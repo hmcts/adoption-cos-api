@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.demo.config;
+package uk.gov.hmcts.reform.adoption.config;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,9 +38,9 @@ class SwaggerPublisherTest {
             .getResponse()
             .getContentAsByteArray();
 
-        try (OutputStream outputStream = Files.newOutputStream(Paths.get("/tmp/swagger-specs.json"))) {
+        Path swaggerSpecPath = Paths.get(System.getProperty("java.io.tmpdir"), "swagger-specs.json");
+        try (OutputStream outputStream = Files.newOutputStream(swaggerSpecPath)) {
             outputStream.write(specs);
         }
-
     }
 }
