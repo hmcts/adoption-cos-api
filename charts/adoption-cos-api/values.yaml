@@ -4,7 +4,7 @@ java:
   aadIdentityName: adoption
 #  Uncomment once the vault containing the app insights key has been set up
 #  keyVaults:
-#    rpe:
+#    adoption:
 #      secrets:
 #        - name: AppInsightsInstrumentationKey
 #          alias: azure.application-insights.instrumentation-key
