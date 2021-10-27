@@ -3,7 +3,7 @@
 @Library("Infrastructure")
 
 def type = "java"
-def product = "adoption-cos-api"
-def component = "adoption-cos-api"
+def product = "adoption"
+def component = "cos-api"
 
 withPipeline(type, product, component) {}

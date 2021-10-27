@@ -112,7 +112,7 @@ project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 sonarqube {
   properties {
-    property "sonar.projectName", "Reform :: adoption-cos-api"
+    property "sonar.projectName", "Adoption :: adoption-cos-api"
     property "sonar.projectKey", "uk.gov.hmcts.reform:adoption-cos-api"
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
   }
