@@ -7,5 +7,7 @@ def product = "adoption"
 def component = "cos-api"
 
 withPipeline(type, product, component) {
+    enableAksStagingDeployment()
+    disableLegacyDeployment()
     enableSlackNotifications('#adoption-tech')
 }
