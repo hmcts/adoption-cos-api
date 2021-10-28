@@ -11,4 +11,6 @@ def type = "java"
 def product = "adoption"
 def component = "cos-api"
 
-withNightlyPipeline(type, product, component) {}
+withNightlyPipeline(type, product, component) {
+  enableSlackNotifications('#adoption-tech')
+}
