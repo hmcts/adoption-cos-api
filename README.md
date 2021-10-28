@@ -1,22 +1,17 @@
-# Spring Boot application template
+# Adoption Case Orchestration Service Spring Boot application
 
-[![Build Status](https://travis-ci.org/hmcts/spring-boot-template.svg?branch=master)](https://travis-ci.org/hmcts/spring-boot-template)
+[![Build Status](https://travis-ci.org/hmcts/adoption-cos-api.svg?branch=master)](https://travis-ci.org/hmcts/adoption-cos-api)
 
-## Purpose
-
-The purpose of this template is to speed up the creation of new Spring applications within HMCTS
-and help keep the same standards across multiple teams. If you need to create a new app, you can
-simply use this one as a starting point and build on top of it.
 
 ## What's inside
 
-The template is a working application with a minimal setup. It contains:
- * application skeleton
+The project contains:
+ * application code
  * setup script to prepare project
- * common plugins and libraries
+ * common plugins and libraries required to build the application
  * docker setup
  * swagger configuration for api documentation ([see how to publish your api documentation to shared repository](https://github.com/hmcts/reform-api-docs#publish-swagger-docs))
- * code quality tools already set up
+ * code quality tools
  * integration with Travis CI
  * Hystrix circuit breaker enabled
  * MIT license and contribution information
@@ -27,7 +22,7 @@ The application exposes health endpoint (http://localhost:4550/health) and metri
 
 ## Plugins
 
-The template contains the following plugins:
+The project contains the following plugins:
 
   * checkstyle
 
@@ -125,7 +120,7 @@ Create docker image:
   docker-compose build
 ```
 
-Run the distribution (created in `build/install/spring-boot-template` directory)
+Run the distribution (created in `build/install/adoption-cos-api` directory)
 by executing the following command:
 
 ```bash
@@ -133,7 +128,7 @@ by executing the following command:
 ```
 
 This will start the API container exposing the application's port
-(set to `4550` in this template app).
+(set to `4550` in this app).
 
 In order to test if the application is up, you can call its health endpoint:
 
@@ -143,8 +138,24 @@ In order to test if the application is up, you can call its health endpoint:
 
 You should get a response similar to this:
 
-```
-  {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
+```json
+{
+  "status": "UP",
+  "components": {
+    "diskSpace": {
+      "status": "UP",
+      "details": {
+        "total": 67371577344,
+        "free": 59963727872,
+        "threshold": 10485760,
+        "exists": true
+      }
+    },
+    "ping": {
+      "status": "UP"
+    }
+  }
+}
 ```
 
 ### Alternative script to run application
@@ -190,4 +201,4 @@ Here are some other functionalities it provides:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
+ 

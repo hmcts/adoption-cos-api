@@ -1,4 +1,4 @@
-name: Template CI
+name: Adoption-COS-API CI
 
 on:
   pull_request:
