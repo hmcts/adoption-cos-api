@@ -1,7 +1,6 @@
 # Adoption Case Orchestration Service Spring Boot application
 
 [![Build Status](https://travis-ci.org/hmcts/adoption-cos-api.svg?branch=master)](https://travis-ci.org/hmcts/adoption-cos-api)
-
 ## What's inside
 
 The project contains:
