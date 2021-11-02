@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.adoption.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +11,7 @@ import static org.springframework.http.ResponseEntity.ok;
 /**
  * Default endpoints per application.
  */
+@Api
 @RestController
 public class RootController {
 
@@ -21,6 +24,7 @@ public class RootController {
      *
      * @return Welcome message from the service.
      */
+    @ApiOperation("Returns a welcome text")
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
         return ok("Welcome to adoption-cos-api");
