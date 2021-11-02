@@ -14,5 +14,12 @@
     ]]></notes>
     <cve>CVE-2020-10663</cve>
     <cve>CVE-2020-7712</cve>
-   </suppress>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+        Suppressing for swagger-ui
+    ]]></notes>
+    <cve>CVE-2020-8908</cve>
+    <cve>CVE-2018-10237</cve>
+  </suppress>
 </suppressions>
