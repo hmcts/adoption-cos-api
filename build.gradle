@@ -175,6 +175,9 @@ dependencies {
 
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.1'
+  implementation 'org.projectlombok:lombok:1.18.18'
+  compileOnly "org.projectlombok:lombok:1.18.18"
+  annotationProcessor "org.projectlombok:lombok:1.18.18"
 
   testImplementation(platform('org.junit:junit-bom:5.8.1'))
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
