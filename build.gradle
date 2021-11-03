@@ -154,6 +154,12 @@ ext {
 }
 
 dependencies {
+  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+  compileOnly("org.projectlombok:lombok:1.18.20")
+  testCompileOnly("org.projectlombok:lombok:1.18.20")
+  annotationProcessor("org.projectlombok:lombok:1.18.20")
+  testAnnotationProcessor("org.projectlombok:lombok:1.18.20")
+
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
@@ -164,6 +170,8 @@ dependencies {
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: reformLoggingVersion
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: reformLoggingVersion
+
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.1'
