@@ -9,7 +9,6 @@
   <rule ref="category/java/bestpractices.xml">
     <exclude name="GuardLogStatement"/>
     <exclude name="JUnitTestContainsTooManyAsserts"/>
-    <exclude name="AvoidReassigningParameters"/>
   </rule>
   <rule ref="category/java/codestyle.xml">
     <exclude name="AtLeastOneConstructor"/>
@@ -27,11 +26,6 @@
       <property name="utilityClassPattern" value="[A-Z][a-zA-Z]+"/>
     </properties>
   </rule>
-  <rule ref="category/java/codestyle.xml/ShortClassName">
-    <properties>
-      <property name="minimum" value="4"/>
-    </properties>
-  </rule>
   <rule ref="category/java/codestyle.xml/MethodNamingConventions">
     <properties>
       <property name="junit4TestPattern" value="[a-z][a-zA-Z0-9_]+"/>
@@ -47,7 +41,6 @@
     <exclude name="UseUtilityClass"/>
     <exclude name="LoosePackageCoupling"/>
     <exclude name="DataClass"/>
-    <exclude name="AvoidUncheckedExceptionsInSignatures"/>
   </rule>
   <rule ref="category/java/design.xml/ExcessiveImports">
     <properties>
@@ -72,9 +65,6 @@
   <rule ref="category/java/errorprone.xml">
     <exclude name="BeanMembersShouldSerialize"/>
     <exclude name="MissingSerialVersionUID" />
-  </rule>
-  <rule ref="category/java/multithreading.xml">
-    <exclude name="UseConcurrentHashMap"/>
   </rule>
   <rule ref="category/java/performance.xml"/>
   <rule ref="category/java/security.xml"/>
