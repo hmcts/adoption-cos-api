@@ -29,6 +29,7 @@ public class RootController {
     @ApiOperation("Returns a welcome text")
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
+        log.info("Testing");
         return ok("Welcome to adoption-cos-api");
     }
 }
