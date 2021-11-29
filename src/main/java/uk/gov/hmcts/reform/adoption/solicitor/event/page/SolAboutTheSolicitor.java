@@ -1,0 +1,79 @@
+package uk.gov.hmcts.reform.adoption.solicitor.event.page;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
+import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.Organisation;
+import uk.gov.hmcts.ccd.sdk.type.OrganisationPolicy;
+import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
+import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.divorcecase.CaseInfo;
+import uk.gov.hmcts.reform.adoption.divorcecase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.divorcecase.model.Solicitor;
+import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
+import uk.gov.hmcts.reform.adoption.solicitor.service.SolicitorCreateApplicationService;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.APPLICANT_1_SOLICITOR;
+
+@Component
+@Slf4j
+public class SolAboutTheSolicitor implements CcdPageConfiguration {
+
+    @Autowired
+    private SolicitorCreateApplicationService solicitorCreateApplicationService;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Override
+    public void addTo(final PageBuilder pageBuilder) {
+
+        pageBuilder
+            .page("SolAboutTheSolicitor", this::midEvent)
+            .pageLabel("About the Solicitor")
+            .label(
+                "LabelSolAboutTheSolPara-1",
+                "Please note that the information provided will be used as evidence by the court to decide if "
+                    + "the applicant is entitled to legally end their marriage. **A copy of this form is sent to "
+                    + "${labelContentTheApplicant2}**.")
+            .complex(CaseData::getApplicant1)
+                .complex(Applicant::getSolicitor)
+                    .mandatoryWithLabel(Solicitor::getName, "Your name")
+                    .mandatoryWithLabel(Solicitor::getReference, "Your reference")
+                    .mandatoryWithLabel(Solicitor::getPhone,  "Your phone number")
+                    .mandatoryWithLabel(Solicitor::getEmail, "Your email address")
+                    .mandatory(Solicitor::getAgreeToReceiveEmails)
+                    .complex(Solicitor::getOrganisationPolicy, null, "Your firm's address or DX number")
+                        .complex(OrganisationPolicy::getOrganisation)
+                            .mandatory(Organisation::getOrganisationId)
+                            .done()
+                        .optional(OrganisationPolicy::getOrgPolicyCaseAssignedRole, NEVER_SHOW, APPLICANT_1_SOLICITOR)
+                        .optional(OrganisationPolicy::getOrgPolicyReference, NEVER_SHOW)
+                    .done()
+                .done()
+            .done();
+    }
+
+    private AboutToStartOrSubmitResponse<CaseData, State> midEvent(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
+        log.info("Mid-event callback triggered for SolAboutTheSolicitor");
+
+        final CaseInfo caseInfo = solicitorCreateApplicationService.validateSolicitorOrganisation(
+            details.getData(),
+            details.getId(),
+            request.getHeader(AUTHORIZATION)
+        );
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .errors(caseInfo.getErrors())
+            .build();
+    }
+}
