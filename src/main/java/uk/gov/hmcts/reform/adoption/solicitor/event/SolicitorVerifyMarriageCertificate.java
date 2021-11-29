@@ -4,19 +4,19 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Application;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.MarriageDetails;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.MarriageDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.Submitted;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.LEGAL_ADVISOR;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.READ;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
 @Component
 public class SolicitorVerifyMarriageCertificate implements CCDConfig<CaseData, State, UserRole> {

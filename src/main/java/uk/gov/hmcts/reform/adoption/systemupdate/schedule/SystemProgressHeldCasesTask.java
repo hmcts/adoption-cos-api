@@ -6,7 +6,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.common.service.HoldingPeriodService;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.adoption.solicitor.notification.AwaitingConditionalOrderNotification;
 import uk.gov.hmcts.reform.adoption.systemupdate.service.CcdConflictException;
@@ -24,7 +24,7 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.Holding;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Holding;
 import static uk.gov.hmcts.reform.adoption.systemupdate.event.SystemProgressHeldCase.SYSTEM_PROGRESS_HELD_CASE;
 import static uk.gov.hmcts.reform.adoption.systemupdate.service.CcdSearchService.STATE;
 

@@ -5,7 +5,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 @Component
 public class BulkActionWorkBasketInputFields implements CCDConfig<BulkActionCaseData, BulkActionState, UserRole> {

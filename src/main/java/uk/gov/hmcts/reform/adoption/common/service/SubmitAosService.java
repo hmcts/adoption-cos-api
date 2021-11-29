@@ -9,10 +9,10 @@ import uk.gov.hmcts.reform.adoption.common.service.task.GenerateRespondentAnswer
 import uk.gov.hmcts.reform.adoption.common.service.task.SendCitizenAosNotifications;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetSubmissionAndDueDate;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetSubmitAosState;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTaskRunner.caseTasks;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTaskRunner.caseTasks;
 
 @Service
 @Slf4j

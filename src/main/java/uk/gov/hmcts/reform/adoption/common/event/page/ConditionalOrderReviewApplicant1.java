@@ -2,9 +2,9 @@ package uk.gov.hmcts.reform.adoption.common.event.page;
 
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Application;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.ConditionalOrder;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ConditionalOrder;
 
 public class ConditionalOrderReviewApplicant1 implements CcdPageConfiguration {
 

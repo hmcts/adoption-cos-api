@@ -5,8 +5,7 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.befta.dse.ccd.CcdEnvironment;
 import uk.gov.hmcts.befta.dse.ccd.CcdRoleConfig;
 import uk.gov.hmcts.befta.dse.ccd.DataLoaderToDefinitionStore;
-import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionCaseTypeConfig;
-import uk.gov.hmcts.reform.adoption.divorcecase.NoFaultDivorce;
+import uk.gov.hmcts.reform.adoption.adoptioncase.Adoption;
 
 import java.util.List;
 import java.util.Locale;
@@ -16,7 +15,7 @@ public class HighLevelDataSetupApp extends DataLoaderToDefinitionStore {
 
     private static final Logger logger = LoggerFactory.getLogger(HighLevelDataSetupApp.class);
 
-    private static final CcdRoleConfig[] CCD_ROLES_NEEDED_FOR_NFD = {
+    private static final CcdRoleConfig[] CCD_ROLES_NEEDED_FOR_ADOPTION = {
         new CcdRoleConfig("caseworker-adoption-courtadmin_beta", "PUBLIC"),
         new CcdRoleConfig("caseworker-adoption-superuser", "PUBLIC"),
         new CcdRoleConfig("caseworker-adoption-courtadmin-la", "PUBLIC"),
@@ -51,7 +50,7 @@ public class HighLevelDataSetupApp extends DataLoaderToDefinitionStore {
 
     @Override
     public void addCcdRoles() {
-        for (CcdRoleConfig roleConfig : CCD_ROLES_NEEDED_FOR_NFD) {
+        for (CcdRoleConfig roleConfig : CCD_ROLES_NEEDED_FOR_ADOPTION) {
             try {
                 logger.info("\n\nAdding CCD Role {}.", roleConfig);
                 addCcdRole(roleConfig);
@@ -69,8 +68,7 @@ public class HighLevelDataSetupApp extends DataLoaderToDefinitionStore {
     protected List<String> getAllDefinitionFilesToLoadAt(String definitionsPath) {
         String environmentName = environment.name().toLowerCase(Locale.UK);
         return List.of(
-            "build/ccd-config/ccd-" + NoFaultDivorce.CASE_TYPE + "-" + environmentName + ".xlsx",
-            "build/ccd-config/ccd-" + BulkActionCaseTypeConfig.CASE_TYPE + "-" + environmentName + ".xlsx"
+            "build/ccd-config/ccd-" + Adoption.CASE_TYPE + "-" + environmentName + ".xlsx"
         );
     }
 }

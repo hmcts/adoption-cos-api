@@ -7,14 +7,14 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionPageBuilder;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState.Dropped;
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState.Listed;
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState.Pronounced;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.SYSTEMUPDATE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEMUPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
 @Component
 @Slf4j

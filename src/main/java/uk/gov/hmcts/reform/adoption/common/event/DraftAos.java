@@ -13,24 +13,24 @@ import uk.gov.hmcts.reform.adoption.common.event.page.Applicant2SolAosJurisdicti
 import uk.gov.hmcts.reform.adoption.common.event.page.Applicant2SolAosOtherProceedings;
 import uk.gov.hmcts.reform.adoption.common.event.page.Applicant2SolConfirmContactDetails;
 import uk.gov.hmcts.reform.adoption.common.event.page.Applicant2SolReviewApplicant1Application;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.solicitor.service.task.AddMiniApplicationLink;
 
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AosDrafted;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingAos;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.APPLICANT_2;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.APPLICANT_2_SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.LEGAL_ADVISOR;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.READ;
-import static uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTaskRunner.caseTasks;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AosDrafted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAos;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_2;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_2_SOLICITOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTaskRunner.caseTasks;
 
 @Component
 public class DraftAos implements CCDConfig<CaseData, State, UserRole> {

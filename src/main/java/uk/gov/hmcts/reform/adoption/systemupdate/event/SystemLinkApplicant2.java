@@ -7,18 +7,18 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.solicitor.service.CcdAccessService;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingAos;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingApplicant2Response;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.SYSTEMUPDATE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAos;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingApplicant2Response;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEMUPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
 @Slf4j
 @Component

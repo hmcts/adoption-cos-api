@@ -9,11 +9,11 @@ import uk.gov.hmcts.ccd.sdk.type.Organisation;
 import uk.gov.hmcts.ccd.sdk.type.OrganisationPolicy;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.divorcecase.CaseInfo;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Applicant;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Solicitor;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.CaseInfo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Solicitor;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.solicitor.service.SolicitorCreateApplicationService;
 
 import javax.servlet.http.HttpServletRequest;

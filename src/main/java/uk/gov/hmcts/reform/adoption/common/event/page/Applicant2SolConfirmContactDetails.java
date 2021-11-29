@@ -2,10 +2,10 @@ package uk.gov.hmcts.reform.adoption.common.event.page;
 
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Applicant;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.LabelContent;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Solicitor;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LabelContent;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Solicitor;
 
 
 public class Applicant2SolConfirmContactDetails implements CcdPageConfiguration {

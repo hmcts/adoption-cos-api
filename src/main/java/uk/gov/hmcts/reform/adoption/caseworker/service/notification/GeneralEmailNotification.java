@@ -3,16 +3,16 @@ package uk.gov.hmcts.reform.adoption.caseworker.service.notification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.notification.CommonContent;
 import uk.gov.hmcts.reform.adoption.notification.EmailTemplateName;
 import uk.gov.hmcts.reform.adoption.notification.NotificationService;
 
 import java.util.Map;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.GeneralParties.APPLICANT;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.GeneralParties.RESPONDENT;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.LanguagePreference.ENGLISH;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.GeneralParties.APPLICANT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.GeneralParties.RESPONDENT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SOLICITOR_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.GENERAL_EMAIL_OTHER_PARTY;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.GENERAL_EMAIL_PETITIONER;

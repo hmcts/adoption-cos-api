@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.adoption.bulkaction.task;
 
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 public interface BulkActionCaseTaskProvider {
 

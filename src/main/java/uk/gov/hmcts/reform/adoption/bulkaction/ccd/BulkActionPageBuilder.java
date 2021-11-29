@@ -4,7 +4,7 @@ import uk.gov.hmcts.ccd.sdk.api.Event.EventBuilder;
 import uk.gov.hmcts.ccd.sdk.api.FieldCollection.FieldCollectionBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.MidEvent;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 public class BulkActionPageBuilder {
 

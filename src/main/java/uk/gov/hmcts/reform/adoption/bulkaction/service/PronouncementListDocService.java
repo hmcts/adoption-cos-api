@@ -8,7 +8,7 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkListCaseDetails;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import uk.gov.hmcts.reform.adoption.document.content.PronouncementListTemplateContent;
 import uk.gov.hmcts.reform.adoption.document.model.DivorceDocument;

@@ -12,15 +12,15 @@ import uk.gov.hmcts.reform.adoption.caseworker.service.task.SendAosPack;
 import uk.gov.hmcts.reform.adoption.caseworker.service.task.SendApplicationIssueNotifications;
 import uk.gov.hmcts.reform.adoption.caseworker.service.task.SetPostIssueState;
 import uk.gov.hmcts.reform.adoption.caseworker.service.task.SetReIssueAndDueDate;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.ReissueOption;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ReissueOption;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.systemupdate.service.ReissueProcessingException;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.ReissueOption.DIGITAL_AOS;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.ReissueOption.OFFLINE_AOS;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.ReissueOption.REISSUE_CASE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTaskRunner.caseTasks;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ReissueOption.DIGITAL_AOS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ReissueOption.OFFLINE_AOS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ReissueOption.REISSUE_CASE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTaskRunner.caseTasks;
 
 @Service
 @Slf4j

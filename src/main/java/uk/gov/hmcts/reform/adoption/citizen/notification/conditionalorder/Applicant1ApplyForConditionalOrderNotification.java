@@ -3,8 +3,8 @@ package uk.gov.hmcts.reform.adoption.citizen.notification.conditionalorder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Gender;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Gender;
 import uk.gov.hmcts.reform.adoption.notification.CommonContent;
 import uk.gov.hmcts.reform.adoption.notification.NotificationService;
 

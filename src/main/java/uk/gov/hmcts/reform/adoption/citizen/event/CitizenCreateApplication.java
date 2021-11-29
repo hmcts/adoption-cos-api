@@ -5,15 +5,15 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.reform.adoption.common.AddSystemUpdateRole;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import java.util.ArrayList;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.Draft;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.CITIZEN;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
 @Component
 public class CitizenCreateApplication implements CCDConfig<CaseData, State, UserRole> {

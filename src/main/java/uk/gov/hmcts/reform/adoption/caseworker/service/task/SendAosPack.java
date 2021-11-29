@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.reform.adoption.caseworker.service.print.AosPackPrinter;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Applicant;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Solicitor;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Solicitor;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 @Component
 @Slf4j

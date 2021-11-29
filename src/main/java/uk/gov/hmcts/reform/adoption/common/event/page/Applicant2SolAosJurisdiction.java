@@ -2,8 +2,8 @@ package uk.gov.hmcts.reform.adoption.common.event.page;
 
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.AcknowledgementOfService;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AcknowledgementOfService;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 
 public class Applicant2SolAosJurisdiction implements CcdPageConfiguration {
 

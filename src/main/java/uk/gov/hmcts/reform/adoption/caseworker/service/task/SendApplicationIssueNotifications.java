@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.reform.adoption.citizen.notification.ApplicationIssuedNotification;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingAos;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAos;
 
 @Component
 public class SendApplicationIssueNotifications implements CaseTask {

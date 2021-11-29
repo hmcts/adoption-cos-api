@@ -8,14 +8,14 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.citizen.notification.Applicant2NotBrokenNotification;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingApplicant1Response;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingApplicant2Response;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.APPLICANT_2;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingApplicant1Response;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingApplicant2Response;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_2;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
 @Slf4j
 @Component

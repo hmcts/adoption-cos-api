@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.adoption.bulkaction.task;
 
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static uk.gov.hmcts.reform.adoption.systemupdate.event.SystemRemoveBulkCase.SYSTEM_REMOVE_BULK_CASE;

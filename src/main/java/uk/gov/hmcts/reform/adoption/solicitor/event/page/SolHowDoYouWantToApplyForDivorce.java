@@ -5,9 +5,9 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.LabelContent;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LabelContent;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 
 @Slf4j
 public class SolHowDoYouWantToApplyForDivorce implements CcdPageConfiguration {

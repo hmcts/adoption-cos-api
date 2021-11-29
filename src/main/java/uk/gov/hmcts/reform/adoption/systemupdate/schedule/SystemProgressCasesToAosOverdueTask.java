@@ -21,7 +21,7 @@ import java.util.Map;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingAos;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAos;
 import static uk.gov.hmcts.reform.adoption.systemupdate.event.SystemProgressCaseToAosOverdue.SYSTEM_PROGRESS_TO_AOS_OVERDUE;
 import static uk.gov.hmcts.reform.adoption.systemupdate.service.CcdSearchService.STATE;
 

@@ -9,20 +9,20 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.citizen.notification.ApplicationSentForReviewApplicant1Notification;
 import uk.gov.hmcts.reform.adoption.citizen.notification.ApplicationSentForReviewApplicant2Notification;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingApplicant2Response;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.Draft;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.CITIZEN;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.util.AccessCodeGenerator.generateAccessCode;
-import static uk.gov.hmcts.reform.adoption.divorcecase.validation.ValidationUtil.validateApplicant1BasicCase;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingApplicant2Response;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.util.AccessCodeGenerator.generateAccessCode;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateApplicant1BasicCase;
 
 @Slf4j
 @Component

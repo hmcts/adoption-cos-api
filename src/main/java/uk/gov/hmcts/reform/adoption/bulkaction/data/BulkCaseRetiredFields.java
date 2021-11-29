@@ -5,14 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.map.HashedMap;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Court;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.access.CaseworkerAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Court;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
 import static java.util.Collections.unmodifiableMap;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.ConditionalOrderCourt.BURY_ST_EDMUNDS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ConditionalOrderCourt.BURY_ST_EDMUNDS;
 
 @Data
 @NoArgsConstructor

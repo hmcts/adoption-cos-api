@@ -3,9 +3,9 @@ package uk.gov.hmcts.reform.adoption.common.event.page;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.AcknowledgementOfService;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Applicant;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AcknowledgementOfService;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 
 @Component
 public class Applicant2SolStatementOfTruth implements CcdPageConfiguration {

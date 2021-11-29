@@ -7,9 +7,9 @@ import uk.gov.hmcts.reform.adoption.common.service.task.SendCitizenSubmissionNot
 import uk.gov.hmcts.reform.adoption.common.service.task.SetApplicant2Email;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetDateSubmitted;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterSubmission;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTaskRunner;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTaskRunner;
 
 @Service
 public class SubmissionService {

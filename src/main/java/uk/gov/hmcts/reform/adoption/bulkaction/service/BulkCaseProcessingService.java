@@ -8,7 +8,7 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkListCaseDetails;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 import uk.gov.hmcts.reform.adoption.systemupdate.service.CcdManagementException;
 import uk.gov.hmcts.reform.adoption.systemupdate.service.CcdUpdateService;
 import uk.gov.hmcts.reform.idam.client.models.User;

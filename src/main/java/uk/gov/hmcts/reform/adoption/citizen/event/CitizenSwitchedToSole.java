@@ -9,25 +9,25 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.citizen.notification.SwitchToSoleNotification;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Applicant;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.ApplicationType;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseInvite;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplicationType;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseInvite;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.solicitor.service.CcdAccessService;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static java.util.Objects.isNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.Applicant2Approved;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingApplicant1Response;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingApplicant2Response;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingPayment;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.Draft;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.SYSTEMUPDATE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Applicant2Approved;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingApplicant1Response;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingApplicant2Response;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEMUPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
 @Slf4j
 @Component

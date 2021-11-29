@@ -3,8 +3,8 @@ package uk.gov.hmcts.reform.adoption.document.content;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CtscContactDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CtscContactDetails;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static uk.gov.hmcts.ccd.sdk.type.YesOrNo.NO;
 import static uk.gov.hmcts.ccd.sdk.type.YesOrNo.YES;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.AlternativeServiceType.DEEMED;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AlternativeServiceType.DEEMED;
 import static uk.gov.hmcts.reform.adoption.document.content.DocmosisTemplateConstants.CASE_REFERENCE;
 import static uk.gov.hmcts.reform.adoption.document.content.DocmosisTemplateConstants.DOCUMENTS_ISSUED_ON;
 import static uk.gov.hmcts.reform.adoption.document.content.DocmosisTemplateConstants.IS_SERVICE_ORDER_TYPE_DEEMED;

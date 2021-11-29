@@ -15,7 +15,7 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionCaseTypeConfig.CASE_TYPE;
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.event.CreateBulkList.CREATE_BULK_LIST;
-import static uk.gov.hmcts.reform.adoption.divorcecase.NoFaultDivorce.JURISDICTION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.JURISDICTION;
 
 @Service
 @Slf4j

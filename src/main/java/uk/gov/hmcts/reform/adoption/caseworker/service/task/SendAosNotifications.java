@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.reform.adoption.caseworker.service.notification.NoticeOfProceedingsNotification;
 import uk.gov.hmcts.reform.adoption.caseworker.service.notification.SolicitorServiceNotification;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 @Component
 public class SendAosNotifications implements CaseTask {

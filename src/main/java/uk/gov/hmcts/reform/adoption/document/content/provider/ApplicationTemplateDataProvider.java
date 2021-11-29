@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.common.exception.InvalidCcdCaseDataException;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Application;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.JurisdictionConnections;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.JurisdictionConnections;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 
 import static java.util.Map.entry;
 import static org.springframework.util.CollectionUtils.isEmpty;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.JurisdictionConnections.APP_1_APP_2_DOMICILED;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.JurisdictionConnections.APP_1_APP_2_LAST_RESIDENT;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.JurisdictionConnections.APP_1_APP_2_RESIDENT;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.JurisdictionConnections.APP_1_RESIDENT_SIX_MONTHS;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.JurisdictionConnections.APP_1_RESIDENT_TWELVE_MONTHS;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.JurisdictionConnections.RESIDUAL_JURISDICTION;
-import static uk.gov.hmcts.reform.adoption.divorcecase.validation.ValidationUtil.EMPTY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.JurisdictionConnections.APP_1_APP_2_DOMICILED;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.JurisdictionConnections.APP_1_APP_2_LAST_RESIDENT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.JurisdictionConnections.APP_1_APP_2_RESIDENT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.JurisdictionConnections.APP_1_RESIDENT_SIX_MONTHS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.JurisdictionConnections.APP_1_RESIDENT_TWELVE_MONTHS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.JurisdictionConnections.RESIDUAL_JURISDICTION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.EMPTY;
 
 @Component
 @Slf4j

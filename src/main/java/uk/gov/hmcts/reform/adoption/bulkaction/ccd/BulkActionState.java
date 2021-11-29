@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.adoption.bulkaction.ccd;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.access.SystemUpdateAndSuperUserAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAndSuperUserAccess;
 
 @RequiredArgsConstructor
 @Getter

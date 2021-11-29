@@ -1,12 +1,12 @@
 package uk.gov.hmcts.reform.adoption.common;
 
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.SYSTEMUPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEMUPDATE;
 
 @Component
 public class AddSystemUpdateRole {

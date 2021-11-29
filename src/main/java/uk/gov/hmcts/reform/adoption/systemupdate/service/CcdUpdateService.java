@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionCaseTypeConfig;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 import uk.gov.hmcts.reform.adoption.systemupdate.convert.CaseDetailsConverter;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
@@ -20,8 +20,8 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.CONFLICT;
-import static uk.gov.hmcts.reform.adoption.divorcecase.NoFaultDivorce.CASE_TYPE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.NoFaultDivorce.JURISDICTION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.CASE_TYPE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.JURISDICTION;
 
 @Service
 @Slf4j

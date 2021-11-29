@@ -2,8 +2,8 @@ package uk.gov.hmcts.reform.adoption.document.content.provider;
 
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.type.AddressGlobalUK;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Applicant;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Application;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
 
 import java.util.stream.Stream;
 

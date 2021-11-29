@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import uk.gov.hmcts.reform.adoption.document.content.RespondentSolicitorAosInvitationTemplateContent;
 
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static uk.gov.hmcts.reform.adoption.caseworker.service.task.util.FileNameUtil.formatDocumentName;
-import static uk.gov.hmcts.reform.adoption.divorcecase.util.AccessCodeGenerator.generateAccessCode;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.util.AccessCodeGenerator.generateAccessCode;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.RESP_AOS_INVITATION_DOCUMENT_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.RESP_SOLICITOR_AOS_INVITATION;
 import static uk.gov.hmcts.reform.adoption.document.model.DocumentType.RESPONDENT_INVITATION;

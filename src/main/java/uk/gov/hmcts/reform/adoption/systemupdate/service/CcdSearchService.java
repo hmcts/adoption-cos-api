@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionCaseTypeConfig;
 import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.systemupdate.convert.CaseDetailsConverter;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -33,8 +33,8 @@ import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.search.sort.SortOrder.ASC;
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState.Created;
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState.Listed;
-import static uk.gov.hmcts.reform.adoption.divorcecase.NoFaultDivorce.CASE_TYPE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.State.AwaitingPronouncement;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.CASE_TYPE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPronouncement;
 
 @Service
 @Slf4j

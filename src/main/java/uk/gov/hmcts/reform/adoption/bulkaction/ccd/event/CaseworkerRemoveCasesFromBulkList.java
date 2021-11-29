@@ -13,7 +13,7 @@ import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkListCaseDetails;
 import uk.gov.hmcts.reform.adoption.bulkaction.service.CaseRemovalService;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.ccd.client.model.SubmittedCallbackResponse;
 
 import java.util.List;
@@ -23,10 +23,10 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState.Created;
 import static uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState.Listed;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.SYSTEMUPDATE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.access.Permissions.CREATE_READ_UPDATE;
-import static uk.gov.hmcts.reform.adoption.divorcecase.validation.ValidationUtil.validateCasesAcceptedToListForHearing;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEMUPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateCasesAcceptedToListForHearing;
 
 @Component
 public class CaseworkerRemoveCasesFromBulkList implements CCDConfig<BulkActionCaseData, BulkActionState, UserRole> {

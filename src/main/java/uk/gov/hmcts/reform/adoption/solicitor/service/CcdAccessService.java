@@ -16,9 +16,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.APPLICANT_1_SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.APPLICANT_2;
-import static uk.gov.hmcts.reform.adoption.divorcecase.model.UserRole.CREATOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_1_SOLICITOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_2;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CREATOR;
 
 @Service
 @Slf4j

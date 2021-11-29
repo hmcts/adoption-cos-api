@@ -2,9 +2,9 @@ package uk.gov.hmcts.reform.adoption.solicitor.event.page;
 
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Applicant;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.Application;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 
 public class SolStatementOfTruth implements CcdPageConfiguration {
 

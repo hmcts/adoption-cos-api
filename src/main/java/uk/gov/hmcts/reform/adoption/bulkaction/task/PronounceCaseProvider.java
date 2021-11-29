@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.adoption.bulkaction.task;
 
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
-import uk.gov.hmcts.reform.adoption.divorcecase.task.CaseTask;
+import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 import static uk.gov.hmcts.ccd.sdk.type.YesOrNo.YES;
 import static uk.gov.hmcts.reform.adoption.systemupdate.event.SystemPronounceCase.SYSTEM_PRONOUNCE_CASE;

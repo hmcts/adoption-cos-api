@@ -12,9 +12,9 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.CaseLink;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.ConditionalOrderCourt;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.access.BulkCaseListAccess;
-import uk.gov.hmcts.reform.adoption.divorcecase.model.access.CaseworkerAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ConditionalOrderCourt;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.BulkCaseListAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.document.model.DivorceDocument;
 
 import java.time.LocalDate;
