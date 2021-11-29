@@ -107,7 +107,7 @@ idam:
   s2s-auth:
     url: ${S2S_URL:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
     secret: ${S2S_SECRET:AAAAAAAAAAAAAAAA}
-    microservice: nfdiv_case_api
+    microservice: adoption-cos-api
   api:
     url: ${IDAM_API_BASEURL:http://localhost:5000}
   systemupdate:
@@ -116,7 +116,7 @@ idam:
   client:
     id: 'adoption'
     secret: ${IDAM_CLIENT_SECRET:123456}
-    redirect_uri: ${IDAM_API_REDIRECT_URL:http://localhost:3001/oauth2/callback}
+    redirect_uri: ${IDAM_API_REDIRECT_URL:http://localhost:3001/receiver}
 
 fee:
   api:

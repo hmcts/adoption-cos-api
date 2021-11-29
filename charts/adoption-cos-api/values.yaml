@@ -1,14 +1,5 @@
-tags:
-  ccd-idam-pr: false
-
-xui-webapp:
-  enabled: false
-
-idam-pr:
-  enabled: false
-
 java:
-  image: 'hmctspublic.azurecr.io/adoption/cos-api:latest'
+  image: "hmctspublic.azurecr.io/adoption/cos-api:latest"
   applicationPort: 4550
   ingressHost: adoption-cos-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   aadIdentityName: adoption
@@ -17,16 +8,36 @@ java:
     maxReplicas: 9
     minReplicas: 6
     targetCPUUtilizationPercentage: 80 # Default is 80% target CPU utilization
-#  Uncomment once the vault containing the app insights key has been set up
-#  keyVaults:
-#    adoption:
-#      secrets:
-#        - name: AppInsightsInstrumentationKey
-#          alias: azure.application-insights.instrumentation-key
+
+  keyVaults:
+    adoption-kv:
+      secrets:
+        # - name: AppInsightsInstrumentationKey-Preview
+        #   alias: APP_INSIGHTS_KEY
+        # - name: uk-gov-notify-api-key
+        #   alias: UK_GOV_NOTIFY_API_KEY
+        - name: s2s-secret-cos-api
+          alias: S2S_SECRET
+        - name: idam-secret
+          alias: IDAM_CLIENT_SECRET
+        - name: idam-systemupdate-username
+          alias: IDAM_SYSTEM_UPDATE_USERNAME
+        - name: idam-systemupdate-password
+          alias: IDAM_SYSTEM_UPDATE_PASSWORD
+
   environment:
-    PRD_API_BASEURL: "http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+    PRD_API_BASEURL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     RUNS_LOCALLY: false
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     IDAM_API_REDIRECT_URL: https://div-pfe-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/authenticated
-    IDAM_API_BASEURL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
-    CASE_DATA_STORE_BASEURL: "http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+    IDAM_API_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+    CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+
+tags:
+  ccd-idam-pr: false
+
+xui-webapp:
+  enabled: false
+
+idam-pr:
+  enabled: false
