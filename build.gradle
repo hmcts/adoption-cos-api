@@ -314,7 +314,7 @@ mainClassName = 'uk.gov.hmcts.reform.adoption.Application'
 ext.getVaultSecret = { String secretName ->
   new ByteArrayOutputStream().withStream { os ->
     exec {
-      commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'adoption-kv-aat', '-o', 'tsv', '--query', 'value', '--name', secretName
+      commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'adoption-aat', '-o', 'tsv', '--query', 'value', '--name', secretName
       standardOutput = os
     }
     return os.toString().replace('\n', '')

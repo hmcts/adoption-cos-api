@@ -10,7 +10,7 @@ java:
     targetCPUUtilizationPercentage: 80 # Default is 80% target CPU utilization
 
   keyVaults:
-    adoption-kv:
+    adoption:
       secrets:
         # - name: AppInsightsInstrumentationKey-Preview
         #   alias: APP_INSIGHTS_KEY
