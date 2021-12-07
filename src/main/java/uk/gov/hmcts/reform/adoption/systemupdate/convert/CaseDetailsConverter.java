@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
-import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -21,19 +19,6 @@ public class CaseDetailsConverter {
     }
 
     public uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> convertToCaseDetailsFromReformModel(final CaseDetails caseDetails) {
-        return objectMapper.convertValue(caseDetails, new TypeReference<>() {
-        });
-    }
-
-    public CaseDetails convertToReformModelFromBulkActionCaseDetails(
-        final uk.gov.hmcts.ccd.sdk.api.CaseDetails<BulkActionCaseData, BulkActionState> caseDetails) {
-
-        return objectMapper.convertValue(caseDetails, CaseDetails.class);
-    }
-
-    public uk.gov.hmcts.ccd.sdk.api.CaseDetails<BulkActionCaseData, BulkActionState> convertToBulkActionCaseDetailsFromReformModel(
-        final CaseDetails caseDetails) {
-
         return objectMapper.convertValue(caseDetails, new TypeReference<>() {
         });
     }

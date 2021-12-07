@@ -1,8 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.validation;
 
-import uk.gov.hmcts.ccd.sdk.type.CaseLink;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MarriageDetails;
@@ -10,14 +7,12 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.MarriageDetails;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import static java.time.temporal.ChronoUnit.YEARS;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
@@ -123,21 +118,6 @@ public final class ValidationUtil {
             return emptyList();
         }
         return application.getJurisdiction().validate();
-    }
-
-    public static List<String> validateCasesAcceptedToListForHearing(BulkActionCaseData caseData) {
-        final List<ListValue<CaseLink>> casesAcceptedToListForHearing = caseData.getCasesAcceptedToListForHearing();
-        final List<String> caseReferences = caseData.getBulkListCaseDetails().stream()
-            .map(c -> c.getValue().getCaseReference().getCaseReference())
-            .collect(toList());
-
-        final boolean anyDuplicateCases = !casesAcceptedToListForHearing.stream().allMatch(new HashSet<>()::add);
-        final boolean anyNewCasesAdded =
-            casesAcceptedToListForHearing.stream().anyMatch(caseLink -> !caseReferences.contains(caseLink.getValue().getCaseReference()));
-
-        return anyDuplicateCases || anyNewCasesAdded
-            ? singletonList("You can only remove cases from the list of cases accepted to list for hearing.")
-            : emptyList();
     }
 
     private static boolean isLessThanOneYearAgo(LocalDate date) {

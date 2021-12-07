@@ -5,9 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionCaseTypeConfig;
-import uk.gov.hmcts.reform.adoption.bulkaction.ccd.BulkActionState;
-import uk.gov.hmcts.reform.adoption.bulkaction.data.BulkActionCaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
@@ -130,49 +127,7 @@ public class CcdUpdateService {
             caseDataContent);
     }
 
-    @Retryable(value = {FeignException.class, RuntimeException.class})
-    public void updateBulkCaseWithRetries(final CaseDetails caseDetails,
-                                          final String eventId,
-                                          final User authorization,
-                                          final String serviceAuth,
-                                          final Long caseId) {
 
-        log.info("Submit event for Case ID: {}, Event ID: {}", caseId, eventId);
-        try {
-            final String userId = authorization.getUserDetails().getId();
-
-            final StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
-                authorization.getAuthToken(),
-                serviceAuth,
-                userId,
-                JURISDICTION,
-                BulkActionCaseTypeConfig.CASE_TYPE,
-                String.valueOf(caseId),
-                eventId
-            );
-
-            final CaseDataContent caseDataContent = ccdCaseDataContentProvider.createCaseDataContent(
-                startEventResponse,
-                DIVORCE_CASE_SUBMISSION_EVENT_SUMMARY,
-                DIVORCE_CASE_SUBMISSION_EVENT_DESCRIPTION,
-                caseDetails.getData());
-
-            coreCaseDataApi.submitEventForCaseWorker(
-                authorization.getAuthToken(),
-                serviceAuth,
-                userId,
-                JURISDICTION,
-                BulkActionCaseTypeConfig.CASE_TYPE,
-                String.valueOf(caseId),
-                true,
-                caseDataContent);
-        } catch (final FeignException e) {
-            final String message = format("Submit Event Failed for Case ID: %s, Event ID: %s", caseId, eventId);
-            log.info(message, e);
-
-            throw new CcdManagementException(message, e);
-        }
-    }
 
     private void startAndSubmitEventForCaseworkers(final CaseDetails caseDetails,
                                                    final String eventId,
@@ -205,19 +160,5 @@ public class CcdUpdateService {
             caseId,
             true,
             caseDataContent);
-    }
-
-    public void submitBulkActionEvent(final uk.gov.hmcts.ccd.sdk.api.CaseDetails<BulkActionCaseData, BulkActionState> caseDetails,
-                                      final String eventId,
-                                      final User user,
-                                      final String serviceAuth) {
-
-        updateBulkCaseWithRetries(
-            caseDetailsConverter.convertToReformModelFromBulkActionCaseDetails(caseDetails),
-            eventId,
-            user,
-            serviceAuth,
-            caseDetails.getId()
-        );
     }
 }
