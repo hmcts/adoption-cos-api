@@ -1,19 +1,14 @@
 package uk.gov.hmcts.reform.adoption.citizen.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
-import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.payment.PaymentService;
 
 import java.util.List;
 
@@ -25,21 +20,12 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USE
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ApplicationValidation.validateReadyForPayment;
-import static uk.gov.hmcts.reform.adoption.payment.PaymentService.EVENT_ISSUE;
-import static uk.gov.hmcts.reform.adoption.payment.PaymentService.KEYWORD_DIVORCE;
-import static uk.gov.hmcts.reform.adoption.payment.PaymentService.SERVICE_DIVORCE;
 
 @Slf4j
 @Component
 public class CitizenSubmitApplication implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String CITIZEN_SUBMIT = "citizen-submit-application";
-
-    @Autowired
-    private PaymentService paymentService;
-
-    @Autowired
-    private SubmissionService submissionService;
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -78,20 +64,6 @@ public class CitizenSubmitApplication implements CCDConfig<CaseData, State, User
                 .build();
         }
 
-        Application application = data.getApplication();
-
-        if (data.isSoleApplicationOrApplicant2HasAgreedHwf() && application.isHelpWithFeesApplication()) {
-            var submittedDetails = submissionService.submitApplication(details);
-            data = submittedDetails.getData();
-            state = submittedDetails.getState();
-        } else {
-            OrderSummary orderSummary = paymentService.getOrderSummaryByServiceEvent(SERVICE_DIVORCE,
-                EVENT_ISSUE,KEYWORD_DIVORCE);
-            application.setApplicationFeeOrderSummary(orderSummary);
-
-            state = AwaitingPayment;
-        }
-
         data.getLabelContent().setApplicationType(data.getApplicationType());
         data.getLabelContent().setUnionType(data.getDivorceOrDissolution());
 
@@ -102,4 +74,3 @@ public class CitizenSubmitApplication implements CCDConfig<CaseData, State, User
     }
 
 }
-

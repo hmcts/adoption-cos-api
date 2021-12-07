@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
-import uk.gov.hmcts.reform.adoption.citizen.notification.ApplicationOutstandingActionNotification;
 import uk.gov.hmcts.reform.adoption.citizen.notification.ApplicationSubmittedNotification;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -17,9 +16,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 @Component
 @Slf4j
 public class SendCitizenSubmissionNotifications implements CaseTask {
-
-    @Autowired
-    private ApplicationOutstandingActionNotification applicationOutstandingActionNotification;
 
     @Autowired
     private ApplicationSubmittedNotification applicationSubmittedNotification;
@@ -52,15 +48,5 @@ public class SendCitizenSubmissionNotifications implements CaseTask {
                 applicationSubmittedNotification.sendToApplicant2(caseData, caseId);
             }
         }
-
-        if (caseData.getApplication().hasAwaitingApplicant1Documents()) {
-            log.info("Triggering applicant 1 has outstanding actions notification");
-            applicationOutstandingActionNotification.sendToApplicant1(caseData, caseId);
-        }
-        if (caseData.getApplication().hasAwaitingApplicant2Documents()) {
-            log.info("Triggering applicant 2 has outstanding actions notification");
-            applicationOutstandingActionNotification.sendToApplicant2(caseData, caseId);
-        }
-
     }
 }

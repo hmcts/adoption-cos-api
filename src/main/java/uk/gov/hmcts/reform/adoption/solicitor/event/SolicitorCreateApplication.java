@@ -13,18 +13,12 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.Applicant2ServiceDetails;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.FinancialOrders;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.JurisdictionApplyForDivorce;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.MarriageCertificateDetails;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.MarriageIrretrievablyBroken;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.OtherLegalProceedings;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolAboutApplicant1;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolAboutApplicant2;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolAboutTheSolicitor;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolHowDoYouWantToApplyForDivorce;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.UploadDocument;
 import uk.gov.hmcts.reform.adoption.solicitor.service.CcdAccessService;
 import uk.gov.hmcts.reform.adoption.solicitor.service.SolicitorCreateApplicationService;
 import uk.gov.hmcts.reform.ccd.client.model.SubmittedCallbackResponse;
@@ -70,17 +64,11 @@ public class SolicitorCreateApplication implements CCDConfig<CaseData, State, Us
         final PageBuilder pageBuilder = addEventConfig(configBuilder);
 
         final List<CcdPageConfiguration> pages = asList(
-            new SolHowDoYouWantToApplyForDivorce(),
             solAboutTheSolicitor,
-            new MarriageIrretrievablyBroken(),
             new SolAboutApplicant1(),
-            new SolAboutApplicant2(),
-            new Applicant2ServiceDetails(),
-            new MarriageCertificateDetails(),
             new JurisdictionApplyForDivorce(),
             new OtherLegalProceedings(),
             new FinancialOrders(),
-            new UploadDocument(),
             new LanguagePreference()
         );
 

@@ -11,7 +11,6 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -61,9 +60,6 @@ public class SolicitorSubmitApplication implements CCDConfig<CaseData, State, Us
 
     @Autowired
     private SolPayment solPayment;
-
-    @Autowired
-    private SubmissionService submissionService;
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -137,7 +133,7 @@ public class SolicitorSubmitApplication implements CCDConfig<CaseData, State, Us
 
         updateApplicant2DigitalDetails(caseData);
 
-        final CaseDetails<CaseData, State> updatedCaseDetails = submissionService.submitApplication(details);
+        final CaseDetails<CaseData, State> updatedCaseDetails = null;//TODO submissionService.submitApplication(details);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(updatedCaseDetails.getData())

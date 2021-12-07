@@ -28,13 +28,13 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildAosTab(configBuilder);
         buildPaymentTab(configBuilder);
         buildLanguageTab(configBuilder);
-        buildDocumentsTab(configBuilder);
+        //buildDocumentsTab(configBuilder);
         buildConfidentialApplicantTab(configBuilder);
         buildConfidentialRespondentTab(configBuilder);
         buildMarriageCertificateTab(configBuilder);
         buildNotesTab(configBuilder);
         buildGeneralReferralTab(configBuilder);
-        buildConfidentialDocumentsTab(configBuilder);
+        //buildConfidentialDocumentsTab(configBuilder);
         buildServiceApplicationTab(configBuilder);
         buildConditionalOrderTab(configBuilder);
         buildOutcomeOfConditionalOrderTab(configBuilder);
@@ -79,16 +79,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1LanguagePreferenceWelsh")
             .label("LabelLanguageDetails-Respondent", null, "### The respondent")
             .field("applicant2LanguagePreferenceWelsh");
-    }
-
-    private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("documents", "Documents")
-            .field(CaseData::getDocumentsGenerated)
-            .field(CaseData::getApplicant1DocumentsUploaded)
-            .field(CaseData::getGeneralOrders)
-            .field(CaseData::getDocumentsUploaded)
-            .field("certificateOfServiceDocument")
-            .field("coCertificateOfEntitlementDocument");
     }
 
     private void buildConfidentialApplicantTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -142,12 +132,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("generalReferralJudgeDetails")
             .field("generalReferralLegalAdvisorDetails")
             .field("generalReferralFeeRequired");
-    }
-
-    private void buildConfidentialDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("confidentialDocuments", "Confidential Document")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR, SUPER_USER)
-            .field(CaseData::getConfidentialDocumentsUploaded);
     }
 
     private void buildServiceApplicationTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {

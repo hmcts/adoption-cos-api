@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uk.gov.hmcts.reform.adoption.common.config.interceptors.UnAuthorisedServiceException;
-import uk.gov.hmcts.reform.adoption.document.print.exception.InvalidResourceException;
 import uk.gov.hmcts.reform.adoption.notification.exception.NotificationException;
 import uk.gov.hmcts.reform.authorisation.exceptions.InvalidTokenException;
 import uk.gov.service.notify.NotificationClientException;
@@ -51,13 +50,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(exception.status()).body(
             String.format("%s - %s", exception.getMessage(), exception.contentUTF8())
-        );
-    }
-
-    @ExceptionHandler(InvalidResourceException.class)
-    public ResponseEntity<Object> handleInvalidResourceException() {
-        return new ResponseEntity<>(
-            HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 }

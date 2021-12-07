@@ -19,7 +19,6 @@ import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Applicant2Access;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoption.document.model.DocumentType;
 import uk.gov.hmcts.reform.adoption.payment.model.Payment;
 import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
 
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.Set;
 
 import static java.lang.Integer.parseInt;
-import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
@@ -258,18 +256,6 @@ public class Application {
     private YesOrNo app2ContactMethodIsDigital;
 
     @CCD(
-        label = "Applicant 1 cannot upload supporting documents",
-        access = {DefaultAccess.class}
-    )
-    private Set<DocumentType> applicant1CannotUploadSupportingDocument;
-
-    @CCD(
-        label = "Applicant 2 cannot upload supporting documents",
-        access = {DefaultAccess.class, Applicant2Access.class}
-    )
-    private Set<DocumentType> applicant2CannotUploadSupportingDocument;
-
-    @CCD(
         label = "All documents uploaded",
         hint = "Select yes to submit the case, if all documents have been uploaded",
         access = {DefaultAccess.class}
@@ -416,18 +402,6 @@ public class Application {
     @JsonIgnore
     public LocalDate getDateOfSubmissionResponse() {
         return dateSubmitted == null ? null : dateSubmitted.plusDays(SUBMISSION_RESPONSE_DAYS).toLocalDate();
-    }
-
-    @JsonIgnore
-    public boolean hasAwaitingApplicant1Documents() {
-        return applicant1WantsToHavePapersServedAnotherWay != null
-            && applicant1WantsToHavePapersServedAnotherWay.toBoolean()
-            || !isEmpty(applicant1CannotUploadSupportingDocument);
-    }
-
-    @JsonIgnore
-    public boolean hasAwaitingApplicant2Documents() {
-        return !isEmpty(applicant2CannotUploadSupportingDocument);
     }
 
     @JsonIgnore

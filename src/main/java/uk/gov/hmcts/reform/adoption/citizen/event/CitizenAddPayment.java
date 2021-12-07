@@ -1,13 +1,11 @@
 package uk.gov.hmcts.reform.adoption.citizen.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -31,9 +29,6 @@ import static uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus.SUCCESS;
 public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String CITIZEN_ADD_PAYMENT = "citizen-add-payment";
-
-    @Autowired
-    private SubmissionService submissionService;
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -85,7 +80,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
                 .build();
         }
 
-        final CaseDetails<CaseData, State> updatedCaseDetails = submissionService.submitApplication(details);
+        final CaseDetails<CaseData, State> updatedCaseDetails = null;//TODO submissionService.submitApplication(details);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(updatedCaseDetails.getData())

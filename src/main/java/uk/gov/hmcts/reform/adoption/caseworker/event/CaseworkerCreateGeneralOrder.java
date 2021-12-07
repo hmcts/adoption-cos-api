@@ -7,24 +7,17 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.caseworker.event.page.CreateGeneralOrder;
 import uk.gov.hmcts.reform.adoption.caseworker.event.page.GeneralOrderDraft;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.DivorceGeneralOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.document.DocumentIdProvider;
-import uk.gov.hmcts.reform.adoption.document.model.DivorceDocument;
-import uk.gov.hmcts.reform.adoption.document.model.DocumentType;
 
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
@@ -41,9 +34,6 @@ public class CaseworkerCreateGeneralOrder implements CCDConfig<CaseData, State, 
 
     @Autowired
     private CreateGeneralOrder createGeneralOrder;
-
-    @Autowired
-    private DocumentIdProvider documentIdProvider;
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -77,40 +67,10 @@ public class CaseworkerCreateGeneralOrder implements CCDConfig<CaseData, State, 
         final CaseDetails<CaseData, State> beforeDetails
     ) {
 
-        log.info("Caseworker create general order about to submit callback invoked");
-
         var caseDataCopy = details.getData().toBuilder().build();
         var generalOrder = caseDataCopy.getGeneralOrder();
 
-        DivorceDocument generalOrderDocument = DivorceDocument
-            .builder()
-            .documentFileName(generalOrder.getGeneralOrderDraft().getFilename())
-            .documentType(DocumentType.GENERAL_ORDER)
-            .documentLink(generalOrder.getGeneralOrderDraft())
-            .build();
-
-        DivorceGeneralOrder divorceGeneralOrder = DivorceGeneralOrder
-            .builder()
-            .generalOrderDocument(generalOrderDocument)
-            .generalOrderDivorceParties(generalOrder.getGeneralOrderDivorceParties())
-            .build();
-
-        ListValue<DivorceGeneralOrder> divorceGeneralOrderListValue =
-            ListValue
-                .<DivorceGeneralOrder>builder()
-                .id(documentIdProvider.documentId())
-                .value(divorceGeneralOrder)
-                .build();
-
-        if (isEmpty(caseDataCopy.getGeneralOrders())) {
-            caseDataCopy.setGeneralOrders(singletonList(divorceGeneralOrderListValue));
-
-        } else {
-            caseDataCopy.getGeneralOrders().add(0, divorceGeneralOrderListValue);
-        }
-
-        //clear general order field so that on next general order old data is not shown
-        caseDataCopy.setGeneralOrder(null);
+        log.info("Caseworker create general order about to submit callback invoked {}", generalOrder);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseDataCopy)

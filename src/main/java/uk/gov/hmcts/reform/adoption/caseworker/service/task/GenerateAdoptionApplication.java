@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.solicitor.service.task;
+package uk.gov.hmcts.reform.adoption.caseworker.service.task;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,16 +11,16 @@ import java.time.LocalDate;
 
 @Component
 @Slf4j
-public class AdoptionApplicationDraft implements CaseTask {
+public class GenerateAdoptionApplication implements CaseTask {
 
     @Override
     public CaseDetails<CaseData, State> apply(final CaseDetails<CaseData, State> caseDetails) {
 
-        final CaseData caseData = caseDetails.getData();
         final Long caseId = caseDetails.getId();
+        final CaseData caseData = caseDetails.getData();
         final LocalDate createdDate = caseDetails.getCreatedDate().toLocalDate();
 
-        log.info("Executing handler for generating draft adoption application for case id {} ", caseId, caseData, createdDate);
+        log.info("Executing handler for generating adoption application for case id {} {} {}", caseId, caseData, createdDate);
 
         return caseDetails;
     }

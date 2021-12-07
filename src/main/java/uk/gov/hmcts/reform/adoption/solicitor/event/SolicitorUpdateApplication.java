@@ -12,18 +12,12 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.Applicant2ServiceDetails;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.FinancialOrders;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.JurisdictionApplyForDivorce;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.MarriageCertificateDetails;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.MarriageIrretrievablyBroken;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.OtherLegalProceedings;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolAboutApplicant1;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolAboutApplicant2;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolAboutTheSolicitor;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolHowDoYouWantToApplyForDivorce;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.UploadDocument;
 import uk.gov.hmcts.reform.adoption.solicitor.service.SolicitorUpdateApplicationService;
 
 import java.util.List;
@@ -55,16 +49,10 @@ public class SolicitorUpdateApplication implements CCDConfig<CaseData, State, Us
         final PageBuilder pageBuilder = addEventConfig(configBuilder);
 
         final List<CcdPageConfiguration> pages = asList(
-            new SolHowDoYouWantToApplyForDivorce(),
             solAboutTheSolicitor,
-            new MarriageIrretrievablyBroken(),
             new SolAboutApplicant1(),
-            new SolAboutApplicant2(),
-            new Applicant2ServiceDetails(),
-            new MarriageCertificateDetails(),
             new OtherLegalProceedings(),
             new FinancialOrders(),
-            new UploadDocument(),
             new LanguagePreference(),
             new JurisdictionApplyForDivorce()
         );
@@ -80,7 +68,7 @@ public class SolicitorUpdateApplication implements CCDConfig<CaseData, State, Us
         final CaseDetails<CaseData, State> result = solicitorUpdateApplicationService.aboutToSubmit(details);
 
         //sort app1 documents in descending order so latest appears first
-        result.getData().sortApplicant1UploadedDocuments(beforeDetails.getData().getApplicant1DocumentsUploaded());
+        //result.getData().sortApplicant1UploadedDocuments(beforeDetails.getData().getApplicant1DocumentsUploaded());
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(result.getData())

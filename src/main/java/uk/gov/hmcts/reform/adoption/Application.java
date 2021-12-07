@@ -8,8 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import uk.gov.hmcts.reform.adoption.document.DocAssemblyClient;
-import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
 import uk.gov.hmcts.reform.adoption.payment.FeesAndPaymentsClient;
 import uk.gov.hmcts.reform.adoption.payment.PaymentPbaClient;
 import uk.gov.hmcts.reform.adoption.solicitor.client.organisation.OrganisationClient;
@@ -35,10 +33,8 @@ import java.util.TimeZone;
         ServiceAuthorisationApi.class,
         CaseUserApi.class,
         FeesAndPaymentsClient.class,
-        DocAssemblyClient.class,
         CoreCaseDataApi.class,
         CaseAssignmentApi.class,
-        DocumentManagementClient.class,
         OrganisationClient.class,
         PbaRefDataClient.class,
         PaymentPbaClient.class

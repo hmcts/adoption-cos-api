@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.framework.exceptions;
+package uk.gov.hmcts.reform.adoption.exceptions;
 
 public class WorkflowException extends Exception {
 
