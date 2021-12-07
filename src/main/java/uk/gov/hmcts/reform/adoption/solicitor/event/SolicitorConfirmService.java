@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.solicitor.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -14,7 +13,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolConfirmService;
-import uk.gov.hmcts.reform.adoption.solicitor.service.SolicitorSubmitConfirmService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +31,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions
 public class SolicitorConfirmService implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String SOLICITOR_CONFIRM_SERVICE = "solicitor-confirm-service";
-
-    @Autowired
-    private SolicitorSubmitConfirmService solicitorSubmitConfirmService;
 
     private final List<CcdPageConfiguration> pages = List.of(
         new SolConfirmService()
@@ -70,7 +65,7 @@ public class SolicitorConfirmService implements CCDConfig<CaseData, State, UserR
         }
 
 
-        final CaseDetails<CaseData, State> updateDetails = solicitorSubmitConfirmService.submitConfirmService(details);
+        final CaseDetails<CaseData, State> updateDetails = null;//solicitorSubmitConfirmService.submitConfirmService(details);
 
         log.info("Due date after submit Task is {}", updateDetails.getData().getDueDate());
 

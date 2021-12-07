@@ -8,10 +8,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.CaseInfo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.solicitor.client.organisation.OrganisationClient;
-import uk.gov.hmcts.reform.adoption.solicitor.service.task.DivorceApplicationDraft;
+import uk.gov.hmcts.reform.adoption.solicitor.service.task.AdoptionApplicationDraft;
 import uk.gov.hmcts.reform.adoption.solicitor.service.task.InitialiseSolicitorCreatedApplication;
 import uk.gov.hmcts.reform.adoption.solicitor.service.task.SetApplicant1SolicitorAddress;
-import uk.gov.hmcts.reform.adoption.solicitor.service.task.SolicitorCourtDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import static java.util.Collections.singletonList;
@@ -25,10 +24,7 @@ public class SolicitorCreateApplicationService {
     private InitialiseSolicitorCreatedApplication initialiseSolicitorCreatedApplication;
 
     @Autowired
-    private SolicitorCourtDetails solicitorCourtDetails;
-
-    @Autowired
-    private DivorceApplicationDraft divorceApplicationDraft;
+    private AdoptionApplicationDraft adoptionApplicationDraft;
 
     @Autowired
     private SetApplicant1SolicitorAddress setApplicant1SolicitorAddress;
@@ -43,9 +39,9 @@ public class SolicitorCreateApplicationService {
 
         return caseTasks(
             initialiseSolicitorCreatedApplication,
-            solicitorCourtDetails,
+            null,//solicitorCourtDetails
             setApplicant1SolicitorAddress,
-            divorceApplicationDraft
+            adoptionApplicationDraft
         ).run(caseDetails);
     }
 

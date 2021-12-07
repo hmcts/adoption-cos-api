@@ -7,7 +7,7 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.document.task.DivorceApplicationRemover;
-import uk.gov.hmcts.reform.adoption.solicitor.service.task.DivorceApplicationDraft;
+import uk.gov.hmcts.reform.adoption.solicitor.service.task.AdoptionApplicationDraft;
 import uk.gov.hmcts.reform.adoption.solicitor.service.task.SetApplicant1SolicitorAddress;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTaskRunner.caseTasks;
@@ -20,7 +20,7 @@ public class SolicitorUpdateApplicationService {
     private DivorceApplicationRemover divorceApplicationRemover;
 
     @Autowired
-    private DivorceApplicationDraft divorceApplicationDraft;
+    private AdoptionApplicationDraft adoptionApplicationDraft;
 
     @Autowired
     private SetApplicant1SolicitorAddress setApplicant1SolicitorAddress;
@@ -30,7 +30,7 @@ public class SolicitorUpdateApplicationService {
         return caseTasks(
             setApplicant1SolicitorAddress,
             divorceApplicationRemover,
-            divorceApplicationDraft
+            adoptionApplicationDraft
         ).run(caseDetails);
     }
 }
