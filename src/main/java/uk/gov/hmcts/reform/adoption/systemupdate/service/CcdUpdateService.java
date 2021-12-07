@@ -24,8 +24,8 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.JURISDICTION;
 @Slf4j
 public class CcdUpdateService {
 
-    private static final String DIVORCE_CASE_SUBMISSION_EVENT_SUMMARY = "No Fault Divorce case submission event";
-    private static final String DIVORCE_CASE_SUBMISSION_EVENT_DESCRIPTION = "Submitting No Fault Divorce Case Event";
+    private static final String CASE_SUBMISSION_EVENT_SUMMARY = "Adoption case submission event";
+    private static final String CASE_SUBMISSION_EVENT_DESCRIPTION = "Submitting Adoption Case Event";
 
     @Autowired
     private CoreCaseDataApi coreCaseDataApi;
@@ -112,8 +112,8 @@ public class CcdUpdateService {
 
         final CaseDataContent caseDataContent = ccdCaseDataContentProvider.createCaseDataContent(
             startEventResponse,
-            DIVORCE_CASE_SUBMISSION_EVENT_SUMMARY,
-            DIVORCE_CASE_SUBMISSION_EVENT_DESCRIPTION,
+            CASE_SUBMISSION_EVENT_SUMMARY,
+            CASE_SUBMISSION_EVENT_DESCRIPTION,
             caseDetailsUpdater.updateCaseData(caseTask, startEventResponse).getData());
 
         coreCaseDataApi.submitEventForCaseWorker(
@@ -147,8 +147,8 @@ public class CcdUpdateService {
 
         final CaseDataContent caseDataContent = ccdCaseDataContentProvider.createCaseDataContent(
             startEventResponse,
-            DIVORCE_CASE_SUBMISSION_EVENT_SUMMARY,
-            DIVORCE_CASE_SUBMISSION_EVENT_DESCRIPTION,
+            CASE_SUBMISSION_EVENT_SUMMARY,
+            CASE_SUBMISSION_EVENT_DESCRIPTION,
             caseDetails.getData());
 
         coreCaseDataApi.submitEventForCaseWorker(
