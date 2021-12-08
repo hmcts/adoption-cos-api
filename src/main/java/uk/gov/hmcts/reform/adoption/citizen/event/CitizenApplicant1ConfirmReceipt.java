@@ -7,12 +7,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Holding;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
-
 @Component
 public class CitizenApplicant1ConfirmReceipt implements CCDConfig<CaseData, State, UserRole> {
 
@@ -20,14 +14,7 @@ public class CitizenApplicant1ConfirmReceipt implements CCDConfig<CaseData, Stat
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-
-        configBuilder
-            .event(APPLICANT_1_CONFIRM_RECEIPT)
-            .forStates(Holding)
-            .name("Applicant 1 Confirm Receipt")
-            .description("Applicant 1 confirms receipt for joint application")
-            .grant(CREATE_READ_UPDATE, CITIZEN)
-            .grant(READ, SUPER_USER);
+        configBuilder.event(APPLICANT_1_CONFIRM_RECEIPT);//TODO
     }
 }
 

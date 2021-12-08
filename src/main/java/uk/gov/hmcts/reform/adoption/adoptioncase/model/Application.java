@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +15,6 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Applicant2Access;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.payment.model.Payment;
@@ -29,13 +27,8 @@ import java.util.Set;
 
 import static java.lang.Integer.parseInt;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.YesOrNo.YES;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ServiceMethod.SOLICITOR_SERVICE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.SolicitorPaymentMethod.FEES_HELP_WITH;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.SolicitorPaymentMethod.FEE_PAY_BY_ACCOUNT;
 import static uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus.SUCCESS;
 
 @Data
@@ -53,56 +46,6 @@ public class Application {
     private YesOrNo applicant1ScreenHasMarriageBroken;
 
     @CCD(
-        label = "Has applicant 2's marriage broken down irretrievably?",
-        access = {Applicant2Access.class}
-    )
-    private YesOrNo applicant2ScreenHasMarriageBroken;
-
-    @CCD(
-        label = "The applicant has marriage cert?",
-        access = {DefaultAccess.class}
-    )
-    private YesOrNo screenHasMarriageCert;
-
-    @CCD(
-        access = {DefaultAccess.class}
-    )
-    @JsonUnwrapped(prefix = "marriage")
-    @Builder.Default
-    private MarriageDetails marriageDetails = new MarriageDetails();
-
-    @JsonUnwrapped(prefix = "jurisdiction")
-    @Builder.Default
-    private Jurisdiction jurisdiction = new Jurisdiction();
-
-    @JsonUnwrapped(prefix = "solService")
-    @Builder.Default
-    private SolicitorService solicitorService = new SolicitorService();
-
-    @JsonUnwrapped(prefix = "applicant1HWF")
-    @CCD(access = {DefaultAccess.class})
-    private HelpWithFees applicant1HelpWithFees;
-
-    @JsonUnwrapped(prefix = "applicant2HWF")
-    @CCD(access = {Applicant2Access.class})
-    private HelpWithFees applicant2HelpWithFees;
-
-    @CCD(
-        label = "Who is the applicant divorcing?",
-        hint = "Husband or Wife?",
-        typeOverride = FixedList,
-        typeParameterOverride = "WhoDivorcing",
-        access = {DefaultAccess.class}
-    )
-    private WhoDivorcing divorceWho;
-
-    @CCD(
-        label = "Does this case require urgent issue due to jurisdiction or other financial matters?",
-        access = {DefaultAccess.class}
-    )
-    private YesOrNo solUrgentCase;
-
-    @CCD(
         label = "Any supporting information or instructions?",
         typeOverride = TextArea,
         access = {DefaultAccess.class}
@@ -116,12 +59,6 @@ public class Application {
         access = {DefaultAccess.class}
     )
     private YesOrNo applicant1WantsToHavePapersServedAnotherWay;
-
-    @CCD(
-        label = "How would you like the respondent to be served?",
-        access = {DefaultAccess.class}
-    )
-    private ServiceMethod solServiceMethod;
 
     @CCD(
         label = "I have discussed the possibility of a reconciliation with the applicant.",
@@ -152,24 +89,10 @@ public class Application {
     }
 
     @CCD(
-        label = "The applicant has given their \"prayer\".",
-        hint = "\"The prayer\" means they confirm they wish to dissolve the union, pay any fees (if applicable),"
-            + " and have decided how money and property will be split (\"financial order\").",
-        access = {Applicant2Access.class}
-    )
-    private YesOrNo applicant2PrayerHasBeenGiven;
-
-    @CCD(
         label = "The applicant believes that the facts stated in this application are true.",
         access = {DefaultAccess.class}
     )
     private YesOrNo applicant1StatementOfTruth;
-
-    @CCD(
-        label = "The applicant believes that the facts stated in this application are true.",
-        access = {Applicant2Access.class}
-    )
-    private YesOrNo applicant2StatementOfTruth;
 
     @CCD(
         label = "I am duly authorised by the applicant to sign this statement.",
@@ -205,14 +128,6 @@ public class Application {
     private String solApplicationFeeInPounds;
 
     @CCD(
-        label = "How will payment be made?",
-        typeOverride = FixedList,
-        typeParameterOverride = "SolicitorPaymentMethod",
-        access = {DefaultAccess.class}
-    )
-    private SolicitorPaymentMethod solPaymentHowToPay;
-
-    @CCD(
         label = "Account number",
         access = {DefaultAccess.class}
     )
@@ -232,12 +147,6 @@ public class Application {
     private OrderSummary applicationFeeOrderSummary;
 
     @CCD(
-        label = "The respondent agrees that the divorce service can send notifications by email.",
-        access = {DefaultAccess.class}
-    )
-    private YesOrNo applicant2AgreeToReceiveEmails;
-
-    @CCD(
         label = "Is the respondent's email address known?",
         access = {DefaultAccess.class}
     )
@@ -248,19 +157,6 @@ public class Application {
         access = {DefaultAccess.class}
     )
     private YesOrNo applicant1KnowsApplicant2Address;
-
-    @CCD(
-        label = "Applicant 2 is using digital channel?",
-        access = {DefaultAccess.class}
-    )
-    private YesOrNo app2ContactMethodIsDigital;
-
-    @CCD(
-        label = "All documents uploaded",
-        hint = "Select yes to submit the case, if all documents have been uploaded",
-        access = {DefaultAccess.class}
-    )
-    private YesOrNo documentUploadComplete;
 
     @CCD(
         label = "Link to online application",
@@ -274,18 +170,6 @@ public class Application {
     )
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime dateSubmitted;
-
-    @CCD(
-        label = "Is the information provided on the case correct?",
-        access = {Applicant2Access.class}
-    )
-    private YesOrNo applicant2ConfirmApplicant1Information;
-
-    @CCD(
-        label = "Explain what is incorrect or needs changing.",
-        access = {Applicant2Access.class}
-    )
-    private String applicant2ExplainsApplicant1IncorrectInformation;
 
     @CCD(
         label = "Date when the application was issued",
@@ -309,12 +193,6 @@ public class Application {
     private LocalDate createdDate;
 
     @CCD(
-        label = "Reject reason",
-        access = {CaseworkerAccess.class}
-    )
-    private RejectReason rejectReason;
-
-    @CCD(
         label = "Previous state",
         access = {CaseworkerAccess.class}
     )
@@ -335,30 +213,10 @@ public class Application {
     private YesOrNo overdueNotificationSent;
 
     @CCD(
-        label = "Reminder that applicant 2 has approved application sent?",
-        access = {DefaultAccess.class}
-    )
-    private YesOrNo applicant1ReminderSent;
-
-    @CCD(
-        label = "Reminder that applicant 2 needs to review joint application",
-        access = {DefaultAccess.class}
-    )
-    private YesOrNo applicant2ReminderSent;
-
-    @CCD(
         label = "Notification sent to Applicant 1 indicating they can apply for a Conditional Order",
         access = {DefaultAccess.class}
     )
     private YesOrNo applicant1NotifiedCanApplyForConditionalOrder;
-
-    @CCD(
-        label = "What would you like to reissue?",
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "ReissueOption"
-    )
-    private ReissueOption reissueOption;
-
 
     @JsonIgnore
     public boolean hasBeenPaidFor() {
@@ -405,21 +263,6 @@ public class Application {
     }
 
     @JsonIgnore
-    public boolean isSolicitorServiceMethod() {
-        return SOLICITOR_SERVICE.equals(solServiceMethod);
-    }
-
-    @JsonIgnore
-    public boolean hasApplicant2ReminderBeenSent() {
-        return YES.equals(applicant2ReminderSent);
-    }
-
-    @JsonIgnore
-    public boolean hasApplicant1ReminderBeenSent() {
-        return YES.equals(applicant1ReminderSent);
-    }
-
-    @JsonIgnore
     public boolean hasApplicant1BeenNotifiedCanApplyForConditionalOrder() {
         return YES.equals(applicant1NotifiedCanApplyForConditionalOrder);
     }
@@ -430,20 +273,7 @@ public class Application {
     }
 
     @JsonIgnore
-    public boolean isHelpWithFeesApplication() {
-        return null != applicant1HelpWithFees
-            && null != applicant1HelpWithFees.getNeedHelp()
-            && applicant1HelpWithFees.getNeedHelp().toBoolean()
-            || FEES_HELP_WITH.equals(solPaymentHowToPay);
-    }
-
-    @JsonIgnore
     public boolean isSolicitorApplication() {
         return hasSolSignStatementOfTruth();
-    }
-
-    @JsonIgnore
-    public boolean isSolicitorPaymentMethodPba() {
-        return FEE_PAY_BY_ACCOUNT.equals(this.getSolPaymentHowToPay());
     }
 }

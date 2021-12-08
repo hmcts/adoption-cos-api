@@ -14,7 +14,7 @@ public class FinancialOrders implements CcdPageConfiguration {
             .page("FinancialOrders")
             .pageLabel("Financial orders")
             .complex(CaseData::getApplicant1)
-                .mandatory(Applicant::getFinancialOrder)
+                .mandatory(Applicant::getFirstName)
                 .done();
     }
 }

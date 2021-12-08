@@ -10,7 +10,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingDocuments;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingHWFDecision;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 
 @Component
@@ -37,15 +36,14 @@ public class SendCitizenSubmissionNotifications implements CaseTask {
     private void sendCitizenNotifications(final CaseData caseData, final Long caseId, final State state) {
 
         if (Submitted.equals(state)
-            || AwaitingDocuments.equals(state)
-            || AwaitingHWFDecision.equals(state)) {
+            || AwaitingDocuments.equals(state)) {
 
             log.info("Sending application submitted notification to applicant 1 for case : {}", caseId);
             applicationSubmittedNotification.sendToApplicant1(caseData, caseId);
             if (!caseData.getApplicationType().isSole()) {
 
                 log.info("Sending application submitted notification to applicant 2 for case : {}", caseId);
-                applicationSubmittedNotification.sendToApplicant2(caseData, caseId);
+                //applicationSubmittedNotification.sendToApplicant1(caseData, caseId);//TODO
             }
         }
     }

@@ -6,10 +6,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.flattenLists;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateApplicant2BasicCase;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateBasicCase;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateCaseFieldsForIssueApplication;
 
 public final class ApplicationValidation {
 
@@ -18,13 +15,7 @@ public final class ApplicationValidation {
     }
 
     public static List<String> validateReadyForPayment(CaseData caseData) {
-        List<String> errors = validateBasicCase(caseData);
-
-        if (caseData.getApplicationType() != null && !caseData.getApplicationType().isSole()) {
-            errors.addAll(validateApplicant2BasicCase(caseData));
-        }
-
-        return errors;
+        return validateBasicCase(caseData);
     }
 
     public static List<String> validateSubmission(Application application) {
@@ -40,12 +31,4 @@ public final class ApplicationValidation {
 
         return errors;
     }
-
-    public static List<String> validateIssue(CaseData caseData) {
-        return flattenLists(
-            validateBasicCase(caseData),
-            validateCaseFieldsForIssueApplication(caseData.getApplication().getMarriageDetails())
-        );
-    }
-
 }

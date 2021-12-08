@@ -68,9 +68,9 @@ public class CaseworkerCreateGeneralOrder implements CCDConfig<CaseData, State, 
     ) {
 
         var caseDataCopy = details.getData().toBuilder().build();
-        var generalOrder = caseDataCopy.getGeneralOrder();
+        //var generalOrder = caseDataCopy.getGeneralOrder();
 
-        log.info("Caseworker create general order about to submit callback invoked {}", generalOrder);
+        //log.info("Caseworker create general order about to submit callback invoked {}", generalOrder);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseDataCopy)

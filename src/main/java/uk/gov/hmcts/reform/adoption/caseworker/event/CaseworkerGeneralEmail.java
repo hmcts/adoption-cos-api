@@ -45,7 +45,7 @@ public class CaseworkerGeneralEmail implements CCDConfig<CaseData, State, UserRo
             .page("createGeneralEmail")
             .pageLabel("Create general email")
             .complex(CaseData::getGeneralEmail)
-                .mandatory(GeneralEmail::getGeneralEmailParties)
+                //.mandatory(GeneralEmail::getGeneralEmailParties)
                 .mandatory(GeneralEmail::getGeneralEmailOtherRecipientEmail, "generalEmailParties=\"other\"")
                 .mandatory(GeneralEmail::getGeneralEmailOtherRecipientName, "generalEmailParties=\"other\"")
                 .mandatory(GeneralEmail::getGeneralEmailDetails)

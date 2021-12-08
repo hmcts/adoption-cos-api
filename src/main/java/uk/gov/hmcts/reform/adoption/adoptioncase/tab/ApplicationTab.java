@@ -17,8 +17,6 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
 
         addHeaderFields(tabBuilder);
         addApplicant1(tabBuilder);
-        addApplicant2(tabBuilder);
-        addMarriageAndCertificate(tabBuilder);
         addLegalConnections(tabBuilder);
         addOtherProceedings(tabBuilder);
         addService(tabBuilder);
@@ -31,8 +29,7 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("issueDate")
             .field("dueDate")
             .field(CaseData::getApplicationType)
-            .field(CaseData::getDivorceOrDissolution)
-            .field(CaseData::getDivorceUnit)
+            .field(CaseData::getAdoptionUnit)
             .field(CaseData::getBulkListCaseReference);
     }
 
@@ -47,8 +44,6 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1NameChangedHow", "applicant1NameDifferentToMarriageCertificate=\"Yes\"")
             .field("applicant1NameChangedHowOtherDetails", "applicant1NameChangedHow=\"other\"")
             .field("applicant1KeepContactDetailsConfidential", "applicationType=\"NEVER_SHOW\"")
-            .field("divorceWho")
-            .field("applicant1ScreenHasMarriageBroken")
             .field("applicant1PcqId")
             .label("LabelApplicant1DetailsAreConfidential-Heading",
                 "applicant1KeepContactDetailsConfidential=\"Yes\"",
@@ -70,60 +65,6 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1SolicitorEmail", "applicant1SolicitorRepresented=\"Yes\"")
             .field("applicant1SolicitorOrganisationPolicy", "applicant1SolicitorRepresented=\"Yes\"")
             .field("applicant1SolicitorAgreeToReceiveEmails", "applicant1SolicitorRepresented=\"Yes\"");
-    }
-
-    private void addApplicant2(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
-        tabBuilder
-            .label("LabelApplicant2-Heading", null, "### ${labelContentTheApplicant2UC}")
-            .field("applicant2FirstName")
-            .field("applicant2MiddleName")
-            .field("applicant2LastName")
-            .field("applicant2Gender")
-            .field("applicant2NameDifferentToMarriageCertificate")
-            .field("applicant2ScreenHasMarriageBroken")
-            .field("applicant2NameChangedHow", "applicant2NameDifferentToMarriageCertificate=\"Yes\"")
-            .field("applicant2NameChangedHowOtherDetails", "applicant2NameChangedHow=\"other\"")
-            .field("applicant2KeepContactDetailsConfidential", "applicationType=\"NEVER_SHOW\"")
-            .label("LabelApplicant2DetailsAreConfidential-Heading",
-                "applicant2KeepContactDetailsConfidential=\"Yes\"",
-                "#### ${labelContentTheApplicant2UC}'s contact details are confidential")
-            .label("LabelApplicant2DetailsAreShareable-Heading",
-                "applicant2KeepContactDetailsConfidential!=\"Yes\"",
-                "#### ${labelContentTheApplicant2UC}'s contact details may be shared")
-            .field("applicant2PhoneNumber", "applicant2KeepContactDetailsConfidential!=\"Yes\"")
-            .field("applicant2Email", "applicant2KeepContactDetailsConfidential!=\"Yes\"")
-            .field("applicant2HomeAddress", "applicant2KeepContactDetailsConfidential!=\"Yes\"")
-            .field("applicant2CorrespondenceAddress", "applicant2KeepContactDetailsConfidential!=\"Yes\"")
-            .field("applicant2AgreedToReceiveEmails")
-
-            //Applicant 2 Solicitor
-            .field("applicant2SolicitorRepresented", "applicationType=\"NEVER_SHOW\"")
-            .label("LabelApplicant2sSolicitor-Heading",
-                "applicant2SolicitorRepresented=\"Yes\"",
-                "#### ${labelContentTheApplicant2UC}'s solicitor")
-            .field("applicant2SolicitorReference", "applicant2SolicitorRepresented=\"Yes\"")
-            .field("applicant2SolicitorName", "applicant2SolicitorRepresented=\"Yes\"")
-            .field("applicant2SolicitorAddress", "applicant2SolicitorRepresented=\"Yes\"")
-            .field("applicant2SolicitorPhone", "applicant2SolicitorRepresented=\"Yes\"")
-            .field("applicant2SolicitorEmail", "applicant2SolicitorRepresented=\"Yes\"")
-            .field("applicant2SolicitorOrganisationPolicy", "applicant2SolicitorRepresented=\"Yes\"")
-            .field("applicant2SolicitorAgreeToReceiveEmails", "applicant2SolicitorRepresented=\"Yes\"");
-    }
-
-    private void addMarriageAndCertificate(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
-        tabBuilder
-            .label("LabelMarriage-Heading", null, "### Marriage and certificate")
-            .field("labelContentTheApplicant2UC", "applicationType=\"NEVER_SHOW\"")
-            .field("labelContentTheApplicant2", "applicationType=\"NEVER_SHOW\"")
-            .field("marriageDate")
-            .field("marriageApplicant1Name")
-            .field("marriageApplicant2Name")
-            .field("marriageIsSameSexCouple")
-            .field("marriageMarriedInUk")
-            .field("marriagePlaceOfMarriage", "marriageMarriedInUk=\"No\"")
-            .field("marriageCountryOfMarriage", "marriageMarriedInUk=\"No\"")
-            .field("marriageCertificateInEnglish")
-            .field("marriageCertifiedTranslation", "marriageCertificateInEnglish=\"No\"");
     }
 
     private void addLegalConnections(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {

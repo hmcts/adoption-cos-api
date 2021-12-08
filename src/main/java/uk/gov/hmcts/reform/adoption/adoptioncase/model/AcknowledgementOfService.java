@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.YesOrNo.YES;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.HowToRespondApplication.DISPUTE_DIVORCE;
 
 @Data
 @AllArgsConstructor
@@ -102,12 +101,6 @@ public class AcknowledgementOfService {
     private YesOrNo prayerHasBeenGiven;
 
     @CCD(
-        label = "How do you want to respond ?",
-        access = {AosAccess.class}
-    )
-    private HowToRespondApplication howToRespondApplication;
-
-    @CCD(
         label = "Solicitor’s name"
     )
     private String solicitorName;
@@ -130,10 +123,5 @@ public class AcknowledgementOfService {
         digitalNoticeOfProceedings = YES;
         noticeOfProceedingsEmail = solicitor.getEmail();
         noticeOfProceedingsSolicitorFirm = solicitor.getOrganisationPolicy().getOrganisation().getOrganisationName();
-    }
-
-    @JsonIgnore
-    public boolean isDisputed() {
-        return DISPUTE_DIVORCE.equals(howToRespondApplication);
     }
 }

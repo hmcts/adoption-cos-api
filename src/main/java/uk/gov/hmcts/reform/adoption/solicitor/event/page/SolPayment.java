@@ -54,7 +54,7 @@ public class SolPayment implements CcdPageConfiguration {
                 "LabelSolPaymentPara-1",
                 "Amount to pay: **£${solApplicationFeeInPounds}**")
             .complex(CaseData::getApplication)
-            .mandatory(Application::getSolPaymentHowToPay)
+            .mandatory(Application::getCreatedDate)//TODO
             .done();
     }
 
@@ -66,8 +66,8 @@ public class SolPayment implements CcdPageConfiguration {
 
         CaseData caseData = details.getData();
 
-        if (!caseData.getApplication().isSolicitorPaymentMethodPba()) {
-            log.info("Payment method is not PBA for case id {}  :", details.getId());
+        if (!caseData.getApplication().isSolicitorApplication()) {
+            log.info("Payment method is not PBA for case id {}  :", details.getId());//TODO
             return AboutToStartOrSubmitResponse.<CaseData, State>builder()
                 .data(caseData)
                 .build();

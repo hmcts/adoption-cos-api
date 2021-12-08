@@ -14,7 +14,6 @@ import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
 import java.util.List;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
@@ -61,12 +60,9 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
         }
 
         if (!SUCCESS.equals(lastPaymentStatus)) {
-            log.info("Case {} payment canceled", caseId);
+            log.info("Case {} payment canceled", caseId);//TODO
 
-            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-                .data(details.getData())
-                .state(Draft)
-                .build();
+            return null;
         }
 
         log.info("Validating case caseData CaseID: {}", caseId);

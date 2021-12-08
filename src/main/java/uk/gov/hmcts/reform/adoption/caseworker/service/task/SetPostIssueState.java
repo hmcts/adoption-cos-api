@@ -8,10 +8,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAos;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingService;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Holding;
-
 @Component
 @Slf4j
 public class SetPostIssueState implements CaseTask {
@@ -21,15 +17,7 @@ public class SetPostIssueState implements CaseTask {
 
         final Application application = caseDetails.getData().getApplication();
 
-        if (!caseDetails.getData().getApplicationType().isSole()) {
-            caseDetails.setState(Holding);
-        } else if (application.isSolicitorApplication() && application.isSolicitorServiceMethod()) {
-            caseDetails.setState(AwaitingService);
-        } else {
-            caseDetails.setState(AwaitingAos);
-        }
-
-        log.info("Setting state to {}.  Case ID: {}", caseDetails.getState(), caseDetails.getId());
+        log.info("Setting state to {}.  Case ID: {}", caseDetails.getState(), caseDetails.getId(), application);
         return caseDetails;
     }
 }

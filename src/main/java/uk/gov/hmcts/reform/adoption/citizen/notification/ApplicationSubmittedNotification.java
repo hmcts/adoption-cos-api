@@ -30,18 +30,7 @@ public class ApplicationSubmittedNotification {
         notificationService.sendEmail(
             caseData.getApplicant1().getEmail(),
             APPLICATION_SUBMITTED,
-            templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2()),
-            caseData.getApplicant1().getLanguagePreference()
-        );
-    }
-
-    public void sendToApplicant2(CaseData caseData, Long id) {
-        log.info("Sending application submitted notification to applicant 2 for case : {}", id);
-
-        notificationService.sendEmail(
-            caseData.getApplicant2EmailAddress(),
-            APPLICATION_SUBMITTED,
-            templateVars(caseData, id, caseData.getApplicant2(), caseData.getApplicant1()),
+            templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant1()),
             caseData.getApplicant1().getLanguagePreference()
         );
     }

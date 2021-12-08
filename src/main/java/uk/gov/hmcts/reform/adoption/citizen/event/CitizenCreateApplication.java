@@ -11,7 +11,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import java.util.ArrayList;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingService;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
@@ -32,9 +32,9 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
 
         configBuilder
             .event(CITIZEN_CREATE)
-            .initialState(Draft)
+            .initialState(AwaitingService)
             .name("Create draft case")
-            .description("Apply for a divorce or dissolution")
+            .description("Apply for a adoption")
             .grant(CREATE_READ_UPDATE, updatedRoles.toArray(UserRole[]::new))
             .retries(120, 120);
     }

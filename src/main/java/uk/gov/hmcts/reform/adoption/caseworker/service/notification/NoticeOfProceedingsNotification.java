@@ -15,7 +15,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SOLICITOR_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_NOTICE_OF_PROCEEDINGS;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_SOLICITOR_NOTICE_OF_PROCEEDINGS;
-import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.RESPONDENT_SOLICITOR_NOTICE_OF_PROCEEDINGS;
 
 @Component
 @Slf4j
@@ -34,21 +33,7 @@ public class NoticeOfProceedingsNotification {
     public void send(final CaseData caseData, final Long caseId) {
 
         final Applicant applicant = caseData.getApplicant1();
-        final Applicant respondent = caseData.getApplicant2();
         final Solicitor applicantSolicitor = applicant.getSolicitor();
-        final Solicitor respondentSolicitor = respondent.getSolicitor();
-
-        if (respondent.isRepresented()) {
-
-            log.info("Sending Notice Of Proceedings email to respondent solicitor.  Case ID: {}", caseId);
-
-            notificationService.sendEmail(
-                respondentSolicitor.getEmail(),
-                RESPONDENT_SOLICITOR_NOTICE_OF_PROCEEDINGS,
-                respondentSolicitorNoticeOfProceedingsTemplateVars(caseData, caseId),
-                ENGLISH
-            );
-        }
 
         if (applicant.isRepresented()) {
 
@@ -69,23 +54,6 @@ public class NoticeOfProceedingsNotification {
                 commonContent.basicTemplateVars(caseData, caseId),
                 applicant.getLanguagePreference());
         }
-    }
-
-    private Map<String, String> respondentSolicitorNoticeOfProceedingsTemplateVars(final CaseData caseData,
-                                                                                   final Long caseId) {
-
-        final Map<String, String> templateVars = commonContent.basicTemplateVars(caseData, caseId);
-        final Solicitor respondentSolicitor = caseData.getApplicant2().getSolicitor();
-        final String respondentOrganisationName = respondentSolicitor
-            .getOrganisationPolicy()
-            .getOrganisation()
-            .getOrganisationName();
-
-        templateVars.put(SOLICITOR_NAME, respondentSolicitor.getName());
-        templateVars.put(CASE_ID, caseId.toString());
-        templateVars.put(SOLICITOR_ORGANISATION, respondentOrganisationName);
-
-        return templateVars;
     }
 
     private Map<String, String> solicitorNoticeOfProceedingsTemplateVars(final CaseData caseData, final Long caseId) {

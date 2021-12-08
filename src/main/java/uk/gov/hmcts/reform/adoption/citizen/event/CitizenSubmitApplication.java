@@ -12,9 +12,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import java.util.List;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Applicant2Approved;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingService;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Applicant1Approved;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
@@ -32,7 +32,7 @@ public class CitizenSubmitApplication implements CCDConfig<CaseData, State, User
 
         configBuilder
             .event(CITIZEN_SUBMIT)
-            .forStates(Draft, AwaitingPayment, Applicant2Approved)
+            .forStates(AwaitingService, AwaitingPayment, Applicant1Approved)
             .name("Applicant Statement of Truth")
             .description("The applicant confirms SOT")
             .retries(120, 120)
@@ -63,9 +63,6 @@ public class CitizenSubmitApplication implements CCDConfig<CaseData, State, User
                 .state(state)
                 .build();
         }
-
-        data.getLabelContent().setApplicationType(data.getApplicationType());
-        data.getLabelContent().setUnionType(data.getDivorceOrDissolution());
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)

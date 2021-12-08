@@ -48,15 +48,15 @@ public class PaymentService {
     public static final String EVENT_ENFORCEMENT = "enforcement";
     public static final String EVENT_GENERAL = "general%20application";
     public static final String EVENT_ISSUE = "issue";
-    public static final String SERVICE_DIVORCE = "divorce";
+    public static final String SERVICE_ADOPTION = "adoption";
     public static final String SERVICE_OTHER = "other";
     public static final String KEYWORD_BAILIFF = "BailiffServeDoc";
     public static final String KEYWORD_DEEMED = "GeneralAppWithoutNotice";
-    public static final String KEYWORD_DIVORCE = "DivorceCivPart";
+    public static final String KEYWORD_ADOPTION = "Adoption";
 
     private static final String FAMILY = "family";
     private static final String FAMILY_COURT = "family court";
-    private static final String DIVORCE_SERVICE = "DIVORCE";
+    private static final String ADOPTION_SERVICE = "ADOPTION";
     private static final String GBP = "GBP";
     public static final String CA_E0001 = "CA-E0001";
     public static final String CA_E0004 = "CA-E0004";
@@ -248,7 +248,7 @@ public class PaymentService {
         var creditAccountPaymentRequest = new CreditAccountPaymentRequest();
         var orderSummary = caseData.getApplication().getApplicationFeeOrderSummary();
 
-        creditAccountPaymentRequest.setService(DIVORCE_SERVICE);
+        creditAccountPaymentRequest.setService(ADOPTION_SERVICE);
         creditAccountPaymentRequest.setCurrency(GBP);
         creditAccountPaymentRequest.setAccountNumber(getPbaNumber(caseData));
         creditAccountPaymentRequest.setCaseType(CASE_TYPE);

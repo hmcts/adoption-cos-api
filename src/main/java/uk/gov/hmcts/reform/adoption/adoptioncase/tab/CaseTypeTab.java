@@ -7,17 +7,11 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingDocuments;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingHWFDecision;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_2_SOLICITOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.tab.TabShowCondition.andNotShowForState;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_2_SOLICITOR;
 
 @Component
 public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
@@ -28,13 +22,13 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildAosTab(configBuilder);
         buildPaymentTab(configBuilder);
         buildLanguageTab(configBuilder);
-        //buildDocumentsTab(configBuilder);
+        buildDocumentsTab(configBuilder);
         buildConfidentialApplicantTab(configBuilder);
         buildConfidentialRespondentTab(configBuilder);
         buildMarriageCertificateTab(configBuilder);
         buildNotesTab(configBuilder);
         buildGeneralReferralTab(configBuilder);
-        //buildConfidentialDocumentsTab(configBuilder);
+        buildConfidentialDocumentsTab(configBuilder);
         buildServiceApplicationTab(configBuilder);
         buildConditionalOrderTab(configBuilder);
         buildOutcomeOfConditionalOrderTab(configBuilder);
@@ -50,9 +44,9 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildAosTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("aosDetails", "AoS")
             .forRoles(CASE_WORKER, LEGAL_ADVISOR,
-                SUPER_USER, SOLICITOR)
-            .showCondition("applicationType=\"soleApplication\" AND "
-                + andNotShowForState(Draft, AwaitingHWFDecision, AwaitingPayment, Submitted, AwaitingDocuments))
+                      SUPER_USER, SOLICITOR)
+            //.showCondition("applicationType=\"soleApplication\" AND "+ andNotShowForState(Draft, AwaitingHWFDecision,
+            // AwaitingPayment, Submitted, AwaitingDocuments))
             .label("LabelAosTabOnlineResponse-Heading", null, "## This is an online AoS response")
             .field("confirmReadPetition")
             .field("jurisdictionAgree")
@@ -79,6 +73,12 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1LanguagePreferenceWelsh")
             .label("LabelLanguageDetails-Respondent", null, "### The respondent")
             .field("applicant2LanguagePreferenceWelsh");
+    }
+
+    private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("documents", "Documents")
+            .field("certificateOfServiceDocument")
+            .field("coCertificateOfEntitlementDocument");
     }
 
     private void buildConfidentialApplicantTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -117,7 +117,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildNotesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("notes", "Notes")
-            .field(CaseData::getNotes);
+            .field(CaseData::getDueDate);
     }
 
     private void buildGeneralReferralTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -134,6 +134,12 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("generalReferralFeeRequired");
     }
 
+    private void buildConfidentialDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("confidentialDocuments", "Confidential Document")
+            .forRoles(CASE_WORKER, LEGAL_ADVISOR, SUPER_USER)
+            .field(CaseData::getApplication);
+    }
+
     private void buildServiceApplicationTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("alternativeService", "Service Application")
             .forRoles(CASE_WORKER, LEGAL_ADVISOR, SUPER_USER)
@@ -146,16 +152,16 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("feeAccountReferenceNumber", "paymentMethod=\"feePayByAccount\"")
             .field("helpWithFeesReferenceNumber", "paymentMethod=\"feePayByHelp\"")
             .label("bailiffLocalCourtDetailsLabel",
-                "localCourtName=\"*\" OR localCourtEmail=\"*\"", "### Bailiff local court details")
+                   "localCourtName=\"*\" OR localCourtEmail=\"*\"", "### Bailiff local court details")
             .field("localCourtName")
             .field("localCourtEmail")
             .label("bailiffReturnLabel",
-                "certificateOfServiceDate=\"*\" OR successfulServedByBailiff=\"*\" OR reasonFailureToServeByBailiff=\"*\"",
-                "### Bailiff return")
+                   "certificateOfServiceDate=\"*\" OR successfulServedByBailiff=\"*\" OR reasonFailureToServeByBailiff=\"*\"",
+                   "### Bailiff return")
             .field("certificateOfServiceDate")
             .label("serviceOutcomeLabel",
-                    "serviceApplicationGranted=\"No\" OR serviceApplicationGranted=\"Yes\"",
-                                "Outcome of Service Application")
+                   "serviceApplicationGranted=\"No\" OR serviceApplicationGranted=\"Yes\"",
+                   "Outcome of Service Application")
             .field("serviceApplicationGranted")
             .field("serviceApplicationDecisionDate")
             .field("serviceApplicationRefusalReason", "serviceApplicationGranted=\"No\"")
@@ -197,8 +203,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("coRefusalClarificationReason")
             .field("coRefusalClarificationAdditionalInfo")
             .label("labelCoClarificationResponse",
-                "coClarificationResponse=\"*\" OR coClarificationUploadDocuments=\"*\"",
-                "## Clarification Response")
+                   "coClarificationResponse=\"*\" OR coClarificationUploadDocuments=\"*\"",
+                   "## Clarification Response")
             .field("coClarificationResponse")
             .field("coClarificationUploadDocuments")
             .label("labelCoPronouncementDetails", null, "## Pronouncement Details")
@@ -210,8 +216,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("dateFinalOrderEligibleFrom")
             .field("coOutcomeCase")
             .label("labelJudgeCostsDecision",
-                "coJudgeCostsClaimGranted=\"*\" OR coJudgeCostsOrderAdditionalInfo=\"*\"",
-                "## Judge costs decision")
+                   "coJudgeCostsClaimGranted=\"*\" OR coJudgeCostsOrderAdditionalInfo=\"*\"",
+                   "## Judge costs decision")
             .field("coJudgeCostsClaimGranted")
             .field("coJudgeCostsOrderAdditionalInfo")
             .field("coCertificateOfEntitlementDocument");

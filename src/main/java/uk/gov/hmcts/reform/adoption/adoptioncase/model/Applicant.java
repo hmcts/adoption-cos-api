@@ -12,9 +12,6 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.AddressGlobalUK;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 
-import java.util.Set;
-
-import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
@@ -73,9 +70,6 @@ public class Applicant {
     )
     private YesOrNo nameDifferentToMarriageCertificate;
 
-    @CCD(label = "How did they change their name?")
-    private Set<ChangedNameHow> nameChangedHow;
-
     @CCD(
         label = "Details of how they changed their name",
         typeOverride = TextArea
@@ -117,25 +111,6 @@ public class Applicant {
     private Solicitor solicitor;
 
     @CCD(
-        label = "Do they wish to apply for a financial order?",
-        hint = "The court will not start processing your request for a financial order until you submit the separate "
-            + "application and pay the fee."
-    )
-    private YesOrNo financialOrder;
-
-    @CCD(
-        label = "Are there any existing or previous court proceedings relating to the marriage?"
-    )
-    private YesOrNo legalProceedings;
-
-    @CCD(
-        label = "Legal proceeding details",
-        hint = "Include the case number(s), if known.",
-        typeOverride = TextArea
-    )
-    private String legalProceedingsDetails;
-
-    @CCD(
         label = "PCQ ID"
     )
     private String pcqId;
@@ -160,10 +135,5 @@ public class Applicant {
     @JsonIgnore
     public boolean isBasedOverseas() {
         return !("UK").equalsIgnoreCase(homeAddress.getCountry());
-    }
-
-    @JsonIgnore
-    public boolean appliedForFinancialOrder() {
-        return nonNull(financialOrder) && financialOrder.toBoolean();
     }
 }

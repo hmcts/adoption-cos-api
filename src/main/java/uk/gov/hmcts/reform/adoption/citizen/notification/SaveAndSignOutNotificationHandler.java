@@ -19,16 +19,12 @@ public class SaveAndSignOutNotificationHandler {
     private CommonContent commonContent;
 
     public void notifyApplicant(CaseData caseData, UserDetails user) {
-        final var invite = caseData.getCaseInvite();
-        final var isTriggeredByApp2 = invite != null && user.getId().equals(invite.getApplicant2UserId());
-        final var self = isTriggeredByApp2 ? caseData.getApplicant2() : caseData.getApplicant1();
-        final var partner = isTriggeredByApp2 ? caseData.getApplicant1() : caseData.getApplicant2();
 
         notificationService.sendEmail(
             user.getEmail(),
             SAVE_SIGN_OUT,
-            commonContent.mainTemplateVars(caseData, null, self, partner),
-            self.getLanguagePreference()
+            commonContent.mainTemplateVars(caseData, null, null, null), null
         );
+        //TODO
     }
 }

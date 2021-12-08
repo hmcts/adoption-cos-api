@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
@@ -15,14 +14,6 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @NoArgsConstructor
 @Builder
 public class GeneralEmail {
-
-    @CCD(
-        label = "Address to",
-        typeOverride = FixedList,
-        typeParameterOverride = "GeneralParties"
-    )
-    private GeneralParties generalEmailParties;
-
     @CCD(
         label = "Recipient's email",
         typeOverride = Email
