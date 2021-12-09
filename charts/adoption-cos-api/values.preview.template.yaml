@@ -135,7 +135,6 @@ ccd:
     persistence:
       enabled: false
 
-
 xui-webapp:
   enabled: true
   nodejs:
