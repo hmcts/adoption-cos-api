@@ -15,7 +15,7 @@ import static uk.gov.hmcts.reform.adoption.common.config.ControllerConstants.SER
 @SuppressWarnings("PMD.UseObjectForClearerAPI")
 public interface PaymentPbaClient {
 
-    @ApiOperation("Handles Solicitor Payment By Account (PBA) Payments")
+    @ApiOperation("Handles Adoption Payment By Account (PBA) Payments")
     @PostMapping(value = "/credit-account-payments")
     ResponseEntity<CreditAccountPaymentResponse> creditAccountPayment(
         @RequestHeader(AUTHORIZATION) String authorisation,

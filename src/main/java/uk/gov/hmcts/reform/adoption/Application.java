@@ -10,8 +10,6 @@ import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import uk.gov.hmcts.reform.adoption.payment.FeesAndPaymentsClient;
 import uk.gov.hmcts.reform.adoption.payment.PaymentPbaClient;
-import uk.gov.hmcts.reform.adoption.solicitor.client.organisation.OrganisationClient;
-import uk.gov.hmcts.reform.adoption.solicitor.client.pba.PbaRefDataClient;
 import uk.gov.hmcts.reform.adoption.systemupdate.service.ScheduledTaskRunner;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.ccd.client.CaseAssignmentApi;
@@ -35,8 +33,6 @@ import java.util.TimeZone;
         FeesAndPaymentsClient.class,
         CoreCaseDataApi.class,
         CaseAssignmentApi.class,
-        OrganisationClient.class,
-        PbaRefDataClient.class,
         PaymentPbaClient.class
     }
 )

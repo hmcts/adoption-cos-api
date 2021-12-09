@@ -45,17 +45,9 @@ import static uk.gov.hmcts.reform.adoption.payment.model.PbaErrorMessage.NOT_FOU
 public class PaymentService {
 
     private static final String DEFAULT_CHANNEL = "default";
-    public static final String EVENT_ENFORCEMENT = "enforcement";
-    public static final String EVENT_GENERAL = "general%20application";
-    public static final String EVENT_ISSUE = "issue";
-    public static final String SERVICE_ADOPTION = "adoption";
-    public static final String SERVICE_OTHER = "other";
-    public static final String KEYWORD_BAILIFF = "BailiffServeDoc";
-    public static final String KEYWORD_DEEMED = "GeneralAppWithoutNotice";
-    public static final String KEYWORD_ADOPTION = "Adoption";
 
-    private static final String FAMILY = "family";
-    private static final String FAMILY_COURT = "family court";
+    private static final String ADOPTION = "adoption";
+    private static final String ADOPTION_COURT = "adoption court";
     private static final String ADOPTION_SERVICE = "ADOPTION";
     private static final String GBP = "GBP";
     public static final String CA_E0001 = "CA-E0001";
@@ -81,8 +73,8 @@ public class PaymentService {
         final var feeResponse = feesAndPaymentsClient.getPaymentServiceFee(
             DEFAULT_CHANNEL,
             event,
-            FAMILY,
-            FAMILY_COURT,
+            ADOPTION,
+            ADOPTION_COURT,
             service,
             keyword
         );

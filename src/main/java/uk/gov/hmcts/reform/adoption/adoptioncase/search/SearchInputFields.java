@@ -11,9 +11,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import java.util.List;
 
 import static java.util.List.of;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_1_EMAIL;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_1_FIRST_NAME;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_1_LAST_NAME;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_EMAIL;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_FIRST_NAME;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_LAST_NAME;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.EMAIL;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.FIRSTNAME;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.LASTNAME;
@@ -26,10 +26,10 @@ public class SearchInputFields implements CCDConfig<CaseData, State, UserRole> {
 
         final List<SearchField> searchFieldList = of(
             SearchField.builder().label(FIRSTNAME).id(
-                APPLICANT_1_FIRST_NAME).build(),
+                APPLICANT_FIRST_NAME).build(),
             SearchField.builder().label(LASTNAME).id(
-                APPLICANT_1_LAST_NAME).build(),
-            SearchField.builder().label(EMAIL).id(APPLICANT_1_EMAIL).build());
+                APPLICANT_LAST_NAME).build(),
+            SearchField.builder().label(EMAIL).id(APPLICANT_EMAIL).build());
 
         configBuilder.searchInputFields().caseReferenceField();
         configBuilder.searchInputFields().fields(searchFieldList);

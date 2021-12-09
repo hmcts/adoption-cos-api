@@ -11,36 +11,24 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORK
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_2_SOLICITOR;
 
 @Component
 public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        buildStateTab(configBuilder);
         buildAosTab(configBuilder);
         buildPaymentTab(configBuilder);
         buildLanguageTab(configBuilder);
         buildDocumentsTab(configBuilder);
         buildConfidentialApplicantTab(configBuilder);
-        buildConfidentialRespondentTab(configBuilder);
-        buildMarriageCertificateTab(configBuilder);
         buildNotesTab(configBuilder);
-        buildGeneralReferralTab(configBuilder);
         buildConfidentialDocumentsTab(configBuilder);
         buildServiceApplicationTab(configBuilder);
-        buildConditionalOrderTab(configBuilder);
         buildOutcomeOfConditionalOrderTab(configBuilder);
     }
 
-    private void buildStateTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("state", "State")
-            .forRoles(APPLICANT_2_SOLICITOR)
-            .label("LabelState", null, "#### Case State:  ${[STATE]}");
-    }
-
-    //TODO: Need to revisit this tab once the field stated in the ticket NFDIV-595 are available
+    //TODO: Need to revisit this tab once the field stated
     private void buildAosTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("aosDetails", "AoS")
             .forRoles(CASE_WORKER, LEGAL_ADVISOR,
@@ -51,15 +39,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("confirmReadPetition")
             .field("jurisdictionAgree")
             .field("jurisdictionDisagreeReason")
-            .field("applicant2LegalProceedings")
-            .field("applicant2LegalProceedingsDetails")
-            .field("applicant2UserId")
-            .field("dueDate")
-            .label("LabelAosTabOnlineResponse-RespondentRepresent", null, "### Respondent")
-            .field("applicant2SolicitorRepresented")
             .field("digitalNoticeOfProceedings")
-            .field("noticeOfProceedingsEmail")
-            .field("noticeOfProceedingsSolicitorFirm");
+            .field("noticeOfProceedingsEmail");
     }
 
     private void buildPaymentTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -91,47 +72,9 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1HomeAddress");
     }
 
-    private void buildConfidentialRespondentTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("ConfidentialRespondent", "Confidential Respondent")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR)
-            .showCondition("applicant2KeepContactDetailsConfidential=\"Yes\"")
-            .field("applicant2CorrespondenceAddress")
-            .field("applicant2PhoneNumber")
-            .field("applicant2Email")
-            .field("applicant2HomeAddress");
-    }
-
-    private void buildMarriageCertificateTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("marriageDetails", "Marriage Certificate")
-            .field("labelContentTheApplicant2UC", "marriageMarriedInUk=\"NEVER_SHOW\"")
-            .field("marriageApplicant1Name")
-            .field("marriageApplicant2Name")
-            .field("marriageDate")
-            .field("marriageMarriedInUk")
-            .field("marriagePlaceOfMarriage", "marriageMarriedInUk=\"No\"")
-            .field("marriageCountryOfMarriage", "marriageMarriedInUk=\"No\"")
-            .field("marriageCertifyMarriageCertificateIsCorrect")
-            .field("marriageMarriageCertificateIsIncorrectDetails", "marriageCertifyMarriageCertificateIsCorrect=\"No\"")
-            .field("marriageIssueApplicationWithoutMarriageCertificate", "marriageCertifyMarriageCertificateIsCorrect=\"No\"");
-    }
-
     private void buildNotesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("notes", "Notes")
             .field(CaseData::getDueDate);
-    }
-
-    private void buildGeneralReferralTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("generalReferral", "General Referral")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR, SUPER_USER)
-            .field("generalReferralReason")
-            .field("generalApplicationFrom", "generalApplicationFrom=\"*\"")
-            .field("generalApplicationReferralDate", "generalApplicationReferralDate=\"*\"")
-            .field("generalApplicationAddedDate")
-            .field("generalReferralType")
-            .field("alternativeServiceMedium")
-            .field("generalReferralJudgeDetails")
-            .field("generalReferralLegalAdvisorDetails")
-            .field("generalReferralFeeRequired");
     }
 
     private void buildConfidentialDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -169,22 +112,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("successfulServedByBailiff")
             .field("reasonFailureToServeByBailiff")
             .field("alternativeServiceOutcomes");
-    }
-
-    private void buildConditionalOrderTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("conditionalOrder", "Conditional Order")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR, SOLICITOR, SUPER_USER)
-            .showCondition("coDateSubmitted=\"*\"")
-            .field("coApplyForConditionalOrder")
-            .field("coDateSubmitted")
-            .field("coChangeOrAddToApplication")
-            .field("coApplicantStatementOfTruth")
-            .field("coSolicitorName")
-            .field("coSolicitorFirm")
-            .field("coSolicitorAdditionalComments")
-            .field("coCourtName")
-            .field("coDateAndTimeOfHearing")
-            .field("coPronouncementJudge");
     }
 
     private void buildOutcomeOfConditionalOrderTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
