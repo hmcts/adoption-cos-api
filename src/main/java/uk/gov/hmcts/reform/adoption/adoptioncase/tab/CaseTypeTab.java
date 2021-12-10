@@ -25,7 +25,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildNotesTab(configBuilder);
         buildConfidentialDocumentsTab(configBuilder);
         buildServiceApplicationTab(configBuilder);
-        buildOutcomeOfConditionalOrderTab(configBuilder);
     }
 
     //TODO: Need to revisit this tab once the field stated
@@ -33,8 +32,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("aosDetails", "AoS")
             .forRoles(CASE_WORKER, LEGAL_ADVISOR,
                       SUPER_USER, SOLICITOR)
-            //.showCondition("applicationType=\"soleApplication\" AND "+ andNotShowForState(Draft, AwaitingHWFDecision,
-            // AwaitingPayment, Submitted, AwaitingDocuments))
             .label("LabelAosTabOnlineResponse-Heading", null, "## This is an online AoS response")
             .field("confirmReadPetition")
             .field("jurisdictionAgree")
@@ -51,9 +48,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildLanguageTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("languageDetails", "Language")
             .label("LabelLanguageDetails-Applicant", null, "### The applicant")
-            .field("applicant1LanguagePreferenceWelsh")
-            .label("LabelLanguageDetails-Respondent", null, "### The respondent")
-            .field("applicant2LanguagePreferenceWelsh");
+            .field("applicant1LanguagePreferenceWelsh");
     }
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -93,60 +88,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("dateOfPayment", "paymentMethod=\"*\"")
             .field("feeAccountNumber", "paymentMethod=\"feePayByAccount\"")
             .field("feeAccountReferenceNumber", "paymentMethod=\"feePayByAccount\"")
-            .field("helpWithFeesReferenceNumber", "paymentMethod=\"feePayByHelp\"")
-            .label("bailiffLocalCourtDetailsLabel",
-                   "localCourtName=\"*\" OR localCourtEmail=\"*\"", "### Bailiff local court details")
-            .field("localCourtName")
-            .field("localCourtEmail")
-            .label("bailiffReturnLabel",
-                   "certificateOfServiceDate=\"*\" OR successfulServedByBailiff=\"*\" OR reasonFailureToServeByBailiff=\"*\"",
-                   "### Bailiff return")
-            .field("certificateOfServiceDate")
-            .label("serviceOutcomeLabel",
-                   "serviceApplicationGranted=\"No\" OR serviceApplicationGranted=\"Yes\"",
-                   "Outcome of Service Application")
-            .field("serviceApplicationGranted")
-            .field("serviceApplicationDecisionDate")
-            .field("serviceApplicationRefusalReason", "serviceApplicationGranted=\"No\"")
-            .field("deemedServiceDate")
-            .field("successfulServedByBailiff")
-            .field("reasonFailureToServeByBailiff")
-            .field("alternativeServiceOutcomes");
-    }
-
-    private void buildOutcomeOfConditionalOrderTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("outcomeOfConditionalOrder", "Outcome of Conditional Order")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR, SOLICITOR, SUPER_USER)
-            .showCondition("coGranted=\"*\"")
-            .label("labelLegalAdvisorDecision", null, "## Legal advisor decision")
-            .field("coDecisionDate")
-            .field("coGranted")
-            .field("coClaimsGranted")
-            .field("coClaimsCostsOrderInformation")
-            .field("coRefusalDecision")
-            .field("coRefusalAdminErrorInfo")
-            .field("coRefusalRejectionReason")
-            .field("coRefusalRejectionAdditionalInfo")
-            .field("coRefusalClarificationReason")
-            .field("coRefusalClarificationAdditionalInfo")
-            .label("labelCoClarificationResponse",
-                   "coClarificationResponse=\"*\" OR coClarificationUploadDocuments=\"*\"",
-                   "## Clarification Response")
-            .field("coClarificationResponse")
-            .field("coClarificationUploadDocuments")
-            .label("labelCoPronouncementDetails", null, "## Pronouncement Details")
-            .field("bulkListCaseReference")
-            .field("coCourt")
-            .field("coDateAndTimeOfHearing")
-            .field("coPronouncementJudge")
-            .field("coGrantedDate")
-            .field("dateFinalOrderEligibleFrom")
-            .field("coOutcomeCase")
-            .label("labelJudgeCostsDecision",
-                   "coJudgeCostsClaimGranted=\"*\" OR coJudgeCostsOrderAdditionalInfo=\"*\"",
-                   "## Judge costs decision")
-            .field("coJudgeCostsClaimGranted")
-            .field("coJudgeCostsOrderAdditionalInfo")
-            .field("coCertificateOfEntitlementDocument");
+            .field("helpWithFeesReferenceNumber", "paymentMethod=\"feePayByHelp\"");
     }
 }
