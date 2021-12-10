@@ -20,7 +20,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildAosTab(configBuilder);
         buildPaymentTab(configBuilder);
         buildLanguageTab(configBuilder);
-        buildDocumentsTab(configBuilder);
         buildConfidentialApplicantTab(configBuilder);
         buildNotesTab(configBuilder);
         buildConfidentialDocumentsTab(configBuilder);
@@ -49,12 +48,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("languageDetails", "Language")
             .label("LabelLanguageDetails-Applicant", null, "### The applicant")
             .field("applicant1LanguagePreferenceWelsh");
-    }
-
-    private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("documents", "Documents")
-            .field("certificateOfServiceDocument")
-            .field("coCertificateOfEntitlementDocument");
     }
 
     private void buildConfidentialApplicantTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
