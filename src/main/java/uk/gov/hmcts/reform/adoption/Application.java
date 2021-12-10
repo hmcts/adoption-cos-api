@@ -48,7 +48,6 @@ public class Application implements CommandLineRunner {
     public static void main(final String[] args) {
         final var application = new SpringApplication(Application.class);
         final var instance = application.run(args);
-
         if (System.getenv("TASK_NAME") != null) {
             instance.close();
         }
