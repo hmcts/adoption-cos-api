@@ -30,13 +30,7 @@ uk:
         baseUrl: https://api.notifications.service.gov.uk
       email:
         templateVars:
-          signInDivorceUrl: ${NOTIFY_TEMPLATE_SIGN_IN_DIVORCE_URL:https://nfdiv-apply-for-divorce.aat.platform.hmcts.net/}
-          applicant2SignInDivorceUrl: ${NOTIFY_TEMPLATE_APPLICANT2_SIGN_IN_DIVORCE_URL:https://nfdiv-apply-for-divorce.aat.platform.hmcts.net/applicant2}
-          applicant2SignInDissolutionUrl: ${NOTIFY_TEMPLATE_APPLICANT2_SIGN_IN_DISSOLUTION_URL:https://nfdiv-end-civil-partnership.aat.platform.hmcts.net/applicant2}
-          respondentSignInDivorceUrl: ${NOTIFY_TEMPLATE_RESPONDENT_SIGN_IN_DIVORCE_URL:https://nfdiv-apply-for-divorce.aat.platform.hmcts.net/respondent}
-          respondentSignInDissolutionUrl: ${NOTIFY_TEMPLATE_RESPONDENT_SIGN_IN_DISSOLUTION_URL:https://nfdiv-end-civil-partnership.aat.platform.hmcts.net/respondent}
-          signInDissolutionUrl: ${NOTIFY_TEMPLATE_SIGN_IN_DISSOLUTION_URL:https://nfdiv-end-civil-partnership.aat.platform.hmcts.net/}
-          divorceCourtEmail: contactdivorce@justice.gov.uk
+          signInAdoptionUrl: ${NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL:https://apply-for-adoption.aat.platform.hmcts.net/}
           dissolutionCourtEmail: civilpartnership.case@justice.gov.uk
         templates:
           english:
@@ -44,16 +38,8 @@ uk:
             OUTSTANDING_ACTIONS: '1bc9ce05-557b-4cf6-9e20-87d57d55e89c'
             APPLICATION_SUBMITTED: '68b87fab-f99f-49c2-a3df-04415d003eb9'
             JOINT_APPLICANT1_ANSWERS_SENT_FOR_REVIEW: 'd15a318f-404b-4c29-8a01-1febee5bf2d5'
-            JOINT_APPLICANT2_ANSWERS_SENT_FOR_REVIEW: 'd7e4af3e-53b4-4372-ac28-296e43182a21'
-            JOINT_APPLICANT2_REQUEST_CHANGES: '99b0b24c-a54d-486a-a69a-4348eb2e66a4'
-            JOINT_APPLICANT1_APPLICANT2_APPROVED: '59ab58b7-b102-4b17-b023-226ce399668b'
-            JOINT_APPLICANT1_APPLICANT2_APPROVED_WITHOUT_HWF: 'f7b63c3d-d687-401d-8e4e-14e1aa0c77b5'
-            JOINT_APPLICANT2_APPLICANT2_APPROVED: '6c9270fc-82c4-4355-b0e4-b88a778ef5db'
-            JOINT_APPLICANT1_APPLICANT2_REJECTED: '92440b46-66f9-4b15-bf28-047b5cc8202d'
-            JOINT_APPLICANT2_APPLICANT2_REJECTED: '38d403a8-a3a2-4cbf-bfd6-de406583047c'
             JOINT_APPLICANT1_NEED_TO_MAKE_CHANGES: '356a4b59-fbaf-4367-9b47-dbd05340b073'
             JOINT_APPLICANT1_APPLICANT1_CHANGES_MADE: 'b823559f-e421-432f-bb3f-051cdb3db007'
-            JOINT_APPLICANT2_APPLICANT1_CHANGES_MADE: 'e0398a62-8900-48d0-baf8-5d73040089ae'
             JOINT_APPLICATION_ACCEPTED: '39aac458-5f31-442e-bee7-0f97bb584d98'
             JOINT_APPLICATION_OVERDUE: '63b41176-67eb-4ad7-9e3d-fa8aabd77c6a'
             JOINT_APPLICATION_APPROVED_APPLICANT1_REMINDER: '59ab58b7-b102-4b17-b023-226ce399668b'
@@ -134,12 +120,8 @@ core_case_data:
 docmosis:
   templates:
     english:
-      DIVORCE_APPLICATION_SOLE: NFD_CP_Application_Sole.docx
-      DIVORCE_APPLICATION_JOINT: NFD_CP_Application_Joint.docx
-      DIVORCE_DRAFT_APPLICATION: NFD_CP_Mini_Draft_Application_Template.docx
       RESP_SOLICITOR_AOS_INVITATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
       CITIZEN_RESP_AOS_INVITATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
-      DIVORCE_GENERAL_ORDER: NFD_General_Order_Eng.docx #TODO: update template once available
       RESPONDENT_ANSWERS: NFD_Respondent_Answers_Eng.docx #TODO: update content
       CERTIFICATE_OF_SERVICE: NFD_Certificate_Of_Service.docx #TODO: update content
       SERVICE_ORDER: NFD_Service_Order.docx #TODO: update content
@@ -148,12 +130,8 @@ docmosis:
       NOTICE_OF_PROCEEDINGS_OVERSEAS_RESP: NFD_Notice_Of_Proceedings_Overseas_Sole.docx
       CERTIFICATE_OF_ENTITLEMENT: NFD_Certificate_Of_Entitlement.docx #TODO: update content
     welsh:
-      DIVORCE_APPLICATION_SOLE: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
-      DIVORCE_APPLICATION_JOINT: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
-      DIVORCE_DRAFT_APPLICATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
       RESP_SOLICITOR_AOS_INVITATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
       CITIZEN_RESP_AOS_INVITATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
-      DIVORCE_GENERAL_ORDER: NFD_General_Order_Eng.docx #TODO: update template once available
       RESPONDENT_ANSWERS: NFD_Respondent_Answers_Eng.docx #TODO: replace template once available
       CERTIFICATE_OF_SERVICE: NFD_Certificate_Of_Service.docx #TODO: update content
       SERVICE_ORDER: NFD_Service_Order.docx #TODO: update content
@@ -189,7 +167,7 @@ court:
   locations:
     serviceCentre:
       serviceCentreName: 'Courts and Tribunals Service Centre'
-      centreName: 'HMCTS Digital Divorce and Dissolution'
+      centreName: 'HMCTS Digital Adoption and Dissolution'
       town: 'Harlow'
       poBox: 'PO Box 12706'
       postCode: 'CM20 9QT'
@@ -204,7 +182,7 @@ conditional-order-court:
       email: "adoptioncase@justice.gov.uk"
       phone: "0300 303 0642"
     buryStEdmunds:
-      name: "Bury St. Edmunds Regional Divorce Centre"
+      name: "Bury St. Edmunds Regional Adoption Centre"
       address: "2nd Floor\nTriton House\nSt. Andrews Street North\nBury St. Edmunds\nIP33 1TR"
       email: "adoptioncase@justice.gov.uk"
       phone: "0300 303 0642"

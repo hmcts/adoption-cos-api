@@ -20,10 +20,6 @@ import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FOR
 @Slf4j
 public class ApplicationIssuedNotification {
 
-    public static final String RESPONDENT_SIGN_IN_DIVORCE_URL = "respondentSignInDivorceUrl";
-    public static final String RESPONDENT_SIGN_IN_DISSOLUTION_URL = "respondentSignInDissolutionUrl";
-
-
     @Autowired
     private NotificationService notificationService;
 

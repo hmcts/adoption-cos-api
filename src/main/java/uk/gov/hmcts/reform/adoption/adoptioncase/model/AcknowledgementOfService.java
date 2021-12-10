@@ -25,12 +25,6 @@ import static uk.gov.hmcts.ccd.sdk.type.YesOrNo.YES;
 public class AcknowledgementOfService {
 
     @CCD(
-        label = "Has the respondent read the application ${labelContentDivorceOrEndCivilPartnership}?",
-        access = AosAccess.class
-    )
-    private YesOrNo confirmReadPetition;
-
-    @CCD(
         label = "Respondent confirms that they want to dispute the application",
         access = AosAccess.class
     )

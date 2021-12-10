@@ -52,13 +52,6 @@ public class CaseData {
     private GeneralEmail generalEmail = new GeneralEmail();
 
     @CCD(
-        label = "RDC",
-        hint = "Regional divorce unit",
-        access = {DefaultAccess.class}
-    )
-    private Court adoptionUnit;
-
-    @CCD(
         label = "Case ID for previously Amended Case, which was challenged by the respondent",
         access = {DefaultAccess.class}
     )

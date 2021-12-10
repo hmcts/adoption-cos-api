@@ -26,7 +26,6 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("issueDate")
             .field("dueDate")
             .field(CaseData::getApplicationType)
-            .field(CaseData::getAdoptionUnit)
             .field(CaseData::getBulkListCaseReference);
     }
 
