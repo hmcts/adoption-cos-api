@@ -23,7 +23,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildConfidentialApplicantTab(configBuilder);
         buildNotesTab(configBuilder);
         buildConfidentialDocumentsTab(configBuilder);
-        buildServiceApplicationTab(configBuilder);
     }
 
     //TODO: Need to revisit this tab once the field stated
@@ -69,18 +68,5 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("confidentialDocuments", "Confidential Document")
             .forRoles(CASE_WORKER, LEGAL_ADVISOR, SUPER_USER)
             .field(CaseData::getApplication);
-    }
-
-    private void buildServiceApplicationTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("alternativeService", "Service Application")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR, SUPER_USER)
-            .field("receivedServiceApplicationDate")
-            .field("receivedServiceAddedDate")
-            .field("alternativeServiceType")
-            .field("paymentMethod")
-            .field("dateOfPayment", "paymentMethod=\"*\"")
-            .field("feeAccountNumber", "paymentMethod=\"feePayByAccount\"")
-            .field("feeAccountReferenceNumber", "paymentMethod=\"feePayByAccount\"")
-            .field("helpWithFeesReferenceNumber", "paymentMethod=\"feePayByHelp\"");
     }
 }
