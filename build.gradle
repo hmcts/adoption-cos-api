@@ -180,7 +180,7 @@ dependencies {
   compileOnly "org.projectlombok:lombok:1.18.18"
   annotationProcessor "org.projectlombok:lombok:1.18.18"
 
-  testImplementation(platform('org.junit:junit-bom:5.8.1'))
+  testImplementation(platform('org.junit:junit-bom:5.8.2'))
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
