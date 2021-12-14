@@ -19,10 +19,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         buildAosTab(configBuilder);
         buildPaymentTab(configBuilder);
-        buildLanguageTab(configBuilder);
         buildConfidentialApplicantTab(configBuilder);
-        buildNotesTab(configBuilder);
-        buildConfidentialDocumentsTab(configBuilder);
     }
 
     //TODO: Need to revisit this tab once the field stated
@@ -31,22 +28,12 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .forRoles(CASE_WORKER, LEGAL_ADVISOR,
                       SUPER_USER, SOLICITOR)
             .label("LabelAosTabOnlineResponse-Heading", null, "## This is an online AoS response")
-            .field("confirmReadPetition")
-            .field("jurisdictionAgree")
-            .field("jurisdictionDisagreeReason")
-            .field("digitalNoticeOfProceedings")
-            .field("noticeOfProceedingsEmail");
+            .field("confirmReadPetition");
     }
 
     private void buildPaymentTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("paymentDetailsCourtAdmin", "Payment")
             .field("applicant1HWFReferenceNumber");
-    }
-
-    private void buildLanguageTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("languageDetails", "Language")
-            .label("LabelLanguageDetails-Applicant", null, "### The applicant")
-            .field("applicant1LanguagePreferenceWelsh");
     }
 
     private void buildConfidentialApplicantTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -55,18 +42,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .showCondition("applicant1KeepContactDetailsConfidential=\"Yes\"")
             .field("applicant1CorrespondenceAddress")
             .field("applicant1PhoneNumber")
-            .field("applicant1Email")
-            .field("applicant1HomeAddress");
-    }
-
-    private void buildNotesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("notes", "Notes")
-            .field(CaseData::getDueDate);
-    }
-
-    private void buildConfidentialDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("confidentialDocuments", "Confidential Document")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR, SUPER_USER)
-            .field(CaseData::getApplication);
+            .field("applicant1Email");
     }
 }

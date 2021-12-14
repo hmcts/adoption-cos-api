@@ -34,18 +34,6 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1FirstName")
             .field("applicant1MiddleName")
             .field("applicant1LastName")
-            .field("applicant1Gender")
-            .field("applicant1NameDifferentToMarriageCertificate")
-            .field("applicant1NameChangedHow", "applicant1NameDifferentToMarriageCertificate=\"Yes\"")
-            .field("applicant1NameChangedHowOtherDetails", "applicant1NameChangedHow=\"other\"")
-            .field("applicant1KeepContactDetailsConfidential", "applicationType=\"NEVER_SHOW\"")
-            .field("applicant1PcqId")
-            .label("LabelApplicant1DetailsAreConfidential-Heading",
-                "applicant1KeepContactDetailsConfidential=\"Yes\"",
-                "#### The applicant's contact details are confidential")
-            .field("applicant1PhoneNumber", "applicant1KeepContactDetailsConfidential=\"No\"")
-            .field("applicant1Email", "applicant1KeepContactDetailsConfidential=\"No\"")
-            .field("applicant1HomeAddress", "applicant1KeepContactDetailsConfidential=\"No\"")
-            .field("applicant1CorrespondenceAddress", "applicant1KeepContactDetailsConfidential=\"No\"");
+            .field("applicant1Gender");
     }
 }
