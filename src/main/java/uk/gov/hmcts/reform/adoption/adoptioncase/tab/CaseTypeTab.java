@@ -18,7 +18,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         buildAosTab(configBuilder);
-        buildPaymentTab(configBuilder);
         buildConfidentialApplicantTab(configBuilder);
     }
 
@@ -29,11 +28,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
                       SUPER_USER, SOLICITOR)
             .label("LabelAosTabOnlineResponse-Heading", null, "## This is an online AoS response")
             .field("confirmReadPetition");
-    }
-
-    private void buildPaymentTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("paymentDetailsCourtAdmin", "Payment")
-            .field("applicant1HWFReferenceNumber");
     }
 
     private void buildConfidentialApplicantTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
