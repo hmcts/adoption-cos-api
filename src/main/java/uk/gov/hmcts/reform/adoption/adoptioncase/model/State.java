@@ -17,7 +17,7 @@ public enum State {
 
     @CCD(
         name = "Application awaiting payment",
-        label = "# **${[CASE_REFERENCE]}** ${applicant1LastName} **&** ${applicant2LastName}\n### **${[STATE]}**\n"
+        label = "# **${[CASE_REFERENCE]}** ${applicant1LastName}"
     )
     AwaitingPayment("AwaitingPayment"),
 
