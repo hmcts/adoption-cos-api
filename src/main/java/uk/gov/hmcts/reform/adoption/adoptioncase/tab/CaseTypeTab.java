@@ -27,7 +27,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .forRoles(CASE_WORKER, LEGAL_ADVISOR,
                       SUPER_USER, SOLICITOR)
             .label("LabelAosTabOnlineResponse-Heading", null, "## This is an online AoS response")
-            .field("confirmReadPetition");
+            .field("applicant1FirstName");
     }
 
     private void buildConfidentialApplicantTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
