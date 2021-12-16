@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.OrganisationPolicy;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.OrganisationPolicyAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
@@ -55,7 +55,7 @@ public class Solicitor {
 
     @CCD(
         label = "Firm address/DX address",
-        access = {OrganisationPolicyAccess.class}
+        access = {DefaultAccess.class}
     )
     private OrganisationPolicy<UserRole> organisationPolicy;
 

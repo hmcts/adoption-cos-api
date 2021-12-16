@@ -12,24 +12,17 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoption.payment.model.Payment;
-import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
-import static java.lang.Integer.parseInt;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.YesOrNo.YES;
-import static uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus.SUCCESS;
 
 @Data
 @AllArgsConstructor
@@ -199,14 +192,6 @@ public class Application {
     private State previousState;
 
     @CCD(
-        label = "Payments",
-        typeOverride = Collection,
-        typeParameterOverride = "Payment",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<Payment>> applicationPayments;
-
-    @CCD(
         label = "Notification of overdue application sent?",
         access = {DefaultAccess.class}
     )
@@ -217,30 +202,6 @@ public class Application {
         access = {DefaultAccess.class}
     )
     private YesOrNo applicant1NotifiedCanApplyForConditionalOrder;
-
-    @JsonIgnore
-    public boolean hasBeenPaidFor() {
-        return null != applicationFeeOrderSummary
-            && parseInt(applicationFeeOrderSummary.getPaymentTotal()) == getPaymentTotal();
-    }
-
-    @JsonIgnore
-    public Integer getPaymentTotal() {
-        return applicationPayments == null
-            ? 0
-            : applicationPayments
-            .stream()
-            .filter(p -> p.getValue().getStatus().equals(SUCCESS))
-            .map(p -> p.getValue().getAmount())
-            .reduce(0, Integer::sum);
-    }
-
-    @JsonIgnore
-    public PaymentStatus getLastPaymentStatus() {
-        return applicationPayments == null || applicationPayments.isEmpty()
-            ? null
-            : applicationPayments.get(applicationPayments.size() - 1).getValue().getStatus();
-    }
 
     @JsonIgnore
     public boolean applicant1HasStatementOfTruth() {

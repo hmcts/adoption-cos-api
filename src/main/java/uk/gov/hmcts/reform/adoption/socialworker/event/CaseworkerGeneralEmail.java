@@ -14,11 +14,11 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.GeneralEmail;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.ADOPTION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.JUDGE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
@@ -40,14 +40,11 @@ public class CaseworkerGeneralEmail implements CCDConfig<CaseData, State, UserRo
             .explicitGrants()
             .showSummary()
             .aboutToSubmitCallback(this::aboutToSubmit)
-            .grant(CREATE_READ_UPDATE, CASE_WORKER)
-            .grant(READ, SUPER_USER, LEGAL_ADVISOR, SOLICITOR, CITIZEN))
+            .grant(CREATE_READ_UPDATE, COURT_ADMIN)
+            .grant(READ, CASE_WORKER, SOLICITOR, JUDGE, ADOPTION))
             .page("createGeneralEmail")
             .pageLabel("Create general email")
             .complex(CaseData::getGeneralEmail)
-                //.mandatory(GeneralEmail::getGeneralEmailParties)
-                .mandatory(GeneralEmail::getGeneralEmailOtherRecipientEmail, "generalEmailParties=\"other\"")
-                .mandatory(GeneralEmail::getGeneralEmailOtherRecipientName, "generalEmailParties=\"other\"")
                 .mandatory(GeneralEmail::getGeneralEmailDetails)
                 .done();
     }

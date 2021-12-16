@@ -18,11 +18,11 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.ADOPTION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.JUDGE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
@@ -58,8 +58,8 @@ public class CaseworkerCreateGeneralOrder implements CCDConfig<CaseData, State, 
             .explicitGrants()
             .showSummary()
             .aboutToSubmitCallback(this::aboutToSubmit)
-            .grant(CREATE_READ_UPDATE, CASE_WORKER)
-            .grant(READ, SUPER_USER, LEGAL_ADVISOR, SOLICITOR, CITIZEN));
+            .grant(CREATE_READ_UPDATE, COURT_ADMIN)
+            .grant(READ, CASE_WORKER, SOLICITOR, JUDGE, ADOPTION));
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(

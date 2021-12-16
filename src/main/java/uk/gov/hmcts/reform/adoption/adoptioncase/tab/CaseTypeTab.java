@@ -7,10 +7,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.JUDGE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 
 @Component
 public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
@@ -24,15 +24,16 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     //TODO: Need to revisit this tab once the field stated
     private void buildAosTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("aosDetails", "AoS")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR,
-                      SUPER_USER, SOLICITOR)
+            .forRoles(COURT_ADMIN, SOLICITOR,
+                      CASE_WORKER, JUDGE
+            )
             .label("LabelAosTabOnlineResponse-Heading", null, "## This is an online AoS response")
             .field("applicant1FirstName");
     }
 
     private void buildConfidentialApplicantTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("ConfidentialApplicant", "Confidential Address")
-            .forRoles(CASE_WORKER, LEGAL_ADVISOR)
+            .forRoles(COURT_ADMIN, SOLICITOR)
             .showCondition("applicant1KeepContactDetailsConfidential=\"Yes\"")
             .field("applicant1CorrespondenceAddress")
             .field("applicant1PhoneNumber")
