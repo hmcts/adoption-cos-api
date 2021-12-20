@@ -48,23 +48,170 @@ def secrets = [
   ]
 ]
 
+def pipelineConf = new AppPipelineConfig()
+pipelineConf.vaultSecrets = secrets
+
+withPipeline(type, product, component) {
+    enableAksStagingDeployment()
+    disableLegacyDeployment()
+    loadVaultSecrets(secrets)
+    syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
+
+    MetricsPublisher metricsPublisher = new MetricsPublisher(this, currentBuild, product, component, params.subscription )
+    approvedEnvironmentRepository(params.environment, metricsPublisher) {
+      enableHighLevelDataSetup()
+    }
+
+    after('test') {
+      builder.gradle('integration')
+      builder.gradle('jacocoTestReport')
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/checkstyle",
+        reportFiles          : "main.html",
+        reportName           : "Checkstyle Main Report"
+      ]
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/checkstyle",
+        reportFiles          : "test.html",
+        reportName           : "Checkstyle Test Report"
+      ]
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/checkstyle",
+        reportFiles          : "functionalTest.html",
+        reportName           : "Checkstyle Functional Test Report"
+      ]
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/checkstyle",
+        reportFiles          : "integrationTest.html",
+        reportName           : "Checkstyle Integration Test Report"
+      ]
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/tests/test",
+        reportFiles          : "index.html",
+        reportName           : "Unit Tests Report"
+      ]
+    }
+
+    after('functionalTest') {
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/tests/functional",
+        reportFiles          : "index.html",
+        reportName           : "Functional Tests Report"
+      ]
+    }
+
+    //after('smoketest:preview') {
+      //publishHTML target: [
+        //allowMissing         : true,
+        //alwaysLinkToLastBuild: true,
+        //keepAll              : true,
+        //reportDir            : "build/reports/tests/smoke",
+        //reportFiles          : "index.html",
+        //reportName           : "Smoke Test Report"
+      //]
+    //}
+
+    after('smoketest:aat') {
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/tests/smoke",
+        reportFiles          : "index.html",
+        reportName           : "Smoke Test Report"
+      ]
+    }
+
+    after('checkout') {
+      builder.gradle('generateCCDConfig')
+      generateDefinitions()
+    }
+
+    onPR {
+      env.ENVIRONMENT="preview"
+      env.CASE_API_URL = "http://adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.CCD_DEF_NAME = "preview"
+      env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.CASE_DATA_STORE_BASEURL = "http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+
+      setCommonEnvVariables()
+    }
+
+    onMaster {
+        env.ENVIRONMENT="aat"
+        env.CASE_API_URL="http://adoption-cos-api-aat.service.core-compute-aat.internal"
+        env.CCD_DEF_NAME="aat"
+        env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
+
+        setCommonEnvVariables()
+    }
+
+    onDemo {
+      env.ENVIRONMENT="demo"
+      env.CASE_API_URL = "http://adoption-cos-api-demo.service.core-compute-demo.internal"
+      env.CCD_DEF_NAME = "demo"
+      env.IDAM_API_URL_BASE = "https://idam-api.demo.platform.hmcts.net"
+      env.S2S_URL_BASE = "http://rpe-service-auth-provider-demo.service.core-compute-demo.internal"
+      env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-demo.service.core-compute-demo.internal"
+    }
+
+    onPerftest {
+      env.ENVIRONMENT="perftest"
+      env.CASE_API_URL = "http://adoption-cos-api-perftest.service.core-compute-perftest.internal"
+      env.CCD_DEF_NAME = "perftest"
+      env.IDAM_API_URL_BASE = "https://idam-api.perftest.platform.hmcts.net"
+      env.S2S_URL_BASE = "http://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal"
+      env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-perftest.service.core-compute-perftest.internal"
+      env.FEE_API_URL = "http://fees-register-api-demo.service.core-compute-demo.internal"
+    }
+
+    before('functionalTest:preview') {
+      // Only for preview upload the definitions via script as high level data set up relies on an existing environment
+      uploadCoreCaseDataDefinitions()
+    }
+}
+
 def setCommonEnvVariables() {
-  env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
-  env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-  env.FEE_API_URL = "http://fees-register-api-aat.service.core-compute-aat.internal"
-  env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
-  env.BEFTA_S2S_CLIENT_ID = "ccd_data"
-  env.CCD_API_GATEWAY_OAUTH2_REDIRECT_URL = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
+    env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
+    env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.FEE_API_URL = "http://fees-register-api-aat.service.core-compute-aat.internal"
+    env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
+    env.BEFTA_S2S_CLIENT_ID = "ccd_data"
+    env.CCD_API_GATEWAY_OAUTH2_REDIRECT_URL = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
 }
 
 def uploadCoreCaseDataDefinitions() {
-  dir("${WORKSPACE}/bin"){
-    sh "./add-roles.sh"
-    sh "./process-and-import-ccd-definition.sh"
-  }
-  dir("${WORKSPACE}") {
-    steps.archiveArtifacts artifacts: "build/ccd-config/*.xlsx"
-  }
+    dir("${WORKSPACE}/bin"){
+        sh "./add-roles.sh"
+        sh "./process-and-import-ccd-definition.sh"
+    }
+    dir("${WORKSPACE}") {
+        steps.archiveArtifacts artifacts: "build/ccd-config/*.xlsx"
+    }
 }
 
 def generateDefinitions() {
@@ -73,161 +220,5 @@ def generateDefinitions() {
   }
   dir("${WORKSPACE}") {
     steps.archiveArtifacts artifacts: "build/ccd-config/*.xlsx"
-  }
-}
-
-def pipelineConf = new AppPipelineConfig()
-pipelineConf.vaultSecrets = secrets
-
-withPipeline(type, product, component) {
-  enableAksStagingDeployment()
-  disableLegacyDeployment()
-  loadVaultSecrets(secrets)
-  syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
-
-  MetricsPublisher metricsPublisher = new MetricsPublisher(this, currentBuild, product, component, params.subscription )
-  approvedEnvironmentRepository(params.environment, metricsPublisher) {
-    enableHighLevelDataSetup()
-  }
-
-  after('test') {
-    builder.gradle('integration')
-    builder.gradle('jacocoTestReport')
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "build/reports/checkstyle",
-      reportFiles          : "main.html",
-      reportName           : "Checkstyle Main Report"
-    ]
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "build/reports/checkstyle",
-      reportFiles          : "test.html",
-      reportName           : "Checkstyle Test Report"
-    ]
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "build/reports/checkstyle",
-      reportFiles          : "functionalTest.html",
-      reportName           : "Checkstyle Functional Test Report"
-    ]
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "build/reports/checkstyle",
-      reportFiles          : "integrationTest.html",
-      reportName           : "Checkstyle Integration Test Report"
-    ]
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "build/reports/tests/test",
-      reportFiles          : "index.html",
-      reportName           : "Unit Tests Report"
-    ]
-  }
-
-  after('functionalTest') {
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "build/reports/tests/functional",
-      reportFiles          : "index.html",
-      reportName           : "Functional Tests Report"
-    ]
-  }
-
-  after('smoketest:preview') {
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "build/reports/tests/smoke",
-      reportFiles          : "index.html",
-      reportName           : "Smoke Test Report"
-    ]
-  }
-
-  after('smoketest:aat') {
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "build/reports/tests/smoke",
-      reportFiles          : "index.html",
-      reportName           : "Smoke Test Report"
-    ]
-  }
-
-  after('checkout') {
-    builder.gradle('generateCCDConfig')
-    generateDefinitions()
-  }
-
-  onPR {
-    env.ENVIRONMENT="preview"
-    env.CASE_API_URL = "http://adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_DEF_NAME = "preview"
-    env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CASE_DATA_STORE_BASEURL = "http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-
-    setCommonEnvVariables()
-  }
-
-  onMaster {
-    env.ENVIRONMENT="aat"
-    env.CASE_API_URL="http://adoption-cos-api-aat.service.core-compute-aat.internal"
-    env.CCD_DEF_NAME="aat"
-    env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
-
-    setCommonEnvVariables()
-  }
-
-  before('functionalTest:preview') {
-    // Only for preview upload the definitions via script as high level data set up relies on an existing environment
-    uploadCoreCaseDataDefinitions()
-  }
-
-  after('checkout') {
-    echo 'adoption-cos-api checked out'
-  }
-
-  after('test') {
-    steps.junit '**/test-results/**/*.xml'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/**/*'
-  }
-
-  before('functionalTest:aat') {
-    env.test_environment = 'aat'
-  }
-
-  after('functionalTest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/**/*'
-  }
-
-  // Kubernetes does not retrieve variables from the output terraform
-  before('functionalTest:preview') {
-    env.test_environment = 'aat'
-  }
-
-  after('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/**/*'
   }
 }
