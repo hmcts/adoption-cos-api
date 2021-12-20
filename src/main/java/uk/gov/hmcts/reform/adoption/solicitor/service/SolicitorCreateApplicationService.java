@@ -19,13 +19,13 @@ public class SolicitorCreateApplicationService {
     private InitialiseSolicitorCreatedApplication initialiseSolicitorCreatedApplication;
 
     @Autowired
-    private AdoptionApplicationDraft domesticAbuseApplicationDraft;
+    private AdoptionApplicationDraft applicationDraft;
 
     public CaseDetails<CaseData, State> aboutToSubmit(final CaseDetails<CaseData, State> caseDetails) {
 
         return caseTasks(
             initialiseSolicitorCreatedApplication,
-            domesticAbuseApplicationDraft
+            applicationDraft
         ).run(caseDetails);
     }
 }

@@ -16,7 +16,7 @@ public class AdoptionApplicationDraft implements CaseTask {
 
         final Long caseId = caseDetails.getId();
 
-        log.info("Executing handler for generating draft domestic application for case id {} ", caseId);
+        log.info("Executing handler for generating draft adoption application for case id {} ", caseId);
 
         return caseDetails;
     }
