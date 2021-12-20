@@ -117,7 +117,7 @@ ccd:
       jurisdictions:
         - ADOPTION
       users:
-        - da_caseworker_solicitor@mailinator.com|DOMESTICABUSE|FL401|Created
+        - adoption_caseworker_solicitor@mailinator.com|DOMESTICABUSE|FL401|Created
       userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
       userProfileDatabasePort: 5432
       userProfileDatabaseUser: hmcts

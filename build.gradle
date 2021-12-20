@@ -19,7 +19,6 @@ plugins {
   id 'application'
   id 'checkstyle'
   id 'idea'
-  id 'pmd'
   id 'jacoco'
   id 'org.owasp.dependencycheck' version '6.5.0.1'
   id 'org.sonarqube' version '3.3'
@@ -29,11 +28,23 @@ plugins {
   id 'hmcts.ccd.sdk' version '0.24.8'
 }
 
-apply plugin: 'cz.habarta.typescript-generator'
-apply plugin: 'com.github.ben-manes.versions'
 
-group = 'uk.gov.hmcts'
+
+group = 'uk.gov.hmcts.reform'
 version = '0.0.1'
+
+allprojects {
+  sourceCompatibility = '11'
+  targetCompatibility = '11'
+
+  apply plugin: 'checkstyle'
+  apply plugin: 'com.github.ben-manes.versions'
+  apply plugin: 'io.spring.dependency-management'
+  apply plugin: 'jacoco'
+  apply plugin: 'java'
+  apply plugin: 'org.owasp.dependencycheck'
+  apply plugin: 'cz.habarta.typescript-generator'
+}
 
 ccd {
   configDir = file('ccd-definitions/definitions')
@@ -46,6 +57,7 @@ sourceSets {
       runtimeClasspath += main.output
       srcDir file('src/functionalTest/java')
     }
+    resources.srcDir file('src/functionalTest/resources')
   }
 
   integrationTest {
@@ -103,12 +115,12 @@ task integration(type: Test) {
   failFast = true
 }
 
-task smoke(type: Test) {
-  description = "Runs Smoke Tests"
-  setTestClassesDirs(sourceSets.functionalTest.output.classesDirs)
-  setClasspath(sourceSets.functionalTest.runtimeClasspath)
-  include "uk/gov/hmcts/reform/adoption/smoke/**"
-}
+//task smoke(type: Test) {
+  //description = "Runs Smoke Tests"
+  //testClassesDirs = sourceSets.smokeTest.output.classesDirs
+  //classpath = sourceSets.smokeTest.runtimeClasspath
+  //include "uk/gov/hmcts/reform/adoption/smoketests/**"
+//}
 
 task highLevelDataSetup(type: JavaExec) {
   mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
@@ -122,35 +134,12 @@ checkstyle {
   getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
-pmd {
-  toolVersion = "6.18.0"
-  sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest]
-  reportsDir = file("$project.buildDir/reports/pmd")
-  // https://github.com/pmd/pmd/issues/876
-  ruleSets = []
-  ruleSetFiles = files("${rootDir}/config/pmd/ruleset.xml")
-}
-
 jacocoTestReport {
-  executionData(test, integration)
+  executionData(test)
   reports {
-    xml.getRequired().set(true)
-    csv.getRequired().set(false)
+    xml.required = true
+    csv.required = false
     xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-  }
-}
-
-// https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
-dependencyCheck {
-  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
-  // range of 0-10 fails the build, anything greater and it doesn't fail the build
-  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-  suppressionFile = 'config/owasp/suppressions.xml'
-  outputDirectory = 'build/reports/'
-
-  analyzers {
-    // Disable scanning of .NET related binaries
-    assemblyEnabled = false
   }
 }
 
@@ -168,10 +157,9 @@ sonarqube {
     property "sonar.projectKey", "uk.gov.hmcts.reform:adoption-cos-api"
     property "sonar.exclusions", "**/*" //TODO temporary
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
-    property "sonar.coverage.exclusions", "**/*" //TODO temporary
+    property "sonar.coverage.exclusions", "**/*" //TODO temporary  }
   }
 }
-
 
 // before committing a change, make sure task still works
 dependencyUpdates {
@@ -185,6 +173,19 @@ dependencyUpdates {
   }
 }
 
+// https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
+dependencyCheck {
+  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+  // range of 0-10 fails the build, anything greater and it doesn't fail the build
+  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+  suppressionFile = 'config/owasp/suppressions.xml'
+
+  analyzers {
+    // Disable scanning of .NET related binaries
+    assemblyEnabled = false
+  }
+}
+
 dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.69'
@@ -195,6 +196,67 @@ dependencyManagement {
   }
 }
 
+def reloadCcd = tasks.register('reloadCcd') {
+  group = 'ccd tasks'
+  doLast {
+    exec {
+      file('../.env').readLines().each() {
+        def (key, value) = it.tokenize('=')
+        environment key, value
+      }
+      commandLine './bin/process-and-import-ccd-definition.sh'
+    }
+    exec {
+      file('../.env').readLines().each() {
+        def (key, value) = it.tokenize('=')
+        environment key, value
+      }
+      commandLine 'docker-compose', '-f', '../docker-compose.yml', 'up', '--build', '-d', 'adoption-cos-api'
+    }
+  }
+}
+
+generateTypeScript {
+  jsonLibrary = 'jackson2'
+  classPatterns = [
+    'uk.gov.hmcts.reform.adoption.**.model.*',
+    'uk.gov.hmcts.ccd.sdk.type.*',
+  ]
+  outputFile = 'build/ts/index.ts'
+  outputKind = 'module'
+  outputFileType = 'implementationFile'
+  mapEnum = 'asEnum'
+  mapDate = 'asString'
+  group = 'ccd tasks'
+
+  doLast {
+    exec {
+      commandLine 'yarn', 'prepublishOnly'
+    }
+  }
+}
+
+ccd {
+  configDir = file('build/definitions')
+}
+
+reloadCcd.configure {
+  dependsOn assemble, generateCCDConfig
+}
+
+tasks.register('stopCaseApiContainer') {
+  group = 'ccd tasks'
+
+  doFirst {
+    exec {
+      executable "sh"
+      args "-c", "docker stop adoption-cos-api || exit 0"
+    }
+  }
+}
+
+generateCCDConfig.dependsOn stopCaseApiContainer
+
 repositories {
   mavenLocal()
   mavenCentral()
@@ -202,16 +264,17 @@ repositories {
 }
 
 def versions = [
-  awaitility        : '1.7.0',
-  jackson           : '2.12.4',
-  junit             : '5.8.1',
-  junitPlatform     : '1.8.1',
-  lombok            : '1.18.20',
-  reformsJavaLogging: '5.1.7',
-  springBoot        : springBoot.class.package.implementationVersion,
-  springfoxSwagger  : '3.0.0',
-  s2sClient         : '4.0.0'
+  awaitility                  : '1.7.0',
+  guava                       : '30.1-jre',
+  springfoxSwagger            : '2.9.2',
+  lombok                      : '1.18.20',
+  s2sClient                   : '4.0.0',
+  junit                       : '5.8.2'
 ]
+
+ext {
+  reformLoggingVersion = "5.1.9"
+}
 
 ext["rest-assured.version"] = '4.4.0'
 
@@ -226,8 +289,8 @@ ext.libraries = [
 ]
 
 dependencies {
-// uncomment for local version
-//implementation group: 'com.github.hmcts', name: 'ccd-config-generator', version: 'DEV-SNAPSHOT'
+  // uncomment for local version
+  // implementation group: 'com.github.hmcts', name: 'ccd-config-generator', version: '0.24.8'
 
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
@@ -235,47 +298,39 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: versions.springBoot
 
-  implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
-
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.4'
 
-  implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
-
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
-
-  implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
-  implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.8.3'
+  implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
+  implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
 
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
 
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: reformLoggingVersion
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: reformLoggingVersion
+
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.15.0'
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.15.0'
-  implementation 'org.projectlombok:lombok:1.18.18'
-  compileOnly "org.projectlombok:lombok:1.18.18"
-  annotationProcessor "org.projectlombok:lombok:1.18.18"
-
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.45'
+  implementation(group: 'com.google.guava', name: 'guava', version: versions.guava)
 
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
+  implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.6.0-prerelease'
+  implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
+  implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.8.3'
+
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
 
-  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.9'
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '7.15.1'
-
-  implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.6.0-prerelease'
 
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.3.1'
   implementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.12'
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  testImplementation libraries.junit5
+  testImplementation(platform('org.junit:junit-bom:5.8.1'))
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -307,12 +362,20 @@ dependencies {
   integrationTestImplementation sourceSets.test.runtimeClasspath
 
   functionalTestImplementation sourceSets.main.runtimeClasspath
-  functionalTestImplementation sourceSets.test.runtimeClasspath
-  functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '7.0.0'
-  functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
+
+  //smokeTestImplementation sourceSets.main.runtimeClasspath
+  //smokeTestImplementation sourceSets.test.runtimeClasspath
 }
 
 mainClassName = 'uk.gov.hmcts.reform.adoption.Application'
+
+bootJar {
+  archiveFileName = "adoption-cos-api.jar"
+
+  manifest {
+    attributes('Implementation-Version': project.version.toString())
+  }
+}
 
 ext.getVaultSecret = { String secretName ->
   new ByteArrayOutputStream().withStream { os ->
@@ -324,22 +387,17 @@ ext.getVaultSecret = { String secretName ->
   }
 }
 
-/*bootRun {
+bootRun {
   doFirst() {
     if (System.getenv("IDAM_API_BASEURL") == null) {
       println("Loading secrets from vault")
 
       systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
 
-      systemProperty 'UK_GOV_NOTIFY_API_KEY', getVaultSecret('uk-gov-notify-api-key')
-      systemProperty 'S2S_SECRET', getVaultSecret('s2s-secret-cos-api')
-      systemProperty 'IDAM_CASEWORKER_USERNAME', getVaultSecret('idam-caseworker-username')
-      systemProperty 'IDAM_CASEWORKER_PASSWORD', getVaultSecret('idam-caseworker-password')
-      systemProperty 'IDAM_SYSTEM_UPDATE_USERNAME', getVaultSecret('idam-system-user-name')
-      systemProperty 'IDAM_SYSTEM_UPDATE_PASSWORD', getVaultSecret('idam-system-user-password')
-      systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
-      systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
-      systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-secret')
+      systemProperty 'S2S_SECRET', getVaultSecret('s2s-cos-api-secret')
+      systemProperty 'IDAM_SYSTEM_UPDATE_USERNAME', getVaultSecret('idam-systemupdate-username')
+      systemProperty 'IDAM_SYSTEM_UPDATE_PASSWORD', getVaultSecret('idam-systemupdate-password')
+      systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-client-secret')
 
       if (System.getenv("BOOT_RUN_DOCKER")) {
         systemProperty 'IDAM_API_BASEURL', 'http://localhost:5000'
@@ -347,95 +405,13 @@ ext.getVaultSecret = { String secretName ->
       }
     }
   }
-}*/
-
-bootJar {
-  getArchiveFileName().set(provider {
-    'adoption-cos-api.jar'
-  })
-
-  manifest {
-    attributes('Implementation-Version': project.version.toString())
-  }
 }
 
-/*functional {
-  doFirst() {
-    if (System.getenv("OAUTH2_CLIENT_SECRET") == null) {
-      println("Loading secrets from vault")
+// Gradle 7.x issue, workaround from: https://github.com/gradle/gradle/issues/17236#issuecomment-894768083
+//rootProject.tasks.named("processSmokeTestResources") {
+//  duplicatesStrategy = 'include'
+//}
 
-      systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
-
-      systemProperty 'UK_GOV_NOTIFY_API_KEY', getVaultSecret('uk-gov-notify-api-key')
-      systemProperty 'S2S_SECRET', getVaultSecret('s2s-secret-cos-api')
-      systemProperty 'IDAM_CASEWORKER_USERNAME', getVaultSecret('idam-caseworker-username')
-      systemProperty 'IDAM_CASEWORKER_PASSWORD', getVaultSecret('idam-caseworker-password')
-      systemProperty 'IDAM_SYSTEM_UPDATE_USERNAME', getVaultSecret('idam-system-user-name')
-      systemProperty 'IDAM_SYSTEM_UPDATE_PASSWORD', getVaultSecret('idam-system-user-password')
-      systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
-      systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
-      systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
-    }
-  }
-}*/
-
-generateTypeScript {
-  jsonLibrary = 'jackson2'
-  classPatterns = [
-    'uk.gov.hmcts.reform.adoption.**.model.*',
-    'uk.gov.hmcts.ccd.sdk.type.*',
-  ]
-  outputFile = 'build/ts/index.ts'
-  outputKind = 'module'
-  outputFileType = 'implementationFile'
-  mapEnum = 'asEnum'
-  mapDate = 'asString'
-  group = 'ccd tasks'
-
-  doLast {
-    exec {
-      commandLine 'yarn', 'prepublishOnly'
-    }
-  }
+wrapper {
+  distributionType = Wrapper.DistributionType.ALL
 }
-
-ccd {
-  configDir = file('build/definitions')
-}
-
-tasks.register('stopCosApiContainer') {
-  group = 'ccd tasks'
-
-  doFirst {
-    exec {
-      executable "sh"
-      args "-c", "docker stop adoption-cos-api || exit 0"
-    }
-  }
-}
-
-def reloadCcd = tasks.register('reloadCcd') {
-  group = 'ccd tasks'
-  doLast {
-    exec {
-      file('../.env').readLines().each() {
-        def (key, value) = it.tokenize('=')
-        environment key, value
-      }
-      commandLine './bin/process-and-import-ccd-definition.sh'
-    }
-    exec {
-      file('../.env').readLines().each() {
-        def (key, value) = it.tokenize('=')
-        environment key, value
-      }
-      commandLine 'docker-compose', '-f', '../docker-compose.yml', 'up', '--build', '-d', 'adoption-cos-api'
-    }
-  }
-}
-
-reloadCcd.configure {
-  dependsOn assemble, generateCCDConfig
-}
-
-generateCCDConfig.dependsOn stopCosApiContainer
