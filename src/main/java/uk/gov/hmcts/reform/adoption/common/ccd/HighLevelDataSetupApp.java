@@ -10,19 +10,20 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.Adoption;
 import java.util.List;
 import java.util.Locale;
 
-
 public class HighLevelDataSetupApp extends DataLoaderToDefinitionStore {
 
     private static final Logger logger = LoggerFactory.getLogger(HighLevelDataSetupApp.class);
 
-    private static final CcdRoleConfig[] CCD_ROLES_NEEDED_FOR_ADOPTION = {
-        new CcdRoleConfig("caseworker-adoption", "PUBLIC"),
+    public static final String PUBLIC = "PUBLIC";
+    private static final CcdRoleConfig[] CCD_ROLES_NEEDED_FOR_DA = {
+        new CcdRoleConfig("caseworker-adoption-courtadmin_beta", "PUBLIC"),
+        new CcdRoleConfig("caseworker-adoption-superuser", "PUBLIC"),
+        new CcdRoleConfig("caseworker-adoption-courtadmin-la", "PUBLIC"),
         new CcdRoleConfig("caseworker-adoption-courtadmin", "PUBLIC"),
         new CcdRoleConfig("caseworker-adoption-solicitor", "PUBLIC"),
-        new CcdRoleConfig("caseworker-adoption-caseworker", "PUBLIC"),
-        new CcdRoleConfig("caseworker-adoption-judge", "PUBLIC"),
-        new CcdRoleConfig("caseworker-adoption-la", "PUBLIC"),
-        new CcdRoleConfig("caseworker-adoption-superuser", "PUBLIC")
+        new CcdRoleConfig("caseworker-adoption-systemupdate", "PUBLIC"),
+        new CcdRoleConfig("caseworker-caa", "PUBLIC"),
+        new CcdRoleConfig("citizen", "PUBLIC")
     };
 
     private final CcdEnvironment environment;
@@ -46,7 +47,7 @@ public class HighLevelDataSetupApp extends DataLoaderToDefinitionStore {
 
     @Override
     public void addCcdRoles() {
-        for (CcdRoleConfig roleConfig : CCD_ROLES_NEEDED_FOR_ADOPTION) {
+        for (CcdRoleConfig roleConfig : CCD_ROLES_NEEDED_FOR_DA) {
             try {
                 logger.info("\n\nAdding CCD Role {}.", roleConfig);
                 addCcdRole(roleConfig);

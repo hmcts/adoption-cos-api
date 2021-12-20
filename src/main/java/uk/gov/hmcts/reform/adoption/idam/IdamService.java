@@ -12,6 +12,7 @@ import static uk.gov.hmcts.reform.adoption.common.config.ControllerConstants.BEA
 
 @Service
 public class IdamService {
+
     @Value("${idam.systemupdate.username}")
     private String systemUpdateUserName;
 

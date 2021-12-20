@@ -7,36 +7,31 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 
 @Component
 public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        buildAosTab(configBuilder);
-        buildConfidentialApplicantTab(configBuilder);
+        buildStateTab(configBuilder);
+        buildConfidentialTab(configBuilder);
     }
 
-    //TODO: Need to revisit this tab once the field stated
-    private void buildAosTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("aosDetails", "AoS")
-            .forRoles(COURT_ADMIN, SOLICITOR,
-                      CASE_WORKER, JUDGE
-            )
-            .label("LabelAosTabOnlineResponse-Heading", null, "## This is an online AoS response")
-            .field("applicant1FirstName");
+    private void buildStateTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("state", "State")
+            .forRoles(UserRole.APPLICANT_SOLICITOR)
+            .label("LabelState", null, "#### Case State:  ${[STATE]}");
     }
 
-    private void buildConfidentialApplicantTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("ConfidentialApplicant", "Confidential Address")
-            .forRoles(COURT_ADMIN, SOLICITOR)
-            .showCondition("applicant1KeepContactDetailsConfidential=\"Yes\"")
-            .field("applicant1CorrespondenceAddress")
-            .field("applicant1PhoneNumber")
-            .field("applicant1Email");
+    private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("Confidential", "Confidential Address")
+            .forRoles(CASE_WORKER, LEGAL_ADVISOR, DISTRICT_JUDGE)
+            .field("applicantCorrespondenceAddress")
+            .field("applicantPhoneNumber")
+            .field("applicantEmail")
+            .field("applicantHomeAddress");
     }
 }

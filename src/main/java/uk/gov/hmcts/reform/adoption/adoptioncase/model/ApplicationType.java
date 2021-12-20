@@ -9,15 +9,19 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum ApplicationType implements HasLabel {
 
-    @JsonProperty("soleApplication")
-    SOLE_APPLICATION("Sole Application"),
+    @JsonProperty("nonMolestationOrder")
+    NON_MOLESTATION_ORDER("Non-molestation Order"),
 
-    @JsonProperty("jointApplication")
-    JOINT_APPLICATION("Joint Application");
+    @JsonProperty("occupationalOrder")
+    OCCUPATIONAL_ORDER("Occupational Order");
 
     private final String label;
 
-    public boolean isSole() {
-        return SOLE_APPLICATION.name().equalsIgnoreCase(this.name());
+    public boolean isNonMolestationOrder() {
+        return NON_MOLESTATION_ORDER.name().equalsIgnoreCase(this.name());
+    }
+
+    public boolean isOccupationalOrder() {
+        return OCCUPATIONAL_ORDER.name().equalsIgnoreCase(this.name());
     }
 }

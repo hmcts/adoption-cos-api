@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -12,13 +11,8 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.AddressGlobalUK;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
-import static uk.gov.hmcts.ccd.sdk.type.YesOrNo.NO;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.WELSH;
 
 @Data
 @AllArgsConstructor
@@ -41,40 +35,6 @@ public class Applicant {
         typeOverride = Email
     )
     private String email;
-
-    @CCD(
-        label = "They have agreed to receive notifications and be served (delivered) court documents by email"
-    )
-    private YesOrNo agreedToReceiveEmails;
-
-    @CCD(
-        label = "Has the applicant confirmed the receipt"
-    )
-    private YesOrNo confirmReceipt;
-
-    @CCD(
-        label = "Is the language preference Welsh?",
-        hint = "Select \"No\" for English or \"Yes\" for bilingual"
-    )
-    private YesOrNo languagePreferenceWelsh;
-
-    @CCD(
-        label = "Did you change your last name when you got married?"
-    )
-    private YesOrNo lastNameChangedWhenMarried;
-
-    @CCD(
-        label = "Have they changed their name since they got married?",
-        hint = "Is their current name different to their married name or the name shown on their "
-            + "marriage certificate?"
-    )
-    private YesOrNo nameDifferentToMarriageCertificate;
-
-    @CCD(
-        label = "Details of how they changed their name",
-        typeOverride = TextArea
-    )
-    private String nameChangedHowOtherDetails;
 
     @CCD(label = "Home address")
     private AddressGlobalUK homeAddress;
@@ -103,29 +63,6 @@ public class Applicant {
             + "address below"
     )
     private AddressGlobalUK correspondenceAddress;
-
-    @CCD(label = "Is represented by a solicitor?")
-    private YesOrNo solicitorRepresented;
-
-    @JsonUnwrapped(prefix = "Solicitor")
-    private Solicitor solicitor;
-
-    @CCD(
-        label = "PCQ ID"
-    )
-    private String pcqId;
-
-    @JsonIgnore
-    public LanguagePreference getLanguagePreference() {
-        return languagePreferenceWelsh == null || languagePreferenceWelsh.equals(NO)
-            ? ENGLISH
-            : WELSH;
-    }
-
-    @JsonIgnore
-    public boolean isRepresented() {
-        return null != solicitor && isNotEmpty(solicitor.getEmail());
-    }
 
     @JsonIgnore
     public boolean isConfidentialContactDetails() {
