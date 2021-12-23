@@ -22,7 +22,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildStateTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("state", "State")
-            .forRoles(UserRole.APPLICANT_SOLICITOR)
+            .forRoles(CASE_WORKER)
             .label("LabelState", null, "#### Case State:  ${[STATE]}");
     }
 

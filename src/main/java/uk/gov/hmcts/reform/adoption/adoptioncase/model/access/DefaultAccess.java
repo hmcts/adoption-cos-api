@@ -12,14 +12,11 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
-
 
 public class DefaultAccess implements HasAccessControl {
     @Override
     public SetMultimap<HasRole, Permission> getGrants() {
         SetMultimap<HasRole, Permission> grants = HashMultimap.create();
-        grants.putAll(SYSTEM_UPDATE, Permissions.CREATE_READ_UPDATE);
         grants.putAll(CASE_WORKER, Permissions.READ);
         grants.putAll(COURT_ADMIN, Permissions.READ);
         grants.putAll(SOLICITOR, Permissions.READ);

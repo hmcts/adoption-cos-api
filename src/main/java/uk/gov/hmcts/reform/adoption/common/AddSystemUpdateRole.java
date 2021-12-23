@@ -6,7 +6,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 
 @Component
 public class AddSystemUpdateRole {
@@ -17,7 +17,7 @@ public class AddSystemUpdateRole {
         String environment = System.getenv().getOrDefault("ENVIRONMENT", null);
 
         if (null != environment && environment.equalsIgnoreCase(ENVIRONMENT_AAT)) {
-            existingRoles.add(SYSTEM_UPDATE);
+            existingRoles.add(SUPER_USER);//TODO
         }
 
         return existingRoles;

@@ -1,10 +1,8 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
-import uk.gov.hmcts.reform.adoption.common.AddSystemUpdateRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -16,7 +14,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
@@ -25,8 +22,8 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
     public static final String CASE_TYPE = "A58";
     public static final String JURISDICTION = "ADOPTION";
 
-    @Autowired
-    private AddSystemUpdateRole addSystemUpdateRole;
+    //@Autowired
+    //private AddSystemUpdateRole addSystemUpdateRole;
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -42,9 +39,5 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
 
         configBuilder.grant(DRAFT, READ, LEGAL_ADVISOR);
         configBuilder.grant(DRAFT, READ, DISTRICT_JUDGE);
-
-        if (addSystemUpdateRole.isEnvironmentAat()) {
-            configBuilder.grant(DRAFT, CREATE_READ_UPDATE, SYSTEM_UPDATE);
-        }
     }
 }

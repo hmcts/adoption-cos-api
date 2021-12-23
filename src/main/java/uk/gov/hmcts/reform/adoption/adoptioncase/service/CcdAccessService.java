@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.solicitor.service;
+package uk.gov.hmcts.reform.adoption.adoptioncase.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 import java.util.List;
 import java.util.Set;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.APPLICANT_SOLICITOR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 
 @Service
 @Slf4j
@@ -35,7 +35,7 @@ public class CcdAccessService {
         User solicitorUser = idamService.retrieveUser(solicitorIdamToken);
         User systemUpdateUser = idamService.retrieveSystemUpdateUserDetails();
 
-        Set<String> caseRoles = Set.of(APPLICANT_SOLICITOR.getRole());
+        Set<String> caseRoles = Set.of(CASE_WORKER.getRole());//TODO
 
         String solicitorUserId = solicitorUser.getUserDetails().getId();
 
@@ -58,7 +58,7 @@ public class CcdAccessService {
                     List.of(
                         CaseAssignmentUserRoleWithOrganisation.builder()
                             .caseDataId(caseId.toString())
-                            .caseRole(APPLICANT_SOLICITOR.getRole())
+                            .caseRole(CASE_WORKER.getRole())
                             .userId(solicitorUserId)
                             .build()
                     )
@@ -75,7 +75,7 @@ public class CcdAccessService {
                     List.of(
                         CaseAssignmentUserRoleWithOrganisation.builder()
                             .caseDataId(caseId.toString())
-                            .caseRole(APPLICANT_SOLICITOR.getRole())
+                            .caseRole(CASE_WORKER.getRole())
                             .userId(solicitorUserId)
                             .build()
                     )
@@ -83,6 +83,6 @@ public class CcdAccessService {
                 .build()
         );
 
-        log.info("Successfully added the applicant's solicitor roles to case Id {} ", caseId);
+        log.info("Successfully added the applicant's roles to case Id {} ", caseId);
     }
 }

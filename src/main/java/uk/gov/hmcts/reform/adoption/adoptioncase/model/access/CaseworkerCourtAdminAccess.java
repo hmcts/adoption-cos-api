@@ -10,7 +10,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORK
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 
 public class CaseworkerCourtAdminAccess implements HasAccessControl {
 
@@ -22,7 +21,7 @@ public class CaseworkerCourtAdminAccess implements HasAccessControl {
 
         grants.putAll(COURT_ADMIN, Permissions.CREATE_READ_UPDATE);
         grants.putAll(CASE_WORKER, Permissions.CREATE_READ_UPDATE);
-        grants.putAll(SYSTEM_UPDATE, Permissions.CREATE_READ_UPDATE);
+
         return grants;
     }
 }

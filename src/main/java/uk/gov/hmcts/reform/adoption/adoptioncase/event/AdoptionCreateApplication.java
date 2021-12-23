@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.solicitor.event;
+package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.reform.adoption.adoptioncase.service.AdoptionCreateApplicationService;
 import uk.gov.hmcts.reform.ccd.client.model.SubmittedCallbackResponse;
 import uk.gov.hmcts.reform.adoption.common.AddSystemUpdateRole;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -14,9 +15,7 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.solicitor.event.page.SolAboutApplicant;
-import uk.gov.hmcts.reform.adoption.solicitor.service.CcdAccessService;
-import uk.gov.hmcts.reform.adoption.solicitor.service.SolicitorCreateApplicationService;
+import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdAccessService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +35,12 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions
 
 @Slf4j
 @Component
-public class SolicitorCreateApplication implements CCDConfig<CaseData, State, UserRole> {
+public class AdoptionCreateApplication implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String SOLICITOR_CREATE = "solicitor-create-application";
 
     @Autowired
-    private SolicitorCreateApplicationService solicitorCreateApplicationService;
+    private AdoptionCreateApplicationService applicationService;
 
     @Autowired
     private AddSystemUpdateRole addSystemUpdateRole;
@@ -67,7 +66,7 @@ public class SolicitorCreateApplication implements CCDConfig<CaseData, State, Us
                                                                        CaseDetails<CaseData, State> beforeDetails) {
         log.info("Solicitor create application about to submit callback invoked");
 
-        final CaseDetails<CaseData, State> result = solicitorCreateApplicationService.aboutToSubmit(details);
+        final CaseDetails<CaseData, State> result = applicationService.aboutToSubmit(details);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(result.getData())

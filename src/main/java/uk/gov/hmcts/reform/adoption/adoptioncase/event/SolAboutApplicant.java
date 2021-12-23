@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.solicitor.event.page;
+package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
