@@ -3,7 +3,7 @@ IDAM_API_BASE_URL=https://idam-api.aat.platform.hmcts.net
 SERVICE_AUTH_PROVIDER_API_BASE_URL=http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 CCD_BASE_URL=http://ccd-data-store-api-aat.service.core-compute-aat.internal
 OAUTH2_CLIENT_SECRET=$(az keyvault secret show --vault-name adoption-aat -o tsv --query value --name idam-secret)
-REDIRECT_URI=http://localhost:3001/receiver
+REDIRECT_URI=http://localhost:3000/oauth2/callback
 
 <<USERCONFIG
     Configure users in below format

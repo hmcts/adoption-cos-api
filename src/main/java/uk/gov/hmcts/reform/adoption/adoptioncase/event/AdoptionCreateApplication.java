@@ -37,7 +37,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions
 @Component
 public class AdoptionCreateApplication implements CCDConfig<CaseData, State, UserRole> {
 
-    public static final String SOLICITOR_CREATE = "solicitor-create-application";
+    public static final String SOLICITOR_CREATE = "adoption-create-application";
 
     @Autowired
     private AdoptionCreateApplicationService applicationService;
