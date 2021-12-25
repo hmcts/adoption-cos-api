@@ -16,14 +16,13 @@ public class HighLevelDataSetupApp extends DataLoaderToDefinitionStore {
 
     public static final String PUBLIC = "PUBLIC";
     private static final CcdRoleConfig[] CCD_ROLES_NEEDED_FOR_DA = {
-        new CcdRoleConfig("caseworker-adoption-courtadmin_beta", "PUBLIC"),
-        new CcdRoleConfig("caseworker-adoption-superuser", "PUBLIC"),
-        new CcdRoleConfig("caseworker-adoption-courtadmin-la", "PUBLIC"),
+        new CcdRoleConfig("caseworker-adoption", "PUBLIC"),
+        new CcdRoleConfig("caseworker-adoption-caseworker", "PUBLIC"),
         new CcdRoleConfig("caseworker-adoption-courtadmin", "PUBLIC"),
-        new CcdRoleConfig("caseworker-adoption-solicitor", "PUBLIC"),
-        new CcdRoleConfig("caseworker-adoption-systemupdate", "PUBLIC"),
-        new CcdRoleConfig("caseworker-caa", "PUBLIC"),
-        new CcdRoleConfig("citizen", "PUBLIC")
+        new CcdRoleConfig("caseworker-adoption-superuser", "PUBLIC"),
+        new CcdRoleConfig("caseworker-adoption-la", "PUBLIC"),
+        new CcdRoleConfig("caseworker-adoption-judge", "PUBLIC"),
+        new CcdRoleConfig("caseworker-adoption-solicitor", "PUBLIC")
     };
 
     private final CcdEnvironment environment;
