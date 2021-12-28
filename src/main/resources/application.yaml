@@ -22,76 +22,12 @@ azure:
   application-insights:
     instrumentation-key: ${APP_INSIGHTS_KEY:00000000-0000-0000-0000-000000000000}
 
-uk:
-  gov:
-    notify:
-      api:
-        key: ${UK_GOV_NOTIFY_API_KEY:dummy}
-        baseUrl: https://api.notifications.service.gov.uk
-      email:
-        templateVars:
-          signInAdoptionUrl: ${NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL:https://apply-for-adoption.aat.platform.hmcts.net/}
-          dissolutionCourtEmail: civilpartnership.case@justice.gov.uk
-        templates:
-          english:
-            SAVE_SIGN_OUT: '3aff9dc0-0188-42f6-a0be-fc5daa404d9a'
-            OUTSTANDING_ACTIONS: '1bc9ce05-557b-4cf6-9e20-87d57d55e89c'
-            APPLICATION_SUBMITTED: '68b87fab-f99f-49c2-a3df-04415d003eb9'
-            JOINT_APPLICANT1_ANSWERS_SENT_FOR_REVIEW: 'd15a318f-404b-4c29-8a01-1febee5bf2d5'
-            JOINT_APPLICANT1_NEED_TO_MAKE_CHANGES: '356a4b59-fbaf-4367-9b47-dbd05340b073'
-            JOINT_APPLICANT1_APPLICANT1_CHANGES_MADE: 'b823559f-e421-432f-bb3f-051cdb3db007'
-            JOINT_APPLICATION_ACCEPTED: '39aac458-5f31-442e-bee7-0f97bb584d98'
-            JOINT_APPLICATION_OVERDUE: '63b41176-67eb-4ad7-9e3d-fa8aabd77c6a'
-            JOINT_APPLICATION_APPROVED_APPLICANT1_REMINDER: '59ab58b7-b102-4b17-b023-226ce399668b'
-            SOLE_APPLICANT_APPLICATION_ACCEPTED: '5f9d4cbe-623e-4066-ae87-76f9afeae884'
-            SOLE_APPLICANT_PARTNER_HAS_NOT_RESPONDED: 'fe1a2a4c-68ac-4887-8557-7be338399a34'
-            SOLE_RESPONDENT_APPLICATION_ACCEPTED: '1726bcfb-95c7-4afd-b789-8072551febd1'
-            OVERSEAS_RESPONDENT_HAS_EMAIL_APPLICATION_ISSUED: '248d19a5-b00b-4c57-a283-10054558003c'
-            OVERSEAS_RESPONDENT_NO_EMAIL_APPLICATION_ISSUED: 'b3be698a-d4b4-4fa8-8ed7-c1fd39827d21'
-            SOLE_APPLICANT_APPLICATION_SUBMITTED: '3ecccc69-81e7-4bcd-8316-0547fd30795f'
-            SOLE_APPLICANT_AMENDED_APPLICATION_SUBMITTED: 'd87e0405-15bb-405b-b277-27cec5444106'
-            SOLE_APPLICANT_SOLICITOR_APPLICATION_SUBMITTED: '97814664-95e9-457d-a40d-e062c0b6cfce'
-            SOLE_APPLICANT_SOLICITOR_AMENDED_APPLICATION_SUBMITTED: '61b44a57-4e00-40d7-bce8-205863f94230'
-            APPLICANT_SOLICITOR_NOTICE_OF_PROCEEDINGS: '841a2098-f0fe-4348-aa84-4e716b8b2c54'
-            RESPONDENT_SOLICITOR_NOTICE_OF_PROCEEDINGS: '841a2098-f0fe-4348-aa84-4e716b8b2c54'
-            APPLICANT_NOTICE_OF_PROCEEDINGS: '2d79f93a-aabc-470a-b5f5-333059787a8a'
-            APPLICANT_SOLICITOR_SERVICE: '1fb44d0d-c743-4bff-9e5c-6a62d3711517'
-            GENERAL_EMAIL_PETITIONER: '48a1dd7e-1a46-4c1b-be4c-c7e733c8334e'
-            GENERAL_EMAIL_PETITIONER_SOLICITOR: 'ca22e5be-7460-48af-b781-ef1564a63a29'
-            GENERAL_EMAIL_RESPONDENT: 'fccb96fb-7d6a-41f3-9d63-bebfc76829ef'
-            GENERAL_EMAIL_RESPONDENT_SOLICITOR: 'ac9a9948-25d8-4e59-8025-89860c251d3a'
-            GENERAL_EMAIL_OTHER_PARTY: '2c188c63-db80-46b4-a1e2-53fdc510d5b9'
-            SOLICITOR_AWAITING_CONDITIONAL_ORDER: '3f2e50a1-b4ae-4466-bb8c-eac55563aa02'
-            CITIZEN_APPLY_FOR_CONDITIONAL_ORDER: '39def49e-2d2d-489e-b715-3103e27d5977'
-            SOLE_APPLICANT_AOS_SUBMITTED: '28139c85-180d-456c-b40c-36c4e04afa5d'
-            SOLE_RESPONDENT_AOS_SUBMITTED: '61a8ec4f-b0cf-45d9-a419-29cae2c811c7'
-            SOLE_APPLICANT_DISPUTED_AOS_SUBMITTED: '98960794-a1a9-4761-a495-2eca16f4c81e'
-            SOLE_RESPONDENT_DISPUTED_AOS_SUBMITTED: '3f42a757-f635-4f58-be27-d65af450a2ee'
-            APPLICANT_SWITCH_TO_SOLE: '29c1cdb1-bf0c-4f27-bb52-b99f040e8f53'
-            JOINT_APPLICATION_ENDED: 'f7929730-decd-41fd-b596-de71699f6c7e'
-          welsh:
-            SAVE_SIGN_OUT: '6e9526c5-9380-4bf1-879a-b8e401e39a6f'
-            OUTSTANDING_ACTIONS: '1bc9ce05-557b-4cf6-9e20-87d57d55e89c'
-            APPLICATION_SUBMITTED: '68b87fab-f99f-49c2-a3df-04415d003eb9'
-            SOLE_APPLICANT_APPLICATION_SUBMITTED: '3ecccc69-81e7-4bcd-8316-0547fd30795f'
-            SOLE_APPLICANT_AMENDED_APPLICATION_SUBMITTED: 'd87e0405-15bb-405b-b277-27cec5444106'
-            SOLE_APPLICANT_SOLICITOR_APPLICATION_SUBMITTED: '97814664-95e9-457d-a40d-e062c0b6cfce'
-            SOLE_APPLICANT_SOLICITOR_AMENDED_APPLICATION_SUBMITTED: '61b44a57-4e00-40d7-bce8-205863f94230'
-            APPLICANT_NOTICE_OF_PROCEEDINGS: '2d79f93a-aabc-470a-b5f5-333059787a8a'
-            GENERAL_EMAIL_PETITIONER: '48a1dd7e-1a46-4c1b-be4c-c7e733c8334e'
-            GENERAL_EMAIL_PETITIONER_SOLICITOR: 'ca22e5be-7460-48af-b781-ef1564a63a29'
-            GENERAL_EMAIL_RESPONDENT: 'fccb96fb-7d6a-41f3-9d63-bebfc76829ef'
-            GENERAL_EMAIL_RESPONDENT_SOLICITOR: 'ac9a9948-25d8-4e59-8025-89860c251d3a'
-            GENERAL_EMAIL_OTHER_PARTY: '2c188c63-db80-46b4-a1e2-53fdc510d5b9'
-            SOLICITOR_AWAITING_CONDITIONAL_ORDER: '3f2e50a1-b4ae-4466-bb8c-eac55563aa02'
-            CITIZEN_APPLY_FOR_CONDITIONAL_ORDER: '39def49e-2d2d-489e-b715-3103e27d5977'
-
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
 
 idam:
   s2s-auth:
-    url: ${S2S_URL:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
+    url: ${S2S_URL:http://localhost:4552}
     secret: ${S2S_SECRET:AAAAAAAAAAAAAAAA}
     microservice: adoption-cos-api
   api:
@@ -100,9 +36,9 @@ idam:
     username: ${IDAM_SYSTEM_UPDATE_USERNAME:dummysystemupdate@test.com}
     password: ${IDAM_SYSTEM_UPDATE_PASSWORD:dummy}
   client:
-    id: 'adoption'
+    id: 'adoption-cos-api'
     secret: ${IDAM_CLIENT_SECRET:123456}
-    redirect_uri: ${IDAM_API_REDIRECT_URL:http://localhost:3001/receiver}
+    redirect_uri: ${IDAM_API_REDIRECT_URL:http://localhost:3000/oauth2/callback}
 
 fee:
   api:
