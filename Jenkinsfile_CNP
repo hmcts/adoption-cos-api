@@ -170,10 +170,10 @@ withPipeline(type, product, component) {
         setCommonEnvVariables()
     }
 
-  before('functionalTest:preview') {
+  //before('functionalTest:preview') {
     // Only for preview upload the definitions via script as high level data set up relies on an existing environment
-    uploadCoreCaseDataDefinitions()
-  }
+    //uploadCoreCaseDataDefinitions()
+  //}
 
   //after('checkout') {
     //echo 'adoption-cos-api checked out'
