@@ -175,23 +175,23 @@ withPipeline(type, product, component) {
     uploadCoreCaseDataDefinitions()
   }
 
-  //after('checkout') {
-    //echo 'adoption-cos-api checked out'
-  //}
+  after('checkout') {
+    echo 'adoption-cos-api checked out'
+  }
 
-  //after('test') {
-    //steps.junit '**/test-results/**/*.xml'
-    //steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/**/*'
-  //}
+  after('test') {
+    steps.junit '**/test-results/**/*.xml'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/**/*'
+  }
 
-  //before('functionalTest:aat') {
-    //env.test_environment = 'aat'
-  //}
+  before('functionalTest:aat') {
+    env.test_environment = 'aat'
+  }
 
-  //after('functionalTest:aat') {
-    //steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    //steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/**/*'
-  //}
+  after('functionalTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/**/*'
+  }
     onDemo {
       env.ENVIRONMENT="demo"
       env.CASE_API_URL = "http://adoption-cos-api-demo.service.core-compute-demo.internal"
