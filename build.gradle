@@ -32,7 +32,7 @@ plugins {
 apply plugin: 'cz.habarta.typescript-generator'
 apply plugin: 'com.github.ben-manes.versions'
 
-group = 'uk.gov.hmcts.reform'
+group = 'uk.gov.hmcts'
 version = '0.0.1'
 
 ccd {
@@ -46,7 +46,6 @@ sourceSets {
       runtimeClasspath += main.output
       srcDir file('src/functionalTest/java')
     }
-    resources.srcDir file('src/functionalTest/resources')
   }
 
   integrationTest {
@@ -325,14 +324,17 @@ ext.getVaultSecret = { String secretName ->
   }
 }
 
-bootRun {
+/*bootRun {
   doFirst() {
     if (System.getenv("IDAM_API_BASEURL") == null) {
       println("Loading secrets from vault")
 
       systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
 
+      systemProperty 'UK_GOV_NOTIFY_API_KEY', getVaultSecret('uk-gov-notify-api-key')
       systemProperty 'S2S_SECRET', getVaultSecret('s2s-secret-cos-api')
+      systemProperty 'IDAM_CASEWORKER_USERNAME', getVaultSecret('idam-caseworker-username')
+      systemProperty 'IDAM_CASEWORKER_PASSWORD', getVaultSecret('idam-caseworker-password')
       systemProperty 'IDAM_SYSTEM_UPDATE_USERNAME', getVaultSecret('idam-system-user-name')
       systemProperty 'IDAM_SYSTEM_UPDATE_PASSWORD', getVaultSecret('idam-system-user-password')
       systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
@@ -345,7 +347,7 @@ bootRun {
       }
     }
   }
-}
+}*/
 
 bootJar {
   getArchiveFileName().set(provider {
