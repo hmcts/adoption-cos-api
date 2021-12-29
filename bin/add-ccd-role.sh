@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+BASEDIR=$(realpath $(dirname ${0})/../../)
+if [ -f $BASEDIR/.env ]
+then
+  export $(cat $BASEDIR/.env | sed 's/#.*//g' | xargs)
+fi
 set -eu
 
 dir=$(dirname ${0})
@@ -7,6 +12,7 @@ dir=$(dirname ${0})
 role=${1}
 
 userToken=$(${dir}/idam-user-token.sh ${DEFINITION_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${DEFINITION_IMPORTER_PASSWORD:-Password12!})
+
 serviceToken=$(${dir}/s2s-token.sh ccd_gw)
 
 echo "Creating CCD role: ${role}"
