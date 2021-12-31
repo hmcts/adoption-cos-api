@@ -7,8 +7,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.DRAFT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
@@ -28,16 +29,16 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.setCallbackHost(System.getenv().getOrDefault("CASE_API_URL", "http://adoption-cos-api:4550"));
-        configBuilder.caseType(CASE_TYPE, CASE_TYPE, "Handling of child adoption case");
+        configBuilder.caseType(CASE_TYPE, "New adoption case", "Handling of child adoption case");
         configBuilder.jurisdiction(JURISDICTION, "Family jurisdiction adoption", "Child adoption");
 
-        configBuilder.grant(DRAFT, CREATE_READ_UPDATE, SOLICITOR);
-        configBuilder.grant(DRAFT, CREATE_READ_UPDATE, SUPER_USER);
-        configBuilder.grant(DRAFT, CREATE_READ_UPDATE, CASE_WORKER);
-        configBuilder.grant(DRAFT, CREATE_READ_UPDATE, COURT_ADMIN);
-        configBuilder.grant(DRAFT, CREATE_READ_UPDATE, SUPER_USER);
-
-        configBuilder.grant(DRAFT, READ, LEGAL_ADVISOR);
-        configBuilder.grant(DRAFT, READ, DISTRICT_JUDGE);
+        configBuilder.grant(Draft, CREATE_READ_UPDATE, CITIZEN);
+        configBuilder.grant(Draft, CREATE_READ_UPDATE, SOLICITOR);
+        configBuilder.grant(Draft, CREATE_READ_UPDATE, SUPER_USER);
+        configBuilder.grant(Draft, CREATE_READ_UPDATE, CASE_WORKER);
+        configBuilder.grant(Draft, CREATE_READ_UPDATE, COURT_ADMIN);
+        configBuilder.grant(Draft, CREATE_READ_UPDATE, SUPER_USER);
+        configBuilder.grant(Draft, READ, LEGAL_ADVISOR);
+        configBuilder.grant(Draft, READ, DISTRICT_JUDGE);
     }
 }

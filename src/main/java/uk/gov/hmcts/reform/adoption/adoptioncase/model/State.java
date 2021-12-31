@@ -11,13 +11,13 @@ public enum State {
         name = "Draft",
         label = "# **${[CASE_REFERENCE]}** ${applicantLastName} **&** ${respondentLastName}\n### **${[STATE]}**\n"
     )
-    DRAFT("Draft"),
+    Draft("Draft"),
 
     @CCD(
         name = "Submitted",
         label = "# **${[CASE_REFERENCE]}** ${applicantLastName} **&** ${respondentLastName}\n### **${[STATE]}**\n"
     )
-    SUBMITTED("Submitted");
+    Submitted("Submitted");
 
     private final String name;
 

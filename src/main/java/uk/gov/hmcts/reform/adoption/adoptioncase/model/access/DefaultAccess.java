@@ -7,11 +7,13 @@ import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.Permission;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CREATOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.*;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 
 public class DefaultAccess implements HasAccessControl {
     @Override

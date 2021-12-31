@@ -15,27 +15,27 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationDetails", "Application");
 
-        addHeaderFields(tabBuilder);
+        //addHeaderFields(tabBuilder);
         addApplicant(tabBuilder);
     }
 
-    private void addHeaderFields(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
+    public void addHeaderFields(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
-            .field("createdDate")
-            .field(CaseData::getApplicationType);
+            .field("createdDate");
+        //.field(CaseData::getApplicationType);
     }
 
     private void addApplicant(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
-            .label("LabelApplicant-Heading", null, "### The applicant")
-            .field("applicantFirstName")
-            .field("applicantMiddleName")
-            .field("applicantLastName")
-            .field("applicantGender")
-            .field("applicantPhoneNumber")
-            .field("applicantEmail")
-            .field("applicantHomeAddress")
-            .field("applicantCorrespondenceAddress");
+            //.label("LabelApplicant-Heading", null, "### The applicant")
+            .field("applicant1FirstName");
+            //.field("applicantMiddleName")
+            //.field("applicantLastName")
+            /*.field("applicantGender")
+            .field("applicantPhoneNumber")*/
+            //.field("applicantEmail");
+            /*.field("applicantHomeAddress")
+            .field("applicantCorrespondenceAddress");*/
     }
 
 }

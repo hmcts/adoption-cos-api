@@ -15,7 +15,7 @@ public class InitialiseSolicitorCreatedApplication implements CaseTask {
     @Override
     public CaseDetails<CaseData, State> apply(final CaseDetails<CaseData, State> caseDetails) {
         final LocalDate createdDate = caseDetails.getCreatedDate().toLocalDate();
-        caseDetails.getData().getApplication().setCreatedDate(createdDate);
+        //caseDetails.getData().getApplication().setCreatedDate(createdDate);
 
         log.info(
             "Setting application createdDate to {} for CaseId: {}, State: {}",
