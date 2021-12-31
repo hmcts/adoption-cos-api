@@ -11,7 +11,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADM
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.*;
 
 public class DefaultAccess implements HasAccessControl {
     @Override
@@ -23,6 +23,9 @@ public class DefaultAccess implements HasAccessControl {
         grants.putAll(SUPER_USER, Permissions.READ);
         grants.putAll(LEGAL_ADVISOR, Permissions.READ);
         grants.putAll(DISTRICT_JUDGE, Permissions.READ);
+        grants.putAll(CREATOR, Permissions.CREATE_READ_UPDATE);
+        grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE);
+
         return grants;
     }
 }
