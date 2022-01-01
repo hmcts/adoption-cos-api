@@ -7,7 +7,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.Permission;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
+// import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CREATOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
@@ -26,7 +26,7 @@ public class DefaultAccess implements HasAccessControl {
         grants.putAll(LEGAL_ADVISOR, Permissions.READ);
         grants.putAll(DISTRICT_JUDGE, Permissions.READ);
         grants.putAll(CREATOR, Permissions.CREATE_READ_UPDATE);
-        grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE);
+        //grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE);
 
         return grants;
     }
