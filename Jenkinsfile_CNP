@@ -123,16 +123,16 @@ withPipeline(type, product, component) {
       ]
     }
 
-    //after('smoketest:preview') {
-      //publishHTML target: [
-        //allowMissing         : true,
-        //alwaysLinkToLastBuild: true,
-        //keepAll              : true,
-        //reportDir            : "build/reports/tests/smoke",
-        //reportFiles          : "index.html",
-        //reportName           : "Smoke Test Report"
-      //]
-    //}
+    after('smoketest:preview') {
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/tests/smoke",
+        reportFiles          : "index.html",
+        reportName           : "Smoke Test Report"
+      ]
+    }
 
     after('smoketest:aat') {
       publishHTML target: [
