@@ -2,10 +2,10 @@ tags:
   ccd-idam-pr: true
 
 java:
-  image: ${IMAGE_NAME}
+  image: hmctspublic.azurecr.io/prl/cos:latest
   ingressHost: ${SERVICE_FQDN}
   environment:
-    CASE_DATA_STORE_BASEURL: "http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true  
   keyVaults:
     adoption:

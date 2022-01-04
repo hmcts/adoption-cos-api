@@ -9,14 +9,14 @@ idam-pr:
 
 java:
   applicationPort: 4550
-  image: 'hmctspublic.azurecr.io/adoption/cos-api:latest'
+  image: hmctspublic.azurecr.io/adoption/cos-api:latest
   ingressHost: adoption-cos-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   aadIdentityName: adoption
   autoscaling:
     enabled: true
     maxReplicas: 9
     minReplicas: 6
-    targetCPUUtilizationPercentage: 80 # Default is 80% target CPU utilization
+    targetCPUUtilizationPercentage: 80
   keyVaults:
     adoption:
       secrets:
@@ -29,13 +29,9 @@ java:
         - name: idam-system-user-password
           alias: IDAM_SYSTEM_UPDATE_PASSWORD
   environment:
-    # REFORM_TEAM: adoption
-    # REFORM_SERVICE_NAME: adoption-cos-api
-    # REFORM_ENVIRONMENT: preview
-    S2S_URL: "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
-    IDAM_API_REDIRECT_URL: "https://div-pfe-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/authenticated"
-    IDAM_API_BASEURL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
-    CASE_DATA_STORE_BASEURL: "http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+    S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    IDAM_API_REDIRECT_URL: https://div-pfe-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/authenticated
+    IDAM_API_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+    CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     # IDAM_API_REDIRECT_URL: https://adoption-cos-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/authenticated
-    # IDAM_API_BASEURL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
     CITIZEN_UPDATE_CASE_STATE_ENABLED: false
