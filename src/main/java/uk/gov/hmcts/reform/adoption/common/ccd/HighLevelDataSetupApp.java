@@ -16,6 +16,7 @@ public class HighLevelDataSetupApp extends DataLoaderToDefinitionStore {
 
     public static final String PUBLIC = "PUBLIC";
     private static final CcdRoleConfig[] CCD_ROLES_NEEDED_FOR_ADOPTION = {
+        new CcdRoleConfig("citizen", "PUBLIC"),
         new CcdRoleConfig("caseworker-adoption", "PUBLIC"),
         new CcdRoleConfig("caseworker-adoption-caseworker", "PUBLIC"),
         new CcdRoleConfig("caseworker-adoption-courtadmin", "PUBLIC"),

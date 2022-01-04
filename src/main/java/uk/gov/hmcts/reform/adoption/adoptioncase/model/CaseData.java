@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoptions.dacase.model.access.CaseworkerAccess;
 
@@ -19,7 +20,6 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class CaseData {
-
     @CCD(
         label = "Applying with",
         access = {DefaultAccess.class},
@@ -33,9 +33,26 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private Applicant applicant1 = new Applicant();
 
-    /*@JsonUnwrapped()
+    @JsonUnwrapped(prefix = "applicant2")
     @Builder.Default
-    private Application application = new Application();*/
+    @CCD(access = {DefaultAccess.class})
+    private Applicant applicant2 = new Applicant();
+
+    @JsonUnwrapped(prefix = "children")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Children children = new Children();
+
+    @JsonUnwrapped(prefix = "placementOrder")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private PlacementOrder placementOrder = new PlacementOrder();
+
+    @CCD(
+        label = "Add Another Placement Order",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo addAnotherPlacementOrder;
 
     @CCD(
         label = "hyphenatedCaseReference",
