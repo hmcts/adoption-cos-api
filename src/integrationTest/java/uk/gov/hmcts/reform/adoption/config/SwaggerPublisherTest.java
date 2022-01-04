@@ -1,46 +1,28 @@
 package uk.gov.hmcts.reform.adoption.config;
 
-import org.junit.jupiter.api.DisplayName;
+import io.restassured.RestAssured;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Built-in feature which saves service's swagger specs in temporary directory.
  * Each CI run on master should automatically save and upload (if updated) documentation.
  */
-@WebMvcTest
-@ContextConfiguration(classes = SwaggerConfiguration.class)
-@AutoConfigureMockMvc
 class SwaggerPublisherTest {
 
-    @Autowired
-    private MockMvc mvc;
-
-    @DisplayName("Generate swagger documentation")
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void generateDocs() throws Exception {
-        byte[] specs = mvc.perform(get("/v2/api-docs"))
-            .andExpect(status().isOk())
-            .andReturn()
-            .getResponse()
-            .getContentAsByteArray();
-
-        Path swaggerSpecPath = Paths.get(System.getProperty("java.io.tmpdir"), "swagger-specs.json");
-        try (OutputStream outputStream = Files.newOutputStream(swaggerSpecPath)) {
-            outputStream.write(specs);
-        }
+    public void testHealthEndpoint() {
+        String  testUrl = "http://ccd-data-store-api-aat.service.core-compute-aat.internal";
+        Assert.assertTrue(true);
+        RestAssured.useRelaxedHTTPSValidation();
+        RestAssured
+            .given()
+            .baseUri(testUrl)
+            .get("/")
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .asString();
     }
 }
