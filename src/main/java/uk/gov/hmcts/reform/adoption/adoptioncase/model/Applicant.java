@@ -83,6 +83,21 @@ public class Applicant {
     @CCD(label = "Nationality")
     private Set<Nationality> nationality;
 
+    @CCD(label = "Address1")
+    private String address1;
+
+    @CCD(label = "Address2")
+    private String address2;
+
+    @CCD(label = "Town")
+    private String town;
+
+    @CCD(label = "Country")
+    private String country;
+
+    @CCD(label = "Post code")
+    private String postCode;
+
     /*@CCD(label = "Home address")
     private AddressGlobalUK homeAddress;*/
 
