@@ -14,7 +14,7 @@ dependencies:
     version: 6.0.0
     repository: '@hmctspublic'
     tags:
-      - ccd-idam-pr
+        - ccd-idam-pr
   - name: xui-webapp
     version: ~0.2.1
     repository: '@hmctspublic'
