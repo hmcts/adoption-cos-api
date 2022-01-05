@@ -15,6 +15,8 @@ uploadFilename="$(date +"%Y%m%d-%H%M%S")-${filename}"
 userToken=$(${dir}/idam-user-token.sh ${DEFINITION_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${DEFINITION_IMPORTER_PASSWORD:-Password12!})
 serviceToken=$(${dir}/s2s-token.sh ccd_gw)
 
+echo "ccd-import-definition.sh---${DEFINITION_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${DEFINITION_IMPORTER_PASSWORD:-Password12!} userToken: ${userToken} serviceToken: ${serviceToken}\n\n"
+
 [ -z "$serviceToken" ] && >&2 echo "No service token" && exit
 [ -z "$userToken" ] && >&2 echo "No user token" && exit
 
