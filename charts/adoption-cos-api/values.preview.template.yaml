@@ -123,18 +123,16 @@ ccd:
         - ADOPTION
       users:
         - adoption_caseworker_solicitor@mailinator.com|ADOPTION|A58|Draft
+        - AdoptionCaseWorkerUser@AAT.com|ADOPTION|A58|Draft
+        - TEST_CASE_WORKER_USER@mailinator.com|ADOPTION|A58|Draft
+        - TEST_SOLICITOR@mailinator.com|ADOPTION|A58|Draft
+        - adoption_as_caseworker_admin@mailinator.com|ADOPTION|A58|Draft
+        - civil_unspecified@mailinator.com|ADOPTION|A58|Draft
       userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
       userProfileDatabasePort: 5432
       userProfileDatabaseUser: hmcts
       userProfileDatabasePassword: hmcts
       userProfileDatabaseName: user-profile
-
-  am-role-assignment-service:
-    java:
-      keyVaults:
-        am:
-          secrets:
-            - role-assignment-service-LD-SDK-KEY
 
   postgresql:
     persistence:
