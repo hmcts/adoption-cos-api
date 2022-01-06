@@ -50,12 +50,7 @@ public class Applicant {
     )
     private YesOrNo hasOtherNames;
 
-    @CCD(
-        label = "Additional Names"
-        //typeOverride = Collection,
-        //typeParameterOverride = "String",
-        //access = {DefaultAccess.class}
-    )
+    @CCD(label = "Additional names")
     private Set<OtherName> additionalNames;
 
     @CCD(
