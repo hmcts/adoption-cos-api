@@ -8,12 +8,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 //import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
@@ -50,8 +53,15 @@ public class Applicant {
     )
     private YesOrNo hasOtherNames;
 
-    @CCD(label = "Additional names")
-    private Set<OtherName> additionalNames;
+    /*@CCD(label = "Additional names")
+    private Set<OtherName> additionalNames;*/
+
+    @CCD(
+        label = "Additional names",
+        typeOverride = Collection,
+        typeParameterOverride = "OtherName"
+    )
+    private List<ListValue<OtherName>> additionalNames;
 
     @CCD(
         label = "Date of Birth",
