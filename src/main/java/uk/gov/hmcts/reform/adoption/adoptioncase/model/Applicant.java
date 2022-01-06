@@ -12,7 +12,6 @@ import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
@@ -52,12 +51,12 @@ public class Applicant {
     private YesOrNo hasOtherNames;
 
     @CCD(
-        label = "Additional Names",
+        label = "Additional Names"
         //typeOverride = Collection,
         //typeParameterOverride = "String",
-        access = {DefaultAccess.class}
+        //access = {DefaultAccess.class}
     )
-    private List<OtherName> additionalNames;
+    private Set<OtherName> additionalNames;
 
     @CCD(
         label = "Date of Birth",
@@ -90,13 +89,13 @@ public class Applicant {
     private String address2;
 
     @CCD(label = "Town")
-    private String town;
+    private String addressTown;
 
     @CCD(label = "Country")
-    private String country;
+    private String addressCountry;
 
     @CCD(label = "Post code")
-    private String postCode;
+    private String addressPostCode;
 
     /*@CCD(label = "Home address")
     private AddressGlobalUK homeAddress;*/
