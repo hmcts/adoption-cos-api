@@ -102,6 +102,12 @@ public class Applicant {
     @CCD(label = "Post code")
     private String addressPostCode;
 
+    @CCD(label = "Address same as applicant1")
+    private String addressSameAsApplicant1;
+
+    @CCD(label = "contactDetails")
+    private Set<ContactDetails> contactDetails;
+
     /*@CCD(label = "Home address")
     private AddressGlobalUK homeAddress;*/
 
