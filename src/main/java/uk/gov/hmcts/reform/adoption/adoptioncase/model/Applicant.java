@@ -59,7 +59,8 @@ public class Applicant {
     @CCD(
         label = "Additional names",
         typeOverride = Collection,
-        typeParameterOverride = "OtherName"
+        typeParameterOverride = "OtherName",
+        access = {DefaultAccess.class}
     )
     private List<ListValue<OtherName>> additionalNames;
 
