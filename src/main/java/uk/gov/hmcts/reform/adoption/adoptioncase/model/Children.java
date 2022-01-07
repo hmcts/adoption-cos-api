@@ -8,11 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 
 @Data
@@ -37,6 +40,14 @@ public class Children {
 
     @CCD(label = "Nationality")
     private Set<Nationality> nationality;
+
+    @CCD(
+        label = "Children Additional Nationalities",
+        typeOverride = Collection,
+        typeParameterOverride = "OtherName",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<OtherName>> additionalNationalities;
 
     @CCD(label = "First name after adoption")
     private String firstNameAfterAdoption;

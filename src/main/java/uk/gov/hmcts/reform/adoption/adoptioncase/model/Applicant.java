@@ -18,9 +18,7 @@ import java.util.Set;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
-//import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
-//import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 
 @Data
 @AllArgsConstructor
@@ -31,9 +29,6 @@ public class Applicant {
 
     @CCD(label = "First name")
     private String firstName;
-
-    /*@CCD(label = "Middle name(s)")
-    private String middleName;*/
 
     @CCD(label = "Last name")
     private String lastName;
@@ -52,9 +47,6 @@ public class Applicant {
         access = {DefaultAccess.class}
     )
     private YesOrNo hasOtherNames;
-
-    /*@CCD(label = "Additional names")
-    private Set<OtherName> additionalNames;*/
 
     @CCD(
         label = "Additional names",
@@ -87,6 +79,14 @@ public class Applicant {
 
     @CCD(label = "Nationality")
     private Set<Nationality> nationality;
+
+    @CCD(
+        label = "Additional Nationalities",
+        typeOverride = Collection,
+        typeParameterOverride = "OtherName",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<OtherName>> additionalNationalities;
 
     @CCD(label = "Address1")
     private String address1;
