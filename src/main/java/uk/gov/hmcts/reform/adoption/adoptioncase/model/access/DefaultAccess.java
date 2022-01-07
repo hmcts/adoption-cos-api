@@ -26,7 +26,7 @@ public class DefaultAccess implements HasAccessControl {
         grants.putAll(LEGAL_ADVISOR, Permissions.READ);
         grants.putAll(DISTRICT_JUDGE, Permissions.READ);
         grants.putAll(CREATOR, Permissions.CREATE_READ_UPDATE);
-        grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE);
+        grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE_DELETE);
 
         return grants;
     }
