@@ -18,16 +18,22 @@ import java.time.LocalDate;
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Builder
 public class PlacementOrder {
+    @CCD(label = "Placement Order id")
+    private String placementOrderId;
+
+    @CCD(label = "Placement Order type")
+    private String placementOrderType;
+
     @CCD(label = "Placement Order Number")
-    private String number;
+    private String placementOrderNumber;
 
     @CCD(label = "Placement Order Court")
-    private String court;
+    private String placementOrderCourt;
 
     @CCD(
         label = "Placement Order Date",
         access = {DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private LocalDate placementOrderDate;
 }

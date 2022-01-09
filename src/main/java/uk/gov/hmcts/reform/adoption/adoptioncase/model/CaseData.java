@@ -8,10 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoptions.dacase.model.access.CaseworkerAccess;
 
+import java.util.List;
+
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -43,10 +47,13 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private Children children = new Children();
 
-    @JsonUnwrapped(prefix = "placementOrder")
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private PlacementOrder placementOrder = new PlacementOrder();
+    @CCD(
+        label = "Placement orders",
+        typeOverride = Collection,
+        typeParameterOverride = "PlacementOrder",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<PlacementOrder>> placementOrders;
 
     @CCD(
         label = "Add Another Placement Order",
