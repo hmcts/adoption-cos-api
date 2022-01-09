@@ -47,6 +47,8 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private Children children = new Children();
 
+    //@JsonUnwrapped(prefix = "")
+    //@Builder.Default
     @CCD(
         label = "Placement orders",
         typeOverride = Collection,
