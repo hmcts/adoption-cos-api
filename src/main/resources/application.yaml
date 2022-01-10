@@ -53,29 +53,6 @@ core_case_data:
   search:
     page_size: ${CCD_SEARCH_PAGE_SIZE:100}
 
-docmosis:
-  templates:
-    english:
-      RESP_SOLICITOR_AOS_INVITATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
-      CITIZEN_RESP_AOS_INVITATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
-      RESPONDENT_ANSWERS: NFD_Respondent_Answers_Eng.docx #TODO: update content
-      CERTIFICATE_OF_SERVICE: NFD_Certificate_Of_Service.docx #TODO: update content
-      SERVICE_ORDER: NFD_Service_Order.docx #TODO: update content
-      BULK_CASE_PRONOUNCEMENT: NFD_Pronouncement_List.docx
-      NOTICE_OF_PROCEEDINGS: NFD_Notice_Of_Proceedings_Sole.docx
-      NOTICE_OF_PROCEEDINGS_OVERSEAS_RESP: NFD_Notice_Of_Proceedings_Overseas_Sole.docx
-      CERTIFICATE_OF_ENTITLEMENT: NFD_Certificate_Of_Entitlement.docx #TODO: update content
-    welsh:
-      RESP_SOLICITOR_AOS_INVITATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
-      CITIZEN_RESP_AOS_INVITATION: NFD_CP_Dummy_Template.docx #TODO: Set correct template when available
-      RESPONDENT_ANSWERS: NFD_Respondent_Answers_Eng.docx #TODO: replace template once available
-      CERTIFICATE_OF_SERVICE: NFD_Certificate_Of_Service.docx #TODO: update content
-      SERVICE_ORDER: NFD_Service_Order.docx #TODO: update content
-      BULK_CASE_PRONOUNCEMENT: NFD_Pronouncement_List.docx  #TODO: update content
-      NOTICE_OF_PROCEEDINGS: NFD_Notice_Of_Proceedings_Sole.docx  #TODO: update content
-      NOTICE_OF_PROCEEDINGS_OVERSEAS_RESP: NFD_Notice_Of_Proceedings_Overseas_Sole.docx #TODO: update content
-      CERTIFICATE_OF_ENTITLEMENT: NFD_Certificate_Of_Entitlement.docx #TODO: update content
-
 doc_assembly:
   url: ${DOC_ASSEMBLY_URL:http://dg-docassembly-aat.service.core-compute-aat.internal}
 
@@ -98,30 +75,6 @@ case_progression:
 submit_aos:
   dispute_offset_days: ${DISPUTE_DUE_DATE_OFFSET_DAYS:37}
   holding_offset_days: ${HOLDING_DUE_DATE_OFFSET_DAYS:141}
-
-court:
-  locations:
-    serviceCentre:
-      serviceCentreName: 'Courts and Tribunals Service Centre'
-      centreName: 'HMCTS Digital Adoption and Dissolution'
-      town: 'Harlow'
-      poBox: 'PO Box 12706'
-      postCode: 'CM20 9QT'
-      email: 'adoptioncase@justice.gov.uk'
-      phoneNumber: '0300 303 0642'
-
-conditional-order-court:
-  locations:
-    birmingham:
-      name: "Birmingham Civil and Family Justice Centre"
-      address: "Priory Courts\n33 Bull Street\nBirmingham\nB4 6DS"
-      email: "adoptioncase@justice.gov.uk"
-      phone: "0300 303 0642"
-    buryStEdmunds:
-      name: "Bury St. Edmunds Regional Adoption Centre"
-      address: "2nd Floor\nTriton House\nSt. Andrews Street North\nBury St. Edmunds\nIP33 1TR"
-      email: "adoptioncase@justice.gov.uk"
-      phone: "0300 303 0642"
 
 pba:
   ref:

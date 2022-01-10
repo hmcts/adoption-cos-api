@@ -50,39 +50,6 @@ public class CitizenSubmitApplication implements CCDConfig<CaseData, State, User
         CaseData data = details.getData();
         State state = details.getState();
 
-        //log.info("Validating case data");
-        //final List<String> validationErrors = validateReadyForPayment(data);
-
-        /*if (!validationErrors.isEmpty()) {
-            log.info("Validation errors: ");
-            for (String error : validationErrors) {
-                log.info(error);
-            }
-
-            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-                .data(data)
-                .errors(validationErrors)
-                .state(state)
-                .build();
-        }*/
-
-        /*Application application = data.getApplication();
-
-        if (data.isSoleApplicationOrApplicant2HasAgreedHwf() && application.isHelpWithFeesApplication()) {
-            var submittedDetails = submissionService.submitApplication(details);
-            data = submittedDetails.getData();
-            state = submittedDetails.getState();
-        } else {
-            OrderSummary orderSummary = paymentService.getOrderSummaryByServiceEvent(SERVICE_DIVORCE,
-                                                                                     EVENT_ISSUE,KEYWORD_DIVORCE);
-            application.setApplicationFeeOrderSummary(orderSummary);
-
-            state = AwaitingPayment;
-        }
-
-        data.getLabelContent().setApplicationType(data.getApplicationType());
-        data.getLabelContent().setUnionType(data.getDivorceOrDissolution());*/
-
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)
             .state(state)
