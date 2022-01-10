@@ -63,6 +63,10 @@ public class CaseData {
     )
     private YesOrNo addAnotherPlacementOrder;
 
+    @CCD(label = "Selected Placement Order Id",
+        access = {DefaultAccess.class})
+    String selectedPlacementOrderId;
+
     @CCD(
         label = "hyphenatedCaseReference",
         access = {CaseworkerAccess.class}
