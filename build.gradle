@@ -112,7 +112,7 @@ task smoke(type: Test) {
 
 task highLevelDataSetup(type: JavaExec) {
   println("XXXXXXXXXXX:"+System.getenv("ENVIRONMENT"))
-  if (System.getenv("ENVIRONMENT") == "prod") {
+  if (System.getenv("ENVIRONMENT") != "prod") {
     mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
     classpath += sourceSets.main.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
