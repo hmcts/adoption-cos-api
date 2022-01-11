@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDate;
@@ -39,9 +40,6 @@ public class Applicant {
     )
     private String email;
 
-    @CCD(label = "Applicant full name")
-    private String fullName;
-
     @CCD(
         label = "Additional Name",
         access = {DefaultAccess.class}
@@ -52,7 +50,7 @@ public class Applicant {
         label = "Additional names",
         typeOverride = Collection,
         typeParameterOverride = "OtherName",
-        access = {DefaultAccess.class}
+        access = {CollectionAccess.class}
     )
     private List<ListValue<OtherName>> additionalNames;
 
@@ -84,7 +82,7 @@ public class Applicant {
         label = "Additional Nationalities",
         typeOverride = Collection,
         typeParameterOverride = "OtherName",
-        access = {DefaultAccess.class}
+        access = {CollectionAccess.class}
     )
     private List<ListValue<OtherName>> additionalNationalities;
 
@@ -108,14 +106,4 @@ public class Applicant {
 
     @CCD(label = "contactDetails")
     private Set<ContactDetails> contactDetails;
-
-    /*@CCD(label = "Home address")
-    private AddressGlobalUK homeAddress;*/
-
-    /*@CCD(
-        label = "Service address",
-        hint = "If they are to be served at their home address, enter the home address here and as the service "
-            + "address below"
-    )
-    private AddressGlobalUK correspondenceAddress;*/
 }

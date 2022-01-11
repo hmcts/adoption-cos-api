@@ -47,6 +47,21 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private Children children = new Children();
 
+    @JsonUnwrapped(prefix = "birthMother")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Parent birthMother = new Parent();
+
+    @JsonUnwrapped(prefix = "birthFather")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Parent birthFather = new Parent();
+
+    @JsonUnwrapped(prefix = "otherParent")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Parent otherParent = new Parent();
+
     @CCD(
         label = "Placement orders",
         typeOverride = Collection,
