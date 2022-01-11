@@ -62,7 +62,6 @@ def vaultOverrides = [
 withPipeline(type, product, component) {
     enableAksStagingDeployment()
     disableLegacyDeployment()
-    //TODO remove this: overriding overrideVaultEnvironments with vaultOverrides arry to point aat in case of prod env execution
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
     syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
