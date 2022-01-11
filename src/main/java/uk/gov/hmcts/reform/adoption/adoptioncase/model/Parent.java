@@ -75,5 +75,8 @@ public class Parent {
         typeParameterOverride = "OtherName",
         access = {CollectionAccess.class}
     )
-    private List<ListValue<OtherName>> additionalNationalities;
+    private List<ListValue<OtherName>> otherNationalities;
+
+    @CCD(label = "Name on Certificate")
+    private String nameOnCertificate;
 }
