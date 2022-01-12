@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoptions.dacase.model.access.CaseworkerAccess;
 
@@ -66,7 +67,7 @@ public class CaseData {
         label = "Placement orders",
         typeOverride = Collection,
         typeParameterOverride = "PlacementOrder",
-        access = {DefaultAccess.class}
+        access = {CollectionAccess.class}
     )
     private List<ListValue<PlacementOrder>> placementOrders;
 
