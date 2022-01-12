@@ -14,7 +14,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CREATOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE_DELETE;
 
 @Component
 public class CitizenUpdateApplication implements CCDConfig<CaseData, State, UserRole> {
@@ -30,7 +29,7 @@ public class CitizenUpdateApplication implements CCDConfig<CaseData, State, User
             .name("Adoption case")
             .description("Adoption application update")
             .retries(120, 120)
-            .grant(CREATE_READ_UPDATE_DELETE, CITIZEN)
+            .grant(CREATE_READ_UPDATE, CITIZEN)
             .grant(CREATE_READ_UPDATE, CREATOR)
             .grant(READ, SUPER_USER);
     }

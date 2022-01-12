@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoptions.dacase.model.access.CaseworkerAccess;
 
@@ -47,11 +48,26 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private Children children = new Children();
 
+    @JsonUnwrapped(prefix = "birthMother")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Parent birthMother = new Parent();
+
+    @JsonUnwrapped(prefix = "birthFather")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Parent birthFather = new Parent();
+
+    @JsonUnwrapped(prefix = "otherParent")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Parent otherParent = new Parent();
+
     @CCD(
         label = "Placement orders",
         typeOverride = Collection,
         typeParameterOverride = "PlacementOrder",
-        access = {DefaultAccess.class}
+        access = {CollectionAccess.class}
     )
     private List<ListValue<PlacementOrder>> placementOrders;
 
