@@ -18,7 +18,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USE
 public class DefaultAccess implements HasAccessControl {
     @Override
     public SetMultimap<HasRole, Permission> getGrants() {
-
         SetMultimap<HasRole, Permission> grants = HashMultimap.create();
         grants.putAll(CASE_WORKER, Permissions.READ);
         grants.putAll(COURT_ADMIN, Permissions.READ);
