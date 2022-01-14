@@ -17,29 +17,25 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Builder
-public class AdoptionAgencyOrLocalAuthority {
+public class SocialWorker {
 
-    @CCD(label = "Adoption Agency Or Local Authority Id",
+    @CCD(label = "Social Worker Name",
         access = {DefaultAccess.class})
-    private String adopAgencyOrLaId;
+    private String socialWorkerName;
 
-    @CCD(label = "Adoption Agency Or Local Authority Name",
-        access = {DefaultAccess.class})
-    private String adopAgencyOrLaName;
-
-    @CCD(label = "Adoption Agency Or Local Authority Phone Number",
+    @CCD(label = "Social Worker PhoneNumber",
         typeOverride = PhoneUK,
         access = {DefaultAccess.class}
     )
-    private String adopAgencyOrLaPhoneNumber;
+    private String socialWorkerPhoneNumber;
 
-    @CCD(label = "Adoption Agency Or Local Authority Contact Name",
+    @CCD(label = "Social Worker Email",
         access = {DefaultAccess.class})
-    private String adopAgencyOrLaContactName;
+    private String socialWorkerEmail;
 
-    @CCD(label = "Adoption Agency Or Local Authority Contact Email",
+    @CCD(label = "Social Worker Team Email",
         typeOverride = Email,
         access = {DefaultAccess.class}
     )
-    private String adopAgencyOrLaContactEmail;
+    private String socialWorkerTeamEmail;
 }
