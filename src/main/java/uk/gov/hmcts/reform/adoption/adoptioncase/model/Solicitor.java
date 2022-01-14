@@ -16,7 +16,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 @Builder
 public class Solicitor {
 
