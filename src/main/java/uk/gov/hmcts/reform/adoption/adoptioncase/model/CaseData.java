@@ -17,7 +17,9 @@ import uk.gov.hmcts.reform.adoptions.dacase.model.access.CaseworkerAccess;
 import java.util.List;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
@@ -80,6 +82,104 @@ public class CaseData {
     @CCD(label = "Selected Placement Order Id",
         access = {DefaultAccess.class})
     String selectedPlacementOrderId;
+
+    @CCD(label = "Social Worker Name")
+    private String socialWorkerName;
+
+    @CCD(label = "Social Worker PhoneNumber",
+        typeOverride = PhoneUK
+    )
+    private String socialWorkerPhoneNumber;
+
+    @CCD(label = "Social Worker Email")
+    private String socialWorkerEmail;
+
+    @CCD(label = "Social Worker Team Email",
+        typeOverride = Email
+    )
+    private String socialWorkerTeamEmail;
+
+    @CCD(label = "Solicitor’s Firm")
+    private String solicitorFirm;
+
+    @CCD(label = "Solicitor’s Name")
+    private String solicitorName;
+
+    @CCD(
+        label = "Solicitor’s Phone number",
+        typeOverride = PhoneUK
+    )
+    private String solicitorPhoneNumber;
+
+    @CCD(
+        label = "Solicitor’s Email",
+        typeOverride = Email
+    )
+    private String solicitorEmail;
+
+    @CCD(
+        label = "Solicitor Helping With Application"
+    )
+    private YesOrNo solicitorHelpingWithApplication;
+
+    @CCD(
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionAgencyOrLocalAuthority",
+        access = {CollectionAccess.class}
+    )
+    private List<ListValue<AdoptionAgencyOrLocalAuthority>> adopAgencyOrLAs;
+
+    @CCD(access = {DefaultAccess.class})
+    private YesOrNo hasAnotherAdopAgencyOrLA;
+
+    @CCD(label = "Selected Adoption Agency ID",
+        access = {DefaultAccess.class})
+    String selectedAdoptionAgencyId;
+
+    @CCD(access = {DefaultAccess.class})
+    String hasSiblings;
+
+    @CCD(access = {DefaultAccess.class})
+    String hasSiblingNotSureReason;
+
+    @CCD(
+        label = "Add Another Siblings",
+        access = {DefaultAccess.class}
+    )
+    private String hasPoForSiblings;
+
+    @CCD(access = {DefaultAccess.class})
+    String hasPoForSiblingsNotSureReason;
+
+    @CCD(
+        label = "Siblings",
+        typeOverride = Collection,
+        typeParameterOverride = "Sibling",
+        access = {CollectionAccess.class}
+    )
+    private List<ListValue<Sibling>> siblings;
+
+    @CCD(
+        label = "Add Another Sibling Placement Order",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo addAnotherSiblingPlacementOrder;
+
+    @CCD(label = "Selected Sibling ID",
+        access = {DefaultAccess.class})
+    String selectedSiblingId;
+
+    @CCD(label = "Selected Sibling PO ID",
+        access = {DefaultAccess.class})
+    String selectedSiblingPoId;
+
+    @CCD(
+        label = "Payments",
+        typeOverride = Collection,
+        typeParameterOverride = "Payment",
+        access = {CollectionAccess.class}
+    )
+    private List<ListValue<Payment>> payments;
 
     @CCD(
         label = "hyphenatedCaseReference",
