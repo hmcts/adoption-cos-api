@@ -81,10 +81,10 @@ public class Applicant {
     @CCD(
         label = "Additional Nationalities",
         typeOverride = Collection,
-        typeParameterOverride = "OtherName",
+        typeParameterOverride = "OtherNationality",
         access = {CollectionAccess.class}
     )
-    private List<ListValue<OtherName>> additionalNationalities;
+    private List<ListValue<OtherNationality>> additionalNationalities;
 
     @CCD(label = "Address1")
     private String address1;

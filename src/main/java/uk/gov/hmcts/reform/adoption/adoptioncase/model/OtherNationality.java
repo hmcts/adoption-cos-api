@@ -10,9 +10,9 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OtherName {
+public class OtherNationality {
     @CCD(
-        label = "name"
+        label = "Country name"
     )
-    private String name;
+    private String country;
 }
