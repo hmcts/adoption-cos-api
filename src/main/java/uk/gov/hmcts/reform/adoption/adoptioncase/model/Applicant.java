@@ -49,10 +49,10 @@ public class Applicant {
     @CCD(
         label = "Additional names",
         typeOverride = Collection,
-        typeParameterOverride = "OtherName",
+        typeParameterOverride = "AdditionalName",
         access = {CollectionAccess.class}
     )
-    private List<ListValue<OtherName>> additionalNames;
+    private List<ListValue<AdditionalName>> additionalNames;
 
     @CCD(
         label = "Date of Birth",
