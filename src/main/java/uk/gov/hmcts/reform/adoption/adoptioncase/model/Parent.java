@@ -72,10 +72,10 @@ public class Parent {
     @CCD(
         label = "Additional Nationalities",
         typeOverride = Collection,
-        typeParameterOverride = "OtherName",
+        typeParameterOverride = "OtherNationality",
         access = {CollectionAccess.class}
     )
-    private List<ListValue<OtherName>> otherNationalities;
+    private List<ListValue<OtherNationality>> otherNationalities;
 
     @CCD(label = "Name on Certificate")
     private String nameOnCertificate;
