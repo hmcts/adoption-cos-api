@@ -12,12 +12,12 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 @Builder
 public class AdditionalName {
     @CCD(
-        label = "First name"
+        label = "First names"
     )
     private String firstNames;
 
     @CCD(
-        label = "First name"
+        label = "First names"
     )
     private String lastNames;
 }
