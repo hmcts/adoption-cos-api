@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
@@ -18,33 +17,29 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 @Builder
-public class Solicitor {
+public class AdoptionAgencyOrLocalAuthority {
 
-    @CCD(label = "Solicitor’s Firm",
+    @CCD(label = "Adoption Agency Or Local Authority Id",
         access = {DefaultAccess.class})
-    private String solicitorFirm;
+    private String adopAgencyOrLaId;
 
-    @CCD(label = "Solicitor’s Name",
+    @CCD(label = "Adoption Agency Or Local Authority Name",
         access = {DefaultAccess.class})
-    private String solicitorName;
+    private String adopAgencyOrLaName;
 
-    @CCD(
-        label = "Solicitor’s Phone number",
+    @CCD(label = "Adoption Agency Or Local Authority Phone Number",
         typeOverride = PhoneUK,
         access = {DefaultAccess.class}
     )
-    private String solicitorPhoneNumber;
+    private String adopAgencyOrLaPhoneNumber;
 
-    @CCD(
-        label = "Solicitor’s Email",
+    @CCD(label = "Adoption Agency Or Local Authority Contact Name",
+        access = {DefaultAccess.class})
+    private String adopAgencyOrLaContactName;
+
+    @CCD(label = "Adoption Agency Or Local Authority Contact Email",
         typeOverride = Email,
         access = {DefaultAccess.class}
     )
-    private String solicitorEmail;
-
-    @CCD(
-        label = "Solicitor Helping With Application",
-        access = {DefaultAccess.class}
-    )
-    private YesOrNo solicitorHelpingWithApplication;
+    private String adopAgencyOrLaContactEmail;
 }
