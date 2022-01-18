@@ -195,7 +195,7 @@ dependencyUpdates {
 
 dependencyManagement {
   dependencies {
-    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.69'
+    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
     // CVE-2018-10237 - Unbounded memory allocation
     dependencySet(group: 'com.google.guava', version: '31.0.1-jre') {
       entry 'guava'
@@ -271,7 +271,7 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
 
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.9'
-  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '7.15.1'
+  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '7.16.3'
 
   implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.6.0-prerelease'
 
