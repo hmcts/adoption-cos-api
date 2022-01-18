@@ -10,9 +10,14 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OtherName {
+public class AdditionalName {
     @CCD(
-        label = "name"
+        label = "First names"
     )
-    private String name;
+    private String firstNames;
+
+    @CCD(
+        label = "First names"
+    )
+    private String lastNames;
 }

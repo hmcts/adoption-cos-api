@@ -13,7 +13,10 @@ public enum ApplyingWith implements HasLabel {
     ALONE("I'm applying on my own"),
 
     @JsonProperty("withSpouseOrCivilPartner")
-    WITH_SPOUSE_OR_CIVIL_PARTNER("I'm applying with my spouse or civil partner");
+    WITH_SPOUSE_OR_CIVIL_PARTNER("I'm applying with my spouse or civil partner"),
+
+    @JsonProperty("withSomeoneElse")
+    WITH_SOME_ONE_ELSE("I'm applying with someone who is not my spouse or civil partner");
 
     private final String label;
 }

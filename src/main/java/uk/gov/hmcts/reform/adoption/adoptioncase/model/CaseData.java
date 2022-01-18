@@ -81,6 +81,73 @@ public class CaseData {
         access = {DefaultAccess.class})
     String selectedPlacementOrderId;
 
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private SocialWorker socialWorker = new SocialWorker();
+
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Solicitor solicitor = new Solicitor();
+
+    @CCD(
+        label = "Adoption Agency Or LA list",
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionAgencyOrLocalAuthority",
+        access = {CollectionAccess.class}
+    )
+    private List<ListValue<AdoptionAgencyOrLocalAuthority>> adopAgencyOrLAs;
+
+    @CCD(
+        label = "Siblings",
+        typeOverride = Collection,
+        typeParameterOverride = "Sibling",
+        access = {CollectionAccess.class}
+    )
+    private List<ListValue<Sibling>> siblings;
+
+    @CCD(
+        label = "Payments",
+        typeOverride = Collection,
+        typeParameterOverride = "Payment",
+        access = {CollectionAccess.class}
+    )
+    private List<ListValue<Payment>> payments;
+
+    @CCD(
+        label = "Has another Adoption Agency Or LA",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo hasAnotherAdopAgencyOrLA;
+
+    @CCD(label = "Selected Adoption Agency ID")
+    private String selectedAdoptionAgencyId;
+
+    @CCD(label = "Has Siblings")
+    private String hasSiblings;
+
+    @CCD(label = "Has Sibling Not Sure Reason")
+    private String hasSiblingNotSureReason;
+
+    @CCD(label = "Add Another Siblings")
+    private String hasPoForSiblings;
+
+    @CCD(label = "Has Placement order For Siblings Not Sure Reason")
+    private String hasPoForSiblingsNotSureReason;
+
+    @CCD(
+        label = "Add Another Sibling Placement Order",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo addAnotherSiblingPlacementOrder;
+
+    @CCD(label = "Selected Sibling ID")
+    private String selectedSiblingId;
+
+    @CCD(label = "Selected Sibling PO ID")
+    private String selectedSiblingPoId;
+
     @CCD(
         label = "hyphenatedCaseReference",
         access = {CaseworkerAccess.class}

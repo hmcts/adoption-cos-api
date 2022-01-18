@@ -45,10 +45,10 @@ public class Children {
     @CCD(
         label = "Children Additional Nationalities",
         typeOverride = Collection,
-        typeParameterOverride = "OtherName",
+        typeParameterOverride = "OtherNationality",
         access = {CollectionAccess.class}
     )
-    private List<ListValue<OtherName>> additionalNationalities;
+    private List<ListValue<OtherNationality>> additionalNationalities;
 
     @CCD(label = "First name after adoption")
     private String firstNameAfterAdoption;

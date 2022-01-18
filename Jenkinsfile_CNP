@@ -55,8 +55,6 @@ def vaultOverrides = [
   'preview': 'aat',
   'prod': 'aat',
   'demo': 'aat',
-  'ithc': 'aat',
-  'perftest': 'aat'
 ]
 
 withPipeline(type, product, component) {
