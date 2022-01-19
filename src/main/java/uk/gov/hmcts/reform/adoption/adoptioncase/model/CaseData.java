@@ -121,19 +121,29 @@ public class CaseData {
     )
     private YesOrNo hasAnotherAdopAgencyOrLA;
 
-    @CCD(label = "Selected Adoption Agency ID")
+    @CCD(label = "Selected Adoption Agency ID",
+        access = {DefaultAccess.class}
+    )
     private String selectedAdoptionAgencyId;
 
-    @CCD(label = "Has Siblings")
+    @CCD(label = "Has Siblings",
+        access = {DefaultAccess.class}
+    )
     private String hasSiblings;
 
-    @CCD(label = "Has Sibling Not Sure Reason")
+    @CCD(label = "Has Sibling Not Sure Reason",
+        access = {DefaultAccess.class}
+    )
     private String hasSiblingNotSureReason;
 
-    @CCD(label = "Add Another Siblings")
+    @CCD(label = "Add Another Siblings",
+        access = {DefaultAccess.class}
+    )
     private String hasPoForSiblings;
 
-    @CCD(label = "Has Placement order For Siblings Not Sure Reason")
+    @CCD(label = "Has Placement order For Siblings Not Sure Reason",
+        access = {DefaultAccess.class}
+    )
     private String hasPoForSiblingsNotSureReason;
 
     @CCD(
@@ -142,10 +152,14 @@ public class CaseData {
     )
     private YesOrNo addAnotherSiblingPlacementOrder;
 
-    @CCD(label = "Selected Sibling ID")
+    @CCD(label = "Selected Sibling ID",
+        access = {DefaultAccess.class}
+    )
     private String selectedSiblingId;
 
-    @CCD(label = "Selected Sibling PO ID")
+    @CCD(label = "Selected Sibling PO ID",
+        access = {DefaultAccess.class}
+    )
     private String selectedSiblingPoId;
 
     @CCD(
