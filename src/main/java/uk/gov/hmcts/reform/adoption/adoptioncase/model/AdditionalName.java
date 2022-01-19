@@ -17,7 +17,7 @@ public class AdditionalName {
     private String firstNames;
 
     @CCD(
-        label = "First names"
+        label = "Last names"
     )
     private String lastNames;
 }
