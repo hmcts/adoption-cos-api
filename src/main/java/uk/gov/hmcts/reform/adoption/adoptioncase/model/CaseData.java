@@ -131,11 +131,6 @@ public class CaseData {
     )
     private String hasSiblings;
 
-    @CCD(label = "Has Sibling Not Sure Reason",
-        access = {DefaultAccess.class}
-    )
-    private String hasSiblingNotSureReason;
-
     @CCD(label = "Add Another Siblings",
         access = {DefaultAccess.class}
     )
