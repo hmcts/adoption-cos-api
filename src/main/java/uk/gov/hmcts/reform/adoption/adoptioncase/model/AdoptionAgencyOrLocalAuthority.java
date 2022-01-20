@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +28,7 @@ public class AdoptionAgencyOrLocalAuthority {
     private String adopAgencyOrLaName;
 
     @CCD(label = "Adoption Agency Or Local Authority Phone Number",
+        typeOverride = PhoneUK,
         access = {DefaultAccess.class}
     )
     private String adopAgencyOrLaPhoneNumber;
@@ -34,6 +38,7 @@ public class AdoptionAgencyOrLocalAuthority {
     private String adopAgencyOrLaContactName;
 
     @CCD(label = "Adoption Agency Or Local Authority Contact Email",
+        typeOverride = Email,
         access = {DefaultAccess.class}
     )
     private String adopAgencyOrLaContactEmail;
