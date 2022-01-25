@@ -163,6 +163,28 @@ public class CaseData {
     )
     private String hyphenatedCaseRef;
 
+    @CCD(
+        label = "Primary applicant statement of truth",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo primaryApplicantSot;
+
+    @CCD(
+        label = "Secondary applicant statement ot truth",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo secondaryApplicantSot;
+
+    @CCD(label = "Primary applicant statement of truth full name",
+        access = {DefaultAccess.class}
+    )
+    private String primaryApplicantSotFullName;
+
+    @CCD(label = "Secondary applicant statement of truth full name",
+        access = {DefaultAccess.class}
+    )
+    private String secondaryApplicantSotFullName;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);

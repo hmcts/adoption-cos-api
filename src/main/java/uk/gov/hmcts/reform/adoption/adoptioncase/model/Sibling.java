@@ -24,7 +24,7 @@ public class Sibling {
     private String siblingId;
 
     @CCD(label = "Sibling First Name")
-    private String siblingFirstName;
+    private String siblingFirstNames;
 
     @CCD(label = "Sibling Last Name")
     private String siblingLastNames;
