@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
 
 @Data
 @AllArgsConstructor
@@ -35,8 +33,7 @@ public class Applicant {
     private String lastName;
 
     @CCD(
-        label = "Email address",
-        typeOverride = Email
+        label = "Email address"
     )
     private String email;
 
@@ -65,14 +62,11 @@ public class Applicant {
     private String occupation;
 
     @CCD(
-        label = "Email address",
-        typeOverride = Email
+        label = "Email address"
     )
     private String emailAddress;
 
-    @CCD(label = "Applicant phoneNumber",
-        typeOverride = PhoneUK
-    )
+    @CCD(label = "Applicant phoneNumber")
     private String phoneNumber;
 
     @CCD(label = "Nationality")
