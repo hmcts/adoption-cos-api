@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
 
@@ -38,7 +39,7 @@ public class Application {
     private OrderSummary applicationFeeOrderSummary;
 
     @CCD(label = "Payments", typeOverride = Collection, typeParameterOverride = "Payment", access = {
-            DefaultAccess.class })
+        CollectionAccess.class })
     private List<ListValue<Payment>> applicationPayments;
 
     @JsonIgnore

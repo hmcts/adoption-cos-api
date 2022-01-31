@@ -110,14 +110,6 @@ public class CaseData {
     private List<ListValue<Sibling>> siblings;
 
     @CCD(
-        label = "Payments",
-        typeOverride = Collection,
-        typeParameterOverride = "Payment",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<Payment>> payments;
-
-    @CCD(
         label = "Has another Adoption Agency Or LA",
         access = {DefaultAccess.class}
     )
