@@ -35,7 +35,7 @@ public class Application {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime dateSubmitted;
 
-    @CCD(label = "Here are your order details", access = { DefaultAccess.class })
+    @CCD(label = "Here are your order details", access = { CollectionAccess.class })
     private OrderSummary applicationFeeOrderSummary;
 
     @CCD(label = "Payments", typeOverride = Collection, typeParameterOverride = "Payment", access = {
