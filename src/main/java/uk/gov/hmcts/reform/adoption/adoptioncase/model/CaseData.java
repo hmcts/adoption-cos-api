@@ -190,6 +190,11 @@ public class CaseData {
     @Builder.Default
     private Application application = new Application();
 
+    @CCD(
+        label = "PCQ ID"
+    )
+    private String pcqId;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);
