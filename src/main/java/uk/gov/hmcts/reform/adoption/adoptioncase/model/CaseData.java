@@ -191,7 +191,8 @@ public class CaseData {
     private Application application = new Application();
 
     @CCD(
-        label = "PCQ ID"
+        label = "PCQ ID",
+        access = {DefaultAccess.class}
     )
     private String pcqId;
 
