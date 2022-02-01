@@ -10,6 +10,8 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,6 +35,7 @@ public class Solicitor {
 
     @CCD(
         label = "Solicitor’s Email",
+        typeOverride = Email,
         access = {DefaultAccess.class}
     )
     private String solicitorEmail;
