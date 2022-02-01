@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
-import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -24,7 +23,6 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Slf4j
 public class Application {
     @CCD(ignore = true)
     private static final int SUBMISSION_RESPONSE_DAYS = 14;
@@ -53,25 +51,12 @@ public class Application {
 
     @JsonIgnore
     public boolean hasBeenPaidFor() {
-        if (null != applicationFeeOrderSummary) {
-            log.info("Validating case caseData CaseID: {}", applicationFeeOrderSummary.getPaymentTotal());
-        } else {
-            log.info("applicationFeeOrderSummary is null");
-        }
-        log.info("getPaymentTotal: {}", getPaymentTotal());
-
         return null != applicationFeeOrderSummary
                 && Integer.parseInt(applicationFeeOrderSummary.getPaymentTotal()) == getPaymentTotal();
     }
 
     @JsonIgnore
     public Integer getPaymentTotal() {
-        if (applicationPayments != null) {
-            for (ListValue<Payment> payment : applicationPayments) {
-                Payment value = payment.getValue();
-                log.info("Payment value: {}, {}", value.getAmount(), value.getStatus());
-            }
-        }
         return applicationPayments == null
                 ? 0
                 : applicationPayments
