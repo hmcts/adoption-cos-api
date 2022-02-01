@@ -1,86 +1,162 @@
-# Adoption Case Orchestration Service Spring Boot application
+# Adoption Case Orchestration Service API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[![Build Status](https://travis-ci.org/hmcts/adoption-cos-api.svg?branch=master)](https://travis-ci.org/hmcts/adoption-cos-api)
+This API handles callbacks from CCD for the ADOPTION case type.
 
-## What's inside
+## Overview
 
-The project contains:
- * application code
- * setup script to prepare project
- * common plugins and libraries required to build the application
- * docker setup
- * swagger configuration for api documentation ([see how to publish your api documentation to shared repository](https://github.com/hmcts/reform-api-docs#publish-swagger-docs))
- * code quality tools
- * integration with Travis CI
- * Hystrix circuit breaker enabled
- * MIT license and contribution information
- * Helm chart using chart-java.
+                        ┌─────────────────┐
+                        │                 │
+                        │ADOPTION-COS-API │
+                        │                 │
+                        └───────▲─────────┘
+                                │
+                                │
+                        ┌───────▼────────┐
+                        │                │
+                  ┌─────►      CCD       ◄─────┐
+                  │     │                │     │
+                  │     └────────────────┘     │
+                  │                            │
+          ┌───────┴─────────┐        ┌─────────┴───────┐
+          │                 │        │                 │
+          │ ADOPTION-WEB    │        │       XUI       │
+          │                 │        │                 │
+          └─────────────────┘        └─────────────────┘
+
+## Building and deploying the application
+
+### Building the application
+
+The project uses [Gradle](https://gradle.org) as a build tool. It already contains
+`./gradlew` wrapper script, so there's no need to install gradle.
+
+To build the project execute the following command:
+
+    ./gradlew build
+
+### Running the application
+
+Create the image of the application by executing the following command:
+
+    ./gradlew assemble
+
+Create docker image:
+
+    docker-compose build
+
+Run the distribution (created in `build/install/adoption-cos-api` directory)
+by executing the following command:
+
+    docker-compose up
+
+This will start the API container exposing the application's port
+(set to `4013` in this template app).
 
 The application exposes health endpoint (http://localhost:4550/health) and metrics endpoint
-(http://localhost:4550/metrics).
+(http://localhost:4550/metrics):
+
+    curl http://localhost:4550/health
+
+You should get a response similar to this:
+
+    {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
+
+### Generate CCD JSON files
+
+To generate the CCD JSON files from the Java Model run the following from the root of the project:
+
+    ./gradlew ccd-definitions:generateCCDConfig
+
+### Generate TypeScript definitions for CCD definition
+
+    ./gradlew generateTypeScript
+
+### Crons
+
+You can manually run a cron task from the cli:
+
+```
+TASK_NAME=[task] java -jar adoption-cos-api.jar run
+
+# E.g.
+TASK_NAME=SystemProgressHeldCasesTask java -jar adoption-cos-api.jar
+
+# or
+TASK_NAME=SystemProgressHeldCasesTask ./gradlew bootRun
+```
+
+To configure a new cron in AAT please checkout the [cnp-flux-config](https://github.com/hmcts/cnp-flux-config/) repository and run:
+
+```
+./bin/add-cron.sh SystemProgressHeldCasesTask ~/cnp-flux-config "0/10 * * * *"
+```
+
+Then create a PR in the cnp-flux-config repository.
+
+Note that the cron will only run in the aat-00 cluster as we don't have a way to run the job once over multiple clusters. Let's hope that cluster doesn't go down.
 
 ## Plugins
 
 The project contains the following plugins:
 
-  * checkstyle
+* checkstyle
 
-    https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+  https://docs.gradle.org/current/userguide/checkstyle_plugin.html
 
-    Performs code style checks on Java source files using Checkstyle and generates reports from these checks.
-    The checks are included in gradle's *check* task (you can run them by executing `./gradlew check` command).
+  Performs code style checks on Java source files using Checkstyle and generates reports from these checks.
+  The checks are included in gradle's *check* task (you can run them by executing `./gradlew check` command).
 
-  * pmd
+* pmd
 
-    https://docs.gradle.org/current/userguide/pmd_plugin.html
+  https://docs.gradle.org/current/userguide/pmd_plugin.html
 
-    Performs static code analysis to finds common programming flaws. Included in gradle `check` task.
+  Performs static code analysis to finds common programming flaws. Included in gradle `check` task.
 
 
-  * jacoco
+* jacoco
 
-    https://docs.gradle.org/current/userguide/jacoco_plugin.html
+  https://docs.gradle.org/current/userguide/jacoco_plugin.html
 
-    Provides code coverage metrics for Java code via integration with JaCoCo.
-    You can create the report by running the following command:
+  Provides code coverage metrics for Java code via integration with JaCoCo.
+  You can create the report by running the following command:
 
-    ```bash
-      ./gradlew jacocoTestReport
-    ```
+  ```bash
+    ./gradlew jacocoTestReport
+  ```
 
-    The report will be created in build/reports subdirectory in your project directory.
+  The report will be created in build/reports subdirectory in your project directory.
 
-  * io.spring.dependency-management
+* io.spring.dependency-management
 
-    https://github.com/spring-gradle-plugins/dependency-management-plugin
+  https://github.com/spring-gradle-plugins/dependency-management-plugin
 
-    Provides Maven-like dependency management. Allows you to declare dependency management
-    using `dependency 'groupId:artifactId:version'`
-    or `dependency group:'group', name:'name', version:version'`.
+  Provides Maven-like dependency management. Allows you to declare dependency management
+  using `dependency 'groupId:artifactId:version'`
+  or `dependency group:'group', name:'name', version:version'`.
 
-  * org.springframework.boot
+* org.springframework.boot
 
-    http://projects.spring.io/spring-boot/
+  http://projects.spring.io/spring-boot/
 
-    Reduces the amount of work needed to create a Spring application
+  Reduces the amount of work needed to create a Spring application
 
-  * org.owasp.dependencycheck
+* org.owasp.dependencycheck
 
-    https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html
+  https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html
 
-    Provides monitoring of the project's dependent libraries and creating a report
-    of known vulnerable components that are included in the build. To run it
-    execute `gradle dependencyCheck` command.
+  Provides monitoring of the project's dependent libraries and creating a report
+  of known vulnerable components that are included in the build. To run it
+  execute `gradle dependencyCheck` command.
 
-  * com.github.ben-manes.versions
+* com.github.ben-manes.versions
 
-    https://github.com/ben-manes/gradle-versions-plugin
+  https://github.com/ben-manes/gradle-versions-plugin
 
-    Provides a task to determine which dependencies have updates. Usage:
+  Provides a task to determine which dependencies have updates. Usage:
 
-    ```bash
-      ./gradlew dependencyUpdates -Drevision=release
-    ```
+  ```bash
+    ./gradlew dependencyUpdates -Drevision=release
+  ```
 
 ## Setup
 
@@ -191,13 +267,12 @@ There is no need to remove postgres and java or similar core images.
 
 Hystrix offers much more than Circuit Breaker pattern implementation or command monitoring.
 Here are some other functionalities it provides:
- * [Separate, per-dependency thread pools](https://github.com/Netflix/Hystrix/wiki/How-it-Works#isolation)
- * [Semaphores](https://github.com/Netflix/Hystrix/wiki/How-it-Works#semaphores), which you can use to limit
- the number of concurrent calls to any given dependency
- * [Request caching](https://github.com/Netflix/Hystrix/wiki/How-it-Works#request-caching), allowing
- different code paths to execute Hystrix Commands without worrying about duplicating work
+* [Separate, per-dependency thread pools](https://github.com/Netflix/Hystrix/wiki/How-it-Works#isolation)
+* [Semaphores](https://github.com/Netflix/Hystrix/wiki/How-it-Works#semaphores), which you can use to limit
+  the number of concurrent calls to any given dependency
+* [Request caching](https://github.com/Netflix/Hystrix/wiki/How-it-Works#request-caching), allowing
+  different code paths to execute Hystrix Commands without worrying about duplicating work
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
- 
