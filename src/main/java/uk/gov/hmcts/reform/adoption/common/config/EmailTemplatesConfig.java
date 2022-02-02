@@ -1,5 +1,4 @@
 package uk.gov.hmcts.reform.adoption.common.config;
-
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
