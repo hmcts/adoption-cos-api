@@ -54,7 +54,6 @@ pipelineConf.vaultSecrets = secrets
 def vaultOverrides = [
   'preview': 'aat',
   'prod': 'aat',
-  'demo': 'aat',
 ]
 
 withPipeline(type, product, component) {
