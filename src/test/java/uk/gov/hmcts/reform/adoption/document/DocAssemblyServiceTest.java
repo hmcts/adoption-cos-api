@@ -34,7 +34,7 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.ENGLISH_TEMPLA
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME;
-import static uk.gov.hmcts.reform.adoption.document.model.LanguagePreference.ENGLISH;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 
 @ExtendWith(MockitoExtension.class)
 public class DocAssemblyServiceTest {

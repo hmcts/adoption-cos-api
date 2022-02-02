@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
-import uk.gov.hmcts.reform.adoption.document.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;

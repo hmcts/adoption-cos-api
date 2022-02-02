@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.EMAIL;
-import static uk.gov.hmcts.reform.adoption.document.model.LanguagePreference.ENGLISH;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.SAMPLE_DOCUMENT;
