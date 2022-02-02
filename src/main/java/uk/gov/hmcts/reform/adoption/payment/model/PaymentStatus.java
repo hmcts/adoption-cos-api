@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.adoptioncase.model;
+package uk.gov.hmcts.reform.adoption.payment.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -1,11 +1,10 @@
-package uk.gov.hmcts.reform.adoptions.dacase.model.access;
+package uk.gov.hmcts.reform.adoption.adoptioncase.model.access;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import uk.gov.hmcts.ccd.sdk.api.HasAccessControl;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.Permission;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;

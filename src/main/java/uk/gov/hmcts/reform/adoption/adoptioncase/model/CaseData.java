@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -12,8 +13,9 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoptions.dacase.model.access.CaseworkerAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -108,14 +110,6 @@ public class CaseData {
     private List<ListValue<Sibling>> siblings;
 
     @CCD(
-        label = "Payments",
-        typeOverride = Collection,
-        typeParameterOverride = "Payment",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<Payment>> payments;
-
-    @CCD(
         label = "Has another Adoption Agency Or LA",
         access = {DefaultAccess.class}
     )
@@ -185,6 +179,23 @@ public class CaseData {
     )
     private String applicant2SotFullName;
 
+    @CCD(
+        label = "Due Date",
+        access = {DefaultAccess.class}
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dueDate;
+
+    @JsonUnwrapped()
+    @Builder.Default
+    private Application application = new Application();
+
+    @CCD(
+        label = "PCQ ID",
+        access = {DefaultAccess.class}
+    )
+    private String pcqId;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);
@@ -196,5 +207,4 @@ public class CaseData {
             temp.substring(12, 16)
         );
     }
-
 }
