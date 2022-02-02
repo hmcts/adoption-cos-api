@@ -22,6 +22,21 @@ azure:
   application-insights:
     instrumentation-key: ${APP_INSIGHTS_KEY:00000000-0000-0000-0000-000000000000}
 
+uk:
+  gov:
+    notify:
+      api:
+        key: ${UK_GOV_NOTIFY_API_KEY:adoptioncosapi-be03d538-db4c-4efe-8d36-b2a8c9d5131b-dff08d9e-a874-4bb5-9c21-32fbc4922fb1}
+        baseUrl: https://api.notifications.service.gov.uk
+      email:
+        templateVars:
+          signInAdoptionUrl: ${NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL:https://adoption-web.aat.platform.hmcts.net/}
+        templates:
+          english:
+            SAVE_SIGN_OUT: '3aff9dc0-0188-42f6-a0be-fc5daa404d9a'
+          welsh:
+            SAVE_SIGN_OUT: '6e9526c5-9380-4bf1-879a-b8e401e39a6f'
+
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
 
