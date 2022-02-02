@@ -22,6 +22,24 @@ azure:
   application-insights:
     instrumentation-key: ${APP_INSIGHTS_KEY:00000000-0000-0000-0000-000000000000}
 
+uk:
+  gov:
+    notify:
+      api:
+        key: ${UK_GOV_NOTIFY_API_KEY:dummy}
+        baseUrl: https://api.notifications.service.gov.uk
+      email:
+        templateVars:
+          signInAdoptionUrl: ${NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL:https://adoption-web.aat.platform.hmcts.net/}
+          adoptionCourtEmail: some.email@justice.gov.uk
+        templates:
+          english:
+            TEST_EMAIL: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
+            SAVE_SIGN_OUT: ''
+          welsh:
+            TEST_EMAIL: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
+            SAVE_SIGN_OUT: ''
+
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
 
