@@ -4,8 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
+import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.adoptionDocumentFrom;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.documentFrom;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,5 +40,21 @@ class DocumentUtilTest {
             PDF_FILENAME,
             DOC_BINARY_URL
         );
+    }
+
+    @Test
+    void shouldCreateDivorceDocumentFromDocumentInfoAndDocumentType() {
+
+        final AdoptionDocument adoptionDocument = adoptionDocumentFrom(documentInfo(), APPLICATION);
+
+        assertThat(adoptionDocument.getDocumentType()).isEqualTo(APPLICATION);
+        assertThat(adoptionDocument.getDocumentFileName()).isEqualTo(PDF_FILENAME);
+        assertThat(adoptionDocument
+                       .getDocumentLink())
+            .extracting(URL, FILENAME, BINARY_URL)
+            .contains(
+                DOC_URL,
+                PDF_FILENAME,
+                DOC_BINARY_URL);
     }
 }
