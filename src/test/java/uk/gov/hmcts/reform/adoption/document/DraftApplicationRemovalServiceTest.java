@@ -41,7 +41,7 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.documentWithType;
 
 @ExtendWith(MockitoExtension.class)
-public class DraftApplicationRemovalServiceTest {
+class DraftApplicationRemovalServiceTest {
 
     @Mock
     private DocumentManagementClient documentManagementClient;
@@ -56,7 +56,7 @@ public class DraftApplicationRemovalServiceTest {
     private DraftApplicationRemovalService draftApplicationRemovalService;
 
     @Test
-    public void shouldRemoveDraftApplicationDocumentFromCaseDataAndDeleteApplicationDocumentFromDocManagement() {
+    void shouldRemoveDraftApplicationDocumentFromCaseDataAndDeleteApplicationDocumentFromDocManagement() {
         final List<String> systemRoles = List.of("caseworker-adoption");
         final String systemRolesCsv = String.join(",", systemRoles);
         final ListValue<AdoptionDocument> adoptionDocumentListValue = documentWithType(APPLICATION);
@@ -97,7 +97,7 @@ public class DraftApplicationRemovalServiceTest {
     }
 
     @Test
-    public void shouldThrow403ForbiddenWhenServiceIsNotWhitelistedInDocManagement() {
+    void shouldThrow403ForbiddenWhenServiceIsNotWhitelistedInDocManagement() {
         final List<String> systemRoles = List.of("caseworker-adoption");
         final String userId = UUID.randomUUID().toString();
         final User systemUser = systemUser(systemRoles, userId);
@@ -142,7 +142,7 @@ public class DraftApplicationRemovalServiceTest {
     }
 
     @Test
-    public void shouldThrow401UnAuthorizedWhenServiceAuthTokenGenerationFails() {
+    void shouldThrow401UnAuthorizedWhenServiceAuthTokenGenerationFails() {
         final List<String> systemRoles = List.of("caseworker-adoption");
         final String userId = UUID.randomUUID().toString();
         final User systemUser = systemUser(systemRoles, userId);
