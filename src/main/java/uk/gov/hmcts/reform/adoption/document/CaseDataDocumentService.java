@@ -7,7 +7,7 @@ import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
-import uk.gov.hmcts.reform.adoption.document.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
 import java.util.Map;
