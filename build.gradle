@@ -131,6 +131,7 @@ pmd {
   sourceSets = [sourceSets.main]
   reportsDir = file("$project.buildDir/reports/pmd")
   // https://github.com/pmd/pmd/issues/876
+  consoleOutput = true
   ruleSets = []
   ruleSetFiles = files("${rootDir}/config/pmd/ruleset.xml")
 }
