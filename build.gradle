@@ -131,6 +131,7 @@ pmd {
   sourceSets = [sourceSets.main]
   reportsDir = file("$project.buildDir/reports/pmd")
   // https://github.com/pmd/pmd/issues/876
+  consoleOutput = true
   ruleSets = []
   ruleSetFiles = files("${rootDir}/config/pmd/ruleset.xml")
 }
@@ -303,7 +304,7 @@ dependencies {
 
   testImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  testImplementation group: 'org.mockito', name: 'mockito-inline', version: '4.2.0'
+  testImplementation group: 'org.mockito', name: 'mockito-inline', version: '4.3.1'
 
   testImplementation group: 'com.jayway.awaitility', name: 'awaitility', version: versions.awaitility
 
@@ -339,7 +340,7 @@ bootRun {
       println("Loading secrets from vault")
 
       systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
-
+      systemProperty 'UK_GOV_NOTIFY_API_KEY', getVaultSecret('uk-gov-notify-api-key')
       systemProperty 'S2S_SECRET', getVaultSecret('s2s-secret-cos-api')
       //systemProperty 'IDAM_CASEWORKER_USERNAME', getVaultSecret('idam-caseworker-username')
       //systemProperty 'IDAM_CASEWORKER_PASSWORD', getVaultSecret('idam-caseworker-password')
@@ -373,7 +374,7 @@ functional {
       println("Loading secrets from vault")
 
       systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
-
+      systemProperty 'UK_GOV_NOTIFY_API_KEY', getVaultSecret('uk-gov-notify-api-key')
       systemProperty 'S2S_SECRET', getVaultSecret('s2s-secret-cos-api')
       //systemProperty 'IDAM_CASEWORKER_USERNAME', getVaultSecret('idam-caseworker-username')
       //systemProperty 'IDAM_CASEWORKER_PASSWORD', getVaultSecret('idam-caseworker-password')

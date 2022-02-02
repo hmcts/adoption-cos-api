@@ -54,7 +54,6 @@ pipelineConf.vaultSecrets = secrets
 def vaultOverrides = [
   'preview': 'aat',
   'prod': 'aat',
-  'demo': 'aat',
 ]
 
 withPipeline(type, product, component) {
@@ -63,6 +62,7 @@ withPipeline(type, product, component) {
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
     syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
+    enableSlackNotifications('#adoption-tech')
 
     MetricsPublisher metricsPublisher = new MetricsPublisher(this, currentBuild, product, component, params.subscription )
     approvedEnvironmentRepository(params.environment, metricsPublisher) {

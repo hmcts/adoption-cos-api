@@ -17,7 +17,13 @@ public enum State {
         name = "Submitted",
         label = "# **${[CASE_REFERENCE]}** ${applicantLastName} **&** ${respondentLastName}\n### **${[STATE]}**\n"
     )
-    Submitted("Submitted");
+    Submitted("Submitted"),
+
+    @CCD(
+        name = "Application awaiting payment",
+        label = "### Case number: ${hyphenatedCaseRef}\n ### ${applicant1LastName}\n"
+    )
+    AwaitingPayment("AwaitingPayment");
 
     private final String name;
 

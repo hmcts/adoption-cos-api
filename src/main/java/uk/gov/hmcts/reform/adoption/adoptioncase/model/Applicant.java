@@ -12,6 +12,7 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.document.model.LanguagePreference;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +20,6 @@ import java.util.Set;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
 
 @Data
 @AllArgsConstructor
@@ -70,9 +70,7 @@ public class Applicant {
     )
     private String emailAddress;
 
-    @CCD(label = "Applicant phoneNumber",
-        typeOverride = PhoneUK
-    )
+    @CCD(label = "Applicant phoneNumber")
     private String phoneNumber;
 
     @CCD(label = "Nationality")
@@ -106,4 +104,7 @@ public class Applicant {
 
     @CCD(label = "contactDetails")
     private Set<ContactDetails> contactDetails;
+
+    @CCD(label = "languagePreference")
+    private LanguagePreference languagePreference;
 }
