@@ -21,6 +21,7 @@ public class NotificationService {
 
     @Autowired
     private EmailTemplatesConfig emailTemplatesConfig;
+
     public void sendEmail(
         String destinationAddress,
         EmailTemplateName template,

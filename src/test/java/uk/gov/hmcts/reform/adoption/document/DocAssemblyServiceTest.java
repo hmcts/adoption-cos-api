@@ -59,7 +59,7 @@ public class DocAssemblyServiceTest {
     private DocAssemblyService docAssemblyService;
 
     @Test
-    public void shouldGenerateAndStoreDraftApplicationAndReturnDocumentUrl() {
+    void shouldGenerateAndStoreDraftApplicationAndReturnDocumentUrl() {
 
         final Map<String, Object> templateContent = new HashMap<>();
         Map<String, Object> caseDataMap = expectedCaseData();
@@ -110,7 +110,7 @@ public class DocAssemblyServiceTest {
     }
 
     @Test
-    public void shouldReturn401UnauthorizedExceptionWhenServiceIsNotWhitelistedInDocAssemblyService() {
+    void shouldReturn401UnauthorizedExceptionWhenServiceIsNotWhitelistedInDocAssemblyService() {
 
         final Map<String, Object> templateContent = new HashMap<>();
         Map<String, Object> caseDataMap = expectedCaseData();
