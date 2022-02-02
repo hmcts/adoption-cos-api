@@ -12,10 +12,13 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoptions.dacase.model.access.CaseworkerAccess;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 
@@ -185,6 +188,14 @@ public class CaseData {
     )
     private String applicant2SotFullName;
 
+    @CCD(
+        label = "Documents generated",
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionDocument",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> documentsGenerated;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);
@@ -195,6 +206,20 @@ public class CaseData {
             temp.substring(8, 12),
             temp.substring(12, 16)
         );
+    }
+
+    @JsonIgnore
+    public void addToDocumentsGenerated(final ListValue<AdoptionDocument> listValue) {
+
+        final List<ListValue<AdoptionDocument>> documents = getDocumentsGenerated();
+
+        if (isEmpty(documents)) {
+            final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
+            documentList.add(listValue);
+            setDocumentsGenerated(documentList);
+        } else {
+            documents.add(0, listValue); // always add to start top of list
+        }
     }
 
 }
