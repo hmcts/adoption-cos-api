@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.adoption.document.content.DocmosisTemplateProvider;
 import uk.gov.hmcts.reform.adoption.document.model.DocAssemblyRequest;
 import uk.gov.hmcts.reform.adoption.document.model.DocAssemblyResponse;
-import uk.gov.hmcts.reform.adoption.document.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.Map;

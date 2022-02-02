@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.document.model;
+package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
 public enum LanguagePreference {
     ENGLISH("english"),
