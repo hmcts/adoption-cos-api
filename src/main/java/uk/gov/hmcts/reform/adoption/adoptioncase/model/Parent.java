@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
 @AllArgsConstructor
@@ -47,6 +48,12 @@ public class Parent {
         access = {DefaultAccess.class}
     )
     private YesOrNo addressKnown;
+
+    @CCD(
+        label = "Address Unknown Reason",
+        typeOverride = TextArea
+    )
+    private String addressUnknownReason;
 
     @CCD(label = "Address1")
     private String address1;
