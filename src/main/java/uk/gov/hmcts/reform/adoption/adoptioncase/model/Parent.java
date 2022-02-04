@@ -53,7 +53,7 @@ public class Parent {
         label = "Address Unknown Reason",
         typeOverride = TextArea
     )
-    private String AddressUnknownReason;
+    private String addressUnknownReason;
 
     @CCD(label = "Address1")
     private String address1;
