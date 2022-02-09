@@ -479,7 +479,7 @@ reloadCcd.configure {
 generateCCDConfig.dependsOn stopCosApiContainer
 pact {
   publish {
-    pactDirectory = 'pacts'
+    pactDirectory = 'target/pacts'
     pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
     tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
     version = versions.pact_version
