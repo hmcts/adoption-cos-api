@@ -27,7 +27,7 @@ plugins {
   id 'org.springframework.boot' version '2.5.6'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'hmcts.ccd.sdk' version '0.24.8'
-  id 'au.com.dius.pact' version '4.1.0'
+  id 'au.com.dius.pact' version '4.1.7'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
@@ -57,7 +57,7 @@ sourceSets {
     }
   }
 
-  contract {
+  contractTest {
     java {
       compileClasspath += main.output
       runtimeClasspath += main.output
@@ -79,6 +79,9 @@ configurations {
   functionalTestRuntime.extendsFrom testRuntime
   integrationTestImplementation.extendsFrom testImplementation
   integrationTestRuntime.extendsFrom testRuntime
+  contractTestCompile.extendsFrom testCompile
+  contractTestRuntime.extendsFrom testRuntime
+  contractTestImplementation.extendsFrom testImplementation
 }
 
 tasks.withType(JavaCompile) {
@@ -130,12 +133,11 @@ task highLevelDataSetup(type: JavaExec) {
   }
 }
 
-task contractTest(type: Test) {
-  group = 'Delivery pipeline'
-  description = 'Runs the consumer Pact tests'
-  setTestClassesDirs(sourceSets.contract.output.classesDirs)
-  setClasspath(sourceSets.contract.runtimeClasspath)
-  systemProperty 'pact.rootDir', "pacts"
+task contract(type: Test, description: 'Runs the pact contract tests.', group: 'Verification') {
+  description = "Runs the consumer Pact tests"
+  useJUnitPlatform()
+  testClassesDirs = sourceSets.contractTest.output.classesDirs
+  classpath = sourceSets.contractTest.runtimeClasspath
 }
 
 checkstyle {
@@ -238,7 +240,7 @@ def versions = [
   springBoot        : springBoot.class.package.implementationVersion,
   springfoxSwagger  : '3.0.0',
   s2sClient         : '4.0.0',
-  pact_version      : '4.1.11'
+  pact              : '4.1.7'
 ]
 
 ext["rest-assured.version"] = '4.4.0'
@@ -315,6 +317,11 @@ dependencies {
     exclude(module: 'android-json')
   }
 
+  testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
+    exclude(module: 'commons-logging')
+    exclude(module: 'android-json')
+  }
+
   testImplementation group: 'io.rest-assured', name: 'rest-assured'
 
   testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
@@ -340,16 +347,32 @@ dependencies {
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '7.0.0'
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
 
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
+  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
 
-  contractImplementation group: 'au.com.dius.pact.consumer', name: 'junit', version: versions.pact_version
-  contractImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-  contractRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit', version: versions.pact_version
-  contractRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
+  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
 
-  contractImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact
+  contractTestRuntime group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
 
-  contractImplementation sourceSets.main.runtimeClasspath
-  contractImplementation sourceSets.test.runtimeClasspath
+  contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  contractTestCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
+  contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
+
+  contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
+  contractTestRuntime "org.junit.platform:junit-platform-commons:1.8.1"
+
+  contractTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '1.30') {
+    force = true
+  }
+
+  contractTestCompile sourceSets.main.runtimeClasspath
+  contractTestCompile sourceSets.test.runtimeClasspath
+
 }
 
 mainClassName = 'uk.gov.hmcts.reform.adoption.Application'
@@ -477,30 +500,33 @@ reloadCcd.configure {
 }
 
 generateCCDConfig.dependsOn stopCosApiContainer
-pact {
-  publish {
-    pactDirectory = 'target/pacts'
-    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
-    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
-    version = versions.pact_version
-  }
-}
 
 project.ext {
-  pactVersion = getCheckedOutGitCommitHash()
+  pacticipant = 'sscs_tribunalsCaseApi'
+  pacticipantVersion = getCheckedOutGitCommitHash()
 }
 
 task runAndPublishConsumerPactTests(type: Test){
   logger.lifecycle("Runs pact Tests")
-  testClassesDirs = sourceSets.contract.output.classesDirs
-  classpath = sourceSets.contract.runtimeClasspath
+  testClassesDirs = sourceSets.contractTest.output.classesDirs
+  classpath = sourceSets.contractTest.runtimeClasspath
 
 }
-
-runAndPublishConsumerPactTests.dependsOn contractTest
+runAndPublishConsumerPactTests.dependsOn contract
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
-def getCheckedOutGitCommitHash() {
+pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+  }
+  publish {
+    pactDirectory = 'pacts'
+    tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
+    version = project.pacticipantVersion
+  }
+}
+
+static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
 }
