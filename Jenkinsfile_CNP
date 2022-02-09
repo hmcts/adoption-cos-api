@@ -44,7 +44,8 @@ def secrets = [
     secret('idam-solicitor-username', 'IDAM_SOLICITOR_USERNAME'),
     secret('idam-solicitor-password', 'IDAM_SOLICITOR_PASSWORD'),
     secret('idam-system-user-name', 'IDAM_SYSTEM_UPDATE_USERNAME'),
-    secret('idam-system-user-password', 'IDAM_SYSTEM_UPDATE_PASSWORD')
+    secret('idam-system-user-password', 'IDAM_SYSTEM_UPDATE_PASSWORD'),
+    secret('AppInsightsInstrumentationKey', 'APPINSIGHTS_INSTRUMENTATIONKEY')
   ]
 ]
 
