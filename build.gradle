@@ -27,6 +27,7 @@ plugins {
   id 'org.springframework.boot' version '2.5.6'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'hmcts.ccd.sdk' version '0.24.8'
+  id 'au.com.dius.pact' version '4.1.0'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
@@ -54,6 +55,15 @@ sourceSets {
       runtimeClasspath += main.output
       srcDir file('src/integrationTest/java')
     }
+  }
+
+  contract {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/contractTest/java')
+    }
+    resources.srcDir file('src/contractTest/resources')
   }
 }
 
@@ -118,6 +128,14 @@ task highLevelDataSetup(type: JavaExec) {
   } else {
     println("high level data setup is disabled in prod temporarily")
   }
+}
+
+task contractTest(type: Test) {
+  group = 'Delivery pipeline'
+  description = 'Runs the consumer Pact tests'
+  setTestClassesDirs(sourceSets.contract.output.classesDirs)
+  setClasspath(sourceSets.contract.runtimeClasspath)
+  systemProperty 'pact.rootDir', "pacts"
 }
 
 checkstyle {
@@ -219,7 +237,8 @@ def versions = [
   reformsJavaLogging: '5.1.7',
   springBoot        : springBoot.class.package.implementationVersion,
   springfoxSwagger  : '3.0.0',
-  s2sClient         : '4.0.0'
+  s2sClient         : '4.0.0',
+  pact_version      : '4.1.11'
 ]
 
 ext["rest-assured.version"] = '4.4.0'
@@ -320,6 +339,17 @@ dependencies {
   functionalTestImplementation sourceSets.test.runtimeClasspath
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '7.0.0'
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
+
+
+  contractImplementation group: 'au.com.dius.pact.consumer', name: 'junit', version: versions.pact_version
+  contractImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+  contractRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit', version: versions.pact_version
+  contractRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+
+  contractImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+  contractImplementation sourceSets.main.runtimeClasspath
+  contractImplementation sourceSets.test.runtimeClasspath
 }
 
 mainClassName = 'uk.gov.hmcts.reform.adoption.Application'
@@ -447,3 +477,30 @@ reloadCcd.configure {
 }
 
 generateCCDConfig.dependsOn stopCosApiContainer
+pact {
+  publish {
+    pactDirectory = 'pacts'
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+    version = versions.pact_version
+  }
+}
+
+project.ext {
+  pactVersion = getCheckedOutGitCommitHash()
+}
+
+task runAndPublishConsumerPactTests(type: Test){
+  logger.lifecycle("Runs pact Tests")
+  testClassesDirs = sourceSets.contract.output.classesDirs
+  classpath = sourceSets.contract.runtimeClasspath
+
+}
+
+runAndPublishConsumerPactTests.dependsOn contractTest
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
+
+def getCheckedOutGitCommitHash() {
+  'git rev-parse --verify --short HEAD'.execute().text.trim()
+}

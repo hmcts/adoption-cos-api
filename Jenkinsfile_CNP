@@ -204,6 +204,10 @@ withPipeline(type, product, component) {
       // Only for preview upload the definitions via script as high level data set up relies on an existing environment
       uploadCoreCaseDataDefinitions()
     }
+
+    onPR() {
+      enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+    }
 }
 
 def setCommonEnvVariables() {
