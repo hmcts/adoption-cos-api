@@ -48,11 +48,11 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
         return builder
             .given("a token is requested")
-            .uponReceiving("Provider receives a POST /o/token request from SSCS Tribunals API")
+            .uponReceiving("Provider receives a POST /o/token request from Adoption COS API")
             .path("/o/token")
             .method(HttpMethod.POST.toString())
             .body("redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback"
-                      + "&client_id=sscs"
+                      + "&client_id=adoption-web"
                       + "&grant_type=password"
                       + "&username=" + caseworkerUsername
                       + "&password=" + caseworkerPwd
@@ -89,7 +89,7 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
     private TokenRequest buildTokenRequestMap() {
         return new TokenRequest(
-            "sscs",
+            "adoption-web",
             clientSecret,
             "password",
             "http://www.dummy-pact-service.com/callback",

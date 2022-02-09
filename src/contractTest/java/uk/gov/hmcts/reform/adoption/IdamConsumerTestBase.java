@@ -28,9 +28,9 @@ public abstract class IdamConsumerTestBase {
     protected static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     @Autowired
     protected IdamApi idamApi;
-    @Value("${idam.systemupdate.username}")
+    @Value("${idam.pact.username}")
     protected String caseworkerUsername;
-    @Value("${idam.systemupdate.password}")
+    @Value("${idam.pact.password}")
     protected String caseworkerPwd;
     @Value("${idam.client.secret}")
     protected String clientSecret;
