@@ -86,4 +86,7 @@ public class Parent {
 
     @CCD(label = "Name on Certificate")
     private String nameOnCertificate;
+
+    @CCD(label = "Address Not Known Reason")
+    private String addressNotKnownReason;
 }
