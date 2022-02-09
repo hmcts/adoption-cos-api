@@ -104,7 +104,7 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
         return new PactDslJsonBody()
             .stringType("sub", "61")
-            .stringType("uid", "sscs-citizen2@hmcts.net")
+            .stringType("uid", "adop_pact_user@mailinator.com")
             .stringType("givenName", "Test")
             .stringType("familyName", "User")
             .minArrayLike("roles", 1, PactDslJsonRootValue.stringType("citizen"), 1);
@@ -112,7 +112,7 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
     private PactDslJsonBody createAuthResponse() {
         return new PactDslJsonBody()
-            .stringType("access_token", "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre")
+            .stringType("access_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FIiwia2lkI")
             .stringType("scope", "openid roles profile");
     }
 

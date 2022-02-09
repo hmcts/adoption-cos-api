@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 
 @ExtendWith(PactConsumerTestExt.class)
@@ -21,16 +20,15 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 @SpringBootTest({
     "idam.api.url : localhost:8891"
 })
-@TestPropertySource(locations = {"/config/application_contract.properties"})
 public abstract class IdamConsumerTestBase {
 
     public static final int SLEEP_TIME = 2000;
     protected static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     @Autowired
     protected IdamApi idamApi;
-    @Value("${idam.pact.username}")
+    @Value("${idam.systemupdate.username}")
     protected String caseworkerUsername;
-    @Value("${idam.pact.password}")
+    @Value("${idam.systemupdate.password}")
     protected String caseworkerPwd;
     @Value("${idam.client.secret}")
     protected String clientSecret;
