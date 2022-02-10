@@ -8,7 +8,7 @@ java:
     CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
   keyVaults:
-    "adoption":
+    adoption:
       secrets:
         - name: AppInsightsInstrumentationKey
           alias: APP_INSIGHTS_KEY

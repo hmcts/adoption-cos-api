@@ -22,11 +22,11 @@ public class RootController {
      *
      * @return Welcome message from the service.
      */
-    @Value("${uk.gov.notify.api.key}")
+    @Value("${azure.application-insights.instrumentation-key}")
     String testValue;
 
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok(String.valueOf(testValue.startsWith("dum")));
+        return ok(String.valueOf(testValue.startsWith("000")));
     }
 }
