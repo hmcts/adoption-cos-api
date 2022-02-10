@@ -18,7 +18,7 @@ java:
     minReplicas: 6
     targetCPUUtilizationPercentage: 80
   keyVaults:
-    adoption:
+    "adoption":
       secrets:
         - name: AppInsightsInstrumentationKey
           alias: APP_INSIGHTS_KEY
