@@ -23,10 +23,10 @@ public class RootController {
      * @return Welcome message from the service.
      */
     @Value("${azure.application-insights.instrumentation-key}")
-    String x;
+    String testValue;
 
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok(String.valueOf(x.startsWith("000")));
+        return ok(String.valueOf(testValue.startsWith("000")));
     }
 }
