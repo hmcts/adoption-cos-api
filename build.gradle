@@ -27,7 +27,7 @@ plugins {
   id 'org.springframework.boot' version '2.5.6'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'hmcts.ccd.sdk' version '0.24.8'
-  id 'au.com.dius.pact' version '4.1.7'
+  id 'au.com.dius.pact' version '4.3.5'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
