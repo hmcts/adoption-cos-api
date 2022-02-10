@@ -1,8 +1,6 @@
 package uk.gov.hmcts.reform.adoption.controllers;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -22,11 +20,7 @@ public class RootController {
      *
      * @return Welcome message from the service.
      */
-    @Value("${azure.application-insights.instrumentation-key}")
-    String testValue;
-
-    @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok(String.valueOf(testValue.startsWith("000")));
+        return ok("Welcome to root controller");
     }
 }
