@@ -21,7 +21,7 @@ java:
     adoption:
       secrets:
         - name: AppInsightsInstrumentationKey
-          alias: APP_INSIGHTS_KEY
+          alias: APPINSIGHTS_INSTRUMENTATIONKEY
         - name: uk-gov-notify-api-key
           alias: UK_GOV_NOTIFY_API_KEY
         - name: s2s-secret-cos-api
