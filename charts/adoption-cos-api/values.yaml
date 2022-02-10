@@ -32,8 +32,6 @@ java:
           alias: IDAM_SYSTEM_UPDATE_USERNAME
         - name: idam-system-user-password
           alias: IDAM_SYSTEM_UPDATE_PASSWORD
-        - name: adoption-cos-api-app-insights-config
-          alias: app-insights-config
   environment:
     NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL: https://adoption-web.{{ .Values.global.environment }}.platform.hmcts.net/
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
@@ -42,4 +40,3 @@ java:
     CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     # IDAM_API_REDIRECT_URL: https://div-pfe-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/authenticated
     CITIZEN_UPDATE_CASE_STATE_ENABLED: false
-    APPLICATIONINSIGHTS_CONFIGURATION_FILE: /mnt/secrets/adoption/app-insights-config

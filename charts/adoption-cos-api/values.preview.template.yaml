@@ -7,7 +7,6 @@ java:
   environment:
     CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
-    APPLICATIONINSIGHTS_CONFIGURATION_FILE: /mnt/secrets/adoption/app-insights-config
   keyVaults:
     adoption:
       secrets:
@@ -23,8 +22,6 @@ java:
           alias: IDAM_SYSTEM_UPDATE_USERNAME
         - name: idam-system-user-password
           alias: IDAM_SYSTEM_UPDATE_PASSWORD
-        - name: adoption-cos-api-app-insights-config
-          alias: app-insights-config
 
 idam-pr:
   enabled: true
