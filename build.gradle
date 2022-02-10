@@ -27,6 +27,7 @@ plugins {
   id 'org.springframework.boot' version '2.5.6'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'hmcts.ccd.sdk' version '0.24.8'
+  id 'au.com.dius.pact' version '4.3.5'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
@@ -55,6 +56,15 @@ sourceSets {
       srcDir file('src/integrationTest/java')
     }
   }
+
+  contractTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/contractTest/java')
+    }
+    resources.srcDir file('src/contractTest/resources')
+  }
 }
 
 idea {
@@ -69,6 +79,9 @@ configurations {
   functionalTestRuntime.extendsFrom testRuntime
   integrationTestImplementation.extendsFrom testImplementation
   integrationTestRuntime.extendsFrom testRuntime
+  contractTestCompile.extendsFrom testCompile
+  contractTestRuntime.extendsFrom testRuntime
+  contractTestImplementation.extendsFrom testImplementation
 }
 
 tasks.withType(JavaCompile) {
@@ -118,6 +131,13 @@ task highLevelDataSetup(type: JavaExec) {
   } else {
     println("high level data setup is disabled in prod temporarily")
   }
+}
+
+task contract(type: Test, description: 'Runs the pact contract tests.', group: 'Verification') {
+  description = "Runs the consumer Pact tests"
+  useJUnitPlatform()
+  testClassesDirs = sourceSets.contractTest.output.classesDirs
+  classpath = sourceSets.contractTest.runtimeClasspath
 }
 
 checkstyle {
@@ -219,7 +239,8 @@ def versions = [
   reformsJavaLogging: '5.1.7',
   springBoot        : springBoot.class.package.implementationVersion,
   springfoxSwagger  : '3.0.0',
-  s2sClient         : '4.0.0'
+  s2sClient         : '4.0.0',
+  pact              : '4.1.7'
 ]
 
 ext["rest-assured.version"] = '4.4.0'
@@ -256,7 +277,7 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
 
   implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
-  implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.8.4'
+  implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.8.5'
 
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
@@ -272,7 +293,7 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
 
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.10'
-  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '7.15.1'
+  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '7.17.0'
 
   implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.6.0-prerelease'
 
@@ -292,6 +313,11 @@ dependencies {
   }
 
   testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+    exclude(module: 'commons-logging')
+    exclude(module: 'android-json')
+  }
+
+  testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
     exclude(module: 'commons-logging')
     exclude(module: 'android-json')
   }
@@ -320,6 +346,33 @@ dependencies {
   functionalTestImplementation sourceSets.test.runtimeClasspath
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '7.0.0'
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
+
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
+  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.1'
+
+  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
+  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact
+  contractTestRuntime group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+
+  contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  contractTestCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
+  contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
+
+  contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
+  contractTestRuntime "org.junit.platform:junit-platform-commons:1.8.1"
+
+  contractTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '1.30') {
+    force = true
+  }
+
+  contractTestCompile sourceSets.main.runtimeClasspath
+  contractTestCompile sourceSets.test.runtimeClasspath
+
 }
 
 mainClassName = 'uk.gov.hmcts.reform.adoption.Application'
@@ -349,6 +402,7 @@ bootRun {
       systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
       systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-secret')
+      systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
 
       if (System.getenv("BOOT_RUN_DOCKER")) {
         systemProperty 'IDAM_API_BASEURL', 'http://localhost:5000'
@@ -383,6 +437,7 @@ functional {
       systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
       systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
+      systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
     }
   }
 }
@@ -447,3 +502,33 @@ reloadCcd.configure {
 }
 
 generateCCDConfig.dependsOn stopCosApiContainer
+
+project.ext {
+  pacticipant = 'sscs_tribunalsCaseApi'
+  pacticipantVersion = getCheckedOutGitCommitHash()
+}
+
+task runAndPublishConsumerPactTests(type: Test){
+  logger.lifecycle("Runs pact Tests")
+  testClassesDirs = sourceSets.contractTest.output.classesDirs
+  classpath = sourceSets.contractTest.runtimeClasspath
+
+}
+runAndPublishConsumerPactTests.dependsOn contract
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
+
+pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+  }
+  publish {
+    pactDirectory = 'pacts'
+    tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
+    version = project.pacticipantVersion
+  }
+}
+
+static def getCheckedOutGitCommitHash() {
+  'git rev-parse --verify --short HEAD'.execute().text.trim()
+}

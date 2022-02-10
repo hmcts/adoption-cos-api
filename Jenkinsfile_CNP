@@ -2,6 +2,7 @@
 
 @Library("Infrastructure")
 
+import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GradleBuilder
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.MetricsPublisher
@@ -44,7 +45,8 @@ def secrets = [
     secret('idam-solicitor-username', 'IDAM_SOLICITOR_USERNAME'),
     secret('idam-solicitor-password', 'IDAM_SOLICITOR_PASSWORD'),
     secret('idam-system-user-name', 'IDAM_SYSTEM_UPDATE_USERNAME'),
-    secret('idam-system-user-password', 'IDAM_SYSTEM_UPDATE_PASSWORD')
+    secret('idam-system-user-password', 'IDAM_SYSTEM_UPDATE_PASSWORD'),
+    secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_KEY')
   ]
 ]
 
@@ -61,7 +63,7 @@ withPipeline(type, product, component) {
     disableLegacyDeployment()
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
-    syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
+    syncBranchesWithMaster(['demo', 'perftest'])
     enableSlackNotifications('#adoption-tech')
 
     MetricsPublisher metricsPublisher = new MetricsPublisher(this, currentBuild, product, component, params.subscription )
@@ -163,6 +165,7 @@ withPipeline(type, product, component) {
       env.ENVIRONMENT="preview"
       env.CASE_API_URL = "http://adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       env.CCD_DEF_NAME = "preview"
+      env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
       env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       env.CASE_DATA_STORE_BASEURL = "http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
@@ -177,8 +180,9 @@ withPipeline(type, product, component) {
         env.CCD_DEF_NAME="aat"
         env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
         env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
+        env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
-        setCommonEnvVariables()
+      setCommonEnvVariables()
     }
 
     onDemo {
@@ -203,6 +207,14 @@ withPipeline(type, product, component) {
     before('functionalTest:preview') {
       // Only for preview upload the definitions via script as high level data set up relies on an existing environment
       uploadCoreCaseDataDefinitions()
+    }
+
+    onPR() {
+      enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+    }
+
+    onMaster() {
+      enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     }
 }
 
