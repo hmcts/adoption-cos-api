@@ -22,7 +22,7 @@ public class RootController {
      *
      * @return Welcome message from the service.
      */
-    @Value("${uk.gov.notify.email}")
+    @Value("${uk.gov.notify.api.key}")
     String testValue;
 
     @GetMapping("/")
