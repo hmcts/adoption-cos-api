@@ -349,7 +349,7 @@ dependencies {
 
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
-  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.1'
 
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
