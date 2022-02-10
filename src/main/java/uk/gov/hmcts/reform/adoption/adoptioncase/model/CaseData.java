@@ -38,6 +38,13 @@ public class CaseData {
     )
     private ApplyingWith applyingWith;
 
+    @CCD(
+        label = "Child moved in date",
+        access = {DefaultAccess.class}
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateChildMovedIn;
+
     @JsonUnwrapped(prefix = "applicant1")
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
