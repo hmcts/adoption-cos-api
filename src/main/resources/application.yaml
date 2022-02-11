@@ -21,7 +21,7 @@ spring:
 
 azure:
   application-insights:
-    instrumentation-key: ${APP_INSIGHTS_KEY:0000000000000}
+    instrumentation-key: ${APP_INSIGHTS_KEY:00000000-0000-0000-0000-000000000001}
 
 uk:
   gov:
