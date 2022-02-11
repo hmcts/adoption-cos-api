@@ -20,6 +20,7 @@ spring:
     allow-bean-definition-overriding: true
 
 temp: ${AppInsightsInstrumentationKey}
+temp2: ${APP_INSIGHTS_KEY}
 
 uk:
   gov:
