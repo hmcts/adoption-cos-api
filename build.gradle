@@ -140,7 +140,7 @@ task contract(type: Test, description: 'Runs the pact contract tests.', group: '
   classpath = sourceSets.contractTest.runtimeClasspath
 }
 
-ask fortifyScan(type: JavaExec)  {
+task fortifyScan(type: JavaExec)  {
   main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
