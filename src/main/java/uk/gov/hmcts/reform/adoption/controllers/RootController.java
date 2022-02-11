@@ -27,6 +27,6 @@ public class RootController {
 
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok(String.valueOf(testKey.startsWith("2")));
+        return ok(String.valueOf(testKey.startsWith("273")));
     }
 }
