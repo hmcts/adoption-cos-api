@@ -7,7 +7,7 @@ import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
+import static uk.gov.hmcts.reform.adoption.document.DocumentTypes.APPLICATION;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.adoptionDocumentFrom;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.documentFrom;
 

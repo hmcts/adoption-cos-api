@@ -16,7 +16,7 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.util.CollectionUtils.isEmpty;
-import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
+import static uk.gov.hmcts.reform.adoption.document.DocumentTypes.APPLICATION;
 
 @Service
 @Slf4j

@@ -8,7 +8,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 
 @Getter
 @AllArgsConstructor
-public enum DocumentType implements HasLabel {
+public enum DocumentTypes implements HasLabel {
 
     @JsonProperty("application")
     @JsonAlias("adoptionApplication")
