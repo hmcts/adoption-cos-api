@@ -19,6 +19,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+temp: APP_INSIGHTS_KEY
+temp2: AppInsightsInstrumentationKey
+
 uk:
   gov:
     notify:

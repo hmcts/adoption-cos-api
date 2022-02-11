@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.controllers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +22,13 @@ public class RootController {
      *
      * @return Welcome message from the service.
      */
+    @Value("${temp}")
+    String temp;
+    @Value("${temp2}")
+    String temp2;
+
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok("Welcome to root controller");
+        return ok(temp.substring(0,5)+" "+temp2.substring(0,5));
     }
 }
