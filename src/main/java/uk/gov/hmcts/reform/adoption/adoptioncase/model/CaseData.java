@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -213,6 +214,20 @@ public class CaseData {
         access = {CollectionAccess.class}
     )
     private List<ListValue<AdoptionDocument>> documentsGenerated;
+
+    @CCD(
+        label = "Applicant 1 uploaded documents",
+        typeOverride = Collection,
+        typeParameterOverride = "DivorceDocument",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<DivorceDocument>> applicant1DocumentsUploaded;
+
+    @CCD(
+        label = "Applicant 1 cannot upload supporting documents",
+        access = {DefaultAccess.class}
+    )
+    private Set<DocumentType> applicant1CannotUploadSupportingDocument;
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {
