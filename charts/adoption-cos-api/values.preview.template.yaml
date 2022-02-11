@@ -7,11 +7,12 @@ java:
   environment:
     CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
+    # AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY: 'Override'
   keyVaults:
     adoption:
       secrets:
         - name: AppInsightsInstrumentationKey-Preview
-          alias: APP_INSIGHTS_KEY
+          alias: AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY
         - name: uk-gov-notify-api-key
           alias: UK_GOV_NOTIFY_API_KEY
         - name: s2s-secret-cos-api
