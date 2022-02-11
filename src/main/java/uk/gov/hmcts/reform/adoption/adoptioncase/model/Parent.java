@@ -49,12 +49,6 @@ public class Parent {
     )
     private YesOrNo addressKnown;
 
-    @CCD(
-        label = "Address Unknown Reason",
-        typeOverride = TextArea
-    )
-    private String addressUnknownReason;
-
     @CCD(label = "Address1")
     private String address1;
 
@@ -86,4 +80,9 @@ public class Parent {
 
     @CCD(label = "Name on Certificate")
     private String nameOnCertificate;
+
+    @CCD(label = "Address Not Known Reason",
+        typeOverride = TextArea
+    )
+    private String addressNotKnownReason;
 }
