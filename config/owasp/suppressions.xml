@@ -23,4 +23,12 @@
       <cve>CVE-2021-42340</cve>
       <cve>CVE-2022-23181</cve>
     </suppress>
+  <suppress>
+    <notes>spring-*-5.3.12</notes>
+    <cve>CVE-2021-30640</cve>
+  </suppress>
+  <suppress>
+    <notes>logback-*-1.2.6</notes>
+    <cve>CVE-2021-42550</cve>
+  </suppress>
 </suppressions>
