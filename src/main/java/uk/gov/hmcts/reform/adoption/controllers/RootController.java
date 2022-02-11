@@ -22,7 +22,7 @@ public class RootController {
      *
      * @return Welcome message from the service.
      */
-    @Value("${azure.application-insights.instrumentation-key}")
+    @Value("${azure.application-insights.instrumentation-key1}")
     String testValue;
 
     @Value("${uk.gov.notify.api.key}")
