@@ -29,6 +29,6 @@ public class RootController {
 
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok(temp.substring(0,5)+" "+temp2.substring(0,5));
+        return ok(temp.substring(0,5) + " " + temp2.substring(0,5));
     }
 }
