@@ -264,6 +264,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: versions.springBoot
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.0.0'
 
   implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
 
@@ -402,7 +403,6 @@ bootRun {
       systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
       systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-secret')
-      systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
 
       if (System.getenv("BOOT_RUN_DOCKER")) {
         systemProperty 'IDAM_API_BASEURL', 'http://localhost:5000'
@@ -437,7 +437,6 @@ functional {
       systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
       systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
-      systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
     }
   }
 }
