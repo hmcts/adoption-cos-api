@@ -24,11 +24,9 @@ public class RootController {
      */
     @Value("${temp}")
     String temp;
-    @Value("${temp2}")
-    String temp2;
 
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok(temp.substring(0,5) + " " + temp2.substring(0,5));
+        return ok(temp.substring(0,5));
     }
 }
