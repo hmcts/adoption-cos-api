@@ -132,6 +132,14 @@ withPipeline(type, product, component) {
         reportFiles          : "index.html",
         reportName           : "Functional Tests Report"
       ]
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "target/site/serenity",
+        reportFiles          : "*.*",
+        reportName           : "Functional Tests Report"
+      ]
     }
 
     after('smoketest:preview') {

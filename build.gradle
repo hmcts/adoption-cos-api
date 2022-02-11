@@ -11,6 +11,7 @@ buildscript {
 
   }
   dependencies {
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.13")
     classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '2.35.1025'
   }
 }
@@ -32,6 +33,7 @@ plugins {
 
 apply plugin: 'cz.habarta.typescript-generator'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'net.serenity-bdd.aggregator'
 
 group = 'uk.gov.hmcts'
 version = '0.0.1'
@@ -240,7 +242,10 @@ def versions = [
   springBoot        : springBoot.class.package.implementationVersion,
   springfoxSwagger  : '3.0.0',
   s2sClient         : '4.0.0',
-  pact              : '4.1.7'
+  pact              : '4.1.7',
+  serenity           : '2.3.12',
+  serenityRestAssured: '2.3.4',
+  serenityreporter   : '2.3.12',
 ]
 
 ext["rest-assured.version"] = '4.4.0'
@@ -346,6 +351,12 @@ dependencies {
   functionalTestImplementation sourceSets.test.runtimeClasspath
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '7.0.0'
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
+
+
+  testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityRestAssured
+  testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+  testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
 
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
