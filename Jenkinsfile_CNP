@@ -209,14 +209,8 @@ withPipeline(type, product, component) {
       uploadCoreCaseDataDefinitions()
     }
 
-    after('contractTest') {
-      dir("${WORKSPACE}") {
-        steps.archiveArtifacts artifacts: "pacts/*.json"
-      }
-    }
 
-
-  onPR() {
+    onPR() {
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     }
 
