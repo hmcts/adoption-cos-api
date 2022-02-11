@@ -25,8 +25,11 @@ public class RootController {
     @Value("${azure.application-insights.instrumentation-key}")
     String testValue;
 
+    @Value("${uk.gov.notify.api.key}")
+    String testValue2;
+
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok("Welcome to RootController " + testValue);
+        return ok("Welcome to RootController testValue" + testValue +  " testValue2 " + testValue2);
     }
 }
