@@ -170,8 +170,6 @@ withPipeline(type, product, component) {
       env.CASE_DATA_STORE_BASEURL = "http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
       env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
-      env.APP_INSIGHTS_KEY="000000000"
-      env.AppInsightsInstrumentationKey="000000000"
 
       setCommonEnvVariables()
     }

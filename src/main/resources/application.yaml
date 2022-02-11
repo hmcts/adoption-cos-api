@@ -19,8 +19,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-temp: ${AppInsightsInstrumentationKey}
-temp2: ${APP_INSIGHTS_KEY}
+azure:
+  application-insights:
+    instrumentation-key: ${APP_INSIGHTS_KEY:0000000000000}
 
 uk:
   gov:
