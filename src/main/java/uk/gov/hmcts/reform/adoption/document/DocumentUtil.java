@@ -16,7 +16,7 @@ public final class DocumentUtil {
             documentInfo.getBinaryUrl());
     }
 
-    public static AdoptionDocument adoptionDocumentFrom(final DocumentInfo documentInfo, final DocumentTypes documentType) {
+    public static AdoptionDocument adoptionDocumentFrom(final DocumentInfo documentInfo, final DocumentType documentType) {
         return AdoptionDocument
             .builder()
             .documentLink(documentFrom(documentInfo))

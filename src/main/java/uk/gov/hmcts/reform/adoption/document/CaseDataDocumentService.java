@@ -29,7 +29,7 @@ public class CaseDataDocumentService {
     private IdamService idamService;
 
     public void renderDocumentAndUpdateCaseData(final CaseData caseData,
-                                                final DocumentTypes documentType,
+                                                final DocumentType documentType,
                                                 final Map<String, Object> templateContent,
                                                 final Long caseId,
                                                 final String templateId,

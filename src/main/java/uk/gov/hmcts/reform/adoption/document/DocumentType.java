@@ -1,5 +1,6 @@
-package uk.gov.hmcts.reform.adoption.adoptioncase.model;
+package uk.gov.hmcts.reform.adoption.document;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,14 @@ public enum DocumentType implements HasLabel {
     BIRTH_OR_ADOPTION_CERTIFICATE("birthOrAdoptionCertificate"),
 
     @JsonProperty("deathCertificate")
-    DEATH_CERTIFICATE("deathCertificate");
+    DEATH_CERTIFICATE("deathCertificate"),
+
+    @JsonProperty("application")
+    @JsonAlias("adoptionApplication")
+    APPLICATION("Application"),
+
+    @JsonProperty("email")
+    EMAIL("Email");
 
     private final String label;
 }

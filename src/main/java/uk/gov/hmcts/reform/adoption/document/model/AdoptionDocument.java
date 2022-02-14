@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
-import uk.gov.hmcts.reform.adoption.document.DocumentTypes;
+import uk.gov.hmcts.reform.adoption.document.DocumentType;
 
 import java.time.LocalDate;
 
@@ -55,7 +55,7 @@ public class AdoptionDocument {
         typeOverride = FixedList,
         typeParameterOverride = "DocumentType"
     )
-    private DocumentTypes documentType;
+    private DocumentType documentType;
 
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
@@ -64,7 +64,7 @@ public class AdoptionDocument {
                             @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
                             @JsonProperty("documentComment") String documentComment,
                             @JsonProperty("documentFileName") String documentFileName,
-                            @JsonProperty("documentType") DocumentTypes documentType) {
+                            @JsonProperty("documentType") DocumentType documentType) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;

@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.adoption.document.DocumentTypes.APPLICATION;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.LOCAL_DATE_TIME;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.documentWithType;

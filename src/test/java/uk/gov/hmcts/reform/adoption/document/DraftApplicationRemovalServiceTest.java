@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.doThrow;
-import static uk.gov.hmcts.reform.adoption.document.DocumentTypes.APPLICATION;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.SYSTEM_USER_USER_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_SERVICE_AUTH_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;

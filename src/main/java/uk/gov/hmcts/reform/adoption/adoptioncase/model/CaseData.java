@@ -14,6 +14,8 @@ import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
+import uk.gov.hmcts.reform.adoption.document.DocumentType;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -212,7 +214,7 @@ public class CaseData {
         typeParameterOverride = "AdoptionDocument",
         access = {CollectionAccess.class}
     )
-    private List<ListValue<uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument>> documentsGenerated;
+    private List<ListValue<AdoptionDocument>> documentsGenerated;
 
     @CCD(
         label = "Applicant uploaded documents",
@@ -241,12 +243,12 @@ public class CaseData {
     }
 
     @JsonIgnore
-    public void addToDocumentsGenerated(final ListValue<uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument> listValue) {
+    public void addToDocumentsGenerated(final ListValue<AdoptionDocument> listValue) {
 
-        final List<ListValue<uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument>> documents = getDocumentsGenerated();
+        final List<ListValue<AdoptionDocument>> documents = getDocumentsGenerated();
 
         if (isEmpty(documents)) {
-            final List<ListValue<uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument>> documentList = new ArrayList<>();
+            final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
             documentList.add(listValue);
             setDocumentsGenerated(documentList);
         } else {
