@@ -43,7 +43,7 @@ class DocumentUtilTest {
     }
 
     @Test
-    void shouldCreateDivorceDocumentFromDocumentInfoAndDocumentType() {
+    void shouldCreateDocumentFromDocumentInfoAndDocumentType() {
 
         final AdoptionDocument adoptionDocument = adoptionDocumentFrom(documentInfo(), APPLICATION);
 

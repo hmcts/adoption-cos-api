@@ -17,7 +17,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @Data
 @NoArgsConstructor
 @Builder
-public class DivorceDocument {
+public class AdoptionDocument {
 
     @CCD(
         label = "Add content to be emailed",
@@ -58,12 +58,12 @@ public class DivorceDocument {
 
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
-    public DivorceDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
-                           @JsonProperty("documentLink") Document documentLink,
-                           @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
-                           @JsonProperty("documentComment") String documentComment,
-                           @JsonProperty("documentFileName") String documentFileName,
-                           @JsonProperty("documentType") DocumentType documentType) {
+    public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
+                            @JsonProperty("documentLink") Document documentLink,
+                            @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
+                            @JsonProperty("documentComment") String documentComment,
+                            @JsonProperty("documentFileName") String documentFileName,
+                            @JsonProperty("documentType") DocumentType documentType) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;

@@ -13,7 +13,6 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 
 import java.time.LocalDate;
@@ -213,18 +212,18 @@ public class CaseData {
         typeParameterOverride = "AdoptionDocument",
         access = {CollectionAccess.class}
     )
-    private List<ListValue<AdoptionDocument>> documentsGenerated;
+    private List<ListValue<uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument>> documentsGenerated;
 
     @CCD(
-        label = "Applicant 1 uploaded documents",
+        label = "Applicant uploaded documents",
         typeOverride = Collection,
-        typeParameterOverride = "DivorceDocument",
+        typeParameterOverride = "AdoptionDocument",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<DivorceDocument>> applicant1DocumentsUploaded;
+    private List<ListValue<AdoptionDocument>> applicant1DocumentsUploaded;
 
     @CCD(
-        label = "Applicant 1 cannot upload supporting documents",
+        label = "Applicant cannot upload supporting documents",
         access = {DefaultAccess.class}
     )
     private Set<DocumentType> applicant1CannotUploadSupportingDocument;
@@ -242,12 +241,12 @@ public class CaseData {
     }
 
     @JsonIgnore
-    public void addToDocumentsGenerated(final ListValue<AdoptionDocument> listValue) {
+    public void addToDocumentsGenerated(final ListValue<uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument> listValue) {
 
-        final List<ListValue<AdoptionDocument>> documents = getDocumentsGenerated();
+        final List<ListValue<uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument>> documents = getDocumentsGenerated();
 
         if (isEmpty(documents)) {
-            final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
+            final List<ListValue<uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument>> documentList = new ArrayList<>();
             documentList.add(listValue);
             setDocumentsGenerated(documentList);
         } else {
