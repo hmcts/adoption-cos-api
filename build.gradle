@@ -11,6 +11,7 @@ buildscript {
 
   }
   dependencies {
+    classpath "net.serenity-bdd:serenity-gradle-plugin:2.4.34"
     classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '2.35.1025'
   }
 }
@@ -27,11 +28,12 @@ plugins {
   id 'org.springframework.boot' version '2.5.6'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'hmcts.ccd.sdk' version '0.24.8'
-  id 'au.com.dius.pact' version '4.3.5'
+  id 'au.com.dius.pact' version '4.1.7'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'net.serenity-bdd.aggregator'
 
 group = 'uk.gov.hmcts'
 version = '0.0.1'
@@ -106,6 +108,7 @@ task functional(type: Test) {
   group = "Verification"
   testClassesDirs = sourceSets.functionalTest.output.classesDirs
   classpath = sourceSets.functionalTest.runtimeClasspath
+  finalizedBy(aggregate)
 }
 
 task integration(type: Test) {
@@ -246,7 +249,8 @@ def versions = [
   springBoot        : springBoot.class.package.implementationVersion,
   springfoxSwagger  : '3.0.0',
   s2sClient         : '4.0.0',
-  pact              : '4.1.7'
+  pact              : '4.1.7',
+  serenityCoreVersion: '3.0.2'
 ]
 
 ext["rest-assured.version"] = '4.4.0'
@@ -376,6 +380,11 @@ dependencies {
   contractTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '1.30') {
     force = true
   }
+
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenityCoreVersion)
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenityCoreVersion)
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityCoreVersion)
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityCoreVersion)
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
