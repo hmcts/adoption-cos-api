@@ -13,12 +13,14 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
+import uk.gov.hmcts.reform.adoption.document.DocumentType;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -213,6 +215,20 @@ public class CaseData {
         access = {CollectionAccess.class}
     )
     private List<ListValue<AdoptionDocument>> documentsGenerated;
+
+    @CCD(
+        label = "Applicant uploaded documents",
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionDocument",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> applicant1DocumentsUploaded;
+
+    @CCD(
+        label = "Applicant cannot upload supporting documents",
+        access = {DefaultAccess.class}
+    )
+    private Set<DocumentType> applicant1CannotUploadSupportingDocument;
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {
