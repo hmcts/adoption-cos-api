@@ -230,6 +230,12 @@ public class CaseData {
     )
     private Set<DocumentType> applicant1CannotUploadSupportingDocument;
 
+    @CCD(
+        label = "Applicant can not upload",
+        access = {DefaultAccess.class}
+    )
+    private String applicant1CannotUpload;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);
