@@ -132,6 +132,19 @@ withPipeline(type, product, component) {
         reportFiles          : "index.html",
         reportName           : "Functional Tests Report"
       ]
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "target/site/serenity/",
+        reportFiles          : "index.html",
+        reportName           : "Functional Tests Report"
+      ]
+
+      dir("${WORKSPACE}") {
+        steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
+      }
     }
 
     after('smoketest:preview') {
@@ -154,6 +167,12 @@ withPipeline(type, product, component) {
         reportFiles          : "index.html",
         reportName           : "Smoke Test Report"
       ]
+    }
+
+    after('contractTest') {
+      dir("${WORKSPACE}") {
+        steps.archiveArtifacts artifacts: "pacts/*.json"
+      }
     }
 
     after('checkout') {
@@ -209,7 +228,14 @@ withPipeline(type, product, component) {
       uploadCoreCaseDataDefinitions()
     }
 
-    onPR() {
+    after('contractTest') {
+      dir("${WORKSPACE}") {
+        steps.archiveArtifacts artifacts: "pacts/*.json"
+      }
+    }
+
+
+  onPR() {
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     }
 
