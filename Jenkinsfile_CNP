@@ -133,34 +133,64 @@ withPipeline(type, product, component) {
         reportName           : "Functional Tests Report"
       ]
 
-    }
-
-    after('smoketest:preview') {
       publishHTML target: [
         allowMissing         : true,
         alwaysLinkToLastBuild: true,
         keepAll              : true,
-        reportDir            : "build/reports/tests/smoke",
+        reportDir            : "target/site/serenity/",
         reportFiles          : "index.html",
-        reportName           : "Smoke Test Report"
+        reportName           : "Functional Tests Report"
       ]
-    }
 
-    after('smoketest:aat') {
-      publishHTML target: [
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : "build/reports/tests/smoke",
-        reportFiles          : "index.html",
-        reportName           : "Smoke Test Report"
-      ]
-    }
-
-    after('contractTest') {
       dir("${WORKSPACE}") {
-        steps.archiveArtifacts artifacts: "pacts/*.json"
+        steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
       }
+    }
+
+  after('functionalTest:aat') {
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/tests/functional",
+      reportFiles          : "index.html",
+      reportName           : "Functional Tests Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "target/site/serenity/",
+      reportFiles          : "index.html",
+      reportName           : "Functional Tests Report"
+    ]
+
+    dir("${WORKSPACE}") {
+      steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
+    }
+  }
+
+    after('smokeTest:preview') {
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/tests/smoke",
+        reportFiles          : "index.html",
+        reportName           : "Smoke Test Report"
+      ]
+    }
+
+    after('smokeTest:aat') {
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "build/reports/tests/smoke",
+        reportFiles          : "index.html",
+        reportName           : "Smoke Test Report"
+      ]
     }
 
     after('checkout') {
@@ -216,11 +246,16 @@ withPipeline(type, product, component) {
       uploadCoreCaseDataDefinitions()
     }
 
-    after('contractTest') {
-      dir("${WORKSPACE}") {
-        steps.archiveArtifacts artifacts: "pacts/*.json"
-      }
+  after('contractTest:preview') {
+    dir("${WORKSPACE}") {
+      steps.archiveArtifacts artifacts: "pacts/*.json"
     }
+  }
+  after('contractTest:aat') {
+    dir("${WORKSPACE}") {
+      steps.archiveArtifacts artifacts: "pacts/*.json"
+    }
+  }
 
 
   onPR() {
