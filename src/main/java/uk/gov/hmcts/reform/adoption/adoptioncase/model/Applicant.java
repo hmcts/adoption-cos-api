@@ -72,6 +72,9 @@ public class Applicant {
     @CCD(label = "Applicant phoneNumber")
     private String phoneNumber;
 
+    @CCD(label = "Applicant consent")
+    private YesOrNo consent;
+
     @CCD(label = "Nationality")
     private Set<Nationality> nationality;
 
