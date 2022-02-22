@@ -9,19 +9,22 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 public enum State {
     @CCD(
         name = "Draft",
-        label = "# **${[CASE_REFERENCE]}** ${applicantLastName} **&** ${respondentLastName}\n### **${[STATE]}**\n"
+        label = "### Case number: ${[CASE_REFERENCE]}\n" +
+            " ### ${applicant1FirstName} ${applicant1LastName}\n"
     )
     Draft("Draft"),
 
     @CCD(
         name = "Submitted",
-        label = "# **${[CASE_REFERENCE]}** ${applicantLastName} **&** ${respondentLastName}\n### **${[STATE]}**\n"
+        label = "### Case number: ${[CASE_REFERENCE]}\n" +
+            " ### ${applicant1FirstName} ${applicant1LastName}\n"
     )
     Submitted("Submitted"),
 
     @CCD(
         name = "Application awaiting payment",
-        label = "### Case number: ${hyphenatedCaseRef}\n ### ${applicant1LastName}\n"
+        label = "### Case number: ${[CASE_REFERENCE]}\n" +
+            " ### ${applicant1FirstName} ${applicant1LastName}\n"
     )
     AwaitingPayment("AwaitingPayment");
 
