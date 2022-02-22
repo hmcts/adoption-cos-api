@@ -6,11 +6,15 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
+
+import java.util.UUID;
 
 
 @Component
@@ -20,6 +24,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.ADOPTION_GENERIC);
         new PageBuilder(configBuilder
                             .event(CASEWORKER_UPLOAD_DOCUMENT)
                             .forAllStates()
@@ -41,7 +46,11 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         log.info("Callback invoked for {}", CASEWORKER_UPLOAD_DOCUMENT);
 
         var caseData = details.getData();
-
+        ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
+            .id(String.valueOf(UUID.randomUUID()))
+            .value(caseData.getAdoptionDocument())
+            .build();
+        caseData.addToDocumentsUploaded(adoptionDocument);
         caseData.sortUploadedDocuments(beforeDetails.getData().getDocumentsUploaded());
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()

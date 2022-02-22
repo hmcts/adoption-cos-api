@@ -325,4 +325,18 @@ public class CaseData {
         return previousDocuments;
     }
 
+    @JsonIgnore
+    public void addToDocumentsUploaded(final ListValue<AdoptionDocument> listValue) {
+
+        final List<ListValue<AdoptionDocument>> documents = getDocumentsUploaded();
+
+        if (isEmpty(documents)) {
+            final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
+            documentList.add(listValue);
+            setDocumentsUploaded(documentList);
+        } else {
+            documents.add(0, listValue); // always add to start top of list
+        }
+    }
+
 }
