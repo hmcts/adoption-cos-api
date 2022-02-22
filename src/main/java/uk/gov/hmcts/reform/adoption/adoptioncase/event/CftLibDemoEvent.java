@@ -19,6 +19,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.ADOPTION_GENERIC;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;*/
 
+//This is the test class created to test cftlib.
 @Component
 @Slf4j
 public class CftLibDemoEvent implements CCDConfig<CaseData, State, UserRole> {
