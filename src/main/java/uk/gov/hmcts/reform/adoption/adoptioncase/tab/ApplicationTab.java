@@ -24,7 +24,6 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
         tabBuilder
             .field("createdDate")
             .field("dateSubmitted");
-            //.field(CaseData::getHyphenatedCaseRef, APPLICATION_TYPE_NEVER_SHOW);
     }
 
     private void addApplicant(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
@@ -35,7 +34,6 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1PhoneNumber")
             .field("applicant1EmailAddress")
             .field("applicant1Nationality");
-            //.field("applicantCorrespondenceAddress");
     }
 
 }
