@@ -45,7 +45,7 @@ public class CaseData {
         typeOverride = TextArea,
         access = {DefaultAccess.class}
     )
-    private String applyingWithSomeoneElseReason;
+    private String otherApplicantRelation;
 
     @CCD(
         label = "Child moved in date",
