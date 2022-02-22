@@ -25,6 +25,7 @@ import java.util.Set;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
@@ -39,6 +40,12 @@ public class CaseData {
         typeParameterOverride = "ApplyingWith"
     )
     private ApplyingWith applyingWith;
+
+    @CCD(label = "Applying with someone else reason",
+        typeOverride = TextArea,
+        access = {DefaultAccess.class}
+    )
+    private String otherApplicantRelation;
 
     @CCD(
         label = "Child moved in date",
