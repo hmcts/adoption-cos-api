@@ -14,11 +14,12 @@ import uk.gov.hmcts.reform.ccd.client.CaseAssignmentApi;
 import uk.gov.hmcts.reform.ccd.client.CaseUserApi;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataClientAutoConfiguration;
+import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClientApi;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 
 @SpringBootApplication(
     exclude = {CoreCaseDataClientAutoConfiguration.class},
-    scanBasePackages = {"uk.gov.hmcts.ccd.sdk", "uk.gov.hmcts.reform.adoption"}
+    scanBasePackages = {"uk.gov.hmcts.ccd.sdk", "uk.gov.hmcts.reform.adoption", "uk.gov.hmcts.reform.ccd.document"}
 )
 @EnableFeignClients(
     clients = {
@@ -28,7 +29,8 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
         DocAssemblyClient.class,
         CoreCaseDataApi.class,
         CaseAssignmentApi.class,
-        DocumentManagementClient.class
+        DocumentManagementClient.class,
+        CaseDocumentClientApi.class
     }
 )
 @EnableScheduling
