@@ -34,6 +34,6 @@ public class CaseworkerRequestAnnexA implements CCDConfig<CaseData, State, UserR
                                    .showEventNotes()
                                    .grant(
                                        Permissions.CREATE_READ_UPDATE,
-                                       UserRole.ADOPTION_GENERIC));
+                                       UserRole.CASE_WORKER));
     }
 }
