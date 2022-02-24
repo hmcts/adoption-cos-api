@@ -84,6 +84,9 @@ prd:
 send-letter:
   url: ${SEND_LETTER_SERVICE_BASEURL:http://rpe-send-letter-service-aat.service.core-compute-aat.internal}
 
+case_document_am:
+  url: ${CASE_DOCUMENT_AM_BASEURL:http://ccd-case-document-am-api-aat.service.core-compute-aat.internal}
+
 aos_pack:
   due_date_offset_days: ${AOS_PACK_DUE_DATE_OFFSET_DAYS:16}
 

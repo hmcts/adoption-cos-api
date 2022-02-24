@@ -2,13 +2,22 @@ package uk.gov.hmcts.reform.adoption.testutil;
 
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
+import static uk.gov.hmcts.reform.adoption.notification.CommonContent.APPLICATION_REFERENCE;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_FIRST_NAME;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LAST_NAME;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
 
 public class TestDataHelper {
 
@@ -44,5 +53,26 @@ public class TestDataHelper {
     }
 
     private TestDataHelper() {
+    }
+
+    public static CaseData caseData() {
+        return CaseData.builder()
+            .applicant1(getApplicant())
+            .build();
+    }
+
+    public static Applicant getApplicant() {
+        return Applicant.builder()
+            .firstName(TEST_FIRST_NAME)
+            .lastName(TEST_LAST_NAME)
+            .email(TEST_USER_EMAIL)
+            .languagePreference(ENGLISH)
+            .build();
+    }
+
+    public static Map<String, String> getMainTemplateVars() {
+        Map<String, String> templateVars = new HashMap<>();
+        templateVars.put(APPLICATION_REFERENCE, "1234-5678-9012-3456");
+        return templateVars;
     }
 }

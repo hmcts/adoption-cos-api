@@ -6,4 +6,12 @@ public interface ApplicantNotification {
     default void sendToApplicant1(final CaseData caseData, final Long caseId) {
         //No operation
     }
+
+    default void sendToCaseWorker(final CaseData caseData, final Long caseId) {
+        //No operation
+    }
+
+    default void sendToLocalAuthority(final CaseData caseData, final Long caseId) {
+        //No operation
+    }
 }
