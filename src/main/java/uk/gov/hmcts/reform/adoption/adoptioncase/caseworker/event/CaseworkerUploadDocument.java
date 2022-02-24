@@ -21,21 +21,22 @@ import java.util.UUID;
 @Slf4j
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-upload-document";
+    public static final String UPLOAD_DOCUMENT = "Upload document";
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.ADOPTION_GENERIC);
+        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
         new PageBuilder(configBuilder
                             .event(CASEWORKER_UPLOAD_DOCUMENT)
                             .forAllStates()
-                            .name("Upload document")
-                            .description("Upload document")
+                            .name(UPLOAD_DOCUMENT)
+                            .description(UPLOAD_DOCUMENT)
                             .aboutToSubmitCallback(this::aboutToSubmit)
                             .showSummary(false)
                             .showEventNotes()
-                            .grant(Permissions.CREATE_READ_UPDATE, UserRole.ADOPTION_GENERIC))
+                            .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER))
             .page("uploadDocument")
-            .pageLabel("Upload document")
+            .pageLabel(UPLOAD_DOCUMENT)
             .optional(CaseData::getAdoptionDocument);
     }
 
