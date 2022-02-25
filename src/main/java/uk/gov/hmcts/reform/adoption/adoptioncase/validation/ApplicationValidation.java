@@ -27,18 +27,19 @@ public final class ApplicationValidation {
     }
 
     public static List<String> validateSubmission(Application application) {
-        List<String> errors = new ArrayList<>();
+        //List<String> errors = new ArrayList<>();
 
-        if (!application.hasBeenPaidFor()) {
-            errors.add("Payment incomplete");
-        }
+        // if (!application.hasBeenPaidFor()) {
+        // TODO to be enabled after submission has been enabled
+        //      errors.add("Payment incomplete");
+        // }
 
         //TODO
         // if (!application.applicant1HasStatementOfTruth() && !application.hasSolSignStatementOfTruth()) {
         //     errors.add("Statement of truth must be accepted by the person making the application");
         // }
 
-        return errors;
+        return new ArrayList<>();
     }
 
     public static List<String> validateIssue(CaseData caseData) {
@@ -46,5 +47,5 @@ public final class ApplicationValidation {
             validateBasicCase(caseData)
         );
     }
-    
+
 }
