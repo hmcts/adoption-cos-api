@@ -1,27 +1,23 @@
 package uk.gov.hmcts.reform.adoption.common.notification;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
 import uk.gov.hmcts.reform.adoption.notification.ApplicantNotification;
-import uk.gov.hmcts.reform.adoption.notification.CommonContent;
 import uk.gov.hmcts.reform.adoption.notification.NotificationService;
 
 import java.util.HashMap;
 
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.TEST_EMAIL;
 
+@Component
+@Slf4j
 public class ApplicantIssuedNotification implements ApplicantNotification {
 
     @Autowired
     NotificationService notificationService;
-
-    @Autowired
-    private CommonContent commonContent;
-
-    @Autowired
-    private EmailTemplatesConfig config;
 
     @Override
     public void sendToApplicant1(final CaseData caseData, final Long caseId) {
