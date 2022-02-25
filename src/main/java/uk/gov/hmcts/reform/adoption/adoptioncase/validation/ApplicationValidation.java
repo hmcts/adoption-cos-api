@@ -27,7 +27,7 @@ public final class ApplicationValidation {
     }
 
     public static List<String> validateSubmission(Application application) {
-        List<String> errors = new ArrayList<>();
+        //List<String> errors = new ArrayList<>();
 
         // if (!application.hasBeenPaidFor()) {
         // TODO to be enabled after submission has been enabled
@@ -39,7 +39,7 @@ public final class ApplicationValidation {
         //     errors.add("Statement of truth must be accepted by the person making the application");
         // }
 
-        return errors;
+        return new ArrayList<>();
     }
 
     public static List<String> validateIssue(CaseData caseData) {
