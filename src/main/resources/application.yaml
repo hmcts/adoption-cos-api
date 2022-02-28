@@ -40,7 +40,7 @@ uk:
           welsh:
             TEST_EMAIL: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
             SAVE_SIGN_OUT: ''
-            APPLICATION_SUBMITTED: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
+            APPLICATION_SUBMITTED: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
 
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
