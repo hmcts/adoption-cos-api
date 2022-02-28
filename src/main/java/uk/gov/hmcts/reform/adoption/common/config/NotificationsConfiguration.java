@@ -14,8 +14,6 @@ public class NotificationsConfiguration {
         @Value("${uk.gov.notify.api.key}") String apiKey,
         @Value("${uk.gov.notify.api.baseUrl}") final String baseUrl
     ) {
-
-        log.info("uk.gov.notify.api.key" + apiKey);
         return new NotificationClient(apiKey, baseUrl);
     }
 }
