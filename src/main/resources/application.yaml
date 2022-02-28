@@ -13,7 +13,7 @@ management:
 
 spring:
   config:
-    import: "optional:configtree:/mnt/secrets/"
+    import: "optional:configtree:/mnt/secrets/adoption/"
   application:
     name: Adoption COS API
   main:
