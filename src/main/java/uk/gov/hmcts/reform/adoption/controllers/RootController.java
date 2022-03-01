@@ -18,6 +18,9 @@ public class RootController {
     @Value("azure.application-insights.instrumentation-key1")
     String appInsights;
 
+    @Value("azure.application-insights.instrumentation-key")
+    String appInsightsk;
+
     /**
      * Root GET endpoint.
      *
@@ -30,6 +33,6 @@ public class RootController {
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
         return ok("Welcome to adoption-cos-api RootController: " + System.getenv("APP_INSIGHTS_KEY")
-                      + ":" + appInsights);
+                      + "key1:" + appInsights + " key: "+appInsightsk);
     }
 }
