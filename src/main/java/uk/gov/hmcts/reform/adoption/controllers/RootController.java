@@ -32,7 +32,7 @@ public class RootController {
      */
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok("Welcome to adoption-cos-api RootController: " + System.getenv("APP_INSIGHTS_KEY")
+        return ok("Welcome to adoption-cos-api RootController: " + System.getenv("devApplicationInsightsInstrumentKey")
                       + "key1:" + appInsights + " key: " + appInsightsk);
     }
 }
