@@ -29,6 +29,6 @@ public class RootController {
      */
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok("Welcome to adoption-cos-api RootController: " + appInsights);
+        return ok("Welcome to adoption-cos-api RootController: " + System.getenv("APP_INSIGHTS_KEY"));
     }
 }
