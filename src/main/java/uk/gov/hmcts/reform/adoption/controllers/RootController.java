@@ -1,8 +1,12 @@
 package uk.gov.hmcts.reform.adoption.controllers;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.reform.adoption.notification.ApplicationSubmittedNotification;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -10,7 +14,14 @@ import static org.springframework.http.ResponseEntity.ok;
  * Default endpoints per application.
  */
 @RestController
+@Slf4j
 public class RootController {
+
+    @Autowired
+    private ApplicationSubmittedNotification applicationSubmittedNotification;
+
+    @Value("azure.application-insights.instrumentation-key")
+    String appInsights;
 
     /**
      * Root GET endpoint.
@@ -23,6 +34,7 @@ public class RootController {
      */
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
+        log.info("AppInsights: "+ appInsights);
         return ok("Welcome to adoption-cos-api RootController");
     }
 }
