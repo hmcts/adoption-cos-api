@@ -34,6 +34,6 @@ public class RootController {
      */
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok("Welcome to adoption-cos-api RootController: "+ appInsights);
+        return ok("Welcome to adoption-cos-api RootController: " + appInsights);
     }
 }
