@@ -20,7 +20,7 @@ spring:
     allow-bean-definition-overriding: true
 azure:
   application-insights:
-    instrumentation-key: ${APP_INSIGHTS_KEY}
+    instrumentation-key: ${APP_INSIGHTS_KEY:DUMMY}
 
 uk:
   gov:
