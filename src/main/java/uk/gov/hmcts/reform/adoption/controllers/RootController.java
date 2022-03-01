@@ -15,7 +15,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @Slf4j
 public class RootController {
 
-    @Value("azure.application-insights.instrumentation-key")
+    @Value("azure.application-insights.instrumentation-key1")
     String appInsights;
 
     /**
@@ -29,6 +29,7 @@ public class RootController {
      */
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok("Welcome to adoption-cos-api RootController: " + System.getenv("APP_INSIGHTS_KEY"));
+        return ok("Welcome to adoption-cos-api RootController: " + System.getenv("APP_INSIGHTS_KEY")
+                      + ":" + appInsights);
     }
 }

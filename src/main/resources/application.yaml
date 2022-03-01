@@ -22,6 +22,11 @@ azure:
   application-insights:
     instrumentation-key: ${APP_INSIGHTS_KEY:DUMMY}
 
+
+azure:
+  application-insights:
+    instrumentation-key1: ${APP_INSIGHTS_KEY:DUMMY}
+
 uk:
   gov:
     notify:
