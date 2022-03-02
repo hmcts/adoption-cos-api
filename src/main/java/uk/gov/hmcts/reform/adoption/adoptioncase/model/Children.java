@@ -63,4 +63,7 @@ public class Children {
         typeParameterOverride = "Gender"
     )
     private Gender sexAtBirth;
+
+    @CCD(label = "Other sex at birth")
+    private String otherSexAtBirth;
 }
