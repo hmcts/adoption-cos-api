@@ -261,6 +261,24 @@ public class CaseData {
     )
     private String applicant1CannotUpload;
 
+    @CCD(
+        label = "Applicant can not upload",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo findFamilyCourt;
+
+    @CCD(
+        label = "Family court name",
+        access = {DefaultAccess.class}
+    )
+    private String familyCourtName;
+
+    @CCD(
+        label = "Family court email",
+        access = {DefaultAccess.class}
+    )
+    private String familyCourtEmailId;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);
