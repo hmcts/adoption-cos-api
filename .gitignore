@@ -3,6 +3,8 @@
 !gradle/wrapper/gradle-wrapper.jar
 *.class
 bin/main/application.yaml
+bin/functionalTest/application.properties
+bin/test/task-list-markdown.md
 
 ### STS ###
 .apt_generated

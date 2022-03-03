@@ -3,7 +3,7 @@ IDAM_API_BASE_URL=https://idam-api.aat.platform.hmcts.net
 SERVICE_AUTH_PROVIDER_API_BASE_URL=http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 CCD_BASE_URL=http://ccd-data-store-api-aat.service.core-compute-aat.internal
 OAUTH2_CLIENT_SECRET=$(az keyvault secret show --vault-name adoption-aat -o tsv --query value --name idam-secret)
-REDIRECT_URI=http://localhost:3000/oauth2/callback
+REDIRECT_URI=http://localhost:4550/receiver
 
 <<USERCONFIG
     Configure users in below format
@@ -35,7 +35,7 @@ for user in $users; do
   password=$(echo $user | cut -f2 -d'|')
 
   echo "Generating Idam token for user $email"
-  code=$(curl --insecure --fail --show-error --silent -X POST --user "$email:$password" "${IDAM_API_BASE_URL}/oauth2/authorize?redirect_uri=${REDIRECT_URI}&response_type=code&client_id=adoption-web" -d "" | docker run --rm --interactive stedolan/jq -r .code)
+  code=$(curl --insecure --fail --show-error --silent -X POST --user "$email:$password" "${IDAM_API_BASE_URL}/oauth2/authorize?redirect_uri=${REDIRECT_URI}&response_type=code&client_id=adoption-cos-api" -d "" | docker run --rm --interactive stedolan/jq -r .code)
   idamToken=$(curl --insecure --fail --show-error --silent -X POST -H "Content-Type: application/x-www-form-urlencoded" --user "adoption:${OAUTH2_CLIENT_SECRET}" "${IDAM_API_BASE_URL}/oauth2/token?code=${code}&redirect_uri=${REDIRECT_URI}&grant_type=authorization_code" -d "" | docker run --rm --interactive stedolan/jq -r .access_token)
 
   echo "Retrieving user details for user $email"

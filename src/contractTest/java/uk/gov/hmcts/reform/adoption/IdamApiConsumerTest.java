@@ -52,7 +52,7 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
             .path("/o/token")
             .method(HttpMethod.POST.toString())
             .body("redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback"
-                      + "&client_id=adoption-web"
+                      + "&client_id=adoption-cos-api"
                       + "&grant_type=password"
                       + "&username=" + caseworkerUsername
                       + "&password=" + caseworkerPwd
@@ -89,7 +89,7 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
     private TokenRequest buildTokenRequestMap() {
         return new TokenRequest(
-            "adoption-web",
+            "adoption-cos-api",
             clientSecret,
             "password",
             "http://www.dummy-pact-service.com/callback",
