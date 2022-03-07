@@ -13,4 +13,5 @@ def component = "spring-boot-template"
 
 withNightlyPipeline(type, product, component) {
   enableSlackNotifications('#adoption-tech')
+  enableFortifyScan()
 }
