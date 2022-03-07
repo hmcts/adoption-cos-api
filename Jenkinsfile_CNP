@@ -62,7 +62,7 @@ withPipeline(type, product, component) {
     enableAksStagingDeployment()
     disableLegacyDeployment()
     overrideVaultEnvironments(vaultOverrides)
-  enableFortifyScan()
+    enableFortifyScan()
     loadVaultSecrets(secrets)
     syncBranchesWithMaster(['demo', 'perftest'])
     enableSlackNotifications('#adoption-tech')
@@ -72,6 +72,9 @@ withPipeline(type, product, component) {
       if(params.environment != 'prod') {
           enableHighLevelDataSetup()
       }
+    }
+    after('fortify-scan') {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
 
     after('test') {
