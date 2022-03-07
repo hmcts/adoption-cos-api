@@ -13,7 +13,7 @@ management:
 
 spring:
   config:
-    import: "optional:configtree:/mnt/secrets/"
+    import: "optional:configtree:/mnt/secrets/adoption/"
   application:
     name: Adoption COS API
   main:
@@ -36,9 +36,11 @@ uk:
           english:
             TEST_EMAIL: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
             SAVE_SIGN_OUT: ''
+            APPLICATION_SUBMITTED: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
           welsh:
             TEST_EMAIL: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
             SAVE_SIGN_OUT: ''
+            APPLICATION_SUBMITTED: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
 
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
@@ -83,6 +85,9 @@ prd:
 
 send-letter:
   url: ${SEND_LETTER_SERVICE_BASEURL:http://rpe-send-letter-service-aat.service.core-compute-aat.internal}
+
+case_document_am:
+  url: ${CASE_DOCUMENT_AM_BASEURL:http://ccd-case-document-am-api-aat.service.core-compute-aat.internal}
 
 aos_pack:
   due_date_offset_days: ${AOS_PACK_DUE_DATE_OFFSET_DAYS:16}
