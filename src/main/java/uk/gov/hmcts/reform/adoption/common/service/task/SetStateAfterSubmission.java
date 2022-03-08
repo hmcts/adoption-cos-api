@@ -11,8 +11,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 //TODO
 // import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingDocuments;
 // import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingHWFDecision;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+
 
 @Component
 @Slf4j
@@ -32,8 +33,7 @@ public class SetStateAfterSubmission implements CaseTask {
         // } else if (application.hasAwaitingApplicant1Documents()) {
         //   caseDetails.setState(AwaitingDocuments);
         } else {
-            //TODO Change it to Submitted once we have application submission flow
-            caseDetails.setState(Draft);
+            caseDetails.setState(Submitted);
         }
 
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());

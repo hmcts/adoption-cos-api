@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION_RESPONSE_DATE;
@@ -27,10 +29,11 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         log.info("Sending application submitted notification to applicant 1 for case : {}", id);
 
         notificationService.sendEmail(
-            caseData.getApplicant1().getEmail(),
+            "gaurav.tomar@hmcts.net",
             APPLICATION_SUBMITTED,
             templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2()),
-            caseData.getApplicant1().getLanguagePreference()
+            caseData.getApplicant1().getLanguagePreference() != null
+                ? caseData.getApplicant1().getLanguagePreference() : LanguagePreference.ENGLISH
         );
     }
 
@@ -54,13 +57,16 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             caseData.getApplicant1().getEmail(),
             APPLICATION_SUBMITTED,
             templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2()),
-            caseData.getApplicant1().getLanguagePreference()
+            caseData.getApplicant1().getLanguagePreference() != null
+                ? caseData.getApplicant1().getLanguagePreference() : LanguagePreference.ENGLISH
         );
     }
 
     private Map<String, String> templateVars(CaseData caseData, Long id, Applicant applicant, Applicant partner) {
         Map<String, String> templateVars = commonContent.mainTemplateVars(caseData, id, applicant, partner);
-        templateVars.put(SUBMISSION_RESPONSE_DATE, caseData.getDueDate().format(DATE_TIME_FORMATTER));
+        templateVars.put(SUBMISSION_RESPONSE_DATE, caseData.getDueDate() != null
+                         ? caseData.getDueDate().format(DATE_TIME_FORMATTER) : LocalDate.now().format(DATE_TIME_FORMATTER));
+        // TODO: Remove the due date once it is implemented
         return templateVars;
     }
 }

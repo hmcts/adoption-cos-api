@@ -46,5 +46,5 @@ public final class ApplicationValidation {
             validateBasicCase(caseData)
         );
     }
-    
+
 }

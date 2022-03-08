@@ -15,8 +15,8 @@ public enum Gender implements HasLabel {
     @JsonProperty("female")
     FEMALE("Female"),
 
-    @JsonProperty("intersex")
-    INTERSEX("Intersex"),
+    @JsonProperty("other")
+    OTHER("Other"),
 
     @JsonProperty("notGiven")
     NOT_GIVEN("Not given");
