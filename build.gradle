@@ -176,11 +176,27 @@ pmd {
 }
 
 jacocoTestReport {
-  executionData(test, integration)
+  executionData(test)
   reports {
-    xml.getRequired().set(true)
-    csv.getRequired().set(false)
+    xml.enabled = true
+    csv.enabled = false
     xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+  }
+}
+
+jacoco {
+  toolVersion = "0.8.5"
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      limit {
+        counter = 'LINE'
+        value = 'COVEREDRATIO'
+        minimum = 0.0
+      }
+    }
   }
 }
 
@@ -201,22 +217,28 @@ dependencyCheck {
 project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 def sonarExclusions = [
-  '**/uk/gov/hmcts/reform/adoption/common/ccd/**',
-  '**/uk/gov/hmcts/reform/adoption/Application.java',
-  '**/uk/gov/hmcts/reform/adoption/common/config/**',
-  '**/uk/gov/hmcts/reform/adoption/adoption/**',
-  '**/uk/gov/hmcts/reform/adoption/adoptioncase/**',
-  '**/uk/gov/hmcts/reform/adoption/controllers/**',
-  '**/uk/gov/hmcts/reform/adoption/idam/**',
+  "src/main/java/uk/gov/hmcts/reform/adoption/common/ccd/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/Application.java," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/common/config/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/caseworker/event/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/event/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/model/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/search/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/service/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/tab/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/task/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/workbasket/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/controllers/**," +
+  "src/main/java/uk/gov/hmcts/reform/adoption/idam/**"
 ]
 
 sonarqube {
   properties {
     property "sonar.projectName", "Adoption :: adoption-cos-api"
     property "sonar.projectKey", "uk.gov.hmcts.reform:adoption-cos-api"
-    property "sonar.exclusions", "**/*" //TODO temporary
+    property "sonar.exclusions", sonarExclusions
+    property "sonar.coverage.exclusions", sonarExclusions
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
-    property "sonar.coverage.exclusions", "**/*" //TODO temporary
   }
 }
 
