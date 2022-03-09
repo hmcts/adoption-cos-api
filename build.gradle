@@ -220,7 +220,7 @@ def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/common/ccd/**',
   '**/uk/gov/hmcts/reform/adoption/Application.java',
   '**/uk/gov/hmcts/reform/adoption/common/config/**',
-  '**/uk/gov/hmcts/reform/adoption/adoptioncase/caseworker/event/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/caseworker/**',
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/event/**',
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/model/**',
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/search/**',
@@ -228,8 +228,16 @@ def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/tab/**',
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/task/**',
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/workbasket/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/Adoption.java',
+  '**/uk/gov/hmcts/reform/adoption/payment/**',
   '**/uk/gov/hmcts/reform/adoption/controllers/**',
-  '**/uk/gov/hmcts/reform/adoption/idam/**'
+  '**/uk/gov/hmcts/reform/adoption/idam/**',
+  '**/uk/gov/hmcts/reform/adoption/common/AddSystemUpdateRole.java',
+  '**/uk/gov/hmcts/reform/adoption/common/notification/**',
+  '**/uk/gov/hmcts/reform/adoption/document/content/**',
+  '**/uk/gov/hmcts/reform/adoption/document/DocumentConstants.java',
+  '**/uk/gov/hmcts/reform/adoption/document/DocumentInfo.java',
+  '**/uk/gov/hmcts/reform/adoption/document/DocumentType.java'
 ]
 
 sonarqube {
