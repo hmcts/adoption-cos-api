@@ -434,7 +434,7 @@ dependencies {
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
 
-  cftlibImplementation 'com.github.hmcts:rse-cft-lib:0.10.2'
+  cftlibImplementation 'com.github.hmcts:rse-cft-lib:0.14.1'
 
 }
 
