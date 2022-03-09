@@ -237,7 +237,17 @@ def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/document/content/**',
   '**/uk/gov/hmcts/reform/adoption/document/DocumentConstants.java',
   '**/uk/gov/hmcts/reform/adoption/document/DocumentInfo.java',
-  '**/uk/gov/hmcts/reform/adoption/document/DocumentType.java'
+  '**/uk/gov/hmcts/reform/adoption/document/DocumentType.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/FormatUtil.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/CommonContent.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/ApplicantNotification.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/NotificationDispatcher.java',
+  '**/uk/gov/hmcts/reform/adoption/common/service/task/SetStateAfterSubmission.java',
+  '**/uk/gov/hmcts/reform/adoption/exception/**',
+  '**/uk/gov/hmcts/reform/adoption/document/BulkPrintService.java',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/validation/ApplicationValidation.java',
+  '**/uk/gov/hmcts/reform/adoption/config/SwaggerConfiguration.java'
+
 ]
 
 sonarqube {
@@ -434,7 +444,7 @@ dependencies {
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
 
-  cftlibImplementation 'com.github.hmcts:rse-cft-lib:0.10.2'
+  cftlibImplementation 'com.github.hmcts:rse-cft-lib:0.14.2'
 
 }
 
