@@ -38,6 +38,10 @@ import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_COURT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
 
 @Component
@@ -134,6 +138,19 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         Map<String, Object> templateVars = commonContent.mainTemplateVars(caseData, id, applicant1, applicant2);
         templateVars.put(SUBMISSION_RESPONSE_DATE, caseData.getDueDate() != null
             ? caseData.getDueDate().format(DATE_TIME_FORMATTER) : LocalDate.now().format(DATE_TIME_FORMATTER));
+        templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
+        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " " + caseData.getApplicant1().getLastName());
+        templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
+        if (caseData.getApplicant2() != null) {
+            templateVars.put(
+                APPLICANT_2_FULL_NAME,
+                caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
+            );
+            templateVars.put(HAS_SECOND_APPLICANT, YES);
+        } else {
+            templateVars.put(HAS_SECOND_APPLICANT, NO);
+            templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        }
 
         return templateVars;
     }
@@ -144,10 +161,10 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(DATE_SUBMITTED, Optional.ofNullable(caseData.getApplication().getDateSubmitted())
             .orElse(LocalDateTime.now()).format(DATE_TIME_FORMATTER));
-        int i = 0;
-        for (i = 1; i < 11; i++) {
-            templateVars.put(DOCUMENT_EXISTS + i, NO);
-            templateVars.put(DOCUMENT + i, StringUtils.EMPTY);
+        int count = 0;
+        for (count = 1; count < 11; count++) {
+            templateVars.put(DOCUMENT_EXISTS + count, NO);
+            templateVars.put(DOCUMENT + count, StringUtils.EMPTY);
         }
         templateVars.put(DOCUMENT_EXISTS_CHECK, NO);
 
@@ -169,14 +186,14 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 .map(item -> item.getDocumentFileId())
                 .collect(Collectors.toList());
 
-            i = 1;
+            count = 1;
             for (String item : uploadedDocumentsUrls) {
                 Resource uploadedDocument = dmClient.downloadBinary(authorisation, serviceAuthorization,
                                                                     UserRole.CASE_WORKER_SYSTEM.getRole(),
                                                                     systemUpdateUserName, item).getBody();
                 byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
-                templateVars.put(DOCUMENT_EXISTS + i, YES);
-                templateVars.put(DOCUMENT + i++, prepareUpload(uploadedDocumentContents));
+                templateVars.put(DOCUMENT_EXISTS + count, YES);
+                templateVars.put(DOCUMENT + count++, prepareUpload(uploadedDocumentContents));
             }
         }
         return templateVars;
