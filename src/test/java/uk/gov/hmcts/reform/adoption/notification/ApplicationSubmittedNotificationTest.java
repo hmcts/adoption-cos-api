@@ -82,6 +82,8 @@ class ApplicationSubmittedNotificationTest {
         caseData.setFamilyCourtName(StringUtils.EMPTY);
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
+        templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
+        templateVars.put(APPLICATION_REFERENCE, "1234-5678-9012-3456");
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
             + caseData.getApplicant1().getLastName());
         templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
