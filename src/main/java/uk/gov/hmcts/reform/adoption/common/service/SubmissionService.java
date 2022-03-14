@@ -35,7 +35,6 @@ public class SubmissionService {
             setStateAfterSubmission,
             setDateSubmitted,
             generateApplicationSummaryDocument
-            // setApplicant2Email,
         ).run(caseDetails);
         return CaseTaskRunner.caseTasks(sendCitizenSubmissionNotifications).run(updatedCaseDetails);
     }
