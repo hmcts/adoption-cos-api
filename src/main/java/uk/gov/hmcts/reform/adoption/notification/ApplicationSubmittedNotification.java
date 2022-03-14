@@ -178,7 +178,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         if (adoptionDocument != null) {
             Resource document = dmClient.downloadBinary(authorisation,
                                                         serviceAuthorization,
-                                                        UserRole.CASE_WORKER_SYSTEM.getRole(),
+                                                        UserRole.CASE_WORKER.getRole(),
                                                         systemUpdateUserName,
                                                         adoptionDocument.getDocumentFileId()
             ).getBody();
@@ -194,7 +194,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             count = 1;
             for (String item : uploadedDocumentsUrls) {
                 Resource uploadedDocument = dmClient.downloadBinary(authorisation, serviceAuthorization,
-                                                                    UserRole.CASE_WORKER_SYSTEM.getRole(),
+                                                                    UserRole.CASE_WORKER.getRole(),
                                                                     systemUpdateUserName, item).getBody();
                 if (uploadedDocument != null) {
                     byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
