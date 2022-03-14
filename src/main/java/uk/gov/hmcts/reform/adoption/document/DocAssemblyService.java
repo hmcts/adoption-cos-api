@@ -64,7 +64,8 @@ public class DocAssemblyService {
         return new DocumentInfo(
             docAssemblyResponse.getRenditionOutputLocation(),
             filename + PDF_EXT,
-            docAssemblyResponse.getBinaryFilePath()
+            docAssemblyResponse.getBinaryFilePath(),
+            docAssemblyResponse.getFileId()
         );
     }
 }

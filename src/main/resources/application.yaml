@@ -122,6 +122,8 @@ docmosis:
   templates:
     english:
       SAMPLE_DOCUMENT: Dummy_Template.docx #TODO: update template once available
+      ADOPTION_APPLICATION_SUMMARY: ADO-A58-Draft.docx
     welsh:
       SAMPLE_DOCUMENT: Dummy_Template.docx #TODO: update template once available
+      ADOPTION_APPLICATION_SUMMARY: ADO-A58-Draft.docx
 

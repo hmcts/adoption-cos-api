@@ -21,11 +21,11 @@ public class NotificationService {
 
     @Autowired
     private EmailTemplatesConfig emailTemplatesConfig;
-    
+
     public void sendEmail(
         String destinationAddress,
         EmailTemplateName template,
-        Map<String, String> templateVars,
+        Map<String, Object> templateVars,
         LanguagePreference languagePreference
     ) {
         String referenceId = UUID.randomUUID().toString();
@@ -57,4 +57,5 @@ public class NotificationService {
             throw new NotificationException(notificationClientException);
         }
     }
+
 }
