@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-public class NotificationConstants {
+public final class NotificationConstants {
 
     public static final String APPLICANT_1_FULL_NAME = "applicant1FullName";
     public static final String HAS_SECOND_APPLICANT = "hasSecondApplicant";
