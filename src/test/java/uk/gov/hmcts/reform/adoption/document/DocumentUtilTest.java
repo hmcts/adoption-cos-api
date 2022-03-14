@@ -63,6 +63,7 @@ class DocumentUtilTest {
                 PDF_FILENAME,
                 DOC_BINARY_URL);
     }
+    
     @Test
     void shouldGenerateDocumentName() {
 
