@@ -6,4 +6,7 @@ public class NotificationConstants {
     public static final String HAS_SECOND_APPLICANT = "hasSecondApplicant";
     public static final String APPLICANT_2_FULL_NAME = "applicant2FullName";
     public static final String LOCAL_COURT_NAME = "localCourtName";
+
+    private NotificationConstants() {
+    }
 }
