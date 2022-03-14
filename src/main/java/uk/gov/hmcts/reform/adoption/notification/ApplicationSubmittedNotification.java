@@ -141,7 +141,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " " + caseData.getApplicant1().getLastName());
         templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
-        if (caseData.getApplicant2() != null) {
+        if (caseData.getApplicant2() != null && StringUtils.isNotBlank(caseData.getApplicant2().getEmailAddress())) {
             templateVars.put(
                 APPLICANT_2_FULL_NAME,
                 caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
