@@ -57,6 +57,12 @@ public class AdoptionDocument {
     )
     private DocumentType documentType;
 
+    @CCD(
+        label = "File Id",
+        hint = "DM Store file Id"
+    )
+    private String documentFileId;
+
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
     public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
@@ -64,12 +70,14 @@ public class AdoptionDocument {
                             @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
                             @JsonProperty("documentComment") String documentComment,
                             @JsonProperty("documentFileName") String documentFileName,
-                            @JsonProperty("documentType") DocumentType documentType) {
+                            @JsonProperty("documentType") DocumentType documentType,
+                            @JsonProperty("documentFileId") String documentFileId) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
         this.documentComment = documentComment;
         this.documentFileName = documentFileName;
         this.documentType = documentType;
+        this.documentFileId = documentFileId;
     }
 }

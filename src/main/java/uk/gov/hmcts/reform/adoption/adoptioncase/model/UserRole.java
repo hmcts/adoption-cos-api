@@ -15,6 +15,7 @@ public enum UserRole implements HasRole {
     DISTRICT_JUDGE("caseworker-adoption-judge", "CRU"),
     SUPER_USER("caseworker-adoption-superuser", "CRU"),
     SOLICITOR("caseworker-adoption-solicitor", "CRU"),
+    CASE_WORKER_SYSTEM("caseworker", "CRU"),
     CITIZEN("citizen", "CRUD"),
     CREATOR("[CREATOR]", "CRU");
 

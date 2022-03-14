@@ -20,7 +20,7 @@ public class ApplicantIssuedNotification implements ApplicantNotification {
     NotificationService notificationService;
 
     @Override
-    public void sendToApplicant1(final CaseData caseData, final Long caseId) {
+    public void sendToApplicants(final CaseData caseData, final Long caseId) {
         final String email = caseData.getApplicant1().getEmail();
         final LanguagePreference languagePreference = caseData.getApplicant1().getLanguagePreference();
         notificationService.sendEmail(

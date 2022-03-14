@@ -9,7 +9,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 import uk.gov.hmcts.reform.adoption.notification.ApplicationSubmittedNotification;
 import uk.gov.hmcts.reform.adoption.notification.NotificationDispatcher;
+import uk.gov.service.notify.NotificationClientException;
 
+import java.io.IOException;
 import java.util.EnumSet;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
@@ -36,7 +38,11 @@ public class SendCitizenSubmissionNotifications implements CaseTask {
 
         if (EnumSet.of(Submitted).contains(state)) {
             log.info("Sending application submitted notifications for case : {}", caseId);
-            notificationDispatcher.send(applicationSubmittedNotification, caseData, caseId);
+            try {
+                notificationDispatcher.send(applicationSubmittedNotification, caseData, caseId);
+            } catch (NotificationClientException | IOException e) {
+                log.error("Couldn't send notifications");
+            }
         }
 
         //log.info("Sending outstanding action notification if awaiting documents for case : {}", caseId);

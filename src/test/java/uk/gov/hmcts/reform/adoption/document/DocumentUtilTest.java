@@ -20,6 +20,7 @@ class DocumentUtilTest {
     private static final String URL = "url";
     private static final String FILENAME = "filename";
     private static final String BINARY_URL = "binaryUrl";
+    private static final String FILE_ID = "fileId";
 
     @Test
     void shouldConvertFromDocumentInfoToDocument() {
@@ -38,7 +39,8 @@ class DocumentUtilTest {
         return new DocumentInfo(
             DOC_URL,
             PDF_FILENAME,
-            DOC_BINARY_URL
+            DOC_BINARY_URL,
+            FILE_ID
         );
     }
 
