@@ -47,9 +47,6 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     @Value("${idam.systemupdate.username}")
     private String systemUpdateUserName;
 
-    @Value("#{${pilot-courts}}")
-    private Map<String, String> pilotCourts;
-
     @Autowired
     IdamService idamService;
 
