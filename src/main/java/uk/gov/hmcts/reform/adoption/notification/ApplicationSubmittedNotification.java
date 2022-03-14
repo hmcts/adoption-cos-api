@@ -175,12 +175,17 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY))
             .findFirst().orElse(null);
 
-        Resource document = dmClient.downloadBinary(authorisation, serviceAuthorization, UserRole.CASE_WORKER_SYSTEM.getRole(),
-                                                    systemUpdateUserName, adoptionDocument.getDocumentFileId()).getBody();
-        byte[] documentContents = document.getInputStream().readAllBytes();
+        if (adoptionDocument != null) {
+            Resource document = dmClient.downloadBinary(authorisation,
+                                                        serviceAuthorization,
+                                                        UserRole.CASE_WORKER_SYSTEM.getRole(),
+                                                        systemUpdateUserName,
+                                                        adoptionDocument.getDocumentFileId()
+            ).getBody();
+            byte[] documentContents = document != null ? document.getInputStream().readAllBytes() : null;
 
-        templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
-
+            templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
+        }
         if (caseData.getApplicant1DocumentsUploaded() != null) {
             List<String> uploadedDocumentsUrls = caseData.getApplicant1DocumentsUploaded().stream().map(item -> item.getValue())
                 .map(item -> item.getDocumentFileId())
@@ -191,9 +196,11 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 Resource uploadedDocument = dmClient.downloadBinary(authorisation, serviceAuthorization,
                                                                     UserRole.CASE_WORKER_SYSTEM.getRole(),
                                                                     systemUpdateUserName, item).getBody();
-                byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
-                templateVars.put(DOCUMENT_EXISTS + count, YES);
-                templateVars.put(DOCUMENT + count++, prepareUpload(uploadedDocumentContents));
+                if (uploadedDocument != null) {
+                    byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
+                    templateVars.put(DOCUMENT_EXISTS + count, YES);
+                    templateVars.put(DOCUMENT + count++, prepareUpload(uploadedDocumentContents));
+                }
             }
         }
         return templateVars;

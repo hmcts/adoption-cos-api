@@ -12,8 +12,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 import java.util.Map;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_SUMMARY;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_SUMMARY;
@@ -32,19 +34,28 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
     @Override
     public CaseDetails<CaseData, State> apply(CaseDetails<CaseData, State> caseDetails) {
         final CaseData caseData = caseDetails.getData();
+        final Long caseId = caseDetails.getId();
         final LanguagePreference lang = caseData.getApplicant1().getLanguagePreference();
-        @SuppressWarnings("unchecked")
-        Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+        final State state = caseDetails.getState();
 
-        caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
-                                                                APPLICATION_SUMMARY,
-                                                                templateContent,
-                                                                caseDetails.getId(),
-                                                                ADOPTION_APPLICATION_SUMMARY,
-                                                                lang != null ? lang : LanguagePreference.ENGLISH,
-                                                                formatDocumentName(caseDetails.getId(), ADOPTION_APPLICATION_FILE_NAME,
-                                                                                   LocalDateTime.now()
-                                                                ));
+        if (EnumSet.of(Submitted).contains(state)) {
+            log.info("Generating summary document for caseId: {}", caseId);
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+
+            caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
+                                                                    APPLICATION_SUMMARY,
+                                                                    templateContent,
+                                                                    caseDetails.getId(),
+                                                                    ADOPTION_APPLICATION_SUMMARY,
+                                                                    lang != null ? lang : LanguagePreference.ENGLISH,
+                                                                    formatDocumentName(caseDetails.getId(), ADOPTION_APPLICATION_FILE_NAME,
+                                                                                       LocalDateTime.now()));
+
+        } else {
+            log.error("Could not generate summary document for caseId: {}", caseId);
+        }
 
         return caseDetails;
     }
