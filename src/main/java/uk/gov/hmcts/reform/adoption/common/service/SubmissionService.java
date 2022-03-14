@@ -31,12 +31,12 @@ public class SubmissionService {
 
     public CaseDetails<CaseData, State> submitApplication(final CaseDetails<CaseData, State> caseDetails) {
 
-        return CaseTaskRunner.caseTasks(
+        CaseDetails<CaseData, State> updatedCaseDetails = CaseTaskRunner.caseTasks(
             setStateAfterSubmission,
             setDateSubmitted,
-            generateApplicationSummaryDocument,
+            generateApplicationSummaryDocument
             // setApplicant2Email,
-            sendCitizenSubmissionNotifications
             ).run(caseDetails);
+        return CaseTaskRunner.caseTasks(sendCitizenSubmissionNotifications).run(updatedCaseDetails);
     }
 }
