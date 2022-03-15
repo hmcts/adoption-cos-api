@@ -52,7 +52,7 @@ public class CaseDataDocumentService {
         log.info("Adding document to case data for templateId : {} case id: {}", templateId, caseId);
 
 
-        log.info("Document url: ", documentInfo);
+        log.info("Document url: {}", documentInfo.getFileId());
 
         ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
             .id(documentIdProvider.documentId())
@@ -60,7 +60,7 @@ public class CaseDataDocumentService {
             .build();
 
         try {
-            log.info("Recieved generated document: ", adoptionDocument.getValue().toString());
+            log.info("Recieved generated document: {}", adoptionDocument.getValue().toString());
         } catch (Exception e) {
             log.info(e.getMessage());
         }
