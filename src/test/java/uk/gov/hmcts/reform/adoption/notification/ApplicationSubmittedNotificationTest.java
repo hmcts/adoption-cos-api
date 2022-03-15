@@ -102,13 +102,18 @@ class ApplicationSubmittedNotificationTest {
 
         notification.sendToApplicants(caseData, 1234567890123456L);
 
-        verify(notificationService, times(2)).sendEmail(
+        verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
+        caseData.getApplicant1().setLanguagePreference(null);
+        caseData.getApplicant2().setLanguagePreference(null);
+
+        notification.sendToApplicants(caseData, 1234567890123456L);
+
+        verify(notificationService, times(4)).sendEmail(
             eq(TEST_USER_EMAIL),
             eq(APPLICANT_APPLICATION_SUBMITTED),
             eq(templateVars),
             eq(ENGLISH)
         );
-        verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
     }
 
     @Test
@@ -143,10 +148,12 @@ class ApplicationSubmittedNotificationTest {
             .thenReturn(getMainTemplateVars());
 
         notification.sendToLocalAuthority(data, 1234567890123456L);
+        data.getApplicant1().setLanguagePreference(null);
+        notification.sendToLocalAuthority(data, 1234567890123456L);
         Object submissionResponseDate = new String("21 April 2021");
         Object applicationReference = new String("1234-5678-9012-3456");
 
-        verify(notificationService).sendEmail(
+        verify(notificationService, times(2)).sendEmail(
             eq(TEST_USER_EMAIL),
             eq(APPLICANT_APPLICATION_SUBMITTED),
             argThat(allOf(
@@ -155,7 +162,7 @@ class ApplicationSubmittedNotificationTest {
             )),
             eq(ENGLISH)
         );
-        verify(commonContent).mainTemplateVars(data, 1234567890123456L, data.getApplicant1(), data.getApplicant2());
+        verify(commonContent, times(2)).mainTemplateVars(data, 1234567890123456L, data.getApplicant1(), data.getApplicant2());
     }
 
     @Test
