@@ -11,6 +11,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
@@ -160,7 +161,8 @@ class ApplicationSubmittedNotificationTest {
     void shouldSendEmailToLocalCourt() throws NotificationClientException, IOException {
         CaseData data = caseData();
         data.setHyphenatedCaseRef("1234-1234-1234-1234");
-        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY).build();
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY)
+            .documentLink(Document.builder().url(StringUtils.EMPTY).build()).build();
         ListValue<AdoptionDocument> listValue = new ListValue<>();
         listValue.setValue(adoptionDocument);
         List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
