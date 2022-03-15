@@ -93,6 +93,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
         try {
             final CaseDetails<CaseData, State> notificationSentUpdatedDetails = sendNotificationService.sendNotifications(
                 updatedCaseDetails);
+            log.info("logging for utilization check: ", notificationSentUpdatedDetails);
         } catch (Exception e) {
             log.error("Test for adoption data: ", e.getMessage());
         }
