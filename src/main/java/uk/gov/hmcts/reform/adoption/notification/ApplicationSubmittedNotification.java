@@ -176,7 +176,8 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             .findFirst().orElse(null);
 
         if (adoptionDocument != null) {
-            log.info("Test for adoption document: ", adoptionDocument.getDocumentFileName(), adoptionDocument.getDocumentFileId());
+            log.info("Test for adoption document: {} and fileID: {}", adoptionDocument.getDocumentFileName(),
+                     adoptionDocument.getDocumentFileId());
             Resource document = dmClient.downloadBinary(authorisation,
                                                         serviceAuthorization,
                                                         UserRole.CASE_WORKER.getRole(),
