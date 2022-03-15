@@ -204,6 +204,10 @@ class ApplicationSubmittedNotificationTest {
 
         notification.sendToLocalCourt(data, 1234567890123456L);
 
+        data.setApplicant2(null);
+        notification.sendToLocalCourt(data, 1234567890123456L);
+        data.setApplicant2(Applicant.builder().emailAddress(null).build());
+        notification.sendToLocalCourt(data, 1234567890123456L);
         verify(notificationService).sendEmail(any(), any(), any(), any());
     }
 
