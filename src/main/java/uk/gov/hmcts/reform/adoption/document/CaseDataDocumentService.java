@@ -57,7 +57,8 @@ public class CaseDataDocumentService {
             .id(documentIdProvider.documentId())
             .value(adoptionDocumentFrom(documentInfo, documentType))
             .build();
-            log.info("Recieved generated document: ", adoptionDocument.getValue().getDocumentLink().getUrl());
+
+        log.info("Recieved generated document: ", adoptionDocument.getValue().getDocumentLink().getUrl());
 
         caseData.addToDocumentsGenerated(adoptionDocument);
     }
