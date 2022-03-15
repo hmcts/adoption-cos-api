@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
@@ -184,7 +185,7 @@ class ApplicationSubmittedNotificationTest {
     @Test
     void shouldSendEmailToLocalCourtToApplicant1Only() throws NotificationClientException, IOException {
         CaseData data = caseData();
-        data.setApplicant2(null);
+        data.setApplicant2(Applicant.builder().emailAddress(TEST_USER_EMAIL).build());
         data.setHyphenatedCaseRef("1234-1234-1234-1234");
         AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY)
             .documentLink(Document.builder().url(StringUtils.EMPTY).build()).build();
