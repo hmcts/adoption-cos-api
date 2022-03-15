@@ -131,7 +131,6 @@ public class RootController {
 
         @SuppressWarnings("unchecked")
         Map<String, Object> map = objectMapper.convertValue(caseData, Map.class);
-        System.out.println(objectMapper.writeValueAsString(map));
 
         caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
                                                                 DocumentType.APPLICATION_SUMMARY,
