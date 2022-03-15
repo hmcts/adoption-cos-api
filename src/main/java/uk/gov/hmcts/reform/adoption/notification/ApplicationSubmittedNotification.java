@@ -191,7 +191,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         }
         if (caseData.getApplicant1DocumentsUploaded() != null) {
             List<String> uploadedDocumentsUrls = caseData.getApplicant1DocumentsUploaded().stream().map(item -> item.getValue())
-                .map(item -> item.getDocumentFileId())
+                .map(item -> StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/"))
                 .collect(Collectors.toList());
 
             count = 1;
