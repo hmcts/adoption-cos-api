@@ -12,6 +12,4 @@ public class DocumentInfo {
     private final String filename;
 
     private final String binaryUrl;
-
-    private final String fileId;
 }

@@ -2,13 +2,12 @@ package uk.gov.hmcts.reform.adoption.document;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.document.content.DocmosisTemplateProvider;
 import uk.gov.hmcts.reform.adoption.document.model.DocAssemblyRequest;
 import uk.gov.hmcts.reform.adoption.document.model.DocAssemblyResponse;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.Map;
@@ -65,8 +64,7 @@ public class DocAssemblyService {
         return new DocumentInfo(
             docAssemblyResponse.getRenditionOutputLocation(),
             filename + PDF_EXT,
-            docAssemblyResponse.getRenditionOutputLocation() + "/binary",
-            StringUtils.substringAfterLast(docAssemblyResponse.getRenditionOutputLocation(), "/")
+            docAssemblyResponse.getRenditionOutputLocation() + "/binary"
         );
     }
 }

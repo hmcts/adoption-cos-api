@@ -175,13 +175,14 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY))
             .findFirst().orElse(null);
 
-        if (adoptionDocument != null) {
-            log.info("Test for adoption document: ", adoptionDocument.getDocumentFileName(), adoptionDocument.getDocumentFileId());
+        if (adoptionDocument != null && adoptionDocument.getDocumentLink() != null) {
+            String resourceUrl = StringUtils.substringAfterLast(adoptionDocument.getDocumentLink().getUrl(), "/");
+            log.info("Test for adoption document: ", adoptionDocument.getDocumentFileName(), resourceUrl);
             Resource document = dmClient.downloadBinary(authorisation,
                                                         serviceAuthorization,
                                                         UserRole.CASE_WORKER.getRole(),
                                                         systemUpdateUserName,
-                                                        adoptionDocument.getDocumentFileId()
+                                                        resourceUrl
             ).getBody();
             byte[] documentContents = document != null ? document.getInputStream().readAllBytes() : null;
 
@@ -189,18 +190,22 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         }
         if (caseData.getApplicant1DocumentsUploaded() != null) {
             List<String> uploadedDocumentsUrls = caseData.getApplicant1DocumentsUploaded().stream().map(item -> item.getValue())
-                .map(item -> item.getDocumentFileId())
+                .map(item -> item.getDocumentLink() != null ? item.getDocumentLink().getUrl() : null)
                 .collect(Collectors.toList());
 
             count = 1;
             for (String item : uploadedDocumentsUrls) {
-                Resource uploadedDocument = dmClient.downloadBinary(authorisation, serviceAuthorization,
-                                                                    UserRole.CASE_WORKER.getRole(),
-                                                                    systemUpdateUserName, item).getBody();
-                if (uploadedDocument != null) {
-                    byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
-                    templateVars.put(DOCUMENT_EXISTS + count, YES);
-                    templateVars.put(DOCUMENT + count++, prepareUpload(uploadedDocumentContents));
+                if (item != null) {
+                    String resourceUrl = StringUtils.substringAfterLast(item, "/");
+                    Resource uploadedDocument = dmClient.downloadBinary(authorisation, serviceAuthorization,
+                                                                        UserRole.CASE_WORKER.getRole(),
+                                                                        systemUpdateUserName, resourceUrl
+                    ).getBody();
+                    if (uploadedDocument != null) {
+                        byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
+                        templateVars.put(DOCUMENT_EXISTS + count, YES);
+                        templateVars.put(DOCUMENT + count++, prepareUpload(uploadedDocumentContents));
+                    }
                 }
             }
         }

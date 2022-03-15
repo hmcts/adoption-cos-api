@@ -29,7 +29,6 @@ public final class DocumentUtil {
             .builder()
             .documentLink(documentFrom(documentInfo))
             .documentFileName(documentInfo.getFilename())
-            .documentFileId(documentInfo.getFileId())
             .documentType(documentType)
             .build();
     }

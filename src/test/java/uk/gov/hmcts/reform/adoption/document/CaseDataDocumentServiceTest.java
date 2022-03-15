@@ -37,7 +37,6 @@ class CaseDataDocumentServiceTest {
     private static final String URL = "url";
     private static final String FILENAME = "filename";
     private static final String BINARY_URL = "binaryUrl";
-    private static final String FILE_ID = "fileId";
 
     @Mock
     private DocAssemblyService docAssemblyService;
@@ -70,7 +69,7 @@ class CaseDataDocumentServiceTest {
                 ADOPTION_DRAFT_APPLICATION,
                 ENGLISH,
                 filename))
-            .thenReturn(new DocumentInfo(DOC_URL, PDF_FILENAME, DOC_BINARY_URL, FILE_ID));
+            .thenReturn(new DocumentInfo(DOC_URL, PDF_FILENAME, DOC_BINARY_URL));
 
         when(documentIdProvider.documentId()).thenReturn(documentId);
 
@@ -118,7 +117,7 @@ class CaseDataDocumentServiceTest {
                 SAMPLE_DOCUMENT,
                 ENGLISH,
                 filename))
-            .thenReturn(new DocumentInfo(DOC_URL, PDF_FILENAME, DOC_BINARY_URL, FILE_ID));
+            .thenReturn(new DocumentInfo(DOC_URL, PDF_FILENAME, DOC_BINARY_URL));
 
         final Document result = caseDataDocumentService.renderDocument(
             templateContent,
