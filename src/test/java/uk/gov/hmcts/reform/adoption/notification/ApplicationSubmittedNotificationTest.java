@@ -181,4 +181,29 @@ class ApplicationSubmittedNotificationTest {
         verify(notificationService).sendEmail(any(), any(), any(), any());
     }
 
+    @Test
+    void shouldSendEmailToLocalCourtToApplicant1Only() throws NotificationClientException, IOException {
+        CaseData data = caseData();
+        data.setApplicant2(null);
+        data.setHyphenatedCaseRef("1234-1234-1234-1234");
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY)
+            .documentLink(Document.builder().url(StringUtils.EMPTY).build()).build();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocument);
+        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
+        data.setApplicant1DocumentsUploaded(listOfUploadedDocument);
+        data.setDocumentsGenerated(listOfUploadedDocument);
+        data.setFamilyCourtEmailId(TEST_USER_EMAIL);
+        data.setDueDate(LocalDate.of(2021, 4, 21));
+        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(dmClient.downloadBinary(anyString(), anyString(), any(), any(), any())).thenReturn(resource);
+
+        notification.sendToLocalCourt(data, 1234567890123456L);
+
+        verify(notificationService).sendEmail(any(), any(), any(), any());
+    }
+
 }
