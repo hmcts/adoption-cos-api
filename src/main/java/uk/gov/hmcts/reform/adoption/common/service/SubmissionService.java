@@ -7,7 +7,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTaskRunner;
 import uk.gov.hmcts.reform.adoption.common.service.task.GenerateApplicationSummaryDocument;
-import uk.gov.hmcts.reform.adoption.common.service.task.SendCitizenSubmissionNotifications;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetDateSubmitted;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterSubmission;
 
@@ -24,18 +23,14 @@ public class SubmissionService {
     // private SetApplicant2Email setApplicant2Email;
 
     @Autowired
-    private SendCitizenSubmissionNotifications sendCitizenSubmissionNotifications;
-
-    @Autowired
     private GenerateApplicationSummaryDocument generateApplicationSummaryDocument;
 
     public CaseDetails<CaseData, State> submitApplication(final CaseDetails<CaseData, State> caseDetails) {
 
-        CaseDetails<CaseData, State> updatedCaseDetails = CaseTaskRunner.caseTasks(
+        return CaseTaskRunner.caseTasks(
             setStateAfterSubmission,
             setDateSubmitted,
             generateApplicationSummaryDocument
         ).run(caseDetails);
-        return CaseTaskRunner.caseTasks(sendCitizenSubmissionNotifications).run(updatedCaseDetails);
     }
 }
