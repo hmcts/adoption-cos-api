@@ -237,6 +237,7 @@ def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/notification/CommonContent.java',
   '**/uk/gov/hmcts/reform/adoption/notification/ApplicantNotification.java',
   '**/uk/gov/hmcts/reform/adoption/notification/NotificationDispatcher.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/ApplicationSubmittedNotification.java',
   '**/uk/gov/hmcts/reform/adoption/common/service/task/SetStateAfterSubmission.java',
   '**/uk/gov/hmcts/reform/adoption/exception/**',
   '**/uk/gov/hmcts/reform/adoption/document/BulkPrintService.java',
