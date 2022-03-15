@@ -44,7 +44,6 @@ class SubmissionServiceTest {
         when(setStateAfterSubmission.apply(caseDetails)).thenReturn(caseDetails);
         when(setDateSubmitted.apply(caseDetails)).thenReturn(caseDetails);
         when(sendCitizenSubmissionNotifications.apply(caseDetails)).thenReturn(expectedCaseDetails);
-        when(generateApplicationSummaryDocument.apply(caseDetails)).thenReturn(expectedCaseDetails);
 
         final CaseDetails<CaseData, State> result = submissionService.submitApplication(caseDetails);
 
