@@ -52,7 +52,7 @@ public class CaseDataDocumentService {
         log.info("Adding document to case data for templateId : {} case id: {}", templateId, caseId);
 
 
-        log.info("Document url: ", documentInfo);
+        log.info("Document fileID: ", documentInfo.getFileId());
 
         ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
             .id(documentIdProvider.documentId())
