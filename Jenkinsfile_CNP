@@ -63,7 +63,7 @@ withPipeline(type, product, component) {
     disableLegacyDeployment()
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
-    syncBranchesWithMaster(['demo', 'perftest'])
+    syncBranchesWithMaster(['demo', 'ithc', 'perftest'])
     enableSlackNotifications('#adoption-tech')
 
     MetricsPublisher metricsPublisher = new MetricsPublisher(this, currentBuild, product, component, params.subscription )
@@ -212,12 +212,12 @@ withPipeline(type, product, component) {
     }
 
     onMaster {
-        env.ENVIRONMENT="aat"
-        env.CASE_API_URL="http://adoption-cos-api-aat.service.core-compute-aat.internal"
-        env.CCD_DEF_NAME="aat"
-        env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
-        env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
-        env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
+      env.ENVIRONMENT="aat"
+      env.CASE_API_URL="http://adoption-cos-api-aat.service.core-compute-aat.internal"
+      env.CCD_DEF_NAME="aat"
+      env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
+      env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
+      env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
       setCommonEnvVariables()
     }
@@ -229,6 +229,7 @@ withPipeline(type, product, component) {
       env.IDAM_API_URL_BASE = "https://idam-api.demo.platform.hmcts.net"
       env.S2S_URL_BASE = "http://rpe-service-auth-provider-demo.service.core-compute-demo.internal"
       env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-demo.service.core-compute-demo.internal"
+      env.FEE_API_URL = "http://fees-register-api-demo.service.core-compute-demo.internal"
     }
 
     onPerftest {
@@ -238,7 +239,17 @@ withPipeline(type, product, component) {
       env.IDAM_API_URL_BASE = "https://idam-api.perftest.platform.hmcts.net"
       env.S2S_URL_BASE = "http://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal"
       env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-perftest.service.core-compute-perftest.internal"
-      env.FEE_API_URL = "http://fees-register-api-demo.service.core-compute-demo.internal"
+      env.FEE_API_URL = "http://fees-register-api-perftest.service.core-compute-perftest.internal"
+    }
+
+    onIthc {
+      env.ENVIRONMENT="ithc"
+      env.CASE_API_URL = "http://adoption-cos-api-ithc.service.core-compute-ithc.internal"
+      env.CCD_DEF_NAME = "ithc"
+      env.IDAM_API_URL_BASE = "https://idam-api.ithc.platform.hmcts.net"
+      env.S2S_URL_BASE = "http://rpe-service-auth-provider-ithc.service.core-compute-ithc.internal"
+      env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-ithc.service.core-compute-ithc.internal"
+      env.FEE_API_URL = "http://fees-register-api-ithc.service.core-compute-ithc.internal"
     }
 
     before('functionalTest:preview') {

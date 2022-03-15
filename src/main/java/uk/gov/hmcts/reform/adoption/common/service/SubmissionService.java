@@ -27,7 +27,7 @@ public class SubmissionService {
 
     public CaseDetails<CaseData, State> submitApplication(final CaseDetails<CaseData, State> caseDetails) {
 
-        return CaseTaskRunner.caseTasks(
+        return CaseDetails<CaseData, State> updatedCaseDetails = CaseTaskRunner.caseTasks(
             setStateAfterSubmission,
             setDateSubmitted,
             generateApplicationSummaryDocument
