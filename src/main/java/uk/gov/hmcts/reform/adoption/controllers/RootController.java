@@ -133,7 +133,11 @@ public class RootController {
         Map<String, Object> map = objectMapper.convertValue(caseData, Map.class);
         System.out.println(objectMapper.writeValueAsString(map));
 
-        caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData, DocumentType.APPLICATION_SUMMARY, map, 1644932103784645L, ADOPTION_APPLICATION_SUMMARY, LanguagePreference.ENGLISH, "temp");
+        caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
+                                                                DocumentType.APPLICATION_SUMMARY,
+                                                                map, 1644932103784645L,
+                                                                ADOPTION_APPLICATION_SUMMARY,
+                                                                LanguagePreference.ENGLISH, "temp");
 
         applicantNotification.sendToLocalCourt(caseData, 1644932103784645L);
         return ok("Success");
