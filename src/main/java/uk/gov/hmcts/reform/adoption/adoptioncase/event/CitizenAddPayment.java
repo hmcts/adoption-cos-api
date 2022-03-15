@@ -90,17 +90,16 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
         }
 
         final CaseDetails<CaseData, State> updatedCaseDetails = submissionService.submitApplication(details);
-
-        AboutToStartOrSubmitResponse.<CaseData, State>builder()
+        try {
+            final CaseDetails<CaseData, State> notificationSentUpdatedDetails = sendNotificationService.sendNotifications(
+                updatedCaseDetails);
+            log.info("logging for utilization check: ", notificationSentUpdatedDetails);
+        } catch (Exception e) {
+            log.error("Test for adoption data: ", e.getMessage());
+        }
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(updatedCaseDetails.getData())
             .state(updatedCaseDetails.getState())
-            .build();
-
-        final CaseDetails<CaseData, State> notificationSentUpdatedDetails = sendNotificationService.sendNotifications(updatedCaseDetails);
-
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(notificationSentUpdatedDetails.getData())
-            .state(notificationSentUpdatedDetails.getState())
             .build();
     }
 }
