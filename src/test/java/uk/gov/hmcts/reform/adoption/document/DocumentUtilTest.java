@@ -24,7 +24,6 @@ class DocumentUtilTest {
     private static final String FILENAME = "filename";
     private static final String DOCUMENT_NAME = "filename-1234567890123456-2021-02-02:02:02";
     private static final String BINARY_URL = "binaryUrl";
-    private static final String FILE_ID = "fileId";
 
     @Test
     void shouldConvertFromDocumentInfoToDocument() {
@@ -43,8 +42,7 @@ class DocumentUtilTest {
         return new DocumentInfo(
             DOC_URL,
             PDF_FILENAME,
-            DOC_BINARY_URL,
-            FILE_ID
+            DOC_BINARY_URL
         );
     }
 
@@ -63,7 +61,7 @@ class DocumentUtilTest {
                 PDF_FILENAME,
                 DOC_BINARY_URL);
     }
-    
+
     @Test
     void shouldGenerateDocumentName() {
 
