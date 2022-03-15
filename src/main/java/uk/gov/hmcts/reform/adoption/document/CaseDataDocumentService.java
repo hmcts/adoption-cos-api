@@ -51,11 +51,21 @@ public class CaseDataDocumentService {
 
         log.info("Adding document to case data for templateId : {} case id: {}", templateId, caseId);
 
-        caseData.addToDocumentsGenerated(
-            ListValue.<AdoptionDocument>builder()
-                .id(documentIdProvider.documentId())
-                .value(adoptionDocumentFrom(documentInfo, documentType))
-                .build());
+
+        log.info("Document url: ", documentInfo);
+
+        ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
+            .id(documentIdProvider.documentId())
+            .value(adoptionDocumentFrom(documentInfo, documentType))
+            .build();
+
+        try {
+            log.info("Recieved generated document: ", adoptionDocument.getValue().toString());
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        caseData.addToDocumentsGenerated(adoptionDocument);
     }
 
     public Document renderDocument(final Map<String, Object> templateContent,
