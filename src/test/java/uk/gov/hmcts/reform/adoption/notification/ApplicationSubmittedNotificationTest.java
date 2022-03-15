@@ -185,6 +185,7 @@ class ApplicationSubmittedNotificationTest {
     @Test
     void shouldSendEmailToLocalCourtToApplicant1Only() throws NotificationClientException, IOException {
         CaseData data = caseData();
+        data.getApplicant1().setLanguagePreference(null);
         data.setApplicant2(Applicant.builder().emailAddress(TEST_USER_EMAIL).build());
         data.setHyphenatedCaseRef("1234-1234-1234-1234");
         AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY)
@@ -203,12 +204,13 @@ class ApplicationSubmittedNotificationTest {
         when(dmClient.downloadBinary(anyString(), anyString(), any(), any(), any())).thenReturn(resource);
 
         notification.sendToLocalCourt(data, 1234567890123456L);
-
+        data.getApplicant1().setLanguagePreference(ENGLISH);
         data.setApplicant2(null);
         notification.sendToLocalCourt(data, 1234567890123456L);
         data.setApplicant2(Applicant.builder().emailAddress(null).build());
+        data.setApplicant1DocumentsUploaded(null);
         notification.sendToLocalCourt(data, 1234567890123456L);
-        verify(notificationService).sendEmail(any(), any(), any(), any());
+        verify(notificationService, times(3)).sendEmail(any(), any(), any(), any());
     }
 
 }
