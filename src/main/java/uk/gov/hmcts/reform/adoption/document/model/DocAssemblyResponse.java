@@ -4,20 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Slf4j
 public class DocAssemblyResponse {
     private String renditionOutputLocation;
-
-    public String getBinaryFilePath() {
-        return renditionOutputLocation + "/binary";
-    }
-
-    public String getFileId() {
-        return StringUtils.substringAfterLast(renditionOutputLocation, "/");
-    }
 }

@@ -69,7 +69,7 @@ class CaseDataDocumentServiceTest {
                 ADOPTION_DRAFT_APPLICATION,
                 ENGLISH,
                 filename))
-            .thenReturn(new DocumentInfo(DOC_URL, PDF_FILENAME, DOC_BINARY_URL));
+            .thenReturn(DOC_URL);
 
         when(documentIdProvider.documentId()).thenReturn(documentId);
 
@@ -117,7 +117,7 @@ class CaseDataDocumentServiceTest {
                 SAMPLE_DOCUMENT,
                 ENGLISH,
                 filename))
-            .thenReturn(new DocumentInfo(DOC_URL, PDF_FILENAME, DOC_BINARY_URL));
+            .thenReturn(DOC_URL);
 
         final Document result = caseDataDocumentService.renderDocument(
             templateContent,
@@ -128,6 +128,5 @@ class CaseDataDocumentServiceTest {
 
         assertThat(result.getBinaryUrl()).isEqualTo(DOC_BINARY_URL);
         assertThat(result.getUrl()).isEqualTo(DOC_URL);
-        assertThat(result.getFilename()).isEqualTo(GENERAL_ORDER_PDF_FILENAME);
     }
 }

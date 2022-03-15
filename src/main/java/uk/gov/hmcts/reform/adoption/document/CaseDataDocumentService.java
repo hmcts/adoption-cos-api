@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
 import java.util.Map;
 
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF_EXT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.adoptionDocumentFrom;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.documentFrom;
 
@@ -40,7 +41,7 @@ public class CaseDataDocumentService {
 
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
 
-        final var documentInfo = docAssemblyService.renderDocument(
+        final String documentUrl = docAssemblyService.renderDocument(
             templateContent,
             caseId,
             authorisation,
@@ -51,7 +52,8 @@ public class CaseDataDocumentService {
 
         log.info("Adding document to case data for templateId : {} case id: {}", templateId, caseId);
 
-        log.info("Document fileID: ", documentInfo.getUrl());
+        log.info("Document fileID: ", documentUrl);
+        DocumentInfo documentInfo = new DocumentInfo(documentUrl, filename + PDF_EXT, documentUrl + "/binary");
 
         ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
             .id(documentIdProvider.documentId())
@@ -73,7 +75,7 @@ public class CaseDataDocumentService {
 
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
 
-        final var documentInfo = docAssemblyService.renderDocument(
+        final var documentUrl = docAssemblyService.renderDocument(
             templateContent,
             caseId,
             authorisation,
@@ -81,6 +83,8 @@ public class CaseDataDocumentService {
             languagePreference,
             filename
         );
+
+        DocumentInfo documentInfo = new DocumentInfo(documentUrl, filename + PDF_EXT, documentUrl + "/binary");
 
         return documentFrom(documentInfo);
     }

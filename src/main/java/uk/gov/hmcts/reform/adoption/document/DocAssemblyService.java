@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import java.util.Map;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF_EXT;
 
 @Service
 @Slf4j
@@ -31,7 +30,7 @@ public class DocAssemblyService {
     @Autowired
     private DocmosisTemplateProvider docmosisTemplateProvider;
 
-    public DocumentInfo renderDocument(final Map<String, Object> templateContent,
+    public String renderDocument(final Map<String, Object> templateContent,
                                        final Long caseId,
                                        final String authorisation,
                                        final String templateId,
@@ -58,13 +57,10 @@ public class DocAssemblyService {
 
         log.info("Document successfully generated and stored for case Id {} with document location {}",
             caseId,
+            filename,
             docAssemblyResponse.getRenditionOutputLocation()
         );
 
-        return new DocumentInfo(
-            docAssemblyResponse.getRenditionOutputLocation(),
-            filename + PDF_EXT,
-            docAssemblyResponse.getRenditionOutputLocation() + "/binary"
-        );
+        return docAssemblyResponse.getRenditionOutputLocation();
     }
 }
