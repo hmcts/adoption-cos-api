@@ -182,7 +182,8 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                                                         serviceAuthorization,
                                                         UserRole.CASE_WORKER.getRole(),
                                                         systemUpdateUserName,
-                                                        adoptionDocument.getDocumentFileId()
+                                                        StringUtils.substringAfterLast(
+                                                            adoptionDocument.getDocumentLink().getUrl(), "/")
             ).getBody();
             byte[] documentContents = document != null ? document.getInputStream().readAllBytes() : null;
 
