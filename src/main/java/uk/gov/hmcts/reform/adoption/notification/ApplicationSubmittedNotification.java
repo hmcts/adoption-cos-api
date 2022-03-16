@@ -188,11 +188,13 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             ).getBody();
 
             if (document != null) {
-                InputStream inputStream = document.getInputStream();
-                if (inputStream != null) {
-                    byte[] documentContents = inputStream.readAllBytes();
-                    templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
-                    inputStream.close();
+                try (InputStream inputStream = document.getInputStream()) {
+                    if (inputStream != null) {
+                        byte[] documentContents = inputStream.readAllBytes();
+                        templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
+                    }
+                } catch (Exception e) {
+                    log.error("Document could not be read");
                 }
             }
         }
