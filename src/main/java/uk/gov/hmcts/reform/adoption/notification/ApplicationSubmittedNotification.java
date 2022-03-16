@@ -192,6 +192,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 if (inputStream != null) {
                     byte[] documentContents = inputStream.readAllBytes();
                     templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
+                    inputStream.close();
                 }
             }
         }
