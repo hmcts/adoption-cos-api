@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -185,9 +186,14 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                                                         StringUtils.substringAfterLast(
                                                             adoptionDocument.getDocumentLink().getUrl(), "/")
             ).getBody();
-            byte[] documentContents = document != null ? document.getInputStream().readAllBytes() : null;
 
-            templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
+            if (document != null) {
+                InputStream inputStream = document.getInputStream();
+                if (inputStream != null) {
+                    byte[] documentContents = inputStream.readAllBytes();
+                    templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
+                }
+            }
         }
         if (caseData.getApplicant1DocumentsUploaded() != null) {
             List<String> uploadedDocumentsUrls = caseData.getApplicant1DocumentsUploaded().stream().map(item -> item.getValue())
