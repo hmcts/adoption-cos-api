@@ -7,11 +7,11 @@ java:
   environment:
     CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
+    APP_INSIGHTS_KEY: 273cc8cd-c511-49ae-9988-9debe01d54d5
+
   keyVaults:
     adoption:
       secrets:
-        - name: AppInsightsInstrumentationKey
-          alias: APP_INSIGHTS_KEY
         - name: uk-gov-notify-api-key
           alias: UK_GOV_NOTIFY_API_KEY
         - name: s2s-secret-cos-api

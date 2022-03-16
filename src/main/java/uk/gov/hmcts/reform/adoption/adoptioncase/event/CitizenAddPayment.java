@@ -7,6 +7,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.reform.adoption.common.service.SendNotificationService;
 import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -34,6 +35,9 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
 
     @Autowired
     private SubmissionService submissionService;
+
+    @Autowired
+    private SendNotificationService sendNotificationService;
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -86,7 +90,13 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
         }
 
         final CaseDetails<CaseData, State> updatedCaseDetails = submissionService.submitApplication(details);
-
+        try {
+            final CaseDetails<CaseData, State> notificationSentUpdatedDetails = sendNotificationService.sendNotifications(
+                updatedCaseDetails);
+            log.info("logging for utilization check: ", notificationSentUpdatedDetails);
+        } catch (Exception e) {
+            log.error("Test for adoption data: ", e.getMessage());
+        }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(updatedCaseDetails.getData())
             .state(updatedCaseDetails.getState())

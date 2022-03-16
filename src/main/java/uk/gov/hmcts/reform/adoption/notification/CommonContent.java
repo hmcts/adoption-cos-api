@@ -21,16 +21,16 @@ public class CommonContent {
     //    @Autowired
     //    private EmailTemplatesConfig config;
 
-    public Map<String, String> mainTemplateVars(final CaseData caseData,
+    public Map<String, Object> mainTemplateVars(final CaseData caseData,
                                                 final Long id,
-                                                final Applicant applicant,
-                                                final Applicant partner) {
-        Map<String, String> templateVars = new HashMap<>();
+                                                final Applicant applicant1,
+                                                final Applicant applicant2) {
+        Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICATION_REFERENCE, id != null ? formatId(id) : null);
         //        templateVars.put(IS_DIVORCE, caseData.isDivorce() ? YES : NO);
         //        templateVars.put(IS_DISSOLUTION, !caseData.isDivorce() ? YES : NO);
-        templateVars.put(FIRST_NAME, applicant.getFirstName());
-        templateVars.put(LAST_NAME, applicant.getLastName());
+        templateVars.put(FIRST_NAME, applicant1.getFirstName());
+        templateVars.put(LAST_NAME, applicant1.getLastName());
         //        templateVars.put(PARTNER, caseData.isDivorce() ? partner.getGender() == MALE ? "husband" : "wife" : "civil partner");
         //        templateVars.put(COURT_EMAIL,
         //            config.getTemplateVars().get(caseData.isDivorce() ? DIVORCE_COURT_EMAIL : DISSOLUTION_COURT_EMAIL));

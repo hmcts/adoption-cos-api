@@ -10,6 +10,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.notification.ApplicationSubmittedNotification;
 import uk.gov.hmcts.reform.adoption.notification.NotificationDispatcher;
+import uk.gov.service.notify.NotificationClientException;
+
+import java.io.IOException;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -30,7 +33,7 @@ class SendCitizenSubmissionNotificationsTest {
     private SendCitizenSubmissionNotifications sendCitizenSubmissionNotifications;
 
     @Test
-    void shouldDispatchSubmittedNotifications() {
+    void shouldDispatchSubmittedNotifications() throws NotificationClientException, IOException {
         //Given
         final CaseData caseData = caseData();
         final CaseDetails<CaseData, State> caseDetails = new CaseDetails<>();

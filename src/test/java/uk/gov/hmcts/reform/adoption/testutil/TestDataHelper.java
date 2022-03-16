@@ -58,6 +58,7 @@ public class TestDataHelper {
     public static CaseData caseData() {
         return CaseData.builder()
             .applicant1(getApplicant())
+            .applicant2(getApplicant())
             .build();
     }
 
@@ -66,13 +67,15 @@ public class TestDataHelper {
             .firstName(TEST_FIRST_NAME)
             .lastName(TEST_LAST_NAME)
             .email(TEST_USER_EMAIL)
+            .emailAddress(TEST_USER_EMAIL)
             .languagePreference(ENGLISH)
             .build();
     }
 
-    public static Map<String, String> getMainTemplateVars() {
-        Map<String, String> templateVars = new HashMap<>();
-        templateVars.put(APPLICATION_REFERENCE, "1234-5678-9012-3456");
+    public static Map<String, Object> getMainTemplateVars() {
+        Map<String, Object> templateVars = new HashMap<>();
+        Object appRef = new String("1234-5678-9012-3456");
+        templateVars.put(APPLICATION_REFERENCE, appRef);
         return templateVars;
     }
 }

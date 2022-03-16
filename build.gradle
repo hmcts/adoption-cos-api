@@ -27,8 +27,9 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.5.6'
   id 'com.github.ben-manes.versions' version '0.38.0'
+  id 'com.github.hmcts.rse-cft-lib' version '0.14.2'
   id 'hmcts.ccd.sdk' version '0.25.16'
-  id 'au.com.dius.pact' version '4.1.7'
+  id 'au.com.dius.pact' version '4.3.5'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
@@ -70,11 +71,6 @@ sourceSets {
     resources.srcDir file('src/contractTest/resources')
   }
 
-  cftlib {
-    compileClasspath += sourceSets.main.output
-    runtimeClasspath += sourceSets.main.output
-  }
-
 }
 
 idea {
@@ -92,8 +88,6 @@ configurations {
   contractTestCompile.extendsFrom testCompile
   contractTestRuntime.extendsFrom testRuntime
   contractTestImplementation.extendsFrom testImplementation
-  cftlibImplementation.extendsFrom implementation
-  cftlibRuntimeOnly.extendsFrom runtimeOnly
 }
 
 tasks.withType(JavaCompile) {
@@ -176,11 +170,27 @@ pmd {
 }
 
 jacocoTestReport {
-  executionData(test, integration)
+  executionData(test)
   reports {
-    xml.getRequired().set(true)
-    csv.getRequired().set(false)
+    xml.enabled = true
+    csv.enabled = false
     xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+  }
+}
+
+jacoco {
+  toolVersion = "0.8.5"
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      limit {
+        counter = 'LINE'
+        value = 'COVEREDRATIO'
+        minimum = 0.0
+      }
+    }
   }
 }
 
@@ -202,21 +212,46 @@ project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/common/ccd/**',
+  '**/uk/gov/hmcts/reform/adoption/common/service/**',
   '**/uk/gov/hmcts/reform/adoption/Application.java',
   '**/uk/gov/hmcts/reform/adoption/common/config/**',
-  '**/uk/gov/hmcts/reform/adoption/adoption/**',
-  '**/uk/gov/hmcts/reform/adoption/adoptioncase/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/caseworker/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/event/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/model/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/search/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/service/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/tab/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/task/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/workbasket/**',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/Adoption.java',
+  '**/uk/gov/hmcts/reform/adoption/payment/**',
   '**/uk/gov/hmcts/reform/adoption/controllers/**',
   '**/uk/gov/hmcts/reform/adoption/idam/**',
+  '**/uk/gov/hmcts/reform/adoption/common/AddSystemUpdateRole.java',
+  '**/uk/gov/hmcts/reform/adoption/common/notification/**',
+  '**/uk/gov/hmcts/reform/adoption/document/content/**',
+  '**/uk/gov/hmcts/reform/adoption/document/DocumentConstants.java',
+  '**/uk/gov/hmcts/reform/adoption/document/DocumentInfo.java',
+  '**/uk/gov/hmcts/reform/adoption/document/DocumentType.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/FormatUtil.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/CommonContent.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/ApplicantNotification.java',
+  '**/uk/gov/hmcts/reform/adoption/notification/NotificationDispatcher.java',
+  '**/uk/gov/hmcts/reform/adoption/common/service/task/SetStateAfterSubmission.java',
+  '**/uk/gov/hmcts/reform/adoption/exception/**',
+  '**/uk/gov/hmcts/reform/adoption/document/BulkPrintService.java',
+  '**/uk/gov/hmcts/reform/adoption/adoptioncase/validation/ApplicationValidation.java',
+  '**/uk/gov/hmcts/reform/adoption/config/SwaggerConfiguration.java'
+
 ]
 
 sonarqube {
   properties {
     property "sonar.projectName", "Adoption :: adoption-cos-api"
     property "sonar.projectKey", "uk.gov.hmcts.reform:adoption-cos-api"
-    property "sonar.exclusions", "**/*" //TODO temporary
+    property "sonar.exclusions", sonarExclusions.join(', ')
+    property "sonar.coverage.exclusions", sonarExclusions.join(', ')
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
-    property "sonar.coverage.exclusions", "**/*" //TODO temporary
   }
 }
 
@@ -237,7 +272,7 @@ dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
     // CVE-2018-10237 - Unbounded memory allocation
-    dependencySet(group: 'com.google.guava', version: '31.0.1-jre') {
+    dependencySet(group: 'com.google.guava', version: '31.1-jre') {
       entry 'guava'
     }
   }
@@ -308,8 +343,8 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
 
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.17.1'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.17.2'
 
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.45'
 
@@ -320,10 +355,10 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.10'
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '7.17.0'
 
-  implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.6.0-prerelease'
+  implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.2-Categories'
 
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.3.1'
-  implementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.12'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.3.2'
+  implementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.16'
 
   implementation 'org.projectlombok:lombok:1.18.18'
   compileOnly "org.projectlombok:lombok:1.18.18"
@@ -403,8 +438,6 @@ dependencies {
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
-
-  cftlibImplementation 'com.github.hmcts:rse-cft-lib:0.10.2'
 
 }
 
@@ -588,18 +621,9 @@ task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
   outputs.dir layout.buildDirectory.dir('ccd-config')
 }
 
-task bootWithCcd(type: org.springframework.boot.gradle.tasks.run.BootRun, dependsOn: [buildCCDXlsx, loadEnvSecrets], group: 'ccd tasks') {
-  classpath sourceSets.cftlib.runtimeClasspath
-  mainClass = 'uk.gov.hmcts.reform.adoption.RunWithCft'
+bootWithCCD {
+  dependsOn(buildCCDXlsx, loadEnvSecrets)
   doFirst() {
-    // Required by Access Management for Java 17.
-    // https://github.com/x-stream/xstream/issues/101
-    ['java.lang', 'java.util', 'java.lang.reflect', 'java.text', 'java.awt.font'].each {
-      jvmArgs('--add-opens', "java.base/${it}=ALL-UNNAMED")
-    }
-    jvmArgs('--add-opens', 'java.desktop/java.awt.font=ALL-UNNAMED')
-    jvmArgs('-XX:ReservedCodeCacheSize=64m')
-
     project.file('./.aat-env').readLines().each() {
       def index = it.indexOf("=")
       def key = it.substring(0, index)
