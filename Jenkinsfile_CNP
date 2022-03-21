@@ -63,9 +63,9 @@ withPipeline(type, product, component) {
     disableLegacyDeployment()
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
-    syncBranchesWithMaster(['demo', 'ithc', 'perftest'])
+    enableSecurityScan()
+  syncBranchesWithMaster(['demo', 'ithc', 'perftest'])
     enableSlackNotifications('#adoption-tech')
-
     MetricsPublisher metricsPublisher = new MetricsPublisher(this, currentBuild, product, component, params.subscription )
     approvedEnvironmentRepository(params.environment, metricsPublisher) {
       if(params.environment != 'prod') {
