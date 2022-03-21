@@ -14,7 +14,7 @@ def component = "spring-boot-template"
 withNightlyPipeline(type, product, component) {
   enableSlackNotifications('#adoption-tech')
   enableFortifyScan()
-
+  enableSecurityScan()
   after('fortify-scan') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
   }
