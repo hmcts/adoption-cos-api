@@ -18,4 +18,5 @@ withNightlyPipeline(type, product, component) {
   after('fortify-scan') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
   }
+  env.TEST_URL = "http://adoption-cos-api-aat.service.core-compute-aat.internal"
 }
