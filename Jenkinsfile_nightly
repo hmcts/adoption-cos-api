@@ -19,7 +19,6 @@ def component = "spring-boot-template"
 
 withNightlyPipeline(type, product, component) {
   env.TEST_URL = "http://adoption-cos-api-aat.service.core-compute-aat.internal"
-  env.Rules = params.SecurityRules
   enableSlackNotifications('#adoption-tech')
   enableSecurityScan()
   enableFortifyScan()
