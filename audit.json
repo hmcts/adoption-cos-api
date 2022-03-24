@@ -1,0 +1,13 @@
+{
+  "10010_Cookie No HttpOnly Flag_http://adoption-cos-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://adoption-cos-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10054_Cookie without SameSite Attribute_http://adoption-cos-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10054_Cookie without SameSite Attribute_http://adoption-cos-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10096_Timestamp Disclosure - Unix_http://adoption-cos-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10096_Timestamp Disclosure - Unix_http://adoption-cos-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "100001_Unexpected Content-Type was returned_http://adoption-cos-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10021_X-Content-Type-Options Header Missing_http://adoption-cos-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10021_X-Content-Type-Options Header Missing_http://adoption-cos-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "90033_Loosely Scoped Cookie_http://adoption-cos-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "90033_Loosely Scoped Cookie_http://adoption-cos-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore"
+}
