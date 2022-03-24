@@ -53,7 +53,7 @@ public class GenerateApplicationSummaryDocumentTest {
 
         verify(caseDataDocumentService).renderDocumentAndUpdateCaseData(
             caseData,
-            DocumentType.APPLICATION_SUMMARY,
+            DocumentType.APPLICATION_SUMMARY_EN,
             templateVars,
             TEST_CASE_ID,
             ADOPTION_APPLICATION_SUMMARY,

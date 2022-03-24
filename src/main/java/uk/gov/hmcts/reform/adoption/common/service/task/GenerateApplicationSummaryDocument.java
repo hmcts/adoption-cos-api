@@ -14,11 +14,13 @@ import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_SUMMARY;
-import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_SUMMARY;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_SUMMARY_CY;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_SUMMARY_EN;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 
 @Component
@@ -43,16 +45,25 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
 
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+            final CompletableFuture<Void> appSummaryEn = CompletableFuture.runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
+                                                                                            APPLICATION_SUMMARY_EN,
+                                                                                            templateContent,
+                                                                                            caseDetails.getId(),
+                                                                                            ADOPTION_APPLICATION_SUMMARY,
+                                                                                            LanguagePreference.ENGLISH,
+                                                                                            formatDocumentName(caseDetails.getId(), ADOPTION_APPLICATION_FILE_NAME,
+                                                                                            LocalDateTime.now())));
+            final CompletableFuture<Void> appSummaryCy = CompletableFuture.runAsync(() ->
+                                                                                        caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
+                                                                                            APPLICATION_SUMMARY_CY,
+                                                                                            templateContent,
+                                                                                            caseDetails.getId(),
+                                                                                            ADOPTION_APPLICATION_SUMMARY,
+                                                                                            LanguagePreference.WELSH,
+                                                                                            formatDocumentName(caseDetails.getId(),
+                                                                                            ADOPTION_APPLICATION_FILE_NAME, LocalDateTime.now())));
 
-            caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
-                                                                    APPLICATION_SUMMARY,
-                                                                    templateContent,
-                                                                    caseDetails.getId(),
-                                                                    ADOPTION_APPLICATION_SUMMARY,
-                                                                    lang != null ? lang : LanguagePreference.ENGLISH,
-                                                                    formatDocumentName(caseDetails.getId(), ADOPTION_APPLICATION_FILE_NAME,
-                                                                                       LocalDateTime.now()));
-
+            CompletableFuture.allOf(appSummaryEn, appSummaryCy).join();
         } else {
             log.error("Could not generate summary document for caseId: {}", caseId);
         }
