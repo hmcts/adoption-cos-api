@@ -45,23 +45,26 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
 
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
-            final CompletableFuture<Void> appSummaryEn = CompletableFuture.runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
-                                                                                            APPLICATION_SUMMARY_EN,
-                                                                                            templateContent,
-                                                                                            caseDetails.getId(),
-                                                                                            ADOPTION_APPLICATION_SUMMARY,
-                                                                                            LanguagePreference.ENGLISH,
-                                                                                            formatDocumentName(caseDetails.getId(), ADOPTION_APPLICATION_FILE_NAME,
-                                                                                            LocalDateTime.now())));
-            final CompletableFuture<Void> appSummaryCy = CompletableFuture.runAsync(() ->
-                                                                                        caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
-                                                                                            APPLICATION_SUMMARY_CY,
-                                                                                            templateContent,
-                                                                                            caseDetails.getId(),
-                                                                                            ADOPTION_APPLICATION_SUMMARY,
-                                                                                            LanguagePreference.WELSH,
-                                                                                            formatDocumentName(caseDetails.getId(),
-                                                                                            ADOPTION_APPLICATION_FILE_NAME, LocalDateTime.now())));
+            final CompletableFuture<Void> appSummaryEn = CompletableFuture
+                .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
+                                                                                        APPLICATION_SUMMARY_EN,
+                                                                                        templateContent,
+                                                                                        caseDetails.getId(),
+                                                                                        ADOPTION_APPLICATION_SUMMARY,
+                                                                                        LanguagePreference.ENGLISH,
+                                                                                        formatDocumentName(caseDetails.getId(),
+                                                                                        ADOPTION_APPLICATION_FILE_NAME,
+                                                                                        LocalDateTime.now())));
+            final CompletableFuture<Void> appSummaryCy = CompletableFuture
+                .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
+                                                                                        APPLICATION_SUMMARY_CY,
+                                                                                        templateContent,
+                                                                                        caseDetails.getId(),
+                                                                                        ADOPTION_APPLICATION_SUMMARY,
+                                                                                        LanguagePreference.WELSH,
+                                                                                        formatDocumentName(caseDetails.getId(),
+                                                                                        ADOPTION_APPLICATION_FILE_NAME,
+                                                                                        LocalDateTime.now())));
 
             CompletableFuture.allOf(appSummaryEn, appSummaryCy).join();
         } else {
