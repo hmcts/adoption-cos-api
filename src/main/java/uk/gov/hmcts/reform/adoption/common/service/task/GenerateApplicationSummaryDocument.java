@@ -37,7 +37,6 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
     public CaseDetails<CaseData, State> apply(CaseDetails<CaseData, State> caseDetails) {
         final CaseData caseData = caseDetails.getData();
         final Long caseId = caseDetails.getId();
-        final LanguagePreference lang = caseData.getApplicant1().getLanguagePreference();
         final State state = caseDetails.getState();
 
         if (EnumSet.of(Submitted).contains(state)) {
