@@ -288,7 +288,7 @@ repositories {
 
 def versions = [
   awaitility        : '1.7.0',
-  jackson           : '2.12.4',
+  jackson           : '2.13.1',
   junit             : '5.8.1',
   junitPlatform     : '1.8.2',
   lombok            : '1.18.20',
@@ -412,15 +412,15 @@ dependencies {
 
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
-  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.1'
+  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
 
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
-  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
 
   contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact
-  contractTestRuntime group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+  contractTestRuntime group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
 
   contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter

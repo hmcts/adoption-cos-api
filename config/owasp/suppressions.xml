@@ -29,13 +29,13 @@
     <notes>spring-*-5.3.12</notes>
     <cve>CVE-2021-22060</cve>
   </suppress>
+  <suppress>
+    <notes>jackson-databind-2.12.4</notes>
+    <cve>CVE-2020-36518</cve>
+  </suppress>
 -->
   <suppress>
     <notes>logback-*-1.2.6</notes>
     <cve>CVE-2021-42550</cve>
-  </suppress>
-  <suppress>
-    <notes>jackson-databind-2.12.4</notes>
-    <cve>CVE-2020-36518</cve>
   </suppress>
 </suppressions>
