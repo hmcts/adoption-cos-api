@@ -130,8 +130,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             caseData.getFamilyCourtEmailId(),
             LOCAL_COURT_APPLICATION_SUBMITTED,
             templateVarsLocalCourt(caseData, id),
-            caseData.getApplicant1().getLanguagePreference() != null
-                ? caseData.getApplicant1().getLanguagePreference() : LanguagePreference.ENGLISH
+            LanguagePreference.ENGLISH
         );
     }
 
@@ -173,7 +172,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         String serviceAuthorization = authTokenGenerator.generate();
 
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
-            .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY))
+            .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY_EN))
             .findFirst().orElse(null);
 
         if (adoptionDocument != null) {

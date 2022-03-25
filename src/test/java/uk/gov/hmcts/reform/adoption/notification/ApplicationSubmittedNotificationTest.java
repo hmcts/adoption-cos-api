@@ -161,7 +161,7 @@ class ApplicationSubmittedNotificationTest {
     void shouldSendEmailToLocalCourt() throws NotificationClientException, IOException {
         CaseData data = caseData();
         data.setHyphenatedCaseRef("1234-1234-1234-1234");
-        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY)
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY_EN)
             .documentLink(Document.builder().url(StringUtils.EMPTY).build()).build();
         ListValue<AdoptionDocument> listValue = new ListValue<>();
         listValue.setValue(adoptionDocument);
