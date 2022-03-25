@@ -18,24 +18,24 @@
       <cve>CVE-2022-26336</cve>
     </suppress>
   <!--
-  <suppress>
-    <notes>Tomcat 9.0.45</notes>
-    <cve>CVE-2021-30640</cve>
-    <cve>CVE-2021-33037</cve>
-    <cve>CVE-2021-42340</cve>
-    <cve>CVE-2022-23181</cve>
-  </suppress>
-  <suppress>
-    <notes>spring-*-5.3.12</notes>
-    <cve>CVE-2021-22060</cve>
-  </suppress>
-  <suppress>
-    <notes>jackson-databind-2.12.4</notes>
-    <cve>CVE-2020-36518</cve>
-  </suppress>
+    <suppress>
+      <notes>Tomcat 9.0.45</notes>
+      <cve>CVE-2021-30640</cve>
+      <cve>CVE-2021-33037</cve>
+      <cve>CVE-2021-42340</cve>
+      <cve>CVE-2022-23181</cve>
+    </suppress>
+    <suppress>
+      <notes>spring-*-5.3.12</notes>
+      <cve>CVE-2021-22060</cve>
+    </suppress>
+    <suppress>
+      <notes>jackson-databind-2.12.4</notes>
+      <cve>CVE-2020-36518</cve>
+    </suppress>
+    <suppress>
+      <notes>logback-*-1.2.6</notes>
+      <cve>CVE-2021-42550</cve>
+    </suppress>
 -->
-  <suppress>
-    <notes>logback-*-1.2.6</notes>
-    <cve>CVE-2021-42550</cve>
-  </suppress>
 </suppressions>
