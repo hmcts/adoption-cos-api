@@ -13,6 +13,10 @@
       <cve>CVE-2019-12415</cve>
       <cve>CVE-2022-26336</cve>
     </suppress>
+    <suppress>
+      <notes>jackson-databind-2.13.2</notes>
+      <cve>CVE-2020-36518</cve>
+    </suppress>
   <!--
      <suppress>
       <notes>commons-io.2.6</notes>
@@ -28,10 +32,6 @@
     <suppress>
       <notes>spring-*-5.3.12</notes>
       <cve>CVE-2021-22060</cve>
-    </suppress>
-    <suppress>
-      <notes>jackson-databind-2.12.4</notes>
-      <cve>CVE-2020-36518</cve>
     </suppress>
     <suppress>
       <notes>logback-*-1.2.6</notes>
