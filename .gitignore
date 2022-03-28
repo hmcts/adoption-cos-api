@@ -26,3 +26,5 @@ bin/test/task-list-markdown.md
 ### VS Code ###
 .vscode
 .aat-env
+/target/
+/pacts/

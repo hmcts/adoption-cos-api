@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -129,8 +130,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             caseData.getFamilyCourtEmailId(),
             LOCAL_COURT_APPLICATION_SUBMITTED,
             templateVarsLocalCourt(caseData, id),
-            caseData.getApplicant1().getLanguagePreference() != null
-                ? caseData.getApplicant1().getLanguagePreference() : LanguagePreference.ENGLISH
+            LanguagePreference.ENGLISH
         );
     }
 
@@ -172,7 +172,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         String serviceAuthorization = authTokenGenerator.generate();
 
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
-            .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY))
+            .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY_EN))
             .findFirst().orElse(null);
 
         if (adoptionDocument != null) {
@@ -185,9 +185,17 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                                                         StringUtils.substringAfterLast(
                                                             adoptionDocument.getDocumentLink().getUrl(), "/")
             ).getBody();
-            byte[] documentContents = document != null ? document.getInputStream().readAllBytes() : null;
 
-            templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
+            if (document != null) {
+                try (InputStream inputStream = document.getInputStream()) {
+                    if (inputStream != null) {
+                        byte[] documentContents = inputStream.readAllBytes();
+                        templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
+                    }
+                } catch (Exception e) {
+                    log.error("Document could not be read");
+                }
+            }
         }
         if (caseData.getApplicant1DocumentsUploaded() != null) {
             List<String> uploadedDocumentsUrls = caseData.getApplicant1DocumentsUploaded().stream().map(item -> item.getValue())

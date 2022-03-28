@@ -59,12 +59,6 @@ public class CaseDataDocumentService {
             .value(adoptionDocumentFrom(documentInfo, documentType))
             .build();
 
-        try {
-            log.info("Recieved generated document: {}", adoptionDocument.getValue().toString());
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
-
         caseData.addToDocumentsGenerated(adoptionDocument);
     }
 
