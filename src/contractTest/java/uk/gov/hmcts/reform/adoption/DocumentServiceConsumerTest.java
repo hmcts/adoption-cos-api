@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @PactTestFor(providerName = "em_dm_store", port = "5006")
 @PactFolder("pacts")
 @SpringBootTest({
-    "document_management.url : http://localhost:5006"
+    //"document_management.url : http://localhost:5006"
 })
 public class DocumentServiceConsumerTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
@@ -42,7 +42,7 @@ public class DocumentServiceConsumerTest {
     @MockBean
     private AuthTokenGenerator authTokenGenerator;
     @Autowired
-    private DocumentManagementClient deleteApi;
+    private DocumentManagementClient documentApi;
 
     @Pact(provider = "em_dm_store", consumer = "adoption_cos_api")
     public RequestResponsePact generatePactFragment(PactDslWithProvider builder) throws IOException {
@@ -65,11 +65,11 @@ public class DocumentServiceConsumerTest {
     @PactTestFor(pactMethod = "generatePactFragment")
     public void verifyPactFragment() throws JSONException {
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
-        ResponseEntity<?> response = deleteApi.downloadBinary(AUTH_TOKEN,
-                                                              SOME_SERVICE_AUTHORIZATION_TOKEN,
-                                                              USER_ROLES,
-                                                              USER_ID,
-                                                              "/documents/" + DOCUMENT_ID + "/binary"
+        ResponseEntity<?> response = documentApi.downloadBinary(AUTH_TOKEN,
+                                                                SOME_SERVICE_AUTHORIZATION_TOKEN,
+                                                                USER_ROLES,
+                                                                USER_ID,
+                                                                "/documents/" + DOCUMENT_ID + "/binary"
         );
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }
