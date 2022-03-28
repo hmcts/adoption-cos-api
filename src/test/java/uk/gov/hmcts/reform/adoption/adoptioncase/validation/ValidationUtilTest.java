@@ -18,10 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.LESS_THAN_TEN_WEEKS_AGO;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.YES;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateAdoptAgencyOrLAsContactEmail;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateAdoptAgencyOrLAsPhoneNumber;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateBasicCase;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateBirthFather;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateDateChildMovedIn;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateOtherParent;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_PHONE_NUMBER;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
 
 public class ValidationUtilTest {
@@ -29,6 +31,7 @@ public class ValidationUtilTest {
     @Test
     public void shouldValidateBasicCase() {
         CaseData caseData = new CaseData();
+        caseData.setHasAnotherAdopAgencyOrLA(YesOrNo.NO);
         List<String> errors = validateBasicCase(caseData);
         assertThat(errors).hasSize(21);
     }
@@ -37,6 +40,7 @@ public class ValidationUtilTest {
     public void shouldValidateBasicCaseWhenApplyingAlone() {
         CaseData caseData = new CaseData();
         caseData.setApplyingWith(ApplyingWith.ALONE);
+        caseData.setHasAnotherAdopAgencyOrLA(YesOrNo.NO);
         List<String> errors = validateBasicCase(caseData);
         assertThat(errors).hasSize(14);
     }
@@ -65,64 +69,91 @@ public class ValidationUtilTest {
     }
 
     @Test
-    public void shouldReturnFirstLaIfDoesNotHaveAnotherLa() {
+    public void shouldValidateIfFirstLaIsValid() {
         AdoptionAgencyOrLocalAuthority adoptionAgencyOrLa = AdoptionAgencyOrLocalAuthority.builder()
-            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).build();
-        ListValue<AdoptionAgencyOrLocalAuthority> aAOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
+            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).adopAgencyOrLaPhoneNumber(TEST_PHONE_NUMBER).build();
+        ListValue<AdoptionAgencyOrLocalAuthority> adopAgencyOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
         List<ListValue<AdoptionAgencyOrLocalAuthority>> agencyOrLocalAuthorityList = new ArrayList<>();
-        agencyOrLocalAuthorityList.add(aAOrLaListValue);
+        agencyOrLocalAuthorityList.add(adopAgencyOrLaListValue);
 
-        List<String> response = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.NO);
+        List<String> responseEmail = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.NO);
+        List<String> responsePhone = validateAdoptAgencyOrLAsPhoneNumber(agencyOrLocalAuthorityList, YesOrNo.NO);
 
-        assertThat(response).hasSize(0);
+        assertThat(responseEmail).hasSize(0);
+        assertThat(responsePhone).hasSize(0);
     }
 
 
     @Test
-    public void shouldReturnFirstLaIfDoesNotHaveAnotherLaIfSecondIsNotNull() {
+    public void shouldValidateIfBothLasAreValid() {
         AdoptionAgencyOrLocalAuthority adoptionAgencyOrLa = AdoptionAgencyOrLocalAuthority.builder()
-            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).build();
-        ListValue<AdoptionAgencyOrLocalAuthority> aAOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
+            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).adopAgencyOrLaPhoneNumber(TEST_PHONE_NUMBER).build();
+        ListValue<AdoptionAgencyOrLocalAuthority> adopAgencyOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
         List<ListValue<AdoptionAgencyOrLocalAuthority>> agencyOrLocalAuthorityList = new ArrayList<>();
-        agencyOrLocalAuthorityList.add(aAOrLaListValue);
-        agencyOrLocalAuthorityList.add(aAOrLaListValue);
+        agencyOrLocalAuthorityList.add(adopAgencyOrLaListValue);
+        agencyOrLocalAuthorityList.add(adopAgencyOrLaListValue);
 
-        List<String> response = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.NO);
+        List<String> responseEmail = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.YES);
+        List<String> responsePhone = validateAdoptAgencyOrLAsPhoneNumber(agencyOrLocalAuthorityList, YesOrNo.YES);
 
-        assertThat(response).hasSize(0);
+        assertThat(responseEmail).hasSize(0);
+        assertThat(responsePhone).hasSize(0);
     }
 
     @Test
-    public void shouldThrowErrorIfSecondLaEmailIsNull() {
+    public void shouldThrowErrorIfSecondLaEmailOrPhoneIsNull() {
         AdoptionAgencyOrLocalAuthority adoptionAgencyOrLa = AdoptionAgencyOrLocalAuthority.builder()
-            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).build();
-        ListValue<AdoptionAgencyOrLocalAuthority> aAOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
+            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).adopAgencyOrLaPhoneNumber(TEST_PHONE_NUMBER).build();
+        ListValue<AdoptionAgencyOrLocalAuthority> adopAgencyOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
         AdoptionAgencyOrLocalAuthority adoptionAgencyOrLaSecond = AdoptionAgencyOrLocalAuthority.builder()
-            .adopAgencyOrLaContactEmail(null).build();
-        ListValue<AdoptionAgencyOrLocalAuthority> aAOrLaSecondListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLaSecond);
+            .adopAgencyOrLaContactEmail(null).adopAgencyOrLaPhoneNumber(null).build();
+        ListValue<AdoptionAgencyOrLocalAuthority> adopAgencyOrLa2ListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLaSecond);
         List<ListValue<AdoptionAgencyOrLocalAuthority>> agencyOrLocalAuthorityList = new ArrayList<>();
-        agencyOrLocalAuthorityList.add(aAOrLaListValue);
-        agencyOrLocalAuthorityList.add(aAOrLaSecondListValue);
+        agencyOrLocalAuthorityList.add(adopAgencyOrLaListValue);
+        agencyOrLocalAuthorityList.add(adopAgencyOrLa2ListValue);
 
-        List<String> response = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.YES);
+        List<String> responseEmail = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.YES);
+        List<String> responsePhone = validateAdoptAgencyOrLAsPhoneNumber(agencyOrLocalAuthorityList, YesOrNo.YES);
 
-        assertThat(response).isEqualTo(List.of("AdoptAgencyOrLaContactEmail cannot be empty or null"));
+        assertThat(responseEmail).isEqualTo(List.of("AdoptAgencyOrLaContactEmail cannot be empty or null"));
+        assertThat(responsePhone).isEqualTo(List.of("AdoptAgencyOrLaPhoneNumber cannot be empty or null"));
     }
 
     @Test
-    public void shouldThrowErrorIfFirstLaEmailIsNull() {
+    public void shouldValidateIfNoSelectedEvenIfSecondLaEmailOrPhoneIsNull() {
         AdoptionAgencyOrLocalAuthority adoptionAgencyOrLa = AdoptionAgencyOrLocalAuthority.builder()
-            .adopAgencyOrLaContactEmail(null).build();
-        ListValue<AdoptionAgencyOrLocalAuthority> aAOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
+            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).adopAgencyOrLaPhoneNumber(TEST_PHONE_NUMBER).build();
+        ListValue<AdoptionAgencyOrLocalAuthority> adopAgencyOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
         AdoptionAgencyOrLocalAuthority adoptionAgencyOrLaSecond = AdoptionAgencyOrLocalAuthority.builder()
-            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).build();
-        ListValue<AdoptionAgencyOrLocalAuthority> aAOrLaSecondListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLaSecond);
+            .adopAgencyOrLaContactEmail(null).adopAgencyOrLaPhoneNumber(null).build();
+        ListValue<AdoptionAgencyOrLocalAuthority> adopAgencyOrLa2ListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLaSecond);
         List<ListValue<AdoptionAgencyOrLocalAuthority>> agencyOrLocalAuthorityList = new ArrayList<>();
-        agencyOrLocalAuthorityList.add(aAOrLaListValue);
-        agencyOrLocalAuthorityList.add(aAOrLaSecondListValue);
+        agencyOrLocalAuthorityList.add(adopAgencyOrLaListValue);
+        agencyOrLocalAuthorityList.add(adopAgencyOrLa2ListValue);
 
-        List<String> response = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.NO);
+        List<String> responseEmail = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.NO);
+        List<String> responsePhone = validateAdoptAgencyOrLAsPhoneNumber(agencyOrLocalAuthorityList, YesOrNo.NO);
 
-        assertThat(response).isEqualTo(List.of("AdoptAgencyOrLaContactEmail cannot be empty or null"));
+        assertThat(responseEmail).hasSize(0);
+        assertThat(responsePhone).hasSize(0);
+    }
+
+    @Test
+    public void shouldThrowErrorIfFirstLaEmailOrPhoneIsNullEvenIfSecondIsValid() {
+        AdoptionAgencyOrLocalAuthority adoptionAgencyOrLa = AdoptionAgencyOrLocalAuthority.builder()
+            .adopAgencyOrLaContactEmail(null).adopAgencyOrLaPhoneNumber(null).build();
+        ListValue<AdoptionAgencyOrLocalAuthority> adopAgencyOrLaListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLa);
+        AdoptionAgencyOrLocalAuthority adoptionAgencyOrLaSecond = AdoptionAgencyOrLocalAuthority.builder()
+            .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).adopAgencyOrLaPhoneNumber(TEST_PHONE_NUMBER).build();
+        ListValue<AdoptionAgencyOrLocalAuthority> adopAgencyOrLa2ListValue = new ListValue<>(StringUtils.EMPTY, adoptionAgencyOrLaSecond);
+        List<ListValue<AdoptionAgencyOrLocalAuthority>> agencyOrLocalAuthorityList = new ArrayList<>();
+        agencyOrLocalAuthorityList.add(adopAgencyOrLaListValue);
+        agencyOrLocalAuthorityList.add(adopAgencyOrLa2ListValue);
+
+        List<String> responseEmail = validateAdoptAgencyOrLAsContactEmail(agencyOrLocalAuthorityList, YesOrNo.YES);
+        List<String> responsePhone = validateAdoptAgencyOrLAsPhoneNumber(agencyOrLocalAuthorityList, YesOrNo.YES);
+
+        assertThat(responseEmail).isEqualTo(List.of("AdoptAgencyOrLaContactEmail cannot be empty or null"));
+        assertThat(responsePhone).isEqualTo(List.of("AdoptAgencyOrLaPhoneNumber cannot be empty or null"));
     }
 }

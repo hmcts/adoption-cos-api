@@ -56,7 +56,7 @@ public final class ValidationUtil {
     static List<String> validateAdoptAgencyOrLAsContactEmail(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs,
                                                              YesOrNo hasAnotherAdopAgencyOrLA) {
         boolean adoptAgencyOrLAsContactEmailNotPresent = nonNull(adoptAgencyOrLAs);
-        if (hasAnotherAdopAgencyOrLA.equals(YesOrNo.YES)) {
+        if (hasAnotherAdopAgencyOrLA != null && hasAnotherAdopAgencyOrLA.equals(YesOrNo.YES)) {
             adoptAgencyOrLAsContactEmailNotPresent = adoptAgencyOrLAsContactEmailNotPresent && adoptAgencyOrLAs
                 .stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaContactEmail()));
         } else {
@@ -67,8 +67,8 @@ public final class ValidationUtil {
         return adoptAgencyOrLAsContactEmailNotPresent ? List.of("AdoptAgencyOrLaContactEmail" + EMPTY) : emptyList();
     }
 
-    private static List<String> validateAdoptAgencyOrLAsPhoneNumber(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs,
-                                                                    YesOrNo hasAnotherAdopAgencyOrLA) {
+    static List<String> validateAdoptAgencyOrLAsPhoneNumber(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs,
+                                                            YesOrNo hasAnotherAdopAgencyOrLA) {
         boolean adoptAgencyOrLAsPhoneNumberNotPresent = nonNull(adoptAgencyOrLAs);
 
         if (hasAnotherAdopAgencyOrLA.equals(YesOrNo.YES)) {
