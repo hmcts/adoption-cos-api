@@ -24,3 +24,5 @@ bin/main/application.yaml
 ### VS Code ###
 .vscode
 .aat-env
+/target/
+/pacts/
