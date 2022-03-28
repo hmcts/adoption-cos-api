@@ -33,8 +33,6 @@ import static org.mockito.Mockito.when;
 @SpringBootTest({
     "document_management.url : http://localhost:5006"
 })
-//http://localhost:5006
-//http://dm-store-aat.service.core-compute-aat.internal
 public class DocumentServiceConsumerTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
     private static final String USER_ID = "id1";
