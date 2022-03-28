@@ -5,6 +5,10 @@
     <cve>CVE-2019-12415</cve>
     <cve>CVE-2022-26336</cve>
   </suppress>
+  <suppress>
+    <notes>jackson-databind-2.13.2</notes>
+    <cve>CVE-2020-36518</cve>
+  </suppress>
   <!--
     <suppress>
       <notes>commons-compress-1.18</notes>
