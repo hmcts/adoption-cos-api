@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @PactTestFor(providerName = "em_dm_store", port = "5006")
 @PactFolder("pacts")
 @SpringBootTest({
-    //"document_management.url : http://localhost:5006"
+    "http://localhost:5006"
 })
 public class DocumentServiceConsumerTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
@@ -47,13 +47,15 @@ public class DocumentServiceConsumerTest {
     @Pact(provider = "em_dm_store", consumer = "adoption_cos_api")
     public RequestResponsePact generatePactFragment(PactDslWithProvider builder) throws IOException {
         Map<String, String> headers = Maps.newHashMap();
+        headers.put("Authorization", AUTH_TOKEN);
         headers.put("ServiceAuthorization", SOME_SERVICE_AUTHORIZATION_TOKEN);
+        headers.put("user-roles", USER_ROLES);
         headers.put("user-id", USER_ID);
 
         return builder
             .given("I have existing document")
             .uponReceiving("a request for download the document")
-            .path("/documents/" + DOCUMENT_ID + "/binary")
+            .path("/documents/"+DOCUMENT_ID +"/binary")//"/documents/" + + "/binary"
             .method("GET")
             .headers(headers)
             .willRespondWith()
@@ -69,7 +71,7 @@ public class DocumentServiceConsumerTest {
                                                                 SOME_SERVICE_AUTHORIZATION_TOKEN,
                                                                 USER_ROLES,
                                                                 USER_ID,
-                                                                "/documents/" + DOCUMENT_ID + "/binary"
+                                                                 DOCUMENT_ID
         );
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }
