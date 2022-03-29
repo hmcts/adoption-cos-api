@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.adoption;
 
+//import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
+
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
@@ -31,21 +33,22 @@ import static org.mockito.Mockito.when;
 @PactTestFor(providerName = "em_dm_store", port = "5006")
 @PactFolder("pacts")
 @SpringBootTest({
-    "http://localhost:5006"
+    "document_management.url : http://localhost:5006"
 })
-public class DocumentServiceConsumerTest {
+public class DocumentManagementPactTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-    private static final String USER_ID = "id1";
+    private static final String USER_ID = "id";
     private static final String USER_ROLES = "admin";
-    private static final String DOCUMENT_ID = "5c3c3906-2b51-468e-8cbb-a4002eded075";
+    private static final String DOCUMENT_ID = "6c3c3906-2b51-468e-8cbb-a4002eded076";
     private static final String AUTH_TOKEN = "Bearer someAuthToken";
+
     @MockBean
     private AuthTokenGenerator authTokenGenerator;
     @Autowired
     private DocumentManagementClient documentApi;
 
     @Pact(provider = "em_dm_store", consumer = "adoption_cos_api")
-    public RequestResponsePact generatePactFragment(PactDslWithProvider builder) throws IOException {
+    public RequestResponsePact downloadBinaryPact(PactDslWithProvider builder) throws IOException {
         Map<String, String> headers = Maps.newHashMap();
         headers.put("Authorization", AUTH_TOKEN);
         headers.put("ServiceAuthorization", SOME_SERVICE_AUTHORIZATION_TOKEN);
@@ -55,7 +58,7 @@ public class DocumentServiceConsumerTest {
         return builder
             .given("I have existing document")
             .uponReceiving("a request for download the document")
-            .path("/documents/"+DOCUMENT_ID +"/binary")//"/documents/" + + "/binary"
+            .path("/documents/" + DOCUMENT_ID + "/binary")
             .method("GET")
             .headers(headers)
             .willRespondWith()
@@ -64,14 +67,15 @@ public class DocumentServiceConsumerTest {
     }
 
     @Test
-    @PactTestFor(pactMethod = "generatePactFragment")
+    @PactTestFor(pactMethod = "downloadBinaryPact")
     public void verifyPactFragment() throws JSONException {
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
-        ResponseEntity<?> response = documentApi.downloadBinary(AUTH_TOKEN,
-                                                                SOME_SERVICE_AUTHORIZATION_TOKEN,
-                                                                USER_ROLES,
-                                                                USER_ID,
-                                                                 DOCUMENT_ID
+        ResponseEntity<?> response = documentApi.downloadBinary(
+            AUTH_TOKEN,
+            SOME_SERVICE_AUTHORIZATION_TOKEN,
+            USER_ROLES,
+            USER_ID,
+            DOCUMENT_ID
         );
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }
