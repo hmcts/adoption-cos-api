@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.adoption;
 
-//import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
-
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
@@ -41,6 +39,7 @@ public class DocumentManagementPactTest {
     private static final String USER_ROLES = "admin";
     private static final String DOCUMENT_ID = "6c3c3906-2b51-468e-8cbb-a4002eded076";
     private static final String AUTH_TOKEN = "Bearer someAuthToken";
+    private static final Boolean PERMANENT = false;
 
     @MockBean
     private AuthTokenGenerator authTokenGenerator;
@@ -68,7 +67,7 @@ public class DocumentManagementPactTest {
 
     @Test
     @PactTestFor(pactMethod = "downloadBinaryPact")
-    public void verifyPactFragment() throws JSONException {
+    public void verifyDownloadBinary() throws JSONException {
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
         ResponseEntity<?> response = documentApi.downloadBinary(
             AUTH_TOKEN,
@@ -79,4 +78,40 @@ public class DocumentManagementPactTest {
         );
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }
+
+    /*@Pact(provider = "em_dm_store", consumer = "adoption_cos_api")
+    public RequestResponsePact deleteDocumentPact(PactDslWithProvider builder) throws IOException {
+        Map<String, String> headers = Maps.newHashMap();
+        headers.put("Authorization", AUTH_TOKEN);
+        headers.put("ServiceAuthorization", SOME_SERVICE_AUTHORIZATION_TOKEN);
+        headers.put("user-roles", USER_ROLES);
+        headers.put("user-id", USER_ID);
+
+        return builder
+            .given("Deleting existing document")
+            .uponReceiving("a request for delete the document")
+            .path("/documents/" + DOCUMENT_ID)
+            .method("DELETE")
+            .headers(headers)
+            .query("permanent=false")
+            .willRespondWith()
+            .status(204)
+            .toPact();
+    }
+
+    @Test
+    @PactTestFor(pactMethod = "deleteDocumentPact")
+    public void verifyDeleteDocument() throws JSONException {
+        when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
+        documentApi.deleteDocument(
+            AUTH_TOKEN,
+            SOME_SERVICE_AUTHORIZATION_TOKEN,
+            USER_ROLES,
+            USER_ID,
+            DOCUMENT_ID,
+            PERMANENT
+        );
+        Assertions.assertTrue(true);
+    }*/
+
 }
