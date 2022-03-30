@@ -10,6 +10,7 @@ public final class TestConstants {
     public static final String ENGLISH_TEMPLATE_ID = "adoptionminiapplication";
 
     public static final String TEST_USER_EMAIL = "gaurav.tomar@hmcts.net";
+    public static final String TEST_PHONE_NUMBER = "1234567890";
     public static final String TEST_FIRST_NAME = "test_first_name";
     public static final String TEST_LAST_NAME = "test_last_name";
     public static final String ABOUT_TO_START_URL = "/callbacks/about-to-start";
