@@ -144,7 +144,7 @@ public abstract class FunctionalTest {
     protected Response triggerCallback(CallbackRequest request, String url) throws IOException {
         return restAssuredInstance
             .header("ServiceAuthorization", serviceAuthenticationGenerator.generate())
-            .header(AUTHORIZATION, idamTokenGenerator.generateIdamTokenForUser("youtubeman@mailinator.com", "Mercer@29"))
+            .header(AUTHORIZATION, idamTokenGenerator.generateIdamTokenForSystem())
             .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .when()

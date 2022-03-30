@@ -40,7 +40,7 @@ s2s-authorised:
 
 idam:
   s2s-auth:
-    url: ${S2S_URL:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
+    url: ${TEST_S2S_URL:http://localhost:4552}
     secret: ${S2S_SECRET:AAAAAAAAAAAAAAAA}
     microservice: adoption_cos_api
   api:
