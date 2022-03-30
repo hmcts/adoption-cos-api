@@ -174,7 +174,7 @@
     "childrenFirstNameAfterAdoption": "child",
     "childrenLastName": "child",
     "childrenLastNameAfterAdoption": "child",
-    "childrenNationality": ["Irish", "British", "Other"
+    "childrenNationality": ["Irish", "British"
     ],
     "childrenOtherSexAtBirth": "something",
     "childrenSexAtBirth": "other",
