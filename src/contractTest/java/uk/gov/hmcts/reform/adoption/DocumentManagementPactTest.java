@@ -78,40 +78,4 @@ public class DocumentManagementPactTest {
         );
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }
-
-    /*@Pact(provider = "em_dm_store", consumer = "adoption_cos_api")
-    public RequestResponsePact deleteDocumentPact(PactDslWithProvider builder) throws IOException {
-        Map<String, String> headers = Maps.newHashMap();
-        headers.put("Authorization", AUTH_TOKEN);
-        headers.put("ServiceAuthorization", SOME_SERVICE_AUTHORIZATION_TOKEN);
-        headers.put("user-roles", USER_ROLES);
-        headers.put("user-id", USER_ID);
-
-        return builder
-            .given("Deleting existing document")
-            .uponReceiving("a request for delete the document")
-            .path("/documents/" + DOCUMENT_ID)
-            .method("DELETE")
-            .headers(headers)
-            .query("permanent=false")
-            .willRespondWith()
-            .status(204)
-            .toPact();
-    }
-
-    @Test
-    @PactTestFor(pactMethod = "deleteDocumentPact")
-    public void verifyDeleteDocument() throws JSONException {
-        when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
-        documentApi.deleteDocument(
-            AUTH_TOKEN,
-            SOME_SERVICE_AUTHORIZATION_TOKEN,
-            USER_ROLES,
-            USER_ID,
-            DOCUMENT_ID,
-            PERMANENT
-        );
-        Assertions.assertTrue(true);
-    }*/
-
 }
