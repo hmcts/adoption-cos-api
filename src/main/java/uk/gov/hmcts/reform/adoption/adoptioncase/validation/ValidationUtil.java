@@ -4,10 +4,10 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -48,21 +48,36 @@ public final class ValidationUtil {
             validateOtherParent(caseData.getOtherParent()),
             validatePlacementOrders(caseData.getPlacementOrders()),
             validateSocialWorker(caseData.getSocialWorker()),
-            validateAdoptAgencyOrLAsContactEmail(caseData.getAdopAgencyOrLAs()),
-            validateAdoptAgencyOrLAsPhoneNumber(caseData.getAdopAgencyOrLAs())
+            validateAdoptAgencyOrLAsContactEmail(caseData.getAdopAgencyOrLAs(), caseData.getHasAnotherAdopAgencyOrLA()),
+            validateAdoptAgencyOrLAsPhoneNumber(caseData.getAdopAgencyOrLAs(), caseData.getHasAnotherAdopAgencyOrLA())
         );
     }
 
-    private static List<String> validateAdoptAgencyOrLAsContactEmail(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs) {
-        boolean adoptAgencyOrLAsContactEmailNotPresent = nonNull(adoptAgencyOrLAs) && adoptAgencyOrLAs
-            .stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaContactEmail()));
+    static List<String> validateAdoptAgencyOrLAsContactEmail(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs,
+                                                             YesOrNo hasAnotherAdopAgencyOrLA) {
+        boolean adoptAgencyOrLAsContactEmailNotPresent = nonNull(adoptAgencyOrLAs);
+        if (hasAnotherAdopAgencyOrLA != null && hasAnotherAdopAgencyOrLA.equals(YesOrNo.YES)) {
+            adoptAgencyOrLAsContactEmailNotPresent = adoptAgencyOrLAsContactEmailNotPresent && adoptAgencyOrLAs
+                .stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaContactEmail()));
+        } else {
+            adoptAgencyOrLAsContactEmailNotPresent = adoptAgencyOrLAsContactEmailNotPresent && adoptAgencyOrLAs.stream()
+                .findFirst().stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaContactEmail()));
+        }
 
         return adoptAgencyOrLAsContactEmailNotPresent ? List.of("AdoptAgencyOrLaContactEmail" + EMPTY) : emptyList();
     }
 
-    private static List<String> validateAdoptAgencyOrLAsPhoneNumber(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs) {
-        boolean adoptAgencyOrLAsPhoneNumberNotPresent = nonNull(adoptAgencyOrLAs) && adoptAgencyOrLAs
-            .stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaPhoneNumber()));
+    static List<String> validateAdoptAgencyOrLAsPhoneNumber(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs,
+                                                            YesOrNo hasAnotherAdopAgencyOrLA) {
+        boolean adoptAgencyOrLAsPhoneNumberNotPresent = nonNull(adoptAgencyOrLAs);
+
+        if (hasAnotherAdopAgencyOrLA.equals(YesOrNo.YES)) {
+            adoptAgencyOrLAsPhoneNumberNotPresent = adoptAgencyOrLAsPhoneNumberNotPresent && adoptAgencyOrLAs
+                .stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaPhoneNumber()));
+        } else {
+            adoptAgencyOrLAsPhoneNumberNotPresent = adoptAgencyOrLAsPhoneNumberNotPresent && adoptAgencyOrLAs.stream()
+                .findFirst().stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaPhoneNumber()));
+        }
 
         return adoptAgencyOrLAsPhoneNumberNotPresent ? List.of("AdoptAgencyOrLaPhoneNumber" + EMPTY) : emptyList();
     }
