@@ -43,17 +43,17 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
         final Long caseId = caseDetails.getId();
         final State state = caseDetails.getState();
 
-        if (caseDataCopy.getBirthMother().getNationality() != null) {
+        if (caseDataCopy.getBirthMother() != null && caseDataCopy.getBirthMother().getNationality() != null) {
             caseDataCopy.getBirthMother().setNationality(caseDataCopy.getBirthMother().getNationality().stream()
                 .filter(item -> item != Nationality.OTHER).collect(
                 Collectors.toCollection(TreeSet<Nationality>::new)));
         }
-        if (caseDataCopy.getBirthFather().getNationality() != null) {
+        if (caseDataCopy.getBirthFather() != null && caseDataCopy.getBirthFather().getNationality() != null) {
             caseDataCopy.getBirthFather().setNationality(caseDataCopy.getBirthFather().getNationality().stream()
                 .filter(item -> item != Nationality.OTHER).collect(
                 Collectors.toCollection(TreeSet<Nationality>::new)));
         }
-        if (caseDataCopy.getChildren().getNationality() != null) {
+        if (caseDataCopy.getChildren() != null && caseDataCopy.getChildren().getNationality() != null) {
             caseDataCopy.getChildren().setNationality(caseDataCopy.getChildren().getNationality().stream()
                 .filter(item -> item != Nationality.OTHER).collect(
                 Collectors.toCollection(TreeSet<Nationality>::new)));
