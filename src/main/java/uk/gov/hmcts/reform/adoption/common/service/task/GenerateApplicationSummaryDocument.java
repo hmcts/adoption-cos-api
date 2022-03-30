@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Nationality;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
@@ -14,7 +15,9 @@ import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_FILE_NAME;
@@ -36,14 +39,31 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
     @Override
     public CaseDetails<CaseData, State> apply(CaseDetails<CaseData, State> caseDetails) {
         final CaseData caseData = caseDetails.getData();
+        CaseData caseDataCopy = caseDetails.getData();
         final Long caseId = caseDetails.getId();
         final State state = caseDetails.getState();
+
+        if (caseDataCopy.getBirthMother().getNationality() != null) {
+            caseDataCopy.getBirthMother().setNationality(caseDataCopy.getBirthMother().getNationality().stream()
+                .filter(item -> item != Nationality.OTHER).collect(
+                Collectors.toCollection(TreeSet<Nationality>::new)));
+        }
+        if (caseDataCopy.getBirthFather().getNationality() != null) {
+            caseDataCopy.getBirthFather().setNationality(caseDataCopy.getBirthFather().getNationality().stream()
+                .filter(item -> item != Nationality.OTHER).collect(
+                Collectors.toCollection(TreeSet<Nationality>::new)));
+        }
+        if (caseDataCopy.getChildren().getNationality() != null) {
+            caseDataCopy.getChildren().setNationality(caseDataCopy.getChildren().getNationality().stream()
+                .filter(item -> item != Nationality.OTHER).collect(
+                Collectors.toCollection(TreeSet<Nationality>::new)));
+        }
 
         if (EnumSet.of(Submitted).contains(state)) {
             log.info("Generating summary document for caseId: {}", caseId);
 
             @SuppressWarnings("unchecked")
-            Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+            Map<String, Object> templateContent = objectMapper.convertValue(caseDataCopy, Map.class);
             final CompletableFuture<Void> appSummaryEn = CompletableFuture
                 .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
                                                                                         APPLICATION_SUMMARY_EN,
