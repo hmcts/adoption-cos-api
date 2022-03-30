@@ -134,18 +134,18 @@ withPipeline(type, product, component) {
         reportName           : "Functional Tests Report"
       ]
 
-      publishHTML target: [
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : "target/site/serenity/",
-        reportFiles          : "index.html",
-        reportName           : "Functional Tests Report"
-      ]
+//      publishHTML target: [
+//        allowMissing         : true,
+//        alwaysLinkToLastBuild: true,
+//        keepAll              : true,
+//        reportDir            : "target/site/serenity/",
+//        reportFiles          : "index.html",
+//        reportName           : "Functional Tests Report"
+//      ]
 
-      dir("${WORKSPACE}") {
-        steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
-      }
+//      dir("${WORKSPACE}") {
+//        steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
+//      }
     }
 
   after('functionalTest:aat') {
@@ -206,7 +206,6 @@ withPipeline(type, product, component) {
       env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
       env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       env.CASE_DATA_STORE_BASEURL = "http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
       env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
 
       setCommonEnvVariables()
@@ -287,6 +286,7 @@ def setCommonEnvVariables() {
     env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
     env.BEFTA_S2S_CLIENT_ID = "ccd_data"
     env.CCD_API_GATEWAY_OAUTH2_REDIRECT_URL = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
+    env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 }
 
 def uploadCoreCaseDataDefinitions() {
