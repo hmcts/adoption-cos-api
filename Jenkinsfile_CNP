@@ -143,9 +143,9 @@ withPipeline(type, product, component) {
 //        reportName           : "Functional Tests Report"
 //      ]
 
-//      dir("${WORKSPACE}") {
-//        steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
-//      }
+      dir("${WORKSPACE}") {
+        steps.archiveArtifacts artifacts: "build/reports/tests/functional/**/*"
+      }
     }
 
   after('functionalTest:aat') {
