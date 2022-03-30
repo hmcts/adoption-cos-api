@@ -112,7 +112,7 @@ task functional(type: Test) {
   group = "Verification"
   testClassesDirs = sourceSets.functionalTest.output.classesDirs
   classpath = sourceSets.functionalTest.runtimeClasspath
-  finalizedBy(aggregate)
+  failFast = true
 }
 
 task integration(type: Test) {
