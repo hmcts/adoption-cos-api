@@ -39,22 +39,23 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
     @Override
     public CaseDetails<CaseData, State> apply(CaseDetails<CaseData, State> caseDetails) {
         final CaseData caseData = caseDetails.getData();
-        CaseData caseDataCopy = caseDetails.getData();
         final Long caseId = caseDetails.getId();
         final State state = caseDetails.getState();
 
-        if (caseDataCopy.getBirthMother() != null && caseDataCopy.getBirthMother().getNationality() != null) {
-            caseDataCopy.getBirthMother().setNationality(caseDataCopy.getBirthMother().getNationality().stream()
+        @SuppressWarnings("unchecked")
+        Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+        if (caseData.getBirthFather() != null && caseData.getBirthFather().getNationality() != null) {
+            templateContent.put("birthMotherNationality", caseData.getBirthMother().getNationality().stream()
                 .filter(item -> item != Nationality.OTHER).collect(
                 Collectors.toCollection(TreeSet<Nationality>::new)));
         }
-        if (caseDataCopy.getBirthFather() != null && caseDataCopy.getBirthFather().getNationality() != null) {
-            caseDataCopy.getBirthFather().setNationality(caseDataCopy.getBirthFather().getNationality().stream()
+        if (caseData.getBirthFather() != null && caseData.getBirthFather().getNationality() != null) {
+            templateContent.put("birthFatherNationality", caseData.getBirthFather().getNationality().stream()
                 .filter(item -> item != Nationality.OTHER).collect(
                 Collectors.toCollection(TreeSet<Nationality>::new)));
         }
-        if (caseDataCopy.getChildren() != null && caseDataCopy.getChildren().getNationality() != null) {
-            caseDataCopy.getChildren().setNationality(caseDataCopy.getChildren().getNationality().stream()
+        if (caseData.getChildren() != null && caseData.getChildren().getNationality() != null) {
+            templateContent.put("childrenNationality", caseData.getChildren().getNationality().stream()
                 .filter(item -> item != Nationality.OTHER).collect(
                 Collectors.toCollection(TreeSet<Nationality>::new)));
         }
@@ -62,8 +63,6 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
         if (EnumSet.of(Submitted).contains(state)) {
             log.info("Generating summary document for caseId: {}", caseId);
 
-            @SuppressWarnings("unchecked")
-            Map<String, Object> templateContent = objectMapper.convertValue(caseDataCopy, Map.class);
             final CompletableFuture<Void> appSummaryEn = CompletableFuture
                 .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
                                                                                         APPLICATION_SUMMARY_EN,
