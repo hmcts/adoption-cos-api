@@ -113,7 +113,6 @@ task functional(type: Test) {
   testClassesDirs = sourceSets.functionalTest.output.classesDirs
   classpath = sourceSets.functionalTest.runtimeClasspath
   failFast = true
-  finalizedBy(aggregate)
 }
 
 task integration(type: Test) {
