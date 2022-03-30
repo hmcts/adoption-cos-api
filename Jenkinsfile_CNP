@@ -144,7 +144,7 @@ withPipeline(type, product, component) {
 //      ]
 
       dir("${WORKSPACE}") {
-        steps.archiveArtifacts artifacts: "build/reports/tests/functional/**/*"
+        steps.archiveArtifacts  allowEmptyArchive: true, artifacts: "build/reports/tests/functional/**/*"
       }
     }
 
@@ -158,17 +158,20 @@ withPipeline(type, product, component) {
       reportName           : "Functional Tests Report"
     ]
 
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "target/site/serenity/",
-      reportFiles          : "index.html",
-      reportName           : "Functional Tests Report"
-    ]
-
+//    publishHTML target: [
+//      allowMissing         : true,
+//      alwaysLinkToLastBuild: true,
+//      keepAll              : true,
+//      reportDir            : "target/site/serenity/",
+//      reportFiles          : "index.html",
+//      reportName           : "Functional Tests Report"
+//    ]
+//
+//    dir("${WORKSPACE}") {
+//      steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
+//    }
     dir("${WORKSPACE}") {
-      steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
+      steps.archiveArtifacts  allowEmptyArchive: true, artifacts: "build/reports/tests/functional/**/*"
     }
   }
 

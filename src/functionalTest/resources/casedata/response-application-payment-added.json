@@ -63,24 +63,7 @@
     "applicant1ContactDetails": null,
     "applicant1ContactDetailsConsent": "Yes",
     "applicant1DateOfBirth": "1990-12-12",
-    "applicant1DocumentsUploaded": [
-      {
-        "id": "c283880e-068e-450a-b44d-e72a6191847b",
-        "value": {
-          "documentComment": "Uploaded by applicant",
-          "documentDateAdded": null,
-          "documentEmailContent": null,
-          "documentFileId": null,
-          "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-          "documentLink": {
-            "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary",
-            "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-            "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1"
-          },
-          "documentType": null
-        }
-      }
-    ],
+    "applicant1DocumentsUploaded": [],
     "applicant1Email": "citizen.automation@mailinator.com",
     "applicant1EmailAddress": "abid@gmail.co",
     "applicant1FirstName": "Abid1",
