@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.service;
 
 import feign.FeignException;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -41,10 +40,6 @@ public class CcdSearchService {
 
     @Value("${core_case_data.search.page_size}")
     private int pageSize;
-
-    @Value("${bulk-action.page-size}")
-    @Setter
-    private int bulkActionPageSize;
 
     @Autowired
     private CoreCaseDataApi coreCaseDataApi;
