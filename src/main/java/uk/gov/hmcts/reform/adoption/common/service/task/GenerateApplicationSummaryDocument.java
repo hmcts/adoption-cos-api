@@ -44,7 +44,7 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
 
         @SuppressWarnings("unchecked")
         Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
-        if (caseData.getBirthFather() != null && caseData.getBirthFather().getNationality() != null) {
+        if (caseData.getBirthMother() != null && caseData.getBirthMother().getNationality() != null) {
             templateContent.put("birthMotherNationality", caseData.getBirthMother().getNationality().stream()
                 .filter(item -> item != Nationality.OTHER).collect(
                 Collectors.toCollection(TreeSet<Nationality>::new)));
