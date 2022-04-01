@@ -13,6 +13,9 @@ public final class TestConstants {
     public static final String TEST_PHONE_NUMBER = "1234567890";
     public static final String TEST_FIRST_NAME = "test_first_name";
     public static final String TEST_LAST_NAME = "test_last_name";
+    public static final String ABOUT_TO_START_URL = "/callbacks/about-to-start";
+    public static final String ABOUT_TO_SUBMIT_URL = "/callbacks/about-to-submit";
+    public static final String SUBMITTED_URL = "/callbacks/submitted";
 
     private TestConstants() {
     }

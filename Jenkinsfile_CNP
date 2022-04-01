@@ -46,6 +46,7 @@ def secrets = [
     secret('idam-solicitor-password', 'IDAM_SOLICITOR_PASSWORD'),
     secret('idam-system-user-name', 'IDAM_SYSTEM_UPDATE_USERNAME'),
     secret('idam-system-user-password', 'IDAM_SYSTEM_UPDATE_PASSWORD'),
+    secret('s2s-secret-cos-api', 'S2S_SECRET'),
     secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_KEY')
   ]
 ]
@@ -133,17 +134,17 @@ withPipeline(type, product, component) {
         reportName           : "Functional Tests Report"
       ]
 
-      publishHTML target: [
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : "target/site/serenity/",
-        reportFiles          : "index.html",
-        reportName           : "Functional Tests Report"
-      ]
+//      publishHTML target: [
+//        allowMissing         : true,
+//        alwaysLinkToLastBuild: true,
+//        keepAll              : true,
+//        reportDir            : "target/site/serenity/",
+//        reportFiles          : "index.html",
+//        reportName           : "Functional Tests Report"
+//      ]
 
       dir("${WORKSPACE}") {
-        steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
+        steps.archiveArtifacts  allowEmptyArchive: true, artifacts: "build/reports/tests/functional/**/*"
       }
     }
 
@@ -157,17 +158,20 @@ withPipeline(type, product, component) {
       reportName           : "Functional Tests Report"
     ]
 
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "target/site/serenity/",
-      reportFiles          : "index.html",
-      reportName           : "Functional Tests Report"
-    ]
-
+//    publishHTML target: [
+//      allowMissing         : true,
+//      alwaysLinkToLastBuild: true,
+//      keepAll              : true,
+//      reportDir            : "target/site/serenity/",
+//      reportFiles          : "index.html",
+//      reportName           : "Functional Tests Report"
+//    ]
+//
+//    dir("${WORKSPACE}") {
+//      steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
+//    }
     dir("${WORKSPACE}") {
-      steps.archiveArtifacts artifacts: "target/site/serenity/**/*"
+      steps.archiveArtifacts  allowEmptyArchive: true, artifacts: "build/reports/tests/functional/**/*"
     }
   }
 
@@ -205,7 +209,6 @@ withPipeline(type, product, component) {
       env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
       env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       env.CASE_DATA_STORE_BASEURL = "http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
       env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
 
       setCommonEnvVariables()
@@ -280,11 +283,13 @@ withPipeline(type, product, component) {
 
 def setCommonEnvVariables() {
     env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
+    env.IDAM_API_BASEURL = "https://idam-api.aat.platform.hmcts.net"
     env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     env.FEE_API_URL = "http://fees-register-api-aat.service.core-compute-aat.internal"
     env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
     env.BEFTA_S2S_CLIENT_ID = "ccd_data"
     env.CCD_API_GATEWAY_OAUTH2_REDIRECT_URL = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
+    env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 }
 
 def uploadCoreCaseDataDefinitions() {
