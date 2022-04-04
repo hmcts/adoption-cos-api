@@ -1,7 +1,11 @@
 package uk.gov.hmcts.reform.adoption.citizen;
 
 import io.restassured.response.Response;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.adoption.testutil.FunctionalTest;
@@ -23,6 +27,8 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.expectedRespo
 
 @TestPropertySource("classpath:application.yaml")
 @SpringBootTest
+@ExtendWith(SerenityJUnit5Extension.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class ApplicationSubmittedFT extends FunctionalTest {
 
     private static final String REQUEST = "classpath:casedata/ccd-callback-casedata-application-payment-ready.json";

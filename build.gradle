@@ -11,7 +11,7 @@ buildscript {
 
   }
   dependencies {
-    classpath "net.serenity-bdd:serenity-gradle-plugin:2.4.34"
+    classpath "net.serenity-bdd:serenity-gradle-plugin:3.1.15"
     classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '2.35.1025'
   }
 }
@@ -29,12 +29,12 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.github.hmcts.rse-cft-lib' version '0.15.27'
   id 'hmcts.ccd.sdk' version '0.25.16'
-  id 'au.com.dius.pact' version '4.3.5'
+  id 'au.com.dius.pact' version '4.1.7'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
 apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
 
 group = 'uk.gov.hmcts'
 version = '0.0.1'
@@ -297,7 +297,7 @@ def versions = [
   springfoxSwagger  : '3.0.0',
   s2sClient         : '4.0.0',
   pact              : '4.1.7',
-  serenityCoreVersion: '3.0.2',
+  serenityCoreVersion: '3.1.15',
   ccdCaseDocumentAmClient      : '1.7.3'
 ]
 
@@ -433,7 +433,7 @@ dependencies {
   }
 
   testImplementation (group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenityCoreVersion)
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenityCoreVersion)
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenityCoreVersion)
   testImplementation (group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityCoreVersion)
   testImplementation (group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityCoreVersion)
 
@@ -491,7 +491,7 @@ bootJar {
 
 functional {
   doFirst() {
-    if (System.getenv("OAUTH2_CLIENT_SECRET") == null) {
+    if (System.getenv("IDAM_CLIENT_SECRET") == null) {
       println("Loading secrets from vault")
 
       systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
@@ -503,7 +503,7 @@ functional {
       systemProperty 'IDAM_SYSTEM_UPDATE_PASSWORD', getVaultSecret('idam-system-user-password')
       systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
-      systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
+      systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
     }
   }
@@ -633,3 +633,6 @@ bootWithCCD {
     }
   }
 }
+
+test.finalizedBy(aggregate)
+functional.finalizedBy(aggregate)
