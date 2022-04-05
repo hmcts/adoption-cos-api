@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableScheduling;
-//import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import uk.gov.hmcts.reform.adoption.document.DocAssemblyClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
@@ -35,7 +34,6 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 )
 @EnableScheduling
 @EnableRetry
-//@EnableSwagger2
 @SuppressWarnings("HideUtilityClassConstructor")
 @Slf4j
 public class Application {
