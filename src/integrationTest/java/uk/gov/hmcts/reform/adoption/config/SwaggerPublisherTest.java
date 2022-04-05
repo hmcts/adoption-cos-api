@@ -12,13 +12,13 @@ class SwaggerPublisherTest {
 
     @Test
     public void testHealthEndpoint() {
-        String  testUrl = "http://ccd-data-store-api-aat.service.core-compute-aat.internal";
+        String  testUrl = "http://adoption-cos-api-aat.service.core-compute-aat.internal";
         Assert.assertTrue(true);
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured
             .given()
             .baseUri(testUrl)
-            .get("/")
+            .get("/health")
             .then()
             .statusCode(200)
             .extract()
