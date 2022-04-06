@@ -13,12 +13,12 @@ public class SwaggerConfiguration {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-            .info(new Info().title("PDF Service")
+            .info(new Info().title("Adoption Case Orchestration Service API")
                       .version("v1.0.0")
                       .license(new License().name("MIT").url("https://opensource.org/licenses/MIT")))
             .externalDocs(new ExternalDocumentation()
                               .description("README")
-                              .url("https://github.com/hmcts/rpe-pdf-service"));
+                              .url("https://github.com/hmcts/adoption-cos-api"));
     }
 
 }
