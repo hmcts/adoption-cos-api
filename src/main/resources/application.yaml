@@ -121,6 +121,6 @@ bulk-action:
 docmosis:
   templates:
     english:
-      ADOPTION_APPLICATION_SUMMARY: ADO-A58-Application-EN.docx
+      ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-ENG-00953.docx
     welsh:
-      ADOPTION_APPLICATION_SUMMARY: ADO-A58-Application-CY.docx
+      ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-WEL-00954.docx
