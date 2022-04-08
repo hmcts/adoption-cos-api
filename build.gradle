@@ -131,13 +131,9 @@ task smoke(type: Test) {
 }
 
 task highLevelDataSetup(type: JavaExec) {
-  if (System.getenv("ENVIRONMENT") != "prod") {
-    mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
-    classpath += sourceSets.main.runtimeClasspath
-    jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
-  } else {
-    println("high level data setup is disabled in prod temporarily")
-  }
+  mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
+  classpath += sourceSets.main.runtimeClasspath
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
 task contract(type: Test, description: 'Runs the pact contract tests.', group: 'Verification') {
