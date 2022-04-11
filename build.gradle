@@ -27,7 +27,7 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.6.6'
   id 'com.github.ben-manes.versions' version '0.38.0'
-  id 'com.github.hmcts.rse-cft-lib' version '0.15.30'
+  id 'com.github.hmcts.rse-cft-lib' version '0.15.62'
   id 'hmcts.ccd.sdk' version '0.25.16'
   id 'au.com.dius.pact' version '4.3.6'
 }
