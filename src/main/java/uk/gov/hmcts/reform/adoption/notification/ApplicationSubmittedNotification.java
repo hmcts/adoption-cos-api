@@ -1,16 +1,15 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
+import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
@@ -26,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.APPLICATION_DOCUMENT_URL;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DATE_SUBMITTED;
@@ -49,8 +49,6 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @Slf4j
 public class ApplicationSubmittedNotification implements ApplicantNotification {
 
-    @Value("${idam.systemupdate.username}")
-    private String systemUpdateUserName;
 
     @Autowired
     IdamService idamService;
@@ -59,7 +57,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     private AuthTokenGenerator authTokenGenerator;
 
     @Autowired
-    DocumentManagementClient dmClient;
+    private CaseDocumentClient caseDocumentClient;
 
     @Autowired
     private NotificationService notificationService;
@@ -177,13 +175,10 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         if (adoptionDocument != null) {
             log.info("Test for adoption document: {} and fileID: {}", adoptionDocument.getDocumentFileName(),
                      adoptionDocument.getDocumentFileId());
-            Resource document = dmClient.downloadBinary(authorisation,
-                                                        serviceAuthorization,
-                                                        UserRole.CASE_WORKER.getRole(),
-                                                        systemUpdateUserName,
-                                                        StringUtils.substringAfterLast(
-                                                            adoptionDocument.getDocumentLink().getUrl(), "/")
-            ).getBody();
+
+            Resource document = caseDocumentClient.getDocumentBinary(authorisation,
+                                                                     serviceAuthorization,UUID.fromString(FilenameUtils
+                            .getName(adoptionDocument.getDocumentLink().getUrl()))).getBody();
 
             if (document != null) {
                 try (InputStream inputStream = document.getInputStream()) {
@@ -203,9 +198,11 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
             count = 1;
             for (String item : uploadedDocumentsUrls) {
-                Resource uploadedDocument = dmClient.downloadBinary(authorisation, serviceAuthorization,
-                                                                    UserRole.CASE_WORKER.getRole(),
-                                                                    systemUpdateUserName, item).getBody();
+
+                Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
+                                                                          serviceAuthorization,
+                                                                          UUID.fromString(item)).getBody();
+
                 if (uploadedDocument != null) {
                     byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
                     templateVars.put(DOCUMENT_EXISTS + count, YES);

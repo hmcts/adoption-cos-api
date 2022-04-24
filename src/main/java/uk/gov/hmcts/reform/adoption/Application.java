@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.adoption.document.DocAssemblyClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
@@ -29,7 +30,8 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
         CoreCaseDataApi.class,
         CaseAssignmentApi.class,
         DocumentManagementClient.class,
-        CaseDocumentClientApi.class
+        CaseDocumentClientApi.class,
+        CaseDocumentClient.class
     }
 )
 @EnableScheduling
