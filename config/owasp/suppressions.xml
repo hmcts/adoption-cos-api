@@ -15,37 +15,13 @@
     <cve>CVE-2013-7315</cve>
     <cve>CVE-2014-0054</cve>
   </suppress>
-  <!--
-    <suppress>
-      <notes>commons-compress-1.18</notes>
-      <cve>CVE-2019-12402</cve>
-      <cve>CVE-2021-35515</cve>
-      <cve>CVE-2021-35516</cve>
-      <cve>CVE-2021-35517</cve>
-      <cve>CVE-2021-36090</cve>
-    </suppress>
-    <suppress>
-      <notes>jackson-databind-2.13.2</notes>
-      <cve>CVE-2020-36518</cve>
-    </suppress>
-     <suppress>
-      <notes>commons-io.2.6</notes>
-      <cve>CVE-2021-29425</cve>
-    </suppress>
-    <suppress>
-      <notes>Tomcat 9.0.45</notes>
-      <cve>CVE-2021-30640</cve>
-      <cve>CVE-2021-33037</cve>
-      <cve>CVE-2021-42340</cve>
-      <cve>CVE-2022-23181</cve>
-    </suppress>
-    <suppress>
-      <notes>spring-*-5.3.12</notes>
-      <cve>CVE-2021-22060</cve>
-    </suppress>
-    <suppress>
-      <notes>logback-*-1.2.6</notes>
-      <cve>CVE-2021-42550</cve>
-    </suppress>
--->
+  <!-- Added on 25th April 2022-->
+  <suppress>
+    <notes>elasticsearch-7.17.0</notes>
+    <cve>CVE-2022-23708</cve>
+  </suppress>
+  <suppress>
+    <notes>spring-*-5.3.18</notes>
+    <cve>CVE-2022-22968</cve>
+  </suppress>
 </suppressions>
