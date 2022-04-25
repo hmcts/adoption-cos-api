@@ -435,6 +435,7 @@ dependencies {
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
 
+  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
 }
 
 mainClassName = 'uk.gov.hmcts.reform.adoption.Application'
