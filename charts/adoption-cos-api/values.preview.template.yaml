@@ -31,7 +31,6 @@ idam-pr:
       - https://admin-web-${SERVICE_FQDN}/oauth2redirect
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
-      - http://xui-${SERVICE_FQDN}/oauth2/callback
 
 ccd:
   ccd:
