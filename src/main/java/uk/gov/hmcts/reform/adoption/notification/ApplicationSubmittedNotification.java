@@ -176,7 +176,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             log.info("Test for adoption document: {} and fileID: {}", adoptionDocument.getDocumentFileName(),
                      adoptionDocument.getDocumentFileId());
             log.info("Adoption authorisation: {} and serviceAuthorization: {} and documentid: {}", authorisation,
-                    serviceAuthorization ,UUID.fromString(FilenameUtils
+                    serviceAuthorization,UUID.fromString(FilenameUtils
                             .getName(adoptionDocument.getDocumentLink().getUrl())));
 
             Resource document = caseDocumentClient.getDocumentBinary(authorisation,
