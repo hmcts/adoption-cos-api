@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.config.launchdarkly;
 
+import lombok.extern.slf4j.Slf4j;
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.interfaces.LDClientInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
+@Slf4j
 public class LaunchDarklyClient {
     public static final LDUser ADOPTION_COS_USER = new LDUser.Builder("adoption-cos-api")
         .anonymous(true)
@@ -38,8 +40,7 @@ public class LaunchDarklyClient {
         try {
             internalClient.close();
         } catch (IOException e) {
-            // can't do anything clever here because things are being destroyed
-            e.printStackTrace(System.err);
+            log.error(e.getMessage());
         }
     }
 }

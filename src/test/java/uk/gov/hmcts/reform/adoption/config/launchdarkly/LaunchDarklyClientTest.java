@@ -19,8 +19,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LaunchDarklyClientTest {
-    private static final String SDK_KEY = "fake key";
-    private static final String FAKE_FEATURE = "fake feature";
+    private static final String SDK_KEY = "launch darkly sdk key";
+    private static final String FAKE_FEATURE = "launch darkly adoption feature";
 
     @Mock
     private LaunchDarkClientFactory ldClientFactory;
