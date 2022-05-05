@@ -26,3 +26,9 @@ resource "azurerm_key_vault_secret" "s2s-secret-cos-api" {
   value        = data.azurerm_key_vault_secret.microservicekey_adoption_cos_api.value
   key_vault_id = data.azurerm_key_vault.adoption_key_vault.id
 }
+
+data "azurerm_key_vault_secret" "launch_darkly_sdk_key" {
+  name = "launchDarkly-sdk-key"
+  key_vault_id = data.azurerm_key_vault.adoption_key_vault.id
+  //key_vault_id = data.azurerm_key_vault.cmc_key_vault.id
+}
