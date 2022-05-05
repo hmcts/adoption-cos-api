@@ -23,7 +23,7 @@ public class LaunchDarklyClient {
     @Autowired
     public LaunchDarklyClient(
         LaunchDarkClientFactory ldClientFactory,
-        @Value("${launchdarkly.sdk-key}") String sdkKey,
+        @Value("${launchdarkly.sdk-key:}") String sdkKey,
         @Value("${launchdarkly.offline-mode:false}") Boolean offlineMode
     ) {
         this.internalClient = ldClientFactory.create(sdkKey, offlineMode);
