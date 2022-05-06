@@ -124,3 +124,6 @@ docmosis:
       ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-ENG-00953.docx
     welsh:
       ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-WEL-00955.docx
+
+launchdarkly:
+  sdk-key: ${LAUNCH_DARKLY_SDK_KEY:}
