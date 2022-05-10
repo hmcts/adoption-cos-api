@@ -159,11 +159,6 @@ public class CaseData {
     )
     private String selectedSiblingId;
 
-    @CCD(label = "Selected Sibling PO ID",
-        access = {DefaultAccess.class}
-    )
-    private String selectedSiblingPoId;
-
     @CCD(
         label = "hyphenatedCaseReference",
         access = {CaseworkerAccess.class}
