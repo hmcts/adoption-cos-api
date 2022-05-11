@@ -119,12 +119,12 @@ public class CaseData {
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
-    private AdoptionAgencyOrLocalAuthority adoptionAgency1 = new AdoptionAgencyOrLocalAuthority();
+    private LocalAuthority localAuthority = new LocalAuthority();
 
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
-    private AdoptionAgencyOrLocalAuthority2 adoptionAgency2 = new AdoptionAgencyOrLocalAuthority2();
+    private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
     @CCD(
         label = "Siblings",

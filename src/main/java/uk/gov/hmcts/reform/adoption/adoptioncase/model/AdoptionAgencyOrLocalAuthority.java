@@ -31,6 +31,21 @@ public class AdoptionAgencyOrLocalAuthority {
     )
     private String adopAgencyOrLaPhoneNumber;
 
+    @CCD(label = "Address line 1",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyAddressLine1;
+
+    @CCD(label = "Town or city",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyTown;
+
+    @CCD(label = "Postcode",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyPostcode;
+
     @CCD(label = "Adoption Agency Or Local Authority Contact Email",
         typeOverride = Email,
         access = {DefaultAccess.class}
