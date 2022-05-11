@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
+import com.microsoft.applicationinsights.core.dependencies.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -173,8 +174,8 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             .findFirst().orElse(null);
 
         if (adoptionDocument != null) {
-            log.info("Test for adoption document: {} and fileID: {}", adoptionDocument.getDocumentFileName(),
-                     adoptionDocument.getDocumentFileId());
+            log.info("Test for adoption document: {} and fileID: {} and caseDAata : {}", adoptionDocument.getDocumentFileName(),
+                     adoptionDocument.getDocumentFileId(),new Gson().toJson(caseData));
 
             Resource document = caseDocumentClient.getDocumentBinary(authorisation,
                                                                      serviceAuthorization,UUID.fromString(FilenameUtils
