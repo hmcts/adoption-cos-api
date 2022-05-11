@@ -14,6 +14,8 @@ import java.util.Map;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF_EXT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.CASE_TYPE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.JURISDICTION;
 
 @Service
 @Slf4j
@@ -41,12 +43,15 @@ public class DocAssemblyService {
         final String templateName = docmosisTemplateProvider.templateNameFor(templateId, languagePreference);
 
         final DocAssemblyRequest docAssemblyRequest =
-            DocAssemblyRequest
-                .builder()
-                .templateId(templateName)
-                .outputType(PDF)
-                .formPayload(objectMapper.valueToTree(templateContent))
-                .build();
+                DocAssemblyRequest
+                        .builder()
+                        .templateId(templateName)
+                        .outputType(PDF)
+                        .caseTypeId(CASE_TYPE)
+                        .secureDocStoreEnabled(Boolean.TRUE)
+                        .jurisdictionId(JURISDICTION)
+                        .formPayload(objectMapper.valueToTree(templateContent))
+                        .build();
 
         log.info("Sending document request for template : {} case id: {}", templateName, caseId);
 
