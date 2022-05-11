@@ -32,9 +32,8 @@ public class SocialWorker {
         access = {DefaultAccess.class})
     private String socialWorkerEmail;
 
-    @CCD(label = "Social Worker Team Email",
-        typeOverride = Email,
+    @CCD(label = "Child's local authority",
         access = {DefaultAccess.class}
     )
-    private String socialWorkerTeamEmail;
+    private String childLocalAuthority;
 }

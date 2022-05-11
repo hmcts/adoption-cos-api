@@ -47,9 +47,9 @@ public final class ValidationUtil {
             validateBirthFather(caseData.getBirthFather()),
             validateOtherParent(caseData.getOtherParent()),
             validatePlacementOrders(caseData.getPlacementOrders()),
-            validateSocialWorker(caseData.getSocialWorker()),
-            validateAdoptAgencyOrLAsContactEmail(caseData.getAdopAgencyOrLAs(), caseData.getHasAnotherAdopAgencyOrLA()),
-            validateAdoptAgencyOrLAsPhoneNumber(caseData.getAdopAgencyOrLAs(), caseData.getHasAnotherAdopAgencyOrLA())
+            validateSocialWorker(caseData.getSocialWorker())
+        //    validateAdoptAgencyOrLAsPhoneNumber(caseData.getAdoptionAgency1(), caseData.getHasAnotherAdopAgencyOrLA()),
+        //    validateAdoptAgencyOrLAsPhoneNumber(caseData.getAdoptionAgency2(), caseData.getHasAnotherAdopAgencyOrLA())
         );
     }
 

@@ -16,7 +16,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 @Builder
-public class AdoptionAgencyOrLocalAuthority {
+public class AdoptionAgencyOrLocalAuthority2 {
 
     @CCD(label = "Adoption Agency Or Local Authority Name",
         access = {DefaultAccess.class})
@@ -30,6 +30,21 @@ public class AdoptionAgencyOrLocalAuthority {
         access = {DefaultAccess.class}
     )
     private String adopAgencyOrLaPhoneNumber;
+
+    @CCD(label = "Address line 1",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyAddressLine1;
+
+    @CCD(label = "Town or city",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyTown;
+
+    @CCD(label = "Postcode",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyPostcode;
 
     @CCD(label = "Adoption Agency Or Local Authority Contact Email",
         typeOverride = Email,

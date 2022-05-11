@@ -116,13 +116,15 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private Solicitor solicitor = new Solicitor();
 
-    @CCD(
-        label = "Adoption Agency Or LA list",
-        typeOverride = Collection,
-        typeParameterOverride = "AdoptionAgencyOrLocalAuthority",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<AdoptionAgencyOrLocalAuthority>> adopAgencyOrLAs;
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private AdoptionAgencyOrLocalAuthority adoptionAgency1 = new AdoptionAgencyOrLocalAuthority();
+
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private AdoptionAgencyOrLocalAuthority2 adoptionAgency2 = new AdoptionAgencyOrLocalAuthority2();
 
     @CCD(
         label = "Siblings",
