@@ -16,24 +16,24 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 @Builder
-public class SocialWorker {
+public class LocalAuthority {
 
-    @CCD(label = "Social Worker Name",
+    @CCD(label = "Local Authority Name",
         access = {DefaultAccess.class})
-    private String socialWorkerName;
+    private String localAuthorityName;
 
-    @CCD(label = "Social Worker PhoneNumber",
+    @CCD(label = "Local Authority Contact Name",
+        access = {DefaultAccess.class})
+    private String localAuthorityContactName;
+
+    @CCD(label = "Local Authority Phone Number",
         access = {DefaultAccess.class}
     )
-    private String socialWorkerPhoneNumber;
+    private String localAuthorityPhoneNumber;
 
-    @CCD(label = "Social Worker Email",
+    @CCD(label = "Local Authority Contact Email",
         typeOverride = Email,
-        access = {DefaultAccess.class})
-    private String socialWorkerEmail;
-
-    @CCD(label = "Child's local authority",
         access = {DefaultAccess.class}
     )
-    private String childLocalAuthority;
+    private String localAuthorityContactEmail;
 }
