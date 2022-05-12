@@ -177,8 +177,6 @@
     "familyCourtName": "xyz",
     "findFamilyCourt": "Yes",
     "hasAnotherAdopAgencyOrLA": "No",
-    "hasPoForSiblings": "Yes",
-    "hasPoForSiblingsNotSureReason": null,
     "hasSiblings": "Yes",
     "hyphenatedCaseRef": "1234-5678-9012-3456",
     "otherApplicantRelation": "",
@@ -225,46 +223,23 @@
     "selectedAdoptionAgencyId": "1646222614256",
     "selectedPlacementOrderId": "1646222468418",
     "selectedSiblingId": "1646222699254",
-    "selectedSiblingPoId": "1646222699696",
     "siblings": [
       {
-        "id": "ffe2299c-6fd7-4e6e-b05c-b4076fd35954",
+        "id": "1646222663145",
         "value": {
-          "siblingFirstName": "sibling1",
           "siblingId": "1646222663145",
-          "siblingLastNames": "sibling 1",
-          "siblingPlacementOrders": [
-            {
-              "id": "3cb7f66e-ad81-4745-a5f4-643ecb202e93",
-              "value": {
-                "placementOrderCourt": null,
-                "placementOrderDate": null,
-                "placementOrderId": "1646222679921",
-                "placementOrderNumber": "1001",
-                "placementOrderType": "some order"
-              }
-            }
-          ]
+          "siblingRelation": "brother",
+          "siblingPoType": "some order",
+          "siblingPoNumber": "1001"
         }
       },
       {
-        "id": "1a70b2fc-6d6e-48c6-98e3-e48d776098d1",
+        "id": "1646222699254",
         "value": {
-          "siblingFirstName": "sibling 2",
           "siblingId": "1646222699254",
-          "siblingLastNames": "sibling 2",
-          "siblingPlacementOrders": [
-            {
-              "id": "ef61cb93-40c3-40eb-8d6f-4461f0e3c09d",
-              "value": {
-                "placementOrderCourt": null,
-                "placementOrderDate": null,
-                "placementOrderId": "1646222699696",
-                "placementOrderNumber": "23456",
-                "placementOrderType": "some other order"
-              }
-            }
-          ]
+          "siblingRelation": "sister",
+          "siblingPoType": "some other order",
+          "siblingPoNumber": "23456"
         }
       }
     ],
