@@ -1,21 +1,39 @@
 {
   "siblings": [
     {
-      "id": "1646222663145",
+      "id": "ffe2299c-6fd7-4e6e-b05c-b4076fd35954",
       "value": {
         "siblingId": "1646222663145",
-        "siblingRelation": "brother",
-        "siblingPoType": "some order",
-        "siblingPoNumber": "1001"
+        "siblingFirstName": "sibling1",
+        "siblingLastNames": "sibling 1",
+        "siblingPlacementOrders": [
+          {
+            "id": "3cb7f66e-ad81-4745-a5f4-643ecb202e93",
+            "value": {
+              "placementOrderId": "1646222679921",
+              "placementOrderType": "some order",
+              "placementOrderNumber": "1001"
+            }
+          }
+        ]
       }
     },
     {
       "id": "1a70b2fc-6d6e-48c6-98e3-e48d776098d1",
       "value": {
         "siblingId": "1646222699254",
-        "siblingRelation": "sister",
-        "siblingPoType": "some other order",
-        "siblingPoNumber": "23456"
+        "siblingFirstName": "sibling 2",
+        "siblingLastNames": "sibling 2",
+        "siblingPlacementOrders": [
+          {
+            "id": "ef61cb93-40c3-40eb-8d6f-4461f0e3c09d",
+            "value": {
+              "placementOrderId": "1646222699696",
+              "placementOrderType": "some other order",
+              "placementOrderNumber": "23456"
+            }
+          }
+        ]
       }
     }
   ],
@@ -62,6 +80,7 @@
   "applicant2Address2": "",
   "documentsGenerated": [],
   "birthFatherFirstName": "Father",
+  "hasPoForSiblings": "Yes",
   "dateChildMovedIn": "2021-10-12",
   "applicant1AddressPostCode": "NG1 1JB",
   "localAuthorityName": "laname",
@@ -78,6 +97,7 @@
   "applicant1ContactDetailsConsent": "Yes",
   "applicant2Nationality": null,
   "applicant1LanguagePreference": "ENGLISH",
+  "hasPoForSiblingsNotSureReason": null,
   "birthMotherAddressPostCode": "NG1 1JB",
   "birthMotherOtherNationalities": [],
   "otherParentOtherNationalities": [],
@@ -147,22 +167,22 @@
   "applicant2FirstName": "second",
   "applicant1DocumentsUploaded": [
     {
-      "id": "c283880e-068e-450a-b44d-e72a6191847b",
-      "value": {
-        "documentEmailContent": null,
-        "documentLink": {
-          "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
-          "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-          "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
-        },
-        "documentDateAdded": null,
-        "documentComment": "Uploaded by applicant",
-        "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-        "documentType": null,
-        "documentFileId": null
-      }
+        "id": "c283880e-068e-450a-b44d-e72a6191847b",
+        "value": {
+            "documentEmailContent": null,
+            "documentLink": {
+                "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
+                "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+                "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
+            },
+            "documentDateAdded": null,
+            "documentComment": "Uploaded by applicant",
+            "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+            "documentType": null,
+            "documentFileId": null
+        }
     }
-  ],
+],
   "addAnotherPlacementOrder": "No",
   "selectedPlacementOrderId": "1646222468418",
   "applicant1Occupation": "Software Engineer",
@@ -224,6 +244,7 @@
   "birthFatherAddressPostCode": "SW1A 1AA",
   "otherParentAddress1": "BUCKINGHAM PALACE",
   "otherParentAddress2": "",
+  "selectedSiblingPoId": "1646222699696",
   "otherParentNameOnCertificate": null,
   "birthMotherLastName": "Mother",
   "otherParentAddress3": null,
@@ -245,15 +266,7 @@
   ],
   "applicationFeeOrderSummary": {
     "PaymentTotal": "183",
-    "Fees": [
-      {
-        "value": {
-          "FeeAmount": 1234,
-          "FeeCode": "A58",
-          "FeeVersion": "1"
-        }
-      }
-    ]
+    "Fees": [{ "value": { "FeeAmount": 1234, "FeeCode": "A58", "FeeVersion": "1" } }]
   },
   "childrenFirstName": "child",
   "birthMotherNationality": [
