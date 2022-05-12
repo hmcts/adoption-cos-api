@@ -148,16 +148,6 @@ public class CaseData {
     )
     private String hasSiblings;
 
-    @CCD(label = "Add Another Siblings",
-        access = {DefaultAccess.class}
-    )
-    private String hasPoForSiblings;
-
-    @CCD(label = "Has Placement order For Siblings Not Sure Reason",
-        access = {DefaultAccess.class}
-    )
-    private String hasPoForSiblingsNotSureReason;
-
     @CCD(
         label = "Add Another Sibling Placement Order",
         access = {DefaultAccess.class}
@@ -168,11 +158,6 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String selectedSiblingId;
-
-    @CCD(label = "Selected Sibling PO ID",
-        access = {DefaultAccess.class}
-    )
-    private String selectedSiblingPoId;
 
     @CCD(
         label = "hyphenatedCaseReference",
