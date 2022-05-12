@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.adoption.notification;
 
 import com.microsoft.applicationinsights.core.dependencies.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -174,14 +173,15 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             .findFirst().orElse(null);
 
         if (adoptionDocument != null) {
-            log.info("Test for adoption document: {} and fileID: {} and caseDAata : {}", adoptionDocument.getDocumentFileName(),
+            log.info("Test for adoption document: {} and fileID: {} and caseData : {}", adoptionDocument.getDocumentFileName(),
                      adoptionDocument.getDocumentFileId(),new Gson().toJson(caseData));
 
             Resource document = caseDocumentClient.getDocumentBinary(authorisation,
-                                                                     serviceAuthorization,UUID.fromString(FilenameUtils
-                            .getName(adoptionDocument.getDocumentLink().getUrl()))).getBody();
+                                                                     serviceAuthorization,
+                    UUID.fromString(adoptionDocument.getDocumentFileId())).getBody();
 
             if (document != null) {
+                log.info("file name : {}",document.getFilename());
                 try (InputStream inputStream = document.getInputStream()) {
                     if (inputStream != null) {
                         byte[] documentContents = inputStream.readAllBytes();
@@ -190,7 +190,10 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 } catch (Exception e) {
                     log.error("Document could not be read");
                 }
+            } else {
+                log.info("document not found with fileID : {}", adoptionDocument.getDocumentFileId());
             }
+
         }
         if (caseData.getApplicant1DocumentsUploaded() != null) {
             List<String> uploadedDocumentsUrls = caseData.getApplicant1DocumentsUploaded().stream().map(item -> item.getValue())
@@ -205,9 +208,12 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                                                                           UUID.fromString(item)).getBody();
 
                 if (uploadedDocument != null) {
+                    log.info("file name : {}",uploadedDocument.getFilename());
                     byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
                     templateVars.put(DOCUMENT_EXISTS + count, YES);
                     templateVars.put(DOCUMENT + count++, prepareUpload(uploadedDocumentContents));
+                } else {
+                    log.info("document not found with uuid : {}", UUID.fromString(item));
                 }
             }
         }

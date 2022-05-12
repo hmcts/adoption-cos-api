@@ -162,7 +162,8 @@ class ApplicationSubmittedNotificationTest {
         CaseData data = caseData();
         data.setHyphenatedCaseRef("1234-1234-1234-1234");
         AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY_EN)
-            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000").build()).build();
+            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
+                    .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
         ListValue<AdoptionDocument> listValue = new ListValue<>();
         listValue.setValue(adoptionDocument);
         List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
