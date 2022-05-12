@@ -2,28 +2,17 @@
   "data": {
     "addAnotherPlacementOrder": "No",
     "addAnotherSiblingPlacementOrder": "No",
-    "adopAgencyOrLAs": [
-      {
-        "id": "50c87b12-cf6d-428a-899c-b94b1f1f242a",
-        "value": {
-          "adopAgencyOrLaContactEmail": "agency1@email.co.uk",
-          "adopAgencyOrLaContactName": "contact name1",
-          "adopAgencyOrLaId": "1646222614256",
-          "adopAgencyOrLaName": "agency1",
-          "adopAgencyOrLaPhoneNumber": "01234567890"
-        }
-      },
-      {
-        "id": "cae8e039-8b63-4784-abb8-d7a99824874a",
-        "value": {
-          "adopAgencyOrLaContactEmail": "",
-          "adopAgencyOrLaContactName": "contact name2",
-          "adopAgencyOrLaId": "1646222634276",
-          "adopAgencyOrLaName": "Agency2",
-          "adopAgencyOrLaPhoneNumber": ""
-        }
-      }
-    ],
+    "localAuthorityName": "laname",
+    "localAuthorityContactName": "contact name1",
+    "localAuthorityPhoneNumber": "01234567890",
+    "localAuthorityContactEmail": "agency1@email.co.uk",
+    "adopAgencyOrLaName": "agency1",
+    "adopAgencyOrLaContactName": "contact name1",
+    "adopAgencyOrLaPhoneNumber": "01234567890",
+    "adopAgencyAddressLine1": "address",
+    "adopAgencyTown": "town",
+    "adopAgencyPostcode": "aa14aa",
+    "adopAgencyOrLaContactEmail": "agency1@email.co.uk",
     "adoptionDocument": {
       "documentComment": null,
       "documentDateAdded": null,
@@ -257,7 +246,7 @@
     "socialWorkerEmail": "socialw@email.com",
     "socialWorkerName": "social worker",
     "socialWorkerPhoneNumber": "01234567893",
-    "socialWorkerTeamEmail": "",
+    "childLocalAuthority": "la",
     "solicitorEmail": null,
     "solicitorFirm": null,
     "solicitorHelpingWithApplication": null,
