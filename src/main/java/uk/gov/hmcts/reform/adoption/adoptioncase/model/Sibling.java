@@ -5,12 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
-
-import java.util.List;
-
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 
 @Data
 @AllArgsConstructor
@@ -20,17 +14,12 @@ public class Sibling {
     @CCD(label = "Sibling Id")
     private String siblingId;
 
-    @CCD(label = "Sibling First Name")
-    private String siblingFirstName;
+    @CCD(label = "Sibling Relation")
+    private String siblingRelation;
 
-    @CCD(label = "Sibling Last Name")
-    private String siblingLastNames;
+    @CCD(label = "Sibling Placement Order Type")
+    private String siblingPoType;
 
-    @CCD(
-        label = "Sibling Placement orders",
-        typeOverride = Collection,
-        typeParameterOverride = "PlacementOrder",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<PlacementOrder>> siblingPlacementOrders;
+    @CCD(label = "Sibling Placement Order Number")
+    private String siblingPoNumber;
 }
