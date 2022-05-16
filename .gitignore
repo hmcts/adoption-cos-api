@@ -21,7 +21,7 @@ bin/main/application.yaml
 
 .DS_Store
 
-### VS Code ###
+### VS Code ####
 .vscode
 .aat-env
 /target/
