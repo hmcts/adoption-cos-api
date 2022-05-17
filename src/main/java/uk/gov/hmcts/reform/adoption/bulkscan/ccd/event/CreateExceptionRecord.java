@@ -37,7 +37,7 @@ public class CreateExceptionRecord implements CCDConfig<ExceptionRecord, Excepti
             .optional(ExceptionRecord::getDeliveryDate)
             .optional(ExceptionRecord::getOpeningDate)
             .optional(ExceptionRecord::getScannedDocuments)
-            .optional(ExceptionRecord::getScanOCRData)
+            .optional(ExceptionRecord::getScanOcrData)
             .optional(ExceptionRecord::getFormType)
             .optional(ExceptionRecord::getEnvelopeCaseReference)
             .optional(ExceptionRecord::getEnvelopeLegacyCaseReference)

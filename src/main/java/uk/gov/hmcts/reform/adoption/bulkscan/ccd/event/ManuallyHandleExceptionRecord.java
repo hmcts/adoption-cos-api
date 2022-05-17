@@ -32,6 +32,6 @@ public class ManuallyHandleExceptionRecord implements CCDConfig<ExceptionRecord,
             .page("updateManually")
             .pageLabel("Correspondence")
             .mandatory(ExceptionRecord::getScannedDocuments)
-            .mandatory(ExceptionRecord::getScanOCRData);
+            .mandatory(ExceptionRecord::getScanOcrData);
     }
 }

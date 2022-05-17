@@ -32,6 +32,6 @@ public class CreateCaseFromExceptionRecord implements CCDConfig<ExceptionRecord,
             .page("createNewCase")
             .pageLabel("Correspondence")
             .mandatory(ExceptionRecord::getScannedDocuments)
-            .mandatory(ExceptionRecord::getScanOCRData);
+            .mandatory(ExceptionRecord::getScanOcrData);
     }
 }
