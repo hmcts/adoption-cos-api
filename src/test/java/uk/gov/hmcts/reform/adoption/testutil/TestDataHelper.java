@@ -2,22 +2,38 @@ package uk.gov.hmcts.reform.adoption.testutil;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableSet;
 import org.springframework.util.ResourceUtils;
+import uk.gov.hmcts.ccd.sdk.ConfigBuilderImpl;
+import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
+import uk.gov.hmcts.ccd.sdk.api.Event;
+import uk.gov.hmcts.ccd.sdk.api.HasRole;
+import uk.gov.hmcts.ccd.sdk.api.Search;
+import uk.gov.hmcts.ccd.sdk.api.Search.SearchBuilder;
+import uk.gov.hmcts.ccd.sdk.api.WorkBasket;
+import uk.gov.hmcts.ccd.sdk.api.WorkBasket.WorkBasketBuilder;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.bulkscan.ccd.ExceptionRecordState;
+import uk.gov.hmcts.reform.adoption.bulkscan.data.ExceptionRecord;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.codehaus.plexus.util.ReflectionUtils.getValueIncludingSuperclasses;
+import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static org.springframework.util.ResourceUtils.getFile;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
@@ -110,5 +126,69 @@ public class TestDataHelper {
     public static byte[] resourceAsBytes(final String resourcePath) throws IOException {
         final File file = ResourceUtils.getFile(resourcePath);
         return Files.readAllBytes(file.toPath());
+    }
+
+    public static ConfigBuilderImpl<ExceptionRecord, ExceptionRecordState, UserRole> createExceptionRecordConfigBuilder() {
+        return new ConfigBuilderImpl<>(new ResolvedCCDConfig<>(
+            ExceptionRecord.class,
+            ExceptionRecordState.class,
+            UserRole.class,
+            new HashMap<>(),
+            ImmutableSet.copyOf(ExceptionRecordState.class.getEnumConstants())));
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public static <T, S, R extends HasRole> Map<String, Event<T, R, S>> getEventsFrom(
+        final ConfigBuilderImpl<T, S, R> configBuilder) {
+        return (Map<String, Event<T, R, S>>) findMethod(ConfigBuilderImpl.class, "getEvents")
+            .map(method -> {
+                try {
+                    method.setAccessible(true);
+                    return method.invoke(configBuilder);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new AssertionError("Unable to invoke ConfigBuilderImpl.class method getEvents", e);
+                }
+            })
+            .orElseThrow(() -> new AssertionError("Unable to find ConfigBuilderImpl.class method getEvents"));
+    }
+
+    public static <T, S, R extends HasRole> Search getSearchInputFields(
+        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
+        return getSearchFor("searchInputFields", configBuilder);
+    }
+
+    public static <T, S, R extends HasRole> Search getSearchResultFields(
+        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
+        return getSearchFor("searchResultFields", configBuilder);
+    }
+
+    public static <T, S, R extends HasRole> WorkBasket getWorkBasketInputFields(
+        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
+        return getWorkBasketFor("workBasketInputFields", configBuilder);
+    }
+
+    public static <T, S, R extends HasRole> WorkBasket getWorkBasketResultFields(
+        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
+        return getWorkBasketFor("workBasketResultFields", configBuilder);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static <T, S, R extends HasRole> Search getSearchFor(
+        final String fieldName,
+        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
+        final List<SearchBuilder> searchInputFields =
+            (List<SearchBuilder>) getValueIncludingSuperclasses(fieldName, configBuilder);
+        final var searchInputBuilder = searchInputFields.get(0);
+        return searchInputBuilder.build();
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static <T, S, R extends HasRole> WorkBasket getWorkBasketFor(
+        final String fieldName,
+        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
+        final List<WorkBasketBuilder> workBasketInputFields =
+            (List<WorkBasketBuilder>) getValueIncludingSuperclasses(fieldName, configBuilder);
+        final var workBasketBuilder = workBasketInputFields.get(0);
+        return workBasketBuilder.build();
     }
 }

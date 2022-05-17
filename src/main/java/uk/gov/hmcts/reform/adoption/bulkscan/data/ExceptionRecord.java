@@ -71,7 +71,7 @@ public class ExceptionRecord {
         typeOverride = Collection,
         typeParameterOverride = "KeyValue"
     )
-    private List<ListValue<KeyValue>> scanOCRData;
+    private List<ListValue<KeyValue>> scanOcrData;
 
     @CCD(
         label = "Attach to case reference",
@@ -113,7 +113,7 @@ public class ExceptionRecord {
         label = "Awaiting Payment DCN processing",
         hint = "Indicates if the payment document control numbers are being processed"
     )
-    private YesOrNo awaitingPaymentDCNProcessing;
+    private YesOrNo awaitingPaymentDcnProcessing;
 
     @CCD(
         label = "Contains payments",
