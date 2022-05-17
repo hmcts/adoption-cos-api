@@ -357,6 +357,10 @@ dependencies {
   testImplementation group: 'com.github.stefanbirkner', name: 'system-lambda', version: '1.2.0'
   testImplementation group: 'io.github.openfeign', name: 'feign-jackson', version: '11.7'
   testImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-contract-stub-runner', version: '3.1.2'
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenityCoreVersion)
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenityCoreVersion)
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityCoreVersion)
+  testImplementation (group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityCoreVersion)
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
@@ -366,24 +370,15 @@ dependencies {
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '7.0.0'
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
 
-  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
-  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
-  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
-  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact
-  contractTestCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
-  contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
   contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
+
+  contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
   contractTestRuntime "org.junit.platform:junit-platform-commons:1.8.1"
   contractTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '1.30') {
     force = true
   }
-
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenityCoreVersion)
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenityCoreVersion)
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityCoreVersion)
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityCoreVersion)
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
 }
