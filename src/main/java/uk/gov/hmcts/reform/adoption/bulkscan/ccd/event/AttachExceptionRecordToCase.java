@@ -32,9 +32,7 @@ public class AttachExceptionRecordToCase implements CCDConfig<ExceptionRecord, E
             .page("attachToExistingCase")
             .pageLabel("Correspondence")
             .readonlyNoSummary(ExceptionRecord::getShowEnvelopeCaseReference,"envelopeCaseReference=\"ALWAYS_HIDE\"")
-            .readonlyNoSummary(ExceptionRecord::getShowEnvelopeLegacyCaseReference,"envelopeLegacyCaseReference=\"ALWAYS_HIDE\"")
             .readonly(ExceptionRecord::getEnvelopeCaseReference,"showEnvelopeCaseReference=\"Yes\"")
-            .readonly(ExceptionRecord::getShowEnvelopeLegacyCaseReference,"showEnvelopeLegacyCaseReference=\"Yes\"")
             .mandatory(ExceptionRecord::getSearchCaseReference)
             .mandatory(ExceptionRecord::getScannedDocuments);
     }
