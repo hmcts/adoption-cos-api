@@ -52,7 +52,7 @@ public class CaseData {
     private String otherApplicantRelation;
 
     @CCD(
-        label = "Child moved in date",
+        label = "Date child moved in",
         access = {DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -205,6 +205,26 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String pcqId;
+
+    @CCD(label = "Prospective parents social worker",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerDetails;
+
+    @CCD(label = "Messages",
+        access = {DefaultAccess.class}
+    )
+    private String message;
+
+    @CCD(label = "Type of adoption",
+        access = {DefaultAccess.class}
+    )
+    private String typeOfAdoption;
+
+    @CCD(label = "Case status",
+        access = {DefaultAccess.class}
+    )
+    private String status;
 
     @CCD(
         label = "Documents generated",
