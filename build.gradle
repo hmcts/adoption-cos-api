@@ -574,4 +574,5 @@ bootWithCCD {
       environment key, value
     }
   }
+  authMode = uk.gov.hmcts.rse.AuthMode.AAT
 }
