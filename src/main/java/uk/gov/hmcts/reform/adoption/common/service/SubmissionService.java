@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.common.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.reform.adoption.common.service.task.SetDateSubmitted;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterSubmission;
 
 @Service
+@Slf4j
 public class SubmissionService {
 
     @Autowired
@@ -26,11 +28,15 @@ public class SubmissionService {
     private GenerateApplicationSummaryDocument generateApplicationSummaryDocument;
 
     public CaseDetails<CaseData, State> submitApplication(final CaseDetails<CaseData, State> caseDetails) {
-
-        return CaseTaskRunner.caseTasks(
-            setStateAfterSubmission,
-            setDateSubmitted,
-            generateApplicationSummaryDocument
-        ).run(caseDetails);
+        try {
+            return CaseTaskRunner.caseTasks(
+                setStateAfterSubmission,
+                setDateSubmitted,
+                generateApplicationSummaryDocument
+            ).run(caseDetails);
+        } catch (Exception e) {
+            log.error("Error : " + e.getMessage());
+        }
+        return null;
     }
 }
