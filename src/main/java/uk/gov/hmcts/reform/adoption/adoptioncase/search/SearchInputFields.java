@@ -20,8 +20,8 @@ public class SearchInputFields implements CCDConfig<CaseData, State, UserRole> {
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
-        final List<SearchField<UserRole>> searchFieldList = of(
-            SearchField.<UserRole>builder().label(FIRST_NAME).id(
+        final List<SearchField> searchFieldList = of(
+            SearchField.builder().label(FIRST_NAME).id(
                 APPLICANT_FIRST_NAME).build()
         );
 
