@@ -6,4 +6,8 @@
     <cve>CVE-2022-22968</cve>
     <cve>CVE-2022-22950</cve>
   </suppress>
+  <suppress>
+    <notes>spring-*-5.3.19</notes>
+    <cve>CVE-2016-1000027</cve>
+  </suppress>
 </suppressions>
