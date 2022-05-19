@@ -123,13 +123,13 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     @Override
     public void sendToLocalCourt(final CaseData caseData, final Long id) throws NotificationClientException, IOException {
         log.info("Sending application submitted notification to local authority for case : {}", id);
-//      TODO
-//        notificationService.sendEmail(
-//            caseData.getFamilyCourtEmailId(),
-//            LOCAL_COURT_APPLICATION_SUBMITTED,
-//            templateVarsLocalCourt(caseData, id),
-//            LanguagePreference.ENGLISH
-//        );
+        //        TODO
+        //        notificationService.sendEmail(
+        //            caseData.getFamilyCourtEmailId(),
+        //            LOCAL_COURT_APPLICATION_SUBMITTED,
+        //            templateVarsLocalCourt(caseData, id),
+        //            LanguagePreference.ENGLISH
+        //        );
     }
 
     private Map<String, Object> templateVars(CaseData caseData, Long id, Applicant applicant1, Applicant applicant2) {
