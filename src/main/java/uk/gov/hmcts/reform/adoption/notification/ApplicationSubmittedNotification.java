@@ -29,15 +29,14 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.APPLICATION_DOCUMENT_URL;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DATE_SUBMITTED;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DOCUMENT_EXISTS;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DOCUMENT;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DOCUMENT_EXISTS;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DOCUMENT_EXISTS_CHECK;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.HYPHENATED_REF;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION_RESPONSE_DATE;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
-import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_COURT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
@@ -124,13 +123,13 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     @Override
     public void sendToLocalCourt(final CaseData caseData, final Long id) throws NotificationClientException, IOException {
         log.info("Sending application submitted notification to local authority for case : {}", id);
-
-        notificationService.sendEmail(
-            caseData.getFamilyCourtEmailId(),
-            LOCAL_COURT_APPLICATION_SUBMITTED,
-            templateVarsLocalCourt(caseData, id),
-            LanguagePreference.ENGLISH
-        );
+//      TODO
+//        notificationService.sendEmail(
+//            caseData.getFamilyCourtEmailId(),
+//            LOCAL_COURT_APPLICATION_SUBMITTED,
+//            templateVarsLocalCourt(caseData, id),
+//            LanguagePreference.ENGLISH
+//        );
     }
 
     private Map<String, Object> templateVars(CaseData caseData, Long id, Applicant applicant1, Applicant applicant2) {

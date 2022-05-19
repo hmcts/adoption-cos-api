@@ -29,8 +29,7 @@ public class SubmissionService {
 
         return CaseTaskRunner.caseTasks(
             setStateAfterSubmission,
-            setDateSubmitted,
-            generateApplicationSummaryDocument
+            setDateSubmitted// TODO, generateApplicationSummaryDocument
         ).run(caseDetails);
     }
 }
