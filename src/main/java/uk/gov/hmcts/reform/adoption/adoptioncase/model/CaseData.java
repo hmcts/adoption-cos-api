@@ -275,6 +275,12 @@ public class CaseData {
     private YesOrNo findFamilyCourt;
 
     @CCD(
+        label = "Placement order court name",
+        access = {DefaultAccess.class}
+    )
+    private String placementOrderCourt;
+
+    @CCD(
         label = "Family court name",
         access = {DefaultAccess.class}
     )
