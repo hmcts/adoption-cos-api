@@ -115,6 +115,8 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     }
 
     private Map<String, Object> templateVars(CaseData caseData, Long id, Applicant applicant1, Applicant applicant2) {
+        log.info("FamilyCourtName : {} FindFamilyCourt : {}, PlacementOrderCourt : {}", caseData.getFamilyCourtName(),
+                 caseData.getFindFamilyCourt(), caseData.getPlacementOrderCourt());
         Map<String, Object> templateVars = commonContent.mainTemplateVars(caseData, id, applicant1, applicant2);
         templateVars.put(SUBMISSION_RESPONSE_DATE, caseData.getDueDate() != null
             ? caseData.getDueDate().format(DATE_TIME_FORMATTER) : LocalDate.now().format(DATE_TIME_FORMATTER));
