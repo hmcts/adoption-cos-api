@@ -6,6 +6,8 @@ xui-webapp:
 
 idam-pr:
   enabled: false
+cdam:
+ enabled: false
 
 java:
   applicationPort: 4550
