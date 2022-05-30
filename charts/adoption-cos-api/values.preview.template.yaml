@@ -78,7 +78,6 @@ ccd:
         DATA_STORE_DEFAULT_LOG_LEVEL: info
         DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,ccd_ps,adoption_cos_api,adoption_web,xui_webapp
         CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: adoption_cos_api
-        ELASTIC_SEARCH_ENABLED: false
         CCD_DM_DOMAIN: http://dm-store-aat.service.core-compute-aat.internal
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:api-gateway\.preprod\.dm\.reform\.hmcts\.net|dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?)|(em-hrs-api-aat\.service\.core-compute-aat\.internal(?::\d+)?\/hearing-recordings\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\/segments\/[0-9]))
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
@@ -87,8 +86,62 @@ ccd:
         IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
         IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
         IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
+        ELASTIC_SEARCH_ENABLED: "true"
+        ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
+        ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
+
+  ccd-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    container_name: ccd-elasticsearch
+    depends_on:
+      - "ccd-data-store-api"
+    environment:
+      - cluster.name=ccd-docker-es-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - action.auto_create_index=.security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - compose_default
+
+  ccd-logstash:
+    image: "ccd-logstash:latest"
+    container_name: ccd-logstash
+#    build:
+#      context: logstash
+#
+#    image: "ccd-logstash:adoption"
+#    container_name: ccd-logstash
+    depends_on:
+      - "ccd-elasticsearch"
+    environment:
+      - XPACK_MONITORING_ENABLED=false
+      - DB_URL=jdbc:postgresql://ccd-shared-database:5432/ccd_data?stringtype=unspecified&ssl=false
+      - DB_USER=ccd
+      - DB_PWD=ccd
+      - ES_DATA_NODES_URL=http://ccd-elasticsearch:9200
+#      - APPINSIGHTS_INSTRUMENTATIONKEY=dummy
+    networks:
+      - compose_default
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.3.0
+    container_name: kibana
+    ports:
+      - 5601:5601
+    depends_on:
+      - ccd-elasticsearch
+
   am-role-assignment-service:
     java:
       keyVaults:
@@ -102,6 +155,8 @@ ccd:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+        ELASTIC_SEARCH_ENABLED: "true"
+        ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
   ccd-user-profile-api:
