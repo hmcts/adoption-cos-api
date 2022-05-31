@@ -86,61 +86,57 @@ ccd:
         IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
         IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
         IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
-        ELASTIC_SEARCH_ENABLED: "true"
-        ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
-        ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
+        ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
+        ELASTIC_SEARCH_DATA_NODES_HOSTS:  http://${SERVICE_NAME}-es-master:9200
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
 
-  ccd-elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
-    container_name: ccd-elasticsearch
-    depends_on:
-      - "ccd-data-store-api"
-    environment:
-      - cluster.name=ccd-docker-es-cluster
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - action.auto_create_index=.security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - esdata1:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
-    networks:
-      - compose_default
-
-  ccd-logstash:
-    image: "ccd-logstash:latest"
-    container_name: ccd-logstash
-#    build:
-#      context: logstash
-#
-#    image: "ccd-logstash:adoption"
-#    container_name: ccd-logstash
-    depends_on:
-      - "ccd-elasticsearch"
-    environment:
-      - XPACK_MONITORING_ENABLED=false
-      - DB_URL=jdbc:postgresql://ccd-shared-database:5432/ccd_data?stringtype=unspecified&ssl=false
-      - DB_USER=ccd
-      - DB_PWD=ccd
-      - ES_DATA_NODES_URL=http://ccd-elasticsearch:9200
-#      - APPINSIGHTS_INSTRUMENTATIONKEY=dummy
-    networks:
-      - compose_default
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:6.3.0
-    container_name: kibana
-    ports:
-      - 5601:5601
-    depends_on:
-      - ccd-elasticsearch
+  elasticsearch:
+    clusterName: "es"
+    imageTag: "7.17.0"
+    replicas: 1
+    minimumMasterNodes: 1
+    antiAffinity: "soft"
+    esJavaOpts: "-Xmx512m -Xms512m"
+    extraEnvs:
+      - name: discovery.type
+        value: single-node
+      - name: cluster.initial_master_nodes
+        value: ""
+      - name: action.auto_create_index
+        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
+    persistence:
+      enabled: false
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: traefik
+      path: /
+      hosts:
+        - es-${SERVICE_FQDN}
+  logstash:
+    image:
+      repository: hmctspublic.azurecr.io/ccd/logstash
+      tag: latest
+      pullPolicy: Always
+    logstashJavaOpts: -Xmx1g -Xms512M
+    persistence:
+      enabled: false
+    volumeMounts:
+      - name: pipeline
+        mountPath: /usr/share/logstash/files
+    elasticsearch:
+      host: ${SERVICE_NAME}-es-master
+      port: 9200
+    configTpl:
+      xpack.monitoring.enabled: "false"
+      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      db.user: hmcts
+      db.pwd: hmcts
+      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
+    livenessProbe:
+      initialDelaySeconds: 90
 
   am-role-assignment-service:
     java:
@@ -155,8 +151,8 @@ ccd:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
-#        ELASTIC_SEARCH_ENABLED: "true"
-#        ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
+        ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
   ccd-user-profile-api:
