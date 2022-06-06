@@ -66,12 +66,14 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         );
 
         if (StringUtils.isNotBlank(applicant2Email)) {
+            final LanguagePreference applicant2LanguagePreference = caseData.getApplicant2().getLanguagePreference();
+
             notificationService.sendEmail(
                 applicant2Email,
                 APPLICANT_APPLICATION_SUBMITTED,
                 templateVars,
-                applicant1LanguagePreference != null
-                    ? applicant1LanguagePreference : LanguagePreference.ENGLISH
+                applicant2LanguagePreference != null
+                    ? applicant2LanguagePreference : LanguagePreference.ENGLISH
             );
         }
     }
