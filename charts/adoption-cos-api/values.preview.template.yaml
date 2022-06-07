@@ -113,7 +113,7 @@ ccd:
     java:
       image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
       imagePullPolicy: Always
-      #ingressHost: ccd-case-document-am-api-${SERVICE_FQDN}
+      ingressHost: ccd-case-document-am-api-${SERVICE_FQDN}
       environment:
         CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,ccd_ps,adoption_cos_api,adoption_web
         REFORM_SERVICE_NAME: ccd-case-document-am-api
