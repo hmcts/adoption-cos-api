@@ -81,12 +81,12 @@ public class CaseData {
 
     @JsonUnwrapped(prefix = "birthFather")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {SystemUpdateAccess.class})
     private Parent birthFather = new Parent();
 
     @JsonUnwrapped(prefix = "otherParent")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {SystemUpdateAccess.class})
     private Parent otherParent = new Parent();
 
     @CCD(
