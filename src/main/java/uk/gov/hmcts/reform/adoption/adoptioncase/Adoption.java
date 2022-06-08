@@ -39,9 +39,9 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.grant(Draft, READ, SUPER_USER);
         configBuilder.grant(Draft, READ, CASE_WORKER);
         configBuilder.grant(Draft, READ, COURT_ADMIN);
-        configBuilder.grant(Draft, READ, SUPER_USER);
         configBuilder.grant(Draft, READ, LEGAL_ADVISOR);
         configBuilder.grant(Draft, READ, DISTRICT_JUDGE);
+        configBuilder.grant(Draft, CREATE_READ_UPDATE, SYSTEM_UPDATE);
         configBuilder.grant(Submitted, CREATE_READ_UPDATE, SYSTEM_UPDATE);
     }
 }

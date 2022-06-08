@@ -13,9 +13,8 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemCollectionAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
@@ -72,12 +71,12 @@ public class CaseData {
 
     @JsonUnwrapped(prefix = "children")
     @Builder.Default
-    @CCD(access = {SystemAccess.class})
+    @CCD(access = {SystemUpdateAccess.class})
     private Children children = new Children();
 
     @JsonUnwrapped(prefix = "birthMother")
     @Builder.Default
-    @CCD(access = {SystemAccess.class})
+    @CCD(access = {SystemUpdateAccess.class})
     private Parent birthMother = new Parent();
 
     @JsonUnwrapped(prefix = "birthFather")
@@ -94,7 +93,7 @@ public class CaseData {
         label = "Placement orders",
         typeOverride = Collection,
         typeParameterOverride = "PlacementOrder",
-        access = {SystemCollectionAccess.class}
+        access = {SystemUpdateCollectionAccess.class}
     )
     private List<ListValue<PlacementOrder>> placementOrders;
 
@@ -132,7 +131,7 @@ public class CaseData {
         label = "Siblings",
         typeOverride = Collection,
         typeParameterOverride = "Sibling",
-        access = {SystemCollectionAccess.class}
+        access = {SystemUpdateCollectionAccess.class}
     )
     private List<ListValue<Sibling>> siblings;
 
@@ -148,7 +147,7 @@ public class CaseData {
     private String selectedAdoptionAgencyId;
 
     @CCD(label = "Has Siblings",
-        access = {SystemAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private String hasSiblings;
 
@@ -165,7 +164,7 @@ public class CaseData {
 
     @CCD(
         label = "hyphenatedCaseReference",
-        access = {CaseworkerAccess.class}
+        access = {DefaultAccess.class}
     )
     private String hyphenatedCaseRef;
 
@@ -240,7 +239,7 @@ public class CaseData {
         label = "Applicant uploaded documents",
         typeOverride = Collection,
         typeParameterOverride = "AdoptionDocument",
-        access = {SystemAccess.class}
+        access = {DefaultAccess.class}
     )
     private List<ListValue<AdoptionDocument>> applicant1DocumentsUploaded;
 
@@ -260,13 +259,13 @@ public class CaseData {
 
     @CCD(
         label = "Applicant cannot upload supporting documents",
-        access = {SystemAccess.class}
+        access = {DefaultAccess.class}
     )
     private Set<DocumentType> applicant1CannotUploadSupportingDocument;
 
     @CCD(
         label = "Applicant can not upload",
-        access = {SystemAccess.class}
+        access = {DefaultAccess.class}
     )
     private String applicant1CannotUpload;
 
