@@ -153,7 +153,7 @@ public class CaseData {
 
     @CCD(
         label = "Add Another Sibling Placement Order",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private YesOrNo addAnotherSiblingPlacementOrder;
 
