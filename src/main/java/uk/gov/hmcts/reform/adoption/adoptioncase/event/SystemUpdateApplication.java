@@ -9,7 +9,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_USER;
+//import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
@@ -28,7 +29,7 @@ public class SystemUpdateApplication implements CCDConfig<CaseData, State, UserR
             .name("Adoption case")
             .description("Adoption application update by system")
             .retries(120, 120)
-            .grant(CREATE_READ_UPDATE, SYSTEM_USER)
+            .grant(CREATE_READ_UPDATE, CASE_WORKER)
             .grant(READ, SUPER_USER);
     }
 }

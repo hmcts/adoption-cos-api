@@ -16,7 +16,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_USER;
+//import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
@@ -42,7 +42,7 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.grant(Draft, CREATE_READ_UPDATE, SUPER_USER);
         configBuilder.grant(Draft, READ, LEGAL_ADVISOR);
         configBuilder.grant(Draft, READ, DISTRICT_JUDGE);
-        configBuilder.grant(Draft, CREATE_READ_UPDATE, SYSTEM_USER);
-        configBuilder.grant(Submitted, CREATE_READ_UPDATE, SYSTEM_USER);
+        //configBuilder.grant(Draft, CREATE_READ_UPDATE, SYSTEM_USER);
+        configBuilder.grant(Submitted, CREATE_READ_UPDATE, CASE_WORKER);
     }
 }
