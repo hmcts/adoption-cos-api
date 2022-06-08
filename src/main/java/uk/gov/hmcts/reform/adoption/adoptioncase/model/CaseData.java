@@ -99,12 +99,12 @@ public class CaseData {
 
     @CCD(
         label = "Add Another Placement Order",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private YesOrNo addAnotherPlacementOrder;
 
     @CCD(label = "Selected Placement Order Id",
-        access = {DefaultAccess.class})
+        access = {SystemUpdateAccess.class})
     String selectedPlacementOrderId;
 
     @JsonUnwrapped
@@ -158,7 +158,7 @@ public class CaseData {
     private YesOrNo addAnotherSiblingPlacementOrder;
 
     @CCD(label = "Selected Sibling ID",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private String selectedSiblingId;
 
