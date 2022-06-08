@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemCollectionAccess;
 
 import java.time.LocalDate;
@@ -32,7 +33,8 @@ public class Children {
     private String lastName;
 
     @CCD(
-        label = "Date of Birth"
+        label = "Date of Birth",
+        access = {SystemAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;

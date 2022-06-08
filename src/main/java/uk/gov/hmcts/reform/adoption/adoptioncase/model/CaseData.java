@@ -240,7 +240,7 @@ public class CaseData {
         label = "Applicant uploaded documents",
         typeOverride = Collection,
         typeParameterOverride = "AdoptionDocument",
-        access = {SystemCollectionAccess.class}
+        access = {SystemAccess.class}
     )
     private List<ListValue<AdoptionDocument>> applicant1DocumentsUploaded;
 
@@ -260,7 +260,7 @@ public class CaseData {
 
     @CCD(
         label = "Applicant cannot upload supporting documents",
-        access = {SystemCollectionAccess.class}
+        access = {SystemAccess.class}
     )
     private Set<DocumentType> applicant1CannotUploadSupportingDocument;
 

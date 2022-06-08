@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemCollectionAccess;
 
 import java.util.List;
@@ -43,7 +44,8 @@ public class Parent {
     private String occupation;
 
     @CCD(
-        label = "Address Known"
+        label = "Address Known",
+        access = {SystemAccess.class}
     )
     private YesOrNo addressKnown;
 
