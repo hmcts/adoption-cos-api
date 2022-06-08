@@ -9,8 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemCollectionAccess;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,8 +32,7 @@ public class Children {
     private String lastName;
 
     @CCD(
-        label = "Date of Birth",
-        access = {DefaultAccess.class}
+        label = "Date of Birth"
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
@@ -46,7 +44,7 @@ public class Children {
         label = "Children Additional Nationalities",
         typeOverride = Collection,
         typeParameterOverride = "OtherNationality",
-        access = {CollectionAccess.class}
+        access = {SystemCollectionAccess.class}
     )
     private List<ListValue<OtherNationality>> additionalNationalities;
 

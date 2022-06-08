@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemCollectionAccess;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -44,8 +43,7 @@ public class Parent {
     private String occupation;
 
     @CCD(
-        label = "Address Known",
-        access = {DefaultAccess.class}
+        label = "Address Known"
     )
     private YesOrNo addressKnown;
 
@@ -74,7 +72,7 @@ public class Parent {
         label = "Additional Nationalities",
         typeOverride = Collection,
         typeParameterOverride = "OtherNationality",
-        access = {CollectionAccess.class}
+        access = {SystemCollectionAccess.class}
     )
     private List<ListValue<OtherNationality>> otherNationalities;
 
