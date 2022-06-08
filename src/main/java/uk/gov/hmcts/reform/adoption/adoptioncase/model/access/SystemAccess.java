@@ -24,7 +24,7 @@ public class SystemAccess implements HasAccessControl {
         grants.putAll(SUPER_USER, Permissions.READ);
         grants.putAll(LEGAL_ADVISOR, Permissions.READ);
         grants.putAll(DISTRICT_JUDGE, Permissions.READ);
-        grants.putAll(SYSTEM_UPDATE, Permissions.CREATE_READ_UPDATE_DELETE);//TODO remove delete access for SYSTEM_USER
+        grants.putAll(SYSTEM_UPDATE, Permissions.CREATE_READ_UPDATE);
 
         return grants;
     }
