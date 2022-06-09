@@ -71,7 +71,7 @@ public class CaseData {
 
     @JsonUnwrapped(prefix = "children")
     @Builder.Default
-    @CCD(access = {SystemUpdateAccess.class})
+    @CCD(access = {DefaultAccess.class})
     private Children children = new Children();
 
     @JsonUnwrapped(prefix = "birthMother")
