@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemAndCitizenAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
@@ -72,7 +71,7 @@ public class CaseData {
 
     @JsonUnwrapped(prefix = "children")
     @Builder.Default
-    @CCD(access = {SystemAndCitizenAccess.class})
+    @CCD(access = {DefaultAccess.class})
     private Children children = new Children();
 
     @JsonUnwrapped(prefix = "birthMother")
