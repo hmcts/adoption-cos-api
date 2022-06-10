@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -85,4 +87,11 @@ public class Parent {
         typeOverride = TextArea
     )
     private String addressNotKnownReason;
+
+    @CCD(
+        label = "Last address known date",
+        access = {SystemUpdateAccess.class}
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate lastAddressDate;
 }
