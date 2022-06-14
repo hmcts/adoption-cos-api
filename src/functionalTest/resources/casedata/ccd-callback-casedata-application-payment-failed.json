@@ -1,39 +1,21 @@
 {
   "siblings": [
     {
-      "id": "ffe2299c-6fd7-4e6e-b05c-b4076fd35954",
+      "id": "1646222663145",
       "value": {
         "siblingId": "1646222663145",
-        "siblingFirstName": "sibling1",
-        "siblingLastNames": "sibling 1",
-        "siblingPlacementOrders": [
-          {
-            "id": "3cb7f66e-ad81-4745-a5f4-643ecb202e93",
-            "value": {
-              "placementOrderId": "1646222679921",
-              "placementOrderType": "some order",
-              "placementOrderNumber": "1001"
-            }
-          }
-        ]
+        "siblingRelation": "brother",
+        "siblingPoType": "some order",
+        "siblingPoNumber": "1001"
       }
     },
     {
-      "id": "1a70b2fc-6d6e-48c6-98e3-e48d776098d1",
+      "id": "1646222699254",
       "value": {
         "siblingId": "1646222699254",
-        "siblingFirstName": "sibling 2",
-        "siblingLastNames": "sibling 2",
-        "siblingPlacementOrders": [
-          {
-            "id": "ef61cb93-40c3-40eb-8d6f-4461f0e3c09d",
-            "value": {
-              "placementOrderId": "1646222699696",
-              "placementOrderType": "some other order",
-              "placementOrderNumber": "23456"
-            }
-          }
-        ]
+        "siblingRelation": "sister",
+        "siblingPoType": "some other order",
+        "siblingPoNumber": "23456"
       }
     }
   ],
@@ -80,35 +62,22 @@
   "applicant2Address2": "",
   "documentsGenerated": [],
   "birthFatherFirstName": "Father",
-  "hasPoForSiblings": "Yes",
   "dateChildMovedIn": "2021-10-12",
   "applicant1AddressPostCode": "NG1 1JB",
-  "adopAgencyOrLAs": [
-    {
-      "id": "50c87b12-cf6d-428a-899c-b94b1f1f242a",
-      "value": {
-        "adopAgencyOrLaId": "1646222614256",
-        "adopAgencyOrLaName": "agency1",
-        "adopAgencyOrLaContactName": "contact name1",
-        "adopAgencyOrLaPhoneNumber": "01234567890",
-        "adopAgencyOrLaContactEmail": "agency1@email.co.uk"
-      }
-    },
-    {
-      "id": "cae8e039-8b63-4784-abb8-d7a99824874a",
-      "value": {
-        "adopAgencyOrLaId": "1646222634276",
-        "adopAgencyOrLaName": "Agency2",
-        "adopAgencyOrLaContactName": "contact name2",
-        "adopAgencyOrLaPhoneNumber": "",
-        "adopAgencyOrLaContactEmail": ""
-      }
-    }
-  ],
+  "localAuthorityName": "laname",
+  "localAuthorityContactName": "contact name1",
+  "localAuthorityPhoneNumber": "01234567890",
+  "localAuthorityContactEmail": "agency1@email.co.uk",
+  "adopAgencyOrLaName": "agency1",
+  "adopAgencyOrLaContactName": "contact name1",
+  "adopAgencyOrLaPhoneNumber": "01234567890",
+  "adopAgencyAddressLine1": "address",
+  "adopAgencyTown": "town",
+  "adopAgencyPostcode": "aa14aa",
+  "adopAgencyOrLaContactEmail": "agency1@email.co.uk",
   "applicant1ContactDetailsConsent": "Yes",
   "applicant2Nationality": null,
   "applicant1LanguagePreference": "ENGLISH",
-  "hasPoForSiblingsNotSureReason": null,
   "birthMotherAddressPostCode": "NG1 1JB",
   "birthMotherOtherNationalities": [],
   "otherParentOtherNationalities": [],
@@ -126,7 +95,7 @@
   "socialWorkerPhoneNumber": "01234567893",
   "addAnotherSiblingPlacementOrder": "No",
   "createdDate": null,
-  "socialWorkerTeamEmail": "",
+  "childLocalAuthority": "la",
   "applicant2Occupation": "tester",
   "applicant2PhoneNumber": "12121212121",
   "applicant1ContactDetails": null,
@@ -143,6 +112,7 @@
   "birthMotherNotAliveReason": "",
   "otherParentAddressPostCode": "SW1A 1AA",
   "applicant1AddressCountry": "NOTTINGHAM CITY",
+  "placementOrderCourt": "xyz",
   "familyCourtName": "xyz",
   "birthMotherAddressTown": "NOTTINGHAM",
   "birthFatherAddress3": null,
@@ -255,7 +225,6 @@
   "birthFatherAddressPostCode": "SW1A 1AA",
   "otherParentAddress1": "BUCKINGHAM PALACE",
   "otherParentAddress2": "",
-  "selectedSiblingPoId": "1646222699696",
   "otherParentNameOnCertificate": null,
   "birthMotherLastName": "Mother",
   "otherParentAddress3": null,

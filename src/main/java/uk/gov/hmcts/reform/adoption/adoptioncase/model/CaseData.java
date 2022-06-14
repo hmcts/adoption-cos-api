@@ -52,7 +52,7 @@ public class CaseData {
     private String otherApplicantRelation;
 
     @CCD(
-        label = "Child moved in date",
+        label = "Date child moved in",
         access = {DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -116,13 +116,15 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private Solicitor solicitor = new Solicitor();
 
-    @CCD(
-        label = "Adoption Agency Or LA list",
-        typeOverride = Collection,
-        typeParameterOverride = "AdoptionAgencyOrLocalAuthority",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<AdoptionAgencyOrLocalAuthority>> adopAgencyOrLAs;
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private LocalAuthority localAuthority = new LocalAuthority();
+
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
     @CCD(
         label = "Siblings",
@@ -148,16 +150,6 @@ public class CaseData {
     )
     private String hasSiblings;
 
-    @CCD(label = "Add Another Siblings",
-        access = {DefaultAccess.class}
-    )
-    private String hasPoForSiblings;
-
-    @CCD(label = "Has Placement order For Siblings Not Sure Reason",
-        access = {DefaultAccess.class}
-    )
-    private String hasPoForSiblingsNotSureReason;
-
     @CCD(
         label = "Add Another Sibling Placement Order",
         access = {DefaultAccess.class}
@@ -168,11 +160,6 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String selectedSiblingId;
-
-    @CCD(label = "Selected Sibling PO ID",
-        access = {DefaultAccess.class}
-    )
-    private String selectedSiblingPoId;
 
     @CCD(
         label = "hyphenatedCaseReference",
@@ -218,6 +205,26 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String pcqId;
+
+    @CCD(label = "Prospective parents social worker",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerDetails;
+
+    @CCD(label = "Messages",
+        access = {DefaultAccess.class}
+    )
+    private String message;
+
+    @CCD(label = "Type of adoption",
+        access = {DefaultAccess.class}
+    )
+    private String typeOfAdoption;
+
+    @CCD(label = "Case status",
+        access = {DefaultAccess.class}
+    )
+    private String status;
 
     @CCD(
         label = "Documents generated",
@@ -266,6 +273,12 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private YesOrNo findFamilyCourt;
+
+    @CCD(
+        label = "Placement order court name",
+        access = {DefaultAccess.class}
+    )
+    private String placementOrderCourt;
 
     @CCD(
         label = "Family court name",
