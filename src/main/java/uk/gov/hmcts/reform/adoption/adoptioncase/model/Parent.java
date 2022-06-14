@@ -94,4 +94,7 @@ public class Parent {
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastAddressDate;
+
+    @CCD(label = "Identity known")
+    private String identityKnown;
 }
