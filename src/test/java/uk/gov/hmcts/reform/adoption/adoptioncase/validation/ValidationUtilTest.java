@@ -30,7 +30,7 @@ public class ValidationUtilTest {
         CaseData caseData = new CaseData();
         caseData.setHasAnotherAdopAgencyOrLA(YesOrNo.NO);
         List<String> errors = validateBasicCase(caseData);
-        assertThat(errors).hasSize(23);
+        assertThat(errors).hasSize(18);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class ValidationUtilTest {
         caseData.setApplyingWith(ApplyingWith.ALONE);
         caseData.setHasAnotherAdopAgencyOrLA(YesOrNo.NO);
         List<String> errors = validateBasicCase(caseData);
-        assertThat(errors).hasSize(16);
+        assertThat(errors).hasSize(11);
     }
 
     @Test

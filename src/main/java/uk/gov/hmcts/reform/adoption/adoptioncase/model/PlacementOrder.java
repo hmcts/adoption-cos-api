@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDate;
 
@@ -32,7 +32,7 @@ public class PlacementOrder {
 
     @CCD(
         label = "Placement Order Date",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate placementOrderDate;
