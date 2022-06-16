@@ -8,7 +8,7 @@ idam-pr:
   enabled: false
 
 ccd-case-document-am-api:
-  enabled: true
+  enabled: false
 
 
 java:
