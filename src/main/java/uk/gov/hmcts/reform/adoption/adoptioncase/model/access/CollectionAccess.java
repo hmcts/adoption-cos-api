@@ -19,7 +19,7 @@ public class CollectionAccess implements HasAccessControl {
     @Override
     public SetMultimap<HasRole, Permission> getGrants() {
         SetMultimap<HasRole, Permission> grants = HashMultimap.create();
-        grants.putAll(CASE_WORKER, Permissions.CREATE_READ_UPDATE_DELETE);//TODO remove delete access for caseworker 31 May 2022
+        grants.putAll(CASE_WORKER, Permissions.READ);
         grants.putAll(COURT_ADMIN, Permissions.READ);
         grants.putAll(SOLICITOR, Permissions.READ);
         grants.putAll(SUPER_USER, Permissions.READ);
