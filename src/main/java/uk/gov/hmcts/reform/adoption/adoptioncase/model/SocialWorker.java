@@ -32,8 +32,13 @@ public class SocialWorker {
         access = {DefaultAccess.class})
     private String socialWorkerEmail;
 
-    @CCD(label = "Child's local authority",
+    @CCD(label = "Local authority",
         access = {DefaultAccess.class}
     )
-    private String childLocalAuthority;
+    private String localAuthority;
+
+    @CCD(label = "Local authority email address",
+        access = {DefaultAccess.class}
+    )
+    private String localAuthorityEmail;
 }
