@@ -151,10 +151,10 @@
     "birthMotherOtherNationalities": [],
     "birthMotherStillAlive": "Yes",
     "childLocalAuthority": "la",
-    "childLocalAuthorityEmail": null,
-    "childSocialWorkerEmail": null,
-    "childSocialWorkerName": null,
-    "childSocialWorkerPhoneNumber": null,
+    "childLocalAuthorityEmail": "abc@gov.uk",
+    "childSocialWorkerEmail": "abc@gov.uk",
+    "childSocialWorkerName": "null",
+    "childSocialWorkerPhoneNumber": "1234567890",
     "childrenAdditionalNationalities": [
       {
         "id": "3b81bf8b-96ad-4001-a5cf-66f2af99a79c",
