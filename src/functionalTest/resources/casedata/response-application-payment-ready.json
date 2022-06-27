@@ -144,6 +144,16 @@
     "birthMotherOccupation": "Teacher",
     "birthMotherOtherNationalities": [],
     "birthMotherStillAlive": "Yes",
+    "childLocalAuthority": "la",
+    "childLocalAuthorityEmail": null,
+    "childSocialWorkerEmail": null,
+    "childSocialWorkerName": null,
+    "childSocialWorkerPhoneNumber": null,
+    "applicantLocalAuthority": null,
+    "applicantLocalAuthorityEmail": null,
+    "applicantSocialWorkerEmail": null,
+    "applicantSocialWorkerName": null,
+    "applicantSocialWorkerPhoneNumber": null,
     "childrenAdditionalNationalities": [
       {
         "id": "3b81bf8b-96ad-4001-a5cf-66f2af99a79c",
@@ -244,10 +254,6 @@
         }
       }
     ],
-    "socialWorkerEmail": "socialw@email.com",
-    "socialWorkerName": "social worker",
-    "socialWorkerPhoneNumber": "01234567893",
-    "childLocalAuthority": "la",
     "solicitorEmail": null,
     "solicitorFirm": null,
     "solicitorHelpingWithApplication": null,
