@@ -38,6 +38,7 @@ public class SocialWorker {
     private String localAuthority;
 
     @CCD(label = "Local authority email address",
+        typeOverride = Email,
         access = {DefaultAccess.class}
     )
     private String localAuthorityEmail;
