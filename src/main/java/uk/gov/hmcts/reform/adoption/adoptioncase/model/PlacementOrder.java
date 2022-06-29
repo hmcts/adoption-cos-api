@@ -36,4 +36,7 @@ public class PlacementOrder {
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate placementOrderDate;
+
+    @CCD(label = "Other Placement Order type")
+    private String otherPlacementOrderType;
 }
