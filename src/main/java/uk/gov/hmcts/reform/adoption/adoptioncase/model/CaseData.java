@@ -107,10 +107,16 @@ public class CaseData {
         access = {SystemUpdateAccess.class})
     String selectedPlacementOrderId;
 
-    @JsonUnwrapped
+
+    @JsonUnwrapped(prefix = "child")
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
-    private SocialWorker socialWorker = new SocialWorker();
+    private SocialWorker childSocialWorker = new SocialWorker();
+
+    @JsonUnwrapped(prefix = "applicant")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private SocialWorker applicantSocialWorker = new SocialWorker();
 
     @JsonUnwrapped
     @Builder.Default
