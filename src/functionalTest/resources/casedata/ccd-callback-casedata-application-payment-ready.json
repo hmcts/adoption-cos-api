@@ -242,6 +242,11 @@
     "Irish",
     "Other"
   ],
+  "childLocalAuthority": "la",
+  "childLocalAuthorityEmail": "abc@gov.uk",
+  "childSocialWorkerEmail": "abc@gov.uk",
+  "childSocialWorkerName": "null",
+  "childSocialWorkerPhoneNumber": "1234567890",
   "applicant2Email": null,
   "otherParentAddressCounty": "CITY OF WESTMINSTER",
   "applicant2LanguagePreference": null,
