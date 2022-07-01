@@ -41,19 +41,19 @@ public final class ValidationUtil {
             notNull(caseData.getDateChildMovedIn(), "DateChildMovedIn"),
             validateDateChildMovedIn(caseData.getDateChildMovedIn(), "DateChildMovedIn"),
             validateApplicant1(caseData),
-            validateApplicant2(applyingAlone, caseData),
-            //validateChildren(caseData.getChildren()),
-            //notNull(caseData.getBirthMother().getFirstName(), "BirthMotherFirstName"),
-            //notNull(caseData.getBirthMother().getLastName(), "BirthMotherLastName"),
-            //validateBirthFather(caseData.getBirthFather()),
-            //validateOtherParent(caseData.getOtherParent()),
-            //validatePlacementOrders(caseData.getPlacementOrders()),
+            validateApplicant2(applyingAlone, caseData)
+        /*    validateChildren(caseData.getChildren()),
+            notNull(caseData.getBirthMother().getFirstName(), "BirthMotherFirstName"),
+            notNull(caseData.getBirthMother().getLastName(), "BirthMotherLastName"),
+            validateBirthFather(caseData.getBirthFather()),
+            validateOtherParent(caseData.getOtherParent()),
+            validatePlacementOrders(caseData.getPlacementOrders()),
             validateSocialWorker(caseData.getChildSocialWorker()),
             validateLocalAuthorityAndAdoptionAgency(
                 caseData.getLocalAuthority(),
                 caseData.getAdopAgencyOrLA(),
                 caseData.getHasAnotherAdopAgencyOrLA()
-            )
+            )*/
         );
     }
 
@@ -73,7 +73,7 @@ public final class ValidationUtil {
         return list;
     }
 
-    private static List<String> validateSocialWorker(SocialWorker socialWorker) {
+    public static List<String> validateSocialWorker(SocialWorker socialWorker) {
         return flattenLists(
             notNull(socialWorker.getSocialWorkerEmail(), "SocialWorkerEmail"),
             notNull(socialWorker.getSocialWorkerPhoneNumber(), "SocialWorkerPhoneNumber")
