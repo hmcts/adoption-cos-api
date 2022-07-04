@@ -271,7 +271,7 @@
     "status": null,
     "typeOfAdoption": null
   },
-  "errors": ["Statement of truth must be accepted by the applicant1","Applicant1SotFullName cannot be empty or null","Statement of truth must be accepted by the applicant2","Applicant2SotFullName cannot be empty or null","SocialWorkerEmail cannot be empty or null","SocialWorkerPhoneNumber cannot be empty or null"],
+  "errors": ["Statement of truth must be accepted by the applicant1","Applicant1SotFullName cannot be empty or null","Statement of truth must be accepted by the applicant2","Applicant2SotFullName cannot be empty or null"],
   "state": null,
   "warnings": null
 }
