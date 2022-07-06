@@ -10,8 +10,6 @@ import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.Search;
 import uk.gov.hmcts.ccd.sdk.api.Search.SearchBuilder;
-import uk.gov.hmcts.ccd.sdk.api.WorkBasket;
-import uk.gov.hmcts.ccd.sdk.api.WorkBasket.WorkBasketBuilder;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
@@ -162,16 +160,6 @@ public class TestDataHelper {
         return getSearchFor("searchResultFields", configBuilder);
     }
 
-    public static <T, S, R extends HasRole> WorkBasket getWorkBasketInputFields(
-        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
-        return getWorkBasketFor("workBasketInputFields", configBuilder);
-    }
-
-    public static <T, S, R extends HasRole> WorkBasket getWorkBasketResultFields(
-        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
-        return getWorkBasketFor("workBasketResultFields", configBuilder);
-    }
-
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static <T, S, R extends HasRole> Search getSearchFor(
         final String fieldName,
@@ -180,15 +168,5 @@ public class TestDataHelper {
             (List<SearchBuilder>) getValueIncludingSuperclasses(fieldName, configBuilder);
         final var searchInputBuilder = searchInputFields.get(0);
         return searchInputBuilder.build();
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private static <T, S, R extends HasRole> WorkBasket getWorkBasketFor(
-        final String fieldName,
-        final ConfigBuilderImpl<T, S, R> configBuilder) throws IllegalAccessException {
-        final List<WorkBasketBuilder> workBasketInputFields =
-            (List<WorkBasketBuilder>) getValueIncludingSuperclasses(fieldName, configBuilder);
-        final var workBasketBuilder = workBasketInputFields.get(0);
-        return workBasketBuilder.build();
     }
 }
