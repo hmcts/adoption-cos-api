@@ -168,6 +168,16 @@ public class CaseData {
     )
     private String selectedSiblingId;
 
+    @CCD(label = "Selected Sibling Relation",
+        access = {SystemUpdateAccess.class}
+    )
+    private String selectedSiblingRelation;
+
+    @CCD(label = "Selected Sibling Po Type",
+        access = {SystemUpdateAccess.class}
+    )
+    private String selectedSiblingPoType;
+
     @CCD(
         label = "hyphenatedCaseReference",
         access = {DefaultAccess.class}

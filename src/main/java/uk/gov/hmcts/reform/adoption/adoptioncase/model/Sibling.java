@@ -15,10 +15,13 @@ public class Sibling {
     private String siblingId;
 
     @CCD(label = "Sibling Relation")
-    private String siblingRelation;
+    private SiblingRelation siblingRelation;
 
     @CCD(label = "Sibling Placement Order Type")
-    private String siblingPoType;
+    private SiblingPoType siblingPoType;
+
+    @CCD(label = "Sibling Placement Other Order Type")
+    private String siblingPlacementOtherType;
 
     @CCD(label = "Sibling Placement Order Number")
     private String siblingPoNumber;
