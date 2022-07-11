@@ -246,5 +246,11 @@
   "otherParentAddressCounty": "CITY OF WESTMINSTER",
   "applicant2LanguagePreference": null,
   "birthMotherOccupation": "Teacher",
-  "applicant1AddressSameAsApplicant1": null
+  "applicant1AddressSameAsApplicant1": null,
+  "childSocialWorker": {
+    "localAuthorityEmail": "mohit.vijay@hmcts.net"
+  },
+  "applicantSocialWorker": {
+    "localAuthorityEmail": "mohit.vijay@hmcts.net"
+  }
 }

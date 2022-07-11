@@ -13,6 +13,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.HYPHENATED_REF;
@@ -20,11 +21,14 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION_RESPONSE_DATE;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
+import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.CHILD_FULL_NAME;
+
 
 @Component
 @Slf4j
@@ -94,12 +98,21 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     public void sendToLocalAuthority(final CaseData caseData, final Long id) {
         log.info("Sending application submitted notification to local authority for case : {}", id);
 
+        final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
+        final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
+
         notificationService.sendEmail(
-            caseData.getApplicant1().getEmail(),
-            APPLICANT_APPLICATION_SUBMITTED,
-            templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2()),
-            caseData.getApplicant1().getLanguagePreference() != null
-                ? caseData.getApplicant1().getLanguagePreference() : LanguagePreference.ENGLISH
+            childLocalAuthorityEmailAddress,
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
+            templateVarsForLocalAuthority(caseData),
+            LanguagePreference.ENGLISH
+        );
+
+        notificationService.sendEmail(
+            applicantLocalAuthorityEmailAddress,
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
+            templateVarsForLocalAuthority(caseData),
+            LanguagePreference.ENGLISH
         );
     }
 
@@ -133,7 +146,15 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
             templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
         }
+        //templateVars.put(CHILD_FULL_NAME, caseData.getChildren().getFirstName() + " " + caseData.getChildren().getLastName());
+        return templateVars;
+    }
 
+
+    private Map<String, Object> templateVarsForLocalAuthority(CaseData caseData) {
+        Map<String, Object> templateVars = new HashMap<>();
+        templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
+        templateVars.put(CHILD_FULL_NAME, caseData.getChildren().getFirstName() + " " + caseData.getChildren().getLastName());
         return templateVars;
     }
 
