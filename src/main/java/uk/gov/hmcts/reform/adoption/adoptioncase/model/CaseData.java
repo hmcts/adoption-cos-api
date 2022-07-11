@@ -275,6 +275,13 @@ public class CaseData {
     )
     private String applicant1CannotUpload;
 
+
+    @CCD(
+        label = "Can not upload supporting Documents (LA)",
+        access = {DefaultAccess.class}
+    )
+    private String cannotUploadSupportingDocuments;
+
     @CCD(
         label = "Find Family Court",
         access = {DefaultAccess.class}
