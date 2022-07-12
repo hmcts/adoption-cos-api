@@ -278,13 +278,13 @@ public class CaseData {
 
     @CCD(
         label = "LA can not upload",
-        access = {DefaultAccess.class}
+        access = { SystemUpdateAccess.class }
     )
     private String laCannotUpload;
 
     @CCD(
         label = "LA cannot upload supporting documents",
-        access = {DefaultAccess.class}
+        access = { SystemUpdateAccess.class }
     )
     private Set<DocumentType> laCannotUploadSupportingDocument;
 
@@ -293,7 +293,7 @@ public class CaseData {
         label = "Documents uploaded",
         typeOverride = Collection,
         typeParameterOverride = "AdoptionDocument",
-        access = {DefaultAccess.class}
+        access = { SystemUpdateAccess.class }
     )
     private List<ListValue<AdoptionDocument>> laDocumentsUploaded;
 
