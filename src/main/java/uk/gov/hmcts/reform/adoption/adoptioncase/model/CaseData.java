@@ -285,6 +285,28 @@ public class CaseData {
     )
     private String applicant1CannotUpload;
 
+
+    @CCD(
+        label = "LA can not upload",
+        access = { SystemUpdateAccess.class }
+    )
+    private String laCannotUpload;
+
+    @CCD(
+        label = "LA cannot upload supporting documents",
+        access = { SystemUpdateAccess.class }
+    )
+    private Set<DocumentType> laCannotUploadSupportingDocument;
+
+
+    @CCD(
+        label = "Documents uploaded",
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionDocument",
+        access = { SystemUpdateAccess.class }
+    )
+    private List<ListValue<AdoptionDocument>> laDocumentsUploaded;
+
     @CCD(
         label = "Find Family Court",
         access = {DefaultAccess.class}
