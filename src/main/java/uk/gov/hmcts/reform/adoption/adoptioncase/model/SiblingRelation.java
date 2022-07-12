@@ -21,10 +21,10 @@ public enum SiblingRelation implements HasLabel {
     @JsonProperty("brother")
     BROTHER("brother"),
 
-    @JsonProperty("halfSister")
+    @JsonProperty("halfBrother")
     HALF_BROTHER("halfBrother"),
 
-    @JsonProperty("stepSister")
+    @JsonProperty("stepBrother")
     STEP_BROTHER("stepBrother");
 
     private final String label;
