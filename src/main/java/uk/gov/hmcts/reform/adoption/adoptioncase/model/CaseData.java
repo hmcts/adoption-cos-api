@@ -257,15 +257,6 @@ public class CaseData {
     )
     private List<ListValue<AdoptionDocument>> documentsUploaded;
 
-
-    @CCD(
-        label = "Documents uploaded",
-        typeOverride = Collection,
-        typeParameterOverride = "AdoptionDocument",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<AdoptionDocument>> laDocumentsUploaded;
-
     @CCD(
         label = "Upload Adoption Document",
         access = {DefaultAccess.class}
@@ -277,13 +268,6 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private Set<DocumentType> applicant1CannotUploadSupportingDocument;
-
-
-    @CCD(
-        label = "LA cannot upload supporting documents",
-        access = {DefaultAccess.class}
-    )
-    private Set<DocumentType> laCannotUploadSupportingDocument;
 
     @CCD(
         label = "Applicant can not upload",
@@ -297,6 +281,21 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String laCannotUpload;
+
+    @CCD(
+        label = "LA cannot upload supporting documents",
+        access = {DefaultAccess.class}
+    )
+    private Set<DocumentType> laCannotUploadSupportingDocument;
+
+
+    @CCD(
+        label = "Documents uploaded",
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionDocument",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> laDocumentsUploaded;
 
     @CCD(
         label = "Find Family Court",
