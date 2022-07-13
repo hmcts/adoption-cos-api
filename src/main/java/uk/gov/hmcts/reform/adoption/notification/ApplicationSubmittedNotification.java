@@ -20,6 +20,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.HYPHENATED
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION_RESPONSE_DATE;
+import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
@@ -95,8 +96,8 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     }
 
     @Override
-    public void sendToLocalAuthority(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to local authority for case : {}", id);
+    public void sendToLocalAuthorityPostApplicantSubmission(final CaseData caseData, final Long id) {
+        log.info("Sending application submitted notification to local authority post Applicant Submission for case : {}", id);
 
         final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
         final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
@@ -111,6 +112,28 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         notificationService.sendEmail(
             applicantLocalAuthorityEmailAddress,
             APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
+            templateVarsForLocalAuthority(caseData),
+            LanguagePreference.ENGLISH
+        );
+    }
+
+    public void sendToLocalAuthorityPostLocalAuthoritySubmission(final CaseData caseData, final Long id) {
+        log.info("Sending application submitted notification to local authority post "
+                     + "Local Authority application Submission for case : {}", id);
+
+        final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
+        final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
+
+        notificationService.sendEmail(
+            childLocalAuthorityEmailAddress,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
+            templateVarsForLocalAuthority(caseData),
+            LanguagePreference.ENGLISH
+        );
+
+        notificationService.sendEmail(
+            applicantLocalAuthorityEmailAddress,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
             templateVarsForLocalAuthority(caseData),
             LanguagePreference.ENGLISH
         );
