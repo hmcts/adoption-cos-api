@@ -95,6 +95,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         );
     }
 
+
     @Override
     public void sendToLocalAuthorityPostApplicantSubmission(final CaseData caseData, final Long id) {
         log.info("Sending application submitted notification to local authority post Applicant Submission for case : {}", id);

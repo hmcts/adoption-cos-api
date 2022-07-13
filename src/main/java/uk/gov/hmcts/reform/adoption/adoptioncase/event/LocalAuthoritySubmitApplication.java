@@ -45,8 +45,6 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(final CaseDetails<CaseData, State> details,
                                                                        final CaseDetails<CaseData, State> beforeDetails) {
-
-        final CaseData caseData = details.getData();
         final Long caseId = details.getId();
 
         log.info("Citizen Submit Application about to submit callback invoked CaseID: {}", caseId);
