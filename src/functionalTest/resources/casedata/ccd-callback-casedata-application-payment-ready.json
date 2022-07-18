@@ -5,8 +5,9 @@
       "value": {
         "siblingId": "1646222663145",
         "siblingRelation": "brother",
-        "siblingPoType": "some order",
-        "siblingPoNumber": "1001"
+        "siblingPoType": "adoptionOrder",
+        "siblingPoNumber": "1001",
+        "siblingPlacementOtherType": ""
       }
     },
     {
@@ -14,8 +15,9 @@
       "value": {
         "siblingId": "1646222699254",
         "siblingRelation": "sister",
-        "siblingPoType": "some other order",
-        "siblingPoNumber": "23456"
+        "siblingPoType": "other",
+        "siblingPoNumber": "23456",
+        "siblingPlacementOtherType": "other type"
       }
     }
   ],
@@ -213,6 +215,8 @@
   ],
   "solicitorName": null,
   "selectedSiblingId": "1646222699254",
+  "selectedSiblingRelation": "sister",
+  "selectedSiblingPoType": "adoptionOrder",
   "solicitorPhoneNumber": null,
   "birthFatherAddressCountry": null,
   "applicant2AddressTown": "NOTTINGHAM",

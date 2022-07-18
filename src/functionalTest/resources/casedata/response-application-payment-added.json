@@ -265,14 +265,17 @@
     "selectedAdoptionAgencyId": "1646222614256",
     "selectedPlacementOrderId": "1646222468418",
     "selectedSiblingId": "1646222699254",
+    "selectedSiblingRelation": "sister",
+    "selectedSiblingPoType": "adoptionOrder",
     "siblings": [
       {
         "id": "1646222663145",
         "value": {
           "siblingId": "1646222663145",
           "siblingRelation": "brother",
-          "siblingPoType": "some order",
-          "siblingPoNumber": "1001"
+          "siblingPoType": "adoptionOrder",
+          "siblingPoNumber": "1001",
+          "siblingPlacementOtherType": ""
         }
       },
       {
@@ -280,8 +283,9 @@
         "value": {
           "siblingId": "1646222699254",
           "siblingRelation": "sister",
-          "siblingPoType": "some other order",
-          "siblingPoNumber": "23456"
+          "siblingPoType": "other",
+          "siblingPoNumber": "23456",
+          "siblingPlacementOtherType": "other type"
         }
       }
     ],

@@ -168,6 +168,16 @@ public class CaseData {
     )
     private String selectedSiblingId;
 
+    @CCD(label = "Selected Sibling Relation",
+        access = {SystemUpdateAccess.class}
+    )
+    private String selectedSiblingRelation;
+
+    @CCD(label = "Selected Sibling Po Type",
+        access = {SystemUpdateAccess.class}
+    )
+    private String selectedSiblingPoType;
+
     @CCD(
         label = "hyphenatedCaseReference",
         access = {DefaultAccess.class}
@@ -274,6 +284,28 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String applicant1CannotUpload;
+
+
+    @CCD(
+        label = "LA can not upload",
+        access = { SystemUpdateAccess.class }
+    )
+    private String laCannotUpload;
+
+    @CCD(
+        label = "LA cannot upload supporting documents",
+        access = { SystemUpdateAccess.class }
+    )
+    private Set<DocumentType> laCannotUploadSupportingDocument;
+
+
+    @CCD(
+        label = "Documents uploaded",
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionDocument",
+        access = { SystemUpdateAccess.class }
+    )
+    private List<ListValue<AdoptionDocument>> laDocumentsUploaded;
 
     @CCD(
         label = "Find Family Court",
