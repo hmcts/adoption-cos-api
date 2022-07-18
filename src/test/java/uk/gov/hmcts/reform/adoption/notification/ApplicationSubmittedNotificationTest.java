@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
+import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
@@ -69,7 +69,7 @@ class ApplicationSubmittedNotificationTest {
     private AuthTokenGenerator authTokenGenerator;
 
     @Mock
-    private DocumentManagementClient dmClient;
+    private CaseDocumentClient caseDocumentClient;
 
     @InjectMocks
     private ApplicationSubmittedNotification notification;
@@ -162,7 +162,8 @@ class ApplicationSubmittedNotificationTest {
         CaseData data = caseData();
         data.setHyphenatedCaseRef("1234-1234-1234-1234");
         AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY_EN)
-            .documentLink(Document.builder().url(StringUtils.EMPTY).build()).build();
+            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
+                    .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
         ListValue<AdoptionDocument> listValue = new ListValue<>();
         listValue.setValue(adoptionDocument);
         List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
@@ -174,7 +175,7 @@ class ApplicationSubmittedNotificationTest {
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(dmClient.downloadBinary(anyString(), anyString(), any(), any(), any())).thenReturn(resource);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
 
         notification.sendToLocalCourt(data, 1234567890123456L);
 
