@@ -39,12 +39,14 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.SYSTEM_USER_US
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_SERVICE_AUTH_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.documentWithType;
+import static org.mockito.ArgumentMatchers.any;
+
 
 @ExtendWith(MockitoExtension.class)
 class DraftApplicationRemovalServiceTest {
 
     @Mock
-    private DocumentManagementClient documentManagementClient;
+    private CaseDocumentClient caseDocumentClient;
 
     @Mock
     private AuthTokenGenerator authTokenGenerator;
@@ -68,12 +70,10 @@ class DraftApplicationRemovalServiceTest {
 
         final String documentUuid = FilenameUtils.getName(adoptionDocumentListValue.getValue().getDocumentLink().getUrl());
 
-        doNothing().when(documentManagementClient).deleteDocument(
+        doNothing().when(caseDocumentClient).deleteDocument(
             SYSTEM_USER_USER_ID,
             TEST_SERVICE_AUTH_TOKEN,
-            systemRolesCsv,
-            userId,
-            documentUuid,
+            UUID.fromString(documentUuid),
             true
         );
 
@@ -84,16 +84,14 @@ class DraftApplicationRemovalServiceTest {
 
         verify(idamService).retrieveSystemUpdateUserDetails();
         verify(authTokenGenerator).generate();
-        verify(documentManagementClient).deleteDocument(
+        verify(caseDocumentClient).deleteDocument(
             SYSTEM_USER_USER_ID,
             TEST_SERVICE_AUTH_TOKEN,
-            systemRolesCsv,
-            userId,
-            documentUuid,
+            UUID.fromString(documentUuid),
             true
         );
 
-        verifyNoMoreInteractions(idamService, authTokenGenerator, documentManagementClient);
+        verifyNoMoreInteractions(idamService, authTokenGenerator, caseDocumentClient);
     }
 
     @Test
@@ -119,13 +117,11 @@ class DraftApplicationRemovalServiceTest {
         );
 
         doThrow(feignException)
-            .when(documentManagementClient)
+            .when(caseDocumentClient)
             .deleteDocument(
                 anyString(),
                 anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
+                any(),
                 anyBoolean()
             );
 
