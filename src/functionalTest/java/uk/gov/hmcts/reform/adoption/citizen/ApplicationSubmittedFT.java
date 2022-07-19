@@ -9,18 +9,17 @@ import uk.gov.hmcts.reform.adoption.testutil.FunctionalTest;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-// import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-// import static net.javacrumbs.jsonunit.assertj.JsonAssertions.json;
-// import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-// import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.json;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.OK;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.event.CitizenCreateApplication.CITIZEN_CREATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.event.CitizenSubmitApplication.CITIZEN_SUBMIT;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.ABOUT_TO_SUBMIT_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
-// import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.expectedResponse;
+import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.expectedResponse;
 
 @TestPropertySource("classpath:application.yaml")
 @SpringBootTest
@@ -28,8 +27,8 @@ public class ApplicationSubmittedFT extends FunctionalTest {
 
     private static final String REQUEST = "classpath:casedata/ccd-callback-casedata-application-payment-ready.json";
     private static final String REQUEST_NOT_READY = "classpath:casedata/ccd-callback-casedata-application-payment-not-ready.json";
-    //private static final String RESPONSE = "classpath:casedata/response-application-payment-ready.json";
-    //private static final String RESPONSE_NOT_READY = "classpath:casedata/response-application-payment-not-ready.json";
+    private static final String RESPONSE = "classpath:casedata/response-application-payment-ready.json";
+    private static final String RESPONSE_NOT_READY = "classpath:casedata/response-application-payment-not-ready.json";
 
     @Test
     public void shouldUpdateCaseInCcdToAwaitingPaymentState() throws IOException {
@@ -39,13 +38,12 @@ public class ApplicationSubmittedFT extends FunctionalTest {
         assertThat(responseCreate.getStatusCode()).isEqualTo(OK.value());
 
         Response response = triggerCallback(request, CITIZEN_SUBMIT, ABOUT_TO_SUBMIT_URL);
-        assertNotNull(response);
-        //assertThat(response.getStatusCode()).isEqualTo(OK.value());
+        assertThat(response.getStatusCode()).isEqualTo(OK.value());
 
-        /*assertThatJson(response.asString())
+        assertThatJson(response.asString())
             .when(IGNORING_EXTRA_FIELDS)
             .when(IGNORING_ARRAY_ORDER)
-            .isEqualTo(json(expectedResponse(RESPONSE)));*/
+            .isEqualTo(json(expectedResponse(RESPONSE)));
     }
 
     @Test
@@ -53,17 +51,15 @@ public class ApplicationSubmittedFT extends FunctionalTest {
         Map<String, Object> request = caseData(REQUEST_NOT_READY);
 
         Response responseCreate = triggerCallback(request, CITIZEN_CREATE, ABOUT_TO_SUBMIT_URL);
-        assertNotNull(responseCreate);
-        //assertThat(responseCreate.getStatusCode()).isEqualTo(OK.value());
+        assertThat(responseCreate.getStatusCode()).isEqualTo(OK.value());
 
         Response response = triggerCallback(request, CITIZEN_SUBMIT, ABOUT_TO_SUBMIT_URL);
-        assertNotNull(response);
-        //assertThat(response.getStatusCode()).isEqualTo(OK.value());
+        assertThat(response.getStatusCode()).isEqualTo(OK.value());
 
-        /*assertThatJson(response.asString())
+        assertThatJson(response.asString())
             .when(IGNORING_EXTRA_FIELDS)
             .when(IGNORING_ARRAY_ORDER)
-            .isEqualTo(json(expectedResponse(RESPONSE_NOT_READY)));*/
+            .isEqualTo(json(expectedResponse(RESPONSE_NOT_READY)));
     }
 
 
@@ -72,12 +68,11 @@ public class ApplicationSubmittedFT extends FunctionalTest {
         Map<String, Object> request = caseData(REQUEST_NOT_READY);
 
         Response response = triggerCallback(request, CITIZEN_SUBMIT, ABOUT_TO_SUBMIT_URL);
-        assertNotNull(response);
-        //assertThat(response.getStatusCode()).isEqualTo(OK.value());
+        assertThat(response.getStatusCode()).isEqualTo(OK.value());
 
-        /*assertThatJson(response.asString())
+        assertThatJson(response.asString())
             .when(IGNORING_EXTRA_FIELDS)
             .when(IGNORING_ARRAY_ORDER)
-            .isEqualTo(json(expectedResponse(RESPONSE_NOT_READY)));*/
+            .isEqualTo(json(expectedResponse(RESPONSE_NOT_READY)));
     }
 }
