@@ -9,17 +9,16 @@ import uk.gov.hmcts.reform.adoption.testutil.FunctionalTest;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-// import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-// import static net.javacrumbs.jsonunit.assertj.JsonAssertions.json;
-// import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-// import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-// import static org.assertj.core.api.Assertions.assertThat;
-// import static org.springframework.http.HttpStatus.OK;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.json;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpStatus.OK;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.event.CitizenCreateApplication.CITIZEN_CREATE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.ABOUT_TO_SUBMIT_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
-// import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.expectedResponse;
+import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.expectedResponse;
 
 @TestPropertySource("classpath:application.yaml")
 @SpringBootTest
@@ -33,12 +32,12 @@ public class ApplicationCreateFT  extends FunctionalTest {
         Map<String, Object> request = caseData(REQUEST);
 
         Response response = triggerCallback(request, CITIZEN_CREATE, ABOUT_TO_SUBMIT_URL);
-        assertNotNull(response);
-        //assertThat(response.getStatusCode()).isEqualTo(OK.value());
 
-        /*assertThatJson(response.asString())
+        assertThat(response.getStatusCode()).isEqualTo(OK.value());
+
+        assertThatJson(response.asString())
             .when(IGNORING_EXTRA_FIELDS)
             .when(IGNORING_ARRAY_ORDER)
-            .isEqualTo(json(expectedResponse(RESPONSE)));*/
+            .isEqualTo(json(expectedResponse(RESPONSE)));
     }
 }
