@@ -8,7 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
+import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
+// import uk.gov.hmcts.reform.adoption.document.DocumentType;
+// import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -54,7 +56,7 @@ class ApplicationSubmittedNotificationTest {
     private AuthTokenGenerator authTokenGenerator;
 
     @Mock
-    private DocumentManagementClient dmClient;
+    private CaseDocumentClient caseDocumentClient;
 
     @InjectMocks
     private ApplicationSubmittedNotification notification;
@@ -142,28 +144,29 @@ class ApplicationSubmittedNotificationTest {
         verify(commonContent).mainTemplateVars(data, 1234567890123456L, data.getApplicant1(), data.getApplicant2());
     }
 
-    //    @Test
-    //    void shouldSendEmailToLocalCourt() throws NotificationClientException, IOException {
-    //        CaseData data = caseData();
-    //        data.setHyphenatedCaseRef("1234-1234-1234-1234");
-    //        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY_EN)
-    //            .documentLink(Document.builder().url(StringUtils.EMPTY).build()).build();
-    //        ListValue<AdoptionDocument> listValue = new ListValue<>();
-    //        listValue.setValue(adoptionDocument);
-    //        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
-    //        data.setApplicant1DocumentsUploaded(listOfUploadedDocument);
-    //        data.setDocumentsGenerated(listOfUploadedDocument);
-    //        data.setFamilyCourtEmailId(TEST_USER_EMAIL);
-    //        data.setDueDate(LocalDate.of(2021, 4, 21));
-    //        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
-    //            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-    //        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
-    //        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-    //        when(dmClient.downloadBinary(anyString(), anyString(), any(), any(), any())).thenReturn(resource);
-    //
-    //        notification.sendToLocalCourt(data, 1234567890123456L);
-    //
-    //        verify(notificationService).sendEmail(any(), any(), any(), any());
-    //    }
+    /*@Test
+    void shouldSendEmailToLocalCourt() throws NotificationClientException, IOException {
+        CaseData data = caseData();
+        data.setHyphenatedCaseRef("1234-1234-1234-1234");
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_SUMMARY_EN)
+            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
+                    .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocument);
+        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
+        data.setApplicant1DocumentsUploaded(listOfUploadedDocument);
+        data.setDocumentsGenerated(listOfUploadedDocument);
+        data.setFamilyCourtEmailId(TEST_USER_EMAIL);
+        data.setDueDate(LocalDate.of(2021, 4, 21));
+        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
+
+        notification.sendToLocalCourt(data, 1234567890123456L);
+
+        verify(notificationService).sendEmail(any(), any(), any(), any());
+    }*/
 
 }
