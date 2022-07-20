@@ -19,6 +19,7 @@ public class CftLibConfig implements CFTLibConfigurer {
             "caseworker-adoption-judge",
             "caseworker-adoption-superuser",
             "caseworker-adoption-solicitor",
+            "caseworker-adoption-systemupdate",
             "citizen"
         );
 

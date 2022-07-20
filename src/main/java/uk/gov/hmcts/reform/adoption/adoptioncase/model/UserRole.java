@@ -16,7 +16,8 @@ public enum UserRole implements HasRole {
     SUPER_USER("caseworker-adoption-superuser", "CRU"),
     SOLICITOR("caseworker-adoption-solicitor", "CRU"),
     CITIZEN("citizen", "CRUD"),
-    CREATOR("[CREATOR]", "CRU");
+    CREATOR("[CREATOR]", "CRU"),
+    CASE_WORKER_SYSTEM_UPDATE("caseworker-adoption-systemupdate", "R");
 
     @JsonValue
     private final String role;
