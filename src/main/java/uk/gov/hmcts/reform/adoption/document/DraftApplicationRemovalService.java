@@ -9,9 +9,9 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.idam.client.models.User;
-import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
@@ -22,8 +22,9 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
 @Slf4j
 public class DraftApplicationRemovalService {
 
+
     @Autowired
-    private DocumentManagementClient documentManagementClient;
+    private CaseDocumentClient caseDocumentClient;
 
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
@@ -68,17 +69,11 @@ public class DraftApplicationRemovalService {
     ) {
         if (isApplicationDocument(document)) {
 
-            final UserDetails userDetails = user.getUserDetails();
-            final String rolesCsv = String.join(",", userDetails.getRoles());
+            caseDocumentClient.deleteDocument(user.getAuthToken(),
+                                                authTokenGenerator.generate(),
+                                                UUID.fromString(FilenameUtils.getName(document.getValue().getDocumentLink().getUrl())),
+                                                true);
 
-            documentManagementClient.deleteDocument(
-                user.getAuthToken(),
-                authTokenGenerator.generate(),
-                rolesCsv,
-                userDetails.getId(),
-                FilenameUtils.getName(document.getValue().getDocumentLink().getUrl()),
-                true
-            );
             log.info("Successfully deleted application document from document management for case id {} ", caseId);
         } else {
             log.info("No draft application document found for case id {} ", caseId);
