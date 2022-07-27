@@ -5,7 +5,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.adoption.common.service.task.GenerateApplicationSummaryDocument;
-import uk.gov.hmcts.reform.adoption.common.service.task.SendCitizenSubmissionNotifications;
+import uk.gov.hmcts.reform.adoption.common.service.task.SendSubmissionNotifications;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetDateSubmitted;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterSubmission;
 
@@ -19,7 +19,7 @@ class SubmissionServiceTest {
     private SetDateSubmitted setDateSubmitted;
 
     @Mock
-    private SendCitizenSubmissionNotifications sendCitizenSubmissionNotifications;
+    private SendSubmissionNotifications sendSubmissionNotifications;
 
     @Mock
     private GenerateApplicationSummaryDocument generateApplicationSummaryDocument;

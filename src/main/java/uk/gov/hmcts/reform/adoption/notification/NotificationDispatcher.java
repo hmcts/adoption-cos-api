@@ -16,6 +16,20 @@ public class NotificationDispatcher {
             applicantNotification.sendToApplicants(caseData, caseId);
             try {
                 applicantNotification.sendToLocalCourt(caseData, caseId);
+                //TODO: Insert call to sendToLocalAuthority
+                applicantNotification.sendToLocalAuthorityPostApplicantSubmission(caseData, caseId);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        }
+    }
+
+    public void sendToLocalAuthority(ApplicantNotification applicationNotification, CaseData caseData, Long caseId)
+        throws NotificationClientException, IOException {
+        if (!(caseData.getChildSocialWorker().getLocalAuthorityEmail().isEmpty()
+            && caseData.getApplicantSocialWorker().getLocalAuthorityEmail().isEmpty())) {
+            try {
+                applicationNotification.sendToLocalAuthorityPostLocalAuthoritySubmission(caseData, caseId);
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
