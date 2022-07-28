@@ -35,6 +35,9 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZA
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.CASE_TYPE;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.JURISDICTION;
 
 @ExtendWith(MockitoExtension.class)
 public class DocAssemblyServiceTest {
@@ -68,32 +71,35 @@ public class DocAssemblyServiceTest {
         when(authTokenGenerator.generate()).thenReturn(TEST_SERVICE_AUTH_TOKEN);
 
         DocAssemblyRequest docAssemblyRequest =
-            DocAssemblyRequest
-                .builder()
-                .templateId(ENGLISH_TEMPLATE_ID)
-                .outputType("PDF")
-                .formPayload(objectMapper.valueToTree(caseDataMap))
-                .build();
+                DocAssemblyRequest
+                        .builder()
+                        .templateId(ENGLISH_TEMPLATE_ID)
+                        .outputType(PDF)
+                        .caseTypeId(CASE_TYPE)
+                        .secureDocStoreEnabled(Boolean.TRUE)
+                        .jurisdictionId(JURISDICTION)
+                        .formPayload(objectMapper.valueToTree(caseDataMap))
+                        .build();
 
         String documentUuid = UUID.randomUUID().toString();
 
         DocAssemblyResponse docAssemblyResponse = new DocAssemblyResponse(
-            DOC_STORE_BASE_URL_PATH + documentUuid
+                DOC_STORE_BASE_URL_PATH + documentUuid
         );
 
         when(docAssemblyClient.generateAndStoreDraftApplication(
-            TEST_AUTHORIZATION_TOKEN,
-            TEST_SERVICE_AUTH_TOKEN,
-            docAssemblyRequest
+                TEST_AUTHORIZATION_TOKEN,
+                TEST_SERVICE_AUTH_TOKEN,
+                docAssemblyRequest
         )).thenReturn(docAssemblyResponse);
 
         DocumentInfo documentInfo = docAssemblyService.renderDocument(
-            templateContent,
-            TEST_CASE_ID,
-            TEST_AUTHORIZATION_TOKEN,
-            ADOPTION_DRAFT_APPLICATION,
-            ENGLISH,
-            ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME + TEST_CASE_ID
+                templateContent,
+                TEST_CASE_ID,
+                TEST_AUTHORIZATION_TOKEN,
+                ADOPTION_DRAFT_APPLICATION,
+                ENGLISH,
+                ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME + TEST_CASE_ID
         );
 
         assertThat(documentInfo.getUrl()).isEqualTo(DOC_STORE_BASE_URL_PATH + documentUuid);
@@ -102,9 +108,9 @@ public class DocAssemblyServiceTest {
 
         verify(authTokenGenerator).generate();
         verify(docAssemblyClient).generateAndStoreDraftApplication(
-            TEST_AUTHORIZATION_TOKEN,
-            TEST_SERVICE_AUTH_TOKEN,
-            docAssemblyRequest
+                TEST_AUTHORIZATION_TOKEN,
+                TEST_SERVICE_AUTH_TOKEN,
+                docAssemblyRequest
         );
         verifyNoMoreInteractions(authTokenGenerator, docAssemblyClient);
     }
@@ -121,44 +127,46 @@ public class DocAssemblyServiceTest {
         when(docmosisTemplateProvider.templateNameFor(ADOPTION_DRAFT_APPLICATION, ENGLISH)).thenReturn(ENGLISH_TEMPLATE_ID);
 
         FeignException feignException = FeignException.errorStatus(
-            "s2sServiceNotWhitelisted",
-            Response.builder()
-                .request(request)
-                .status(401)
-                .headers(Collections.emptyMap())
-                .reason("s2s service not whitelisted")
-                .build()
+                "s2sServiceNotWhitelisted",
+                Response.builder()
+                        .request(request)
+                        .status(401)
+                        .headers(Collections.emptyMap())
+                        .reason("s2s service not whitelisted")
+                        .build()
         );
 
         DocAssemblyRequest docAssemblyRequest =
-            DocAssemblyRequest
-                .builder()
-                .templateId(ENGLISH_TEMPLATE_ID)
-                .outputType("PDF")
-                .formPayload(objectMapper.valueToTree(caseDataMap))
-                .build();
+                DocAssemblyRequest
+                        .builder()
+                        .templateId(ENGLISH_TEMPLATE_ID)
+                        .outputType("PDF")
+                        .caseTypeId(CASE_TYPE)
+                        .secureDocStoreEnabled(Boolean.TRUE)
+                        .jurisdictionId(JURISDICTION)
+                        .formPayload(objectMapper.valueToTree(caseDataMap))
+                        .build();
 
         doThrow(feignException)
-            .when(docAssemblyClient)
-            .generateAndStoreDraftApplication(
-                TEST_AUTHORIZATION_TOKEN,
-                TEST_SERVICE_AUTH_TOKEN,
-                docAssemblyRequest
-            );
+                .when(docAssemblyClient)
+                .generateAndStoreDraftApplication(
+                        TEST_AUTHORIZATION_TOKEN,
+                        TEST_SERVICE_AUTH_TOKEN,
+                        docAssemblyRequest);
 
         when(authTokenGenerator.generate()).thenReturn(TEST_SERVICE_AUTH_TOKEN);
 
         assertThatThrownBy(() -> docAssemblyService
-            .renderDocument(
-                templateContent,
-                TEST_CASE_ID,
-                TEST_AUTHORIZATION_TOKEN,
-                ADOPTION_DRAFT_APPLICATION,
-                ENGLISH,
-                ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME + TEST_CASE_ID
-            ))
-            .isExactlyInstanceOf(FeignException.Unauthorized.class)
-            .hasMessageContaining("s2s service not whitelisted");
+                .renderDocument(
+                        templateContent,
+                        TEST_CASE_ID,
+                        TEST_AUTHORIZATION_TOKEN,
+                        ADOPTION_DRAFT_APPLICATION,
+                        ENGLISH,
+                        ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME + TEST_CASE_ID
+                ))
+                .isExactlyInstanceOf(FeignException.Unauthorized.class)
+                .hasMessageContaining("s2s service not whitelisted");
     }
 
     public static Map<String, Object> expectedCaseData() {

@@ -23,7 +23,14 @@ public enum State {
         name = "Application awaiting payment",
         label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
     )
-    AwaitingPayment("AwaitingPayment");
+    AwaitingPayment("AwaitingPayment"),
+
+
+    @CCD(
+        name = "Awaiting Admin checks",
+        label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
+    )
+    AwaitingAdminChecks("AwaitingAdminChecks");
 
     private final String name;
 

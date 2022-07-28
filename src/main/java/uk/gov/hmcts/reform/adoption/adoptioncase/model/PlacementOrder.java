@@ -12,6 +12,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess
 
 import java.time.LocalDate;
 
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,8 +23,11 @@ public class PlacementOrder {
     @CCD(label = "Placement Order id")
     private String placementOrderId;
 
-    @CCD(label = "Placement Order type")
-    private String placementOrderType;
+    @CCD(label = "Placement Order type",
+        access = {SystemUpdateAccess.class},
+        typeOverride = FixedList,
+        typeParameterOverride = "PlacementOrderType")
+    private PlacementOrderType placementOrderType;
 
     @CCD(label = "Placement Order Number")
     private String placementOrderNumber;

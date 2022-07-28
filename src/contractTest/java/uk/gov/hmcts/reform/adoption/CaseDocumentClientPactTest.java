@@ -17,26 +17,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.reform.adoption.document.DocumentManagementClient;
+import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 
 @ExtendWith(PactConsumerTestExt.class)
 @ExtendWith(SpringExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@PactTestFor(providerName = "em_dm_store", port = "5006")
+@PactTestFor(providerName = "case-document-am-api", port = "4452")
 @PactFolder("pacts")
 @SpringBootTest({
-    "document_management.url : http://localhost:5006"
+    "case_document_am.url : http://localhost:4452"
 })
-public class DocumentManagementPactTest {
+public class CaseDocumentClientPactTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-    private static final String USER_ID = "id";
-    private static final String USER_ROLES = "admin";
     private static final String DOCUMENT_ID = "6c3c3906-2b51-468e-8cbb-a4002eded076";
     private static final String AUTH_TOKEN = "Bearer someAuthToken";
     private static final Boolean PERMANENT = false;
@@ -44,20 +43,19 @@ public class DocumentManagementPactTest {
     @MockBean
     private AuthTokenGenerator authTokenGenerator;
     @Autowired
-    private DocumentManagementClient documentApi;
+    private CaseDocumentClient caseDocumentClient;
 
-    @Pact(provider = "em_dm_store", consumer = "adoption_cos_api")
+    @Pact(provider = "case-document-am-api", consumer = "adoption_cos_api")
     public RequestResponsePact downloadBinaryPact(PactDslWithProvider builder) throws IOException {
         Map<String, String> headers = Maps.newHashMap();
         headers.put("Authorization", AUTH_TOKEN);
         headers.put("ServiceAuthorization", SOME_SERVICE_AUTHORIZATION_TOKEN);
-        headers.put("user-roles", USER_ROLES);
-        headers.put("user-id", USER_ID);
+
 
         return builder
             .given("I have existing document")
             .uponReceiving("a request for download the document")
-            .path("/documents/" + DOCUMENT_ID + "/binary")
+            .path("/cases/documents/" + UUID.fromString(DOCUMENT_ID) + "/binary")
             .method("GET")
             .headers(headers)
             .willRespondWith()
@@ -69,12 +67,10 @@ public class DocumentManagementPactTest {
     @PactTestFor(pactMethod = "downloadBinaryPact")
     public void verifyDownloadBinary() throws JSONException {
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
-        ResponseEntity<?> response = documentApi.downloadBinary(
+        ResponseEntity<?> response = caseDocumentClient.getDocumentBinary(
             AUTH_TOKEN,
             SOME_SERVICE_AUTHORIZATION_TOKEN,
-            USER_ROLES,
-            USER_ID,
-            DOCUMENT_ID
+            UUID.fromString(DOCUMENT_ID)
         );
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }

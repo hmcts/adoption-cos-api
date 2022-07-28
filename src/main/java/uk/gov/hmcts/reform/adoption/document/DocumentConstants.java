@@ -22,6 +22,7 @@ public final class DocumentConstants {
     public static final String NO = "no";
     public static final String PDF = "PDF";
     public static final String PDF_EXT = ".pdf";
+    public static final String DOCUMENT_ID = "documentId";
     public static final String FALLBACK_FOR_EMAIL = "fallback";
 
     private DocumentConstants() {

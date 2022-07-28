@@ -7,6 +7,8 @@ public final class NotificationConstants {
     public static final String APPLICANT_2_FULL_NAME = "applicant2FullName";
     public static final String LOCAL_COURT_NAME = "localCourtName";
 
+    public static final String CHILD_FULL_NAME = "childFullName";
+
     private NotificationConstants() {
     }
 }

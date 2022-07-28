@@ -45,7 +45,7 @@ Create docker image:
     docker-compose build
 
 Run the distribution (created in `build/install/adoption-cos-api` directory)
-by executing the following command:
+by executing the following command
 
     docker-compose up
 

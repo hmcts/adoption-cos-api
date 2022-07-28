@@ -56,4 +56,3 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
             .build();
     }
 }
-
