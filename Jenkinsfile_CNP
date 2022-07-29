@@ -11,6 +11,7 @@ def type = "java"
 def product = "adoption"
 def component = "cos-api"
 
+
 GradleBuilder builder = new GradleBuilder(this, product)
 
 static Map<String, Object> secret(String secretName, String envVariable) {
