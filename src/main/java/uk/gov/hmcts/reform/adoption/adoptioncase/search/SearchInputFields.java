@@ -17,15 +17,12 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
 @Component
 public class SearchInputFields implements CCDConfig<CaseData, State, UserRole> {
 
+    public static final List<SearchField<UserRole>> SEARCH_FIELD_LIST = of(
+        SearchField.<UserRole>builder().label(FIRST_NAME).id(APPLICANT_FIRST_NAME).build());
+
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-
-        final List<SearchField> searchFieldList = of(
-            SearchField.builder().label(FIRST_NAME).id(
-                APPLICANT_FIRST_NAME).build()
-        );
-
         configBuilder.searchInputFields().caseReferenceField();
-        configBuilder.searchInputFields().fields(searchFieldList);
+        configBuilder.searchInputFields().fields(SEARCH_FIELD_LIST);
     }
 }

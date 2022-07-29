@@ -7,7 +7,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.Permission;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER_SYSTEM_UPDATE;
+// import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER_SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CREATOR;
@@ -15,6 +15,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 
 public class DefaultAccess implements HasAccessControl {
     @Override
@@ -28,7 +29,8 @@ public class DefaultAccess implements HasAccessControl {
         grants.putAll(DISTRICT_JUDGE, Permissions.READ);
         grants.putAll(CREATOR, Permissions.CREATE_READ_UPDATE);
         grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE);
-        grants.putAll(CASE_WORKER_SYSTEM_UPDATE, Permissions.READ);
+        grants.putAll(SYSTEM_UPDATE, Permissions.READ);
+        // grants.putAll(CASE_WORKER_SYSTEM_UPDATE, Permissions.READ);
 
         return grants;
     }

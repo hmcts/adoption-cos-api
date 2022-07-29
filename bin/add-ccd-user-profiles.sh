@@ -5,6 +5,7 @@ AdoptionCaseWorkerUser@AAT.com|ADOPTION|A58|Draft
 TEST_CASE_WORKER_USER@mailinator.com|ADOPTION|A58|Draft
 TEST_SOLICITOR@mailinator.com|ADOPTION|A58|Draft
 adoption_as_caseworker_admin@mailinator.com|ADOPTION|A58|Draft
+DivCaseWorkerUser@AAT.com|ADOPTION|A58|Draft
 EOM
 
 echo "Getting service_token from s2s"

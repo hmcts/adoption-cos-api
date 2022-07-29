@@ -18,22 +18,33 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @Builder
 public class AdoptionAgencyOrLocalAuthority {
 
-    @CCD(label = "Adoption Agency Or Local Authority Id",
-        access = {DefaultAccess.class})
-    private String adopAgencyOrLaId;
-
     @CCD(label = "Adoption Agency Or Local Authority Name",
         access = {DefaultAccess.class})
     private String adopAgencyOrLaName;
+
+    @CCD(label = "Adoption Agency Or Local Authority Contact Name",
+        access = {DefaultAccess.class})
+    private String adopAgencyOrLaContactName;
 
     @CCD(label = "Adoption Agency Or Local Authority Phone Number",
         access = {DefaultAccess.class}
     )
     private String adopAgencyOrLaPhoneNumber;
 
-    @CCD(label = "Adoption Agency Or Local Authority Contact Name",
-        access = {DefaultAccess.class})
-    private String adopAgencyOrLaContactName;
+    @CCD(label = "Address line 1",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyAddressLine1;
+
+    @CCD(label = "Town or city",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyTown;
+
+    @CCD(label = "Postcode",
+        access = {DefaultAccess.class}
+    )
+    private String adopAgencyPostcode;
 
     @CCD(label = "Adoption Agency Or Local Authority Contact Email",
         typeOverride = Email,

@@ -8,17 +8,18 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER_SYSTEM_UPDATE;
+// import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER_SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SOLICITOR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
 
 
@@ -37,15 +38,17 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.jurisdiction(JURISDICTION, "Family jurisdiction adoption", "Child adoption");
 
         configBuilder.grant(Draft, CREATE_READ_UPDATE, CITIZEN);
-        configBuilder.grant(Draft, CREATE_READ_UPDATE, SOLICITOR);
-        configBuilder.grant(Draft, CREATE_READ_UPDATE, SUPER_USER);
-        configBuilder.grant(Draft, CREATE_READ_UPDATE, CASE_WORKER);
-        configBuilder.grant(Draft, CREATE_READ_UPDATE, COURT_ADMIN);
-        configBuilder.grant(Draft, CREATE_READ_UPDATE, SUPER_USER);
-        configBuilder.grant(Submitted, READ, CASE_WORKER_SYSTEM_UPDATE);
-        configBuilder.grant(Draft, READ, CASE_WORKER_SYSTEM_UPDATE);
-        configBuilder.grant(AwaitingPayment, READ, CASE_WORKER_SYSTEM_UPDATE);
+        configBuilder.grant(Draft, READ, SOLICITOR);
+        configBuilder.grant(Draft, READ, SUPER_USER);
+        configBuilder.grant(Draft, READ, CASE_WORKER);
+        configBuilder.grant(Draft, READ, COURT_ADMIN);
+        configBuilder.grant(Draft, READ, SUPER_USER);
+        // configBuilder.grant(Submitted, READ, CASE_WORKER_SYSTEM_UPDATE);
+        // configBuilder.grant(Draft, READ, CASE_WORKER_SYSTEM_UPDATE);
+        configBuilder.grant(AwaitingPayment, READ, SYSTEM_UPDATE);
         configBuilder.grant(Draft, READ, LEGAL_ADVISOR);
         configBuilder.grant(Draft, READ, DISTRICT_JUDGE);
+        configBuilder.grant(Draft, CREATE_READ_UPDATE, SYSTEM_UPDATE);
+        configBuilder.grant(Submitted, CREATE_READ_UPDATE, SYSTEM_UPDATE);
     }
 }
