@@ -34,7 +34,8 @@ idam-pr:
       - https://admin-web-${SERVICE_FQDN}/oauth2redirect
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
-      - http://xui-${SERVICE_FQDN}/oauth2/callback
+    XUIMO:
+      - https://xui-mo-${SERVICE_FQDN}/oauth2/callback
 
 ccd:
   ccd:
@@ -192,6 +193,22 @@ xui-webapp:
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
       JURISDICTIONS: ADOPTION
+      FEATURE_REDIS_ENABLED: false
+      NODE_OPTIONS: --max-old-space-size=900
+
+xui-mo-webapp:
+  enabled: true
+  nodejs:
+    imagePullPolicy: Always
+    releaseNameOverride: ${SERVICE_NAME}-xui-mo-webapp
+    image: hmctspublic.azurecr.io/xui/mo-webapp:latest
+    ingressHost: xui-mo-${SERVICE_FQDN}
+    environment:
+      MANAGE_CASE_LINK: https://xui-${SERVICE_FQDN}/cases
+      MANAGE_ORG_LINK: https://xui-mo-${SERVICE_FQDN}
+      SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      SERVICES_MCA_PROXY_API: http://aac-${SERVICE_FQDN}
+      CASE_TYPES: A58
 
 ccd-case-document-am-api:
   enabled: true
