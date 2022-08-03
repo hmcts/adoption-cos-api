@@ -1,6 +1,14 @@
 tags:
   ccd-idam-pr: false
 
+ccd:
+  postgres:
+    enabled: false
+  elastic:
+    enabled: false
+  xui:
+    enabled: false
+
 xui-webapp:
   enabled: false
 
