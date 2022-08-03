@@ -12,6 +12,9 @@ ccd:
 xui-webapp:
   enabled: false
 
+xui-mo-webapp:
+  enabled: false
+
 idam-pr:
   enabled: false
 
