@@ -38,8 +38,7 @@ public class Application {
     @CCD(label = "Here are your order details", access = { CollectionAccess.class })
     private OrderSummary applicationFeeOrderSummary;
 
-    @CCD(label = "Payment Method", typeOverride = Collection, typeParameterOverride = "Payment", access = {
-            CollectionAccess.class })
+    @CCD(label = "Payment Method", typeOverride = Collection, typeParameterOverride = "Payment", access = { CollectionAccess.class })
     private List<ListValue<Payment>> applicationPayments;
 
     @JsonIgnore
