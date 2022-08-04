@@ -34,7 +34,6 @@ idam-pr:
       - https://admin-web-${SERVICE_FQDN}/oauth2redirect
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
-      - http://xui-${SERVICE_FQDN}/oauth2/callback
 
 ccd:
   ccd:
@@ -193,6 +192,8 @@ xui-webapp:
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
       JURISDICTIONS: ADOPTION
+      FEATURE_REDIS_ENABLED: false
+      NODE_OPTIONS: --max-old-space-size=900
 
 ccd-case-document-am-api:
   enabled: true
