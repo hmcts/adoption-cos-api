@@ -10,7 +10,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
@@ -21,7 +20,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions
 @Component
 public class LocalAuthorityCheckYourAnswersValidation implements CCDConfig<CaseData, State, UserRole> {
 
-    public static final String LOCAL_AUTHORITY_CHECK_YOUR_ANSWERS_SUBMIT= "local-authority-check-your-answer-submit";
+    public static final String LOCAL_AUTHORITY_CHECK_YOUR_ANSWERS_SUBMIT = "local-authority-check-your-answer-submit";
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
