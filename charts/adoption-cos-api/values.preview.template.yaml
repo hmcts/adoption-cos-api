@@ -5,8 +5,8 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
-    CASE_DOCUMENT_AM_BASEURL: http://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
+    CASE_DATA_STORE_BASEURL: https://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
+    CASE_DOCUMENT_AM_BASEURL: https://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
     APP_INSIGHTS_KEY: 273cc8cd-c511-49ae-9988-9debe01d54d5
 
@@ -53,12 +53,12 @@ ccd:
   global:
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
     idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
+    dmStoreUrl: https://dm-store-aat.service.core-compute-aat.internal
     ccdAdminWebIngress: admin-web-${SERVICE_FQDN}
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     postgresUsername: hmcts
     postgresPassword: hmcts
-    s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    s2sUrl: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
   ccd-api-gateway-web:
     nodejs:
@@ -67,7 +67,7 @@ ccd:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
         IDAM_SERVICE_KEY: ${CCD_API_GATEWAY_S2S_KEY}
         IDAM_OAUTH2_CLIENT_SECRET: ${CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET}
-        PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
+        PROXY_DOCUMENT_MANAGEMENT: https://dm-store-aat.service.core-compute-aat.internal
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
@@ -81,11 +81,11 @@ ccd:
         DATA_STORE_DEFAULT_LOG_LEVEL: info
         DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,ccd_ps,adoption_cos_api,adoption_web,xui_webapp,ccd_case_document_am_api
         CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: adoption_cos_api
-        CCD_DM_DOMAIN: http://dm-store-aat.service.core-compute-aat.internal
+        CCD_DM_DOMAIN: https://dm-store-aat.service.core-compute-aat.internal
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:api-gateway\.preprod\.dm\.reform\.hmcts\.net|dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?)|(em-hrs-api-aat\.service\.core-compute-aat\.internal(?::\d+)?\/hearing-recordings\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\/segments\/[0-9]))
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
-        CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
+        CASE_DOCUMENT_AM_URL: https://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
         IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
         IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
         IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
@@ -188,7 +188,7 @@ xui-webapp:
       HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal/health
       SERVICES_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}
       SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
-      SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
+      SERVICES_DOCUMENTS_API_V2: https://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
       JURISDICTIONS: ADOPTION
@@ -204,8 +204,8 @@ ccd-case-document-am-api:
     ingressHost: ccd-case-document-am-api-${SERVICE_FQDN}
     environment:
       CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,dg_docassembly_api,bulk_scan_orchestrator,adoption_cos_api,adoption_web
-      DM_STORE_BASE_URL: http://dm-store-aat.service.core-compute-aat.internal
-      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
+      DM_STORE_BASE_URL: https://dm-store-aat.service.core-compute-aat.internal
+      CCD_DATA_STORE_API_BASE_URL: https://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
       IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      IDAM_S2S_URL: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
