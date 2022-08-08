@@ -10,11 +10,14 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
+import java.util.List;
+
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ApplicationValidation.validateReadyForPayment;
 
 @Slf4j
 @Component
@@ -39,6 +42,28 @@ public class LocalAuthorityCheckYourAnswersValidation implements CCDConfig<CaseD
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> details,
                                                                        CaseDetails<CaseData, State> beforeDetails) {
         log.info("LocalAuthorityCheckYourAnswersValidation aboutToSubmit invoked");
-        return null;
+
+        CaseData data = details.getData();
+        State state = details.getState();
+
+        log.info("Validating case data");
+        final List<String> validationErrors = validateReadyForPayment(data);
+        if (!validationErrors.isEmpty()) {
+            log.info("Validation errors: ");
+            for (String error : validationErrors) {
+                log.info(error);
+            }
+
+            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+                .data(data)
+                .errors(validationErrors)
+                .state(state)
+                .build();
+        }
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(data)
+            .state(state)
+            .build();
     }
 }

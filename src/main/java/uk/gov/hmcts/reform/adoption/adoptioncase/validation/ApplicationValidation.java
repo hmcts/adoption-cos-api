@@ -9,6 +9,7 @@ import java.util.List;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.flattenLists;
 // import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateApplicant2BasicCase;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateBasicCase;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateCase;
 
 public final class ApplicationValidation {
 
@@ -47,4 +48,9 @@ public final class ApplicationValidation {
         );
     }
 
+    public static List<String> validateLocalAuthorityCheckYourAnswersSubmission(CaseData caseData) {
+        return flattenLists(
+            validateCase(caseData)
+        );
+    }
 }
