@@ -71,11 +71,11 @@ sourceSets {
 
 }
 
-java {
+/*java {
   toolchain {
     languageVersion = JavaLanguageVersion.of(17)
   }
-}
+}*/
 
 idea {
   module {
@@ -98,9 +98,9 @@ tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
-tasks.withType(JavaExec).configureEach {
+/*tasks.withType(JavaExec).configureEach {
   javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
-}
+}*/
 
 tasks.withType(Test) {
   useJUnitPlatform()
@@ -159,7 +159,7 @@ task fortifyScan(type: JavaExec)  {
 
 checkstyle {
   maxWarnings = 0
-  toolVersion = '9.2.1'
+  toolVersion = '8.29'
   getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
@@ -183,7 +183,7 @@ jacocoTestReport {
 }
 
 jacoco {
-  toolVersion = "0.8.8"
+  toolVersion = "0.8.5"
 }
 
 jacocoTestCoverageVerification {
