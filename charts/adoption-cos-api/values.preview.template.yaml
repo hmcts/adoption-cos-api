@@ -5,8 +5,8 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    CASE_DATA_STORE_BASEURL: https://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
-    CASE_DOCUMENT_AM_BASEURL: https://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
+    CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
+    CASE_DOCUMENT_AM_BASEURL: http://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
     APP_INSIGHTS_KEY: 273cc8cd-c511-49ae-9988-9debe01d54d5
 
@@ -53,12 +53,12 @@ ccd:
   global:
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
     idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    dmStoreUrl: https://dm-store-aat.service.core-compute-aat.internal
+    dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
     ccdAdminWebIngress: admin-web-${SERVICE_FQDN}
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     postgresUsername: hmcts
     postgresPassword: hmcts
-    s2sUrl: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
   ccd-api-gateway-web:
     nodejs:
