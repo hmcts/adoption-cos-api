@@ -207,5 +207,5 @@ ccd-case-document-am-api:
       DM_STORE_BASE_URL: http://dm-store-aat.service.core-compute-aat.internal
       CCD_DATA_STORE_API_BASE_URL: https://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
       IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_URL: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
