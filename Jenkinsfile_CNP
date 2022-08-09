@@ -191,11 +191,11 @@ withPipeline(type, product, component) {
 
   onPR {
     env.ENVIRONMENT="preview"
-    env.CASE_API_URL = "http://adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CASE_API_URL = "https://adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.CCD_DEF_NAME = "preview"
     env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
     env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CASE_DATA_STORE_BASEURL = "http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CASE_DATA_STORE_BASEURL = "https://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
 
     setCommonEnvVariables()
