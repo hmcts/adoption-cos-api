@@ -205,7 +205,7 @@ ccd-case-document-am-api:
     environment:
       CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,dg_docassembly_api,bulk_scan_orchestrator,adoption_cos_api,adoption_web
       DM_STORE_BASE_URL: http://dm-store-aat.service.core-compute-aat.internal
-      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
+      CCD_DATA_STORE_API_BASE_URL: http://{{ .Release.Name }}-ccd-data-store-api
       IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
       IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
