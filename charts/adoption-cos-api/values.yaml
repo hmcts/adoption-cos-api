@@ -10,7 +10,6 @@ idam-pr:
 ccd-case-document-am-api:
   enabled: false
 
-
 java:
   applicationPort: 4550
   image: hmctspublic.azurecr.io/adoption/cos-api:latest
