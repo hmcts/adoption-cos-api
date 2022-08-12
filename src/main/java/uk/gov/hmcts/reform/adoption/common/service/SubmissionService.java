@@ -30,5 +30,7 @@ public class SubmissionService {
             setStateAfterSubmission,
             setDateSubmitted// TODO, generateApplicationSummaryDocument
         ).run(caseDetails);
+
+        
     }
 }
