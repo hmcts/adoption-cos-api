@@ -54,6 +54,8 @@ public class DocAssemblyService {
                         .build();
 
         log.info("Sending document request for template : {} case id: {}", templateName, caseId);
+        log.info("authorisation: {}",authorisation);
+        log.info("ServiceAuthorization: {}",authTokenGenerator.generate());
 
         final DocAssemblyResponse docAssemblyResponse = docAssemblyClient.generateAndStoreDraftApplication(
             authorisation,
