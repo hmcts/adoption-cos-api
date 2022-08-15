@@ -106,7 +106,7 @@ public class DocAssemblyServiceTest {
         assertThat(documentInfo.getBinaryUrl()).isEqualTo(DOC_STORE_BASE_URL_PATH + documentUuid + BINARY);
         assertThat(documentInfo.getFilename()).isEqualTo(DRAFT_APPLICATION_FILENAME);
 
-        /*verify(authTokenGenerator).generate();*/
+        verify(authTokenGenerator).generate();
         verify(docAssemblyClient).generateAndStoreDraftApplication(
                 TEST_AUTHORIZATION_TOKEN,
                 TEST_SERVICE_AUTH_TOKEN,
