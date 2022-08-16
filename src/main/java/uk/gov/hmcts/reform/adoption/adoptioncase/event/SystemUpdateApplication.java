@@ -32,10 +32,12 @@ public class SystemUpdateApplication implements CCDConfig<CaseData, State, UserR
             .description("Adoption application update by system")
             .retries(120, 120)
             .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
-            .grant(READ, SUPER_USER);
+            .grant(READ, SUPER_USER)
+            .aboutToSubmitCallback(this::aboutToSubmit);
     }
 
-    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(final CaseDetails<CaseData, State> details) {
+    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(final CaseDetails<CaseData, State> details,
+                                                                       CaseDetails<CaseData, State> beforeDetails) {
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(details.getData())
             .state(details.getState().equals(Submitted) ? AwaitingAdminChecks : details.getState())
