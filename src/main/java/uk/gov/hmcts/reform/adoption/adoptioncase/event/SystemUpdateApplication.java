@@ -2,18 +2,15 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
-import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
-import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAdminChecks;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
@@ -32,15 +29,6 @@ public class SystemUpdateApplication implements CCDConfig<CaseData, State, UserR
             .description("Adoption application update by system")
             .retries(120, 120)
             .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
-            .grant(READ, SUPER_USER)
-            .aboutToSubmitCallback(this::aboutToSubmit);
-    }
-
-    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(final CaseDetails<CaseData, State> details,
-                                                                       CaseDetails<CaseData, State> beforeDetails) {
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(details.getData())
-            .state(details.getState().equals(Submitted) ? AwaitingAdminChecks : details.getState())
-            .build();
+            .grant(READ, SUPER_USER);
     }
 }

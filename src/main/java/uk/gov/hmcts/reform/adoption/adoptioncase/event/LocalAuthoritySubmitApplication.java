@@ -15,6 +15,8 @@ import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAdminChecks;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
@@ -35,7 +37,7 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder
             .event(LOCAL_AUTHORITY_SUBMIT)
-            .forState(AwaitingAdminChecks)
+            .forStates(Submitted, Draft, AwaitingAdminChecks)
             .name("Local Authority Submit")
             .description("Local Authority Application Submit- Awaiting Admin Checks")
             .retries(120, 120)
