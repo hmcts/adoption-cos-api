@@ -19,6 +19,8 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
 @Component
@@ -41,7 +43,7 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
             .name("Local Authority Submit")
             .description("Local Authority Application Submit- Awaiting Admin Checks")
             .retries(120, 120)
-            //.grant(CREATE_READ_UPDATE, CITIZEN)
+            .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
             .grant(READ, SUPER_USER, CASE_WORKER)
             .aboutToSubmitCallback(this::aboutToSubmit);
     }
