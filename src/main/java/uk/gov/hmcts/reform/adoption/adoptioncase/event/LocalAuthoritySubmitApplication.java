@@ -14,11 +14,10 @@ import uk.gov.hmcts.reform.adoption.common.service.SendNotificationService;
 import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAdminChecks;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
@@ -59,7 +58,7 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
             updatedCaseDetails);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(notificationSentUpdatedDetails.getData())
-            .state(LaSubmitted)
+            .state(notificationSentUpdatedDetails.getState())
             .build();
 
     }

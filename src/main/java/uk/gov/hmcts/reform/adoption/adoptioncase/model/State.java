@@ -30,13 +30,7 @@ public enum State {
         name = "Awaiting Admin checks",
         label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
     )
-    AwaitingAdminChecks("AwaitingAdminChecks"),
-
-    @CCD(
-        name = "LA Submitted",
-        label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
-    )
-    LaSubmitted("LaSubmitted");
+    AwaitingAdminChecks("AwaitingAdminChecks");
 
     private final String name;
 
