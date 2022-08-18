@@ -206,6 +206,29 @@ public class CaseData {
     )
     private String applicant2SotFullName;
 
+
+    @CCD(label = "Local authority worker statement of truth full name",
+        access = {SystemUpdateAccess.class}
+    )
+    private String laSotFullName;
+
+    @CCD(label = "Local authority worker job title",
+        access = {SystemUpdateAccess.class}
+    )
+    private String laSotJobtitle;
+
+
+    @CCD(label = "Local authority worker job title",
+        access = {SystemUpdateAccess.class}
+    )
+    private String laNameSot;
+
+    @CCD(
+        label = "LA worker believes that the facts stated in this application are true.",
+        access = {SystemUpdateAccess.class}
+    )
+    private YesOrNo laStatementOfTruth;
+
     @CCD(
         label = "Due Date",
         access = {DefaultAccess.class}

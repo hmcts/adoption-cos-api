@@ -14,7 +14,7 @@ import uk.gov.service.notify.NotificationClientException;
 import java.io.IOException;
 import java.util.EnumSet;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAdminChecks;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 
 @Component
@@ -46,7 +46,7 @@ public class SendSubmissionNotifications implements CaseTask {
             }
         }
 
-        if (EnumSet.of(AwaitingAdminChecks).contains(state)) {
+        if (EnumSet.of(LaSubmitted).contains(state)) {
             log.info("Sending Local Authority application submitted notifications for case : {}", caseId);
             try {
                 notificationDispatcher.sendToLocalAuthority(applicationSubmittedNotification, caseData, caseId);
