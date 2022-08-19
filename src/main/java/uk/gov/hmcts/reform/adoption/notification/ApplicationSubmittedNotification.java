@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 // import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 // import uk.gov.hmcts.reform.adoption.document.DocumentType;
 // import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
+import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -31,6 +32,7 @@ import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLIC
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
@@ -56,6 +58,9 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Autowired
     private CommonContent commonContent;
+
+    @Autowired
+    private EmailTemplatesConfig emailTemplatesConfig;
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
@@ -184,6 +189,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(CHILD_FULL_NAME, caseData.getChildren().getFirstName() + " " + caseData.getChildren().getLastName());
+        templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
         return templateVars;
     }
 
