@@ -1,0 +1,20 @@
+package uk.gov.hmcts.reform.adoption.adoptioncase.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import uk.gov.hmcts.ccd.sdk.api.CCD;
+
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
+
+@Getter
+@AllArgsConstructor
+public class CaseNote {
+
+    @CCD(label = "Subject")
+    private String subject;
+
+    @CCD(label = "Note",
+        hint = "Include relevant dates and the people involved.",
+        typeOverride = TextArea)
+    private String note;
+}
