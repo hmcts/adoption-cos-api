@@ -42,7 +42,6 @@ public class DocAssemblyService {
 
         final String templateName = docmosisTemplateProvider.templateNameFor(templateId, languagePreference);
 
-        log.info("<<<<<<<>>>>>>>> {}", objectMapper.valueToTree(templateContent));
         final DocAssemblyRequest docAssemblyRequest =
                 DocAssemblyRequest
                         .builder()
