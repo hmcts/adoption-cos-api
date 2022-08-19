@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTaskRunner;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetDateSubmitted;
+import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterLaSubmission;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterSubmission;
 
 @Service
@@ -14,6 +15,9 @@ public class SubmissionService {
 
     @Autowired
     private SetStateAfterSubmission setStateAfterSubmission;
+
+    @Autowired
+    private SetStateAfterLaSubmission setStateAfterLaSubmission;
 
     @Autowired
     private SetDateSubmitted setDateSubmitted;
@@ -28,6 +32,14 @@ public class SubmissionService {
 
         return CaseTaskRunner.caseTasks(
             setStateAfterSubmission,
+            setDateSubmitted// TODO, generateApplicationSummaryDocument
+        ).run(caseDetails);
+    }
+
+    public CaseDetails<CaseData, State> laSubmitApplication(final CaseDetails<CaseData, State> caseDetails) {
+
+        return CaseTaskRunner.caseTasks(
+            setStateAfterLaSubmission,
             setDateSubmitted// TODO, generateApplicationSummaryDocument
         ).run(caseDetails);
     }
