@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerCourtAdminWithSolicitorAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
@@ -356,7 +355,7 @@ public class CaseData {
     private String familyCourtEmailId;
 
     @JsonUnwrapped
-    @Builder.Default
+    //@Builder.Default()
     @CCD(
         label = "Add a case note",
         access = {DefaultAccess.class}
