@@ -11,9 +11,9 @@ public class AddCaseNote implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("pageNote")
             .complex(CaseData::getCaseNote)
-            .mandatory(
+            .mandatoryWithLabel(
                 CaseNote::getNote,
-                "", "", "", "Include relevant dates and the people involved.")
+                "Note")
 
             .mandatoryWithLabel(
                 CaseNote::getSubject,

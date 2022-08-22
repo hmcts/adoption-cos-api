@@ -39,7 +39,7 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
                             .description(ADD_CASE_NOTE)
                             //.aboutToSubmitCallback(this::aboutToSubmit)
                             .showSummary(true)
-                            .showEventNotes()
+                            //.showEventNotes()
                             .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
     }
 
