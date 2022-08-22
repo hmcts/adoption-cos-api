@@ -355,9 +355,11 @@ public class CaseData {
     )
     private String familyCourtEmailId;
 
+    @JsonUnwrapped
+    @Builder.Default
     @CCD(
         label = "Add a case note",
-        access = {CaseworkerCourtAdminWithSolicitorAccess.class}
+        access = {DefaultAccess.class}
     )
     private CaseNote caseNote;
 

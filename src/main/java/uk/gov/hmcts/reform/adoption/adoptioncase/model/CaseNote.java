@@ -1,13 +1,17 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
-@Getter
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CaseNote {
 
     @CCD(label = "Subject")
