@@ -11,13 +11,10 @@ public class AddCaseNote implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("pageNote")
             .complex(CaseData::getCaseNote)
-            .mandatoryWithLabel(
-                CaseNote::getNote,
-                "Note")
-
-            .mandatoryWithLabel(
-                CaseNote::getSubject,
-                "Subject")
+            .mandatory(
+                CaseNote::getNote)
+            .mandatory(
+                CaseNote::getSubject)
             .done();
     }
 }
