@@ -23,24 +23,25 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
     private final CcdPageConfiguration caseNote = new AddCaseNote();
 
     @Override
-    public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+    public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         log.info("Inside configure method for Event {}", CASEWORKER_ADD_CASE_NOTE);
         var pageBuilder = addEventConfig(configBuilder);
         caseNote.addTo(pageBuilder);
     }
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER,UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR,UserRole.DISTRICT_JUDGE);
+        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
+                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
+        );
         return new PageBuilder(configBuilder
-                            .event(CASEWORKER_ADD_CASE_NOTE)
-                            .forAllStates()
-                            .name(ADD_CASE_NOTE)
-                            .description(ADD_CASE_NOTE)
-                            //.aboutToSubmitCallback(this::aboutToSubmit)
-                            .showSummary()
-                            //.showEventNotes()
-                            .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
+                                   .event(CASEWORKER_ADD_CASE_NOTE)
+                                   .forStates(State.Draft)
+                                   .name(ADD_CASE_NOTE)
+                                   .description(ADD_CASE_NOTE)
+                                   //.aboutToSubmitCallback(this::aboutToSubmit)
+                                   .showSummary()
+                                   //.showEventNotes()
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
     }
 
 }
