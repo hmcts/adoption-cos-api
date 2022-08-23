@@ -33,6 +33,11 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1LastName")
             .field("applicant1PhoneNumber")
             .field("applicant1EmailAddress")
+            .field("applicant1AdditionalNames")
+            .field("adoptionDocument")
+            .field("documentsUploaded")
+            .field("applicationPayments")
+            .field("applicationFeeOrderSummary")
             .field("applicant1Nationality");
     }
 
