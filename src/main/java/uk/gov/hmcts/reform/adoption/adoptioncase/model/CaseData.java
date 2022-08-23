@@ -355,7 +355,6 @@ public class CaseData {
     private String familyCourtEmailId;
 
     @JsonUnwrapped
-    //@Builder.Default()
     @CCD(
         label = "Add a case note",
         access = {DefaultAccess.class}
