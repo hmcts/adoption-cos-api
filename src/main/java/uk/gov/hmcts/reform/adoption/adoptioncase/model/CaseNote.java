@@ -12,7 +12,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 //@Builder
 public class CaseNote {
 
-    @CCD(label = "Subject", name = "Mandatory Subject HAHAHAHAHAH")
+    @CCD(label = "Subject")
     private String subject;
 
     @CCD(label = "Note",
