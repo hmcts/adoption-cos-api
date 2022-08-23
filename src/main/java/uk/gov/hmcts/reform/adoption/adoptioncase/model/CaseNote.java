@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 
