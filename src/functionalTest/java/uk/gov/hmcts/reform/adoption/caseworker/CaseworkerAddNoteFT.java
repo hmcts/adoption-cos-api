@@ -21,9 +21,9 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.expectedRespo
 @SpringBootTest
 public class CaseworkerAddNoteFT extends FunctionalTest {
 
-    private static final String REQUEST = "classpath:request/casedata/ccd-callback-casedata.json";
+    private static final String REQUEST = "classpath:casedata/ccd-callback-casedata-application-payment-ready.json";
 
-    private static final String RESPONSE = "classpath:casedata/response-application.json";
+    private static final String RESPONSE = "classpath:casedata/response-application-payment-ready.json";
 
     @Test
     public void shouldUpdateCaseDataWithNotesWhenAboutToSubmitCallbackIsInvoked() throws Exception {
