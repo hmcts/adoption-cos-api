@@ -14,13 +14,15 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @Builder
 public class CaseNote {
 
-    @CCD(label = "Subject",
-        displayOrder = 1)
-    private String subject;
-
     @CCD(label = "Note",
         hint = "Include relevant dates and the people involved.",
         typeOverride = TextArea,
         displayOrder = 0)
     private String note;
+
+    @CCD(label = "Subject",
+        displayOrder = 1)
+    private String subject;
+
+
 }
