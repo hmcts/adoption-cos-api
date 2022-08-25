@@ -45,39 +45,4 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
                                    .showSummary()
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
     }
-
-    /*public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> details,
-                                                                       CaseDetails<CaseData, State> beforeDetails) {
-
-        log.info("{} about to submit callback invoked for Case Id: {}", CASEWORKER_ADD_CASE_NOTE, details.getId());
-        CaseData caseData = details.getData();
-
-        if (caseData.getCaseNote() != null) {
-            log.info("---------------Inside Not Null Condition------------");
-            if (caseData.getCaseNote().getNote() != null
-                && caseData.getCaseNote().getNote().isEmpty()) {
-                log.info("---------------Inside Not Null Condition of Note------------");
-                return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-                    .data(caseData)
-                    .errors(List.of("Enter details for the case note"))
-                    .build();
-            }
-
-            if (caseData.getCaseNote().getSubject() != null
-                && caseData.getCaseNote().getSubject().isEmpty()
-                && caseData.getCaseNote().getSubject().isBlank()) {
-                log.info("---------------Inside Not Null Condition of Subject------------");
-                return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-                    .data(caseData)
-                    .errors(List.of("Enter a subject for the case note"))
-                    .build();
-            }
-        }
-
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseData)
-            .build();
-
-    }*/
-
 }
