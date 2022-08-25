@@ -357,9 +357,11 @@ public class CaseData {
     @JsonUnwrapped
     @CCD(
         label = "Add a case note",
+        typeOverride = Collection,
+        typeParameterOverride = "CaseNote",
         access = {DefaultAccess.class}
     )
-    private CaseNote caseNote;
+    private List<ListValue<CaseNote>> caseNote;
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {
