@@ -354,7 +354,7 @@ public class CaseData {
     )
     private String familyCourtEmailId;
 
-    @JsonUnwrapped
+    //@JsonUnwrapped
     @CCD(
         label = "Add a case note",
         typeOverride = Collection,
