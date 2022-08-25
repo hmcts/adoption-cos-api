@@ -22,8 +22,6 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
 
     public static final String ADD_CASE_NOTE = "Add a case note";
 
-    //private final CcdPageConfiguration caseNote = new AddCaseNote();
-
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         new PageBuilder(configBuilder
@@ -31,25 +29,10 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
                             .forAllStates()
                             .name(ADD_CASE_NOTE)
                             .description(ADD_CASE_NOTE)
-                            //.aboutToSubmitCallback(this::aboutToSubmit)
                             .showSummary()
                             .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER))
                             .page("addCaseNotes")
                             .pageLabel("Add case notes")
                             .mandatory(CaseData::getCaseNote);
     }
-
-    /*private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-        );
-        return new PageBuilder(configBuilder
-                                   .event(CASEWORKER_ADD_CASE_NOTE)
-                                   .forAllStates()
-                                   .name(ADD_CASE_NOTE)
-                                   .description(ADD_CASE_NOTE)
-                                   .showSummary()
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER))
-                .page("addPageNote").pageLabel("Add a Case Note").mandatoryWithLabel(CaseData::getCaseNote, "");
-    }*/
 }
