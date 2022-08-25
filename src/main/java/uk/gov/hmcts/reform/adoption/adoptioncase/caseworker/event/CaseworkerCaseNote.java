@@ -12,6 +12,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
+/**
+ * Adds a Case Note Event in ExUI for all States.
+ * This will enable users to add Note(s) for a Case.
+ */
 @Slf4j
 @Component
 public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> {
