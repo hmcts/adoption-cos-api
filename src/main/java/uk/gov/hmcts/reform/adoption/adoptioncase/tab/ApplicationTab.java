@@ -44,7 +44,7 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1AddressPostCode")
             .field("applicant1EmailAddress")
             .field("applicant1PhoneNumber")
-            .label("LabelApplicant1WithSpouseOrPartner-Heading",
+            .label("LabelApplicant2WithSpouseOrPartner-Heading",
                    "applyingWith!=\"alone\"",
                    "### Second Applicant")
             .field("applicant2FirstName","applyingWith!=\"alone\"")
