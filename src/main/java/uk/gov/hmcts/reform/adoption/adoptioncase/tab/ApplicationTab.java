@@ -14,7 +14,7 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationDetails", "Application");
+        final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationDetails", "Applicants");
 
         addHeaderFields(tabBuilder);
         addApplicant(tabBuilder);
@@ -28,12 +28,17 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void addApplicant(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
-            .label("LabelApplicant-Heading", null, "### The applicant")
+            .label("LabelApplicant-Heading", null, "### First applicant")
             .field("applicant1FirstName")
             .field("applicant1LastName")
-            .field("applicant1PhoneNumber")
+            .field("applicant1additionalNames", "applicant1HasOtherNames=\"Yes\"")
+            .field("applicant1DateOfBirth")
+            .field("applicant1Occupation")
+            .field("${applicant1Address1} ${applicant1Address2}")
+            .field("applicant1AddressTown")
+            .field("applicant1AddressPostCode")
             .field("applicant1EmailAddress")
-            .field("applicant1Nationality");
+            .field("applicant1PhoneNumber");
     }
 
 }
