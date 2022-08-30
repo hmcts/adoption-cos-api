@@ -28,10 +28,10 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @Builder
 public class Applicant {
 
-    @CCD(label = "First name")
+    @CCD(label = "First names")
     private String firstName;
 
-    @CCD(label = "Last name")
+    @CCD(label = "Last names")
     private String lastName;
 
     @CCD(
@@ -47,7 +47,7 @@ public class Applicant {
     private YesOrNo hasOtherNames;
 
     @CCD(
-        label = "Additional names",
+        label = "Previous names",
         typeOverride = Collection,
         typeParameterOverride = "AdditionalName",
         access = {CollectionAccess.class}
@@ -61,7 +61,7 @@ public class Applicant {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
-    @CCD(label = "Applicant Occupation")
+    @CCD(label = "Occupation")
     private String occupation;
 
     @CCD(
@@ -70,7 +70,7 @@ public class Applicant {
     )
     private String emailAddress;
 
-    @CCD(label = "Applicant phoneNumber")
+    @CCD(label = "Phone number")
     private String phoneNumber;
 
     @CCD(label = "The court may want to use your email to serve you court orders. Are you happy to be served court orders by email?")
@@ -93,13 +93,13 @@ public class Applicant {
     @CCD(label = "Address2")
     private String address2;
 
-    @CCD(label = "Town")
+    @CCD(label = "Town or City")
     private String addressTown;
 
     @CCD(label = "Country")
     private String addressCountry;
 
-    @CCD(label = "Post code")
+    @CCD(label = "Postcode")
     private String addressPostCode;
 
     @CCD(label = "Address same as applicant1")
