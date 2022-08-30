@@ -17,6 +17,7 @@ public class SummaryTab implements CCDConfig<CaseData, State, UserRole> {
         final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationSummary", "Summary");
 
         addHeaderFields(tabBuilder);
+
         addApplicant(tabBuilder);
     }
 
@@ -29,7 +30,7 @@ public class SummaryTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void addApplicant(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
-            .label("caseDetails"  , null, "### Case details")
+            .label("caseDetails", null, "### Case details")
             .field("typeOfAdoption")
             .field("dateSubmitted")
             .field("dateChildMovedIn")
