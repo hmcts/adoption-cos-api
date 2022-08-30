@@ -29,7 +29,7 @@ public class SummaryTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void addApplicant(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
-            .label("caseDetails", null, "### Case details")
+            .label("caseDetails"  , null, "### Case details")
             .field("typeOfAdoption")
             .field("dateSubmitted")
             .field("dateChildMovedIn")
