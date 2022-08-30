@@ -30,16 +30,16 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
         tabBuilder
             .label("LabelApplicant-Heading",
                    "applyingWith=\"alone\"",
-                   "#### Applicant")
+                   "## Applicant")
             .label("LabelApplicants-Heading",
                    "applyingWith!=\"alone\"",
-                   "### Applicants")
+                   "## Applicants")
             .label("LabelApplicantAlone-Heading",
                    "applyingWith=\"alone\"",
-                   "# Applicant")
+                   "### Applicant")
             .label("LabelApplicant1WithSpouseOrPartner-Heading",
                    "applyingWith!=\"alone\"",
-                   "## First Applicant")
+                   "### First Applicant")
             .field("applicant1FirstName")
             .field("applicant1LastName")
             .field("applicant1AdditionalNames")
