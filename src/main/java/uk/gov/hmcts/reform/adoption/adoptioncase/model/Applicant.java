@@ -114,10 +114,10 @@ public class Applicant {
     // Bulk Scan phase2 changes starts
 
     @CCD(label = "gender")
-    private LanguagePreference gender;
+    private String gender;
 
     @CCD(label = "relationToChild")
-    private LanguagePreference relationToChild;
+    private String relationToChild;
 
     // BULK SCAN phase 2 changes ends
 }
