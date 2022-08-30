@@ -294,6 +294,7 @@ public class CaseData {
         label = "Upload Adoption Document",
         access = {DefaultAccess.class}
     )
+
     private AdoptionDocument adoptionDocument;
 
     @CCD(
@@ -477,6 +478,12 @@ public class CaseData {
     private String applicant2LegalRepPosition;
 
     @CCD(
+        label = "Speak welsh in court",
+        access = {DefaultAccess.class}
+    )
+    private String welshSpokenInCourtRequired;
+
+    @CCD(
         label = "Welsh Read/Write Preferences",
         access = {DefaultAccess.class}
     )
@@ -541,6 +548,48 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String specialAssistanceFacilities;
+
+    @CCD(
+        label = "Child parent/guardian consent",
+        access = {DefaultAccess.class}
+    )
+    private String adoptionOrderConsent;
+
+    @CCD(
+        label = "Child parent/guardian consent advance",
+        access = {DefaultAccess.class}
+    )
+    private String adoptionOrderConsentAdvance;
+
+    @CCD(
+        label = "Adoption by adoption agency with Child parent/guardian consent ",
+        access = {DefaultAccess.class}
+    )
+    private String adoptionOrderConsentAgency;
+
+    @CCD(
+        label = "Child parent/guardian no consent ",
+        access = {DefaultAccess.class}
+    )
+    private String adoptionOrderNoConsent;
+
+    @CCD(
+        label = "Court consent when parent not found",
+        access = {DefaultAccess.class}
+    )
+    private String courtConsentParentNotFound;
+
+    @CCD(
+        label = "Court consent Parent lack capacity(Mental capcity)",
+        access = {DefaultAccess.class}
+    )
+    private String courtConsentParentLackCapacity;
+
+    @CCD(
+        label = "Court consent child welfare",
+        access = {DefaultAccess.class}
+    )
+    private String courtConsentChildWelfare;
 
     // BULK SCAN phase 2 changes ends
 
