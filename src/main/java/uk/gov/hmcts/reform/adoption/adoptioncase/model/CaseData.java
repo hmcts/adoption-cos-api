@@ -354,6 +354,196 @@ public class CaseData {
     )
     private String familyCourtEmailId;
 
+    // BULK SCAN phase 2 changes starts
+
+    @CCD(
+        label = "Applicant Domicile Status",
+        access = {DefaultAccess.class}
+    )
+    private String applicantsDomicileStatus;
+
+    @CCD(
+        label = "Applicant Relation to Child",
+        access = {DefaultAccess.class}
+    )
+    private String applicantRelationToChild;
+
+    @CCD(
+        label = "Applicant Marital Status",
+        access = {DefaultAccess.class}
+    )
+    private String applicantMaritalStatus;
+
+    @CCD(
+        label = "Children Health Report Date",
+        access = {DefaultAccess.class}
+    )
+    private String childrenHealthReportDate;
+
+    @CCD(
+        label = "Children Adoption Payment Details",
+        access = {DefaultAccess.class}
+    )
+    private String childrenAdoptionPaymentDetails;
+
+    @CCD(
+        label = "Freeing Order",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<FreeingOrder>> freeingOrders;
+
+    @CCD(
+        label = "Applicant1 or Legal Representative Signature",
+        access = {DefaultAccess.class}
+    )
+    private String applicant1SignStatementOfTruth;
+
+    @CCD(
+        label = "Applicant1 or Legal Representative Signature ",
+        access = {DefaultAccess.class}
+    )
+    private String applicant1LegalRepSignature;
+
+    @CCD(
+        label = "Applicant1 Signing",
+        access = {DefaultAccess.class}
+    )
+    private String applicant1Signing;
+
+    @CCD(
+        label = "Legal Representative Signing",
+        access = {DefaultAccess.class}
+    )
+    private String legalRepSigning;
+
+    @CCD(
+        label = "Applicant Statement of Truth Date",
+        access = {DefaultAccess.class}
+    )
+    private String applicant1StatementOfTruthDate;
+
+    @CCD(
+        label = "Name of first applicant's legal representatives firm",
+        access = {DefaultAccess.class}
+    )
+    private String applicant1LegalRepFirm;
+
+    @CCD(
+        label = "firm or company give position or office held",
+        access = {DefaultAccess.class}
+    )
+    private String applicant1LegalRepPosition;
+
+    @CCD(
+        label = "Applicant2 or Legal Representative Signatures",
+        access = {DefaultAccess.class}
+    )
+    private String applicant2SignStatementOfTruth;
+
+    @CCD(
+        label = "Applicant2 or Legal Representative Signature ",
+        access = {DefaultAccess.class}
+    )
+    private String applicant2LegalRepSignature;
+
+    @CCD(
+        label = "Applicant2 Signing",
+        access = {DefaultAccess.class}
+    )
+    private String applicant2Signing;
+
+    @CCD(
+        label = "Applicant2 Legal Representative Signing",
+        access = {DefaultAccess.class}
+    )
+    private String applicant2LegalRepSigning;
+
+    @CCD(
+        label = "Applicant2 Statement of Truth Date",
+        access = {DefaultAccess.class}
+    )
+    private String applicant2StatementOfTruthDate;
+
+    @CCD(
+        label = "Name of first applicant's legal representatives firm(Applicant2)",
+        access = {DefaultAccess.class}
+    )
+    private String applicant2LegalRepFirm;
+
+    @CCD(
+        label = "firm or company give position or office held(Applicant2)",
+        access = {DefaultAccess.class}
+    )
+    private String applicant2LegalRepPosition;
+
+    @CCD(
+        label = "Welsh Read/Write Preferences",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<PartyWelshLanguagePreference>> partyWelshLanguagePreferences;
+
+    @CCD(
+        label = "Unavailable dates to attend court",
+        access = {DefaultAccess.class}
+    )
+    private String courtUnavailableDates;
+
+    @CCD(
+        label = "Preferred Date to attend court",
+        access = {DefaultAccess.class}
+    )
+    private String courtPreferredDates;
+
+    @CCD(
+        label = "Spoken and Written Welsh",
+        access = {DefaultAccess.class}
+    )
+    private String courtInterpreterAssistanceRequired;
+
+    @CCD(
+        label = "Applicant Requires Interpreter",
+        access = {DefaultAccess.class}
+    )
+    private String applicantRequireInterpreter;
+
+    @CCD(
+        label = "Respondent Requires Interpreter",
+        access = {DefaultAccess.class}
+    )
+    private String respondentRequireInterpreter;
+
+    @CCD(
+        label = "Other Party Requires Interpreter",
+        access = {DefaultAccess.class}
+    )
+    private String otherPartyRequireInterpreter;
+
+    @CCD(
+        label = "Other Party name",
+        access = {DefaultAccess.class}
+    )
+    private String otherPartyName;
+
+    @CCD(
+        label = "Language for court interpreter assistance",
+        access = {DefaultAccess.class}
+    )
+    private String courtInterpreterAssistanceLanguage;
+
+    @CCD(
+        label = "Applicant or other party require assistance",
+        access = {DefaultAccess.class}
+    )
+    private String specialAssistanceFacilitiesRequired;
+
+    @CCD(
+        label = "what assistance required",
+        access = {DefaultAccess.class}
+    )
+    private String specialAssistanceFacilities;
+
+    // BULK SCAN phase 2 changes ends
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);

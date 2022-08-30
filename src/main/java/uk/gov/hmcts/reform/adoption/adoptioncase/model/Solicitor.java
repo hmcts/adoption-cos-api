@@ -45,4 +45,32 @@ public class Solicitor {
         access = {DefaultAccess.class}
     )
     private YesOrNo solicitorHelpingWithApplication;
+
+    // BULK SCAN phase 2 changes starts
+
+    @CCD(label = "Address1")
+    private String address1;
+
+    @CCD(label = "Address2")
+    private String address2;
+
+    @CCD(label = "Town")
+    private String addressTown;
+
+    @CCD(label = "Country")
+    private String addressCountry;
+
+    @CCD(label = "Post code")
+    private String addressPostCode;
+
+    @CCD(label = "Solicitor’s Fax No")
+    private String solicitorFaxNumber;
+
+    @CCD(label = "Solicitor’s Dx No")
+    private String solicitorDxNumber;
+
+    @CCD(label = "Solicitor’s Fee account no")
+    private String solicitorFeeAccountNumber;
+
+    // BULK SCAN phase 2 changes ends
 }

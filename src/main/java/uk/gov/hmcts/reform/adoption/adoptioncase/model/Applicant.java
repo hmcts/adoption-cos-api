@@ -110,4 +110,14 @@ public class Applicant {
 
     @CCD(label = "languagePreference")
     private LanguagePreference languagePreference;
+
+    // Bulk Scan phase2 changes starts
+
+    @CCD(label = "gender")
+    private LanguagePreference gender;
+
+    @CCD(label = "relationToChild")
+    private LanguagePreference relationToChild;
+
+    // BULK SCAN phase 2 changes ends
 }
