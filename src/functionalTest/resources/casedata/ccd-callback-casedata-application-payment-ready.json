@@ -256,17 +256,6 @@
   "applicant2LanguagePreference": null,
   "birthMotherOccupation": "Teacher",
   "applicant1AddressSameAsApplicant1": null,
-  "caseNote": [
-    {
-      "id": 1,
-      "value": {
-        "subject": "TEST_SUBJECT",
-        "note": "TEST_NOTE"
-      }
-    }
-  ],
-  "note": {
-    "subject": "TEST_SUBJECT",
-    "note": "TEST_NOTE"
-  }
+  "note": null,
+  "caseNote": null
 }
