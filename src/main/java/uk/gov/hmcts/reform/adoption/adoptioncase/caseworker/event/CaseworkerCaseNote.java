@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.idam.client.models.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,9 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
 
     @Autowired
     private IdamService idamService;
+
+    @Autowired
+    private Clock clock;
 
     public static final String CASEWORKER_ADD_CASE_NOTE = "caseworker-add-casenote";
 
@@ -79,7 +83,7 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
 
         var caseData = details.getData();
         CaseNote caseNote = caseData.getNote();
-        caseNote.setDate(LocalDate.now());
+        caseNote.setDate(LocalDate.now(clock));
         caseNote.setUser(caseworkerUser.getUserDetails().getFullName());
 
         if (isEmpty(caseData.getCaseNote())) {
