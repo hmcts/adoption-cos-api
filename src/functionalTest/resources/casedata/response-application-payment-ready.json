@@ -262,20 +262,7 @@
     "solicitorFirm": null,
     "solicitorHelpingWithApplication": null,
     "solicitorName": null,
-    "solicitorPhoneNumber": null,
-    "caseNote": [
-      {
-        "id": 1,
-        "value": {
-          "subject": "TEST_SUBJECT",
-          "note": "TEST_NOTE"
-        }
-      }
-    ],
-    "note": {
-      "subject": "TEST_SUBJECT",
-      "note": "TEST_NOTE"
-    }
+    "solicitorPhoneNumber": null
   },
   "errors": null,
   "state": "AwaitingPayment",
