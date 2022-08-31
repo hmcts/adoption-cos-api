@@ -15,7 +15,7 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationDetails", "Applicants");
-        //tabBuilder.showCondition(TabShowCondition.showForState(State.Submitted));
+        tabBuilder.showCondition(TabShowCondition.showForState(State.Submitted));
         addHeaderFields(tabBuilder);
         addApplicant(tabBuilder);
     }
