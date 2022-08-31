@@ -1,10 +1,13 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+
+import java.time.LocalDate;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
@@ -24,6 +27,15 @@ public class CaseNote {
         displayOrder = 1)
     private String note;
 
+    @CCD(
+        label = "User"
+    )
+    private String user;
 
+    @CCD(
+        label = "Date added"
+    )
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate date;
 
 }

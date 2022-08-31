@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -15,11 +16,16 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
@@ -29,6 +35,12 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Slf4j
 @Component
 public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> {
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private IdamService idamService;
 
     public static final String CASEWORKER_ADD_CASE_NOTE = "caseworker-add-casenote";
 
@@ -63,8 +75,12 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
     ) {
         log.info("Caseworker add notes callback invoked for Case Id: {}", details.getId());
 
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
+
         var caseData = details.getData();
         CaseNote caseNote = caseData.getNote();
+        caseNote.setDate(LocalDate.now());
+        caseNote.setUser(caseworkerUser.getUserDetails().getFullName());
 
         if (isEmpty(caseData.getCaseNote())) {
             List<ListValue<CaseNote>> listValues = new ArrayList<>();
