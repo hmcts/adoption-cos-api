@@ -356,7 +356,7 @@ public class CaseData {
 
 
     @CCD(
-        label = "Add a case note",
+        label = "Notes",
         typeOverride = Collection,
         typeParameterOverride = "CaseNote",
         access = {DefaultAccess.class}
@@ -364,7 +364,7 @@ public class CaseData {
     private List<ListValue<CaseNote>> caseNote;
 
     @CCD(
-        label = "Add a case note",
+        label = "Add a Case Note",
         access = {DefaultAccess.class}
     )
     private CaseNote note;
