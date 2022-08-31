@@ -24,8 +24,8 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.expectedRespo
 @SpringBootTest
 public class ApplicationCreateFT  extends FunctionalTest {
 
-    private static final String REQUEST = "classpath:casedata/ccd-callback-casedata-application-payment-ready.json";
-    private static final String RESPONSE = "classpath:casedata/response-application-payment-ready";
+    private static final String REQUEST = "classpath:casedata/ccd-callback-casedata-application.json";
+    private static final String RESPONSE = "classpath:casedata/response-application.json";
 
     @Test
     public void shouldCreateCaseInCcdForApplication() throws IOException {

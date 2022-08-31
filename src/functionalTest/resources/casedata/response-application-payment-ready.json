@@ -265,8 +265,11 @@
     "solicitorPhoneNumber": null,
     "caseNote": [
       {
-        "subject": "TEST_SUBJECT",
-        "note": "TEST_NOTE"
+        "id": 1,
+        "value": {
+          "subject": "TEST_SUBJECT",
+          "note": "TEST_NOTE"
+        }
       }
     ],
     "note": {
