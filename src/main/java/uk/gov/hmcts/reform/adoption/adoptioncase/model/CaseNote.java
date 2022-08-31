@@ -25,11 +25,5 @@ public class CaseNote {
     private String note;
 
 
-    @Override
-    public String toString() {
-        return "CaseNote{"
-            + "subject='" + subject + '\''
-            + ", note='" + note + '\''
-            + '}';
-    }
+
 }
