@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseNote;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -11,7 +12,11 @@ public class AddCaseNote implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("pageNote")
-            .mandatory(CaseData::getCaseNote)
+            .complex(CaseData::getNote)
+            .mandatoryWithLabel(
+                CaseNote::getSubject, "Subject")
+            .mandatoryWithLabel(
+                CaseNote::getNote, "Note")
             .done();
     }
 }
