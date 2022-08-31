@@ -265,13 +265,13 @@
     "solicitorPhoneNumber": null,
     "caseNote": [
       {
-        "subject": "Test Subject",
-        "note": "Test Note"
+        "subject": "TEST_SUBJECT",
+        "note": "TEST_NOTE"
       }
     ],
     "note": {
       "subject": "TEST_SUBJECT",
-      "note": "TEST NOTE"
+      "note": "TEST_NOTE"
     }
   },
   "errors": null,
