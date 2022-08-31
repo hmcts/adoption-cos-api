@@ -24,12 +24,4 @@ public class CaseNote {
         displayOrder = 1)
     private String note;
 
-
-    @Override
-    public String toString() {
-        return "CaseNote{"
-            + "subject='" + subject + '\''
-            + ", note='" + note + '\''
-            + '}';
-    }
 }

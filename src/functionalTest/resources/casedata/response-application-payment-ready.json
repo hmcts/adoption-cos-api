@@ -268,7 +268,11 @@
         "subject": "Test Subject",
         "note": "Test Note"
       }
-    ]
+    ],
+    "note": {
+      "subject": "TEST_SUBJECT",
+      "note": "TEST NOTE"
+    }
   },
   "errors": null,
   "state": "AwaitingPayment",
