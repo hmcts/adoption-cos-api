@@ -14,8 +14,13 @@ import uk.gov.hmcts.reform.adoption.common.service.SendNotificationService;
 import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingAdminChecks;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
 @Component
@@ -34,11 +39,11 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder
             .event(LOCAL_AUTHORITY_SUBMIT)
-            .forState(AwaitingAdminChecks)
+            .forStates(Submitted, Draft, AwaitingAdminChecks)
             .name("Local Authority Submit")
             .description("Local Authority Application Submit- Awaiting Admin Checks")
             .retries(120, 120)
-            //.grant(CREATE_READ_UPDATE, CITIZEN)
+            .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
             .grant(READ, SUPER_USER, CASE_WORKER)
             .aboutToSubmitCallback(this::aboutToSubmit);
     }
@@ -49,12 +54,12 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
 
         log.info("Citizen Submit Application about to submit callback invoked CaseID: {}", caseId);
 
-        final CaseDetails<CaseData, State> updatedCaseDetails = submissionService.submitApplication(details);
+        final CaseDetails<CaseData, State> updatedCaseDetails = submissionService.laSubmitApplication(details);
         final CaseDetails<CaseData, State> notificationSentUpdatedDetails = sendNotificationService.sendNotifications(
             updatedCaseDetails);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(notificationSentUpdatedDetails.getData())
-            .state(notificationSentUpdatedDetails.getState())
+            .state(LaSubmitted)
             .build();
 
     }
