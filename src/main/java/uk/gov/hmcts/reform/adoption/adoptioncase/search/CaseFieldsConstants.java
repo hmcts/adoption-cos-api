@@ -10,7 +10,7 @@ public final class CaseFieldsConstants {
     public static final String CHILD_FIRST_NAME = "childrenFirstName";
     public static final String CHILD_LAST_NAME = "childrenLastName";
 
-    public static final String DATE_SUBMITTED = "createdDate";
+    public static final String DATE_SUBMITTED = "dateSubmitted";
 
     // required for Checkstyle
     private CaseFieldsConstants() {

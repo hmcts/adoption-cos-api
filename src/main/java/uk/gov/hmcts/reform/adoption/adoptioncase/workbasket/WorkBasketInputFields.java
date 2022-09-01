@@ -20,6 +20,6 @@ public class WorkBasketInputFields implements CCDConfig<CaseData, State, UserRol
             //.field("applicant1LastName", "Applicant's Last Name")
             .field("childrenFirstName", "Child's First Name")
             .field("childrenLastName", "Child's Last Name")
-            .field("createdDate", "Date Submitted");
+            .field("dateSubmitted", "Date Submitted");
     }
 }
