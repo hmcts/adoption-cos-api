@@ -9,6 +9,8 @@ public final class NotificationConstants {
 
     public static final String CHILD_FULL_NAME = "childFullName";
 
+    public static final String LA_PORTAL_URL = "laPortalURL";
+
     private NotificationConstants() {
     }
 }

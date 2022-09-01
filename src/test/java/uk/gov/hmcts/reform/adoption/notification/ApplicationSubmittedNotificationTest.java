@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
+import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
 import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -34,6 +35,8 @@ import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.getMainTemplateVars;
@@ -60,6 +63,9 @@ class ApplicationSubmittedNotificationTest {
 
     @Mock
     private CaseDocumentClient caseDocumentClient;
+
+    @Mock
+    private EmailTemplatesConfig emailTemplatesConfig;
 
     @InjectMocks
     private ApplicationSubmittedNotification notification;
@@ -136,8 +142,10 @@ class ApplicationSubmittedNotificationTest {
         data.setChildSocialWorker(socialWorker);
         data.setApplicantSocialWorker(socialWorker);
         Map<String, Object> templateVars = new HashMap<>();
+        emailTemplatesConfig.getTemplateVars().put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
         templateVars.put(HYPHENATED_REF, data.getHyphenatedCaseRef());
         templateVars.put(CHILD_FULL_NAME, data.getChildren().getFirstName() + " " + data.getChildren().getLastName());
+        templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
 
         notification.sendToLocalAuthorityPostApplicantSubmission(data, 1234567890123456L);
 
@@ -160,9 +168,11 @@ class ApplicationSubmittedNotificationTest {
         socialWorker.setLocalAuthorityEmail(TEST_USER_EMAIL);
         data.setChildSocialWorker(socialWorker);
         data.setApplicantSocialWorker(socialWorker);
+        emailTemplatesConfig.getTemplateVars().put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, data.getHyphenatedCaseRef());
         templateVars.put(CHILD_FULL_NAME, data.getChildren().getFirstName() + " " + data.getChildren().getLastName());
+        templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
 
         notification.sendToLocalAuthorityPostLocalAuthoritySubmission(data, 1234567890123456L);
 

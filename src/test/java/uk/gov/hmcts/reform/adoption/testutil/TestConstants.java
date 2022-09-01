@@ -17,6 +17,8 @@ public final class TestConstants {
     public static final String ABOUT_TO_SUBMIT_URL = "/callbacks/about-to-submit";
     public static final String SUBMITTED_URL = "/callbacks/submitted";
 
+    public static final String TEST_LA_PORTAL_URL = "/la-portal/kba-case-ref";
+
     private TestConstants() {
     }
 }
