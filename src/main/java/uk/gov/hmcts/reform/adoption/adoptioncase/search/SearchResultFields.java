@@ -22,11 +22,11 @@ public class SearchResultFields implements CCDConfig<CaseData, State, UserRole> 
 
 
     public static final List<SearchField<UserRole>> SEARCH_RESULT_FIELD_LIST = of(
-        SearchField.<UserRole>builder().id(CCD_REFERENCE).label("Case Reference Number").build(),
-        SearchField.<UserRole>builder().id(CHILD_FIRST_NAME).label("Child's First Name").build(),
-        SearchField.<UserRole>builder().id(CHILD_LAST_NAME).label("Child's Last Name").build(),
+        SearchField.<UserRole>builder().id(CCD_REFERENCE).label("Case reference number").build(),
+        SearchField.<UserRole>builder().id(CHILD_FIRST_NAME).label("Child's first name").build(),
+        SearchField.<UserRole>builder().id(CHILD_LAST_NAME).label("Child's last name").build(),
         SearchField.<UserRole>builder().id(CASE_STATE).label("State").build(),
-        SearchField.<UserRole>builder().id(DATE_SUBMITTED).label("Date Submitted").build()
+        SearchField.<UserRole>builder().id(DATE_SUBMITTED).label("Date submitted").build()
     );
 
 
