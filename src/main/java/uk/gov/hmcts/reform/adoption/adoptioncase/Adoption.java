@@ -34,8 +34,12 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.setCallbackHost(System.getenv().getOrDefault("CASE_API_URL", "http://localhost:4550"));
-        configBuilder.caseType(CASE_TYPE, "New adoption case", "Handling of child adoption case");
-        configBuilder.jurisdiction(JURISDICTION, "Family jurisdiction adoption", "Child adoption");
+        /*configBuilder.caseType(CASE_TYPE, "Post Placement", "Post Placement");
+        configBuilder.caseType(CASE_TYPE, "Step Parent", "Step Parent");
+        configBuilder.caseType(CASE_TYPE, "Relinquished", "Relinquished");
+        configBuilder.caseType(CASE_TYPE, "International", "International");*/
+        configBuilder.caseType(CASE_TYPE, "New Adoption case", "New Adoption case");
+        configBuilder.jurisdiction(JURISDICTION, "Adoption", "Child adoption");
 
         configBuilder.grant(Draft, CREATE_READ_UPDATE, CITIZEN);
         configBuilder.grant(Draft, READ, SOLICITOR);
