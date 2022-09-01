@@ -27,15 +27,4 @@ public class CaseNote {
         displayOrder = 1)
     private String note;
 
-    @CCD(
-        label = "User"
-    )
-    private String user;
-
-    @CCD(
-        label = "Date added"
-    )
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
-
 }
