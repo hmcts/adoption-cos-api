@@ -14,7 +14,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.util.List;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -32,8 +32,9 @@ public class Application {
     private LocalDate createdDate;
 
     @CCD(label = "Date submitted to HMCTS", access = { DefaultAccess.class })
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime dateSubmitted;
+    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateSubmitted;
 
     @CCD(label = "Here are your order details", access = { CollectionAccess.class })
     private OrderSummary applicationFeeOrderSummary;
@@ -67,6 +68,6 @@ public class Application {
 
     @JsonIgnore
     public LocalDate getDateOfSubmissionResponse() {
-        return dateSubmitted == null ? null : dateSubmitted.plusDays(SUBMISSION_RESPONSE_DAYS).toLocalDate();
+        return dateSubmitted == null ? null : dateSubmitted.plusDays(SUBMISSION_RESPONSE_DAYS);
     }
 }
