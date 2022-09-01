@@ -30,7 +30,9 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .forRoles(CASE_WORKER)
             .field("applicant1PhoneNumber")
             .field("applicant1EmailAddress")
-            .field("applyingWith");
+            .field("applyingWith")
+            .field("childrenFirstName")
+            .field("childrenLastName");
     }
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
