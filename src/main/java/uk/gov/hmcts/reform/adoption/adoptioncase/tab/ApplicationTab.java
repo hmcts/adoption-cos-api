@@ -16,30 +16,23 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationDetails", "Applicants");
         tabBuilder.showCondition(TabShowCondition.showForState(State.Submitted));
-        addHeaderFields(tabBuilder);
         addApplicant(tabBuilder);
-    }
-
-    public void addHeaderFields(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
-        tabBuilder
-            .field("createdDate")
-            .field("dateSubmitted");
     }
 
     private void addApplicant(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
             .label("LabelApplicant-Heading",
                    "applyingWith=\"alone\"",
-                   "## Applicant")
+                   "### Applicant")
             .label("LabelApplicants-Heading",
                    "applyingWith!=\"alone\"",
-                   "## Applicants")
+                   "### Applicants")
             .label("LabelApplicantAlone-Heading",
                    "applyingWith=\"alone\"",
-                   "### Applicant")
+                   "#### Applicant")
             .label("LabelApplicant1WithSpouseOrPartner-Heading",
                    "applyingWith!=\"alone\"",
-                   "### First Applicant")
+                   "#### First applicant")
             .field("applicant1FirstName")
             .field("applicant1LastName")
             .field("applicant1AdditionalNames")
@@ -52,7 +45,7 @@ public class ApplicationTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1PhoneNumber")
             .label("LabelApplicant2WithSpouseOrPartner-Heading",
                    "applyingWith!=\"alone\"",
-                   "### Second Applicant")
+                   "#### Second applicant")
             .field("applicant2FirstName","applyingWith!=\"alone\"")
             .field("applicant2LastName","applyingWith!=\"alone\"")
             .field("applicant2AdditionalNames","applyingWith!=\"alone\"")
