@@ -17,9 +17,12 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @Builder
 public class CaseNote {
 
-    @CCD(label = "Subject",
-        displayOrder = 0)
-    private String subject;
+    @CCD(
+        label = "Date added",
+        displayOrder = 0
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     @CCD(label = "Note",
         hint = "Include relevant dates and the people involved.",
@@ -27,15 +30,14 @@ public class CaseNote {
         displayOrder = 1)
     private String note;
 
-    @CCD(
-        label = "User"
-    )
-    private String user;
+    @CCD(label = "Subject",
+        displayOrder = 2)
+    private String subject;
 
     @CCD(
-        label = "Date added"
+        label = "User",
+        displayOrder = 3
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private String user;
 
 }
