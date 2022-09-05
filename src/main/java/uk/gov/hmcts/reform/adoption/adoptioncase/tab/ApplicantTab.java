@@ -54,9 +54,9 @@ public class ApplicantTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant2DateOfBirth","applyingWith!=\"alone\"")
             .field("applicant2Occupation","applyingWith!=\"alone\"")
             .field("applicant2Address1","applyingWith!=\"alone\"")
-            .field("applicant1Address2", "applyingWith!=\"alone\"")
+            .field("applicant2Address2", "applyingWith!=\"alone\"")
             .field("applicant2AddressTown","applyingWith!=\"alone\"")
-            .field("applicant1AddressCountry", "applyingWith!=\"alone\"")
+            .field("applicant2AddressCountry", "applyingWith!=\"alone\"")
             .field("applicant2AddressPostCode","applyingWith!=\"alone\"")
             .field("applicant2EmailAddress","applyingWith!=\"alone\"")
             .field("applicant2PhoneNumber","applyingWith!=\"alone\"");
