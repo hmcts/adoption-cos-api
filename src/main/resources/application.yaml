@@ -31,7 +31,8 @@ uk:
       email:
         templateVars:
           signInAdoptionUrl: ${NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL:https://adoption-web.aat.platform.hmcts.net/}
-          adoptionCourtEmail: some.email@justice.gov.uk
+          adoptionCourtEmail: some.email@justice.gov.ukf
+          laPortalURL: ${LA_PORTAL_BASEURL:localhost:3001/la-portal/kba-case-ref}
         templates:
           english:
             TEST_EMAIL: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
@@ -131,3 +132,4 @@ docmosis:
 
 launchdarkly:
   sdk-key: ${LAUNCH_DARKLY_SDK_KEY:}
+

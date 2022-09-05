@@ -7,6 +7,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.SearchResultFields.SEARCH_RESULT_FIELD_LIST;
+
 @Component
 public class WorkBasketResultFields implements CCDConfig<CaseData, State, UserRole> {
 
@@ -15,8 +17,10 @@ public class WorkBasketResultFields implements CCDConfig<CaseData, State, UserRo
 
         configBuilder
             .workBasketResultFields()
-            .caseReferenceField()
-            //.field("applicantHomeAddress", "Applicant's Post Code", "PostCode")
-            .field("applicant1LastName", "Applicant's Last Name");
+            .fields(SEARCH_RESULT_FIELD_LIST);
+        //.caseReferenceField()
+        // .field("applicantHomeAddress", "Applicant's Post Code", "PostCode")
+        //.field("applicant1LastName", "Applicant's Last Name");
+        //.field("childrenFirstName", "Child's name");
     }
 }
