@@ -36,6 +36,11 @@ public class Application {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateSubmitted;
 
+    @CCD(label = "20 week timetable", access = { DefaultAccess.class })
+    //@JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate timetable20Week;
+
     @CCD(label = "Here are your order details", access = { CollectionAccess.class })
     private OrderSummary applicationFeeOrderSummary;
 

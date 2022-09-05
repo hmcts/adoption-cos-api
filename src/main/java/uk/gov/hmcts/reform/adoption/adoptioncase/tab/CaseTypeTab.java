@@ -14,15 +14,27 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        buildStateTab(configBuilder);
+        buildSummaryTab(configBuilder);
         buildConfidentialTab(configBuilder);
         buildDocumentsTab(configBuilder);
     }
 
-    public void buildStateTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("state", "State")
+    public void buildSummaryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("summary", "Summary")
             .forRoles(CASE_WORKER)
-            .label("LabelState", null, "#### Case State:  ${[STATE]}");
+            .label("labelSummary-CaseStatus", null, "### Case status")
+            .field("status")
+            .field("messages")
+            .label("labelSummary-CaseDetails", null, "### Case details")
+            .field("typeOfAdoption")
+            .field("dateSubmitted")
+            .field("timetable20Week")
+            .field("dateChildMovedIn")
+            .field("applicationPayments")
+            .field("familyCourtName")
+            .field("placementOrderCourt")
+            .field("placementOrders")
+            .field("siblings");
     }
 
     private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
