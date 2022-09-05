@@ -201,6 +201,11 @@ public class CaseData {
     )
     private String applicant1SotFullName;
 
+    @CCD(label = "Messages",
+        access = {DefaultAccess.class}
+    )
+    private String messages;
+
     @CCD(label = "Applicant2 statement of truth full name",
         access = {DefaultAccess.class}
     )
