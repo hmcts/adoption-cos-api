@@ -22,8 +22,6 @@ import java.util.UUID;
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
     public static final String MANAGE_DOCUMENT = "Manage documents";
-    public static final String MANAGE_DOCUMENT_PAGE = "Upload documents";
-    public static final String MANAGE_DOCUMENT_PAGE_DESC = "Upload documents DESC";
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -31,8 +29,8 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         new PageBuilder(configBuilder
                             .event(CASEWORKER_UPLOAD_DOCUMENT)
                             .forAllStates()
-                            .name(MANAGE_DOCUMENT_PAGE)
-                            .description(MANAGE_DOCUMENT_PAGE_DESC)
+                            .name(MANAGE_DOCUMENT)
+                            .description(MANAGE_DOCUMENT)
                             .aboutToSubmitCallback(this::aboutToSubmit)
                             .showSummary(false)
                             .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER))
