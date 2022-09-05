@@ -20,8 +20,8 @@ import java.util.UUID;
 @Component
 @Slf4j
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
-    public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-upload-document";
-    public static final String UPLOAD_DOCUMENT = "Upload document";
+    public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
+    public static final String UPLOAD_DOCUMENT = "Manage Documents";
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -33,11 +33,9 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                             .description(UPLOAD_DOCUMENT)
                             .aboutToSubmitCallback(this::aboutToSubmit)
                             .showSummary(false)
-                            .showEventNotes()
                             .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER))
             .page("uploadDocument")
-            .pageLabel(UPLOAD_DOCUMENT)
-            .optional(CaseData::getAdoptionDocument);
+            .pageLabel(UPLOAD_DOCUMENT);
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
