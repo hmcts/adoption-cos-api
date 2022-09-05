@@ -47,7 +47,7 @@ public class Applicant {
     private YesOrNo hasOtherNames;
 
     @CCD(
-        label = "Additional names",
+        label = "Previous names",
         typeOverride = Collection,
         typeParameterOverride = "AdditionalName",
         access = {CollectionAccess.class}
@@ -96,7 +96,7 @@ public class Applicant {
     @CCD(label = "Town or city")
     private String addressTown;
 
-    @CCD(label = "Country")
+    @CCD(label = "County")
     private String addressCountry;
 
     @CCD(label = "Postcode")
