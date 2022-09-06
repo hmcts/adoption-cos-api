@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
@@ -30,7 +31,8 @@ public class AdoptionDocument {
     private String documentEmailContent;
 
     @CCD(
-        label = "Select your document",
+        label = "Document",
+        hint = "The selected file must be smaller than 1GB",
         regex = ".pdf,.tif,.tiff,.jpg,.jpeg,.png"
     )
     private Document documentLink;
@@ -42,8 +44,8 @@ public class AdoptionDocument {
     private LocalDate documentDateAdded;
 
     @CCD(
-        label = "Your comments",
-        hint = "Any relevant information that the court should know about the document"
+        label = "Document description",
+        hint = "Describe what the document is, such as death certificate for the birth father."
     )
     private String documentComment;
 
@@ -68,7 +70,8 @@ public class AdoptionDocument {
 
     @CCD(
         label = "What documents are you uploading",
-        typeOverride = FixedList,
+        hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
+        typeOverride = FixedRadioList,
         typeParameterOverride = "DocumentCategory"
     )
     private DocumentCategory documentCategory;

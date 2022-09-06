@@ -291,7 +291,6 @@ public class CaseData {
     private List<ListValue<AdoptionDocument>> documentsUploaded;
 
     @CCD(
-        label = "Upload Adoption Document",
         access = {DefaultAccess.class}
     )
     private AdoptionDocument adoptionDocument;
