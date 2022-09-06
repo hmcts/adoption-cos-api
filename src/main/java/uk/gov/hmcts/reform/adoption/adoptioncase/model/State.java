@@ -77,4 +77,3 @@ public enum State {
     private final String name;
 
 }
-
