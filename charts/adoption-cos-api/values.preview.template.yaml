@@ -5,8 +5,6 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    #CASE_DATA_STORE_BASEURL: http://ccd-data-store-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
-    #CASE_DOCUMENT_AM_BASEURL: https://ccd-case-document-am-api-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal
     CASE_DATA_STORE_BASEURL: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-data-store-api
     CASE_DOCUMENT_AM_BASEURL: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-case-document-am-api
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
