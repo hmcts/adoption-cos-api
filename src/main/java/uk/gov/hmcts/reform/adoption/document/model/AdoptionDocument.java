@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 
 import java.time.LocalDate;
@@ -65,6 +66,13 @@ public class AdoptionDocument {
     )
     private String documentFileId;
 
+    @CCD(
+        label = "What documents are you uploading",
+        typeOverride = FixedList,
+        typeParameterOverride = "DocumentCategory"
+    )
+    private DocumentCategory documentCategory;
+
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
     public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
@@ -73,7 +81,8 @@ public class AdoptionDocument {
                             @JsonProperty("documentComment") String documentComment,
                             @JsonProperty("documentFileName") String documentFileName,
                             @JsonProperty("documentType") DocumentType documentType,
-                            @JsonProperty("documentFileId") String documentFileId) {
+                            @JsonProperty("documentFileId") String documentFileId,
+                            @JsonProperty("documentCategory") DocumentCategory documentCategory) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
@@ -81,5 +90,6 @@ public class AdoptionDocument {
         this.documentFileName = documentFileName;
         this.documentType = documentType;
         this.documentFileId = documentFileId;
+        this.documentCategory = documentCategory;
     }
 }
