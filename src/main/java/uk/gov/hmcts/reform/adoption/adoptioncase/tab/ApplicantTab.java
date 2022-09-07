@@ -14,16 +14,52 @@ public class ApplicantTab implements CCDConfig<CaseData, State, UserRole> {
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicantDetails", "Applicants");
-
-        addHeaderFields(tabBuilder);
+        final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationDetails", "Applicants");
+        tabBuilder.showCondition(TabShowCondition.showForState(State.Submitted));
+        addApplicant(tabBuilder);
     }
 
-    public void addHeaderFields(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
+    private void addApplicant(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
-            .label("headingApplicantDetails", null, "### Applicants Details")
-            .field("status")
-            .field("message");
+            .label("LabelApplicant-Heading",
+                   "applyingWith=\"alone\"",
+                   "# Applicant")
+            .label("LabelApplicants-Heading",
+                   "applyingWith!=\"alone\"",
+                   "# Applicants")
+            .label("LabelApplicantAlone-Heading",
+                   "applyingWith=\"alone\"",
+                   "### Applicant")
+            .label("LabelApplicant1WithSpouseOrPartner-Heading",
+                   "applyingWith!=\"alone\"",
+                   "### First applicant")
+            .field("applicant1FirstName")
+            .field("applicant1LastName")
+            .field("applicant1AdditionalNames")
+            .field("applicant1DateOfBirth")
+            .field("applicant1Occupation")
+            .field("applicant1Address1")
+            .field("applicant1Address2")
+            .field("applicant1AddressTown")
+            .field("applicant1AddressCountry")
+            .field("applicant1AddressPostCode")
+            .field("applicant1EmailAddress")
+            .field("applicant1PhoneNumber")
+            .label("LabelApplicant2WithSpouseOrPartner-Heading",
+                   "applyingWith!=\"alone\"",
+                   "### Second applicant")
+            .field("applicant2FirstName","applyingWith!=\"alone\"")
+            .field("applicant2LastName","applyingWith!=\"alone\"")
+            .field("applicant2AdditionalNames","applyingWith!=\"alone\"")
+            .field("applicant2DateOfBirth","applyingWith!=\"alone\"")
+            .field("applicant2Occupation","applyingWith!=\"alone\"")
+            .field("applicant2Address1","applyingWith!=\"alone\"")
+            .field("applicant2Address2", "applyingWith!=\"alone\"")
+            .field("applicant2AddressTown","applyingWith!=\"alone\"")
+            .field("applicant2AddressCountry", "applyingWith!=\"alone\"")
+            .field("applicant2AddressPostCode","applyingWith!=\"alone\"")
+            .field("applicant2EmailAddress","applyingWith!=\"alone\"")
+            .field("applicant2PhoneNumber","applyingWith!=\"alone\"");
     }
 
 }

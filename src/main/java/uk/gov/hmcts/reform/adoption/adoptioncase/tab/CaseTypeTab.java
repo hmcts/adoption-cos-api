@@ -31,7 +31,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1PhoneNumber")
             .field("applicant1EmailAddress")
             .field("childrenFirstName")
-            .field("childrenLastName");
+            .field("childrenLastName")
+            .field("applyingWith");
     }
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
