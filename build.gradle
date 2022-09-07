@@ -113,6 +113,11 @@ task functional(type: Test) {
   testClassesDirs = sourceSets.functionalTest.output.classesDirs
   classpath = sourceSets.functionalTest.runtimeClasspath
   failFast = true
+  doLast {
+    exec {
+      commandLine 'yarn', 'test:fullfunctional'
+    }
+  }
 }
 
 task integration(type: Test) {
@@ -128,6 +133,11 @@ task smoke(type: Test) {
   setTestClassesDirs(sourceSets.functionalTest.output.classesDirs)
   setClasspath(sourceSets.functionalTest.runtimeClasspath)
   include "uk/gov/hmcts/reform/adoption/smoke/**"
+  doLast {
+    exec {
+      commandLine 'yarn', 'test:fullfunctional'
+    }
+  }
 }
 
 task highLevelDataSetup(type: JavaExec) {

@@ -265,6 +265,38 @@ withPipeline(type, product, component) {
   onMaster() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
+
+  before('functionalTest:preview') {
+    env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal/"
+  }
+
+  after('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
+
+  before('smoketest:preview') {
+    env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal/"
+  }
+
+  after('smoketest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
+
+  before('smoketest:aat') {
+    env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
+  }
+
+  after('smoketest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
+
+  before('functionalTest:aat') {
+    env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
+  }
+
+  after('functionalTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
 }
 
 def setCommonEnvVariables() {

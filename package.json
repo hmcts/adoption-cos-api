@@ -15,6 +15,35 @@
     "genCaseTypeConsts": "grep -rh \"public static final String\" ./src/main/java/uk/gov/hmcts/reform/adoption/adoptioncase/Adoption.java | sed \"s/    public static final String/export const/\" >> ./build/ts/index.ts",
     "genCitizenEventNameConsts": "grep -rh \"public static final String\" ./src/main/java/uk/gov/hmcts/reform/adoption/citizen/event | sed \"s/    public static final String/export const/\" >> ./build/ts/index.ts",
     "genCommonEventNameConsts": "grep -rh \"public static final String\" ./src/main/java/uk/gov/hmcts/reform/adoption/common/event | sed \"s/    public static final String/export const/\" >> ./build/ts/index.ts",
-    "genSystemEventNameConsts": "grep -rh \"public static final String\" ./src/main/java/uk/gov/hmcts/reform/adoption/systemupdate/event | sed \"s/    public static final String/export const/\" >> ./build/ts/index.ts"
+    "genSystemEventNameConsts": "grep -rh \"public static final String\" ./src/main/java/uk/gov/hmcts/reform/adoption/systemupdate/event | sed \"s/    public static final String/export const/\" >> ./build/ts/index.ts",
+    "test:smoke": "MOCHAWESOME_REPORTFILENAME=smoke codeceptjs run --grep \"${SMOKE_TESTS_SELECTOR:=@smoke-tests}\" --reporter mocha-multi",
+    "test:functional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel --reporter mocha-multi",
+    "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel --reporter mocha-multi",
+    "test:crossbrowser-e2e": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep \"@cross-browser\" ${BROWSER_GROUP:-'--all'} -c saucelabs.conf.js --reporter mocha-multi",
+    "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
+    "test:local": "codeceptjs run-multiple parallel"
+  },
+  "devDependencies": {
+    "@wdio/sauce-service": "^7.16.13",
+    "allure-commandline": "^2.17.2",
+    "axios-debug-log": "^0.8.4",
+    "chai": "^4.3.6",
+    "chai-as-promised": "^7.1.1",
+    "codeceptjs": "^3.3.0",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mocha-junit-reporter": "^2.0.0",
+    "mocha-multi": "^1.1.6",
+    "mochawesome": "^7.1.3",
+    "moment": "^2.29.3",
+    "nodemon": "^2.0.16",
+    "npm-run-all": "^4.1.5",
+    "playwright": "^1.22.2",
+    "webdriverio": "^7.19.7",
+    "puppeteer": "12.0.1",
+    "lodash": "^4.17.21"
+  },
+  "resolutions": {
+    "minimist": "^1.2.6"
   }
 }
