@@ -33,7 +33,6 @@ public class AdoptionDocument {
     @CCD(
         label = "Document",
         hint = "The selected file must be smaller than 1GB"
-        //regex = ".pdf,.tif,.tiff,.jpg,.jpeg,.png"
     )
     private Document documentLink;
 
