@@ -389,6 +389,20 @@ public class CaseData {
     )
     private List<ListValue<AdoptionDocument>> additionalDocumentsCategory;
 
+    @CCD(
+        label = "Notes",
+        typeOverride = Collection,
+        typeParameterOverride = "CaseNote",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<CaseNote>> caseNote;
+
+    @CCD(
+        label = "Add a Case Note",
+        access = {DefaultAccess.class}
+    )
+    private CaseNote note;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);
