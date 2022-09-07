@@ -69,7 +69,7 @@ public class AdoptionDocument {
     private String documentFileId;
 
     @CCD(
-        label = "What documents are you uploading",
+        label = "What document are you uploading?",
         hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
         typeOverride = FixedRadioList,
         typeParameterOverride = "DocumentCategory"

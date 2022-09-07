@@ -9,7 +9,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum DocumentCategory implements HasLabel {
     @JsonProperty("applicationDocuments")
-    APPLICATION_DOCUMENTS("Application Documents"),
+    APPLICATION_DOCUMENTS("Application documents"),
 
     @JsonProperty("courtOrders")
     COURT_ORDERS("Court orders"),
@@ -20,7 +20,7 @@ public enum DocumentCategory implements HasLabel {
     @JsonProperty("statements")
     STATEMENTS("Statements"),
 
-    @JsonProperty("Correspondence")
+    @JsonProperty("correspondence")
     CORRESPONDENCE("Correspondence"),
 
     @JsonProperty("additionalDocuments")
