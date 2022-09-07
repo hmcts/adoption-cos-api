@@ -14,8 +14,8 @@ public enum State {
     Draft("Draft"),
 
     @CCD(
-        name = "Awaiting LA input",
-        label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
+        name = "Submitted",
+        label = "### #${[CASE_REFERENCE]}\n ### Child's Name: ${childrenFirstName} ${childrenLastName}\n"
     )
     Submitted("Awaiting LA input"),
 
