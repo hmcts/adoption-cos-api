@@ -29,7 +29,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("Confidential", "Confidential Details")
             .forRoles(CASE_WORKER)
             .field("applicant1PhoneNumber")
-            .field("applicant1EmailAddress");
+            .field("applicant1EmailAddress")
+            .field("applyingWith");
     }
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
