@@ -16,7 +16,12 @@ import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 
 @Component
@@ -38,13 +43,13 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
         return new PageBuilder(configBuilder
-                            .event(CASEWORKER_UPLOAD_DOCUMENT)
-                            .forAllStates()
-                            .name(MANAGE_DOCUMENT)
-                            .description(MANAGE_DOCUMENT_DESC)
-                            .aboutToSubmitCallback(this::aboutToSubmit)
-                            .showSummary(false)
-                            .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
+                                   .event(CASEWORKER_UPLOAD_DOCUMENT)
+                                   .forAllStates()
+                                   .name(MANAGE_DOCUMENT)
+                                   .description(MANAGE_DOCUMENT_DESC)
+                                   .aboutToSubmitCallback(this::aboutToSubmit)
+                                   .showSummary(false)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
@@ -60,10 +65,94 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             .build();
         caseData.addToDocumentsUploaded(adoptionDocument);
         caseData.sortUploadedDocuments(beforeDetails.getData().getDocumentsUploaded());
+        switch (caseData.getAdoptionDocument().getDocumentCategory()) {
+            case APPLICATION_DOCUMENTS -> {
+                caseData.setApplicationDocumentsCategory(addDocumentToListOfSpecificCategory(
+                    caseData,
+                    caseData.getApplicationDocumentsCategory()
+                ));
+                break;
+            }
+            case COURT_ORDERS -> {
+                caseData.setCourtOrdersDocumentCategory(addDocumentToListOfSpecificCategory(
+                    caseData,
+                    caseData.getCourtOrdersDocumentCategory()
+                ));
+                break;
+            }
+            case REPORTS -> {
+                caseData.setReportsDocumentCategory(addDocumentToListOfSpecificCategory(
+                    caseData,
+                    caseData.getReportsDocumentCategory()
+                ));
+                break;
+            }
+            case STATEMENTS -> {
+                caseData.setStatementsDocumentCategory(addDocumentToListOfSpecificCategory(
+                    caseData,
+                    caseData.getStatementsDocumentCategory()
+                ));
+                break;
+            }
+            case CORRESPONDENCE -> {
+                caseData.setCorrespondenceDocumentCategory(addDocumentToListOfSpecificCategory(
+                    caseData,
+                    caseData.getCorrespondenceDocumentCategory()
+                ));
+                break;
+            }
+            case ADDITIONAL_DOCUMENTS -> {
+                caseData.setAdditionalDocumentsCategory(addDocumentToListOfSpecificCategory(
+                    caseData,
+                    caseData.getAdditionalDocumentsCategory()
+                ));
+                break;
+            }
+            default -> log.info("Document doesn't fall under any provided category");
+        }
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
+    }
+
+    private List<ListValue<AdoptionDocument>> addDocumentToListOfSpecificCategory(CaseData caseData,
+                                                                                  List<ListValue<AdoptionDocument>> adoptionDocumentList) {
+
+        if (isEmpty(adoptionDocumentList)) {
+            log.info("Category List is Empty, adding document to list");
+            List<ListValue<AdoptionDocument>> listValues = new ArrayList<>();
+
+            var listValue = ListValue
+                .<AdoptionDocument>builder()
+                .id("1")
+                .value(caseData.getAdoptionDocument())
+                .build();
+
+            listValues.add(listValue);
+            log.info("{}",listValues);
+            return listValues;
+        } else {
+            log.info("List Size before insertion: {}",adoptionDocumentList.size());
+            AtomicInteger listValueIndex = new AtomicInteger(0);
+            var listValue = ListValue
+                .<AdoptionDocument>builder()
+                .value(caseData.getAdoptionDocument())
+                .build();
+
+            adoptionDocumentList.add(
+                0,
+                listValue
+            ); // always add new note as first element so that it is displayed on top
+
+            adoptionDocumentList.forEach(caseNoteListValue -> caseNoteListValue.setId(String.valueOf(listValueIndex.incrementAndGet())));
+            log.info("List Size after insertion: {}",adoptionDocumentList.size());
+            log.info("{}",adoptionDocumentList);
+        }
+
+        caseData.setAdoptionDocument(null); //Clear note text area as notes value is stored in notes collection
+
+        return adoptionDocumentList;
     }
 }
 
