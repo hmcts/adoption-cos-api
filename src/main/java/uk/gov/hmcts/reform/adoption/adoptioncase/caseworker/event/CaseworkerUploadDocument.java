@@ -24,6 +24,8 @@ import java.util.UUID;
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
     public static final String MANAGE_DOCUMENT = "Manage documents";
+    public static final String MANAGE_DOCUMENT_DESC = "Manage documents desc";
+    public static final String MANAGE_DOCUMENT_PAGE_LABEL = "Manage documents Page";
 
     private final CcdPageConfiguration manageDocuments = new ManageDocuments();
 
@@ -39,7 +41,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                             .event(CASEWORKER_UPLOAD_DOCUMENT)
                             .forAllStates()
                             .name(MANAGE_DOCUMENT)
-                            .description(MANAGE_DOCUMENT)
+                            .description(MANAGE_DOCUMENT_DESC)
                             .aboutToSubmitCallback(this::aboutToSubmit)
                             .showSummary(false)
                             .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));

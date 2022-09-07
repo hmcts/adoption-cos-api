@@ -5,18 +5,16 @@ import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument.MANAGE_DOCUMENT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument.MANAGE_DOCUMENT_PAGE_LABEL;
 
 public class ManageDocuments implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("uploadDocument")
-            .pageLabel(MANAGE_DOCUMENT)
+            .pageLabel(MANAGE_DOCUMENT_PAGE_LABEL)
             .complex(CaseData::getAdoptionDocument)
             .mandatory(AdoptionDocument::getDocumentLink)
             .mandatory(AdoptionDocument::getDocumentComment)
-            //.mandatory(AdoptionDocument::getDocumentType)
-            //.mandatory(AdoptionDocument::getDocumentFileName)
             .mandatory(AdoptionDocument::getDocumentCategory);
     }
 }
