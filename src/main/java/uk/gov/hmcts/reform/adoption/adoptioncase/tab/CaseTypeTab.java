@@ -17,7 +17,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildSummaryTab(configBuilder);
         buildApplicantsTab(configBuilder);
         buildChildDetailsTab(configBuilder);
-        buildConfidentialTab(configBuilder);
         buildDocumentsTab(configBuilder);
     }
 
@@ -146,15 +145,15 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("siblings");
     }
 
-    private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("Confidential", "Confidential Details")
-            .forRoles(CASE_WORKER)
-            .field("applicant1PhoneNumber")
-            .field("applicant1EmailAddress")
-            .field("childrenFirstName")
-            .field("childrenLastName")
-            .field("applyingWith");
-    }
+//    private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+//        configBuilder.tab("Confidential", "Confidential Details")
+//            .forRoles(CASE_WORKER)
+//            .field("applicant1PhoneNumber")
+//            .field("applicant1EmailAddress")
+//            .field("childrenFirstName")
+//            .field("childrenLastName")
+//            .field("applyingWith");
+//    }
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("documents", "Documents")
