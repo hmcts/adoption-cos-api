@@ -18,6 +18,14 @@ public class ManageDocuments implements CcdPageConfiguration {
             .complex(CaseData::getAdoptionDocument)
             .mandatory(AdoptionDocument::getDocumentLink)
             .mandatory(AdoptionDocument::getDocumentComment)
-            .mandatory(AdoptionDocument::getDocumentCategory);
+            .mandatory(AdoptionDocument::getDocumentCategory)
+            .done();
+        pageBuilder.page("uploadDocument")
+            .pageLabel("Who submitted the document?")
+            .complex(CaseData::getAdoptionDocument)
+            .mandatory(AdoptionDocument::getDocumentSubmittedBy)
+            .mandatory(AdoptionDocument::getOtherPartyRole)
+            .mandatory(AdoptionDocument::getOtherPartyName)
+            .done();
     }
 }

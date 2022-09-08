@@ -117,6 +117,17 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             default -> log.info("Document doesn't fall under any provided category");
         }
 
+        log.info("-----------CaseData {}",caseData);
+        if (caseData.getAdoptionDocument().getOtherPartyName() != null || caseData.getAdoptionDocument().getOtherPartyRole() != null) {
+            List<String> errors = new ArrayList<>();
+            errors.add("Test Error");
+            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+                .errors(errors)
+                .build();
+        }
+
+
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
