@@ -15,9 +15,54 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         buildSummaryTab(configBuilder);
+        buildApplicantsTab(configBuilder);
         buildChildDetailsTab(configBuilder);
         buildConfidentialTab(configBuilder);
         buildDocumentsTab(configBuilder);
+    }
+
+    public void buildApplicantsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("applicationDetails", "Applicants")
+            .showCondition(TabShowCondition.showForState(State.Submitted))
+            .label("LabelApplicant-Heading",
+                   "applyingWith=\"alone\"",
+                   "# Applicant")
+            .label("LabelApplicants-Heading",
+                   "applyingWith!=\"alone\"",
+                   "# Applicants")
+            .label("LabelApplicantAlone-Heading",
+                   "applyingWith=\"alone\"",
+                   "### Applicant")
+            .label("LabelApplicant1WithSpouseOrPartner-Heading",
+                   "applyingWith!=\"alone\"",
+                   "### First applicant")
+            .field("applicant1FirstName")
+            .field("applicant1LastName")
+            .field("applicant1AdditionalNames")
+            .field("applicant1DateOfBirth")
+            .field("applicant1Occupation")
+            .field("applicant1Address1")
+            .field("applicant1Address2")
+            .field("applicant1AddressTown")
+            .field("applicant1AddressCountry")
+            .field("applicant1AddressPostCode")
+            .field("applicant1EmailAddress")
+            .field("applicant1PhoneNumber")
+            .label("LabelApplicant2WithSpouseOrPartner-Heading",
+                   "applyingWith!=\"alone\"",
+                   "### Second applicant")
+            .field("applicant2FirstName","applyingWith!=\"alone\"")
+            .field("applicant2LastName","applyingWith!=\"alone\"")
+            .field("applicant2AdditionalNames","applyingWith!=\"alone\"")
+            .field("applicant2DateOfBirth","applyingWith!=\"alone\"")
+            .field("applicant2Occupation","applyingWith!=\"alone\"")
+            .field("applicant2Address1","applyingWith!=\"alone\"")
+            .field("applicant2Address2", "applyingWith!=\"alone\"")
+            .field("applicant2AddressTown","applyingWith!=\"alone\"")
+            .field("applicant2AddressCountry", "applyingWith!=\"alone\"")
+            .field("applicant2AddressPostCode","applyingWith!=\"alone\"")
+            .field("applicant2EmailAddress","applyingWith!=\"alone\"")
+            .field("applicant2PhoneNumber","applyingWith!=\"alone\"");
     }
 
     public void buildChildDetailsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
