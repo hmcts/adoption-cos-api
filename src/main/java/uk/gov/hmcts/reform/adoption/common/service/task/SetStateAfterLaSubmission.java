@@ -17,6 +17,7 @@ public class SetStateAfterLaSubmission implements CaseTask {
     @Override
     public CaseDetails<CaseData, State> apply(final CaseDetails<CaseData, State> caseDetails) {
         caseDetails.setState(LaSubmitted);
+        caseDetails.getData().setStatus(LaSubmitted);
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
 
         return caseDetails;

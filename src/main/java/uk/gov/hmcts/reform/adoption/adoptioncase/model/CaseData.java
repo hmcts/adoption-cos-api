@@ -274,7 +274,7 @@ public class CaseData {
     @CCD(label = "Status",
         access = {DefaultAccess.class}
     )
-    private String status;
+    private State status;
 
     @CCD(
         label = "Documents generated",
