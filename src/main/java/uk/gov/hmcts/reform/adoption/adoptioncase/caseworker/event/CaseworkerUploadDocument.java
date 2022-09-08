@@ -23,14 +23,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 
+/**
+ * This class is used to define the Manage Case Event
+ * This will enable the upload document functionality.
+ * It will also would allow user to specify the Category of document
+ */
 
 @Component
 @Slf4j
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
     public static final String MANAGE_DOCUMENT = "Manage documents";
-    //public static final String MANAGE_DOCUMENT_DESC = "Manage documents desc";
-    //public static final String MANAGE_DOCUMENT_PAGE_LABEL = "Manage documents Page";
 
     private final CcdPageConfiguration manageDocuments = new ManageDocuments();
 
@@ -46,12 +49,15 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                                    .event(CASEWORKER_UPLOAD_DOCUMENT)
                                    .forAllStates()
                                    .name(MANAGE_DOCUMENT)
-                                   //.description(MANAGE_DOCUMENT_DESC)
+                                   .description(MANAGE_DOCUMENT)
                                    .aboutToSubmitCallback(this::aboutToSubmit)
                                    .showSummary(false)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
     }
 
+    /**
+     * This method is used to segregate all the documents post submission into specific pre-defined categories.
+     */
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
         final CaseDetails<CaseData, State> details,
         final CaseDetails<CaseData, State> beforeDetails
@@ -116,6 +122,10 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             .build();
     }
 
+    /**
+     * This method will add the adoption document to list at the top of the list.
+     * Based on whether the list was empty or already had other documents present.
+     */
     private List<ListValue<AdoptionDocument>> addDocumentToListOfSpecificCategory(CaseData caseData,
                                                                                   List<ListValue<AdoptionDocument>> adoptionDocumentList) {
 
@@ -137,15 +147,17 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                 .<AdoptionDocument>builder()
                 .value(caseData.getAdoptionDocument())
                 .build();
-
+            // always add new Adoption Document as first element so that it is displayed on top
             adoptionDocumentList.add(
                 0,
                 listValue
-            ); // always add new note as first element so that it is displayed on top
+            );
 
-            adoptionDocumentList.forEach(caseNoteListValue -> caseNoteListValue.setId(String.valueOf(listValueIndex.incrementAndGet())));
+            adoptionDocumentList.forEach(adoptionDocumentListValue
+                                             -> adoptionDocumentListValue.setId(String.valueOf(listValueIndex.incrementAndGet())));
         }
-        caseData.setAdoptionDocument(null); //Clear note text area as notes value is stored in notes collection
+        //Clear adoption document so that value doesn't persist while navigating to same screen subsequently
+        caseData.setAdoptionDocument(null);
         return adoptionDocumentList;
     }
 }

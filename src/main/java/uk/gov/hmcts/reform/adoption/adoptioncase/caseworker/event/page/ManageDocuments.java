@@ -7,6 +7,9 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument.MANAGE_DOCUMENT;
 
+/**
+ * This class is used to display the Manage Documents screen having all mandatory fields.
+ */
 public class ManageDocuments implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
