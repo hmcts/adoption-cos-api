@@ -33,7 +33,7 @@ public class SetDateSubmitted implements CaseTask {
             || AwaitingHWFDecision.equals(state)*/) {
 
             caseData.getApplication().setDateSubmitted(LocalDate.now());
-            caseData.getApplication().setTimetable20week(LocalDate.now().plusWeeks(20));
+            caseData.getApplication().setTimetable20Week(LocalDate.now().plusWeeks(20));
             caseData.setDueDate(caseData.getApplication().getDateOfSubmissionResponse());
         }
 
