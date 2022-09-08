@@ -272,7 +272,7 @@
     "solicitorHelpingWithApplication": null,
     "solicitorName": null,
     "solicitorPhoneNumber": null,
-    "status": null,
+    "status": "Draft",
     "typeOfAdoption": null
   },
   "errors": null,
