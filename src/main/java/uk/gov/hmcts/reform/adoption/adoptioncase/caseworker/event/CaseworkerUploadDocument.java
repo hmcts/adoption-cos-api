@@ -118,7 +118,8 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         }
 
         log.info("-----------CaseData {}",caseData);
-        if (caseData.getAdoptionDocument().getOtherPartyName() != null || caseData.getAdoptionDocument().getOtherPartyRole() != null) {
+        if (caseData.getAdoptionDocument().getOtherParty().getOtherPartyName() != null
+            || caseData.getAdoptionDocument().getOtherParty().getOtherPartyRole() != null) {
             List<String> errors = new ArrayList<>();
             errors.add("Test Error");
             return AboutToStartOrSubmitResponse.<CaseData, State>builder()

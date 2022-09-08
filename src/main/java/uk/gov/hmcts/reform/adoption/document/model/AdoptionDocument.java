@@ -3,12 +3,14 @@ package uk.gov.hmcts.reform.adoption.document.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherParty;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmittedBy;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
@@ -85,15 +87,11 @@ public class AdoptionDocument {
     )
     private DocumentSubmittedBy documentSubmittedBy;
 
+    @JsonUnwrapped
     @CCD(
-        label = "Role"
+        label = "Who submitted the document?"
     )
-    private String otherPartyRole;
-
-    @CCD(
-        label = "Name"
-    )
-    private String otherPartyName;
+    private OtherParty otherParty;
 
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
@@ -106,8 +104,7 @@ public class AdoptionDocument {
                             @JsonProperty("documentFileId") String documentFileId,
                             @JsonProperty("documentCategory") DocumentCategory documentCategory,
                             @JsonProperty("documentSubmittedBy") DocumentSubmittedBy documentSubmittedBy,
-                            @JsonProperty("otherPartyRole") String otherPartyRole,
-                            @JsonProperty("otherPartyName") String otherPartyName) {
+                            @JsonProperty("otherParty") OtherParty otherParty) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
@@ -117,7 +114,6 @@ public class AdoptionDocument {
         this.documentFileId = documentFileId;
         this.documentCategory = documentCategory;
         this.documentSubmittedBy = documentSubmittedBy;
-        this.otherPartyRole = otherPartyRole;
-        this.otherPartyName = otherPartyName;
+        this.otherParty = otherParty;
     }
 }
