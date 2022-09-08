@@ -51,7 +51,7 @@ public class Children {
     private SortedSet<Nationality> nationality;
 
     @CCD(
-        label = "Nationality",
+        label = "Nationality (other)",
         typeOverride = Collection,
         typeParameterOverride = "OtherNationality",
         access = {SystemUpdateCollectionAccess.class}
@@ -65,6 +65,6 @@ public class Children {
     private String lastNameAfterAdoption;
 
 
-    @CCD(label = "Sex at birth")
+    @CCD(label = "Sex at birth (other)")
     private String otherSexAtBirth;
 }

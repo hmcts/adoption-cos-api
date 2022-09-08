@@ -63,7 +63,7 @@ public class Parent {
     @CCD(label = "Town or city")
     private String addressTown;
 
-    @CCD(label = "County")
+    @CCD(label = "County, district, state or province")
     private String addressCounty;
 
     @CCD(label = "Post code")
