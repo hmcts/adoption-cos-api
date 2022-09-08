@@ -29,8 +29,8 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
     public static final String MANAGE_DOCUMENT = "Manage documents";
-    public static final String MANAGE_DOCUMENT_DESC = "Manage documents desc";
-    public static final String MANAGE_DOCUMENT_PAGE_LABEL = "Manage documents Page";
+    //public static final String MANAGE_DOCUMENT_DESC = "Manage documents desc";
+    //public static final String MANAGE_DOCUMENT_PAGE_LABEL = "Manage documents Page";
 
     private final CcdPageConfiguration manageDocuments = new ManageDocuments();
 
@@ -46,7 +46,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                                    .event(CASEWORKER_UPLOAD_DOCUMENT)
                                    .forAllStates()
                                    .name(MANAGE_DOCUMENT)
-                                   .description(MANAGE_DOCUMENT_DESC)
+                                   //.description(MANAGE_DOCUMENT_DESC)
                                    .aboutToSubmitCallback(this::aboutToSubmit)
                                    .showSummary(false)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
@@ -120,7 +120,6 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                                                                                   List<ListValue<AdoptionDocument>> adoptionDocumentList) {
 
         if (isEmpty(adoptionDocumentList)) {
-            log.info("Category List is Empty, adding document to list");
             List<ListValue<AdoptionDocument>> listValues = new ArrayList<>();
 
             var listValue = ListValue
@@ -130,10 +129,9 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                 .build();
 
             listValues.add(listValue);
-            log.info("{}",listValues);
+            caseData.setAdoptionDocument(null);
             return listValues;
         } else {
-            log.info("List Size before insertion: {}",adoptionDocumentList.size());
             AtomicInteger listValueIndex = new AtomicInteger(0);
             var listValue = ListValue
                 .<AdoptionDocument>builder()
@@ -146,12 +144,8 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             ); // always add new note as first element so that it is displayed on top
 
             adoptionDocumentList.forEach(caseNoteListValue -> caseNoteListValue.setId(String.valueOf(listValueIndex.incrementAndGet())));
-            log.info("List Size after insertion: {}",adoptionDocumentList.size());
-            log.info("{}",adoptionDocumentList);
         }
-
         caseData.setAdoptionDocument(null); //Clear note text area as notes value is stored in notes collection
-
         return adoptionDocumentList;
     }
 }

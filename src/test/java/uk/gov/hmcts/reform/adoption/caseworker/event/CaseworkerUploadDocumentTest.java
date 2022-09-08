@@ -11,6 +11,7 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -19,7 +20,9 @@ import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,10 +49,66 @@ public class CaseworkerUploadDocumentTest {
 
 
     @Test
-    public void shouldSuccessfullyAddCaseNoteToCaseDataWhenThereAreNoExistingCaseNotes() {
+    public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategory() {
         var caseDetails = getCaseDetails();
+        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getAdoptionDocument()).isNotNull();
+        assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategoryWhenThereAreExistingEntries() {
+        var caseDetails = getCaseDetails();
+        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
+        ListValue<AdoptionDocument> listValue = ListValue.<AdoptionDocument>builder()
+            .id("1")
+            .value(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS))
+            .build();
+        List<ListValue<AdoptionDocument>> applicationDocumentsCategoryList = new ArrayList<>();
+        applicationDocumentsCategoryList.add(listValue);
+        caseDetails.getData().setApplicationDocumentsCategory(applicationDocumentsCategoryList);
+        var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyAddAdoptionDocumentWithCourtOrdersDocumentCategory() {
+        var caseDetails = getCaseDetails();
+        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.COURT_ORDERS));
+        var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getCourtOrdersDocumentCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyAddAdoptionDocumentWithReportsDocumentCategory() {
+        var caseDetails = getCaseDetails();
+        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.REPORTS));
+        var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getReportsDocumentCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyAddAdoptionDocumentWithStatementsDocumentCategory() {
+        var caseDetails = getCaseDetails();
+        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.STATEMENTS));
+        var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getStatementsDocumentCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyAddAdoptionDocumentWithCorrespondenceDocumentCategory() {
+        var caseDetails = getCaseDetails();
+        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.CORRESPONDENCE));
+        var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getCorrespondenceDocumentCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyAddAdoptionDocumentWithAdditionalDocumentCategory() {
+        var caseDetails = getCaseDetails();
+        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.ADDITIONAL_DOCUMENTS));
+        var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getAdditionalDocumentsCategory()).isNotNull();
     }
 
     public static ConfigBuilderImpl<CaseData, State, UserRole> createCaseDataConfigBuilder() {
@@ -64,19 +123,20 @@ public class CaseworkerUploadDocumentTest {
     private CaseDetails<CaseData, State> getCaseDetails() {
         final var details = new CaseDetails<CaseData, State>();
         final var data = caseData();
-        AdoptionDocument adoptionDocument =
-            AdoptionDocument.builder()
-            .documentLink(Document
-                              .builder()
-                              .url("TEST URL")
-                              .build())
-            .documentComment("TEST_COMMENT")
-            .documentCategory(DocumentCategory.APPLICATION_DOCUMENTS)
-            .build();
-        data.setAdoptionDocument(adoptionDocument);
         details.setData(data);
         details.setId(1L);
         return details;
+    }
+
+    private AdoptionDocument setAdoptionDocumentCategory(DocumentCategory category) {
+        return AdoptionDocument.builder()
+                .documentLink(Document
+                                  .builder()
+                                  .url("TEST URL")
+                                  .build())
+                .documentComment("TEST_COMMENT")
+                .documentCategory(category)
+                .build();
     }
 
     @SuppressWarnings({"unchecked"})
