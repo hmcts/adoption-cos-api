@@ -72,7 +72,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("childrenFirstName")
             .field("childrenLastName")
             .field("childrenDateOfBirth")
-            .field("childrenSexAtBirt")
+            .field("childrenSexAtBirth")
             .field("childrenOtherSexAtBirth")
             .field("childrenNationality")
             .field("additionalNationalities")
