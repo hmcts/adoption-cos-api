@@ -31,10 +31,16 @@ public class Application {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
 
-    @CCD(label = "Date submitted to HMCTS", access = { DefaultAccess.class })
+    @CCD(label = "Date submitted", access = { DefaultAccess.class })
     //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateSubmitted;
+
+
+    @CCD(label = "20 week timetable", access = { DefaultAccess.class })
+    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate timetable20week;
 
     @CCD(label = "20 week timetable", access = { DefaultAccess.class })
     //@JsonFormat(pattern = "yyyy-MM-dd")

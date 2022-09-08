@@ -20,28 +20,28 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 @Builder
 public class PlacementOrder {
-    @CCD(label = "Placement Order id")
+    @CCD(label = "Order ID")
     private String placementOrderId;
 
-    @CCD(label = "Placement Order type",
+    @CCD(label = "Type of order",
         access = {SystemUpdateAccess.class},
         typeOverride = FixedList,
         typeParameterOverride = "PlacementOrderType")
     private PlacementOrderType placementOrderType;
 
-    @CCD(label = "Placement Order Number")
+    @CCD(label = "Type of order")
+    private String otherPlacementOrderType;
+
+    @CCD(label = "Order case or serial number")
     private String placementOrderNumber;
 
-    @CCD(label = "Placement Order Court")
+    @CCD(label = "Court")
     private String placementOrderCourt;
 
     @CCD(
-        label = "Placement Order Date",
+        label = "Date",
         access = {SystemUpdateAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate placementOrderDate;
-
-    @CCD(label = "Other Placement Order type")
-    private String otherPlacementOrderType;
 }

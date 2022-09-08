@@ -17,21 +17,21 @@ public class Sibling {
     @CCD(label = "Sibling Id")
     private String siblingId;
 
-    @CCD(label = "Sibling Relation",
+    @CCD(label = "Relationship",
         access = {SystemUpdateAccess.class},
         typeOverride = FixedList,
         typeParameterOverride = "SiblingRelation")
     private SiblingRelation siblingRelation;
 
-    @CCD(label = "Sibling Placement Order Type",
+    @CCD(label = "Type of order",
         access = {SystemUpdateAccess.class},
         typeOverride = FixedList,
         typeParameterOverride = "SiblingPoType")
     private SiblingPoType siblingPoType;
 
-    @CCD(label = "Sibling Placement Other Order Type")
+    @CCD(label = "Type of order")
     private String siblingPlacementOtherType;
 
-    @CCD(label = "Sibling Placement Order Number")
+    @CCD(label = "Order case or serial number")
     private String siblingPoNumber;
 }
