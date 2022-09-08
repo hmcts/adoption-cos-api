@@ -272,7 +272,7 @@
     "solicitorHelpingWithApplication": null,
     "solicitorName": null,
     "solicitorPhoneNumber": null,
-    "status": "Draft",
+    "status": null,
     "typeOfAdoption": null
   },
   "errors": ["Statement of truth must be accepted by the applicant1","Applicant1SotFullName cannot be empty or null","Statement of truth must be accepted by the applicant2","Applicant2SotFullName cannot be empty or null"],
