@@ -133,11 +133,6 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
-    @JsonUnwrapped(prefix = "additional")
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private AdoptionAgencyOrLocalAuthority adopAgency = new AdoptionAgencyOrLocalAuthority();
-
     @CCD(
         label = "Sibling court cases",
         typeOverride = Collection,
