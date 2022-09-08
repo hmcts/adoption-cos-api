@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 
 @Component
 public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
@@ -18,6 +19,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildApplicantsTab(configBuilder);
         buildChildDetailsTab(configBuilder);
         buildDocumentsTab(configBuilder);
+        buildConfidentialTab(configBuilder);
     }
 
     public void buildApplicantsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -151,5 +153,15 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field(CaseData::getDocumentsGenerated)
             .field(CaseData::getApplicant1DocumentsUploaded)
             .field(CaseData::getDocumentsUploaded);
+    }
+
+    private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("Confidential", "Confidential Details")
+            .forRoles(SYSTEM_UPDATE)
+            .field("applicant1PhoneNumber")
+            .field("applicant1EmailAddress")
+            .field("childrenFirstName")
+            .field("childrenLastName")
+            .field("applyingWith");
     }
 }
