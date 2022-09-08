@@ -80,7 +80,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("childrenAdditionalNationalities")
             .field("childrenFirstNameAfterAdoption")
             .field("childrenLastNameAfterAdoption")
-            .label("labelSummary-adoptionAgency", "hasAnotherAdopAgencyOrLA==\"Yes\"", "#### Agencies/Local Authorities Details")
+            .label("labelSummary-adoptionAgency", "hasAnotherAdopAgencyOrLA=\"Yes\"", "#### Agencies/Local Authorities Details")
             .label("labelSummary-adoptionAgencySub", null, "### Adoption Agency")
             .field("adopAgencyOrLaName")
             .field("adopAgencyOrLaContactName")
