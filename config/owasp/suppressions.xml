@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
     <suppress>
-        <notes><![CDATA[spring-security-rsa-1.0.10.RELEASE.jar (pkg:maven/org.springframework.security/spring-security-rsa@1.0.10.RELEASE, cpe:2.3:a:vmware:spring_security:1.0.10:release:*:*:*:*:*:*)]]></notes>
+        <notes>
+            <![CDATA[spring-security-rsa-1.0.10.RELEASE.jar (pkg:maven/org.springframework.security/spring-security-rsa@1.0.10.RELEASE, cpe:2.3:a:vmware:spring_security:1.0.10:release:*:*:*:*:*:*)]]></notes>
         <cve>CVE-2022-22978</cve>
         <cve>CVE-2022-22976</cve>
     </suppress>
@@ -16,10 +17,8 @@
         <cve>CVE-2016-1000027</cve>
     </suppress>
     <suppress>
-      <notes><![CDATA[
-       file name: snakeyaml-1.30.jar
-       ]]></notes>
-      <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-      <cve>CVE-2022-25857</cve>
+        <notes><![CDATA[
+      snakeyaml_project:snakeyaml ]]></notes>
+        <cve>CVE-2022-25857</cve>
     </suppress>
 </suppressions>

@@ -16,4 +16,10 @@ public final class TabShowCondition {
             .map(State::getName)
             .collect(joining("\" AND [STATE]!=\"", "[STATE]!=\"", "\""));
     }
+
+    public static String showForState(final State... states) {
+        return Stream.of(states)
+            .map(State::name)
+            .collect(joining("\" OR [STATE]=\"", "[STATE]=\"", "\""));
+    }
 }
