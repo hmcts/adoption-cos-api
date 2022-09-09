@@ -114,7 +114,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthMotherAddress2")
             .field("birthMotherAddress3")
             .field("birthMotherAddressTown")
-            .field("birthMotherAddressCounty")
+            .field("birthMotherAddressCountry")
             .field("birthMotherAddressPostCode")
             .field("birthMotherLastAddressDate")
             .label("labelSummary-birthFather", null, "#### Birth Father")
@@ -125,7 +125,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthFatherAddress2")
             .field("birthFatherAddress3")
             .field("birthFatherAddressTown")
-            .field("birthMotherAddressCounty")
+            .field("birthMotherAddressCountry")
             .field("birthFatherAddressPostCode")
             .field("birthFatherLastAddressDate");
     }
