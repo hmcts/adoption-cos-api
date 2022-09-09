@@ -10,12 +10,10 @@ import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
-import uk.gov.hmcts.reform.adoption.document.DocumentSubmittedBy;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 
 import java.time.LocalDate;
 
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
@@ -77,13 +75,13 @@ public class AdoptionDocument {
     )
     private DocumentCategory documentCategory;
 
-    @CCD(
+    /*@CCD(
         label = "Who submitted the document?",
         //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
         typeOverride = DynamicRadioList,
         typeParameterOverride = "DocumentSubmittedBy"
     )
-    private DocumentSubmittedBy documentSubmittedBy;
+    private DocumentSubmittedBy documentSubmittedBy;*/
 
     /*@JsonUnwrapped
     @CCD(
@@ -100,8 +98,7 @@ public class AdoptionDocument {
                             @JsonProperty("documentFileName") String documentFileName,
                             @JsonProperty("documentType") DocumentType documentType,
                             @JsonProperty("documentFileId") String documentFileId,
-                            @JsonProperty("documentCategory") DocumentCategory documentCategory,
-                            @JsonProperty("documentSubmittedBy") DocumentSubmittedBy documentSubmittedBy) {
+                            @JsonProperty("documentCategory") DocumentCategory documentCategory) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
@@ -110,6 +107,5 @@ public class AdoptionDocument {
         this.documentType = documentType;
         this.documentFileId = documentFileId;
         this.documentCategory = documentCategory;
-        this.documentSubmittedBy = documentSubmittedBy;
     }
 }
