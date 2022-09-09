@@ -20,7 +20,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 @Builder
 public class PlacementOrder {
-    @CCD(label = "Order ID")
+    @CCD(label = "Order ID", showCondition = "placementOrderNumber=\"\"")
     private String placementOrderId;
 
     @CCD(label = "Type of order",

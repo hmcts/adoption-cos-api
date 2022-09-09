@@ -14,7 +14,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 @NoArgsConstructor
 @Builder
 public class Sibling {
-    @CCD(label = "Sibling Id")
+    @CCD(label = "Sibling Id", showCondition = "siblingPoNumber=\"\"")
     private String siblingId;
 
     @CCD(label = "Relationship",
