@@ -47,7 +47,8 @@ def secrets = [
     secret('idam-system-user-name', 'IDAM_SYSTEM_UPDATE_USERNAME'),
     secret('idam-system-user-password', 'IDAM_SYSTEM_UPDATE_PASSWORD'),
     secret('s2s-secret-cos-api', 'S2S_SECRET'),
-    secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_KEY')
+    secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_KEY'),
+    secret("launchDarkly-sdk-key", "LAUNCH_DARKLY_SDK_KEY")
   ]
 ]
 
@@ -189,6 +190,9 @@ withPipeline(type, product, component) {
   }
 
   onPR {
+
+    //env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
     env.ENVIRONMENT="preview"
     env.CASE_API_URL = "http://adoption-cos-api-pr-${CHANGE_ID}-java"
     env.CCD_DEF_NAME = "preview"

@@ -13,7 +13,8 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
@@ -52,7 +53,7 @@ public class CaseData {
     private String otherApplicantRelation;
 
     @CCD(
-        label = "Child moved in date",
+        label = "Date child moved in",
         access = {DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -70,65 +71,73 @@ public class CaseData {
 
     @JsonUnwrapped(prefix = "children")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class})
     private Children children = new Children();
 
     @JsonUnwrapped(prefix = "birthMother")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {SystemUpdateAccess.class})
     private Parent birthMother = new Parent();
 
     @JsonUnwrapped(prefix = "birthFather")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {SystemUpdateAccess.class})
     private Parent birthFather = new Parent();
 
     @JsonUnwrapped(prefix = "otherParent")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {SystemUpdateAccess.class})
     private Parent otherParent = new Parent();
 
     @CCD(
         label = "Placement orders",
         typeOverride = Collection,
         typeParameterOverride = "PlacementOrder",
-        access = {CollectionAccess.class}
+        access = {SystemUpdateCollectionAccess.class}
     )
     private List<ListValue<PlacementOrder>> placementOrders;
 
     @CCD(
         label = "Add Another Placement Order",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private YesOrNo addAnotherPlacementOrder;
 
     @CCD(label = "Selected Placement Order Id",
-        access = {DefaultAccess.class})
+        access = {SystemUpdateAccess.class})
     String selectedPlacementOrderId;
 
-    @JsonUnwrapped
+
+    @JsonUnwrapped(prefix = "child")
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
-    private SocialWorker socialWorker = new SocialWorker();
+    private SocialWorker childSocialWorker = new SocialWorker();
+
+    @JsonUnwrapped(prefix = "applicant")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private SocialWorker applicantSocialWorker = new SocialWorker();
 
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
     private Solicitor solicitor = new Solicitor();
 
-    @CCD(
-        label = "Adoption Agency Or LA list",
-        typeOverride = Collection,
-        typeParameterOverride = "AdoptionAgencyOrLocalAuthority",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<AdoptionAgencyOrLocalAuthority>> adopAgencyOrLAs;
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private LocalAuthority localAuthority = new LocalAuthority();
+
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
     @CCD(
         label = "Siblings",
         typeOverride = Collection,
         typeParameterOverride = "Sibling",
-        access = {CollectionAccess.class}
+        access = {SystemUpdateCollectionAccess.class}
     )
     private List<ListValue<Sibling>> siblings;
 
@@ -144,39 +153,34 @@ public class CaseData {
     private String selectedAdoptionAgencyId;
 
     @CCD(label = "Has Siblings",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private String hasSiblings;
 
-    @CCD(label = "Add Another Siblings",
-        access = {DefaultAccess.class}
-    )
-    private String hasPoForSiblings;
-
-    @CCD(label = "Has Placement order For Siblings Not Sure Reason",
-        access = {DefaultAccess.class}
-    )
-    private String hasPoForSiblingsNotSureReason;
-
     @CCD(
         label = "Add Another Sibling Placement Order",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private YesOrNo addAnotherSiblingPlacementOrder;
 
     @CCD(label = "Selected Sibling ID",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private String selectedSiblingId;
 
-    @CCD(label = "Selected Sibling PO ID",
-        access = {DefaultAccess.class}
+    @CCD(label = "Selected Sibling Relation",
+        access = {SystemUpdateAccess.class}
     )
-    private String selectedSiblingPoId;
+    private String selectedSiblingRelation;
+
+    @CCD(label = "Selected Sibling Po Type",
+        access = {SystemUpdateAccess.class}
+    )
+    private String selectedSiblingPoType;
 
     @CCD(
         label = "hyphenatedCaseReference",
-        access = {CaseworkerAccess.class}
+        access = {DefaultAccess.class}
     )
     private String hyphenatedCaseRef;
 
@@ -202,6 +206,29 @@ public class CaseData {
     )
     private String applicant2SotFullName;
 
+
+    @CCD(label = "Local authority worker statement of truth full name",
+        access = {SystemUpdateAccess.class}
+    )
+    private String laSotFullName;
+
+    @CCD(label = "Local authority worker job title",
+        access = {SystemUpdateAccess.class}
+    )
+    private String laSotJobtitle;
+
+
+    @CCD(label = "Local authority worker job title",
+        access = {SystemUpdateAccess.class}
+    )
+    private String laNameSot;
+
+    @CCD(
+        label = "LA worker believes that the facts stated in this application are true.",
+        access = {SystemUpdateAccess.class}
+    )
+    private YesOrNo laStatementOfTruth;
+
     @CCD(
         label = "Due Date",
         access = {DefaultAccess.class}
@@ -218,6 +245,26 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String pcqId;
+
+    @CCD(label = "Prospective parents social worker",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerDetails;
+
+    @CCD(label = "Messages",
+        access = {DefaultAccess.class}
+    )
+    private String message;
+
+    @CCD(label = "Type of adoption",
+        access = {DefaultAccess.class}
+    )
+    private String typeOfAdoption;
+
+    @CCD(label = "Case status",
+        access = {DefaultAccess.class}
+    )
+    private String status;
 
     @CCD(
         label = "Documents generated",
@@ -261,11 +308,39 @@ public class CaseData {
     )
     private String applicant1CannotUpload;
 
+
     @CCD(
-        label = "Applicant can not upload",
+        label = "LA can not upload",
+        access = { SystemUpdateAccess.class }
+    )
+    private String laCannotUpload;
+
+    @CCD(
+        label = "LA cannot upload supporting documents",
+        access = { SystemUpdateAccess.class }
+    )
+    private Set<DocumentType> laCannotUploadSupportingDocument;
+
+
+    @CCD(
+        label = "Documents uploaded",
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionDocument",
+        access = { SystemUpdateAccess.class }
+    )
+    private List<ListValue<AdoptionDocument>> laDocumentsUploaded;
+
+    @CCD(
+        label = "Find Family Court",
         access = {DefaultAccess.class}
     )
     private YesOrNo findFamilyCourt;
+
+    @CCD(
+        label = "Placement order court name",
+        access = {DefaultAccess.class}
+    )
+    private String placementOrderCourt;
 
     @CCD(
         label = "Family court name",
@@ -278,6 +353,21 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String familyCourtEmailId;
+
+
+    @CCD(
+        label = "Notes",
+        typeOverride = Collection,
+        typeParameterOverride = "CaseNote",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<CaseNote>> caseNote;
+
+    @CCD(
+        label = "Add a Case Note",
+        access = {DefaultAccess.class}
+    )
+    private CaseNote note;
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {

@@ -5,12 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
-import java.util.List;
-
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 
 @Data
 @AllArgsConstructor
@@ -20,17 +17,21 @@ public class Sibling {
     @CCD(label = "Sibling Id")
     private String siblingId;
 
-    @CCD(label = "Sibling First Name")
-    private String siblingFirstName;
+    @CCD(label = "Sibling Relation",
+        access = {SystemUpdateAccess.class},
+        typeOverride = FixedList,
+        typeParameterOverride = "SiblingRelation")
+    private SiblingRelation siblingRelation;
 
-    @CCD(label = "Sibling Last Name")
-    private String siblingLastNames;
+    @CCD(label = "Sibling Placement Order Type",
+        access = {SystemUpdateAccess.class},
+        typeOverride = FixedList,
+        typeParameterOverride = "SiblingPoType")
+    private SiblingPoType siblingPoType;
 
-    @CCD(
-        label = "Sibling Placement orders",
-        typeOverride = Collection,
-        typeParameterOverride = "PlacementOrder",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<PlacementOrder>> siblingPlacementOrders;
+    @CCD(label = "Sibling Placement Other Order Type")
+    private String siblingPlacementOtherType;
+
+    @CCD(label = "Sibling Placement Order Number")
+    private String siblingPoNumber;
 }

@@ -1,12 +1,13 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.validation;
 
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
+//import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
+//import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrder;
+//import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 
 import java.time.LocalDate;
@@ -40,61 +41,50 @@ public final class ValidationUtil {
             notNull(caseData.getDateChildMovedIn(), "DateChildMovedIn"),
             validateDateChildMovedIn(caseData.getDateChildMovedIn(), "DateChildMovedIn"),
             validateApplicant1(caseData),
-            validateApplicant2(applyingAlone, caseData),
-            validateChildren(caseData.getChildren()),
+            validateApplicant2(applyingAlone, caseData)
+        /*    validateChildren(caseData.getChildren()),
             notNull(caseData.getBirthMother().getFirstName(), "BirthMotherFirstName"),
             notNull(caseData.getBirthMother().getLastName(), "BirthMotherLastName"),
             validateBirthFather(caseData.getBirthFather()),
             validateOtherParent(caseData.getOtherParent()),
             validatePlacementOrders(caseData.getPlacementOrders()),
-            validateSocialWorker(caseData.getSocialWorker()),
-            validateAdoptAgencyOrLAsContactEmail(caseData.getAdopAgencyOrLAs(), caseData.getHasAnotherAdopAgencyOrLA()),
-            validateAdoptAgencyOrLAsPhoneNumber(caseData.getAdopAgencyOrLAs(), caseData.getHasAnotherAdopAgencyOrLA())
+            validateSocialWorker(caseData.getChildSocialWorker()),
+            validateLocalAuthorityAndAdoptionAgency(
+                caseData.getLocalAuthority(),
+                caseData.getAdopAgencyOrLA(),
+                caseData.getHasAnotherAdopAgencyOrLA()
+            )*/
         );
     }
 
-    static List<String> validateAdoptAgencyOrLAsContactEmail(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs,
-                                                             YesOrNo hasAnotherAdopAgencyOrLA) {
-        boolean adoptAgencyOrLAsContactEmailNotPresent = nonNull(adoptAgencyOrLAs);
-        if (hasAnotherAdopAgencyOrLA != null && hasAnotherAdopAgencyOrLA.equals(YesOrNo.YES)) {
-            adoptAgencyOrLAsContactEmailNotPresent = adoptAgencyOrLAsContactEmailNotPresent && adoptAgencyOrLAs
-                .stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaContactEmail()));
-        } else {
-            adoptAgencyOrLAsContactEmailNotPresent = adoptAgencyOrLAsContactEmailNotPresent && adoptAgencyOrLAs.stream()
-                .findFirst().stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaContactEmail()));
-        }
-
-        return adoptAgencyOrLAsContactEmailNotPresent ? List.of("AdoptAgencyOrLaContactEmail" + EMPTY) : emptyList();
-    }
-
-    static List<String> validateAdoptAgencyOrLAsPhoneNumber(List<ListValue<AdoptionAgencyOrLocalAuthority>> adoptAgencyOrLAs,
-                                                            YesOrNo hasAnotherAdopAgencyOrLA) {
-        boolean adoptAgencyOrLAsPhoneNumberNotPresent = nonNull(adoptAgencyOrLAs);
-
+    public static List<String> validateLocalAuthorityAndAdoptionAgency(LocalAuthority localAuthority,
+                                                                       AdoptionAgencyOrLocalAuthority adopAgencyOrLA,
+                                                                       YesOrNo hasAnotherAdopAgencyOrLA) {
+        List<String> list = flattenLists(
+            notNull(localAuthority.getLocalAuthorityContactEmail(), "LocalAuthorityEmail"),
+            notNull(localAuthority.getLocalAuthorityPhoneNumber(), "LocalAuthorityPhoneNumber")
+        );
         if (hasAnotherAdopAgencyOrLA.equals(YesOrNo.YES)) {
-            adoptAgencyOrLAsPhoneNumberNotPresent = adoptAgencyOrLAsPhoneNumberNotPresent && adoptAgencyOrLAs
-                .stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaPhoneNumber()));
-        } else {
-            adoptAgencyOrLAsPhoneNumberNotPresent = adoptAgencyOrLAsPhoneNumberNotPresent && adoptAgencyOrLAs.stream()
-                .findFirst().stream().anyMatch(adoptAgencyOrLA -> isEmpty(adoptAgencyOrLA.getValue().getAdopAgencyOrLaPhoneNumber()));
+            list.addAll(flattenLists(
+                notNull(adopAgencyOrLA.getAdopAgencyOrLaContactEmail(), "AdoptionAgencyOrLocalAuthorityEmail"),
+                notNull(adopAgencyOrLA.getAdopAgencyOrLaPhoneNumber(), "AdoptionAgencyOrLocalAuthorityPhoneNumber")
+            ));
         }
-
-        return adoptAgencyOrLAsPhoneNumberNotPresent ? List.of("AdoptAgencyOrLaPhoneNumber" + EMPTY) : emptyList();
+        return list;
     }
 
-    private static List<String> validateSocialWorker(SocialWorker socialWorker) {
+    public static List<String> validateSocialWorker(SocialWorker socialWorker) {
         return flattenLists(
             notNull(socialWorker.getSocialWorkerEmail(), "SocialWorkerEmail"),
             notNull(socialWorker.getSocialWorkerPhoneNumber(), "SocialWorkerPhoneNumber")
         );
-
     }
 
-    private static List<String> validatePlacementOrders(List<ListValue<PlacementOrder>> placementOrders) {
+    /*private static List<String> validatePlacementOrders(List<ListValue<PlacementOrder>> placementOrders) {
         boolean emptyPlacementOrderNumber = nonNull(placementOrders) && placementOrders
             .stream().anyMatch(placementOrderListValue -> isEmpty(placementOrderListValue.getValue().getPlacementOrderNumber()));
         return emptyPlacementOrderNumber ? List.of("PlacementOrderNumber" + EMPTY) : emptyList();
-    }
+    }*/
 
     public static List<String> validateBirthFather(Parent birthFather) {
         if (YES.equalsIgnoreCase(birthFather.getNameOnCertificate())) {
@@ -141,13 +131,13 @@ public final class ValidationUtil {
         return emptyList();
     }
 
-    private static List<String> validateChildren(Children children) {
+    /*private static List<String> validateChildren(Children children) {
         return flattenLists(
             notNull(children.getFirstName(), "ChildrenFirstName"),
             notNull(children.getLastName(), "ChildrenLastName"),
             notNull(children.getDateOfBirth(), "ChildrenDateOfBirth")
         );
-    }
+    }*/
 
     public static List<String> validateDateChildMovedIn(LocalDate dateChildMovedIn, String field) {
         if (nonNull(dateChildMovedIn) && dateChildMovedIn.isAfter(LocalDate.now().minus(10, WEEKS))) {

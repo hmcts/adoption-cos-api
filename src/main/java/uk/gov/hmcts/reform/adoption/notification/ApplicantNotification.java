@@ -14,11 +14,15 @@ public interface ApplicantNotification {
         //No operation
     }
 
-    default void sendToLocalAuthority(final CaseData caseData, final Long caseId) {
+    default void sendToLocalAuthorityPostApplicantSubmission(final CaseData caseData, final Long caseId) {
         //No operation
     }
 
     default void sendToLocalCourt(CaseData caseData, Long id) throws NotificationClientException, IOException {
+        //No operation
+    }
+
+    default void sendToLocalAuthorityPostLocalAuthoritySubmission(final CaseData caseData, final Long caseId) {
         //No operation
     }
 }

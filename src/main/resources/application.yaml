@@ -31,19 +31,24 @@ uk:
       email:
         templateVars:
           signInAdoptionUrl: ${NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL:https://adoption-web.aat.platform.hmcts.net/}
-          adoptionCourtEmail: some.email@justice.gov.uk
+          adoptionCourtEmail: some.email@justice.gov.ukf
+          laPortalURL: ${LA_PORTAL_BASEURL:localhost:3001/la-portal/kba-case-ref}
         templates:
           english:
             TEST_EMAIL: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
             SAVE_SIGN_OUT: ''
             APPLICATION_SUBMITTED: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
             APPLICANT_APPLICATION_SUBMITTED: 'a0aa356f-8c6f-437c-b1b9-3c321048001d'
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY: '501e9da1-76fb-468a-aa88-1cb8ed4d1d8e'
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED: '66348e36-5b4c-4ebc-a8d6-b09679a3429b'
             LOCAL_COURT_APPLICATION_SUBMITTED: '381cfc64-5016-4fe7-bd88-3ceeb163ce69'
           welsh:
             TEST_EMAIL: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
             SAVE_SIGN_OUT: ''
             APPLICATION_SUBMITTED: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
             APPLICANT_APPLICATION_SUBMITTED: 'dd251faa-0c40-4540-80b4-a7edb83a43f0'
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY: ''
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED: ''
             LOCAL_COURT_APPLICATION_SUBMITTED: '2960d8dd-ab3e-4265-a71d-2d81d0fd84c8'
 
 s2s-authorised:
@@ -124,3 +129,7 @@ docmosis:
       ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-ENG-00953.docx
     welsh:
       ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-WEL-00955.docx
+
+launchdarkly:
+  sdk-key: ${LAUNCH_DARKLY_SDK_KEY:}
+

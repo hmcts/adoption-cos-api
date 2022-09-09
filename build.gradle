@@ -12,7 +12,7 @@ buildscript {
   }
   dependencies {
     classpath "net.serenity-bdd:serenity-gradle-plugin:2.4.34"
-    classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '2.35.1025'
+    classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '2.36.1070'
   }
 }
 
@@ -27,8 +27,8 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.7.0'
   id 'com.github.ben-manes.versions' version '0.38.0'
-  id 'com.github.hmcts.rse-cft-lib' version '0.16.140'
-  id 'hmcts.ccd.sdk' version '0.25.16'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.222'
+  id 'hmcts.ccd.sdk' version '3.0.3'
   id 'au.com.dius.pact' version '4.3.8'
 }
 
@@ -43,7 +43,7 @@ ccd {
   configDir = file('ccd-definitions/definitions')
 }
 
-ext['elasticsearch.version'] = '7.17.0'
+ext['elasticsearch.version'] = '7.17.3'
 
 sourceSets {
   functionalTest {
@@ -66,11 +66,15 @@ sourceSets {
     java {
       compileClasspath += main.output
       runtimeClasspath += main.output
-      //srcDir file('src/contractTest/java')
     }
-    //resources.srcDir file('src/contractTest/resources')
   }
 
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
 }
 
 idea {
@@ -92,6 +96,10 @@ configurations {
 
 tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+}
+
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 tasks.withType(Test) {
@@ -161,7 +169,7 @@ task fortifyScan(type: JavaExec)  {
 
 checkstyle {
   maxWarnings = 0
-  toolVersion = '8.29'
+  toolVersion = '9.2.1'
   getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
@@ -185,7 +193,7 @@ jacocoTestReport {
 }
 
 jacoco {
-  toolVersion = "0.8.5"
+  toolVersion = "0.8.8"
 }
 
 jacocoTestCoverageVerification {
@@ -232,6 +240,8 @@ def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/Adoption.java',
   '**/uk/gov/hmcts/reform/adoption/payment/**',
   '**/uk/gov/hmcts/reform/adoption/controllers/**',
+  '**/uk/gov/hmcts/reform/adoption/config/launchdarkly/LaunchdarklyIntValidationService.java',
+  '**/uk/gov/hmcts/reform/adoption/config/launchdarkly/LaunchDirectlyIntValidationController.java',
   '**/uk/gov/hmcts/reform/adoption/idam/**',
   '**/uk/gov/hmcts/reform/adoption/common/AddSystemUpdateRole.java',
   '**/uk/gov/hmcts/reform/adoption/common/notification/**',
@@ -346,11 +356,10 @@ dependencies {
   implementation group: 'org.elasticsearch', name: 'elasticsearch'
   implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.2-Categories'
   implementation group: 'org.springframework.retry', name: 'spring-retry'
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.63'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.63'
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
@@ -359,10 +368,6 @@ dependencies {
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    exclude(module: 'commons-logging')
-    exclude(module: 'android-json')
-  }
-  testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
     exclude(module: 'commons-logging')
     exclude(module: 'android-json')
   }
@@ -426,7 +431,7 @@ bootRun {
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
       systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
-
+      systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
       if (System.getenv("BOOT_RUN_DOCKER")) {
         systemProperty 'IDAM_API_BASEURL', 'http://localhost:5000'
         systemProperty 'CASE_DATA_STORE_BASEURL', 'http://localhost:4452'
@@ -461,6 +466,7 @@ functional {
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
       systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
+      systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
     }
   }
 }
@@ -588,4 +594,5 @@ bootWithCCD {
       environment key, value
     }
   }
+  authMode = uk.gov.hmcts.rse.AuthMode.AAT
 }
