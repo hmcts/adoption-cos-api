@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class OtherParty {
 
