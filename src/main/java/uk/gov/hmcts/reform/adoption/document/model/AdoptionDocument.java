@@ -10,7 +10,7 @@ import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
-import uk.gov.hmcts.reform.adoption.document.DocumentSubmittedBy;
+import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 
 import java.time.LocalDate;
@@ -82,13 +82,7 @@ public class AdoptionDocument {
         typeOverride = FixedRadioList,
         typeParameterOverride = "DocumentSubmittedBy"
     )
-    private DocumentSubmittedBy documentSubmittedBy;
-
-    /*@JsonUnwrapped
-    @CCD(
-        label = "Who submitted the document?"
-    )
-    private OtherParty otherParty;*/
+    private DocumentSubmitter documentSubmitter;
 
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
@@ -100,7 +94,7 @@ public class AdoptionDocument {
                             @JsonProperty("documentType") DocumentType documentType,
                             @JsonProperty("documentFileId") String documentFileId,
                             @JsonProperty("documentCategory") DocumentCategory documentCategory,
-                            @JsonProperty("documentSubmittedBy") DocumentSubmittedBy documentSubmittedBy) {
+                            @JsonProperty("documentSubmitter") DocumentSubmitter documentSubmitter) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
@@ -109,6 +103,6 @@ public class AdoptionDocument {
         this.documentType = documentType;
         this.documentFileId = documentFileId;
         this.documentCategory = documentCategory;
-        this.documentSubmittedBy = documentSubmittedBy;
+        this.documentSubmitter = documentSubmitter;
     }
 }
