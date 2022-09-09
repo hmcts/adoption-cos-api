@@ -164,6 +164,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1EmailAddress")
             .field("childrenFirstName")
             .field("childrenLastName")
+            .field("hasAnotherAdopAgencyOrLA")
             .field("applyingWith");
     }
 }
