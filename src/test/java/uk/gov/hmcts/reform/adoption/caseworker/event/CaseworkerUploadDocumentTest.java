@@ -14,7 +14,6 @@ import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherParty;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
@@ -122,7 +121,6 @@ public class CaseworkerUploadDocumentTest {
     }
 
     private AdoptionDocument setAdoptionDocumentCategory(DocumentCategory category) {
-        OtherParty otherParty = new OtherParty("TEST_ROLE", "TEST_PARTY_NAME");
         return AdoptionDocument.builder()
                 .documentLink(Document
                                   .builder()
@@ -131,7 +129,6 @@ public class CaseworkerUploadDocumentTest {
                 .documentComment("TEST_COMMENT")
                 .documentCategory(category)
                 .documentSubmittedBy(DocumentSubmittedBy.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY)
-                .otherParty(otherParty)
                 .build();
     }
 
