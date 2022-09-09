@@ -90,7 +90,7 @@ public class CaseData {
     private Parent otherParent = new Parent();
 
     @CCD(
-        label = "Other court cases",
+        label = "Linked Cases",
         typeOverride = Collection,
         typeParameterOverride = "PlacementOrder",
         access = {SystemUpdateCollectionAccess.class}
@@ -134,7 +134,7 @@ public class CaseData {
     private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
     @CCD(
-        label = "Sibling court cases",
+        label = "Sibling cases",
         typeOverride = Collection,
         typeParameterOverride = "Sibling",
         access = {SystemUpdateCollectionAccess.class}
