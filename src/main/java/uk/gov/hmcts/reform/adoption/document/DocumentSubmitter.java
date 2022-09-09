@@ -21,6 +21,8 @@ public class DocumentSubmitter {
     )
     private DocumentSubmittedBy documentSubmittedBy;
 
-    @CCD()
+    @CCD(
+        label = ""
+    )
     private OtherParty otherParty;
 }
