@@ -4,7 +4,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherParty;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument.MANAGE_DOCUMENT;
@@ -25,10 +24,9 @@ public class ManageDocuments implements CcdPageConfiguration {
 
         pageBuilder.page("testPage")
             .pageLabel("Test Page")
-            .complex(CaseData::getAdoptionDocument)
-            .complex(AdoptionDocument::getDocumentSubmitter)
-            .complex(DocumentSubmitter::getOtherParty)
+            .complex(CaseData::getOtherParty)
             .optional(OtherParty::getOtherPartyName)
+            .optional(OtherParty::getOtherPartyRole)
             .done();
         /*pageBuilder.page("documentSubmitter")
             .pageLabel("Who submitted the document?")

@@ -22,7 +22,7 @@ public class DocumentSubmitter {
     private DocumentSubmittedBy documentSubmittedBy;
 
     @CCD(
-        label = ""
+        label = "Other Party"
     )
     private OtherParty otherParty;
 }

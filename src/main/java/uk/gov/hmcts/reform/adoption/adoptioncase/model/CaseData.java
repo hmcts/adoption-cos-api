@@ -403,6 +403,12 @@ public class CaseData {
     )
     private CaseNote note;
 
+    @CCD(
+        label = "Other Party",
+        access = {DefaultAccess.class}
+    )
+    private OtherParty otherParty;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);
