@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
+import uk.gov.hmcts.reform.adoption.document.DocumentSubmittedBy;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.lang.reflect.InvocationTargetException;
@@ -127,6 +128,7 @@ public class CaseworkerUploadDocumentTest {
                                   .build())
                 .documentComment("TEST_COMMENT")
                 .documentCategory(category)
+                .documentSubmittedBy(DocumentSubmittedBy.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY)
                 .build();
     }
 
