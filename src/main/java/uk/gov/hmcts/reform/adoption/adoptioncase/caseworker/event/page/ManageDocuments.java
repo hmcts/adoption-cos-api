@@ -4,7 +4,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherParty;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument.MANAGE_DOCUMENT;
@@ -25,9 +24,7 @@ public class ManageDocuments implements CcdPageConfiguration {
 
         pageBuilder.page("testPage")
             .pageLabel("Test Page")
-            .complex(CaseData::getAdoptionDocument)
-            .complex(AdoptionDocument::getDocumentSubmitter)
-            .optional(DocumentSubmitter::getDocumentSubmittedBy)
+            .optional(CaseData::getDocumentSubmittedBy)
             .done();
         pageBuilder.page("testPage")
             .pageLabel("Test Page")

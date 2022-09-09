@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
+import uk.gov.hmcts.reform.adoption.document.DocumentSubmittedBy;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
@@ -408,6 +409,15 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private OtherParty otherParty;
+
+    @CCD(
+        label = "Who submitted the document?",
+        //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "DocumentSubmittedBy",
+        access = {DefaultAccess.class}
+    )
+    private DocumentSubmittedBy documentSubmittedBy;
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {
