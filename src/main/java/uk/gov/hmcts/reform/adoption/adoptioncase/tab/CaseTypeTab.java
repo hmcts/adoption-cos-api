@@ -17,13 +17,14 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         buildSummaryTab(configBuilder);
         buildApplicantsTab(configBuilder);
-        buildChildDetailsTab(configBuilder);
+        buildOtherPartiesTab(configBuilder);
         buildDocumentsTab(configBuilder);
         buildConfidentialTab(configBuilder);
     }
 
     public void buildApplicantsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationDetails", "Applicants")
+            .displayOrder(1)
             .showCondition(TabShowCondition.showForState(State.Submitted, State.LaSubmitted))
             .label("LabelApplicant-Heading",
                    "applyingWith=\"alone\"",
@@ -66,9 +67,10 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant2PhoneNumber","applyingWith!=\"alone\"");
     }
 
-    public void buildChildDetailsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+    public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("otherParties", "Other Parties")
             .forRoles(CASE_WORKER)
+            .displayOrder(2)
             .label("labelSummary-otherParties", null, "### Other parties")
             .label("labelSummary-childDetails", null, "#### Child details")
             .field("childrenFirstName")
@@ -81,7 +83,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("childrenFirstNameAfterAdoption")
             .field("childrenLastNameAfterAdoption")
             .label("labelSummary-adoptionAgency", "hasAnotherAdopAgencyOrLA=\"Yes\"", "### Agencies/Local Authorities Details")
-            .label("labelSummary-adoptionAgencySub", null, "#### Adoption Agency")
+            .label("labelSummary-adoptionAgencySub", "hasAnotherAdopAgencyOrLA=\"Yes\"", "#### Adoption Agency")
             .field("adopAgencyOrLaName")
             .field("adopAgencyOrLaContactName")
             .field("adopAgencyAddressLine1")
@@ -105,8 +107,12 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicantSocialWorkerPostcode")
             .field("applicantSocialWorkerPhoneNumber")
             .field("applicantLocalAuthorityEmail")
-            .label("labelSummary-respondentDetails", null, "### Respondent Details")
-            .label("labelSummary-birthMother", null, "#### Birth Mother")
+            .label("labelSummary-respondentDetails",
+                   "birthMotherStillAlive=\"Yes\" OR birthFatherStillAlive=\"Yes\"",
+                   "### Respondent Details")
+            .label("labelSummary-birthMother",
+                   "birthMotherStillAlive=\"Yes\"",
+                   "#### Birth Mother")
             .field("birthMotherFirstName")
             .field("birthMotherLastName")
             .field("birthMotherStillAlive")
@@ -117,7 +123,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthMotherAddressCountry")
             .field("birthMotherAddressPostCode")
             .field("birthMotherLastAddressDate")
-            .label("labelSummary-birthFather", null, "#### Birth Father")
+            .label("labelSummary-birthFather", "birthFatherStillAlive=\"Yes\"", "#### Birth Father")
             .field("birthFatherFirstName")
             .field("birthFatherLastName")
             .field("birthFatherStillAlive")
@@ -132,6 +138,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     public void buildSummaryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("summary", "Summary")
+            .displayOrder(0)
             .forRoles(CASE_WORKER)
             .label("labelSummary-CaseStatus", null, "### Case status")
             .field("status")
@@ -150,6 +157,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("documents", "Documents")
             .forRoles(CASE_WORKER)
+            .displayOrder(3)
             .field(CaseData::getDocumentsGenerated)
             .field(CaseData::getApplicant1DocumentsUploaded)
             .field(CaseData::getDocumentsUploaded);
