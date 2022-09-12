@@ -9,14 +9,12 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 public class OtherParty {
 
     @CCD(
-        label = "Role",
-        displayOrder = 9
+        label = "Role"
     )
     private String otherPartyRole;
 
     @CCD(
-        label = "Name",
-        displayOrder = 10
+        label = "Name"
     )
     private String otherPartyName;
 }
