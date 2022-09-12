@@ -134,6 +134,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                                                                                   List<ListValue<AdoptionDocument>> adoptionDocumentList) {
         AdoptionDocument adoptionDocument = caseData.getAdoptionDocument();
         adoptionDocument.setDocumentDateAdded(LocalDate.now(Clock.systemDefaultZone()));
+        adoptionDocument.setDocumentCategory(null);
 
         if (isEmpty(adoptionDocumentList)) {
             List<ListValue<AdoptionDocument>> listValues = new ArrayList<>();
