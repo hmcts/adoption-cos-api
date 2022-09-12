@@ -18,6 +18,19 @@ public class SetStateAfterLaSubmission implements CaseTask {
     public CaseDetails<CaseData, State> apply(final CaseDetails<CaseData, State> caseDetails) {
         caseDetails.setState(LaSubmitted);
         caseDetails.getData().setStatus(LaSubmitted);
+        caseDetails.getData().getPlacementOrders()
+            .stream()
+            .filter(item -> item.getValue().getPlacementOrderType() == null)
+            .findFirst()
+            .ifPresent(item -> item.setValue(PlacementOrder
+                                                 .builder()
+                                                 .placementOrderId(item.getValue().getPlacementOrderId())
+                                                 .placementOrderNumber(item.getValue().getPlacementOrderNumber())
+                                                 .placementOrderType(PlacementOrderType.PLACEMENT_ORDER)
+                                                 .placementOrderCourt(item.getValue().getPlacementOrderCourt())
+                                                 .placementOrderDate(item.getValue().getPlacementOrderDate())
+                                                 .otherPlacementOrderType(item.getValue().getOtherPlacementOrderType())
+                                                 .build()));
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
 
         return caseDetails;
