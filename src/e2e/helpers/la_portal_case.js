@@ -1,7 +1,9 @@
 const Axios = require('axios');
 const otplib = require('otplib');
+const cui = require('./create_cui_case.js');
 
-const createCase = async (caseId) => {
+
+const laPortalCase = async (caseId) => {
 
     const clientId = process.env.ADOPTION_WEB_CLIENT_ID;
     const s2sSecret = process.env.S2S_SECRET_WEB;
@@ -28,7 +30,7 @@ const createCase = async (caseId) => {
     newUser.email = `adop-test.${Date.now()}@mailinator.com`;
 
     try {
-        let s2sAuthRequest = await Axios.post(s2sUrl, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword });
+        let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, oneTimePassword });
         s2sAuth = s2sAuthRequest.data;
         let idamData = `username=${process.env.IDAM_SYSTEM_UPDATE_USERNAME}&password=${IDAM_SYSTEM_UPDATE_PASSWORD}&client_id=${clientId}&client_secret=${idamSecret}&grant_type=password&redirect_uri=${callbackUrl}&scope=openid%20profile%20roles`;
         let idamAccess = await Axios.post(`${idamUrl}/o/token`, idamData);
@@ -153,7 +155,7 @@ const createCase = async (caseId) => {
             data: mydata,
             event_token: token,
         });
-
+        console.log("All done")
         return caseId;
 
     } catch (err) {

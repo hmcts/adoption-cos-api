@@ -1,7 +1,7 @@
 const Axios = require('axios');
 const otplib = require('otplib');
 
-const createCase = async () => {
+module.exports.createCase = async () => {
 
     const clientId = process.env.ADOPTION_WEB_CLIENT_ID;
     const s2sSecret = process.env.S2S_SECRET_WEB;
@@ -29,7 +29,7 @@ const createCase = async () => {
     newUser.email = `adop-test.${Date.now()}@mailinator.com`;
 
     try {
-        let s2sAuthRequest = await Axios.post(s2sUrl, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword });
+        let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword });
         s2sAuth = s2sAuthRequest.data;
         let createdAccount = await Axios.post(`${idamUrl}/testing-support/accounts`, newUser);
         let idamData = `username=${newUser.email}&password=${newUser.password}&client_id=${clientId}&client_secret=${idamSecret}&grant_type=password&redirect_uri=${callbackUrl}&scope=openid%20profile%20roles`;
@@ -355,7 +355,7 @@ const createCase = async () => {
             data,
             event_token: token,
         });
-
+        console.log(caseId)
         return caseId;
 
     } catch (err) {
