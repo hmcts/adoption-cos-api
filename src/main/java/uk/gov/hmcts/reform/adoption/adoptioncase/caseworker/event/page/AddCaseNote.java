@@ -9,6 +9,9 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
  * Specify the Order, Mandatory/Optional properties of fields and build the Notes Screen/Page.
  */
 public class AddCaseNote implements CcdPageConfiguration {
+
+    private static final String NEVER_SHOW = "applyingWith=\"never\"";
+
     @Override
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("pageNote")
@@ -17,6 +20,7 @@ public class AddCaseNote implements CcdPageConfiguration {
                 CaseNote::getSubject, "Subject")
             .mandatoryWithLabel(
                 CaseNote::getNote, "Note")
+            .optional(CaseNote::getDate, NEVER_SHOW)
             .done();
     }
 }
