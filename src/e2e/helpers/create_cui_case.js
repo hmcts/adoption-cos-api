@@ -29,7 +29,6 @@ const createCase = async () => {
     newUser.email = `adop-test.${Date.now()}@mailinator.com`;
 
     try {
-        console.log({ "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword });
         let s2sAuthRequest = await Axios.post(s2sUrl, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword });
         s2sAuth = s2sAuthRequest.data;
         let createdAccount = await Axios.post(`${idamUrl}/testing-support/accounts`, newUser);

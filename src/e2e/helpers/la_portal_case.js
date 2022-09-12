@@ -28,7 +28,6 @@ const createCase = async (caseId) => {
     newUser.email = `adop-test.${Date.now()}@mailinator.com`;
 
     try {
-        console.log({ "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword });
         let s2sAuthRequest = await Axios.post(s2sUrl, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword });
         s2sAuth = s2sAuthRequest.data;
         let idamData = `username=${process.env.IDAM_SYSTEM_UPDATE_USERNAME}&password=${IDAM_SYSTEM_UPDATE_PASSWORD}&client_id=${clientId}&client_secret=${idamSecret}&grant_type=password&redirect_uri=${callbackUrl}&scope=openid%20profile%20roles`;
