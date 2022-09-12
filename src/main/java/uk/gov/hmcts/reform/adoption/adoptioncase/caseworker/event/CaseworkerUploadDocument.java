@@ -51,7 +51,6 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                                    .name(MANAGE_DOCUMENT)
                                    .description(MANAGE_DOCUMENT)
                                    .aboutToSubmitCallback(this::aboutToSubmit)
-                                   .showSummary(false)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
     }
 
@@ -116,6 +115,8 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             }
             default -> log.info("Document doesn't fall under any provided category");
         }
+
+
 
         log.info("-----------CaseData {}",caseData);
         /*if (caseData.getAdoptionDocument().getOtherParty().getOtherPartyName() != null
