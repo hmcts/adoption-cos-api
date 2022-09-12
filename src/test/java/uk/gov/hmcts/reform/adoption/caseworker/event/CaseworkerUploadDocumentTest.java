@@ -129,6 +129,11 @@ public class CaseworkerUploadDocumentTest {
     }
 
     private AdoptionDocument setAdoptionDocumentCategory(DocumentCategory category) {
+        DocumentSubmitter documentSubmitter = DocumentSubmitter.builder()
+                .documentSubmittedBy(DocumentSubmittedBy.BIRTH_FATHER)
+                .otherParty(new OtherParty("TEST_PARTY_ROLE","TEST_PARTY_NAME"))
+                .build();
+
         return AdoptionDocument.builder()
                 .documentLink(Document
                                   .builder()
@@ -136,6 +141,7 @@ public class CaseworkerUploadDocumentTest {
                                   .build())
                 .documentComment("TEST_COMMENT")
                 .documentCategory(category)
+                .documentSubmitter(documentSubmitter)
                 .build();
     }
 
