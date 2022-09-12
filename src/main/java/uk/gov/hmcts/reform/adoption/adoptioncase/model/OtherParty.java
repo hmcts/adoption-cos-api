@@ -10,13 +10,13 @@ public class OtherParty {
 
     @CCD(
         label = "Role",
-        displayOrder = 0
+        displayOrder = 9
     )
     private String otherPartyRole;
 
     @CCD(
         label = "Name",
-        displayOrder = 1
+        displayOrder = 10
     )
     private String otherPartyName;
 }
