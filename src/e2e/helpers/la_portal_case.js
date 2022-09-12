@@ -1,6 +1,6 @@
 const Axios = require('axios');
 const otplib = require('otplib');
-const cui = require('./create_cui_case.js');
+const utils = require('../utils/utils.js');
 
 
 const laPortalCase = async (caseId) => {
@@ -50,112 +50,12 @@ const laPortalCase = async (caseId) => {
         tokenRes = await axiosClient.get(`${url}/cases/${caseId}/event-triggers/local-authority-application-submit`);
         token = tokenRes.data.token;
         event = { id: "local-authority-application-submit" };
-        const mydata = {
-
-            "birthFatherAddress1": "BUCKINGHAM PALACE",
-            "birthFatherAddress2": "",
-            "birthFatherAddress3": null,
-            "birthFatherAddressCountry": null,
-            "birthFatherAddressCounty": "CITY OF WESTMINSTER",
-            "birthFatherAddressKnown": "Yes",
-            "birthFatherAddressNotKnownReason": "",
-            "birthFatherAddressPostCode": "SW1A 1AA",
-            "birthFatherAddressTown": "LONDON",
-            "birthFatherFirstName": "Father",
-            "birthFatherLastName": "Father",
-            "birthFatherNameOnCertificate": "Yes",
-            "hasSiblings": "Yes",
-            "birthFatherNationality": [
-                "British"
-            ],
-            "birthFatherNotAliveReason": "",
-            "birthFatherOccupation": "unknown",
-            "birthFatherOtherNationalities": [],
-            "birthFatherStillAlive": "Yes",
-            "birthMotherAddress1": "2 TRIVETT SQUARE",
-            "birthMotherAddress2": "",
-            "birthMotherAddress3": null,
-            "birthMotherAddressCountry": null,
-            "birthMotherAddressCounty": "NOTTINGHAM CITY",
-            "birthMotherAddressKnown": "Yes",
-            "birthMotherAddressNotKnownReason": "Some reason",
-            "birthMotherAddressPostCode": "NG1 1JB",
-            "birthMotherAddressTown": "NOTTINGHAM",
-            "birthMotherFirstName": "Mother",
-            "birthMotherLastName": "Mother",
-            "birthMotherNameOnCertificate": null,
-            "birthMotherNationality": [
-                "British",
-                "Irish"
-            ],
-            "birthMotherNotAliveReason": "",
-            "birthMotherOccupation": "Teacher",
-            "birthMotherOtherNationalities": [],
-            "birthMotherStillAlive": "Yes",
-
-            "otherParentAddress1": "BUCKINGHAM PALACE",
-            "otherParentAddress2": "",
-            "otherParentAddress3": null,
-            "otherParentAddressCountry": null,
-            "otherParentAddressCounty": "CITY OF WESTMINSTER",
-            "otherParentAddressKnown": "Yes",
-            "otherParentAddressNotKnownReason": "",
-            "otherParentAddressPostCode": "SW1A 1AA",
-            "otherParentAddressTown": "LONDON",
-            "otherParentFirstName": "other",
-            "otherParentLastName": "parent",
-            "otherParentNameOnCertificate": null,
-            "otherParentNationality": null,
-            "otherParentNotAliveReason": null,
-            "otherParentOccupation": null,
-            "otherParentOtherNationalities": [],
-            "otherParentStillAlive": "Yes",
-            "placementOrders": [
-                {
-                    "id": "6e59287f-a337-49ba-ae45-c1f8bfe72f25",
-                    "value": {
-                        "placementOrderId": "1646222468418",
-                        "placementOrderDate": "2021-12-12",
-                        "placementOrderCourt": "xyz",
-                        "placementOrderNumber": "123456"
-                    }
-                },
-                {
-                    "id": "a341637f-c3f8-4a00-9d6f-c560cea7a677",
-                    "value": {
-                        "placementOrderId": "1646222494045",
-                        "placementOrderDate": "2021-12-12",
-                        "placementOrderType": "Adoption Order",
-                        "placementOrderCourt": "london court",
-                        "placementOrderNumber": "12345"
-                    }
-                }
-            ],
-            "siblings": [
-              {
-
-              }
-            ],
-            "addAnotherSiblingPlacementOrder": "No",
-            "selectedSiblingId": "1646222699254",
-            "selectedSiblingPoType": "adoptionOrder",
-            "selectedSiblingRelation": "sister",
-            "selectedPlacementOrderId": "1646222468418",
-            "addAnotherPlacementOrder": "No",
-            "laCannotUpload": "Yes",
-            "laCannotUploadSupportingDocument": null,
-            "laDocumentsUploaded": [],
-            "laNameSot": "My LA",
-            "laSotFullName": "John Doe",
-            "laSotJobtitle": "Head",
-            "laStatementOfTruth": "Yes"
-        };
+        const caseData = utils.caseDataLa;
         response = await axiosClient.post(`/cases/${caseId}/events`, {
             event,
             data: mydata,
             event_token: token,
         });
-        console.log("All done")
         return caseId;
 
     } catch (err) {
