@@ -66,8 +66,12 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
         var caseData = details.getData();
 
+        log.info("------------------------------------  {}",caseData.getDocumentSubmittedBy());
+        log.info("------------------------------------  {}",caseData.getOtherParty());
         DocumentSubmitter documentSubmitter = new DocumentSubmitter(caseData.getDocumentSubmittedBy(),caseData.getOtherParty());
+        log.info("<<<<<<<<<<<<<<<<Document Submitter object created>>>>>>>>>>>>>>>");
         caseData.getAdoptionDocument().setDocumentSubmitter(documentSubmitter);
+        log.info("<<<<<<<<<<<<<<<<Document Submitter object set>>>>>>>>>>>>>>>");
 
         ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
             .id(String.valueOf(UUID.randomUUID()))
