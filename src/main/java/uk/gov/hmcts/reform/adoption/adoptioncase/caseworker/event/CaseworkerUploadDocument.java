@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.util.ArrayList;
@@ -65,8 +66,8 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
         var caseData = details.getData();
 
-        caseData.getAdoptionDocument().getDocumentSubmitter().setDocumentSubmittedBy(caseData.getDocumentSubmittedBy());
-        caseData.getAdoptionDocument().getDocumentSubmitter().setOtherParty(caseData.getOtherParty());
+        DocumentSubmitter documentSubmitter = new DocumentSubmitter(caseData.getDocumentSubmittedBy(),caseData.getOtherParty());
+        caseData.getAdoptionDocument().setDocumentSubmitter(documentSubmitter);
 
         ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
             .id(String.valueOf(UUID.randomUUID()))
