@@ -14,7 +14,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.Casewor
 public class ManageDocuments implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
-        pageBuilder.page("uploadDocument")
+        pageBuilder.page("uploadDocumentPage1")
             .pageLabel(MANAGE_DOCUMENT)
             .complex(CaseData::getAdoptionDocument)
             .mandatory(AdoptionDocument::getDocumentLink)
@@ -22,29 +22,15 @@ public class ManageDocuments implements CcdPageConfiguration {
             .mandatory(AdoptionDocument::getDocumentCategory)
             .done();
 
-        pageBuilder.page("testPage")
-            .pageLabel("Test Page")
-            .optional(CaseData::getDocumentSubmittedBy)
-            .done();
-        pageBuilder.page("testPage")
-            .pageLabel("Test Page")
-            .complex(CaseData::getOtherParty)
-            .optional(OtherParty::getOtherPartyName, "documentSubmittedBy=\"otherParty\"")
-            .optional(OtherParty::getOtherPartyRole,"documentSubmittedBy=\"otherParty\"")
-            .done();
-
-        /*pageBuilder.page("documentSubmitter")
+        pageBuilder.page("uploadDocumentPage2")
             .pageLabel("Who submitted the document?")
-            .complex(CaseData::getAdoptionDocument)
-            .complex(AdoptionDocument::getDocumentSubmitter)
-            *//*.mandatory(DocumentSubmitter::getDocumentSubmittedBy)
-            .mandatory(DocumentSubmitter::getOtherParty)*//*
-            .done();*/
+            .mandatory(CaseData::getDocumentSubmittedBy)
+            .done();
+        pageBuilder.page("uploadDocumentPage2")
+            .complex(CaseData::getOtherParty)
+            .mandatory(OtherParty::getOtherPartyName, "documentSubmittedBy=\"otherParty\"")
+            .mandatory(OtherParty::getOtherPartyRole,"documentSubmittedBy=\"otherParty\"")
+            .done();
 
-
-        /*.complex(AdoptionDocument::getOtherParty)
-            .mandatory(OtherParty::getOtherPartyRole)
-            .mandatory(OtherParty::getOtherPartyName)
-            .done();*/
     }
 }
