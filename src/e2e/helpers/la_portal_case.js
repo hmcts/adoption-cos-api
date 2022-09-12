@@ -7,7 +7,7 @@ const createCase = async (caseId) => {
     const s2sSecret = process.env.S2S_SECRET_WEB;
     const idamSecret = process.env.IDAM_CLIENT_SECRET;
     const url = process.env.CASE_DATA_STORE_BASEURL;
-    const s2sUrl = process.env.S2S_SECRET_WEB;
+    const s2sUrl = process.env.S2S_URL;
     const idamUrl = process.env.IDAM_API_BASEURL;
     const oneTimePassword = otplib.authenticator.generate(s2sSecret);
     const callbackUrl = "http://localhost:3001/receiver";
