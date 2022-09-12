@@ -335,7 +335,7 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.10'
   implementation group: 'org.elasticsearch', name: 'elasticsearch'
-  implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.2-Categories'
+  implementation group: 'com.github.hmcts', name: 'befta-fw', version: '9.0.0-CCD-3068.3'
   implementation group: 'org.springframework.retry', name: 'spring-retry'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
