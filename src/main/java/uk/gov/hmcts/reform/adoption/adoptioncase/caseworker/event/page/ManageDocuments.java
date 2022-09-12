@@ -29,8 +29,8 @@ public class ManageDocuments implements CcdPageConfiguration {
         pageBuilder.page("testPage")
             .pageLabel("Test Page")
             .complex(CaseData::getOtherParty)
-            .optional(OtherParty::getOtherPartyName, "documentSubmittedBy=\"Other party\"")
-            .optional(OtherParty::getOtherPartyRole,"documentSubmittedBy=\"Other party\"")
+            .optional(OtherParty::getOtherPartyName, "documentSubmittedBy=\"otherParty\"")
+            .optional(OtherParty::getOtherPartyRole,"documentSubmittedBy=\"otherParty\"")
             .done();
 
         /*pageBuilder.page("documentSubmitter")
