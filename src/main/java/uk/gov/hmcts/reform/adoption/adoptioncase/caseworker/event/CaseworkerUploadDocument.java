@@ -9,6 +9,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageDocuments;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherParty;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
@@ -68,7 +69,8 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
         log.info("------------------------------------  {}",caseData.getDocumentSubmittedBy());
         log.info("------------------------------------  {}",caseData.getOtherParty());
-        DocumentSubmitter documentSubmitter = new DocumentSubmitter(caseData.getDocumentSubmittedBy(),caseData.getOtherParty());
+        OtherParty otherParty = new OtherParty("TEST ROLE","TEST NAME");
+        DocumentSubmitter documentSubmitter = new DocumentSubmitter(caseData.getDocumentSubmittedBy(),otherParty);
         log.info("<<<<<<<<<<<<<<<<Document Submitter object created>>>>>>>>>>>>>>>");
         caseData.getAdoptionDocument().setDocumentSubmitter(documentSubmitter);
         log.info("<<<<<<<<<<<<<<<<Document Submitter object set>>>>>>>>>>>>>>>");
