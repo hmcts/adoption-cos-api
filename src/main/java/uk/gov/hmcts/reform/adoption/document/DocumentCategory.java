@@ -9,19 +9,19 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum DocumentCategory implements HasLabel {
     @JsonProperty("applicationDocuments")
-    APPLICATION_DOCUMENTS("Application documents"),
+    APPLICATION_DOCUMENTS("Application documents ${applicant1FirstName}"),
 
     @JsonProperty("courtOrders")
-    COURT_ORDERS("Court orders"),
+    COURT_ORDERS("Court orders ${applicant1FirstName} ${applicant1LastName}"),
 
     @JsonProperty("reports")
-    REPORTS("Reports"),
+    REPORTS("Reports ${applicant2FirstName} ${applicant2LastName}"),
 
     @JsonProperty("statements")
-    STATEMENTS("Statements"),
+    STATEMENTS("Statements ${birthMotherFirstName} ${birthMotherLastName}"),
 
     @JsonProperty("correspondence")
-    CORRESPONDENCE("Correspondence"),
+    CORRESPONDENCE("Correspondence ${birthFatherFirstName} ${birthFatherLastName}"),
 
     @JsonProperty("additionalDocuments")
     ADDITIONAL_DOCUMENTS("Additional documents");

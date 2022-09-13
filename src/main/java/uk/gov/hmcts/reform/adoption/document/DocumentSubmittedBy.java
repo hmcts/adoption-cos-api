@@ -9,7 +9,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum DocumentSubmittedBy implements HasLabel {
     @JsonProperty("childSocialWorker")
-    CHILD_SOCIAL_WORKER("Child's social worker"),
+    CHILD_SOCIAL_WORKER("Child's social worker  ${applicant1FirstName}"),
 
     @JsonProperty("adoptionAgencyOrLocalAuthority")
     ADOPTION_AGENCY_OR_LOCAL_AUTHORITY("Adoption agency or local authority"),
@@ -18,16 +18,16 @@ public enum DocumentSubmittedBy implements HasLabel {
     OTHER_ADOPTION_AGENCY_OR_LOCAL_AUTHORITY("Other adoption agency or local authority"),
 
     @JsonProperty("firstApplicant")
-    FIRST_APPLICANT("First applicant"),
+    FIRST_APPLICANT("First applicant ${applicant1FirstName} ${applicant1LastName}"),
 
     @JsonProperty("secondApplicant")
-    SECOND_APPLICANT("Second applicant"),
+    SECOND_APPLICANT("Second applicant ${applicant2FirstName} ${applicant2LastName}"),
 
     @JsonProperty("birthMother")
-    BIRTH_MOTHER("Birth mother"),
+    BIRTH_MOTHER("Birth mother ${birthMotherFirstName} ${birthMotherLastName}"),
 
     @JsonProperty("birthFather")
-    BIRTH_FATHER("Birth father"),
+    BIRTH_FATHER("Birth father ${birthFatherFirstName} ${birthFatherLastName}"),
 
     @JsonProperty("personWithParentalResponsibility")
     PERSON_WITH_PARENTAL_RESPONSIBILITY("Person with parental responsibility"),
