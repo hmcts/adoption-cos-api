@@ -15,9 +15,15 @@ public class CorrespondenceTab implements CCDConfig<CaseData, State, UserRole> {
         addCorrespondence(tabBuilder);
     }
 
+
     private void addCorrespondence(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
-            .label("LabelNotes-Correspondence", null, "### Correspondence documents")
-            .field(CaseData::getDocumentsUploaded);
+            .label("LabelNotes-Correspondence", null, "### Correspondence")
+            .label("Upload correspondence",
+                   null,
+                   "[Upload documents](/cases/case-details/${[CASE_REFERENCE]}"
+                       + "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)"
+            )
+            .field(CaseData::getCorrespondenceDocumentCategory);
     }
 }

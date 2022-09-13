@@ -26,7 +26,10 @@ public enum DocumentType implements HasLabel {
     APPLICATION("Application"),
 
     @JsonProperty("email")
-    EMAIL("Email");
+    EMAIL("Email"),
+
+    @JsonProperty("correspondence")
+    CORRESPONDENCE("Correspondence");
 
     private final String label;
 }
