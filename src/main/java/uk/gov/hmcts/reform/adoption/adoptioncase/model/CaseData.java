@@ -405,12 +405,13 @@ public class CaseData {
     private CaseNote note;
 
     @CCD(
+        label = "Other party",
         access = {DefaultAccess.class}
     )
     private OtherParty otherParty;
 
     @CCD(
-        //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
+        label = "Who submitted the document?",
         typeOverride = FixedRadioList,
         typeParameterOverride = "DocumentSubmittedBy",
         access = {DefaultAccess.class}
