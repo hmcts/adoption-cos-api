@@ -90,7 +90,7 @@ public class CaseData {
     private Parent otherParent = new Parent();
 
     @CCD(
-        label = "Linked Cases",
+        label = "Linked cases",
         typeOverride = Collection,
         typeParameterOverride = "PlacementOrder",
         access = {SystemUpdateCollectionAccess.class}

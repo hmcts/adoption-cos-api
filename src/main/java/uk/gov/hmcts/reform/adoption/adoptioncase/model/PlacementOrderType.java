@@ -9,8 +9,8 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum PlacementOrderType implements HasLabel {
 
-    @JsonProperty("Adoption Order")
-    ADOPTION_ORDER("Adoption Order"),
+    @JsonProperty("Adoption order")
+    ADOPTION_ORDER("Adoption order"),
 
     @JsonProperty("Care Order")
     CARE_ORDER("Care Order"),
