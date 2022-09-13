@@ -39,6 +39,9 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("documents", "Documents")
             .forRoles(CASE_WORKER)
             .label("documents", null, "### Documents")
+            .label("upload document", null,
+                   "[Upload documents](/cases/case-details/${[CASE_REFERENCE]}" +
+                       "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)")
 
             .field(CaseData::getApplicationDocumentsCategory)
             .field(CaseData::getReportsDocumentCategory)
