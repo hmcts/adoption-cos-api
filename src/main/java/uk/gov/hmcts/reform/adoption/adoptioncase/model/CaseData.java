@@ -405,7 +405,6 @@ public class CaseData {
     private CaseNote note;
 
     @CCD(
-        label = "Other party",
         access = {DefaultAccess.class}
     )
     private OtherParty otherParty;
