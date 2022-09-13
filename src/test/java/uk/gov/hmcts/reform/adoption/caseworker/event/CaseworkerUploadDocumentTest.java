@@ -59,7 +59,7 @@ public class CaseworkerUploadDocumentTest {
         caseDetails.getData().getAdoptionDocument()
             .setDocumentSubmitter(DocumentSubmitter.builder()
                                       .documentSubmittedBy(DocumentSubmittedBy.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY)
-                                      //.otherParty(otherParty)
+                                      .otherParty(otherParty)
                                       .build());
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
@@ -131,7 +131,7 @@ public class CaseworkerUploadDocumentTest {
     private AdoptionDocument setAdoptionDocumentCategory(DocumentCategory category) {
         DocumentSubmitter documentSubmitter = DocumentSubmitter.builder()
                 .documentSubmittedBy(DocumentSubmittedBy.BIRTH_FATHER)
-                //.otherParty(new OtherParty("TEST_PARTY_ROLE","TEST_PARTY_NAME"))
+                .otherParty(new OtherParty("TEST_PARTY_ROLE","TEST_PARTY_NAME"))
                 .build();
 
         return AdoptionDocument.builder()

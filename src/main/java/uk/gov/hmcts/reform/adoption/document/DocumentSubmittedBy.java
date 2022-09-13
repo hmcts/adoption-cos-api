@@ -30,10 +30,10 @@ public enum DocumentSubmittedBy implements HasLabel {
     BIRTH_FATHER("Birth father"),
 
     @JsonProperty("personWithParentalResponsibility")
-    PERSON_WITH_PARENTAL_RESPONSIBILITY("Person with parental responsibility")/*,
+    PERSON_WITH_PARENTAL_RESPONSIBILITY("Person with parental responsibility"),
 
     @JsonProperty("otherParty")
-    OTHER_PARTY("Other party")*/;
+    OTHER_PARTY("Other party");
 
     private final String label;
 }
