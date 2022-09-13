@@ -14,7 +14,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 public class DocumentSubmitter {
 
     @CCD(
-        label = "Uploaded by",
+        label = "Who submitted the document?",
         //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
         typeOverride = FixedRadioList,
         typeParameterOverride = "DocumentSubmittedBy"
