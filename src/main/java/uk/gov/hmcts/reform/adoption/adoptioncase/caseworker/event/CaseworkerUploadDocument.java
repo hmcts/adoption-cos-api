@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -73,8 +72,10 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         DocumentSubmitter documentSubmitter = new DocumentSubmitter(caseData.getDocumentSubmittedBy(), otherParty);
         //caseData.getAdoptionDocument().setDocumentSubmitter(documentSubmitter);
 
-        log.info("AdoptionDocument {}", caseData.getAdoptionDocument());
-        log.info("AdoptionDocument JSON {}", JSONObject.valueToString(caseData.getAdoptionDocument()));
+        log.info("AdoptionDocument--- {}", caseData.getAdoptionDocument());
+        log.info("DocumentSubmittedBy--- {}", caseData.getDocumentSubmittedBy());
+        log.info("DocumentSubmitter--- {}", documentSubmitter);
+        //log.info("AdoptionDocument JSON {}", JSONObject.valueToString(caseData.getAdoptionDocument()));
 
         ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
             .id(String.valueOf(UUID.randomUUID()))
