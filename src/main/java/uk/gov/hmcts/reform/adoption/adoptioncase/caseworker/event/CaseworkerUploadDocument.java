@@ -16,6 +16,8 @@ import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +34,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Component
 @Slf4j
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
+
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
     public static final String MANAGE_DOCUMENT = "Manage documents";
 
@@ -128,6 +131,9 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
      */
     private List<ListValue<AdoptionDocument>> addDocumentToListOfSpecificCategory(CaseData caseData,
                                                                                   List<ListValue<AdoptionDocument>> adoptionDocumentList) {
+        AdoptionDocument adoptionDocument = caseData.getAdoptionDocument();
+        adoptionDocument.setDocumentDateAdded(LocalDate.now(Clock.systemDefaultZone()));
+        adoptionDocument.setDocumentCategory(null);
 
         if (isEmpty(adoptionDocumentList)) {
             List<ListValue<AdoptionDocument>> listValues = new ArrayList<>();
@@ -135,7 +141,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             var listValue = ListValue
                 .<AdoptionDocument>builder()
                 .id("1")
-                .value(caseData.getAdoptionDocument())
+                .value(adoptionDocument)
                 .build();
 
             listValues.add(listValue);
@@ -145,7 +151,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             AtomicInteger listValueIndex = new AtomicInteger(0);
             var listValue = ListValue
                 .<AdoptionDocument>builder()
-                .value(caseData.getAdoptionDocument())
+                .value(adoptionDocument)
                 .build();
             // always add new Adoption Document as first element so that it is displayed on top
             adoptionDocumentList.add(
