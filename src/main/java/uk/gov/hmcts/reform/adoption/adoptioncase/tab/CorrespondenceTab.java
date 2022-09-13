@@ -10,10 +10,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 public class CorrespondenceTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationCorrespondence", "Correspondence");
-        addNotes(tabBuilder);
+        addCorrespondence(tabBuilder);
     }
 
-    private void addNotes(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
+    private void addCorrespondence(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
             .label("LabelNotes-Correspondence", null, "### Correspondence documents")
             .field(CaseData::getCaseNote);
