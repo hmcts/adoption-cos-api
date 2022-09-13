@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherParty;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 
@@ -21,8 +20,8 @@ public class DocumentSubmitter {
     )
     private DocumentSubmittedBy documentSubmittedBy;
 
-    @CCD(
+    /*@CCD(
         label = "Other Party"
     )
-    private OtherParty otherParty;
+    private OtherParty otherParty;*/
 }

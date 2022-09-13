@@ -34,8 +34,8 @@ public class CaseworkerAddNoteFT extends FunctionalTest {
 
         assertThat(response.getStatusCode()).isEqualTo(OK.value());
 
-        System.out.println("<<<<<<<<<<STRING>>>>>>>> "+response.asString());
-        System.out.println("<<<<<<<<<<JSON>>>>>>>> "+json(response.asString()));
+        System.out.println("<<<<<<<<<<STRING>>>>>>>> " + response.asString());
+        System.out.println("<<<<<<<<<<JSON>>>>>>>> " + json(response.asString()));
         assertThatJson(response.asString())
             .when(IGNORING_EXTRA_FIELDS)
             .when(IGNORING_ARRAY_ORDER)
