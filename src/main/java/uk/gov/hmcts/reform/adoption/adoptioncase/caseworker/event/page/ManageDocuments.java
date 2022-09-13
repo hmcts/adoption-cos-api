@@ -26,8 +26,8 @@ public class ManageDocuments implements CcdPageConfiguration {
             .pageLabel("Who submitted the document?")
             .mandatory(CaseData::getDocumentSubmittedBy)
             .complex(CaseData::getOtherParty)
-            .optional(OtherParty::getOtherPartyName, "documentSubmittedBy=\"otherParty\"")
-            .optional(OtherParty::getOtherPartyRole, "documentSubmittedBy=\"otherParty\"")
+            .mandatory(OtherParty::getOtherPartyName, "documentSubmittedBy=\"otherParty\"")
+            .mandatory(OtherParty::getOtherPartyRole, "documentSubmittedBy=\"otherParty\"")
             .done();
 
     }

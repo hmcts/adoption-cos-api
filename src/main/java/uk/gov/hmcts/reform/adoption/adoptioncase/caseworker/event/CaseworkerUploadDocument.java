@@ -53,6 +53,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                                    .forAllStates()
                                    .name(MANAGE_DOCUMENT)
                                    .description(MANAGE_DOCUMENT)
+                                   .showSummary()
                                    .aboutToSubmitCallback(this::aboutToSubmit)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
     }
