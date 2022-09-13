@@ -3,37 +3,66 @@ package uk.gov.hmcts.reform.adoption.document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import uk.gov.hmcts.ccd.sdk.api.HasLabel;
+import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.FieldType;
 
 @Getter
 @AllArgsConstructor
-public enum DocumentSubmittedBy implements HasLabel {
+public enum DocumentSubmittedBy {
     @JsonProperty("childSocialWorker")
-    CHILD_SOCIAL_WORKER("Child's social worker  ${applicant1FirstName}"),
+    @CCD(
+        label = "Child's social worker  ${applicant1FirstName}"
+    )
+    CHILD_SOCIAL_WORKER,
 
-    @JsonProperty("adoptionAgencyOrLocalAuthority")
-    ADOPTION_AGENCY_OR_LOCAL_AUTHORITY("Adoption agency or local authority"),
+    @JsonProperty("Adoption agency or local authority")
+    @CCD(
+        label = "Adoption agency or local authority",
+        typeOverride = FieldType.Label
+    )
+    ADOPTION_AGENCY_OR_LOCAL_AUTHORITY,
 
-    @JsonProperty("otherAdoptionAgencyOrLocalAuthority")
-    OTHER_ADOPTION_AGENCY_OR_LOCAL_AUTHORITY("Other adoption agency or local authority"),
+    @JsonProperty("Other adoption agency or local authority")
+    @CCD(
+        label = "Other adoption agency or local authority"
+    )
+    OTHER_ADOPTION_AGENCY_OR_LOCAL_AUTHORITY,
 
-    @JsonProperty("firstApplicant")
-    FIRST_APPLICANT("First applicant ${applicant1FirstName} ${applicant1LastName}"),
+    @JsonProperty("First applicant")
+    @CCD(
+        label = "First applicant ${applicant1FirstName} ${applicant1LastName}"
+    )
+    FIRST_APPLICANT,
 
-    @JsonProperty("secondApplicant")
-    SECOND_APPLICANT("Second applicant ${applicant2FirstName} ${applicant2LastName}"),
+    @JsonProperty("Second applicant")
+    @CCD(
+        label = "Second applicant ${applicant2FirstName} ${applicant2LastName}",
+        showCondition = "applyingWith!=\"alone\"",
+        typeOverride = FieldType.Label
+    )
+    SECOND_APPLICANT,
 
-    @JsonProperty("birthMother")
-    BIRTH_MOTHER("Birth mother ${birthMotherFirstName} ${birthMotherLastName}"),
+    @JsonProperty("Birth mother")
+    @CCD(
+        label = "Birth mother ${birthMotherFirstName} ${birthMotherLastName}"
+    )
+    BIRTH_MOTHER,
 
-    @JsonProperty("birthFather")
-    BIRTH_FATHER("Birth father ${birthFatherFirstName} ${birthFatherLastName}"),
+    @JsonProperty("Birth father")
+    @CCD(
+        label = "Birth father ${birthFatherFirstName} ${birthFatherLastName}"
+    )
+    BIRTH_FATHER,
 
-    @JsonProperty("personWithParentalResponsibility")
-    PERSON_WITH_PARENTAL_RESPONSIBILITY("Person with parental responsibility"),
+    @JsonProperty("Person with parental responsibility")
+    @CCD(
+        label = "Person with parental responsibility"
+    )
+    PERSON_WITH_PARENTAL_RESPONSIBILITY,
 
-    @JsonProperty("otherParty")
-    OTHER_PARTY("Other party");
-
-    private final String label;
+    @JsonProperty("Other party")
+    @CCD(
+        label = "Other party"
+    )
+    OTHER_PARTY;
 }
