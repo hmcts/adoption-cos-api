@@ -291,7 +291,6 @@ public class CaseData {
     private List<ListValue<AdoptionDocument>> documentsUploaded;
 
     @CCD(
-        label = "Upload Adoption Document",
         access = {DefaultAccess.class}
     )
     private AdoptionDocument adoptionDocument;
@@ -354,6 +353,41 @@ public class CaseData {
     )
     private String familyCourtEmailId;
 
+    @CCD(
+        label = "Application documents",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> applicationDocumentsCategory;
+
+    @CCD(
+        label = "Court orders",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> courtOrdersDocumentCategory;
+
+    @CCD(
+        label = "Reports",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> reportsDocumentCategory;
+
+    @CCD(
+        label = "Statements",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> statementsDocumentCategory;
+
+    @CCD(
+        label = "Correspondence",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> correspondenceDocumentCategory;
+
+    @CCD(
+        label = "Additional documents",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> additionalDocumentsCategory;
 
     @CCD(
         label = "Notes",
