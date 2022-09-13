@@ -70,7 +70,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
         OtherParty otherParty = new OtherParty("TEST ROLE", "TEST NAME");
         DocumentSubmitter documentSubmitter = new DocumentSubmitter(caseData.getDocumentSubmittedBy(), otherParty);
-        //caseData.getAdoptionDocument().setDocumentSubmitter(documentSubmitter);
+        caseData.getAdoptionDocument().setDocumentSubmitter(documentSubmitter);
 
         log.info("AdoptionDocument--- {}", caseData.getAdoptionDocument());
         log.info("DocumentSubmittedBy--- {}", caseData.getDocumentSubmittedBy());
