@@ -22,7 +22,7 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.expectedRespo
 @SpringBootTest
 public class CaseworkerAddNoteFT extends FunctionalTest {
 
-    private static final String REQUEST = "classpath:casedata/ccd-callback-casedata-application-payment-ready.json";
+    private static final String REQUEST = "classpath:casedata/request/request-caseworker-add-notes-about-to-submit.json";
 
     private static final String RESPONSE = "classpath:casedata/response/response-caseworker-add-notes-about-to-submit.json";
 

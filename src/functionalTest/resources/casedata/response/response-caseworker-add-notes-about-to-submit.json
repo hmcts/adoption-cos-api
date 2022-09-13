@@ -46,30 +46,28 @@
     "applicant1AddressSameAsApplicant1": null,
     "applicant1AddressTown": "NOTTINGHAM",
     "applicant1CannotUpload": "Yes",
-    "applicant1CannotUploadSupportingDocument": [
-      "birthOrAdoptionCertificate"
-    ],
+    "applicant1CannotUploadSupportingDocument": ["birthOrAdoptionCertificate"],
     "applicant1ContactDetails": null,
     "applicant1ContactDetailsConsent": "Yes",
     "applicant1DateOfBirth": "1990-12-12",
     "applicant1DocumentsUploaded": [
-    {
+      {
         "id": "c283880e-068e-450a-b44d-e72a6191847b",
         "value": {
-            "documentEmailContent": null,
-            "documentLink": {
-                "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
-                "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-                "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
-            },
-            "documentDateAdded": null,
-            "documentComment": "Uploaded by applicant",
-            "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-            "documentType": null,
-            "documentFileId": null
+          "documentEmailContent": null,
+          "documentLink": {
+            "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
+            "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+            "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
+          },
+          "documentDateAdded": null,
+          "documentComment": "Uploaded by applicant",
+          "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+          "documentType": null,
+          "documentFileId": null
         }
-    }
-],
+      }
+    ],
     "applicant1Email": "citizen.automation@mailinator.com",
     "applicant1EmailAddress": "abid@gmail.co",
     "applicant1FirstName": "Abid1",
@@ -79,8 +77,8 @@
     "applicant1Nationality": null,
     "applicant1Occupation": "Software Engineer",
     "applicant1PhoneNumber": "0987654321",
-    "applicant1SotFullName": null,
-    "applicant1StatementOfTruth": null,
+    "applicant1SotFullName": "null",
+    "applicant1StatementOfTruth": "Yes",
     "applicant2AdditionalNames": [],
     "applicant2AdditionalNationalities": [],
     "applicant2Address1": "2 WHITE ROSE WR2, BROAD STREET",
@@ -101,8 +99,8 @@
     "applicant2Nationality": null,
     "applicant2Occupation": "tester",
     "applicant2PhoneNumber": "12121212121",
-    "applicant2SotFullName": null,
-    "applicant2StatementOfTruth": null,
+    "applicant2SotFullName": "null",
+    "applicant2StatementOfTruth": "Yes",
     "applicationFeeOrderSummary": {
       "Fees": null,
       "PaymentReference": null,
@@ -122,8 +120,7 @@
     "birthFatherFirstName": "Father",
     "birthFatherLastName": "Father",
     "birthFatherNameOnCertificate": "Yes",
-    "birthFatherNationality": [
-      "British"
+    "birthFatherNationality": ["British"
     ],
     "birthFatherNotAliveReason": "",
     "birthFatherOccupation": "unknown",
@@ -141,14 +138,22 @@
     "birthMotherFirstName": "Mother",
     "birthMotherLastName": "Mother",
     "birthMotherNameOnCertificate": null,
-    "birthMotherNationality": [
-      "Irish",
-      "British"
+    "birthMotherNationality": ["Irish", "British"
     ],
     "birthMotherNotAliveReason": "",
     "birthMotherOccupation": "Teacher",
     "birthMotherOtherNationalities": [],
     "birthMotherStillAlive": "Yes",
+    "childLocalAuthority": "la",
+    "childLocalAuthorityEmail": "abc@gov.uk",
+    "childSocialWorkerEmail": "abc@gov.uk",
+    "childSocialWorkerName": "null",
+    "childSocialWorkerPhoneNumber": "1234567890",
+    "applicantLocalAuthority": null,
+    "applicantLocalAuthorityEmail": null,
+    "applicantSocialWorkerEmail": null,
+    "applicantSocialWorkerName": null,
+    "applicantSocialWorkerPhoneNumber": null,
     "childrenAdditionalNationalities": [
       {
         "id": "3b81bf8b-96ad-4001-a5cf-66f2af99a79c",
@@ -168,52 +173,16 @@
     "childrenFirstNameAfterAdoption": "child",
     "childrenLastName": "child",
     "childrenLastNameAfterAdoption": "child",
-    "childrenNationality": [
-      "Irish",
-      "British",
-      "Other"
+    "childrenNationality": ["Irish", "British", "Other"
     ],
     "childrenOtherSexAtBirth": "something",
     "childrenSexAtBirth": "other",
     "createdDate": null,
     "dateChildMovedIn": "2021-10-12",
-    "dateSubmitted": "${json-unit.any-string}",
-    "documentsGenerated": [
-      {
-        "id": "${json-unit.any-string}",
-        "value": {
-          "documentEmailContent": null,
-          "documentLink": {
-            "document_url": "${json-unit.any-string}",
-            "document_filename": "${json-unit.any-string}",
-            "document_binary_url": "${json-unit.any-string}"
-          },
-          "documentDateAdded": null,
-          "documentComment": null,
-          "documentFileName": "${json-unit.any-string}",
-          "documentType": "applicationSummaryEn",
-          "documentFileId": "${json-unit.any-string}"
-        }
-      },
-      {
-        "id": "${json-unit.any-string}",
-        "value": {
-          "documentEmailContent": null,
-          "documentLink": {
-            "document_url": "${json-unit.any-string}",
-            "document_filename": "${json-unit.any-string}",
-            "document_binary_url": "${json-unit.any-string}"
-          },
-          "documentDateAdded": null,
-          "documentComment": null,
-          "documentFileName": "${json-unit.any-string}",
-          "documentType": "applicationSummaryCy",
-          "documentFileId": "${json-unit.any-string}"
-        }
-      }
-    ],
+    "dateSubmitted": null,
+    "documentsGenerated": [],
     "documentsUploaded": [],
-    "dueDate": "${json-unit.any-string}",
+    "dueDate": null,
     "familyCourtEmailId": "adoptionproject@mailinator.com",
     "placementOrderCourt": "xyz",
     "familyCourtName": "xyz",
@@ -289,43 +258,6 @@
         }
       }
     ],
-    "applicationPayments": [
-      {
-        "id": "12",
-        "value": {
-          "created": "2021-11-02T02:50:12.208Z",
-          "updated": "2021-11-02T02:50:12.208Z",
-          "feeCode": "A58",
-          "amount": 183,
-          "status": "success",
-          "channel": "online",
-          "reference": "1234",
-          "transactionId": "1234"
-        }
-      }
-    ],
-    "applicationFeeOrderSummary": {
-      "PaymentTotal": "183",
-      "Fees": [
-        {
-          "value": {
-            "FeeAmount": "1234",
-            "FeeCode": "A58",
-            "FeeVersion": "1"
-          }
-        }
-      ]
-    },
-    "childLocalAuthority": "la",
-    "childLocalAuthorityEmail": "abc@gov.uk",
-    "childSocialWorkerEmail": "abc@gov.uk",
-    "childSocialWorkerName": "null",
-    "childSocialWorkerPhoneNumber": "1234567890",
-    "applicantLocalAuthority": null,
-    "applicantLocalAuthorityEmail": null,
-    "applicantSocialWorkerEmail": null,
-    "applicantSocialWorkerName": null,
-    "applicantSocialWorkerPhoneNumber": null,
     "solicitorEmail": null,
     "solicitorFirm": null,
     "solicitorHelpingWithApplication": null,
