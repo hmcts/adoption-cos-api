@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -34,6 +35,9 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Component
 @Slf4j
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
+
+    @Autowired
+    private Clock clock;
 
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
     public static final String MANAGE_DOCUMENT = "Manage documents";
@@ -132,7 +136,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
     private List<ListValue<AdoptionDocument>> addDocumentToListOfSpecificCategory(CaseData caseData,
                                                                                   List<ListValue<AdoptionDocument>> adoptionDocumentList) {
         AdoptionDocument adoptionDocument = caseData.getAdoptionDocument();
-        adoptionDocument.setDocumentDateAdded(LocalDate.now(Clock.systemDefaultZone()));
+        adoptionDocument.setDocumentDateAdded(LocalDate.now(clock));
         adoptionDocument.setDocumentCategory(null);
 
         if (isEmpty(adoptionDocumentList)) {

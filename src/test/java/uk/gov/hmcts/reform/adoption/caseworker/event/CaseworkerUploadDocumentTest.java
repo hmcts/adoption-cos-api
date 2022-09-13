@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.ccd.sdk.ConfigBuilderImpl;
 import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
@@ -11,7 +12,6 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.type.Document;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -20,13 +20,16 @@ import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument.CASEWORKER_UPLOAD_DOCUMENT;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
@@ -35,6 +38,9 @@ public class CaseworkerUploadDocumentTest {
 
     @InjectMocks
     CaseworkerUploadDocument caseworkerUploadDocument;
+
+    @Mock
+    private Clock clock;
 
     @Test
     void shouldAddConfigurationToConfigBuilder() throws Exception {
@@ -47,68 +53,136 @@ public class CaseworkerUploadDocumentTest {
             .contains(CASEWORKER_UPLOAD_DOCUMENT);
     }
 
-
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategory() {
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
+        assertThat(result.getData().getApplicationDocumentsCategory())
+            .allMatch(item -> expectedDate.equals(item.getValue().getDocumentDateAdded()));
+        assertThat(result.getData().getApplicationDocumentsCategory())
+            .allMatch(item -> item.getValue().getDocumentCategory() == null);
     }
 
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategoryWhenThereAreExistingEntries() {
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
-        ListValue<AdoptionDocument> listValue = ListValue.<AdoptionDocument>builder()
-            .id("1")
-            .value(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS))
-            .build();
-        List<ListValue<AdoptionDocument>> applicationDocumentsCategoryList = new ArrayList<>();
-        applicationDocumentsCategoryList.add(listValue);
-        caseDetails.getData().setApplicationDocumentsCategory(applicationDocumentsCategoryList);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
+        assertThat(result.getData().getApplicationDocumentsCategory())
+            .allMatch(item -> expectedDate.equals(item.getValue().getDocumentDateAdded()));
+        assertThat(result.getData().getApplicationDocumentsCategory())
+            .allMatch(item -> item.getValue().getDocumentCategory() == null);
     }
 
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithCourtOrdersDocumentCategory() {
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.COURT_ORDERS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getCourtOrdersDocumentCategory()).isNotNull();
+        assertThat(result.getData().getCourtOrdersDocumentCategory())
+            .allMatch(item -> expectedDate.equals(item.getValue().getDocumentDateAdded()));
+        assertThat(result.getData().getCourtOrdersDocumentCategory())
+            .allMatch(item -> item.getValue().getDocumentCategory() == null);
     }
 
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithReportsDocumentCategory() {
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.REPORTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getReportsDocumentCategory()).isNotNull();
+        assertThat(result.getData().getReportsDocumentCategory())
+            .allMatch(item -> expectedDate.equals(item.getValue().getDocumentDateAdded()));
+        assertThat(result.getData().getReportsDocumentCategory())
+            .allMatch(item -> item.getValue().getDocumentCategory() == null);
     }
 
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithStatementsDocumentCategory() {
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.STATEMENTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getStatementsDocumentCategory()).isNotNull();
+        assertThat(result.getData().getStatementsDocumentCategory())
+            .allMatch(item -> expectedDate.equals(item.getValue().getDocumentDateAdded()));
+        assertThat(result.getData().getStatementsDocumentCategory())
+            .allMatch(item -> item.getValue().getDocumentCategory() == null);
     }
 
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithCorrespondenceDocumentCategory() {
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.CORRESPONDENCE));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getCorrespondenceDocumentCategory()).isNotNull();
+        assertThat(result.getData().getCorrespondenceDocumentCategory())
+            .allMatch(item -> expectedDate.equals(item.getValue().getDocumentDateAdded()));
+        assertThat(result.getData().getCorrespondenceDocumentCategory())
+            .allMatch(item -> item.getValue().getDocumentCategory() == null);
     }
 
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithAdditionalDocumentCategory() {
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.ADDITIONAL_DOCUMENTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getAdditionalDocumentsCategory()).isNotNull();
+        assertThat(result.getData().getAdditionalDocumentsCategory())
+            .allMatch(item -> expectedDate.equals(item.getValue().getDocumentDateAdded()));
+        assertThat(result.getData().getAdditionalDocumentsCategory())
+            .allMatch(item -> item.getValue().getDocumentCategory() == null);
     }
 
     public static ConfigBuilderImpl<CaseData, State, UserRole> createCaseDataConfigBuilder() {
