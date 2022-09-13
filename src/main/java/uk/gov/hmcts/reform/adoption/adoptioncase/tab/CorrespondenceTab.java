@@ -8,10 +8,13 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+
 @Component
 public class CorrespondenceTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationCorrespondence", "Correspondence");
+        final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationCorrespondence", "Correspondence")
+            .forRoles(CASE_WORKER);
         addCorrespondence(tabBuilder);
     }
 
@@ -22,7 +25,7 @@ public class CorrespondenceTab implements CCDConfig<CaseData, State, UserRole> {
             .label("Upload correspondence",
                    null,
                    "[Upload documents](/cases/case-details/${[CASE_REFERENCE]}"
-                       + "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)"
+                       + "/trigger/caseworker-upload-document/caseworker-upload-documentuploadDocument)"
             );
     }
 }
