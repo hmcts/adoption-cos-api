@@ -9,23 +9,23 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum PlacementOrderType implements HasLabel {
 
-    @JsonProperty("Adoption Order")
-    ADOPTION_ORDER("Adoption Order"),
+    @JsonProperty("Adoption order")
+    ADOPTION_ORDER("Adoption order"),
 
-    @JsonProperty("Care Order")
-    CARE_ORDER("Care Order"),
+    @JsonProperty("Care order")
+    CARE_ORDER("Care order"),
 
-    @JsonProperty("Contact Order")
-    CONTACT_ORDER("Contact Order"),
+    @JsonProperty("Contact order")
+    CONTACT_ORDER("Contact order"),
 
     @JsonProperty("Freeing Order")
-    FREEING_ORDER("Freeing Order"),
+    FREEING_ORDER("Freeing order"),
 
-    @JsonProperty("Placement Order")
-    PLACEMENT_ORDER("Placement Order"),
+    @JsonProperty("Placement order")
+    PLACEMENT_ORDER("Placement order"),
 
-    @JsonProperty("Supervision Order")
-    SUPERVIS_ORDER("Supervision Order"),
+    @JsonProperty("Supervision order")
+    SUPERVIS_ORDER("Supervision order"),
 
     @JsonProperty("Other")
     OTHER("Other");
