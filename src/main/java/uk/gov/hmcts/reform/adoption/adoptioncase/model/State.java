@@ -9,30 +9,30 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 public enum State {
     @CCD(
         name = "Draft",
-        label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
+        label = "### #${[CASE_REFERENCE]}\n ### Child's Name: ${childrenFirstName} ${childrenLastName}\n"
     )
     Draft("Draft"),
 
     @CCD(
-        name = "Awaiting LA input",
-        label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
+        name = "Submitted",
+        label = "### #${[CASE_REFERENCE]}\n ### Child's Name: ${childrenFirstName} ${childrenLastName}\n"
     )
     Submitted("Awaiting LA input"),
 
     @CCD(
         name = "Application awaiting payment",
-        label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
+        label = "### #${[CASE_REFERENCE]}\n ### Child's Name: ${childrenFirstName} ${childrenLastName}\n"
     )
     AwaitingPayment("AwaitingPayment"),
 
     @CCD(
         name = "Awaiting Admin checks",
-        label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
+        label = "### #${[CASE_REFERENCE]}\n ### Child's Name: ${childrenFirstName} ${childrenLastName}\n"
     )
     AwaitingAdminChecks("AwaitingAdminChecks"),
 
     @CCD(
-        name = "LA Submitted",
+        name = "Awaiting admin check",
         label = "### Case number: ${[CASE_REFERENCE]}\n ### ${applicant1FirstName} ${applicant1LastName}\n"
     )
     LaSubmitted("LaSubmitted"),
@@ -77,4 +77,3 @@ public enum State {
     private final String name;
 
 }
-

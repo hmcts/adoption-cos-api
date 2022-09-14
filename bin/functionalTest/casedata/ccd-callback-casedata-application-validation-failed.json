@@ -4,7 +4,7 @@
       "id": "1646222663145",
       "value": {
         "siblingId": "1646222663145",
-        "siblingRelation": "brother",
+        "siblingRelation": "Brother",
         "siblingPoType": "some order",
         "siblingPoNumber": "1001"
       }
@@ -13,7 +13,7 @@
       "id": "1646222699254",
       "value": {
         "siblingId": "1646222699254",
-        "siblingRelation": "sister",
+        "siblingRelation": "Sister",
         "siblingPoType": "some other order",
         "siblingPoNumber": "23456"
       }
