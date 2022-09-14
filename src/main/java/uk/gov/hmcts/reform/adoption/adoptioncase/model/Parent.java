@@ -33,8 +33,11 @@ public class Parent {
     @CCD(label = "Last names")
     private String lastName;
 
-    @CCD(label = "Deceased")
+    @CCD(label = "Still alive")
     private String stillAlive;
+
+    @CCD(label = "Deceased")
+    private String deceased;
 
     @CCD(label = "Not Alive Reason")
     private String notAliveReason;
