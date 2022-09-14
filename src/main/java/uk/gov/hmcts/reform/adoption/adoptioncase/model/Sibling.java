@@ -29,7 +29,7 @@ public class Sibling {
         typeParameterOverride = "SiblingPoType")
     private SiblingPoType siblingPoType;
 
-    @CCD(label = "Type of order")
+    @CCD(label = "Type of order (Other)")
     private String siblingPlacementOtherType;
 
     @CCD(label = "Order case or serial number")

@@ -151,7 +151,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("timetable20Week")
             .field("dateChildMovedIn")
             .field("familyCourtName")
-            .field("placementOrderCourt")
             .field("placementOrders")
             .field("siblings");
     }

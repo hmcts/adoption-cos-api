@@ -29,7 +29,7 @@ public class PlacementOrder {
         typeParameterOverride = "PlacementOrderType")
     private PlacementOrderType placementOrderType;
 
-    @CCD(label = "Type of order")
+    @CCD(label = "Type of order (Other)")
     private String otherPlacementOrderType;
 
     @CCD(label = "Order case or serial number")
