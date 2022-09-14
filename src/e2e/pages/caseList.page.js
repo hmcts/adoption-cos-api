@@ -9,7 +9,7 @@ module.exports = {
     caseState: '#wb-case-state',
     evidenceHandled: '#evidenceHandled_Yes',
     evidenceNotHandled: '#evidenceHandled_No',
-    caseId: 'Case reference number',
+    caseNumber: '#hyphenatedCaseRef',
     childrenFirstName: '#childrenFirstName',
     childrenLastName: '#childrenLastName',
     search: 'Apply',
@@ -29,20 +29,24 @@ module.exports = {
   searchForCasesWithHandledEvidences(caseId, state = 'Any') {
     this.setInitialSearchFields(state);
     I.waitForElement(this.fields.evidenceHandled, 30);
-    I.fillField(this.fields.caseId, caseId);
+    I.fillField(this.fields.caseNumber, caseId);
     I.click(this.fields.evidenceHandled);
     I.click(this.fields.search);
   },
 
   searchForCasesWithId(caseId, state = 'Any') {
     this.setInitialSearchFields(state);
-    I.grabCurrentUrl();
-    I.fillField(this.fields.caseId, caseId);
+    I.wait(5);
+    I.fillField(this.fields.caseNumber, caseId);
     I.grabCurrentUrl();
     I.click(this.fields.search);
-    I.grabCurrentUrl();
+    I.wait(5);
   },
-
+  seeCaseInSearchResult(caseId) {
+    I.waitForElement(`//a[contains(@href,'/cases/case-details/${caseId}')]`);
+    I.grabCurrentUrl();
+    I.seeElement(this.locateCase(caseId));
+  },
   searchForCasesWithUnhandledEvidences() {
     I.click(this.fields.evidenceNotHandled);
     I.click(this.fields.search);

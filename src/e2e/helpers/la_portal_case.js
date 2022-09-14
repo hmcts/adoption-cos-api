@@ -1,7 +1,7 @@
 const Axios = require('axios');
 const otplib = require('otplib');
 const utils = require('../utils/utils.js');
-
+const cui = require('./create_cui_case.js');
 
 const laPortalCase = async (caseId) => {
 
@@ -53,7 +53,7 @@ const laPortalCase = async (caseId) => {
         const caseData = utils.caseDataLa;
         response = await axiosClient.post(`/cases/${caseId}/events`, {
             event,
-            data: mydata,
+            data: caseData,
             event_token: token,
         });
         return caseId;
@@ -63,3 +63,9 @@ const laPortalCase = async (caseId) => {
     }
 
 };
+
+module.exports.createCompleteCase = async () => {
+  const caseId = await cui.createCase();
+  await laPortalCase(caseId);
+  return caseId;
+}

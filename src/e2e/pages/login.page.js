@@ -18,7 +18,7 @@ module.exports = {
     await I.retry(3).waitForSelector(this.submitButton);
     await I.retry(3).click(this.fields.submitButton);
     await I.retry(3).grabCurrentUrl();
-    await I.wait(60);
+    await I.wait(5);
   },
 
 };

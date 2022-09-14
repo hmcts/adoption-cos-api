@@ -1,10 +1,18 @@
 const config = require('../config');
 
+const laHelper = require('../helpers/la_portal_case');
+
 
 Feature('Smoke tests').retry(1);
 
-Scenario('Verify applicant eligible to adopt', async ({loginPage, caseListPage }) => {
+Scenario('Verify applicant eligible to adopt', async ({I,loginPage, caseListPage }) => {
+
   console.log('Smoke test triggered now');
+  const caseID=await laHelper.createCompleteCase();
+  const hyphanisedCaseId = caseID.replace(/(.{4})/g,"$1-").substring(0,19);
+  console.log('hyphanisedCaseId '+ hyphanisedCaseId);
+  console.log('CCD Case number - '+ hyphanisedCaseId);
   await loginPage.loginToExUI(config.caseWorkerUserOne);
-  await caseListPage.verifyCaseIsNotAccessible('1662-5602-0099-6610');
+  await caseListPage.searchForCasesWithId(hyphanisedCaseId);
+  await caseListPage.seeCaseInSearchResult(caseID);
 });

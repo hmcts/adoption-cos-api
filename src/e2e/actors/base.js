@@ -183,9 +183,6 @@ module.exports = {
     this.seeElement(`//*[@class="markdown"]//h2/strong[text()='FamilyMan ID: ${familyManNumber}']`);
   },
 
-  seeCaseInSearchResult(caseId) {
-    this.seeElement(caseListPage.locateCase(normalizeCaseId(caseId)));
-  },
 
   dontSeeCaseInSearchResult(caseId) {
     this.dontSeeElement(caseListPage.locateCase(normalizeCaseId(caseId)));
