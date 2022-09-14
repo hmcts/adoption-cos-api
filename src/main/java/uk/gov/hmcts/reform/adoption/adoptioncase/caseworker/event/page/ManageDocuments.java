@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument.MANAGE_DOCUMENT;
 
@@ -15,17 +15,17 @@ public class ManageDocuments implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("uploadDocumentPage1")
             .pageLabel(MANAGE_DOCUMENT)
-            .complex(CaseData::getAdoptionDocument)
-            .mandatory(AdoptionDocument::getDocumentLink)
-            .mandatory(AdoptionDocument::getDocumentComment)
-            .mandatory(AdoptionDocument::getDocumentCategory)
+            .complex(CaseData::getAdoptionUploadDocument)
+            .mandatory(AdoptionUploadDocument::getDocumentLink)
+            .mandatory(AdoptionUploadDocument::getDocumentComment)
+            .mandatory(AdoptionUploadDocument::getDocumentCategory)
             .done();
 
         pageBuilder.page("uploadDocumentPage2")
             .pageLabel("Who submitted the document?")
-            .complex(CaseData::getAdoptionDocument)
-            .mandatory(AdoptionDocument::getRole)
-            .mandatory(AdoptionDocument::getName)
+            .complex(CaseData::getAdoptionUploadDocument)
+            .mandatory(AdoptionUploadDocument::getRole)
+            .mandatory(AdoptionUploadDocument::getName)
             /*.complex(CaseData::getOtherParty)
             .mandatory(OtherParty::getOtherPartyName, "documentSubmittedBy=\"otherParty\"")
             .mandatory(OtherParty::getOtherPartyRole, "documentSubmittedBy=\"otherParty\"")*/

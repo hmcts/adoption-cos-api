@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,16 +72,22 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         DocumentSubmitter documentSubmitter = new DocumentSubmitter(caseData.getDocumentSubmittedBy(), otherParty);*/
         //caseData.getAdoptionDocument().setDocumentSubmitter(documentSubmitter);
 
-        log.info("AdoptionDocument {}", caseData.getAdoptionDocument());
-        log.info("AdoptionDocument JSON {}", JSONObject.valueToString(caseData.getAdoptionDocument()));
+        log.info("AdoptionDocument {}", caseData.getAdoptionUploadDocument());
+        log.info("AdoptionDocument JSON {}", JSONObject.valueToString(caseData.getAdoptionUploadDocument()));
 
         ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
             .id(String.valueOf(UUID.randomUUID()))
             .value(caseData.getAdoptionDocument())
             .build();
-        caseData.addToDocumentsUploaded(adoptionDocument);
-        caseData.sortUploadedDocuments(beforeDetails.getData().getDocumentsUploaded());
-        switch (caseData.getAdoptionDocument().getDocumentCategory()) {
+
+        ListValue<AdoptionUploadDocument> adoptionUploadDocument = ListValue.<AdoptionUploadDocument>builder()
+            .id(String.valueOf(UUID.randomUUID()))
+            .value(caseData.getAdoptionUploadDocument())
+            .build();
+
+        //caseData.addToDocumentsUploaded(adoptionUploadDocument);
+        //caseData.sortUploadedDocuments(beforeDetails.getData().getDocumentsUploaded());
+        switch (caseData.getAdoptionUploadDocument().getDocumentCategory()) {
             case APPLICATION_DOCUMENTS -> {
                 caseData.setApplicationDocumentsCategory(addDocumentToListOfSpecificCategory(
                     caseData,
@@ -137,26 +144,26 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
      * This method will add the adoption document to list at the top of the list.
      * Based on whether the list was empty or already had other documents present.
      */
-    private List<ListValue<AdoptionDocument>> addDocumentToListOfSpecificCategory(CaseData caseData,
-                                                                                  List<ListValue<AdoptionDocument>> adoptionDocumentList) {
+    private List<ListValue<AdoptionUploadDocument>> addDocumentToListOfSpecificCategory(
+        CaseData caseData, List<ListValue<AdoptionUploadDocument>> adoptionDocumentList) {
 
         if (isEmpty(adoptionDocumentList)) {
-            List<ListValue<AdoptionDocument>> listValues = new ArrayList<>();
+            List<ListValue<AdoptionUploadDocument>> listValues = new ArrayList<>();
 
             var listValue = ListValue
-                .<AdoptionDocument>builder()
+                .<AdoptionUploadDocument>builder()
                 .id("1")
-                .value(caseData.getAdoptionDocument())
+                .value(caseData.getAdoptionUploadDocument())
                 .build();
 
             listValues.add(listValue);
-            caseData.setAdoptionDocument(null);
+            caseData.setAdoptionUploadDocument(null);
             return listValues;
         } else {
             AtomicInteger listValueIndex = new AtomicInteger(0);
             var listValue = ListValue
-                .<AdoptionDocument>builder()
-                .value(caseData.getAdoptionDocument())
+                .<AdoptionUploadDocument>builder()
+                .value(caseData.getAdoptionUploadDocument())
                 .build();
             // always add new Adoption Document as first element so that it is displayed on top
             adoptionDocumentList.add(
@@ -168,7 +175,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                                              -> adoptionDocumentListValue.setId(String.valueOf(listValueIndex.incrementAndGet())));
         }
         //Clear adoption document so that value doesn't persist while navigating to same screen subsequently
-        caseData.setAdoptionDocument(null);
+        caseData.setAdoptionUploadDocument(null);
         return adoptionDocumentList;
     }
 }

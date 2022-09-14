@@ -9,24 +9,20 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 
 @Data
 @NoArgsConstructor
 @Builder
 @ToString
-public class AdoptionDocument {
+public class AdoptionUploadDocument {
 
-    @CCD(
-        label = "Add content to be emailed",
-        typeOverride = TextArea
-    )
-    private String documentEmailContent;
 
     @CCD(
         label = "Document",
@@ -47,12 +43,6 @@ public class AdoptionDocument {
     private String documentComment;
 
     @CCD(
-        label = "File name",
-        hint = "For your own reference, to make the document easier to find"
-    )
-    private String documentFileName;
-
-    @CCD(
         label = "Select document type",
         typeOverride = FixedList,
         typeParameterOverride = "DocumentType"
@@ -60,12 +50,6 @@ public class AdoptionDocument {
     private DocumentType documentType;
 
     @CCD(
-        label = "File Id",
-        hint = "DM Store file Id"
-    )
-    private String documentFileId;
-
-    /*@CCD(
         label = "What document are you uploading?",
         hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
         typeOverride = FixedRadioList,
@@ -73,13 +57,13 @@ public class AdoptionDocument {
     )
     private DocumentCategory documentCategory;
 
-    *//*@CCD(
+    /*@CCD(
         label = "Who submitted the document?",
         //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
         typeOverride = FixedRadioList,
         typeParameterOverride = "DocumentSubmittedBy"
     )
-    private DocumentSubmitter documentSubmitter;*//*
+    private DocumentSubmitter documentSubmitter;*/
     @CCD(
         label = "Role",
         hint = "Add a role. For example, \"Child social worker\" or \"First applicant\""
@@ -91,23 +75,23 @@ public class AdoptionDocument {
         hint = "Add corresponding name of the role mentioned above. "
             + "For example, \"Agnes James, London Borough of Tower Hamlets\" or \"Agatha Mary Clarissa Christie\""
     )
-    private String name;*/
+    private String name;
 
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
-    public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
-                            @JsonProperty("documentLink") Document documentLink,
-                            @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
-                            @JsonProperty("documentComment") String documentComment,
-                            @JsonProperty("documentFileName") String documentFileName,
-                            @JsonProperty("documentType") DocumentType documentType,
-                            @JsonProperty("documentFileId") String documentFileId) {
-        this.documentEmailContent = documentEmailContent;
+    public AdoptionUploadDocument(@JsonProperty("documentLink") Document documentLink,
+                                  @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
+                                  @JsonProperty("documentComment") String documentComment,
+                                  @JsonProperty("documentType") DocumentType documentType,
+                                  @JsonProperty("documentCategory") DocumentCategory documentCategory,
+                                  @JsonProperty("role") String role,
+                                  @JsonProperty("name") String name) {
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
         this.documentComment = documentComment;
-        this.documentFileName = documentFileName;
         this.documentType = documentType;
-        this.documentFileId = documentFileId;
+        this.documentCategory = documentCategory;
+        this.role = role;
+        this.name = name;
     }
 }

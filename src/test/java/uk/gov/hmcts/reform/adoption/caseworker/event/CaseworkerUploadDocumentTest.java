@@ -20,7 +20,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmittedBy;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -55,14 +55,14 @@ public class CaseworkerUploadDocumentTest {
     public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategory() {
         var caseDetails = getCaseDetails();
         OtherParty otherParty = new OtherParty("TEST_PARTY_ROLE","TEST_PARTY_NAME");
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
         /*caseDetails.getData().getAdoptionDocument()
             .setDocumentSubmitter(DocumentSubmitter.builder()
                                       .documentSubmittedBy(DocumentSubmittedBy.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY)
                                       .otherParty(otherParty)
                                       .build());*/
-        caseDetails.getData().getAdoptionDocument().setName("TEST_NAME");
-        caseDetails.getData().getAdoptionDocument().setRole("TEST_ROLE");
+        caseDetails.getData().getAdoptionUploadDocument().setName("TEST_NAME");
+        caseDetails.getData().getAdoptionUploadDocument().setRole("TEST_ROLE");
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
     }
@@ -70,12 +70,12 @@ public class CaseworkerUploadDocumentTest {
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategoryWhenThereAreExistingEntries() {
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
-        ListValue<AdoptionDocument> listValue = ListValue.<AdoptionDocument>builder()
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
+        ListValue<AdoptionUploadDocument> listValue = ListValue.<AdoptionUploadDocument>builder()
             .id("1")
             .value(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS))
             .build();
-        List<ListValue<AdoptionDocument>> applicationDocumentsCategoryList = new ArrayList<>();
+        List<ListValue<AdoptionUploadDocument>> applicationDocumentsCategoryList = new ArrayList<>();
         applicationDocumentsCategoryList.add(listValue);
         caseDetails.getData().setApplicationDocumentsCategory(applicationDocumentsCategoryList);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
@@ -85,7 +85,7 @@ public class CaseworkerUploadDocumentTest {
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithCourtOrdersDocumentCategory() {
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.COURT_ORDERS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.COURT_ORDERS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getCourtOrdersDocumentCategory()).isNotNull();
     }
@@ -93,7 +93,7 @@ public class CaseworkerUploadDocumentTest {
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithReportsDocumentCategory() {
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.REPORTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.REPORTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getReportsDocumentCategory()).isNotNull();
     }
@@ -101,7 +101,7 @@ public class CaseworkerUploadDocumentTest {
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithStatementsDocumentCategory() {
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.STATEMENTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.STATEMENTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getStatementsDocumentCategory()).isNotNull();
     }
@@ -109,7 +109,7 @@ public class CaseworkerUploadDocumentTest {
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithCorrespondenceDocumentCategory() {
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.CORRESPONDENCE));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.CORRESPONDENCE));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getCorrespondenceDocumentCategory()).isNotNull();
     }
@@ -117,7 +117,7 @@ public class CaseworkerUploadDocumentTest {
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithAdditionalDocumentCategory() {
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.ADDITIONAL_DOCUMENTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.ADDITIONAL_DOCUMENTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getAdditionalDocumentsCategory()).isNotNull();
     }
@@ -130,13 +130,13 @@ public class CaseworkerUploadDocumentTest {
         return details;
     }
 
-    private AdoptionDocument setAdoptionDocumentCategory(DocumentCategory category) {
+    private AdoptionUploadDocument setAdoptionDocumentCategory(DocumentCategory category) {
         DocumentSubmitter documentSubmitter = DocumentSubmitter.builder()
                 .documentSubmittedBy(DocumentSubmittedBy.BIRTH_FATHER)
                 .otherParty(new OtherParty("TEST_PARTY_ROLE","TEST_PARTY_NAME"))
                 .build();
 
-        return AdoptionDocument.builder()
+        return AdoptionUploadDocument.builder()
                 .documentLink(Document
                                   .builder()
                                   .url("TEST URL")
