@@ -65,34 +65,6 @@ public class AdoptionDocument {
     )
     private String documentFileId;
 
-    /*@CCD(
-        label = "What document are you uploading?",
-        hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "DocumentCategory"
-    )
-    private DocumentCategory documentCategory;
-
-    *//*@CCD(
-        label = "Who submitted the document?",
-        //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "DocumentSubmittedBy"
-    )
-    private DocumentSubmitter documentSubmitter;*//*
-    @CCD(
-        label = "Role",
-        hint = "Add a role. For example, \"Child social worker\" or \"First applicant\""
-    )
-    private String role;
-
-    @CCD(
-        label = "Name",
-        hint = "Add corresponding name of the role mentioned above. "
-            + "For example, \"Agnes James, London Borough of Tower Hamlets\" or \"Agatha Mary Clarissa Christie\""
-    )
-    private String name;*/
-
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
     public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,

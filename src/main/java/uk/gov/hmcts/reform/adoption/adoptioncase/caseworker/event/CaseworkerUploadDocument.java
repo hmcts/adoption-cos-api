@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -15,12 +14,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -68,27 +65,9 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
         var caseData = details.getData();
 
-        /*OtherParty otherParty = new OtherParty("TEST ROLE", "TEST NAME");
-        DocumentSubmitter documentSubmitter = new DocumentSubmitter(caseData.getDocumentSubmittedBy(), otherParty);*/
-        //caseData.getAdoptionDocument().setDocumentSubmitter(documentSubmitter);
         caseData.getAdoptionUploadDocument().setName(caseData.getName());
         caseData.getAdoptionUploadDocument().setRole(caseData.getRole());
 
-        log.info("AdoptionDocument {}", caseData.getAdoptionUploadDocument());
-        log.info("AdoptionDocument JSON {}", JSONObject.valueToString(caseData.getAdoptionUploadDocument()));
-
-        ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
-            .id(String.valueOf(UUID.randomUUID()))
-            .value(caseData.getAdoptionDocument())
-            .build();
-
-        ListValue<AdoptionUploadDocument> adoptionUploadDocument = ListValue.<AdoptionUploadDocument>builder()
-            .id(String.valueOf(UUID.randomUUID()))
-            .value(caseData.getAdoptionUploadDocument())
-            .build();
-
-        //caseData.addToDocumentsUploaded(adoptionUploadDocument);
-        //caseData.sortUploadedDocuments(beforeDetails.getData().getDocumentsUploaded());
         switch (caseData.getAdoptionUploadDocument().getDocumentCategory()) {
             case APPLICATION_DOCUMENTS -> {
                 caseData.setApplicationDocumentsCategory(addDocumentToListOfSpecificCategory(

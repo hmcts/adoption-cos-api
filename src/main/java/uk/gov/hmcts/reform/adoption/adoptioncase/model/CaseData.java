@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
-import uk.gov.hmcts.reform.adoption.document.DocumentSubmittedBy;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
@@ -408,19 +407,6 @@ public class CaseData {
     @CCD(
         access = {DefaultAccess.class}
     )
-    private OtherParty otherParty;
-
-    @CCD(
-        label = "Who submitted the document?",
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "DocumentSubmittedBy",
-        access = {DefaultAccess.class}
-    )
-    private DocumentSubmittedBy documentSubmittedBy;
-
-    @CCD(
-        access = {DefaultAccess.class}
-    )
     private AdoptionUploadDocument adoptionUploadDocument;
 
     @CCD(
@@ -512,19 +498,5 @@ public class CaseData {
             documents.add(0, listValue); // always add to start top of list
         }
     }
-
-    /*@JsonIgnore
-    public void addToDocumentsUploaded(final ListValue<AdoptionUploadDocument> listValue) {
-
-        final List<ListValue<AdoptionUploadDocument>> documents = getDocumentsUploaded();
-
-        if (isEmpty(documents)) {
-            final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
-            documentList.add(listValue);
-            setDocumentsUploaded(documentList);
-        } else {
-            documents.add(0, listValue); // always add to start top of list
-        }
-    }*/
 
 }

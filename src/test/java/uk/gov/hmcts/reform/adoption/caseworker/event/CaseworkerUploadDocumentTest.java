@@ -14,12 +14,9 @@ import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherParty;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
-import uk.gov.hmcts.reform.adoption.document.DocumentSubmittedBy;
-import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.lang.reflect.InvocationTargetException;
@@ -54,7 +51,6 @@ public class CaseworkerUploadDocumentTest {
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategory() {
         var caseDetails = getCaseDetails();
-        OtherParty otherParty = new OtherParty("TEST_PARTY_ROLE","TEST_PARTY_NAME");
         caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
         /*caseDetails.getData().getAdoptionDocument()
             .setDocumentSubmitter(DocumentSubmitter.builder()
@@ -131,11 +127,6 @@ public class CaseworkerUploadDocumentTest {
     }
 
     private AdoptionUploadDocument setAdoptionDocumentCategory(DocumentCategory category) {
-        DocumentSubmitter documentSubmitter = DocumentSubmitter.builder()
-                .documentSubmittedBy(DocumentSubmittedBy.BIRTH_FATHER)
-                .otherParty(new OtherParty("TEST_PARTY_ROLE","TEST_PARTY_NAME"))
-                .build();
-
         return AdoptionUploadDocument.builder()
                 .documentLink(Document
                                   .builder()
