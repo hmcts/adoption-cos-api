@@ -62,6 +62,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
 
         if (IN_PROGRESS.equals(lastPaymentStatus)) {
             log.info("Case {} payment in progress", caseId);
+            details.getData().setStatus(AwaitingPayment);
 
             return AboutToStartOrSubmitResponse.<CaseData, State>builder()
                 .data(details.getData())
