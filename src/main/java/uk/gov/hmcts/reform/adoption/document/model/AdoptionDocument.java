@@ -10,7 +10,6 @@ import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
-import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 
 import java.time.LocalDate;
@@ -76,13 +75,25 @@ public class AdoptionDocument {
     )
     private DocumentCategory documentCategory;
 
-    @CCD(
+    /*@CCD(
         label = "Who submitted the document?",
         //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
         typeOverride = FixedRadioList,
         typeParameterOverride = "DocumentSubmittedBy"
     )
-    private DocumentSubmitter documentSubmitter;
+    private DocumentSubmitter documentSubmitter;*/
+    @CCD(
+        label = "Role",
+        hint = "Add a role. For example, \"Child social worker\" or \"First applicant\""
+    )
+    private String role;
+
+    @CCD(
+        label = "Name",
+        hint = "Add corresponding name of the role mentioned above. "
+            + "For example, \"Agnes James, London Borough of Tower Hamlets\" or \"Agatha Mary Clarissa Christie\""
+    )
+    private String name;
 
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
@@ -94,7 +105,8 @@ public class AdoptionDocument {
                             @JsonProperty("documentType") DocumentType documentType,
                             @JsonProperty("documentFileId") String documentFileId,
                             @JsonProperty("documentCategory") DocumentCategory documentCategory,
-                            @JsonProperty("documentSubmitter") DocumentSubmitter documentSubmitter) {
+                            @JsonProperty("role") String role,
+                            @JsonProperty("name") String name) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
@@ -103,6 +115,7 @@ public class AdoptionDocument {
         this.documentType = documentType;
         this.documentFileId = documentFileId;
         this.documentCategory = documentCategory;
-        this.documentSubmitter = documentSubmitter;
+        this.role = role;
+        this.name = name;
     }
 }

@@ -56,11 +56,13 @@ public class CaseworkerUploadDocumentTest {
         var caseDetails = getCaseDetails();
         OtherParty otherParty = new OtherParty("TEST_PARTY_ROLE","TEST_PARTY_NAME");
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
-        caseDetails.getData().getAdoptionDocument()
+        /*caseDetails.getData().getAdoptionDocument()
             .setDocumentSubmitter(DocumentSubmitter.builder()
                                       .documentSubmittedBy(DocumentSubmittedBy.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY)
                                       .otherParty(otherParty)
-                                      .build());
+                                      .build());*/
+        caseDetails.getData().getAdoptionDocument().setName("TEST_NAME");
+        caseDetails.getData().getAdoptionDocument().setRole("TEST_ROLE");
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
     }
@@ -141,7 +143,8 @@ public class CaseworkerUploadDocumentTest {
                                   .build())
                 .documentComment("TEST_COMMENT")
                 .documentCategory(category)
-                .documentSubmitter(documentSubmitter)
+                .name("TEST_NAME")
+                .role("TEST_ROLE")
                 .build();
     }
 
