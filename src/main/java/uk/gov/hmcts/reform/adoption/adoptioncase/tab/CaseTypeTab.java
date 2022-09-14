@@ -108,10 +108,10 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicantSocialWorkerPhoneNumber")
             .field("applicantLocalAuthorityEmail")
             .label("labelSummary-respondentDetails",
-                   "birthMotherStillAlive=\"Yes\" OR birthFatherStillAlive=\"Yes\"",
+                   null,
                    "### Respondent Details")
             .label("labelSummary-birthMother",
-                   "birthMotherStillAlive=\"Yes\"",
+                   null,
                    "#### Birth Mother")
             .field("birthMotherFirstName")
             .field("birthMotherLastName")
@@ -123,7 +123,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthMotherAddressCountry")
             .field("birthMotherAddressPostCode")
             .field("birthMotherLastAddressDate")
-            .label("labelSummary-birthFather", "birthFatherStillAlive=\"Yes\"", "#### Birth Father")
+            .label("labelSummary-birthFather", "birthFatherNameOnCertificate=\"Yes\"", "#### Birth Father")
             .field("birthFatherFirstName")
             .field("birthFatherLastName")
             .field("birthFatherStillAlive")
@@ -170,6 +170,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1EmailAddress")
             .field("childrenFirstName")
             .field("childrenLastName")
+            .field("birthFatherNameOnCertificate")
             .field("hasAnotherAdopAgencyOrLA")
             .field("applyingWith");
     }
