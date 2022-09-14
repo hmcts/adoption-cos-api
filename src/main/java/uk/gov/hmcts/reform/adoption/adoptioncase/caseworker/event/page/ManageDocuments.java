@@ -26,10 +26,6 @@ public class ManageDocuments implements CcdPageConfiguration {
             .complex(CaseData::getAdoptionDocument)
             .mandatory(AdoptionDocument::getDocumentSubmitter)
             .done();
-        pageBuilder.page("uploadDocumentPage2")
-            .complex(CaseData::getAdoptionDocument)
-            .mandatory(AdoptionDocument::getDocumentSubmitter)
-            .done();
 
     }
 }
