@@ -124,7 +124,7 @@ task functional(type: Test) {
   failFast = true
   doLast {
     exec {
-      commandLine 'yarn', 'test:fullfunctional'
+      commandLine 'yarn test:fullfunctional'
     }
   }
 }
@@ -144,7 +144,7 @@ task smoke(type: Test) {
   include "uk/gov/hmcts/reform/adoption/smoke/**"
   doLast {
     exec {
-      commandLine 'yarn', 'test:smoke'
+      commandLine 'yarn test:smoke'
     }
   }
 }
