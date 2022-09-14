@@ -24,7 +24,7 @@ public class DocumentSubmitter {
     )
     private DocumentSubmittedBy documentSubmittedBy;
 
-   //@JsonUnwrapped
+    //@JsonUnwrapped
     @CCD(
         label = "Other Party"
     )
