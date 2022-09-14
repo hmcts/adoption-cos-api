@@ -116,7 +116,7 @@ test {
   useJUnitPlatform()
 }
 
-task functional(type: Test) {
+task functional(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs functional tests"
   group = "Verification"
   testClassesDirs = sourceSets.functionalTest.output.classesDirs
@@ -124,7 +124,7 @@ task functional(type: Test) {
   failFast = true
   doLast {
     exec {
-      commandLine 'yarn test:fullfunctional'
+      commandLine 'yarn' 'test:fullfunctional'
     }
   }
 }
@@ -136,15 +136,18 @@ task integration(type: Test) {
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
 }
-
-task smoke(type: Test) {
+task yarnInstall(type: Exec) {
+  workingDir '.'
+  commandLine 'yarn', 'install'
+}
+task smoke(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs Smoke Tests"
   setTestClassesDirs(sourceSets.functionalTest.output.classesDirs)
   setClasspath(sourceSets.functionalTest.runtimeClasspath)
   include "uk/gov/hmcts/reform/adoption/smoke/**"
   doLast {
     exec {
-      commandLine 'yarn test:smoke'
+      commandLine 'yarn', 'test:smoke'
     }
   }
 }
