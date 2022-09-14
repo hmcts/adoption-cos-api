@@ -124,16 +124,16 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthMotherAddressPostCode", "birthMotherDeceased=\"No\"")
             .field("birthMotherLastAddressDate", "birthMotherDeceased=\"No\"")
             .label("labelSummary-birthFather", "birthFatherNameOnCertificate=\"Yes\"", "#### Birth Father")
-            .field("birthFatherFirstName","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"")
-            .field("birthFatherLastName","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"")
+            .field("birthFatherFirstName","birthFatherNameOnCertificate=\"Yes\"")
+            .field("birthFatherLastName","birthFatherNameOnCertificate=\"Yes\"")
             .field("birthFatherDeceased", "birthFatherNameOnCertificate=\"Yes\"")
-            .field("birthFatherAddress1","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"")
-            .field("birthFatherAddress2","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"")
-            .field("birthFatherAddress3","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"")
-            .field("birthFatherAddressTown","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"")
-            .field("birthMotherAddressCountry","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"")
-            .field("birthFatherAddressPostCode","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"")
-            .field("birthFatherLastAddressDate","birthFatherNameOnCertificate=\"Yes\" AND \"birthFatherDeceased=\"No\"");
+            .field("birthFatherAddress1","birthFatherNameOnCertificate=\"Yes\"")
+            .field("birthFatherAddress2","birthFatherNameOnCertificate=\"Yes\"")
+            .field("birthFatherAddress3","birthFatherNameOnCertificate=\"Yes\"")
+            .field("birthFatherAddressTown","birthFatherNameOnCertificate=\"Yes\"")
+            .field("birthMotherAddressCountry","birthFatherNameOnCertificate=\"Yes\"")
+            .field("birthFatherAddressPostCode","birthFatherNameOnCertificate=\"Yes\"")
+            .field("birthFatherLastAddressDate","birthFatherNameOnCertificate=\"Yes\"");
     }
 
     public void buildSummaryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
