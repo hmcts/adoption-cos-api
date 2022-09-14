@@ -115,20 +115,6 @@ test {
   failFast = true
   useJUnitPlatform()
 }
-
-task functional(type: Test,dependsOn: ':yarnInstall') {
-  description = "Runs functional tests"
-  group = "Verification"
-  testClassesDirs = sourceSets.functionalTest.output.classesDirs
-  classpath = sourceSets.functionalTest.runtimeClasspath
-  failFast = true
-  doLast {
-    exec {
-      commandLine 'yarn' 'test:fullfunctional'
-    }
-  }
-}
-
 task integration(type: Test) {
   description = "Runs integration tests"
   group = "Verification"
@@ -142,9 +128,6 @@ task yarnInstall(type: Exec) {
 }
 task smoke(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs Smoke Tests"
-  setTestClassesDirs(sourceSets.functionalTest.output.classesDirs)
-  setClasspath(sourceSets.functionalTest.runtimeClasspath)
-  include "uk/gov/hmcts/reform/adoption/smoke/**"
   doLast {
     exec {
       commandLine 'yarn', 'test:smoke'
@@ -152,6 +135,14 @@ task smoke(type: Test,dependsOn: ':yarnInstall') {
   }
 }
 
+task functional(type: Test,dependsOn: ':yarnInstall') {
+  description = "Runs functional tests"
+  doLast {
+    exec {
+      commandLine 'yarn' 'test:functional'
+    }
+  }
+}
 task highLevelDataSetup(type: JavaExec) {
   mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
   classpath += sourceSets.main.runtimeClasspath
