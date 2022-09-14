@@ -423,6 +423,18 @@ public class CaseData {
     )
     private AdoptionUploadDocument adoptionUploadDocument;
 
+    @CCD(
+        label = "Role",
+        hint = "What is their role? For example, first applicant or child's social worker."
+    )
+    private String role;
+
+    @CCD(
+        label = "Name",
+        hint = "Add the name of the person who submitted the document."
+    )
+    private String name;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);

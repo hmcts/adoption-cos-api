@@ -22,10 +22,11 @@ public class ManageDocuments implements CcdPageConfiguration {
             .done();
 
         pageBuilder.page("uploadDocumentPage2")
+            //.complex(CaseData::getAdoptionUploadDocument,false,null,"Who submitted the document?","Hint")
             .pageLabel("Who submitted the document?")
-            .complex(CaseData::getAdoptionUploadDocument)
-            .mandatory(AdoptionUploadDocument::getRole)
-            .mandatory(AdoptionUploadDocument::getName)
+            //.complex(CaseData::getAdoptionUploadDocument)
+            .mandatory(CaseData::getRole)
+            .mandatory(CaseData::getName)
             /*.complex(CaseData::getOtherParty)
             .mandatory(OtherParty::getOtherPartyName, "documentSubmittedBy=\"otherParty\"")
             .mandatory(OtherParty::getOtherPartyRole, "documentSubmittedBy=\"otherParty\"")*/
