@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.adoption.document.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -77,7 +76,7 @@ public class AdoptionDocument {
     )
     private DocumentCategory documentCategory;
 
-    @JsonUnwrapped
+    //@JsonUnwrapped
     @CCD(
         label = "Who submitted the document?",
         //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
