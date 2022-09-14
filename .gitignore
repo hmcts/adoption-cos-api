@@ -26,4 +26,4 @@ bin/main/application.yaml
 .aat-env
 /target/
 /pacts/
-/node_modules/
+/node_modules
