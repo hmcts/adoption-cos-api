@@ -114,6 +114,9 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             default -> log.info("Document doesn't fall under any provided category");
         }
 
+        caseData.setRole(null);
+        caseData.setName(null);
+        log.info("Set Role and Name as null");
         log.info("-----------CaseData {}",caseData);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
@@ -157,8 +160,6 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         }
         //Clear adoption document so that value doesn't persist while navigating to same screen subsequently
         caseData.setAdoptionUploadDocument(null);
-        caseData.setName(null);
-        caseData.setRole(null);
         return adoptionDocumentList;
     }
 }
