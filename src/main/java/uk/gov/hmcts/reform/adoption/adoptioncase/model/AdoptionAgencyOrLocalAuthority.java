@@ -18,11 +18,11 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @Builder
 public class AdoptionAgencyOrLocalAuthority {
 
-    @CCD(label = "Name of Agency",
+    @CCD(label = "Name",
         access = {DefaultAccess.class})
     private String adopAgencyOrLaName;
 
-    @CCD(label = "Name of Contact",
+    @CCD(label = "Contact",
         access = {DefaultAccess.class})
     private String adopAgencyOrLaContactName;
 

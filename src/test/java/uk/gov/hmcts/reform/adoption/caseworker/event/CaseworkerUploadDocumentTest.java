@@ -12,19 +12,22 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,6 +56,7 @@ public class CaseworkerUploadDocumentTest {
             .contains(CASEWORKER_UPLOAD_DOCUMENT);
     }
 
+
     @Test
     public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategory() {
         final var instant = Instant.now();
@@ -61,8 +65,11 @@ public class CaseworkerUploadDocumentTest {
 
         when(clock.instant()).thenReturn(instant);
         when(clock.getZone()).thenReturn(zoneId);
+
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
+        caseDetails.getData().getAdoptionUploadDocument().setName("TEST_NAME");
+        caseDetails.getData().getAdoptionUploadDocument().setRole("TEST_ROLE");
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
         assertThat(result.getData().getApplicationDocumentsCategory())
@@ -81,7 +88,17 @@ public class CaseworkerUploadDocumentTest {
         when(clock.getZone()).thenReturn(zoneId);
 
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
+        AdoptionUploadDocument adoptionDocument = setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS);
+        adoptionDocument.setDocumentDateAdded(LocalDate.now(clock));
+        adoptionDocument.setDocumentCategory(null);
+        ListValue<AdoptionUploadDocument> listValue = ListValue.<AdoptionUploadDocument>builder()
+            .id("1")
+            .value(adoptionDocument)
+            .build();
+        List<ListValue<AdoptionUploadDocument>> applicationDocumentsCategoryList = new ArrayList<>();
+        applicationDocumentsCategoryList.add(listValue);
+        caseDetails.getData().setApplicationDocumentsCategory(applicationDocumentsCategoryList);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
         assertThat(result.getData().getApplicationDocumentsCategory())
@@ -100,7 +117,7 @@ public class CaseworkerUploadDocumentTest {
         when(clock.getZone()).thenReturn(zoneId);
 
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.COURT_ORDERS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.COURT_ORDERS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getCourtOrdersDocumentCategory()).isNotNull();
         assertThat(result.getData().getCourtOrdersDocumentCategory())
@@ -119,7 +136,7 @@ public class CaseworkerUploadDocumentTest {
         when(clock.getZone()).thenReturn(zoneId);
 
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.REPORTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.REPORTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getReportsDocumentCategory()).isNotNull();
         assertThat(result.getData().getReportsDocumentCategory())
@@ -138,7 +155,7 @@ public class CaseworkerUploadDocumentTest {
         when(clock.getZone()).thenReturn(zoneId);
 
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.STATEMENTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.STATEMENTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getStatementsDocumentCategory()).isNotNull();
         assertThat(result.getData().getStatementsDocumentCategory())
@@ -157,7 +174,7 @@ public class CaseworkerUploadDocumentTest {
         when(clock.getZone()).thenReturn(zoneId);
 
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.CORRESPONDENCE));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.CORRESPONDENCE));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getCorrespondenceDocumentCategory()).isNotNull();
         assertThat(result.getData().getCorrespondenceDocumentCategory())
@@ -176,22 +193,13 @@ public class CaseworkerUploadDocumentTest {
         when(clock.getZone()).thenReturn(zoneId);
 
         var caseDetails = getCaseDetails();
-        caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.ADDITIONAL_DOCUMENTS));
+        caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.ADDITIONAL_DOCUMENTS));
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getAdditionalDocumentsCategory()).isNotNull();
         assertThat(result.getData().getAdditionalDocumentsCategory())
             .allMatch(item -> expectedDate.equals(item.getValue().getDocumentDateAdded()));
         assertThat(result.getData().getAdditionalDocumentsCategory())
             .allMatch(item -> item.getValue().getDocumentCategory() == null);
-    }
-
-    public static ConfigBuilderImpl<CaseData, State, UserRole> createCaseDataConfigBuilder() {
-        return new ConfigBuilderImpl<>(new ResolvedCCDConfig<>(
-            CaseData.class,
-            State.class,
-            UserRole.class,
-            new HashMap<>(),
-            ImmutableSet.copyOf(State.class.getEnumConstants())));
     }
 
     private CaseDetails<CaseData, State> getCaseDetails() {
@@ -202,15 +210,26 @@ public class CaseworkerUploadDocumentTest {
         return details;
     }
 
-    private AdoptionDocument setAdoptionDocumentCategory(DocumentCategory category) {
-        return AdoptionDocument.builder()
+    private AdoptionUploadDocument setAdoptionDocumentCategory(DocumentCategory category) {
+        return AdoptionUploadDocument.builder()
                 .documentLink(Document
                                   .builder()
                                   .url("TEST URL")
                                   .build())
                 .documentComment("TEST_COMMENT")
                 .documentCategory(category)
+                .name("TEST_NAME")
+                .role("TEST_ROLE")
                 .build();
+    }
+
+    public static ConfigBuilderImpl<CaseData, State, UserRole> createCaseDataConfigBuilder() {
+        return new ConfigBuilderImpl<>(new ResolvedCCDConfig<>(
+            CaseData.class,
+            State.class,
+            UserRole.class,
+            new HashMap<>(),
+            ImmutableSet.copyOf(State.class.getEnumConstants())));
     }
 
     @SuppressWarnings({"unchecked"})

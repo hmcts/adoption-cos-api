@@ -17,13 +17,14 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         buildSummaryTab(configBuilder);
         buildApplicantsTab(configBuilder);
-        buildChildDetailsTab(configBuilder);
+        buildOtherPartiesTab(configBuilder);
         buildDocumentsTab(configBuilder);
         buildConfidentialTab(configBuilder);
     }
 
     public void buildApplicantsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationDetails", "Applicants")
+            .displayOrder(1)
             .showCondition(TabShowCondition.showForState(State.Submitted, State.LaSubmitted))
             .label("LabelApplicant-Heading",
                    "applyingWith=\"alone\"",
@@ -66,9 +67,10 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant2PhoneNumber","applyingWith!=\"alone\"");
     }
 
-    public void buildChildDetailsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+    public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("otherParties", "Other Parties")
             .forRoles(CASE_WORKER)
+            .displayOrder(2)
             .label("labelSummary-otherParties", null, "### Other parties")
             .label("labelSummary-childDetails", null, "#### Child details")
             .field("childrenFirstName")
@@ -80,8 +82,9 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("childrenAdditionalNationalities")
             .field("childrenFirstNameAfterAdoption")
             .field("childrenLastNameAfterAdoption")
-            .label("labelSummary-adoptionAgency", "hasAnotherAdopAgencyOrLA=\"Yes\"", "### Agencies/Local Authorities Details")
-            .label("labelSummary-adoptionAgencySub", null, "#### Adoption Agency")
+            .label("labelSummary-adoptionAgency", null, "### Agencies/Local Authorities Details")
+            .label("labelSummary-adoptionAgencySub", "hasAnotherAdopAgencyOrLA = \"Yes\"", "#### Adoption Agency")
+            .field("hasAnotherAdopAgencyOrLA", "applyingWith=\"NEVER_SHOW\"")
             .field("adopAgencyOrLaName")
             .field("adopAgencyOrLaContactName")
             .field("adopAgencyAddressLine1")
@@ -105,33 +108,39 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicantSocialWorkerPostcode")
             .field("applicantSocialWorkerPhoneNumber")
             .field("applicantLocalAuthorityEmail")
-            .label("labelSummary-respondentDetails", null, "### Respondent Details")
-            .label("labelSummary-birthMother", null, "#### Birth Mother")
-            .field("birthMotherFirstName")
-            .field("birthMotherLastName")
-            .field("birthMotherStillAlive")
-            .field("birthMotherAddress1")
-            .field("birthMotherAddress2")
-            .field("birthMotherAddress3")
-            .field("birthMotherAddressTown")
-            .field("birthMotherAddressCounty")
-            .field("birthMotherAddressPostCode")
-            .field("birthMotherLastAddressDate")
-            .label("labelSummary-birthFather", null, "#### Birth Father")
+            .label("labelSummary-respondentDetails",
+                   null,
+                   "### Respondent Details")
+            .label("labelSummary-birthMother",
+                   null,
+                   "#### Birth Mother")
+            .field("birthMotherFirstName", "birthMotherDeceased=\"No\"")
+            .field("birthMotherLastName", "birthMotherDeceased=\"No\"")
+            .field("birthMotherDeceased")
+            .field("birthMotherAddress1", "birthMotherDeceased=\"No\"")
+            .field("birthMotherAddress2", "birthMotherDeceased=\"No\"")
+            .field("birthMotherAddress3", "birthMotherDeceased=\"No\"")
+            .field("birthMotherAddressTown", "birthMotherDeceased=\"No\"")
+            .field("birthMotherAddressCountry", "birthMotherDeceased=\"No\"")
+            .field("birthMotherAddressPostCode", "birthMotherDeceased=\"No\"")
+            .field("birthMotherLastAddressDate", "birthMotherDeceased=\"No\"")
+            .label("labelSummary-birthFather", "birthFatherNameOnCertificate=\"Yes\"", "#### Birth Father")
             .field("birthFatherFirstName")
+            .field("birthFatherNameOnCertificate", "applyingWith=\"NEVER_SHOW\"")
             .field("birthFatherLastName")
-            .field("birthFatherStillAlive")
+            .field("birthFatherDeceased")
             .field("birthFatherAddress1")
             .field("birthFatherAddress2")
             .field("birthFatherAddress3")
             .field("birthFatherAddressTown")
-            .field("birthMotherAddressCounty")
+            .field("birthMotherAddressCountry")
             .field("birthFatherAddressPostCode")
             .field("birthFatherLastAddressDate");
     }
 
     public void buildSummaryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("summary", "Summary")
+            .displayOrder(0)
             .forRoles(CASE_WORKER)
             .label("labelSummary-CaseStatus", null, "### Case status")
             .field("status")
@@ -149,7 +158,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("documents", "Documents")
             .forRoles(CASE_WORKER)
-            .label("Documents-Heading", null, "## Documents")
+            .displayOrder(3)
+            .label("Documents-Heading", null, "# Documents")
             .label("Upload documents",
                    null,
                    "[Upload documents](/cases/case-details/${[CASE_REFERENCE]}"
@@ -168,6 +178,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant1EmailAddress")
             .field("childrenFirstName")
             .field("childrenLastName")
+            .field("birthFatherNameOnCertificate")
             .field("hasAnotherAdopAgencyOrLA")
             .field("applyingWith");
     }
