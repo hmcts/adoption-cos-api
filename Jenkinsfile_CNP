@@ -245,11 +245,6 @@ withPipeline(type, product, component) {
     env.FEE_API_URL = "http://fees-register-api-ithc.service.core-compute-ithc.internal"
   }
 
-  before('functionalTest:preview') {
-    // Only for preview upload the definitions via script as high level data set up relies on an existing environment
-    uploadCoreCaseDataDefinitions()
-  }
-
   after('contractTest:preview') {
     dir("${WORKSPACE}") {
       steps.archiveArtifacts artifacts: "pacts/*.json"
@@ -279,6 +274,7 @@ withPipeline(type, product, component) {
   }
 
   before('smoketest:preview') {
+    uploadCoreCaseDataDefinitions()
     env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal/"
   }
 
