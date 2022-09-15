@@ -5,7 +5,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
-public class AmendOtherPartiesDetails implements CcdPageConfiguration{
+public class AmendOtherPartiesDetails implements CcdPageConfiguration {
 
 
     @Override
