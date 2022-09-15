@@ -114,8 +114,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .label("labelSummary-birthMother",
                    null,
                    "#### Birth Mother")
-            .field("birthMotherFirstName", "birthMotherDeceased=\"No\"")
-            .field("birthMotherLastName", "birthMotherDeceased=\"No\"")
+            .field("birthMotherFirstName")
+            .field("birthMotherLastName")
             .field("birthMotherDeceased")
             .field("birthMotherAddress1", "birthMotherDeceased=\"No\"")
             .field("birthMotherAddress2", "birthMotherDeceased=\"No\"")

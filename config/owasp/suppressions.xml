@@ -22,24 +22,24 @@
         <cve>CVE-2022-25857</cve>
     </suppress>
   <suppress>
-     <notes><![CDATA[
+    <notes><![CDATA[
      file name: snakeyaml-1.30.jar
      ]]></notes>
-     <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-     <cve>CVE-2022-38749</cve>
+    <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+    <cve>CVE-2022-38749</cve>
   </suppress>
   <suppress>
-     <notes><![CDATA[
+    <notes><![CDATA[
      file name: snakeyaml-1.30.jar
      ]]></notes>
-     <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-     <cve>CVE-2022-38751</cve>
+    <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+    <cve>CVE-2022-38751</cve>
   </suppress>
   <suppress>
-     <notes><![CDATA[
+    <notes><![CDATA[
      file name: snakeyaml-1.30.jar
      ]]></notes>
-     <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-     <cve>CVE-2022-38750</cve>
+    <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+    <cve>CVE-2022-38750</cve>
   </suppress>
 </suppressions>
