@@ -315,6 +315,7 @@ def setCommonEnvVariables() {
     env.FEE_API_URL = "http://fees-register-api-aat.service.core-compute-aat.internal"
     env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
     env.BEFTA_S2S_CLIENT_ID = "ccd_data"
+    env.ADOPTION_WEB_CLIENT_ID = "adoption-web"
     env.ADOPTION_WEB_MICROSERVICE = "adoption_web"
     env.CCD_API_GATEWAY_OAUTH2_REDIRECT_URL = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
     env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
