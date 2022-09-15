@@ -1,11 +1,9 @@
 #!groovy
-
+import uk.gov.hmcts.contino.AppPipelineConfig
 @Library("Infrastructure")
 
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GradleBuilder
-import uk.gov.hmcts.contino.AppPipelineConfig
-import uk.gov.hmcts.contino.MetricsPublisher
 
 def type = "java"
 def product = "adoption"
@@ -311,6 +309,8 @@ def setCommonEnvVariables() {
     env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     env.FEE_API_URL = "http://fees-register-api-aat.service.core-compute-aat.internal"
     env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
+
+    env.ADOPTION_WEB_MICROSERVICE = "adoption_web"
     env.BEFTA_S2S_CLIENT_ID = "ccd_data"
     env.CCD_API_GATEWAY_OAUTH2_REDIRECT_URL = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
     env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
