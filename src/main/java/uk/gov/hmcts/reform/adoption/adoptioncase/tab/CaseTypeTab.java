@@ -159,7 +159,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("documents", "Documents")
             .forRoles(CASE_WORKER)
             .displayOrder(3)
-            .label("Documents-Heading", null, "### Documents")
+            .label("Documents-Heading", null, "# Documents")
             .label("Upload documents",
                    null,
                    "[Upload documents](/cases/case-details/${[CASE_REFERENCE]}"
