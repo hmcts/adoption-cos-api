@@ -53,7 +53,7 @@ module.exports.createCase = async () => {
             },
             httpsAgent: new https.Agent({  
               rejectUnauthorized: false
-            });
+            })
         });
 
         let event = { id: "citizen-create-application" };
