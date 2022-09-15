@@ -27,6 +27,8 @@ java:
           alias: UK_GOV_NOTIFY_API_KEY
         - name: s2s-secret-cos-api
           alias: S2S_SECRET
+        - name: s2s-secret
+          alias: S2S_SECRET_WEB
         - name: idam-secret
           alias: IDAM_CLIENT_SECRET
         - name: idam-system-user-name
@@ -36,6 +38,8 @@ java:
         - name: launchDarkly-sdk-key
           alias: LAUNCH_DARKLY_SDK_KEY
   environment:
+    ADOPTION_WEB_CLIENT_ID: adoption-web
+    ADOPTION_WEB_MICROSERVICE: adoption_web
     NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL: https://adoption-web.{{ .Values.global.environment }}.platform.hmcts.net/
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     IDAM_API_REDIRECT_URL: https://adoption-cos-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/authenticated
