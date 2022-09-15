@@ -157,6 +157,8 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         }
         //Clear adoption document so that value doesn't persist while navigating to same screen subsequently
         caseData.setAdoptionUploadDocument(null);
+        caseData.setName(null);
+        caseData.setRole(null);
         return adoptionDocumentList;
     }
 }

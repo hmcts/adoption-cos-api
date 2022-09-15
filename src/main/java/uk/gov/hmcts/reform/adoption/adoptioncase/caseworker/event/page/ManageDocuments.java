@@ -24,8 +24,8 @@ public class ManageDocuments implements CcdPageConfiguration {
         pageBuilder.page("uploadDocumentPage2")
             .pageLabel("Who submitted the document?")
             .label("uploadDocumentPage2Label","Who submitted the document?")
-            .mandatory(CaseData::getRole)
             .mandatory(CaseData::getName)
+            .mandatory(CaseData::getRole)
             .done();
 
     }
