@@ -9,26 +9,26 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum SiblingPoType implements HasLabel {
 
-    @JsonProperty("adoptionOrder")
-    ADOPTION_ORDER("adoptionOrder"),
+    @JsonProperty("Adoption order")
+    ADOPTION_ORDER("Adoption order"),
 
-    @JsonProperty("careOrder")
-    CARE_ORDER("careOrder"),
+    @JsonProperty("Care order")
+    CARE_ORDER("Care order"),
 
-    @JsonProperty("contactOrder")
-    CONTACT_ORDER("contactOrder"),
+    @JsonProperty("Contact order")
+    CONTACT_ORDER("Contact order"),
 
-    @JsonProperty("freeingOrder")
-    FREEING_ORDER("freeingOrder"),
+    @JsonProperty("Freeing order")
+    FREEING_ORDER("Freeing order"),
 
-    @JsonProperty("placementOrder")
-    PLACEMENT_ORDER("placementOrder"),
+    @JsonProperty("Placement order")
+    PLACEMENT_ORDER("Placement order"),
 
-    @JsonProperty("superVisOrder")
-    SUPERVIS_ORDER("superVisOrder"),
+    @JsonProperty("Supervision order")
+    SUPERVIS_ORDER("Supervision order"),
 
-    @JsonProperty("other")
-    OTHER("other");
+    @JsonProperty("Other")
+    OTHER("Other");
 
     private final String label;
 
