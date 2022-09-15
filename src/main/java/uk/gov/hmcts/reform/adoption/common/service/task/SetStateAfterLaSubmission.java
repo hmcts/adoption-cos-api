@@ -20,6 +20,12 @@ public class SetStateAfterLaSubmission implements CaseTask {
     public CaseDetails<CaseData, State> apply(final CaseDetails<CaseData, State> caseDetails) {
         caseDetails.setState(LaSubmitted);
         caseDetails.getData().setStatus(LaSubmitted);
+        caseDetails.getData().getBirthMother()
+            .setDeceased(caseDetails.getData().getBirthMother().getStillAlive().equals("Yes") ? "No" : "Yes");
+        if (caseDetails.getData().getBirthFather() != null && caseDetails.getData().getBirthFather().getStillAlive() != null) {
+            caseDetails.getData().getBirthFather()
+                .setDeceased(caseDetails.getData().getBirthFather().getStillAlive().equals("Yes") ? "No" : "Yes");
+        }
         caseDetails.getData().getPlacementOrders()
             .stream()
             .filter(item -> item.getValue().getPlacementOrderType() == null)
