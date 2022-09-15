@@ -115,15 +115,6 @@ test {
   failFast = true
   useJUnitPlatform()
 }
-
-task functional(type: Test) {
-  description = "Runs functional tests"
-  group = "Verification"
-  testClassesDirs = sourceSets.functionalTest.output.classesDirs
-  classpath = sourceSets.functionalTest.runtimeClasspath
-  failFast = true
-}
-
 task integration(type: Test) {
   description = "Runs integration tests"
   group = "Verification"
@@ -131,14 +122,27 @@ task integration(type: Test) {
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
 }
-
-task smoke(type: Test) {
+task yarnInstall(type: Exec) {
+  workingDir '.'
+  commandLine 'yarn', 'install'
+}
+task smoke(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs Smoke Tests"
-  setTestClassesDirs(sourceSets.functionalTest.output.classesDirs)
-  setClasspath(sourceSets.functionalTest.runtimeClasspath)
-  include "uk/gov/hmcts/reform/adoption/smoke/**"
+  doLast {
+    exec {
+      commandLine 'yarn', 'test:smoke'
+    }
+  }
 }
 
+task functional(type: Test,dependsOn: ':yarnInstall') {
+  description = "Runs functional tests"
+  doLast {
+    exec {
+      commandLine 'yarn', 'test:functional'
+    }
+  }
+}
 task highLevelDataSetup(type: JavaExec) {
   mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
   classpath += sourceSets.main.runtimeClasspath
@@ -458,6 +462,9 @@ functional {
       systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
       systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
+      secret("caseworker-username", "CASEWORKER_USERNAME")
+      secret("caseworker-password", "CASEWORKER_PASSWORD")
+      secret("s2s-secret", "S2S_SECRET_WEB")
     }
   }
 }

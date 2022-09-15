@@ -25,7 +25,10 @@ java:
           alias: IDAM_SYSTEM_UPDATE_PASSWORD
         - name: launchDarkly-sdk-key
           alias: LAUNCH_DARKLY_SDK_KEY
-
+        - name: caseworker-username
+          alias: CASEWORKER_USERNAME
+        - name: caseworker-password
+          alias: CASEWORKER_PASSWORD
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
