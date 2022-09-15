@@ -90,7 +90,7 @@ public class CaseData {
     private Parent otherParent = new Parent();
 
     @CCD(
-        label = "Placement orders",
+        label = "Linked cases",
         typeOverride = Collection,
         typeParameterOverride = "PlacementOrder",
         access = {SystemUpdateCollectionAccess.class}
@@ -134,7 +134,7 @@ public class CaseData {
     private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
     @CCD(
-        label = "Siblings",
+        label = "Sibling cases",
         typeOverride = Collection,
         typeParameterOverride = "Sibling",
         access = {SystemUpdateCollectionAccess.class}
@@ -201,6 +201,11 @@ public class CaseData {
     )
     private String applicant1SotFullName;
 
+    @CCD(label = "Messages",
+        access = {DefaultAccess.class}
+    )
+    private String messages;
+
     @CCD(label = "Applicant2 statement of truth full name",
         access = {DefaultAccess.class}
     )
@@ -256,15 +261,15 @@ public class CaseData {
     )
     private String message;
 
-    @CCD(label = "Type of adoption",
+    @CCD(label = "Adoption Type",
         access = {DefaultAccess.class}
     )
     private String typeOfAdoption;
 
-    @CCD(label = "Case status",
+    @CCD(label = "Status",
         access = {DefaultAccess.class}
     )
-    private String status;
+    private State status;
 
     @CCD(
         label = "Documents generated",
@@ -337,13 +342,13 @@ public class CaseData {
     private YesOrNo findFamilyCourt;
 
     @CCD(
-        label = "Placement order court name",
+        label = "Allocated court",
         access = {DefaultAccess.class}
     )
     private String placementOrderCourt;
 
     @CCD(
-        label = "Family court name",
+        label = "Allocated court",
         access = {DefaultAccess.class}
     )
     private String familyCourtName;
