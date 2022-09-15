@@ -139,7 +139,7 @@ task functional(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs functional tests"
   doLast {
     exec {
-      commandLine 'yarn' 'test:functional'
+      commandLine 'yarn', 'test:functional'
     }
   }
 }
