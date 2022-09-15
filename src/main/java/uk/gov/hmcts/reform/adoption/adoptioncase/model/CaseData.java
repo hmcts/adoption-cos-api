@@ -100,7 +100,7 @@ public class CaseData {
 
     @CCD(
         label = "Placement",
-        access = {SystemUpdateCollectionAccess.class}
+        access = {SystemUpdateAccess.class}
     )
     private PlacementOrder placementOrder;
 
