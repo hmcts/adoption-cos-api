@@ -462,6 +462,9 @@ functional {
       systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
       systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
+      secret("caseworker-username", "CASEWORKER_USERNAME")
+      secret("caseworker-password", "CASEWORKER_PASSWORD")
+      secret("s2s-secret", "S2S_SECRET_WEB")
     }
   }
 }

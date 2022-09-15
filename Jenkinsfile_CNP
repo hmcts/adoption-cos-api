@@ -50,7 +50,9 @@ def secrets = [
     secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_KEY'),
     secret("launchDarkly-sdk-key", "LAUNCH_DARKLY_SDK_KEY"),
     secret("caseworker-username", "CASEWORKER_USERNAME"),
-    secret("caseworker-password", "CASEWORKER_PASSWORD")
+    secret("caseworker-password", "CASEWORKER_PASSWORD"),
+    secret("s2s-secret", "S2S_SECRET_WEB")
+
   ]
 ]
 
