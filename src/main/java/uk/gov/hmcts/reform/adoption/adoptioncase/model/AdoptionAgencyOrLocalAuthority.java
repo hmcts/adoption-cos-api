@@ -52,4 +52,13 @@ public class AdoptionAgencyOrLocalAuthority {
     )
     private String adopAgencyOrLaContactEmail;
 
+    // Bulk Scan phase 2 starts
+
+    @CCD(label = "Child placed for the purpose of Adoption",
+        access = {DefaultAccess.class}
+    )
+    private String laOrAdoptionAgencyCategory;
+
+    // Bulk Scan phase 2 ends
+
 }
