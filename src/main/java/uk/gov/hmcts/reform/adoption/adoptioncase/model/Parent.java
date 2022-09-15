@@ -27,14 +27,17 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @Builder
 public class Parent {
 
-    @CCD(label = "First name")
+    @CCD(label = "First names")
     private String firstName;
 
-    @CCD(label = "Last name")
+    @CCD(label = "Last names")
     private String lastName;
 
-    @CCD(label = "Still alive")
+    @CCD(label = "Deceased – Yes/No")
     private String stillAlive;
+
+    @CCD(label = "Deceased")
+    private String deceased;
 
     @CCD(label = "Not Alive Reason")
     private String notAliveReason;
@@ -51,19 +54,19 @@ public class Parent {
     )
     private YesOrNo addressKnown;
 
-    @CCD(label = "Address1")
+    @CCD(label = "Address line 1")
     private String address1;
 
-    @CCD(label = "Address2")
+    @CCD(label = "Address line 2")
     private String address2;
 
-    @CCD(label = "Address3")
+    @CCD(label = "Address line 3")
     private String address3;
 
-    @CCD(label = "Town")
+    @CCD(label = "Town or city")
     private String addressTown;
 
-    @CCD(label = "County")
+    @CCD(label = "County, district, state or province")
     private String addressCounty;
 
     @CCD(label = "Post code")
@@ -89,7 +92,7 @@ public class Parent {
     private String addressNotKnownReason;
 
     @CCD(
-        label = "Last address known date",
+        label = "Date of address last confirmed",
         access = {SystemUpdateAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")

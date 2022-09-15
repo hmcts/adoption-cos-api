@@ -49,6 +49,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         log.info("Citizen create adoption application about to submit callback invoked");
 
         CaseData data = details.getData();
+        details.getData().setStatus(Draft);
         data.setHyphenatedCaseRef(data.formatCaseRef(details.getId()));
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
