@@ -29,8 +29,8 @@ public class AdoptionDocument {
     private String documentEmailContent;
 
     @CCD(
-        label = "Select your document",
-        regex = ".pdf,.tif,.tiff,.jpg,.jpeg,.png"
+        label = "Document",
+        hint = "The selected file must be smaller than 1GB"
     )
     private Document documentLink;
 
@@ -41,8 +41,8 @@ public class AdoptionDocument {
     private LocalDate documentDateAdded;
 
     @CCD(
-        label = "Your comments",
-        hint = "Any relevant information that the court should know about the document"
+        label = "Document description",
+        hint = "Describe what the document is, such as death certificate for the birth father."
     )
     private String documentComment;
 
