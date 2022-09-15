@@ -163,4 +163,3 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         return adoptionDocumentList;
     }
 }
-
