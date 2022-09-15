@@ -1,7 +1,7 @@
 module.exports = {
   caseWorkerUserOne: {
-    email: process.env.CITIZEN_USERNAME,
-    password: process.env.CITIZEN_PASSWORD,
+    email: process.env.CASEWORKER_USERNAME,
+    password: process.env.CASEWORKER_PASSWORD,
   },
   hmctsUser: {
     email: process.env.HMCTS_USER_USERNAME,
