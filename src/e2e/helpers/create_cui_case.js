@@ -1,5 +1,6 @@
 const Axios = require('axios');
 const otplib = require('otplib');
+const https = require('https');
 const utils = require('../utils/utils.js');
 
 module.exports.createCase = async () => {
@@ -14,6 +15,10 @@ module.exports.createCase = async () => {
     const callbackUrl = "http://localhost:3001/receiver";
     let s2sAuth;
     let caseId;
+  
+    const agent = new https.Agent({  
+      rejectUnauthorized: false
+    });
 
     let newUser = {
         "forename": "User",
@@ -30,11 +35,11 @@ module.exports.createCase = async () => {
     newUser.email = `adop-test.${Date.now()}@mailinator.com`;
 
     try {
-        let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword });
+        let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword }), { httpsAgent: agent };
         s2sAuth = s2sAuthRequest.data;
-        let createdAccount = await Axios.post(`${idamUrl}/testing-support/accounts`, newUser);
+        let createdAccount = await Axios.post(`${idamUrl}/testing-support/accounts`, newUser, { httpsAgent: agent });
         let idamData = `username=${newUser.email}&password=${newUser.password}&client_id=${clientId}&client_secret=${idamSecret}&grant_type=password&redirect_uri=${callbackUrl}&scope=openid%20profile%20roles`;
-        let idamAccess = await Axios.post(`${idamUrl}/o/token`, idamData);
+        let idamAccess = await Axios.post(`${idamUrl}/o/token`, idamData, { httpsAgent: agent });
         let idamToken = idamAccess.data.access_token;
 
         let axiosClient = Axios.create({
@@ -46,6 +51,9 @@ module.exports.createCase = async () => {
                 Accept: '*/*',
                 'Content-Type': 'application/json',
             },
+            httpsAgent: new https.Agent({  
+              rejectUnauthorized: false
+            });
         });
 
         let event = { id: "citizen-create-application" };
