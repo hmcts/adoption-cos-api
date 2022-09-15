@@ -36,6 +36,9 @@ public class Parent {
     @CCD(label = "Deceased – Yes/No")
     private String stillAlive;
 
+    @CCD(label = "Deceased")
+    private String deceased;
+
     @CCD(label = "Not Alive Reason")
     private String notAliveReason;
 
