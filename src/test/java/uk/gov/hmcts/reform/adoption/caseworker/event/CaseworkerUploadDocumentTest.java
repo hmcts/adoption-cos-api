@@ -12,6 +12,7 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -24,7 +25,9 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,6 +85,16 @@ public class CaseworkerUploadDocumentTest {
 
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
+        AdoptionDocument adoptionDocument = setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS);
+        adoptionDocument.setDocumentDateAdded(LocalDate.now(clock));
+        adoptionDocument.setDocumentCategory(null);
+        ListValue<AdoptionDocument> listValue = ListValue.<AdoptionDocument>builder()
+            .id("1")
+            .value(adoptionDocument)
+            .build();
+        List<ListValue<AdoptionDocument>> applicationDocumentsCategoryList = new ArrayList<>();
+        applicationDocumentsCategoryList.add(listValue);
+        caseDetails.getData().setApplicationDocumentsCategory(applicationDocumentsCategoryList);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
         assertThat(result.getData().getApplicationDocumentsCategory())
