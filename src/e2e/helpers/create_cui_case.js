@@ -35,7 +35,7 @@ module.exports.createCase = async () => {
     newUser.email = `adop-test.${Date.now()}@mailinator.com`;
 
     try {
-        let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword }), { httpsAgent: agent };
+        let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword }, { httpsAgent: agent });
         s2sAuth = s2sAuthRequest.data;
         let createdAccount = await Axios.post(`${idamUrl}/testing-support/accounts`, newUser, { httpsAgent: agent });
         let idamData = `username=${newUser.email}&password=${newUser.password}&client_id=${clientId}&client_secret=${idamSecret}&grant_type=password&redirect_uri=${callbackUrl}&scope=openid%20profile%20roles`;
