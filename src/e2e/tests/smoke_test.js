@@ -3,7 +3,7 @@ const config = require('../config');
 const laHelper = require('../helpers/la_portal_case');
 
 
-Feature('Create case @smoke').retry(1);
+Feature('Create case @smoke-tests').retry(1);
 
 Scenario('Verify case created and able to search in ExUI', async ({loginPage, caseListPage }) => {
   console.log('APP_INSIGHTS_KEY - '+ process.env.APP_INSIGHTS_KEY);
