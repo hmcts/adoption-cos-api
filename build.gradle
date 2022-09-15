@@ -130,7 +130,7 @@ task smoke(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs Smoke Tests"
   doLast {
     exec {
-      commandLine 'yarn', 'test:smoke'
+      commandLine 'NODE_TLS_REJECT_UNAUTHORIZED=0 ', 'yarn', 'test:smoke'
     }
   }
 }
@@ -139,7 +139,7 @@ task functional(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs functional tests"
   doLast {
     exec {
-      commandLine 'yarn', 'test:functional'
+      commandLine 'NODE_TLS_REJECT_UNAUTHORIZED=0', 'yarn', 'test:functional'
     }
   }
 }
