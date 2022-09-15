@@ -99,6 +99,13 @@ public class CaseData {
     private List<ListValue<PlacementOrder>> placementOrders;
 
     @CCD(
+        label = "Placement",
+        access = {SystemUpdateCollectionAccess.class}
+    )
+    private PlacementOrder placementOrder;
+
+
+    @CCD(
         label = "Add Another Placement Order",
         access = {SystemUpdateAccess.class}
     )
