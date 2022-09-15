@@ -37,7 +37,7 @@ const laPortalCase = async (caseId) => {
     try {
         let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, oneTimePassword }, { httpsAgent: agent });
         s2sAuth = s2sAuthRequest.data;
-        let idamData = `username=${process.env.IDAM_SYSTEM_UPDATE_USERNAME}&password=${IDAM_SYSTEM_UPDATE_PASSWORD}&client_id=${clientId}&client_secret=${idamSecret}&grant_type=password&redirect_uri=${callbackUrl}&scope=openid%20profile%20roles`;
+        let idamData = `username=${process.env.IDAM_SYSTEM_UPDATE_USERNAME}&password=${process.env.IDAM_SYSTEM_UPDATE_PASSWORD}&client_id=${clientId}&client_secret=${idamSecret}&grant_type=password&redirect_uri=${callbackUrl}&scope=openid%20profile%20roles`;
         let idamAccess = await Axios.post(`${idamUrl}/o/token`, idamData, { httpsAgent: agent });
         let idamToken = idamAccess.data.access_token;
 
