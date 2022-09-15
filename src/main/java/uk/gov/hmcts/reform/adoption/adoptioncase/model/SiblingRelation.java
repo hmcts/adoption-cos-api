@@ -9,23 +9,23 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum SiblingRelation implements HasLabel {
 
-    @JsonProperty("sister")
-    SISTER("sister"),
+    @JsonProperty("Sister")
+    SISTER("Sister"),
 
-    @JsonProperty("halfSister")
-    HALF_SISTER("halfSister"),
+    @JsonProperty("Half-sister")
+    HALF_SISTER("Half-sister"),
 
-    @JsonProperty("stepSister")
-    STEP_SISTER("stepSister"),
+    @JsonProperty("Step-sister")
+    STEP_SISTER("Step-sister"),
 
-    @JsonProperty("brother")
-    BROTHER("brother"),
+    @JsonProperty("Brother")
+    BROTHER("Brother"),
 
-    @JsonProperty("halfBrother")
-    HALF_BROTHER("halfBrother"),
+    @JsonProperty("Half-brother")
+    HALF_BROTHER("Half-brother"),
 
-    @JsonProperty("stepBrother")
-    STEP_BROTHER("stepBrother");
+    @JsonProperty("Step-brother")
+    STEP_BROTHER("Step-brother");
 
     private final String label;
 

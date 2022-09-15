@@ -26,10 +26,10 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 @Builder
 public class Children {
 
-    @CCD(label = "First name")
+    @CCD(label = "First names")
     private String firstName;
 
-    @CCD(label = "Last name")
+    @CCD(label = "Last names")
     private String lastName;
 
     @CCD(
@@ -39,11 +39,19 @@ public class Children {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
+    @CCD(
+        label = "Sex at birth",
+        hint = "Child Gender",
+        typeOverride = FixedList,
+        typeParameterOverride = "Gender"
+    )
+    private Gender sexAtBirth;
+
     @CCD(label = "Nationality")
     private SortedSet<Nationality> nationality;
 
     @CCD(
-        label = "Children Additional Nationalities",
+        label = "Nationality (other)",
         typeOverride = Collection,
         typeParameterOverride = "OtherNationality",
         access = {SystemUpdateCollectionAccess.class}
@@ -56,14 +64,7 @@ public class Children {
     @CCD(label = "Last name after adoption")
     private String lastNameAfterAdoption;
 
-    @CCD(
-        label = "Gender",
-        hint = "Child Gender",
-        typeOverride = FixedList,
-        typeParameterOverride = "Gender"
-    )
-    private Gender sexAtBirth;
 
-    @CCD(label = "Other sex at birth")
+    @CCD(label = "Sex at birth (other)")
     private String otherSexAtBirth;
 }
