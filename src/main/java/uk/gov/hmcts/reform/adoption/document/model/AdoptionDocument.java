@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
@@ -35,7 +37,7 @@ public class AdoptionDocument {
     private Document documentLink;
 
     @CCD(
-        label = "Date added"
+        label = "Date"
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate documentDateAdded;
@@ -65,6 +67,14 @@ public class AdoptionDocument {
     )
     private String documentFileId;
 
+    @CCD(
+        label = "What document are you uploading?",
+        hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "DocumentCategory"
+    )
+    private DocumentCategory documentCategory;
+
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
     public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
@@ -73,7 +83,8 @@ public class AdoptionDocument {
                             @JsonProperty("documentComment") String documentComment,
                             @JsonProperty("documentFileName") String documentFileName,
                             @JsonProperty("documentType") DocumentType documentType,
-                            @JsonProperty("documentFileId") String documentFileId) {
+                            @JsonProperty("documentFileId") String documentFileId,
+                            @JsonProperty("documentCategory") DocumentCategory documentCategory) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
@@ -81,5 +92,6 @@ public class AdoptionDocument {
         this.documentFileName = documentFileName;
         this.documentType = documentType;
         this.documentFileId = documentFileId;
+        this.documentCategory = documentCategory;
     }
 }

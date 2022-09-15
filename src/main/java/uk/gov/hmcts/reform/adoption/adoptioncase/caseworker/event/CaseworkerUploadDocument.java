@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -16,6 +17,8 @@ import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,6 +34,10 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Component
 @Slf4j
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
+
+    @Autowired
+    private Clock clock;
+
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
     public static final String MANAGE_DOCUMENT = "Manage documents";
 
@@ -130,6 +137,9 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
      */
     private List<ListValue<AdoptionUploadDocument>> addDocumentToListOfSpecificCategory(
         CaseData caseData, List<ListValue<AdoptionUploadDocument>> adoptionDocumentList) {
+        AdoptionUploadDocument adoptionDocument = caseData.getAdoptionUploadDocument();
+        adoptionDocument.setDocumentDateAdded(LocalDate.now(clock));
+        adoptionDocument.setDocumentCategory(null);
 
         if (isEmpty(adoptionDocumentList)) {
             List<ListValue<AdoptionUploadDocument>> listValues = new ArrayList<>();
@@ -137,7 +147,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             var listValue = ListValue
                 .<AdoptionUploadDocument>builder()
                 .id("1")
-                .value(caseData.getAdoptionUploadDocument())
+                .value(adoptionDocument)
                 .build();
 
             listValues.add(listValue);
@@ -147,7 +157,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
             AtomicInteger listValueIndex = new AtomicInteger(0);
             var listValue = ListValue
                 .<AdoptionUploadDocument>builder()
-                .value(caseData.getAdoptionUploadDocument())
+                .value(adoptionDocument)
                 .build();
             // always add new Adoption Document as first element so that it is displayed on top
             adoptionDocumentList.add(

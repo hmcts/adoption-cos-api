@@ -31,7 +31,7 @@ public class AdoptionUploadDocument {
     private Document documentLink;
 
     @CCD(
-        label = "Date added"
+        label = "Date"
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate documentDateAdded;
@@ -57,13 +57,6 @@ public class AdoptionUploadDocument {
     )
     private DocumentCategory documentCategory;
 
-    /*@CCD(
-        label = "Who submitted the document?",
-        //hint = "If you want to upload more than one, you need to go through the steps again from the documents tab.",
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "DocumentSubmittedBy"
-    )
-    private DocumentSubmitter documentSubmitter;*/
     @CCD(
         label = "Role",
         hint = "Add a role. For example, \"Child social worker\" or \"First applicant\""

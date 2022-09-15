@@ -159,9 +159,16 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("documents", "Documents")
             .forRoles(CASE_WORKER)
             .displayOrder(3)
-            .field(CaseData::getDocumentsGenerated)
-            .field(CaseData::getApplicant1DocumentsUploaded)
-            .field(CaseData::getDocumentsUploaded);
+            .label("Documents-Heading", null, "# Documents")
+            .label("Upload documents",
+                   null,
+                   "[Upload documents](/cases/case-details/${[CASE_REFERENCE]}"
+                       + "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)"
+            )
+            .field(CaseData::getApplicationDocumentsCategory)
+            .field(CaseData::getReportsDocumentCategory)
+            .field(CaseData::getStatementsDocumentCategory)
+            .field(CaseData::getAdditionalDocumentsCategory);
     }
 
     private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
