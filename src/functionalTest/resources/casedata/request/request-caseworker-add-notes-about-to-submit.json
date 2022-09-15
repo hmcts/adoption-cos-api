@@ -4,18 +4,20 @@
       "id": "1646222663145",
       "value": {
         "siblingId": "1646222663145",
-        "siblingRelation": "Brother",
-        "siblingPoType": "some order",
-        "siblingPoNumber": "1001"
+        "siblingRelation": "brother",
+        "siblingPoType": "adoptionOrder",
+        "siblingPoNumber": "1001",
+        "siblingPlacementOtherType": ""
       }
     },
     {
       "id": "1646222699254",
       "value": {
         "siblingId": "1646222699254",
-        "siblingRelation": "Sister",
-        "siblingPoType": "some other order",
-        "siblingPoNumber": "23456"
+        "siblingRelation": "sister",
+        "siblingPoType": "other",
+        "siblingPoNumber": "23456",
+        "siblingPlacementOtherType": "other type"
       }
     }
   ],
@@ -134,7 +136,7 @@
       "value": {
         "placementOrderId": "1646222494045",
         "placementOrderDate": "2021-12-12",
-        "placementOrderType": "some order2",
+        "placementOrderType": "Adoption Order",
         "placementOrderCourt": "london court",
         "placementOrderNumber": "12345"
       }
@@ -148,22 +150,22 @@
   "applicant2FirstName": "second",
   "applicant1DocumentsUploaded": [
     {
-        "id": "c283880e-068e-450a-b44d-e72a6191847b",
-        "value": {
-            "documentEmailContent": null,
-            "documentLink": {
-                "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
-                "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-                "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
-            },
-            "documentDateAdded": null,
-            "documentComment": "Uploaded by applicant",
-            "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-            "documentType": null,
-            "documentFileId": null
-        }
+      "id": "c283880e-068e-450a-b44d-e72a6191847b",
+      "value": {
+        "documentEmailContent": null,
+        "documentLink": {
+          "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
+          "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+          "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
+        },
+        "documentDateAdded": null,
+        "documentComment": "Uploaded by applicant",
+        "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+        "documentType": null,
+        "documentFileId": null
+      }
     }
-],
+  ],
   "addAnotherPlacementOrder": "No",
   "selectedPlacementOrderId": "1646222468418",
   "applicant1Occupation": "Software Engineer",
@@ -212,6 +214,8 @@
   ],
   "solicitorName": null,
   "selectedSiblingId": "1646222699254",
+  "selectedSiblingRelation": "sister",
+  "selectedSiblingPoType": "adoptionOrder",
   "solicitorPhoneNumber": null,
   "birthFatherAddressCountry": null,
   "applicant2AddressTown": "NOTTINGHAM",
@@ -247,4 +251,5 @@
   "applicant2LanguagePreference": null,
   "birthMotherOccupation": "Teacher",
   "applicant1AddressSameAsApplicant1": null
+
 }

@@ -51,23 +51,23 @@
     "applicant1ContactDetailsConsent": "Yes",
     "applicant1DateOfBirth": "1990-12-12",
     "applicant1DocumentsUploaded": [
-    {
+      {
         "id": "c283880e-068e-450a-b44d-e72a6191847b",
         "value": {
-            "documentEmailContent": null,
-            "documentLink": {
-                "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
-                "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-                "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
-            },
-            "documentDateAdded": null,
-            "documentComment": "Uploaded by applicant",
-            "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-            "documentType": null,
-            "documentFileId": null
+          "documentEmailContent": null,
+          "documentLink": {
+            "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
+            "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+            "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
+          },
+          "documentDateAdded": null,
+          "documentComment": "Uploaded by applicant",
+          "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+          "documentType": null,
+          "documentFileId": null
         }
-    }
-],
+      }
+    ],
     "applicant1Email": "citizen.automation@mailinator.com",
     "applicant1EmailAddress": "abid@gmail.co",
     "applicant1FirstName": "Abid1",
@@ -144,6 +144,16 @@
     "birthMotherOccupation": "Teacher",
     "birthMotherOtherNationalities": [],
     "birthMotherStillAlive": "Yes",
+    "childLocalAuthority": "la",
+    "childLocalAuthorityEmail": "abc@gov.uk",
+    "childSocialWorkerEmail": "abc@gov.uk",
+    "childSocialWorkerName": "null",
+    "childSocialWorkerPhoneNumber": "1234567890",
+    "applicantLocalAuthority": null,
+    "applicantLocalAuthorityEmail": null,
+    "applicantSocialWorkerEmail": null,
+    "applicantSocialWorkerName": null,
+    "applicantSocialWorkerPhoneNumber": null,
     "childrenAdditionalNationalities": [
       {
         "id": "3b81bf8b-96ad-4001-a5cf-66f2af99a79c",
@@ -217,44 +227,55 @@
           "placementOrderDate": "2021-12-12",
           "placementOrderId": "1646222494045",
           "placementOrderNumber": "12345",
-          "placementOrderType": "some order2"
+          "placementOrderType": "Adoption Order"
         }
       }
     ],
     "selectedAdoptionAgencyId": "1646222614256",
     "selectedPlacementOrderId": "1646222468418",
     "selectedSiblingId": "1646222699254",
+    "selectedSiblingRelation": "sister",
+    "selectedSiblingPoType": "adoptionOrder",
     "siblings": [
       {
         "id": "1646222663145",
         "value": {
           "siblingId": "1646222663145",
-          "siblingRelation": "Brother",
-          "siblingPoType": "some order",
-          "siblingPoNumber": "1001"
+          "siblingRelation": "brother",
+          "siblingPoType": "adoptionOrder",
+          "siblingPoNumber": "1001",
+          "siblingPlacementOtherType": ""
         }
       },
       {
         "id": "1646222699254",
         "value": {
           "siblingId": "1646222699254",
-          "siblingRelation": "Sister",
-          "siblingPoType": "some other order",
-          "siblingPoNumber": "23456"
+          "siblingRelation": "sister",
+          "siblingPoType": "other",
+          "siblingPoNumber": "23456",
+          "siblingPlacementOtherType": "other type"
         }
       }
     ],
-    "socialWorkerEmail": "socialw@email.com",
-    "socialWorkerName": "social worker",
-    "socialWorkerPhoneNumber": "01234567893",
-    "childLocalAuthority": "la",
     "solicitorEmail": null,
     "solicitorFirm": null,
     "solicitorHelpingWithApplication": null,
     "solicitorName": null,
-    "solicitorPhoneNumber": null
+    "solicitorPhoneNumber": null,
+    "caseNote": [
+      {
+        "id": "1",
+        "value": {
+          "author": "User Test",
+          "date": "${json-unit.any-string}",
+          "subject": "TEST_SUBJECT",
+          "note":"TEST_NOTE"
+        }
+      }
+    ]
   },
   "errors": null,
-  "state": "AwaitingPayment",
+  "state": "Submitted",
   "warnings": null
 }
