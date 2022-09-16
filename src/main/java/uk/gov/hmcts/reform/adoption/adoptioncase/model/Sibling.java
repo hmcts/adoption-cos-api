@@ -23,15 +23,15 @@ public class Sibling {
         typeParameterOverride = "SiblingRelation")
     private SiblingRelation siblingRelation;
 
-    @CCD(label = "Type of order",
+    @CCD(label = "Type",
         access = {SystemUpdateAccess.class},
         typeOverride = FixedList,
         typeParameterOverride = "SiblingPoType")
     private SiblingPoType siblingPoType;
 
-    @CCD(label = "Type of order (Other)")
+    @CCD(label = "Type (Other)")
     private String siblingPlacementOtherType;
 
-    @CCD(label = "Order case or serial number")
+    @CCD(label = "Case or serial number")
     private String siblingPoNumber;
 }

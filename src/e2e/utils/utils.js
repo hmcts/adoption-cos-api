@@ -203,6 +203,7 @@ module.exports = {
                                       "placementOrderId": "1646222468418",
                                       "placementOrderDate": "2021-12-12",
                                       "placementOrderCourt": "xyz",
+                                      "placementOrderType": null,
                                       "placementOrderNumber": "123456"
                                   }
                               },
@@ -211,7 +212,7 @@ module.exports = {
                                   "value": {
                                       "placementOrderId": "1646222494045",
                                       "placementOrderDate": "2021-12-12",
-                                      "placementOrderType": "Adoption Order",
+                                      "placementOrderType": "Adoption order",
                                       "placementOrderCourt": "london court",
                                       "placementOrderNumber": "12345"
                                   }
