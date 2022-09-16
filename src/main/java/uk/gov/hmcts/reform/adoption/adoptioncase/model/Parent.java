@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -27,52 +29,66 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @Builder
 public class Parent {
 
-    @CCD(label = "First names")
+    @CCD(label = "First names",
+        access = {DefaultAccess.class})
     private String firstName;
 
-    @CCD(label = "Last names")
+    @CCD(label = "Last names",
+        access = {DefaultAccess.class})
     private String lastName;
 
-    @CCD(label = "Deceased – Yes/No")
-    private String stillAlive;
+    @CCD(label = "Deceased – Yes/No",
+        access = {SystemUpdateAccess.class,DefaultAccess.class})
+    private YesOrNo stillAlive;
 
-    @CCD(label = "Deceased")
-    private String deceased;
+    @CCD(label = "Deceased",
+        access = {DefaultAccess.class})
+    private YesOrNo deceased;
 
-    @CCD(label = "Not Alive Reason")
+    @CCD(label = "Not Alive Reason",
+        access = {DefaultAccess.class})
     private String notAliveReason;
 
-    @CCD(label = "Nationality")
+    @CCD(label = "Nationality",
+        access = {DefaultAccess.class})
     private SortedSet<Nationality> nationality;
 
-    @CCD(label = "Occupation")
+    @CCD(label = "Occupation",
+        access = {DefaultAccess.class})
     private String occupation;
 
     @CCD(
         label = "Address Known",
-        access = {SystemUpdateAccess.class}
+        access = {DefaultAccess.class}
     )
     private YesOrNo addressKnown;
 
-    @CCD(label = "Address line 1")
+    @CCD(label = "Address line 1",
+        access = {DefaultAccess.class})
     private String address1;
 
-    @CCD(label = "Address line 2")
+    @CCD(label = "Address line 2",
+        access = {DefaultAccess.class})
     private String address2;
 
-    @CCD(label = "Address line 3")
+    @CCD(label = "Address line 3",
+        access = {DefaultAccess.class})
     private String address3;
 
-    @CCD(label = "Town or city")
+    @CCD(label = "Town or city",
+        access = {DefaultAccess.class})
     private String addressTown;
 
-    @CCD(label = "County, district, state or province")
+    @CCD(label = "County, district, state or province",
+        access = {DefaultAccess.class})
     private String addressCounty;
 
-    @CCD(label = "Post code")
+    @CCD(label = "Post code",
+        access = {DefaultAccess.class})
     private String addressPostCode;
 
-    @CCD(label = "Country")
+    @CCD(label = "Country",
+        access = {DefaultAccess.class})
     private String addressCountry;
 
     @CCD(
@@ -83,21 +99,43 @@ public class Parent {
     )
     private List<ListValue<OtherNationality>> otherNationalities;
 
-    @CCD(label = "Name on Certificate")
+    @CCD(label = "Name on Certificate",
+        access = {DefaultAccess.class})
     private String nameOnCertificate;
 
     @CCD(label = "Address Not Known Reason",
-        typeOverride = TextArea
+        typeOverride = TextArea,
+        access = {DefaultAccess.class}
     )
     private String addressNotKnownReason;
 
     @CCD(
         label = "Date of address last confirmed",
-        access = {SystemUpdateAccess.class}
+        access = {DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastAddressDate;
 
-    @CCD(label = "Identity known")
+
+
+    @CCD(label = "Identity known",
+        access = {DefaultAccess.class})
     private String identityKnown;
+
+    @CCD(label = "Relationship (e.g. grandparent, step-parent):",
+        access = {DefaultAccess.class})
+    private String relationShipWithChild;
+
+    @CCD(label = "To be served",
+        access = {SystemUpdateAccess.class})
+    private YesOrNo toBeServed;
+
+    public YesOrNo getToBeServed() {
+        if (Objects.isNull(toBeServed)) {
+            return YesOrNo.YES;
+        }
+        return toBeServed;
+    }
+
+
 }
