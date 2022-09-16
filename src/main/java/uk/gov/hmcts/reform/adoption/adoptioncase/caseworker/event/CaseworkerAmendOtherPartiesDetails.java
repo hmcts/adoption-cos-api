@@ -22,6 +22,8 @@ public class CaseworkerAmendOtherPartiesDetails implements CCDConfig<CaseData, S
 
     private final CcdPageConfiguration amendOtherPartiesDetails = new AmendOtherPartiesDetails();
 
+
+
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         log.info("Inside configure method for Event {}", CASEWORKER_AMEND_OTHER_PARTIES_DETAILS);
@@ -34,13 +36,13 @@ public class CaseworkerAmendOtherPartiesDetails implements CCDConfig<CaseData, S
                             UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
         );
         return new PageBuilder(configBuilder
-                                  .event(CASEWORKER_AMEND_OTHER_PARTIES_DETAILS)
-                                  .forAllStates()
-                                  .name(AMEND_OTHER_PARTIES_DETAILS)
-                                  .description(AMEND_OTHER_PARTIES_DETAILS)
-                                  .showSummary()
-                                  .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                  .aboutToSubmitCallback(this::aboutToSubmit));
+                                   .event(CASEWORKER_AMEND_OTHER_PARTIES_DETAILS)
+                                   .forAllStates()
+                                   .name(AMEND_OTHER_PARTIES_DETAILS)
+                                   .description(AMEND_OTHER_PARTIES_DETAILS)
+                                   .showSummary()
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(

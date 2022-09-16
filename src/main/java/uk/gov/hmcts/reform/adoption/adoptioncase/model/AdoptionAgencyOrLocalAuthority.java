@@ -14,7 +14,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Builder
 public class AdoptionAgencyOrLocalAuthority {
 
@@ -26,20 +26,30 @@ public class AdoptionAgencyOrLocalAuthority {
         access = {DefaultAccess.class})
     private String adopAgencyOrLaContactName;
 
-    @CCD(label = "Address",
-        access = {DefaultAccess.class}
-    )
+    @CCD(label = "Address line 1")
     private String adopAgencyAddressLine1;
+
+    @CCD(label = "Address line 2")
+    private String adopAgencyAddressLine2;
+
+    @CCD(label = "Address line 3")
+    private String adopAgencyAddressLine3;
 
     @CCD(label = "Town or city",
         access = {DefaultAccess.class}
     )
     private String adopAgencyTown;
 
+    @CCD(label = "County, district, state or province")
+    private String adopAgencyAddressCounty;
+
     @CCD(label = "Post code",
         access = {DefaultAccess.class}
     )
     private String adopAgencyPostcode;
+
+    @CCD(label = "Country")
+    private String adopAgencyCountry;
 
     @CCD(label = "Phone number",
         access = {DefaultAccess.class}
@@ -47,8 +57,7 @@ public class AdoptionAgencyOrLocalAuthority {
     private String adopAgencyOrLaPhoneNumber;
 
     @CCD(label = "Email",
-        typeOverride = Email,
-        access = {DefaultAccess.class}
+        typeOverride = Email
     )
     private String adopAgencyOrLaContactEmail;
 

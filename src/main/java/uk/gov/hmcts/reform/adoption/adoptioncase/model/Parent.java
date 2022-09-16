@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollec
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -98,6 +99,24 @@ public class Parent {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastAddressDate;
 
+
+
     @CCD(label = "Identity known")
     private String identityKnown;
+
+    @CCD(label = "Relationship (e.g. grandparent, step-parent):")
+    private String relationShipWithChild;
+
+    @CCD(label = "To be served",
+        access = {SystemUpdateAccess.class})
+    private YesOrNo toBeServed;
+
+    public YesOrNo getToBeServed() {
+        if (Objects.isNull(toBeServed)) {
+            return YesOrNo.YES;
+        }
+        return toBeServed;
+    }
+
+
 }

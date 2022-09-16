@@ -20,7 +20,7 @@ public class SocialWorker {
 
     @CCD(label = "Contact ",
         access = {DefaultAccess.class})
-    private String socialWorkerName;
+    private String socialWorkerContact;
 
     @CCD(label = "Phone number",
         access = {DefaultAccess.class}
@@ -35,7 +35,7 @@ public class SocialWorker {
     @CCD(label = "Name",
         access = {DefaultAccess.class}
     )
-    private String localAuthority;
+    private String localAuthorityName;
 
     @CCD(label = "Email",
         typeOverride = Email,
@@ -43,18 +43,30 @@ public class SocialWorker {
     )
     private String localAuthorityEmail;
 
-    @CCD(label = "Address",
+    @CCD(label = "Address line 1",
         access = {DefaultAccess.class}
     )
     private String socialWorkerAddressLine1;
+
+    @CCD(label = "Address line 2")
+    private String socialWorkerAddressLine2;
+
+    @CCD(label = "Address line 3")
+    private String socialWorkerAddressLine3;
 
     @CCD(label = "Town or city",
         access = {DefaultAccess.class}
     )
     private String socialWorkerTown;
 
+    @CCD(label = "County, district, state or province")
+    private String socialWorkerAddressCounty;
+
     @CCD(label = "Post code",
         access = {DefaultAccess.class}
     )
     private String socialWorkerPostcode;
+
+    @CCD(label = "Country")
+    private String socialWorkerCountry;
 }
