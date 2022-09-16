@@ -67,7 +67,7 @@ const laPortalCase = async (caseId) => {
         return caseId;
 
     } catch (err) {
-        console.log("could not create account", err);
+        console.log("could not create account");
     }
 
 };
