@@ -124,18 +124,21 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthMotherAddressCountry", "birthMotherDeceased=\"No\"")
             .field("birthMotherAddressPostCode", "birthMotherDeceased=\"No\"")
             .field("birthMotherLastAddressDate", "birthMotherDeceased=\"No\"")
-            .label("labelSummary-birthFather", "birthFatherNameOnCertificate=\"Yes\"", "#### Birth Father")
-            .field("birthFatherFirstName")
+            .label("labelSummary-birthFather",
+                   "birthFatherNameOnCertificate=\"Yes\" OR birthFatherIdentityKnown = \"Yes\"",
+                   "#### Birth Father")
             .field("birthFatherNameOnCertificate", "applyingWith=\"NEVER_SHOW\"")
+            .field("birthFatherIdentityKnown", "applyingWith=\"NEVER_SHOW\"")
+            .field("birthFatherFirstName")
             .field("birthFatherLastName")
             .field("birthFatherDeceased")
-            .field("birthFatherAddress1")
-            .field("birthFatherAddress2")
-            .field("birthFatherAddress3")
-            .field("birthFatherAddressTown")
-            .field("birthMotherAddressCountry")
-            .field("birthFatherAddressPostCode")
-            .field("birthFatherLastAddressDate");
+            .field("birthFatherAddress1", "birthFatherDeceased=\"No\"")
+            .field("birthFatherAddress2", "birthFatherDeceased=\"No\"")
+            .field("birthFatherAddress3", "birthFatherDeceased=\"No\"")
+            .field("birthFatherAddressTown", "birthFatherDeceased=\"No\"")
+            .field("birthMotherAddressCountry", "birthFatherDeceased=\"No\"")
+            .field("birthFatherAddressPostCode", "birthFatherDeceased=\"No\"")
+            .field("birthFatherLastAddressDate", "birthFatherDeceased=\"No\"");
     }
 
     public void buildSummaryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
