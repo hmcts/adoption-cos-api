@@ -226,22 +226,22 @@
           "placementOrderDate": "2021-12-12",
           "placementOrderId": "1646222494045",
           "placementOrderNumber": "12345",
-          "placementOrderType": "Adoption Order"
+          "placementOrderType": "Adoption order"
         }
       }
     ],
     "selectedAdoptionAgencyId": "1646222614256",
     "selectedPlacementOrderId": "1646222468418",
     "selectedSiblingId": "1646222699254",
-    "selectedSiblingRelation": "sister",
-    "selectedSiblingPoType": "adoptionOrder",
+    "selectedSiblingRelation": "Sister",
+    "selectedSiblingPoType": "Adoption order",
     "siblings": [
       {
         "id": "1646222663145",
         "value": {
           "siblingId": "1646222663145",
-          "siblingRelation": "brother",
-          "siblingPoType": "adoptionOrder",
+          "siblingRelation": "Brother",
+          "siblingPoType": "Adoption order",
           "siblingPoNumber": "1001",
           "siblingPlacementOtherType": ""
         }
@@ -250,8 +250,8 @@
         "id": "1646222699254",
         "value": {
           "siblingId": "1646222699254",
-          "siblingRelation": "sister",
-          "siblingPoType": "other",
+          "siblingRelation": "Sister",
+          "siblingPoType": "Other",
           "siblingPoNumber": "23456",
           "siblingPlacementOtherType": "other type"
         }

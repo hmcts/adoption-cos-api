@@ -36,6 +36,8 @@ public class SetStateAfterSubmission implements CaseTask {
             caseDetails.setState(Submitted);
         }
 
+        caseDetails.getData().setStatus(Submitted);
+
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
 
         return caseDetails;

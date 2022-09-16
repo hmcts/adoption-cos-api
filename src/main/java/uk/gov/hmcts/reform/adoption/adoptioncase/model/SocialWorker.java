@@ -18,11 +18,11 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @Builder
 public class SocialWorker {
 
-    @CCD(label = "Social Worker Name",
+    @CCD(label = "Contact ",
         access = {DefaultAccess.class})
     private String socialWorkerName;
 
-    @CCD(label = "Social Worker PhoneNumber",
+    @CCD(label = "Phone number",
         access = {DefaultAccess.class}
     )
     private String socialWorkerPhoneNumber;
@@ -32,14 +32,29 @@ public class SocialWorker {
         access = {DefaultAccess.class})
     private String socialWorkerEmail;
 
-    @CCD(label = "Local authority",
+    @CCD(label = "Name",
         access = {DefaultAccess.class}
     )
     private String localAuthority;
 
-    @CCD(label = "Local authority email address",
+    @CCD(label = "Email",
         typeOverride = Email,
         access = {DefaultAccess.class}
     )
     private String localAuthorityEmail;
+
+    @CCD(label = "Address",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerAddressLine1;
+
+    @CCD(label = "Town or city",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerTown;
+
+    @CCD(label = "Post code",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerPostcode;
 }
