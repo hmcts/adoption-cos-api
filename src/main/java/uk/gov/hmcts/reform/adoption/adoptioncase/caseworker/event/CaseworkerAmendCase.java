@@ -18,7 +18,7 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 @Slf4j
 @Component
 public class CaseworkerAmendCase implements CCDConfig<CaseData, State, UserRole> {
-    public static final String AMEND_CASE_DETAILS = "Amend Case Details";
+    public static final String AMEND_CASE_DETAILS = "Amend case details";
     public static final String CASEWORKER_AMEND_CASE = "caseworker-amend-case";
 
     private final AmendCaseDetails amendCaseDetails = new AmendCaseDetails();
