@@ -38,7 +38,7 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.caseType(CASE_TYPE, "Step Parent", "Step Parent");
         configBuilder.caseType(CASE_TYPE, "Relinquished", "Relinquished");
         configBuilder.caseType(CASE_TYPE, "International", "International");*/
-        configBuilder.caseType(CASE_TYPE, "New Adoption case1", "New Adoption case1");
+        configBuilder.caseType(CASE_TYPE, "New Adoption case", "New Adoption case");
         configBuilder.jurisdiction(JURISDICTION, "Adoption", "Child adoption");
 
         configBuilder.grant(Draft, CREATE_READ_UPDATE, CITIZEN);
