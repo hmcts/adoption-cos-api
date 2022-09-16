@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.AddressUK;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
@@ -18,7 +19,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @Builder
 public class SocialWorker {
 
-    @CCD(label = "Contact ",
+    @CCD(label = "Name ",
         access = {DefaultAccess.class})
     private String socialWorkerName;
 
@@ -57,4 +58,8 @@ public class SocialWorker {
         access = {DefaultAccess.class}
     )
     private String socialWorkerPostcode;
+
+    @CCD(access = {DefaultAccess.class},
+        label = "Address")
+    private AddressUK socialWorkerAddress;
 }

@@ -6,8 +6,12 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.AddressUK;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AmendOtherPartiesDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
@@ -22,6 +26,8 @@ public class CaseworkerAmendOtherPartiesDetails implements CCDConfig<CaseData, S
 
     private final CcdPageConfiguration amendOtherPartiesDetails = new AmendOtherPartiesDetails();
 
+
+
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         log.info("Inside configure method for Event {}", CASEWORKER_AMEND_OTHER_PARTIES_DETAILS);
@@ -34,14 +40,35 @@ public class CaseworkerAmendOtherPartiesDetails implements CCDConfig<CaseData, S
                             UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
         );
         return new PageBuilder(configBuilder
-                                  .event(CASEWORKER_AMEND_OTHER_PARTIES_DETAILS)
-                                  .forAllStates()
-                                  .name(AMEND_OTHER_PARTIES_DETAILS)
-                                  .description(AMEND_OTHER_PARTIES_DETAILS)
-                                  .showSummary()
-                                  .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                  .aboutToSubmitCallback(this::aboutToSubmit));
+                                   .event(CASEWORKER_AMEND_OTHER_PARTIES_DETAILS)
+                                   .forAllStates()
+                                   .name(AMEND_OTHER_PARTIES_DETAILS)
+                                   .description(AMEND_OTHER_PARTIES_DETAILS)
+                                   .showSummary()
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .aboutToStartCallback(this::aboutToStart)
+                                   .aboutToSubmitCallback(this::aboutToSubmit));
     }
+
+    public AboutToStartOrSubmitResponse<CaseData, State> aboutToStart(CaseDetails<CaseData, State> caseDetails) {
+
+        log.info("About to start Callback invoked for {}", CASEWORKER_AMEND_OTHER_PARTIES_DETAILS);
+        var caseData = caseDetails.getData();
+
+        AdoptionAgencyOrLocalAuthority adoptionAgencyOrLocalAuthority = caseData.getAdopAgencyOrLA();
+        AddressUK addressUK = AddressUK.builder().addressLine1(adoptionAgencyOrLocalAuthority.getAdopAgencyAddressLine1())
+            .postTown(adoptionAgencyOrLocalAuthority.getAdopAgencyTown())
+            .postCode(adoptionAgencyOrLocalAuthority.getAdopAgencyPostcode())
+            .build();
+
+        adoptionAgencyOrLocalAuthority.setAdopAgencyAddress(addressUK);
+        caseData.setAdopAgencyOrLA(adoptionAgencyOrLocalAuthority);
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .build();
+    }
+
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
         final CaseDetails<CaseData, State> details,
@@ -50,6 +77,10 @@ public class CaseworkerAmendOtherPartiesDetails implements CCDConfig<CaseData, S
         log.info("Callback invoked for {}", CASEWORKER_AMEND_OTHER_PARTIES_DETAILS);
 
         var caseData = details.getData();
+        Parent birthMother = caseData.getBirthMother();
+        birthMother.setStillAlive(YesOrNo.YES.equals(birthMother.getDeceased().getValue()) ? YesOrNo.NO : YesOrNo.YES);
+        Parent birthFather = caseData.getBirthFather();
+        birthFather.setStillAlive(YesOrNo.YES.equals(birthMother.getDeceased().getValue()) ? YesOrNo.NO : YesOrNo.YES);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();

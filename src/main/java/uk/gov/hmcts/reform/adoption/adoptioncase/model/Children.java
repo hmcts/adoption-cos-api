@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 
 @Data
 @AllArgsConstructor
@@ -42,7 +42,7 @@ public class Children {
     @CCD(
         label = "Sex at birth",
         hint = "Child Gender",
-        typeOverride = FixedList,
+        typeOverride = FixedRadioList,
         typeParameterOverride = "Gender"
     )
     private Gender sexAtBirth;

@@ -17,28 +17,24 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Builder
-public class Solicitor {
+public class Guardian {
 
-    @CCD(label = "Solicitor",
-        access = {DefaultAccess.class})
-    private String solicitorFirm;
 
-    @CCD(label = "Reference Number",
+    @CCD(label = "Full name of contact",
         access = {DefaultAccess.class})
-    private String solicitorRef;
+    private String name;
 
     @CCD(
         label = "Email",
-        typeOverride = Email,
-        access = {DefaultAccess.class}
+        typeOverride = Email
     )
     private String email;
 
-    @CCD(label = "Phone number",
-        access = {DefaultAccess.class})
+    @CCD(label = "Phone number")
     private String phoneNumber;
 
     @CCD(access = {DefaultAccess.class},
         label = "Address")
-    private AddressUK solicitorAddress;
+    private AddressUK guardianAddress;
+
 }

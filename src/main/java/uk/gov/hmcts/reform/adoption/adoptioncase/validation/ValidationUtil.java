@@ -97,7 +97,7 @@ public final class ValidationUtil {
     }
 
     public static List<String> validateOtherParent(Parent otherParent) {
-        if (YES.equalsIgnoreCase(otherParent.getStillAlive())) {
+        if (YesOrNo.YES.equals(otherParent.getStillAlive())) {
             return flattenLists(
                 notNull(otherParent.getFirstName(), "BirthFatherFirstName"),
                 notNull(otherParent.getLastName(), "BirthFatherLastName")

@@ -8,13 +8,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.AddressUK;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -33,11 +36,13 @@ public class Parent {
     @CCD(label = "Last names")
     private String lastName;
 
-    @CCD(label = "Deceased – Yes/No")
-    private String stillAlive;
+    @CCD(label = "Deceased – Yes/No",
+        access = {SystemUpdateAccess.class})
+    private YesOrNo stillAlive;
 
-    @CCD(label = "Deceased")
-    private String deceased;
+    @CCD(label = "Deceased",
+        access = {SystemUpdateAccess.class})
+    private YesOrNo deceased;
 
     @CCD(label = "Not Alive Reason")
     private String notAliveReason;
@@ -75,6 +80,10 @@ public class Parent {
     @CCD(label = "Country")
     private String addressCountry;
 
+    @CCD(access = {DefaultAccess.class},
+        label = "Address")
+    private AddressUK parentAddress;
+
     @CCD(
         label = "Additional Nationalities",
         typeOverride = Collection,
@@ -98,6 +107,24 @@ public class Parent {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastAddressDate;
 
+
+
     @CCD(label = "Identity known")
     private String identityKnown;
+
+    @CCD(label = "Relationship (e.g. grandparent, step-parent):")
+    private String relationShipWithChild;
+
+    @CCD(label = "To be served",
+        access = {SystemUpdateAccess.class})
+    private YesOrNo toBeServed;
+
+    public YesOrNo getToBeServed() {
+        if (Objects.isNull(toBeServed)) {
+            return YesOrNo.YES;
+        }
+        return toBeServed;
+    }
+
+
 }
