@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -90,12 +91,19 @@ public class CaseData {
     private Parent otherParent = new Parent();
 
     @CCD(
-        label = "Placement orders",
+        label = "Linked cases",
         typeOverride = Collection,
         typeParameterOverride = "PlacementOrder",
         access = {SystemUpdateCollectionAccess.class}
     )
     private List<ListValue<PlacementOrder>> placementOrders;
+
+    @CCD(
+        label = "Placement",
+        access = {SystemUpdateAccess.class}
+    )
+    private PlacementOrder placementOrder;
+
 
     @CCD(
         label = "Add Another Placement Order",
@@ -134,7 +142,7 @@ public class CaseData {
     private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
     @CCD(
-        label = "Siblings",
+        label = "Sibling court cases",
         typeOverride = Collection,
         typeParameterOverride = "Sibling",
         access = {SystemUpdateCollectionAccess.class}
@@ -201,6 +209,11 @@ public class CaseData {
     )
     private String applicant1SotFullName;
 
+    @CCD(label = "Messages",
+        access = {DefaultAccess.class}
+    )
+    private String messages;
+
     @CCD(label = "Applicant2 statement of truth full name",
         access = {DefaultAccess.class}
     )
@@ -256,15 +269,15 @@ public class CaseData {
     )
     private String message;
 
-    @CCD(label = "Type of adoption",
+    @CCD(label = "Adoption Type",
         access = {DefaultAccess.class}
     )
     private String typeOfAdoption;
 
-    @CCD(label = "Case status",
+    @CCD(label = "Status",
         access = {DefaultAccess.class}
     )
-    private String status;
+    private State status;
 
     @CCD(
         label = "Documents generated",
@@ -336,13 +349,13 @@ public class CaseData {
     private YesOrNo findFamilyCourt;
 
     @CCD(
-        label = "Placement order court name",
+        label = "Allocated court",
         access = {DefaultAccess.class}
     )
     private String placementOrderCourt;
 
     @CCD(
-        label = "Family court name",
+        label = "Allocated court",
         access = {DefaultAccess.class}
     )
     private String familyCourtName;
@@ -357,37 +370,37 @@ public class CaseData {
         label = "Application documents",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<AdoptionDocument>> applicationDocumentsCategory;
+    private List<ListValue<AdoptionUploadDocument>> applicationDocumentsCategory;
 
     @CCD(
         label = "Court orders",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<AdoptionDocument>> courtOrdersDocumentCategory;
+    private List<ListValue<AdoptionUploadDocument>> courtOrdersDocumentCategory;
 
     @CCD(
         label = "Reports",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<AdoptionDocument>> reportsDocumentCategory;
+    private List<ListValue<AdoptionUploadDocument>> reportsDocumentCategory;
 
     @CCD(
         label = "Statements",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<AdoptionDocument>> statementsDocumentCategory;
+    private List<ListValue<AdoptionUploadDocument>> statementsDocumentCategory;
 
     @CCD(
         label = "Correspondence",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<AdoptionDocument>> correspondenceDocumentCategory;
+    private List<ListValue<AdoptionUploadDocument>> correspondenceDocumentCategory;
 
     @CCD(
         label = "Additional documents",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<AdoptionDocument>> additionalDocumentsCategory;
+    private List<ListValue<AdoptionUploadDocument>> additionalDocumentsCategory;
 
     @CCD(
         label = "Notes",
@@ -402,6 +415,23 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private CaseNote note;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private AdoptionUploadDocument adoptionUploadDocument;
+
+    @CCD(
+        label = "Role",
+        hint = "What is their role? For example, first applicant or child's social worker."
+    )
+    private String role;
+
+    @CCD(
+        label = "Name",
+        hint = "Add the name of the person who submitted the document."
+    )
+    private String name;
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {

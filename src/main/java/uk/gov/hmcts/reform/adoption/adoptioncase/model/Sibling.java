@@ -14,24 +14,24 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 @NoArgsConstructor
 @Builder
 public class Sibling {
-    @CCD(label = "Sibling Id")
+    @CCD(label = "Sibling Id", showCondition = "siblingPoNumber=\"\"")
     private String siblingId;
 
-    @CCD(label = "Sibling Relation",
+    @CCD(label = "Relationship",
         access = {SystemUpdateAccess.class},
         typeOverride = FixedList,
         typeParameterOverride = "SiblingRelation")
     private SiblingRelation siblingRelation;
 
-    @CCD(label = "Sibling Placement Order Type",
+    @CCD(label = "Type",
         access = {SystemUpdateAccess.class},
         typeOverride = FixedList,
         typeParameterOverride = "SiblingPoType")
     private SiblingPoType siblingPoType;
 
-    @CCD(label = "Sibling Placement Other Order Type")
+    @CCD(label = "Type (Other)")
     private String siblingPlacementOtherType;
 
-    @CCD(label = "Sibling Placement Order Number")
+    @CCD(label = "Case or serial number")
     private String siblingPoNumber;
 }

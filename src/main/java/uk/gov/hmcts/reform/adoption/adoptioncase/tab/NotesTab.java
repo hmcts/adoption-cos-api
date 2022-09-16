@@ -9,21 +9,15 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 @Component
-public class OtherPartiesTab implements CCDConfig<CaseData, State, UserRole> {
-
-
-    @Override
+public class NotesTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("otherParties", "Other Parties");
-
-        addHeaderFields(tabBuilder);
+        final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationNotes", "Notes");
+        addNotes(tabBuilder);
     }
 
-    public void addHeaderFields(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
+    private void addNotes(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
-            .label("headingOtherParties", null, "### Other Parties")
-            .field("status")
-            .field("message");
+            .label("LabelNotes-Heading", null, "### Case Notes")
+            .field(CaseData::getCaseNote);
     }
-
 }

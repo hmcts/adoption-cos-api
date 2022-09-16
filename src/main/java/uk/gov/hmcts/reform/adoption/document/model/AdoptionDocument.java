@@ -37,7 +37,7 @@ public class AdoptionDocument {
     private Document documentLink;
 
     @CCD(
-        label = "Date added"
+        label = "Date"
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate documentDateAdded;
