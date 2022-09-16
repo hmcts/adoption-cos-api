@@ -142,7 +142,7 @@ public class CaseData {
     private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
     @CCD(
-        label = "Sibling cases",
+        label = "Sibling court cases",
         typeOverride = Collection,
         typeParameterOverride = "Sibling",
         access = {SystemUpdateCollectionAccess.class}

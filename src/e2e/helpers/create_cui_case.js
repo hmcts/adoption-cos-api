@@ -96,7 +96,7 @@ module.exports.createCase = async () => {
         return caseId;
 
     } catch (err) {
-        console.log("could not create account", err);
+        console.log("could not create account");
     }
 
 };

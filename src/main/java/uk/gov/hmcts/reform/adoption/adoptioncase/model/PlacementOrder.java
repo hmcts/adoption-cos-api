@@ -23,16 +23,16 @@ public class PlacementOrder {
     @CCD(label = "Order ID", showCondition = "placementOrderNumber=\"\"")
     private String placementOrderId;
 
-    @CCD(label = "Type of order",
+    @CCD(label = "Type",
         access = {SystemUpdateAccess.class},
         typeOverride = FixedList,
         typeParameterOverride = "PlacementOrderType")
     private PlacementOrderType placementOrderType;
 
-    @CCD(label = "Type of order (Other)")
+    @CCD(label = "Type (Other)")
     private String otherPlacementOrderType;
 
-    @CCD(label = "Order case or serial number")
+    @CCD(label = "Case or serial number")
     private String placementOrderNumber;
 
     @CCD(label = "Court")
@@ -40,6 +40,7 @@ public class PlacementOrder {
 
     @CCD(
         label = "Date",
+        showCondition = "placementOrderNumber=\"\"",
         access = {SystemUpdateAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
