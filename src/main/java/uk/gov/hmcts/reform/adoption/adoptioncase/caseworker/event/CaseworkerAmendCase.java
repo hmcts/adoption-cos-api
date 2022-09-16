@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AmendCaseDetails;
@@ -13,6 +15,8 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
  * Contains method to define Event Configuration for ExUI.
  * Enable Amend Case Details functionality for Adoption Cases.
  */
+@Slf4j
+@Component
 public class CaseworkerAmendCase implements CCDConfig<CaseData, State, UserRole> {
     public static final String AMEND_CASE_DETAILS = "Amend Case Details";
     public static final String CASEWORKER_AMEND_CASE = "caseworker-amend-case";
