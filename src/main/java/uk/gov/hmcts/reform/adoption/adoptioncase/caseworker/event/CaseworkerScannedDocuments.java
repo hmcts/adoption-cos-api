@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 @Slf4j
 public class CaseworkerScannedDocuments implements CCDConfig<CaseData, State, UserRole> {
 
-    public static final String CASEWORKER_SCANNED_DOCUMENT = "caseworker-manage-document";
+    public static final String CASEWORKER_SCANNED_DOCUMENT = "caseworker-scanned-document";
     public static final String SCANNED_DOCUMENT = "Scanned documents";
 
     private final CcdPageConfiguration manageDocuments = new ScannedDocuments();
