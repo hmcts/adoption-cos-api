@@ -50,7 +50,7 @@ public class CaseData {
     @CCD(
         label = "Are the applicants represented by a solicitor?",
         typeOverride = FixedRadioList,
-        typeParameterOverride = "YesNoNotSure",
+        typeParameterOverride = "YesNo",
         access = {DefaultAccess.class}
     )
     private YesNo applicantSolicitor;
