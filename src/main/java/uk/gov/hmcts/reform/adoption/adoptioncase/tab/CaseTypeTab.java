@@ -169,6 +169,9 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
                    "[Upload documents](/cases/case-details/${[CASE_REFERENCE]}"
                        + "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)"
             )
+
+            //.field(CaseData::getApplicant1DocumentsUploaded)
+
             .field(CaseData::getApplicationDocumentsCategory)
             .field(CaseData::getReportsDocumentCategory)
             .field(CaseData::getStatementsDocumentCategory)
