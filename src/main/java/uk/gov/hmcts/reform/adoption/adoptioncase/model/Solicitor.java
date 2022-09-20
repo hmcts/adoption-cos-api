@@ -45,4 +45,41 @@ public class Solicitor {
         access = {DefaultAccess.class}
     )
     private YesOrNo solicitorHelpingWithApplication;
+
+    @CCD(
+        label = "Solicitor reference number",
+        access = {DefaultAccess.class}
+    )
+    private String solicitorReference;
+
+    @CCD(
+        label = "Address line 1",
+        access = {DefaultAccess.class}
+    )
+    private String address1;
+
+    @CCD(
+        label = "Address line 2 (optional)",
+        access = {DefaultAccess.class}
+    )
+    private String address2;
+
+    @CCD(
+        label = "Town or city",
+        access = {DefaultAccess.class}
+    )
+    private String addressTown;
+
+    @CCD(
+        label = "County (optional)",
+        access = {DefaultAccess.class}
+    )
+    private String addressCounty;
+
+    @CCD(
+        label = "Postcode",
+        access = {DefaultAccess.class}
+    )
+    private String addressPostCode;
+
 }
