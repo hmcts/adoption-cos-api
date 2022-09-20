@@ -14,7 +14,7 @@ public class ScannedDocuments implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("uploadDocumentPage1")
             .pageLabel(SCANNED_DOCUMENT)
-            .mandatory(CaseData::getApplicant1DocumentsUploaded)
+            .mandatory(CaseData::getLaDocumentsUploaded)
             /*.mandatory(AdoptionUploadDocument::getDocumentLink)
             .mandatory(AdoptionUploadDocument::getDocumentComment)
             .mandatory(AdoptionUploadDocument::getDocumentCategory)*/
