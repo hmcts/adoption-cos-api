@@ -16,7 +16,7 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("amendCaseDetails")
             .pageLabel(AMEND_APPLICANT_DETAILS)
-            .label("applicant1Label","## First applicant","applyingWith=\"alone\"")
+            .label("applicant1Label","## First applicant")
             .complex(CaseData::getApplicant1)
             .mandatory(Applicant::getFirstName)
             .mandatory(Applicant::getLastName)
@@ -31,7 +31,7 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
             .mandatory(Applicant::getEmailAddress)
             .mandatory(Applicant::getPhoneNumber)
             .done()
-            .label("applicant2Label","## Second applicant","applyingWith=!\"alone\"")
+            .label("applicant2Label","## Second applicant")
             .complex(CaseData::getApplicant2)
             .mandatory(Applicant::getFirstName)
             .mandatory(Applicant::getLastName)
