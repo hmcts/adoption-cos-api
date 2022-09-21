@@ -18,11 +18,16 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
             .pageLabel(AMEND_APPLICANT_DETAILS)
             .label("Applicants-solicitor-Heading","## Applicant's solicitor",null)
             .mandatory(CaseData::getYesNo)
-            .done();
-
-        pageBuilder.page("amendCaseDetails")
             .complex(CaseData::getSolicitor)
+            .mandatory(Solicitor::getSolicitorFirm, "yesNo=\"Yes\"")
+            .mandatory(Solicitor::getSolicitorReference, "yesNo=\"Yes\"")
             .mandatory(Solicitor::getAddress1, "yesNo=\"Yes\"")
+            .mandatory(Solicitor::getAddress2, "yesNo=\"Yes\"")
+            .mandatory(Solicitor::getAddressTown, "yesNo=\"Yes\"")
+            .mandatory(Solicitor::getAddressCounty, "yesNo=\"Yes\"")
+            .mandatory(Solicitor::getAddressPostCode, "yesNo=\"Yes\"")
+            .mandatory(Solicitor::getSolicitorEmail, "yesNo=\"Yes\"")
+            .mandatory(Solicitor::getSolicitorPhoneNumber, "yesNo=\"Yes\"")
             .done();
     }
 }
