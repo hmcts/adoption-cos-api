@@ -14,8 +14,9 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.Casewor
 public class AmendApplicantDetails implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
-        pageBuilder.page("amendCaseDetails1")
+        pageBuilder.page("amendCaseDetails")
             .pageLabel(AMEND_APPLICANT_DETAILS)
+            .label("Applicants-solicitor-Heading","## Applicant's solicitor",null)
             .mandatory(CaseData::getYesNo)
             .done();
 
