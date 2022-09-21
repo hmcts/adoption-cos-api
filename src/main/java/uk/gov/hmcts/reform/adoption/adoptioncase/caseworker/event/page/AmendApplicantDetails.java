@@ -18,7 +18,7 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
             .pageLabel(AMEND_APPLICANT_DETAILS)
             .label("solicitor", "Applicant's solicitor")
             .mandatory(CaseData::getApplicantSolicitor)
-            .complex(CaseData::getSolicitorDetails)
+            .complex(CaseData::getSolicitor)
             .mandatory(Solicitor::getSolicitorFirm, "applicantSolicitor=\"Yes\"")
             .mandatory(Solicitor::getSolicitorReference, "applicantSolicitor=\"Yes\"")
             .mandatory(Solicitor::getAddress1, "applicantSolicitor=\"Yes\"")
