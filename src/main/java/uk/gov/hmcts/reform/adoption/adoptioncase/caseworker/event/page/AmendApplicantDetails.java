@@ -14,20 +14,14 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.Casewor
 public class AmendApplicantDetails implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
-        pageBuilder.page("amendCaseDetails")
+        pageBuilder.page("amendCaseDetails1")
             .pageLabel(AMEND_APPLICANT_DETAILS)
-            .label("solicitor", "Applicant's solicitor")
-            .mandatory(CaseData::getApplicantSolicitor)
+            .mandatory(CaseData::getYesNo)
+            .done();
+
+        pageBuilder.page("amendCaseDetails")
             .complex(CaseData::getSolicitor)
-            .mandatory(Solicitor::getSolicitorFirm, "applicantSolicitor=\"Yes\"")
-            .mandatory(Solicitor::getSolicitorReference, "applicantSolicitor=\"Yes\"")
-            .mandatory(Solicitor::getAddress1, "applicantSolicitor=\"Yes\"")
-            .mandatory(Solicitor::getAddress2, "applicantSolicitor=\"Yes\"")
-            .mandatory(Solicitor::getAddressTown, "applicantSolicitor=\"Yes\"")
-            .mandatory(Solicitor::getAddressCounty, "applicantSolicitor=\"Yes\"")
-            .mandatory(Solicitor::getAddressPostCode, "applicantSolicitor=\"Yes\"")
-            .mandatory(Solicitor::getSolicitorEmail, "applicantSolicitor=\"Yes\"")
-            .mandatory(Solicitor::getSolicitorPhoneNumber, "applicantSolicitor=\"Yes\"")
+            .mandatory(Solicitor::getAddress1, "yesNo=\"Yes\"")
             .done();
     }
 }
