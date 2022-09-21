@@ -16,6 +16,11 @@ module.exports = {
     caseType: 'New Adoption case',
     caseTypeFullDesc: 'New Adoption case',
   },
+
+  // actions
+  administrationActions: {
+    amendCaseDetails: 'Amend case details',
+  },
   // files
   testFile: './src/test/e2e/fixtures/testFiles/mockFile.txt',
   testPdfFile: './src/test/e2e/fixtures/testFiles/mockFile.pdf',
