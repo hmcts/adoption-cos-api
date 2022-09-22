@@ -16,7 +16,6 @@ import java.time.LocalDate;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
 @NoArgsConstructor
@@ -24,12 +23,12 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @ToString
 public class AdoptionDocument {
 
-    @CCD(
+    /*@CCD(
         label = "Add content to be emailed",
         typeOverride = TextArea,
         ignore = true
     )
-    private String documentEmailContent;
+    private String documentEmailContent;*/
 
     @CCD(
         label = "Document",
@@ -94,8 +93,7 @@ public class AdoptionDocument {
 
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
-    public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
-                            @JsonProperty("documentLink") Document documentLink,
+    public AdoptionDocument(@JsonProperty("documentLink") Document documentLink,
                             @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
                             @JsonProperty("documentComment") String documentComment,
                             @JsonProperty("documentFileName") String documentFileName,
@@ -104,7 +102,6 @@ public class AdoptionDocument {
                             @JsonProperty("documentCategory") DocumentCategory documentCategory,
                             @JsonProperty("role") String role,
                             @JsonProperty("name") String name) {
-        this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
         this.documentComment = documentComment;
