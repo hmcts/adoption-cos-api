@@ -7,10 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
 
 @Data
 @AllArgsConstructor
@@ -19,30 +19,57 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @Builder
 public class Solicitor {
 
-    @CCD(label = "Solicitor’s Firm",
+    @CCD(label = "Solicitor",
         access = {DefaultAccess.class})
     private String solicitorFirm;
 
-    @CCD(label = "Solicitor’s Name",
-        access = {DefaultAccess.class})
-    private String solicitorName;
-
     @CCD(
-        label = "Solicitor’s Phone number",
+        label = "Solicitor reference number",
         access = {DefaultAccess.class}
     )
-    private String solicitorPhoneNumber;
+    private String solicitorReference;
 
     @CCD(
-        label = "Solicitor’s Email",
+        label = "Address line 1",
+        access = {DefaultAccess.class}
+    )
+    private String address1;
+
+    @CCD(
+        label = "Address line 2 (optional)",
+        access = {DefaultAccess.class}
+    )
+    private String address2;
+
+    @CCD(
+        label = "Town or city",
+        access = {DefaultAccess.class}
+    )
+    private String addressTown;
+
+    @CCD(
+        label = "County (optional)",
+        access = {DefaultAccess.class}
+    )
+    private String addressCounty;
+
+    @CCD(
+        label = "Postcode",
+        access = {DefaultAccess.class}
+    )
+    private String addressPostCode;
+
+    @CCD(
+        label = "Email address",
         typeOverride = Email,
         access = {DefaultAccess.class}
     )
     private String solicitorEmail;
 
     @CCD(
-        label = "Solicitor Helping With Application",
+        label = "Phone number",
+        typeOverride = PhoneUK,
         access = {DefaultAccess.class}
     )
-    private YesOrNo solicitorHelpingWithApplication;
+    private String solicitorPhoneNumber;
 }

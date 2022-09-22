@@ -47,6 +47,14 @@ public class CaseData {
     )
     private ApplyingWith applyingWith;
 
+    @CCD(
+        label = "Are the applicants represented by a solicitor?",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "YesNo"
+    )
+    private YesNo yesNo;
+
     @CCD(label = "Applying with someone else reason",
         typeOverride = TextArea,
         access = {DefaultAccess.class}
