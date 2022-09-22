@@ -80,6 +80,18 @@ public class AdoptionDocument {
     )
     private DocumentCategory documentCategory;
 
+    @CCD(
+        label = "Role",
+        hint = "What is their role? For example, first applicant or child's social worker."
+    )
+    private String role;
+
+    @CCD(
+        label = "Name",
+        hint = "Add the name of the person who submitted the document."
+    )
+    private String name;
+
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
     public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
@@ -89,7 +101,9 @@ public class AdoptionDocument {
                             @JsonProperty("documentFileName") String documentFileName,
                             @JsonProperty("documentType") DocumentType documentType,
                             @JsonProperty("documentFileId") String documentFileId,
-                            @JsonProperty("documentCategory") DocumentCategory documentCategory) {
+                            @JsonProperty("documentCategory") DocumentCategory documentCategory,
+                            @JsonProperty("role") String role,
+                            @JsonProperty("name") String name) {
         this.documentEmailContent = documentEmailContent;
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
@@ -98,5 +112,7 @@ public class AdoptionDocument {
         this.documentType = documentType;
         this.documentFileId = documentFileId;
         this.documentCategory = documentCategory;
+        this.role = role;
+        this.name = name;
     }
 }
