@@ -38,6 +38,8 @@ public class AdoptionDocument {
     private Document documentLink;
 
     @CCD(
+        label = "Date",
+        ignore = true
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate documentDateAdded;
@@ -49,21 +51,24 @@ public class AdoptionDocument {
     private String documentComment;
 
     @CCD(
-        //label = "File name",
-        hint = "For your own reference, to make the document easier to find"
+        label = "File name",
+        hint = "For your own reference, to make the document easier to find",
+        ignore = true
     )
     private String documentFileName;
 
     @CCD(
         label = "Select document type",
         typeOverride = FixedList,
-        typeParameterOverride = "DocumentType"
+        typeParameterOverride = "DocumentType",
+        ignore = true
     )
     private DocumentType documentType;
 
     @CCD(
         label = "File Id",
-        hint = "DM Store file Id"
+        hint = "DM Store file Id",
+        ignore = true
     )
     private String documentFileId;
 
