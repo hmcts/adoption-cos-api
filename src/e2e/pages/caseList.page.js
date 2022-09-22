@@ -42,6 +42,17 @@ module.exports = {
     I.click(this.fields.search);
     I.wait(5);
   },
+
+  searchForCasesWithHypernisedId(caseId, state = 'Any') {
+    const hyphanisedCaseId = caseId.replace(/(.{4})/g,"$1-").substring(0,19);
+    console.log('hyphanisedCaseId '+ hyphanisedCaseId);
+    this.setInitialSearchFields(state);
+    I.wait(5);
+    I.fillField(this.fields.caseNumber, hyphanisedCaseId);
+    I.grabCurrentUrl();
+    I.click(this.fields.search);
+    I.wait(5);
+  },
   seeCaseInSearchResult(caseId) {
     I.waitForElement(`//a[contains(@href,'/cases/case-details/${caseId}')]`);
     I.grabCurrentUrl();
