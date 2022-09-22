@@ -42,7 +42,7 @@ module.exports = {
           I.grabCurrentUrl();
         }
 
-        await this.retryUntilExists(() =>  loginPage.signIn(user), signedInSelector, false, 10);
+        await this.retryUntilExists(() =>  loginPage.loginToExUI(user), signedInSelector, false, 10);
         I.grabCurrentUrl();
 
       }, signedInSelector, false, 10);
@@ -126,8 +126,10 @@ module.exports = {
     }
   },
 
-  seeEventSubmissionConfirmation(event) {
+  seeEventSubmissionConfirmation(caseId,event) {
+    const hyphenatedCaseId = caseId.replace(/(.{4})/g,"$1-").substring(0,19);
     this.waitForText(`updated with event: ${event}`);
+    this.see(`Case #${hyphenatedCaseId} has been updated with event: ${event}`);
   },
 
   clickHyperlink(link, urlNavigatedTo) {
