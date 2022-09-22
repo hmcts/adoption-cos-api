@@ -20,7 +20,7 @@ public class Solicitor {
 
     @CCD(label = "Solicitor",
         access = {DefaultAccess.class})
-    private String solicitor;
+    private String solicitorName;
 
     @CCD(
         label = "Solicitor reference number",
