@@ -19,6 +19,7 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
             .optional(CaseData::getApplyingWith,"applicant1EmailAddress=\"NEVER_SHOW\"")
             .label("applicant1Label","##First applicant", "applyingWith=\"alone\"")
             .complex(CaseData::getApplicant1)
+            .optional(Applicant::getAddress2,"applicant1EmailAddress=\"NEVER_SHOW\"")
             .mandatory(Applicant::getFirstName)
             .mandatory(Applicant::getLastName)
             .mandatory(Applicant::getAdditionalNames)
