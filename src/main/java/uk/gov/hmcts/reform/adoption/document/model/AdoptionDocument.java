@@ -26,7 +26,8 @@ public class AdoptionDocument {
 
     @CCD(
         label = "Add content to be emailed",
-        typeOverride = TextArea
+        typeOverride = TextArea,
+        ignore = true
     )
     private String documentEmailContent;
 
@@ -37,7 +38,6 @@ public class AdoptionDocument {
     private Document documentLink;
 
     @CCD(
-        label = "Date"
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate documentDateAdded;
@@ -49,7 +49,7 @@ public class AdoptionDocument {
     private String documentComment;
 
     @CCD(
-        label = "File name",
+        //label = "File name",
         hint = "For your own reference, to make the document easier to find"
     )
     private String documentFileName;
