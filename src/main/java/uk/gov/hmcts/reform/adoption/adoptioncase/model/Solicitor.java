@@ -20,7 +20,7 @@ public class Solicitor {
 
     @CCD(label = "Solicitor",
         access = {DefaultAccess.class})
-    private String solicitorName;
+    private String solicitorFirm;
 
     @CCD(
         label = "Solicitor reference number",
@@ -63,11 +63,11 @@ public class Solicitor {
         typeOverride = Email,
         access = {DefaultAccess.class}
     )
-    private String emailAddress;
+    private String solicitorEmail;
 
     @CCD(
         label = "Phone number",
         access = {DefaultAccess.class}
     )
-    private String phoneNumber;
+    private String solicitorPhoneNumber;
 }
