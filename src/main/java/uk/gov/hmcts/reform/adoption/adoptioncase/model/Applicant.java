@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.AddressUK;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
@@ -110,4 +111,8 @@ public class Applicant {
 
     @CCD(label = "languagePreference")
     private LanguagePreference languagePreference;
+
+    @CCD(label = "*Enter a UK postcode"
+    )
+    private AddressUK address;
 }
