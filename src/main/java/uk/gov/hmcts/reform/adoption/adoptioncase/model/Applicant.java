@@ -90,13 +90,13 @@ public class Applicant {
     @CCD(label = "Building and street")
     private String address1;
 
-    @CCD(label = "Address line 2 (optional)")
+    @CCD(label = "Address line 2")
     private String address2;
 
     @CCD(label = "Town or city")
     private String addressTown;
 
-    @CCD(label = "County (optional)")
+    @CCD(label = "County")
     private String addressCountry;
 
     @CCD(label = "Postcode")
