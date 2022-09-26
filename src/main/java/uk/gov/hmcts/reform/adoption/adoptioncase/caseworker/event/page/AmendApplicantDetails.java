@@ -49,4 +49,3 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
             .done();
     }
 }
-
