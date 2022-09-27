@@ -7,15 +7,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.AddressUK;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.PhoneUK;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Builder
 public class Solicitor {
 
@@ -23,53 +24,30 @@ public class Solicitor {
         access = {DefaultAccess.class})
     private String solicitorFirm;
 
-    @CCD(
-        label = "Solicitor reference number",
-        access = {DefaultAccess.class}
-    )
-    private String solicitorReference;
+    @CCD(label = "Reference Number",
+        access = {DefaultAccess.class})
+
+    private String solicitorRef;
 
     @CCD(
-        label = "Address line 1",
-        access = {DefaultAccess.class}
-    )
-    private String address1;
-
-    @CCD(
-        label = "Address line 2 (optional)",
-        access = {DefaultAccess.class}
-    )
-    private String address2;
-
-    @CCD(
-        label = "Town or city",
-        access = {DefaultAccess.class}
-    )
-    private String addressTown;
-
-    @CCD(
-        label = "County (optional)",
-        access = {DefaultAccess.class}
-    )
-    private String addressCounty;
-
-    @CCD(
-        label = "Postcode",
-        access = {DefaultAccess.class}
-    )
-    private String addressPostCode;
-
-    @CCD(
-        label = "Email address",
+        label = "Email",
         typeOverride = Email,
         access = {DefaultAccess.class}
     )
-    private String solicitorEmail;
+    private String email;
+
+    @CCD(label = "Phone number",
+        access = {DefaultAccess.class})
+    private String phoneNumber;
+
+    @CCD(label = "Address",
+        access = {DefaultAccess.class})
+    private AddressUK solicitorAddress;
 
     @CCD(
-        label = "Phone number",
-        typeOverride = PhoneUK,
+        label = "Solicitor Helping With Application",
         access = {DefaultAccess.class}
     )
-    private String solicitorPhoneNumber;
+    private YesOrNo solicitorHelpingWithApplication;
+
 }
