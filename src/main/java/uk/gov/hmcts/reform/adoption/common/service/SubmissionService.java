@@ -6,10 +6,11 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTaskRunner;
-import uk.gov.hmcts.reform.adoption.common.service.task.GenerateApplicationSummaryDocument;
-import uk.gov.hmcts.reform.adoption.common.service.task.SetDateSubmitted;
-import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterLaSubmission;
 import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterSubmission;
+import uk.gov.hmcts.reform.adoption.common.service.task.SetStateAfterLaSubmission;
+import uk.gov.hmcts.reform.adoption.common.service.task.SetDateSubmitted;
+import uk.gov.hmcts.reform.adoption.common.service.task.GenerateApplicationSummaryDocument;
+import uk.gov.hmcts.reform.adoption.common.service.task.GenerateApplicationLaSummaryDocument;
 
 @Service
 public class SubmissionService {
@@ -29,6 +30,9 @@ public class SubmissionService {
     @Autowired
     private GenerateApplicationSummaryDocument generateApplicationSummaryDocument;
 
+    @Autowired
+    private GenerateApplicationLaSummaryDocument generateApplicationLaSummaryDocument;
+
     public CaseDetails<CaseData, State> submitApplication(final CaseDetails<CaseData, State> caseDetails) {
 
         return CaseTaskRunner.caseTasks(
@@ -42,7 +46,8 @@ public class SubmissionService {
 
         return CaseTaskRunner.caseTasks(
             setStateAfterLaSubmission,
-            setDateSubmitted// TODO, generateApplicationSummaryDocument
+            setDateSubmitted,
+            generateApplicationLaSummaryDocument
         ).run(caseDetails);
     }
 }
