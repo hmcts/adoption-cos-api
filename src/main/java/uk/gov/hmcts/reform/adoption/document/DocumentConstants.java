@@ -10,7 +10,9 @@ public final class DocumentConstants {
     public static final String SAMPLE_DOCUMENT = "SAMPLE_DOCUMENT";
     public static final String ADOPTION_DRAFT_APPLICATION = "ADOPTION_DRAFT_APPLICATION";
     public static final String ADOPTION_APPLICATION_FILE_NAME = "adoption-application-";
+    public static final String ADOPTION_LAAPPLICATION_FILE_NAME = "adoption-laapplication-";
     public static final String ADOPTION_APPLICATION_SUMMARY = "ADOPTION_APPLICATION_SUMMARY";
+    public static final String ADOPTION_APPLICATION_LASUMMARY = "ADOPTION_APPLICATION_LASUMMARY";
     public static final String ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME = "draft-adoption-application-";
     public static final String DOCUMENT_EXISTS_CHECK = "hasUploadedDocuments";
     public static final String DOCUMENT_EXISTS = "hasDocument";
