@@ -57,6 +57,19 @@ public class GenerateApplicationLaSummaryDocument implements CaseTask {
                 .filter(item -> item != Nationality.OTHER).collect(
                     Collectors.toCollection(TreeSet<Nationality>::new)));
         }
+
+        log.info("LaSubmitted: {}", LaSubmitted);
+        log.info("caseData: {}", caseData);
+        log.info("APPLICATION_LASUMMARY_EN: {}", APPLICATION_LASUMMARY_EN);
+        log.info("ADOPTION_APPLICATION_LASUMMARY: {}", ADOPTION_APPLICATION_LASUMMARY);
+        log.info("templateContent: {}", templateContent);
+        log.info("caseDetails.getId(): {}", caseDetails.getId());
+        log.info("formatDocumentName: {}", formatDocumentName(
+            caseDetails.getId(),
+            ADOPTION_LAAPPLICATION_FILE_NAME,
+            LocalDateTime.now()
+        ));
+
         if (EnumSet.of(LaSubmitted).contains(state)) {
             log.info("Generating summary document for caseId: {}", caseId);
             caseDataDocumentService.renderDocumentAndUpdateCaseData(
