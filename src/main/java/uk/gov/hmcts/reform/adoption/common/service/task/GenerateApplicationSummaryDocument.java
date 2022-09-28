@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_SUMMARY;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_SUMMARY_CY;
-import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_SUMMARY_EN;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 
 @Component
@@ -65,7 +65,7 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
 
             final CompletableFuture<Void> appSummaryEn = CompletableFuture
                 .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
-                                                                                        APPLICATION_SUMMARY_EN,
+                                                                                        APPLICATION_LA_SUMMARY_EN,
                                                                                         templateContent,
                                                                                         caseDetails.getId(),
                                                                                         ADOPTION_APPLICATION_SUMMARY,
