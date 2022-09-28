@@ -20,7 +20,7 @@ import java.util.Map;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_FILE_NAME;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_SUMMARY;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_LA_SUMMARY;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
@@ -56,7 +56,7 @@ public class GenerateApplicationSummaryDocumentTest {
             DocumentType.APPLICATION_LA_SUMMARY_EN,
             templateVars,
             TEST_CASE_ID,
-            ADOPTION_APPLICATION_SUMMARY,
+            ADOPTION_APPLICATION_LA_SUMMARY,
             LanguagePreference.ENGLISH,
             formatDocumentName(TEST_CASE_ID, ADOPTION_APPLICATION_FILE_NAME, LocalDateTime.now())
         );

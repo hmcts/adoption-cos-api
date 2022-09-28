@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_LA_SUMMARY;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_SUMMARY;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_SUMMARY_CY;
@@ -68,7 +69,7 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
                                                                                         APPLICATION_LA_SUMMARY_EN,
                                                                                         templateContent,
                                                                                         caseDetails.getId(),
-                                                                                        ADOPTION_APPLICATION_SUMMARY,
+                                                                                        ADOPTION_APPLICATION_LA_SUMMARY,
                                                                                         LanguagePreference.ENGLISH,
                                                                                         formatDocumentName(caseDetails.getId(),
                                                                                         ADOPTION_APPLICATION_FILE_NAME,
