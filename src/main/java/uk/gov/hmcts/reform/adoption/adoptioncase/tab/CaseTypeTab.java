@@ -39,6 +39,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .label("LabelApplicant1WithSpouseOrPartner-Heading",
                    "applyingWith!=\"alone\"",
                    "### First applicant")
+            .field("applyingWith", "applyingWith=\"applyingWith\"")
             .field("applicant1FirstName")
             .field("applicant1LastName")
             .field("applicant1AdditionalNames")
