@@ -51,9 +51,16 @@ public class ValidationUtilTest {
 
     @Test
     public void shouldValidateOtherParent() {
-        Parent parent = Parent.builder().stillAlive(YES).build();
+        Parent parent = Parent.builder().stillAlive(YesOrNo.YES).build();
         List<String> errors = validateOtherParent(parent);
         assertThat(errors).hasSize(2);
+    }
+
+    @Test
+    public void shouldValidateOtherParent2() {
+        Parent parent = Parent.builder().stillAlive(YesOrNo.NO).build();
+        List<String> errors = validateOtherParent(parent);
+        assertThat(errors).hasSize(0);
     }
 
     @Test
