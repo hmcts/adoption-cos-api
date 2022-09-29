@@ -16,7 +16,6 @@ import java.time.LocalDate;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
 @NoArgsConstructor
@@ -24,11 +23,12 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @ToString
 public class AdoptionDocument {
 
-    @CCD(
+    /*@CCD(
         label = "Add content to be emailed",
-        typeOverride = TextArea
+        typeOverride = TextArea,
+        ignore = true
     )
-    private String documentEmailContent;
+    private String documentEmailContent;*/
 
     @CCD(
         label = "Document",
@@ -37,7 +37,8 @@ public class AdoptionDocument {
     private Document documentLink;
 
     @CCD(
-        label = "Date"
+        label = "Date",
+        ignore = true
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate documentDateAdded;
@@ -50,20 +51,23 @@ public class AdoptionDocument {
 
     @CCD(
         label = "File name",
-        hint = "For your own reference, to make the document easier to find"
+        hint = "For your own reference, to make the document easier to find",
+        ignore = true
     )
     private String documentFileName;
 
     @CCD(
         label = "Select document type",
         typeOverride = FixedList,
-        typeParameterOverride = "DocumentType"
+        typeParameterOverride = "DocumentType",
+        ignore = true
     )
     private DocumentType documentType;
 
     @CCD(
         label = "File Id",
-        hint = "DM Store file Id"
+        hint = "DM Store file Id",
+        ignore = true
     )
     private String documentFileId;
 
@@ -75,17 +79,29 @@ public class AdoptionDocument {
     )
     private DocumentCategory documentCategory;
 
+    @CCD(
+        label = "Role",
+        hint = "What is their role? For example, first applicant or child's social worker."
+    )
+    private String role;
+
+    @CCD(
+        label = "Name",
+        hint = "Add the name of the person who submitted the document."
+    )
+    private String name;
+
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
-    public AdoptionDocument(@JsonProperty("documentEmailContent") String documentEmailContent,
-                            @JsonProperty("documentLink") Document documentLink,
+    public AdoptionDocument(@JsonProperty("documentLink") Document documentLink,
                             @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
                             @JsonProperty("documentComment") String documentComment,
                             @JsonProperty("documentFileName") String documentFileName,
                             @JsonProperty("documentType") DocumentType documentType,
                             @JsonProperty("documentFileId") String documentFileId,
-                            @JsonProperty("documentCategory") DocumentCategory documentCategory) {
-        this.documentEmailContent = documentEmailContent;
+                            @JsonProperty("documentCategory") DocumentCategory documentCategory,
+                            @JsonProperty("role") String role,
+                            @JsonProperty("name") String name) {
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
         this.documentComment = documentComment;
@@ -93,5 +109,7 @@ public class AdoptionDocument {
         this.documentType = documentType;
         this.documentFileId = documentFileId;
         this.documentCategory = documentCategory;
+        this.role = role;
+        this.name = name;
     }
 }
