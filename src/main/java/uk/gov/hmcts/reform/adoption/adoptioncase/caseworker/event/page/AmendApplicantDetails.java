@@ -16,7 +16,7 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("amendCaseDetailsPage1")
             .pageLabel(AMEND_APPLICANT_DETAILS)
-            .optional(CaseData::getApplyingWith,"applicant1EmailAddress=\"NEVER_SHOW\"")
+            .optional(CaseData::getApplyingWith)
             .label("AmendApplicantDetailsApplicant1Label","## First applicant")
             .complex(CaseData::getApplicant1)
             .mandatory(Applicant::getFirstName)
@@ -33,6 +33,7 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
             .mandatory(Applicant::getPhoneNumber)
             .done()
             .label("AmendApplicantDetailsApplicant2Label","## Second applicant","applyingWith!=\"alone\"")
+            .optional(CaseData::getApplyingWith)
             .complex(CaseData::getApplicant2)
             .mandatory(Applicant::getFirstName,"applyingWith!=\"alone\"")
             .mandatory(Applicant::getLastName,"applyingWith!=\"alone\"")
