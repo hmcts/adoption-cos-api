@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Solicitor;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -14,6 +16,15 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("amendCaseDetails")
             .pageLabel(AMEND_APPLICANT_DETAILS)
+            .label("Applicants-solicitor-Heading","## Applicant's solicitor",null)
+            .mandatory(CaseData::getIsApplicantRepresentedBySolicitor)
+            .complex(CaseData::getSolicitor,"isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatory(Solicitor::getSolicitorFirm, "isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatoryWithoutDefaultValue(Solicitor::getSolicitorRef, "isApplicantRepresentedBySolicitor=\"Yes\"",
+                                          "Solicitor reference number")
+            .mandatory(Solicitor::getSolicitorAddress,"isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatory(Solicitor::getEmail, "isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatory(Solicitor::getPhoneNumber, "isApplicantRepresentedBySolicitor=\"Yes\"")
             .done();
     }
 }
