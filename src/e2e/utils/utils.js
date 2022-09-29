@@ -26,10 +26,10 @@ module.exports = {
         "applicant1DocumentsUploaded": [],
         "applicant1Email": "citizen.automation@mailinator.com",
         "applicant1EmailAddress": "abid@gmail.co",
-        "applicant1FirstName": "William",
+        "applicant1FirstName": "Abid1",
         "applicant1HasOtherNames": "No",
         "applicant1LanguagePreference": "ENGLISH",
-        "applicant1LastName": "Hill",
+        "applicant1LastName": "sayyad",
         "applicant1Nationality": null,
         "applicant1Occupation": "Software Engineer",
         "applicant1PhoneNumber": "0987654321",
@@ -103,9 +103,9 @@ module.exports = {
         "childSocialWorkerTown": "London",
         "childrenAdditionalNationalities": [],
         "childrenDateOfBirth": "2015-12-12",
-        "childrenFirstName": "James",
+        "childrenFirstName": "child",
         "childrenFirstNameAfterAdoption": "child",
-        "childrenLastName": "Hill",
+        "childrenLastName": "child",
         "childrenLastNameAfterAdoption": "child",
         "childrenNationality": [
             "British",
@@ -129,7 +129,7 @@ module.exports = {
         "localAuthorityName": "laname",
         "localAuthorityPhoneNumber": "01234567890",
         "pcqId": "9c04ea3a-c614-4eac-8361-ac75fb59f9dc",
-        "placementOrderCourt": "xyz"
+        "placementOrderCourt": "xyz",
     },
   caseDataLa: {
         "birthFatherAddress1": "BUCKINGHAM PALACE",
