@@ -22,9 +22,13 @@ import java.util.stream.Collectors;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_LA_APPLICATION_SUMMARY;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_LA_APPLICATION_FILE_NAME;
-import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LASUMMARY_EN;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 
+/**
+ * Helper class targeted for Generating the PDF document for LA Portal Application Submition summary.
+ *
+ */
 @Component
 @Slf4j
 public class GenerateLaApplicationSummaryDocument implements CaseTask {
@@ -35,6 +39,11 @@ public class GenerateLaApplicationSummaryDocument implements CaseTask {
     @Autowired
     private ObjectMapper objectMapper;
 
+    /**
+     * This overridden method use caseDataDocumentService to render document and update the details back in CaseData.
+     *
+     * @return - CaseDetails
+     */
     @Override
     public CaseDetails<CaseData, State> apply(CaseDetails<CaseData, State> caseDetails) {
         final CaseData caseData = caseDetails.getData();
@@ -59,25 +68,13 @@ public class GenerateLaApplicationSummaryDocument implements CaseTask {
                     Collectors.toCollection(TreeSet<Nationality>::new)));
         }
 
-        log.info("LaSubmitted: {}", LaSubmitted);
-        log.info("caseData: {}", caseData);
-        log.info("APPLICATION_LASUMMARY_EN: {}", APPLICATION_LASUMMARY_EN);
-        log.info("ADOPTION_APPLICATION_LASUMMARY: {}", ADOPTION_LA_APPLICATION_SUMMARY);
-        log.info("templateContent: {}", templateContent);
-        log.info("caseDetails.getId(): {}", caseDetails.getId());
-        log.info("formatDocumentName: {}", formatDocumentName(
-            caseDetails.getId(),
-            ADOPTION_LA_APPLICATION_FILE_NAME,
-            LocalDateTime.now()
-        ));
-
         if (EnumSet.of(LaSubmitted).contains(state)) {
             log.info("Generating summary document for caseId: {}", caseId);
 
             final CompletableFuture<Void> appSummaryEn = CompletableFuture
                 .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(
                     caseData,
-                    APPLICATION_LASUMMARY_EN,
+                    APPLICATION_LA_SUMMARY_EN,
                     templateContent,
                     caseDetails.getId(),
                     ADOPTION_LA_APPLICATION_SUMMARY,
@@ -90,7 +87,6 @@ public class GenerateLaApplicationSummaryDocument implements CaseTask {
                 ));
 
             CompletableFuture.allOf(appSummaryEn).join();
-            log.info("caseData: {}", caseData);
         } else {
             log.error("Could not generate summary document for caseId: {}", caseId);
         }

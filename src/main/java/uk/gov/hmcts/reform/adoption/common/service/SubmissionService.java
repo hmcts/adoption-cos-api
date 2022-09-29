@@ -42,6 +42,12 @@ public class SubmissionService {
         ).run(caseDetails);
     }
 
+    /**
+     * Task method to initiate the request from client to Submit the LA Portal Application and generate PDF document.
+     * This PDF generated will then be viewed on the LA Portal
+     *
+     * @return - CaseDetails
+     */
     public CaseDetails<CaseData, State> laSubmitApplication(final CaseDetails<CaseData, State> caseDetails) {
 
         return CaseTaskRunner.caseTasks(
