@@ -9,7 +9,7 @@ async function setupScenario(I) {
     caseId = await laHelper.createCompleteCase();
     console.log('CCD Case number - '+ caseId);
   }
-  await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
+  //await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 Scenario('Verify amend case details event', async ({I, caseViewPage }) => {
   await setupScenario(I);
