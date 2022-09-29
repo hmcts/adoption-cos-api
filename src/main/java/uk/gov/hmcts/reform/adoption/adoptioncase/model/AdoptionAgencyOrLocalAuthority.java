@@ -26,20 +26,34 @@ public class AdoptionAgencyOrLocalAuthority {
         access = {DefaultAccess.class})
     private String adopAgencyOrLaContactName;
 
-    @CCD(label = "Address",
-        access = {DefaultAccess.class}
-    )
+    @CCD(label = "Address line 1",
+        access = {DefaultAccess.class})
     private String adopAgencyAddressLine1;
+
+    @CCD(label = "Address line 2",
+        access = {DefaultAccess.class})
+    private String adopAgencyAddressLine2;
+
+    @CCD(label = "Address line 3",
+        access = {DefaultAccess.class})
+    private String adopAgencyAddressLine3;
 
     @CCD(label = "Town or city",
         access = {DefaultAccess.class}
     )
     private String adopAgencyTown;
 
+    @CCD(label = "County, district, state or province",
+        access = {DefaultAccess.class})
+    private String adopAgencyAddressCounty;
+
     @CCD(label = "Post code",
         access = {DefaultAccess.class}
     )
     private String adopAgencyPostcode;
+
+    @CCD(label = "Country")
+    private String adopAgencyCountry;
 
     @CCD(label = "Phone number",
         access = {DefaultAccess.class}

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 
 @Data
 @AllArgsConstructor
@@ -26,15 +27,18 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 @Builder
 public class Children {
 
-    @CCD(label = "First names")
+    @CCD(label = "First names",
+        access = {DefaultAccess.class})
     private String firstName;
 
-    @CCD(label = "Last names")
+    @CCD(label = "Last names",
+        access = {DefaultAccess.class})
     private String lastName;
 
     @CCD(
         label = "Date of Birth",
-        access = {SystemUpdateAccess.class}
+        access = {SystemUpdateAccess.class,
+            DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
@@ -42,12 +46,14 @@ public class Children {
     @CCD(
         label = "Sex at birth",
         hint = "Child Gender",
-        typeOverride = FixedList,
-        typeParameterOverride = "Gender"
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "Gender",
+        access = {DefaultAccess.class}
     )
     private Gender sexAtBirth;
 
-    @CCD(label = "Nationality")
+    @CCD(label = "Nationality",
+        access = {DefaultAccess.class})
     private SortedSet<Nationality> nationality;
 
     @CCD(
@@ -58,10 +64,12 @@ public class Children {
     )
     private List<ListValue<OtherNationality>> additionalNationalities;
 
-    @CCD(label = "First name after adoption")
+    @CCD(label = "First name after adoption",
+        access = {DefaultAccess.class})
     private String firstNameAfterAdoption;
 
-    @CCD(label = "Last name after adoption")
+    @CCD(label = "Last name after adoption",
+        access = {DefaultAccess.class})
     private String lastNameAfterAdoption;
 
 
