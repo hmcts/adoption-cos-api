@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Solicitor;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -47,6 +48,15 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
             .mandatory(Applicant::getAddressPostCode,"applyingWith!=\"alone\"")
             .mandatory(Applicant::getEmailAddress,"applyingWith!=\"alone\"")
             .mandatory(Applicant::getPhoneNumber,"applyingWith!=\"alone\"")
+            .done()
+            .label("Applicants-solicitor-Heading","## Applicant's solicitor",null)
+            .mandatory(CaseData::getIsApplicantRepresentedBySolicitor)
+            .complex(CaseData::getSolicitor,"isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatory(Solicitor::getSolicitorFirm, "isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatory(Solicitor::getSolicitorRef, "isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatory(Solicitor::getSolicitorAddress,"isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatory(Solicitor::getEmail, "isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatory(Solicitor::getPhoneNumber, "isApplicantRepresentedBySolicitor=\"Yes\"")
             .done();
     }
 }
