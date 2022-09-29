@@ -20,7 +20,8 @@ public class AmendApplicantDetails implements CcdPageConfiguration {
             .mandatory(CaseData::getIsApplicantRepresentedBySolicitor)
             .complex(CaseData::getSolicitor,"isApplicantRepresentedBySolicitor=\"Yes\"")
             .mandatory(Solicitor::getSolicitorFirm, "isApplicantRepresentedBySolicitor=\"Yes\"")
-            .mandatory(Solicitor::getSolicitorRef, "isApplicantRepresentedBySolicitor=\"Yes\"")
+            .mandatoryWithoutDefaultValue(Solicitor::getSolicitorRef, "isApplicantRepresentedBySolicitor=\"Yes\"",
+                                          "Solicitor reference number")
             .mandatory(Solicitor::getSolicitorAddress,"isApplicantRepresentedBySolicitor=\"Yes\"")
             .mandatory(Solicitor::getEmail, "isApplicantRepresentedBySolicitor=\"Yes\"")
             .mandatory(Solicitor::getPhoneNumber, "isApplicantRepresentedBySolicitor=\"Yes\"")
