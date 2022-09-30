@@ -51,7 +51,7 @@ public class CaseData {
 
     @CCD(
         label = "Are the applicants represented by a solicitor?",
-        access = {DefaultAccess.class}
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
     )
     private YesOrNo isApplicantRepresentedBySolicitor;
 
