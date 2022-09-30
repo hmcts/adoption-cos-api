@@ -15,6 +15,7 @@ module.exports = {
     search: 'Apply',
     caseList: 'Case list',
     spinner: 'xuilib-loading-spinner',
+    caseIdLink: 'a[contains(@href,"/cases/case-details/${caseId}")]',
   },
 
   navigate() {
@@ -105,4 +106,9 @@ module.exports = {
     I.see('No cases found. Try using different filters.');
   },
 
+  clickOnCaseId(caseId){
+    console.log('clicking on case ID');
+    I.click(`//a[contains(@href,'/cases/case-details/${caseId}')]`)
+    I.waitForInvisible(this.fields.spinner, 30);
+  },
 };

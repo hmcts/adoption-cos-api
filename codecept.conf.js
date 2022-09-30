@@ -72,6 +72,9 @@ exports.config = {
     caseListPage: './src/e2e/pages/caseList.page.js',
     eventSummaryPage: './src/e2e/pages/eventSummary.page.js',
     landingPage: './src/e2e/pages/LandingPage.js',
+    caseDetailsPage: './src/e2e/pages/caseDetails.page.js',
+    caseDetailsSummaryPage: './src/e2e/pages/caseDetailsSummary.page.js',
+    caseDetailsOtherPartiesPage: './src/e2e/pages/caseDetailsOtherParties.page.js',
   },
   plugins: {
     retryFailedStep: {

@@ -5,7 +5,8 @@ const loginPage = require('../pages/login.page');
 const caseListPage = require('../pages/caseList.page');
 const eventSummaryPage = require('../pages/eventSummary.page');
 const openApplicationEventPage = require('../pages/events/openApplicationEvent.page');
-
+const caseDetailsPage = require('../pages/caseDetails.page');
+caseDetailsSummaryPage = require('../pages/caseDetailsSummary.page.js');
 
 const normalizeCaseId = caseId => caseId.toString().replace(/\D/g, '');
 
