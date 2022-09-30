@@ -214,3 +214,9 @@ ccd-case-document-am-api:
 
 LA_PORTAL_BASEURL: https://adoption-web-pr-${CHANGE_ID}.service.core-compute-preview.internal/la-portal/kba-case-ref
 
+redis:
+  enabled: true
+  master:
+    persistence:
+      enabled: false
+

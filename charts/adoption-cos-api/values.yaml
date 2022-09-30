@@ -52,3 +52,5 @@ java:
     DOC_ASSEMBLY_URL: http://dg-docassembly-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     LA_PORTAL_BASEURL: https://adoption-web.{{ .Values.global.environment }}.platform.hmcts.net/la-portal/kba-case-ref
+redis:
+  enabled: false
