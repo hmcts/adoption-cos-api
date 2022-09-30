@@ -90,7 +90,7 @@ public class Applicant {
     @CCD(label = "Building and street")
     private String address1;
 
-    @CCD(label = "Address2")
+    @CCD(label = "Address line 2")
     private String address2;
 
     @CCD(label = "Town or city")

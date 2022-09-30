@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -46,6 +47,13 @@ public class CaseData {
         typeParameterOverride = "ApplyingWith"
     )
     private ApplyingWith applyingWith;
+
+
+    @CCD(
+        label = "Are the applicants represented by a solicitor?",
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
+    )
+    private YesOrNo isApplicantRepresentedBySolicitor;
 
     @CCD(label = "Applying with someone else reason",
         typeOverride = TextArea,
@@ -504,6 +512,13 @@ public class CaseData {
         hint = "Add the name of the person who submitted the document."
     )
     private String name;
+
+    public YesOrNo getIsApplicantRepresentedBySolicitor() {
+        if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
+            return YesOrNo.NO;
+        }
+        return isApplicantRepresentedBySolicitor;
+    }
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {
