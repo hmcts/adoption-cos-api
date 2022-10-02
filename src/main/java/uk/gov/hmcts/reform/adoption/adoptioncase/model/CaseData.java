@@ -374,6 +374,125 @@ public class CaseData {
     )
     private CaseNote note;
 
+    // BULK SCAN phase 2 changes starts
+
+    @CCD(
+        label = "Freeing Order",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<FreeingOrder>> freeingOrders;
+
+    @CCD(
+        label = "Speak welsh in court",
+        access = {DefaultAccess.class}
+    )
+    private String welshSpokenInCourtRequired;
+
+    @CCD(
+        label = "Welsh Read/Write Preferences",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<PartyWelshLanguagePreference>> partyWelshLanguagePreferences;
+
+    @CCD(
+        label = "Unavailable dates to attend court",
+        access = {DefaultAccess.class}
+    )
+    private String courtUnavailableDates;
+
+    @CCD(
+        label = "Preferred Date to attend court",
+        access = {DefaultAccess.class}
+    )
+    private String courtPreferredDates;
+
+    @CCD(
+        label = "Spoken and Written Welsh",
+        access = {DefaultAccess.class}
+    )
+    private String courtInterpreterAssistanceRequired;
+
+
+    @CCD(
+        label = "Respondent Requires Interpreter",
+        access = {DefaultAccess.class}
+    )
+    private String respondentRequireInterpreter;
+
+    @CCD(
+        label = "Other Party Requires Interpreter",
+        access = {DefaultAccess.class}
+    )
+    private String otherPartyRequireInterpreter;
+
+    @CCD(
+        label = "Other Party name",
+        access = {DefaultAccess.class}
+    )
+    private String otherPartyName;
+
+    @CCD(
+        label = "Language for court interpreter assistance",
+        access = {DefaultAccess.class}
+    )
+    private String courtInterpreterAssistanceLanguage;
+
+    @CCD(
+        label = "Applicant or other party require assistance",
+        access = {DefaultAccess.class}
+    )
+    private String specialAssistanceFacilitiesRequired;
+
+    @CCD(
+        label = "what assistance required",
+        access = {DefaultAccess.class}
+    )
+    private String specialAssistanceFacilities;
+
+    @CCD(
+        label = "Child parent/guardian consent",
+        access = {DefaultAccess.class}
+    )
+    private String adoptionOrderConsent;
+
+    @CCD(
+        label = "Child parent/guardian consent advance",
+        access = {DefaultAccess.class}
+    )
+    private String adoptionOrderConsentAdvance;
+
+    @CCD(
+        label = "Adoption by adoption agency with Child parent/guardian consent ",
+        access = {DefaultAccess.class}
+    )
+    private String adoptionOrderConsentAgency;
+
+    @CCD(
+        label = "Child parent/guardian no consent ",
+        access = {DefaultAccess.class}
+    )
+    private String adoptionOrderNoConsent;
+
+    @CCD(
+        label = "Court consent when parent not found",
+        access = {DefaultAccess.class}
+    )
+    private String courtConsentParentNotFound;
+
+    @CCD(
+        label = "Court consent Parent lack capacity(Mental capcity)",
+        access = {DefaultAccess.class}
+    )
+    private String courtConsentParentLackCapacity;
+
+    @CCD(
+        label = "Court consent child welfare",
+        access = {DefaultAccess.class}
+    )
+    private String courtConsentChildWelfare;
+
+    // BULK SCAN phase 2 changes ends
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);

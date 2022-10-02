@@ -20,6 +20,7 @@ import java.util.SortedSet;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 
 @Data
 @AllArgsConstructor
@@ -110,4 +111,81 @@ public class Applicant {
 
     @CCD(label = "languagePreference")
     private LanguagePreference languagePreference;
+
+    // Bulk Scan phase2 changes starts
+
+    @CCD(
+        label = "Gender",
+        hint = "Applicant Gender",
+        typeOverride = FixedList,
+        typeParameterOverride = "Gender"
+    )
+    private Gender gender;
+
+    @CCD(
+        label = "Applicant Domicile Status",
+        access = {DefaultAccess.class}
+    )
+    private String domicileStatus;
+
+    @CCD(label = "relationToChild")
+    private String relationToChild;
+
+
+    @CCD(
+        label = "Applicant Marital Status",
+        access = {DefaultAccess.class}
+    )
+    private String maritalStatus;
+
+    @CCD(
+        label = "Applicant or Legal Representative Signature",
+        access = {DefaultAccess.class}
+    )
+    private String signStatementOfTruth;
+
+    @CCD(
+        label = "Applicant or Legal Representative Signature ",
+        access = {DefaultAccess.class}
+    )
+    private String legalRepSignature;
+
+    @CCD(
+        label = "Applicant Signing",
+        access = {DefaultAccess.class}
+    )
+    private String signing;
+
+    @CCD(
+        label = "Legal Representative Signing",
+        access = {DefaultAccess.class}
+    )
+    private String legalRepSigning;
+
+    @CCD(
+        label = "Applicant Statement of Truth Date",
+        access = {DefaultAccess.class}
+    )
+    private String statementOfTruthDate;
+
+    @CCD(
+        label = "Name of first applicant's legal representatives firm",
+        access = {DefaultAccess.class}
+    )
+    private String legalRepFirm;
+
+    @CCD(
+        label = "firm or company give position or office held",
+        access = {DefaultAccess.class}
+    )
+    private String legalRepPosition;
+
+    @CCD(
+        label = "Applicant Requires Interpreter",
+        access = {DefaultAccess.class}
+    )
+    private String requireInterpreter;
+
+
+    // BULK SCAN phase 2 changes ends
 }

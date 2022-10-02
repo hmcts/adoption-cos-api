@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 
@@ -67,4 +69,26 @@ public class Children {
 
     @CCD(label = "Sex at birth (other)")
     private String otherSexAtBirth;
+
+    // Bulk Scan phase2 changes starts
+
+    @CCD(
+        label = "Children Health Report Date",
+        access = {DefaultAccess.class}
+    )
+    private String childrenHealthReportDate;
+
+    @CCD(
+        label = "Children Adoption Payment Details",
+        access = {DefaultAccess.class}
+    )
+    private String childrenAdoptionPaymentDetails;
+
+    @CCD(
+        label = "Child Married",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo isMarried;
+
+    // Bulk Scan phase2 changes ends
 }
