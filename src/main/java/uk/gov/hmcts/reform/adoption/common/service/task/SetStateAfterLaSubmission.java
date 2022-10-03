@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrderType;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 import java.util.List;
