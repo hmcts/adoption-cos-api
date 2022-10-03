@@ -48,8 +48,6 @@ public class SetStateAfterLaSubmission implements CaseTask {
                     .placementOrderDate(item.getValue().getPlacementOrderDate())
                     .otherPlacementOrderType(item.getValue().getOtherPlacementOrderType())
                     .build());
-                // Setting the default value so that its value is shown in Summary Tab and Amend Case details screen
-                caseDetails.getData().setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
                 caseDetails.getData().setPlacementOrders(placementList.stream().filter(el -> !el.equals(item)).collect(
                     Collectors.toList()));
             });
