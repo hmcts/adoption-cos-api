@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrderType;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public class SetStateAfterLaSubmission implements CaseTask {
                     .placementOrderDate(item.getValue().getPlacementOrderDate())
                     .otherPlacementOrderType(item.getValue().getOtherPlacementOrderType())
                     .build());
+                caseDetails.getData().setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
                 caseDetails.getData().setPlacementOrders(placementList.stream().filter(el -> !el.equals(item)).collect(
                     Collectors.toList()));
             });

@@ -12,6 +12,8 @@ public final class CaseFieldsConstants {
 
     public static final String DATE_SUBMITTED = "dateSubmitted";
 
+    public static final String TYPE_OF_ADOPTION = "Post-placement";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }
