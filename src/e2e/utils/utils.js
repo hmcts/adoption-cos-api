@@ -93,7 +93,7 @@ module.exports = {
             }
         ],
        // "applyingWith": "alone",
-       "applyingWith": "withSpouseOrCivilPartner"
+       "applyingWith": "withSpouseOrCivilPartner",
         "childLocalAuthority": "LA",
         "childLocalAuthorityEmail": "la@email.gov.uk",
         "childSocialWorkerAddressLine1": "43 AB Road",
