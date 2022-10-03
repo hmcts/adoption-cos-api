@@ -22,13 +22,6 @@ public class AmendCaseDetails implements CcdPageConfiguration {
             .mandatory(Application::getDateSubmitted)
             .done()
             .mandatory(CaseData::getDateChildMovedIn)
-            //.label("amendCaseDetailsPlacementOrderDetailsLabel","Placement order details")
-            /*.complex(CaseData::getPlacementOrder)
-            .mandatory(PlacementOrder::getPlacementOrderCourt)
-            .done()
-            .mandatory(CaseData::getHiddenPlacementOrderDate)
-            .complex(CaseData::getPlacementOrder)
-            .mandatory(PlacementOrder::getPlacementOrderNumber)*/
             .done();
     }
 }
