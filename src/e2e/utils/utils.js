@@ -107,6 +107,7 @@ module.exports = {
         "childrenFirstNameAfterAdoption": "child",
         "childrenLastName": "child",
         "childrenLastNameAfterAdoption": "child",
+        "allocatedJudge": "Test judge allocation",
         "childrenNationality": [
             "British",
             "Irish",
