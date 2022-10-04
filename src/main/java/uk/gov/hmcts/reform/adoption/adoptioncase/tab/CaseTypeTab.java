@@ -66,7 +66,15 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant2AddressCountry", "applyingWith!=\"alone\"")
             .field("applicant2AddressPostCode","applyingWith!=\"alone\"")
             .field("applicant2EmailAddress","applyingWith!=\"alone\"")
-            .field("applicant2PhoneNumber","applyingWith!=\"alone\"");
+            .field("applicant2PhoneNumber","applyingWith!=\"alone\"")
+            .label("LabelSolicitor-Heading", "",
+                   "### Solicitor")
+            .field("isApplicantRepresentedBySolicitor")
+            .field("solicitorSolicitorFirm", "isApplicantRepresentedBySolicitor!=\"No\"")
+            .field("solicitorSolicitorRef","isApplicantRepresentedBySolicitor!=\"No\"")
+            .field("solicitorSolicitorAddress","isApplicantRepresentedBySolicitor!=\"No\"")
+            .field("solicitorEmail","isApplicantRepresentedBySolicitor!=\"No\"")
+            .field("solicitorPhoneNumber","isApplicantRepresentedBySolicitor!=\"No\"");
     }
 
     public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
