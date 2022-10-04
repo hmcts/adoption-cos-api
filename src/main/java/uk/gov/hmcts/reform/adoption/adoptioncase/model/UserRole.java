@@ -17,7 +17,6 @@ public enum UserRole implements HasRole {
     SOLICITOR("caseworker-adoption-solicitor", "R"),
     CITIZEN("citizen", "CRUD"),
     CREATOR("[CREATOR]", "CRU"),
-    //CASE_WORKER_SYSTEM_UPDATE("caseworker-adoption-systemupdate", "R"),
     SYSTEM_UPDATE("caseworker-adoption-systemupdate", "CRUD");//TODO REMOVE DELETE ACCESS
 
     @JsonValue
