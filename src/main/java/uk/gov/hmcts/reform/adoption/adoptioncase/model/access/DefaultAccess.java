@@ -20,12 +20,12 @@ public class DefaultAccess implements HasAccessControl {
     @Override
     public SetMultimap<HasRole, Permission> getGrants() {
         SetMultimap<HasRole, Permission> grants = HashMultimap.create();
-        grants.putAll(CASE_WORKER, Permissions.READ);
+        grants.putAll(CASE_WORKER, Permissions.READ_UPDATE);
         grants.putAll(COURT_ADMIN, Permissions.READ);
         grants.putAll(SOLICITOR, Permissions.READ);
         grants.putAll(SUPER_USER, Permissions.READ);
         grants.putAll(LEGAL_ADVISOR, Permissions.READ);
-        grants.putAll(DISTRICT_JUDGE, Permissions.READ);
+        grants.putAll(DISTRICT_JUDGE, Permissions.READ_UPDATE);
         grants.putAll(CREATOR, Permissions.CREATE_READ_UPDATE);
         grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE);
         grants.putAll(SYSTEM_UPDATE, Permissions.CREATE_READ_UPDATE);
