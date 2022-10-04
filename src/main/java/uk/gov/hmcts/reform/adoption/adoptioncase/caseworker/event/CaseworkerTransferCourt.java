@@ -1,4 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
@@ -44,7 +45,7 @@ public class CaseworkerTransferCourt implements CCDConfig<CaseData, State, UserR
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
-    private AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
+    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
                                                                         CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
         var caseData = caseDataStateCaseDetails.getData();
         caseData.setFamilyCourtName(caseData.getTransferCourt());
