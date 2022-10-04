@@ -12,7 +12,7 @@ public enum UserRole implements HasRole {
     CASE_WORKER("caseworker-adoption-caseworker", "RU"),
     COURT_ADMIN("caseworker-adoption-courtadmin", "R"),
     LEGAL_ADVISOR("caseworker-adoption-la", "R"),
-    DISTRICT_JUDGE("caseworker-adoption-judge", "R"),
+    DISTRICT_JUDGE("caseworker-adoption-judge", "RU"),
     SUPER_USER("caseworker-adoption-superuser", "CRUD"),
     SOLICITOR("caseworker-adoption-solicitor", "R"),
     CITIZEN("citizen", "CRUD"),
