@@ -428,13 +428,6 @@ public class CaseData {
     )
     private YesOrNo findFamilyCourt;
 
-
-//    @CCD(
-//        label = "Allocated judge",
-//        access = {DefaultAccess.class}
-//    )
-//    private AllocateJudge allocateJudge;
-
     @CCD(label = "Name of the judge",
         access = {DefaultAccess.class})
      private String allocatedJudge;

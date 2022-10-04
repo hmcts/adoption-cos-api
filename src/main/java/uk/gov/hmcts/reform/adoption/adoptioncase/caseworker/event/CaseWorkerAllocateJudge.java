@@ -29,15 +29,17 @@ public class CaseWorkerAllocateJudge implements CCDConfig<CaseData, State, UserR
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         log.info("Inside configure method for Event {}", CASEWORKER_ALLOCATE_JUDGE);
-        allocateJudge.addTo(addConfig(configBuilder));
+        allocateJudge.addTo(addEventConfig(configBuilder));
     }
 
 
-    /***
+    /**
+     * Helper method to make custom changes to the CCD Config in order to add the event to respective Page Configuration.
      *
-     * @param configBuilder
+     * @param configBuilder - Base CCD Config Builder updated to add Event for Page
+     * @return - PageBuilder updated to use on overridden method.
      */
-    private PageBuilder addConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+    private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
                             UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
         );
@@ -56,8 +58,7 @@ public class CaseWorkerAllocateJudge implements CCDConfig<CaseData, State, UserR
         beforeDetails) {
         var caseData = details.getData();
         caseData.setAllocatedJudge(caseData.getAllocatedJudge());
-    return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-        .data(details.getData())
-        .build();
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+        .data(caseData).build();
     }
 }
