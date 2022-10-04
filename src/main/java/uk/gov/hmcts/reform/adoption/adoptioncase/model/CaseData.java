@@ -51,7 +51,7 @@ public class CaseData {
 
     @CCD(
         label = "Are the applicants represented by a solicitor?",
-        access = {DefaultAccess.class, SystemUpdateAccess.class}
+        access = {DefaultAccess.class}
     )
     private YesOrNo isApplicantRepresentedBySolicitor;
 
@@ -195,7 +195,7 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
     private SocialWorker applicantSocialWorker = new SocialWorker();
 
-    @JsonUnwrapped
+    @JsonUnwrapped(prefix = "solicitor")
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
     private Solicitor solicitor = new Solicitor();
