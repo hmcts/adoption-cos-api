@@ -14,7 +14,7 @@ public class AddJudge implements CcdPageConfiguration {
             .pageLabel(ALLOCATE_JUDGE)
             .label("headingLabel","## Choose a judge for this case")
             .label("subheadingLabel",
-                   "Ideally the judge chosen would be the same judge involved in the placement order.")
+                   "Choose whether the placement judge is presiding or a new judge is being allocated.")
             .mandatory(CaseData::getAllocatedJudge, null,"Name of the judge")
             .done();
     }
