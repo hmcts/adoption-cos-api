@@ -10,7 +10,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
-// import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER_SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.COURT_ADMIN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
@@ -47,8 +46,6 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.grant(Draft, READ, CASE_WORKER);
         configBuilder.grant(Draft, READ, COURT_ADMIN);
         configBuilder.grant(Draft, READ, SUPER_USER);
-        // configBuilder.grant(Submitted, READ, CASE_WORKER_SYSTEM_UPDATE);
-        // configBuilder.grant(Draft, READ, CASE_WORKER_SYSTEM_UPDATE);
         configBuilder.grant(AwaitingPayment, READ, SYSTEM_UPDATE);
         configBuilder.grant(Draft, READ, LEGAL_ADVISOR);
         configBuilder.grant(Draft, READ, DISTRICT_JUDGE);

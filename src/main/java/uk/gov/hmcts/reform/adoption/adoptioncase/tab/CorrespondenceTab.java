@@ -9,12 +9,13 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 
 @Component
 public class CorrespondenceTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationCorrespondence", "Correspondence")
-            .forRoles(CASE_WORKER);
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE);
         addCorrespondence(tabBuilder);
     }
 
