@@ -8,7 +8,6 @@ import uk.gov.hmcts.ccd.sdk.api.Permission;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.ADOPTION_GENERIC;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
-// import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER_SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.LEGAL_ADVISOR;
@@ -29,7 +28,6 @@ public class CaseworkerAccess implements HasAccessControl {
         grants.putAll(DISTRICT_JUDGE, Permissions.READ);
         grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE);
         grants.putAll(SYSTEM_UPDATE, Permissions.READ);
-        // grants.putAll(CASE_WORKER_SYSTEM_UPDATE, Permissions.READ);
 
         return grants;
     }
