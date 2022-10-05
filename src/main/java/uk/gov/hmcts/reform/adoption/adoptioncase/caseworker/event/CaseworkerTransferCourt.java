@@ -42,6 +42,7 @@ public class CaseworkerTransferCourt implements CCDConfig<CaseData, State, UserR
                                    .description(TRANSFER_COURT_HEADING)
                                    .showSummary()
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
