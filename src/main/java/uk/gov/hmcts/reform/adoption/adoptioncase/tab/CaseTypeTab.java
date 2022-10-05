@@ -3,11 +3,13 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.tab;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
+import uk.gov.hmcts.ccd.sdk.api.Tab;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 
 @Component
@@ -38,6 +40,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .label("LabelApplicant1WithSpouseOrPartner-Heading",
                    "applyingWith!=\"alone\"",
                    "### First applicant")
+            .field("applyingWith", "applyingWith=\"applyingWith\"")
             .field("applicant1FirstName")
             .field("applicant1LastName")
             .field("applicant1AdditionalNames")
@@ -64,50 +67,30 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant2AddressCountry", "applyingWith!=\"alone\"")
             .field("applicant2AddressPostCode","applyingWith!=\"alone\"")
             .field("applicant2EmailAddress","applyingWith!=\"alone\"")
-            .field("applicant2PhoneNumber","applyingWith!=\"alone\"");
+            .field("applicant2PhoneNumber","applyingWith!=\"alone\"")
+            .label("LabelSolicitor-Heading", "",
+                   "### Solicitor")
+            .field("isApplicantRepresentedBySolicitor")
+            .field("solicitorSolicitorFirm", "isApplicantRepresentedBySolicitor!=\"No\"")
+            .field("solicitorSolicitorRef","isApplicantRepresentedBySolicitor!=\"No\"")
+            .field("solicitorSolicitorAddress","isApplicantRepresentedBySolicitor!=\"No\"")
+            .field("solicitorEmail","isApplicantRepresentedBySolicitor!=\"No\"")
+            .field("solicitorPhoneNumber","isApplicantRepresentedBySolicitor!=\"No\"");
     }
 
     public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("otherParties", "Other Parties")
-            .forRoles(CASE_WORKER)
-            .displayOrder(2)
-            .label("labelSummary-otherParties", null, "### Other parties")
-            .label("labelSummary-childDetails", null, "#### Child details")
-            .field("childrenFirstName")
-            .field("childrenLastName")
-            .field("childrenDateOfBirth")
-            .field("childrenSexAtBirth")
-            .field("childrenOtherSexAtBirth")
-            .field("childrenNationality")
-            .field("childrenAdditionalNationalities")
-            .field("childrenFirstNameAfterAdoption")
-            .field("childrenLastNameAfterAdoption")
-            .label("labelSummary-adoptionAgency", null, "### Agencies/Local Authorities Details")
-            .label("labelSummary-adoptionAgencySub", "hasAnotherAdopAgencyOrLA = \"Yes\"", "#### Adoption Agency")
-            .field("hasAnotherAdopAgencyOrLA", "applyingWith=\"NEVER_SHOW\"")
-            .field("adopAgencyOrLaName")
-            .field("adopAgencyOrLaContactName")
-            .field("adopAgencyAddressLine1")
-            .field("adopAgencyTown")
-            .field("adopAgencyPostcode")
-            .field("adopAgencyOrLaPhoneNumber")
-            .field("adopAgencyOrLaContactEmail")
-            .label("labelSummary-childLA", null, "### Child’s Local Authority")
-            .field("childLocalAuthority")
-            .field("childSocialWorkerName")
-            .field("childSocialWorkerAddressLine1")
-            .field("childSocialWorkerTown")
-            .field("childSocialWorkerPostcode")
-            .field("childSocialWorkerPhoneNumber")
-            .field("childLocalAuthorityEmail")
-            .label("labelSummary-applicantLA", null, "### Applicant’s Local Authority")
-            .field("applicantLocalAuthority")
-            .field("applicantSocialWorkerName")
-            .field("applicantSocialWorkerAddressLine1")
-            .field("applicantSocialWorkerTown")
-            .field("applicantSocialWorkerPostcode")
-            .field("applicantSocialWorkerPhoneNumber")
-            .field("applicantLocalAuthorityEmail")
+
+        final Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties = configBuilder.tab("otherParties", "Other Parties")
+            .displayOrder(2).forRoles(CASE_WORKER, DISTRICT_JUDGE);
+
+        buildTabWithChildDetails(tabBuilderForOtherParties);
+        buildTabWithLocalGuardianAndSolicitorDetails(tabBuilderForOtherParties);
+        buildTabWithAgencyAndLocalAuthorityDetails(tabBuilderForOtherParties);
+        buildTabWithRespondentDetails(tabBuilderForOtherParties);
+    }
+
+    private void buildTabWithRespondentDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
+        tabBuilderForOtherParties
             .label("labelSummary-respondentDetails",
                    null,
                    "### Respondent Details")
@@ -117,34 +100,155 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthMotherFirstName")
             .field("birthMotherLastName")
             .field("birthMotherDeceased")
-            .field("birthMotherAddress1", "birthMotherDeceased=\"No\"")
-            .field("birthMotherAddress2", "birthMotherDeceased=\"No\"")
-            .field("birthMotherAddress3", "birthMotherDeceased=\"No\"")
-            .field("birthMotherAddressTown", "birthMotherDeceased=\"No\"")
-            .field("birthMotherAddressCountry", "birthMotherDeceased=\"No\"")
-            .field("birthMotherAddressPostCode", "birthMotherDeceased=\"No\"")
-            .field("birthMotherLastAddressDate", "birthMotherDeceased=\"No\"")
+            .field("birthMotherAddress1")
+            .field("birthMotherAddress2")
+            .field("birthMotherAddress3")
+            .field("birthMotherAddressTown")
+            .field("birthMotherAddressCounty")
+            .field("birthMotherAddressPostCode")
+            .field("birthMotherAddressCountry")
+            .field("birthMotherLastAddressDate")
+            .field("birthMotherToBeServed")
+            .label("labelsummary-mother-solicitor",null,"### Solicitor")
+            .field("isBirthMotherRepresentedBySolicitor")
+            .field("motherSolicitorSolicitorFirm")
+            .field("motherSolicitorSolicitorRef")
+            .field("motherSolicitorSolicitorAddress")
+            .field("motherSolicitorPhoneNumber")
+            .field("motherSolicitorEmail")
             .label("labelSummary-birthFather",
-                   "birthFatherNameOnCertificate=\"Yes\" OR birthFatherIdentityKnown = \"Yes\"",
+                   null,
                    "#### Birth Father")
             .field("birthFatherNameOnCertificate", "applyingWith=\"NEVER_SHOW\"")
             .field("birthFatherIdentityKnown", "applyingWith=\"NEVER_SHOW\"")
             .field("birthFatherFirstName")
             .field("birthFatherLastName")
             .field("birthFatherDeceased")
-            .field("birthFatherAddress1", "birthFatherDeceased=\"No\"")
-            .field("birthFatherAddress2", "birthFatherDeceased=\"No\"")
-            .field("birthFatherAddress3", "birthFatherDeceased=\"No\"")
-            .field("birthFatherAddressTown", "birthFatherDeceased=\"No\"")
-            .field("birthMotherAddressCountry", "birthFatherDeceased=\"No\"")
-            .field("birthFatherAddressPostCode", "birthFatherDeceased=\"No\"")
-            .field("birthFatherLastAddressDate", "birthFatherDeceased=\"No\"");
+            .field("birthFatherAddress1")
+            .field("birthFatherAddress2")
+            .field("birthFatherAddress3")
+            .field("birthFatherAddressTown")
+            .field("birthFatherAddressCounty")
+            .field("birthFatherAddressPostCode")
+            .field("birthFatherAddressCountry")
+            .field("birthFatherLastAddressDate")
+            .field("birthFatherToBeServed")
+            .label("labelsummary-father-solicitor",null,"### Solicitor")
+            .field("isBirthFatherRepresentedBySolicitor")
+            .field("fatherSolicitorSolicitorFirm")
+            .field("fatherSolicitorSolicitorRef")
+            .field("fatherSolicitorSolicitorAddress")
+            .field("fatherSolicitorPhoneNumber")
+            .field("fatherSolicitorEmail")
+            .label("labelSummary-otherParent", null,
+                   "#### Other person with parental responsibility")
+            .field("isThereAnyOtherPersonWithParentalResponsibility")
+            .field("otherParentFirstName")
+            .field("otherParentLastName")
+            .field("otherParentAddress1")
+            .field("otherParentAddress2")
+            .field("otherParentAddress3")
+            .field("otherParentAddressTown")
+            .field("otherParentAddressCounty")
+            .field("otherParentAddressPostCode")
+            .field("otherParentAddressCountry")
+            .field("otherParentLastAddressDate")
+            .field("otherParentRelationShipWithChild")
+            .field("otherParentToBeServed")
+            .label("labelsummary-otherparent-solicitor",null,"### Solicitor")
+            .field("isOtherParentRepresentedBySolicitor")
+            .field("otherParentSolicitorSolicitorFirm")
+            .field("otherParentSolicitorSolicitorRef")
+            .field("otherParentSolicitorSolicitorAddress");
+    }
+
+    private void buildTabWithAgencyAndLocalAuthorityDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
+
+        tabBuilderForOtherParties
+            .label("labelSummary-adoptionAgency", null, "### Agencies/Local Authorities Details")
+            .label("labelSummary-adoptionAgencyTitle", null, "#### Adoption Agency")
+            .field("adopAgencyOrLaName")
+            .field("adopAgencyOrLaContactName")
+            .field("adopAgencyAddressLine1")
+            .field("adopAgencyAddressLine2")
+            .field("adopAgencyAddressLine3")
+            .field("adopAgencyTown")
+            .field("adopAgencyAddressCounty")
+            .field("adopAgencyPostcode")
+            .field("adopAgencyCountry")
+            .field("adopAgencyOrLaPhoneNumber")
+            .field("adopAgencyOrLaContactEmail")
+            .label("labelSummary-otherAdoptionAgency", null, "#### Other adoption agency")
+            .field("hasAnotherAdopAgencyOrLAinXui")
+            .field("otheradopAgencyOtherAdopAgencyOrLaName")
+            .field("otheradopAgencyOtherAdopAgencyOrLaContactName")
+            .field("otheradopAgencyOtherAdopAgencyAddress")
+            .field("otheradopAgencyOtherAdopAgencyOrLaPhoneNumber")
+            .field("otheradopAgencyOtherAdopAgencyOrLaContactEmail")
+            .label("labelSummary-childLA", null, "### Child’s Local Authority")
+            .field("childSocialWorkerName")
+            .field("childLocalAuthority")
+            .field("childSocialWorkerAddressLine1")
+            .field("childSocialWorkerAddressLine2")
+            .field("childSocialWorkerAddressLine3")
+            .field("childSocialWorkerTown")
+            .field("childSocialWorkerAddressCounty")
+            .field("childSocialWorkerPostcode")
+            .field("childSocialWorkerCountry")
+            .field("childSocialWorkerPhoneNumber")
+            .field("childLocalAuthorityEmail")
+            .label("labelSummary-applicantLA", null, "### Applicant’s Local Authority")
+            .field("applicantSocialWorkerName")
+            .field("applicantLocalAuthority")
+            .field("applicantSocialWorkerAddressLine1")
+            .field("applicantSocialWorkerAddressLine2")
+            .field("applicantSocialWorkerAddressLine3")
+            .field("applicantSocialWorkerTown")
+            .field("applicantSocialWorkerAddressCounty")
+            .field("applicantSocialWorkerPostcode")
+            .field("applicantSocialWorkerCountry")
+            .field("applicantSocialWorkerPhoneNumber")
+            .field("applicantLocalAuthorityEmail");
+    }
+
+    private void buildTabWithLocalGuardianAndSolicitorDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
+
+        tabBuilderForOtherParties
+        .label("labelsummary-legal-guridan",null,"### Legal guardian (CAFCASS)")
+            .field("isChildRepresentedByGuardian")
+            .field("localGuardianName")
+            .field("localGuardianGuardianAddress")
+            .field("localGuardianPhoneNumber")
+            .field("localGuardianEmail")
+            .label("labelsummary-child-solicitor",null,"### Solicitor")
+            .field("isChildRepresentedBySolicitor")
+            .field("childSolicitorSolicitorFirm")
+            .field("childSolicitorSolicitorRef")
+            .field("childSolicitorSolicitorAddress")
+            .field("childSolicitorPhoneNumber")
+            .field("childSolicitorEmail");
+    }
+
+    private Tab.TabBuilder<CaseData, UserRole> buildTabWithChildDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
+        return tabBuilderForOtherParties
+            .label("labelSummary-otherParties", null, "[Amend other parties details](/cases/case-details/${[CASE_REFERENCE]}"
+                + "/trigger/caseworker-amend-other-parties-details/caseworker-amend-other-parties-detailsamendOtherParties)")
+            .label("labelSummary-childDetails", null, "#### Child details")
+            .field("childrenFirstName")
+            .field("childrenLastName")
+            .field("childrenDateOfBirth")
+            .field("childrenSexAtBirth")
+            .field("childrenOtherSexAtBirth")
+            .field("childrenNationality")
+            .field("childrenAdditionalNationalities")
+            .field("childrenFirstNameAfterAdoption")
+            .field("childrenLastNameAfterAdoption");
     }
 
     public void buildSummaryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("summary", "Summary")
             .displayOrder(0)
-            .forRoles(CASE_WORKER)
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-CaseStatus", null, "### Case status")
             .field("status")
             .field("messages")
@@ -161,7 +265,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("documents", "Documents")
-            .forRoles(CASE_WORKER)
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .displayOrder(3)
             .label("Documents-Heading", null, "# Documents")
             .label("Upload documents",

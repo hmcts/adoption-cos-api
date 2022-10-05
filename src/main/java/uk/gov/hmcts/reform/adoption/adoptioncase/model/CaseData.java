@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -46,6 +47,13 @@ public class CaseData {
         typeParameterOverride = "ApplyingWith"
     )
     private ApplyingWith applyingWith;
+
+
+    @CCD(
+        label = "Are the applicants represented by a solicitor?",
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo isApplicantRepresentedBySolicitor;
 
     @CCD(label = "Applying with someone else reason",
         typeOverride = TextArea,
@@ -75,20 +83,81 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class})
     private Children children = new Children();
 
+    @CCD(
+        label = "is Child Represented By Guardian",
+        access = {SystemUpdateAccess.class}
+    )
+    private YesOrNo isChildRepresentedByGuardian;
+
+    @JsonUnwrapped(prefix = "localGuardian")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class})
+    private Guardian localGuardian = new Guardian();
+
+    @CCD(
+        label = "Is the child represented by a solicitor?",
+        access = {SystemUpdateAccess.class}
+    )
+    private YesOrNo isChildRepresentedBySolicitor;
+
+    @JsonUnwrapped(prefix = "childSolicitor")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Solicitor childSolicitor = new Solicitor();
+
+    @CCD(
+        label = "Is the birth mother represented by a solicitor?",
+        access = {SystemUpdateAccess.class}
+    )
+    private YesOrNo isBirthMotherRepresentedBySolicitor;
+
     @JsonUnwrapped(prefix = "birthMother")
     @Builder.Default
     @CCD(access = {SystemUpdateAccess.class})
     private Parent birthMother = new Parent();
+
+    @JsonUnwrapped(prefix = "motherSolicitor")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Solicitor birthMotherSolicitor = new Solicitor();
 
     @JsonUnwrapped(prefix = "birthFather")
     @Builder.Default
     @CCD(access = {SystemUpdateAccess.class})
     private Parent birthFather = new Parent();
 
+    @CCD(
+        label = "Is the birth father represented by a solicitor?",
+        access = {SystemUpdateAccess.class}
+    )
+    private YesOrNo isBirthFatherRepresentedBySolicitor;
+
+    @JsonUnwrapped(prefix = "fatherSolicitor")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private Solicitor birthFatherSolicitor = new Solicitor();
+
+    @CCD(
+        label = "Is there another person who has parental responsibility for the child?",
+        access = {SystemUpdateAccess.class}
+    )
+    private YesOrNo isThereAnyOtherPersonWithParentalResponsibility;
+
     @JsonUnwrapped(prefix = "otherParent")
     @Builder.Default
     @CCD(access = {SystemUpdateAccess.class})
     private Parent otherParent = new Parent();
+
+    @CCD(
+        label = "Is the other person with parental responsibility represented by a solicitor?",
+        access = {SystemUpdateAccess.class}
+    )
+    private YesOrNo isOtherParentRepresentedBySolicitor;
+
+    @JsonUnwrapped(prefix = "otherParentSolicitor")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    private Solicitor otherParentSolicitor = new Solicitor();
 
     @CCD(
         label = "Linked cases",
@@ -118,27 +187,27 @@ public class CaseData {
 
     @JsonUnwrapped(prefix = "child")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
     private SocialWorker childSocialWorker = new SocialWorker();
 
     @JsonUnwrapped(prefix = "applicant")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
     private SocialWorker applicantSocialWorker = new SocialWorker();
 
-    @JsonUnwrapped
+    @JsonUnwrapped(prefix = "solicitor")
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
     private Solicitor solicitor = new Solicitor();
 
     @JsonUnwrapped
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
     private LocalAuthority localAuthority = new LocalAuthority();
 
     @JsonUnwrapped
     @Builder.Default
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
     private AdoptionAgencyOrLocalAuthority adopAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
 
     @CCD(
@@ -151,9 +220,20 @@ public class CaseData {
 
     @CCD(
         label = "Has another Adoption Agency Or LA",
-        access = {DefaultAccess.class}
+        access = {DefaultAccess.class,SystemUpdateAccess.class}
     )
     private YesOrNo hasAnotherAdopAgencyOrLA;
+
+    @CCD(
+        label = "Has another Adoption Agency Or LA",
+        access = {DefaultAccess.class,SystemUpdateAccess.class}
+    )
+    private YesOrNo hasAnotherAdopAgencyOrLAinXui;
+
+    @JsonUnwrapped(prefix = "otheradopAgency")
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    private OtherAdoptionAgencyOrLocalAuthority otherAdopAgencyOrLA = new OtherAdoptionAgencyOrLocalAuthority();
 
     @CCD(label = "Selected Adoption Agency ID",
         access = {DefaultAccess.class}
@@ -432,6 +512,13 @@ public class CaseData {
         hint = "Add the name of the person who submitted the document."
     )
     private String name;
+
+    public YesOrNo getIsApplicantRepresentedBySolicitor() {
+        if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
+            return YesOrNo.NO;
+        }
+        return isApplicantRepresentedBySolicitor;
+    }
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {

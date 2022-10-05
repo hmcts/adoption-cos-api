@@ -92,7 +92,7 @@ module.exports = {
                 }
             }
         ],
-        "applyingWith": "alone",
+        "applyingWith": "withSpouseOrCivilPartner",
         "childLocalAuthority": "LA",
         "childLocalAuthorityEmail": "la@email.gov.uk",
         "childSocialWorkerAddressLine1": "43 AB Road",
@@ -130,11 +130,6 @@ module.exports = {
         "localAuthorityPhoneNumber": "01234567890",
         "pcqId": "9c04ea3a-c614-4eac-8361-ac75fb59f9dc",
         "placementOrderCourt": "xyz",
-        "solicitorEmail": null,
-        "solicitorFirm": null,
-        "solicitorHelpingWithApplication": null,
-        "solicitorName": null,
-        "solicitorPhoneNumber": null
     },
   caseDataLa: {
         "birthFatherAddress1": "BUCKINGHAM PALACE",

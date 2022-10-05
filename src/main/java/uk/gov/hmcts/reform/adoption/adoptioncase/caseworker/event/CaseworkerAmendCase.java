@@ -25,6 +25,7 @@ public class CaseworkerAmendCase implements CCDConfig<CaseData, State, UserRole>
 
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        log.info("Inside configure method for Event {}", CASEWORKER_AMEND_CASE);
         var pageBuilder = addEventConfig(configBuilder);
         amendCaseDetails.addTo(pageBuilder);
     }
@@ -42,6 +43,7 @@ public class CaseworkerAmendCase implements CCDConfig<CaseData, State, UserRole>
                                    .name(AMEND_CASE_DETAILS)
                                    .description(AMEND_CASE_DETAILS)
                                    .showSummary()
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
     }
 }

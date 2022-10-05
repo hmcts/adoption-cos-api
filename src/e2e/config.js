@@ -20,6 +20,7 @@ module.exports = {
   // actions
   administrationActions: {
     amendCaseDetails: 'Amend case details',
+    amendApplicantDetails: 'Amend applicant details',
   },
   // files
   testFile: './src/test/e2e/fixtures/testFiles/mockFile.txt',
