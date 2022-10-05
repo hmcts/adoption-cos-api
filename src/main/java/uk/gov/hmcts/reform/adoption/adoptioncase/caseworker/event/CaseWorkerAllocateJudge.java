@@ -50,6 +50,7 @@ public class CaseWorkerAllocateJudge implements CCDConfig<CaseData, State, UserR
                                    .description(ALLOCATE_JUDGE)
                                    .showSummary()
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
