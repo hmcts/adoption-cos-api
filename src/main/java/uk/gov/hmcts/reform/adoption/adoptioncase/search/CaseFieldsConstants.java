@@ -12,6 +12,10 @@ public final class CaseFieldsConstants {
 
     public static final String DATE_SUBMITTED = "dateSubmitted";
 
+    public static final String STRING_COLON = ":";
+
+    public static final String BLANK_SPACE = " ";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }
