@@ -32,8 +32,7 @@ public class CaseworkerRequestAnnexA implements CCDConfig<CaseData, State, UserR
                                    .description("Request Annex-A")
                                    .showSummary()
                                    .showEventNotes()
-                                   .grant(
-                                       Permissions.CREATE_READ_UPDATE,
-                                       UserRole.CASE_WORKER));
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
     }
 }
