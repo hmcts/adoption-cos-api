@@ -196,7 +196,7 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
     private SocialWorker applicantSocialWorker = new SocialWorker();
 
-    @JsonUnwrapped
+    @JsonUnwrapped(prefix = "solicitor")
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
     private Solicitor solicitor = new Solicitor();
