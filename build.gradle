@@ -299,7 +299,7 @@ repositories {
 
 def versions = [
   awaitility        : '1.7.0',
-  jackson           : '2.13.4',
+  jackson           : '2.13.2',
   junit             : '5.8.1',
   junitPlatform     : '1.8.2',
   lombok            : '1.18.20',
@@ -340,7 +340,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name:'ccd-case-document-am-client', version: versions.ccdCaseDocumentAmClient
   implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
   implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.8.6'
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.4'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2'
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
