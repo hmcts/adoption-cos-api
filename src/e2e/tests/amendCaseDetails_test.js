@@ -13,7 +13,7 @@ async function setupScenario(I) {
 }
 Scenario('Verify amend case details event', async ({I, caseViewPage }) => {
   await setupScenario(I);
-  // await caseViewPage.goToNewActions(config.administrationActions.amendCaseDetails);
-  // await I.click('Save and continue');
-  // await I.seeEventSubmissionConfirmation(caseId,config.administrationActions.amendCaseDetails);
+  await caseViewPage.goToNewActions(config.administrationActions.amendCaseDetails);
+  await I.click('Save and continue');
+  await I.seeEventSubmissionConfirmation(caseId,config.administrationActions.amendCaseDetails);
 });
