@@ -22,6 +22,7 @@ const { I } = inject();
 module.exports = {
   async signIn(user) {
     console.log('base signIn');
+    if (!(this.isPuppeteer() &&  (currentUser === user))) {
       console.log(`Logging in as ${user.email}`);
       output.debug(`Logging in as ${user.email}`);
       currentUser = {}; // reset in case the login fails
@@ -49,6 +50,10 @@ module.exports = {
       I.grabCurrentUrl();
       output.debug(`Logged in as ${user.email}`);
       currentUser = user;
+    } else {
+      console.log(`Already logged in as ${user.email}`);
+      output.debug(`Already logged in as ${user.email}`);
+    }
     I.grabCurrentUrl();
   },
 
@@ -123,8 +128,7 @@ module.exports = {
 
   seeEventSubmissionConfirmation(caseId,event) {
     const hyphenatedCaseId = caseId.replace(/(.{4})/g,"$1-").substring(0,19);
-    this.waitForText(`updated with event: ${event}`,30);
-    this.wait(5);
+    this.waitForText(`updated with event: ${event}`);
     this.see(`Case #${hyphenatedCaseId} has been updated with event: ${event}`);
   },
 
