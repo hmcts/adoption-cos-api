@@ -128,7 +128,8 @@ module.exports = {
 
   seeEventSubmissionConfirmation(caseId,event) {
     const hyphenatedCaseId = caseId.replace(/(.{4})/g,"$1-").substring(0,19);
-    this.waitForText(`updated with event: ${event}`);
+    this.waitForText(`updated with event: ${event}`,30);
+    this.wait(5);
     this.see(`Case #${hyphenatedCaseId} has been updated with event: ${event}`);
   },
 
