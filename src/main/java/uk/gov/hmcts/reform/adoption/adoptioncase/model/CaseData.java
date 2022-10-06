@@ -89,6 +89,7 @@ public class CaseData {
     )
     private YesOrNo isChildRepresentedByGuardian;
 
+
     @JsonUnwrapped(prefix = "localGuardian")
     @Builder.Default
     @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class})
@@ -333,6 +334,13 @@ public class CaseData {
     @Builder.Default
     private Application application = new Application();
 
+    @Builder.Default
+    @CCD(
+        label = "Payment",
+        access = {DefaultAccess.class}
+    )
+    private Payment successfulPayment = new Payment();
+
     @CCD(
         label = "PCQ ID",
         access = {DefaultAccess.class}
@@ -512,6 +520,7 @@ public class CaseData {
         hint = "Add the name of the person who submitted the document."
     )
     private String name;
+
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
