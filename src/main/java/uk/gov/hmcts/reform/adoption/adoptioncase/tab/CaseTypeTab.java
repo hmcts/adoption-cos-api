@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 
 @Component
@@ -80,7 +81,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
         final Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties = configBuilder.tab("otherParties", "Other Parties")
-            .displayOrder(2).forRoles(CASE_WORKER);
+            .displayOrder(2).forRoles(CASE_WORKER, DISTRICT_JUDGE);
 
         buildTabWithChildDetails(tabBuilderForOtherParties);
         buildTabWithLocalGuardianAndSolicitorDetails(tabBuilderForOtherParties);
@@ -247,7 +248,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     public void buildSummaryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("summary", "Summary")
             .displayOrder(0)
-            .forRoles(CASE_WORKER)
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-CaseStatus", null, "### Case status")
             .field("status")
             .field("messages")
@@ -264,7 +265,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("documents", "Documents")
-            .forRoles(CASE_WORKER)
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .displayOrder(3)
             .label("Documents-Heading", null, "# Documents")
             .label("Upload documents",
