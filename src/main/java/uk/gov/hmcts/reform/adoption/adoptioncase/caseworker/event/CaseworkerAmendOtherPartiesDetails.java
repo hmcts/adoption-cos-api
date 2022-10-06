@@ -44,6 +44,7 @@ public class CaseworkerAmendOtherPartiesDetails implements CCDConfig<CaseData, S
                                    .description(AMEND_OTHER_PARTIES_DETAILS)
                                    .showSummary()
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
