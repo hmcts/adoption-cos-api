@@ -4,7 +4,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseWorkerAllocateJudge.ALLOCATE_JUDGE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.event.CaseWorkerAllocateJudge.ALLOCATE_JUDGE;
+
 
 public class AddJudge implements CcdPageConfiguration {
 
