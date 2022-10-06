@@ -22,6 +22,7 @@ module.exports = {
     amendCaseDetails: 'Amend case details',
     amendApplicantDetails: 'Amend applicant details',
     transferCourt: 'Transfer Court',
+    addACaseNote: 'Add a case note',
 
   },
   // files

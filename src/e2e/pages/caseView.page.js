@@ -27,4 +27,9 @@ module.exports = {
     }, 'ccd-case-event-trigger', false);
   },
 
+  async goToTab(actionSelector){
+    await I.wait(3);
+    await I.retry(3).click(actionSelector);
+  }
+
 };

@@ -106,7 +106,11 @@ module.exports = {
     await I.retryUntilExists(() => this.searchForCasesWithId(caseId), this.locateCase(caseId), false);
     I.seeElement(`#select-${caseId}:not(:disabled)`);
   },
-
+  clickOnCaseId(caseId){
+    console.log('clicking on case ID');
+    I.click(`//a[contains(@href,'/cases/case-details/${caseId}')]`)
+    I.waitForInvisible(this.fields.spinner, 30);
+  },
   verifyCaseIsNotAccessible(caseId) {
     I.navigateToCaseList();
     I.grabCurrentUrl();

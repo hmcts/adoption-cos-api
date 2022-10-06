@@ -1,5 +1,9 @@
 const testConfig = require('../config.js');
 
+const fields = {
+  eventList: 'select[id="next-step"]',
+  submit: 'button[type="submit"]'
+};
 
 module.exports = class BrowserHelpers extends Helper {
 
@@ -17,6 +21,13 @@ module.exports = class BrowserHelpers extends Helper {
       return (await helper.options.browser);
     }
     return (await helper.config.browser);
+  }
+
+  async triggerEvent(eventName) {
+    const { Puppeteer } = this.helpers;
+    await Puppeteer.waitForElement(fields.eventList);
+    await Puppeteer.selectOption(fields.eventList, eventName);
+    await Puppeteer.click(fields.submit);
   }
 
   clickBrowserBack() {
