@@ -73,7 +73,7 @@ exports.config = {
     eventSummaryPage: './src/e2e/pages/eventSummary.page.js',
     caseViewPage: './src/e2e/pages/caseView.page.js',
     amendApplicationDetailsPage: './src/e2e/pages/amendApplicationDetails.page.js',
-
+    allocateJudgePage: './src/e2e/pages/allocateJudge.page.js',
   },
   plugins: {
     retryFailedStep: {
