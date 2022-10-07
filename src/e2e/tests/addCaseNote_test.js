@@ -7,22 +7,23 @@ const caseViewPage = require('../pages/caseView.page');
 const addACaseNotePage = require('../pages/addACaseNote.page');
 
 // {I, loginPage,caseListPage,caseViewPage,addACaseNotePage }
-
+let caseId;
 Feature('Add A Case Note').retry(1);
 
-Scenario('Verify Add A Case Note Event', async () => {
-  console.log('Add A Case Note Test *************');
-  // const caseID = await createCompleteCase();
-  const caseID = '1665072458172031';
+async function setupScenario(I) {
+  if (!caseId) {
+    caseId = await laHelper.createCompleteCase();
+    console.log('CCD Case number - '+ caseId);
+  }
+  await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
+}
 
-  console.log('CCD Case number - '+ caseID);
-  await loginPage.loginToExUI(config.caseWorkerUserOne);
-  await caseListPage.searchForCasesWithHypernisedId(caseID);
-  await caseListPage.seeCaseInSearchResult(caseID);
-  await caseListPage.clickOnCaseId(caseID);
+Scenario('Verify Add A Case Note Event', async ({ I }) => {
+  console.log('Add A Case Note Test *************');
+  await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.addACaseNote);
   await addACaseNotePage.addACaseNote();
-  await caseViewPage.verifySuccessBanner(caseID, config.administrationActions.addACaseNote);
+  await caseViewPage.verifySuccessBanner(caseId, config.administrationActions.addACaseNote);
   await caseViewPage.navigateToTab(config.tabs.notesTab);
   const tableTitleNoteRowNamesArray = [addACaseNotePage.fields.tableTitleName,addACaseNotePage.fields.tableCaseNoteRowName];
   const tableTitleSubjectRowNamesArray = [addACaseNotePage.fields.tableTitleName,addACaseNotePage.fields.tableCaseNoteSubjectName];
