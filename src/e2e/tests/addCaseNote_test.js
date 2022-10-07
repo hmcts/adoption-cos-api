@@ -1,10 +1,10 @@
 const config = require('../config');
 
 const laHelper = require('../helpers/la_portal_case');
-const loginPage = require('../pages/login.page');
-const caseListPage = require('../pages/caseList.page');
-const caseViewPage = require('../pages/caseView.page');
-const addACaseNotePage = require('../pages/addACaseNote.page');
+// const loginPage = require('../pages/login.page');
+// const caseListPage = require('../pages/caseList.page');
+// const caseViewPage = require('../pages/caseView.page');
+// const addACaseNotePage = require('../pages/addACaseNote.page');
 
 // {I, loginPage,caseListPage,caseViewPage,addACaseNotePage }
 let caseId;
@@ -18,7 +18,7 @@ async function setupScenario(I) {
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 
-Scenario('Verify Add A Case Note Event', async ({ I }) => {
+Scenario('Verify Add A Case Note Event', async ({ I,caseViewPage,addACaseNotePage }) => {
   console.log('Add A Case Note Test *************');
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.addACaseNote);
