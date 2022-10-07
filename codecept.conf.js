@@ -74,7 +74,7 @@ exports.config = {
     caseViewPage: './src/e2e/pages/caseView.page.js',
     amendApplicationDetailsPage: './src/e2e/pages/amendApplicationDetails.page.js',
     transferCourtPage: './src/e2e/pages/transferCourt.page.js',
-    addACaseNote: './src/e2e/tests/addCaseNote_test.js',
+    addACaseNotePage: './src/e2e/pages/addACaseNote.page.js',
 
   },
   plugins: {

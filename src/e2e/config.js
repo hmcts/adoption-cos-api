@@ -25,6 +25,18 @@ module.exports = {
     addACaseNote: 'Add a case note',
 
   },
+
+  // tabs
+  tabs: {
+    historyTab: 'History',
+    summaryTab: 'Summary',
+    applicantsTab: 'Applicants',
+    otherPartiesTab: 'Other Parties',
+    documentsTab: 'Documents',
+    correspondenceTab: 'Correspondence',
+    notesTab: 'Notes',
+  },
+
   // files
   testFile: './src/test/e2e/fixtures/testFiles/mockFile.txt',
   testPdfFile: './src/test/e2e/fixtures/testFiles/mockFile.pdf',

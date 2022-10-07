@@ -1,4 +1,5 @@
 const { I } = inject();
+const retryCount = 3;
 module.exports = {
 
   fields: {
@@ -27,9 +28,17 @@ module.exports = {
     }, 'ccd-case-event-trigger', false);
   },
 
-  async goToTab(actionSelector){
-    await I.wait(3);
-    await I.retry(3).click(actionSelector);
-  }
+  async navigateToTab(tabName){
+    await I.retry(retryCount).selectTab(tabName);
+  },
+
+  async verifyTableDataInsideTab(tableTitleRowNameArray, rowValue){
+    await I.retry(retryCount).seeInTab(tableTitleRowNameArray, rowValue);
+  },
+
+  async verifySuccessBanner(caseID, actionName){
+    const hyphanisedCaseId = caseID.replace(/(.{4})/g,"$1-").substring(0,19);
+    await I.retry(retryCount).waitForText(`Case #${hyphanisedCaseId} has been updated with event: ${actionName}`, 30);
+  },
 
 };
