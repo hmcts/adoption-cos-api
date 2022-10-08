@@ -1,3 +1,4 @@
+const config = require("../config");
 const { I } = inject();
 const retryCount = 3;
 module.exports = {
@@ -37,8 +38,7 @@ module.exports = {
   },
 
   async verifySuccessBanner(caseID, actionName){
-    const hyphanisedCaseId = caseID.replace(/(.{4})/g,"$1-").substring(0,19);
-    await I.retry(retryCount).waitForText(`Case #${hyphanisedCaseId} has been updated with event: ${actionName}`, 30);
+    await I.retry(retryCount).seeEventSubmissionConfirmation(caseID,actionName);
   },
 
 };

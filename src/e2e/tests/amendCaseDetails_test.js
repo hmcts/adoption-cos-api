@@ -1,5 +1,5 @@
 const config = require('../config');
-
+const retryCount = 3;
 const laHelper = require('../helpers/la_portal_case');
 
 let caseId;
@@ -15,5 +15,9 @@ Scenario('Verify amend case details event', async ({I, caseViewPage,amendCaseDet
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.amendCaseDetails);
   await amendCaseDetailsPage.updateCaseDetails();
-  await I.seeEventSubmissionConfirmation(caseId,config.administrationActions.amendCaseDetails);
+  await caseViewPage.verifySuccessBanner(caseId,config.administrationActions.amendCaseDetails);
+  await caseViewPage.navigateToTab(config.tabs.summaryTab);
+  await I.retry(retryCount).waitForText(amendCaseDetailsPage.fields.adoptionType, 5);
+  await I.retry(retryCount).waitForText(amendCaseDetailsPage.fields.dateSubmitted, 5);
+  await I.retry(retryCount).waitForText(amendCaseDetailsPage.fields.dateChildMovedIn, 5);
 });

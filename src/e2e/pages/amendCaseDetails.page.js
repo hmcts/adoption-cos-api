@@ -1,27 +1,25 @@
 const { I } = inject();
 const retryCount = 3;
 
-const browserHelper = require('../helpers/browser_helper');
-
 module.exports = {
   fields: {
     pageHeaderText: 'Amend case details',
     adoptionType: 'TEST PLACEMENT ORDER',
-    adoptionTypeElement: '',
+    adoptionTypeElement: '#typeOfAdoption',
     dateSubmittedDay: '05',
     dateSubmittedMonth: '01',
     dateSubmittedYear: '2022',
-    dateSubmittedDayElement: '',
-    dateSubmittedMonthElement: '',
-    dateSubmittedYearElement: '',
+    dateSubmittedDayElement: '#dateSubmitted-day',
+    dateSubmittedMonthElement: '#dateSubmitted-month',
+    dateSubmittedYearElement: '#dateSubmitted-year',
     dateChildMovedInDay: '01',
     dateChildMovedInMonth: '01',
     dateChildMovedInYear: '2021',
-    dateChildMovedInDayElement: '',
-    dateChildMovedInMonthElement: '',
-    dateChildMovedInYearElement: '',
-    dateSubmitted: '05 Jan 2022',
-    dateChildMovedIn: '01 Jan 2022',
+    dateChildMovedInDayElement: '#dateChildMovedIn-day',
+    dateChildMovedInMonthElement: '#dateChildMovedIn-month',
+    dateChildMovedInYearElement: 'dateChildMovedIn-year',
+    dateSubmitted: '5 Jan 2022',
+    dateChildMovedIn: '1 Jan 2021',
   },
 
   async updateCaseDetails(){
@@ -40,10 +38,11 @@ module.exports = {
     await I.retry(retryCount).fillField(this.fields.dateChildMovedInYearElement, this.fields.dateChildMovedInYear);
     await I.wait(2);
     await I.retry(retryCount).click('Continue');
-    await I.wait(retryCount);
-    await I.retry(retryCount).waitForText('Check your answers', 30);
-    await I.retry(retryCount).waitForText(this.fields.dateSubmitted, 30);
-    await I.retry(retryCount).waitForText(this.fields.dateChildMovedIn, 30);
+    await I.wait(5);
+    await I.retry(retryCount).waitForText('Check your answers', 5);
+    await I.retry(retryCount).waitForText(this.fields.adoptionType, 5);
+    await I.retry(retryCount).waitForText(this.fields.dateSubmitted, 5);
+    await I.retry(retryCount).waitForText(this.fields.dateChildMovedIn, 5);
     await I.retry(retryCount).click('Save and continue');
     await I.wait('10');
   },

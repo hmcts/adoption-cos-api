@@ -75,7 +75,7 @@ exports.config = {
     amendApplicationDetailsPage: './src/e2e/pages/amendApplicationDetails.page.js',
     transferCourtPage: './src/e2e/pages/transferCourt.page.js',
     addACaseNotePage: './src/e2e/pages/addACaseNote.page.js',
-    amendCaseDetailsPage: 'src/e2e/pages/amendCaseDetails.page.js',
+    amendCaseDetailsPage: './src/e2e/pages/amendCaseDetails.page.js',
   },
   plugins: {
     retryFailedStep: {
