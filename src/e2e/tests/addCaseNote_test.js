@@ -1,12 +1,7 @@
 const config = require('../config');
 
 const laHelper = require('../helpers/la_portal_case');
-// const loginPage = require('../pages/login.page');
-// const caseListPage = require('../pages/caseList.page');
-// const caseViewPage = require('../pages/caseView.page');
-// const addACaseNotePage = require('../pages/addACaseNote.page');
 
-// {I, loginPage,caseListPage,caseViewPage,addACaseNotePage }
 let caseId;
 Feature('Add A Case Note').retry(1);
 
