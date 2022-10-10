@@ -91,7 +91,7 @@ public class AdoptionDocument {
     )
     private String name;
 
-    @CCD(
+    /*@CCD(
         label = "User"
     )
     private String user;
@@ -100,10 +100,9 @@ public class AdoptionDocument {
         label = "Date added"
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private LocalDate date;*/
 
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
-    @SuppressWarnings({"unchecked"})
     @JsonCreator
     public AdoptionDocument(@JsonProperty("documentLink") Document documentLink,
                             @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
@@ -113,9 +112,7 @@ public class AdoptionDocument {
                             @JsonProperty("documentFileId") String documentFileId,
                             @JsonProperty("documentCategory") DocumentCategory documentCategory,
                             @JsonProperty("role") String role,
-                            @JsonProperty("name") String name,
-                            @JsonProperty("user") String user,
-                            @JsonProperty("date") LocalDate date) {
+                            @JsonProperty("name") String name) {
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
         this.documentComment = documentComment;
@@ -125,7 +122,5 @@ public class AdoptionDocument {
         this.documentCategory = documentCategory;
         this.role = role;
         this.name = name;
-        this.user = user;
-        this.date = date;
     }
 }
