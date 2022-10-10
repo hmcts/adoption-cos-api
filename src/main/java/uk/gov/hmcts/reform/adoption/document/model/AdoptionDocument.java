@@ -39,7 +39,6 @@ public class AdoptionDocument {
     @CCD(
         label = "Date",
         showCondition = "documentLink=\"\""
-    //ignore = true
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate documentDateAdded;
@@ -54,7 +53,6 @@ public class AdoptionDocument {
         label = "File name",
         hint = "For your own reference, to make the document easier to find",
         showCondition = "documentLink=\"\""
-    //ignore = true
     )
     private String documentFileName;
 
@@ -63,7 +61,6 @@ public class AdoptionDocument {
         typeOverride = FixedList,
         typeParameterOverride = "DocumentType",
         showCondition = "documentLink=\"\""
-    //ignore = true
     )
     private DocumentType documentType;
 
@@ -71,7 +68,6 @@ public class AdoptionDocument {
         label = "File Id",
         hint = "DM Store file Id",
         showCondition = "documentLink=\"\""
-    //ignore = true
     )
     private String documentFileId;
 
@@ -95,7 +91,19 @@ public class AdoptionDocument {
     )
     private String name;
 
+    @CCD(
+        label = "User"
+    )
+    private String user;
+
+    @CCD(
+        label = "Date added"
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
+    @SuppressWarnings({"unchecked"})
     @JsonCreator
     public AdoptionDocument(@JsonProperty("documentLink") Document documentLink,
                             @JsonProperty("documentDateAdded") LocalDate documentDateAdded,
@@ -105,7 +113,9 @@ public class AdoptionDocument {
                             @JsonProperty("documentFileId") String documentFileId,
                             @JsonProperty("documentCategory") DocumentCategory documentCategory,
                             @JsonProperty("role") String role,
-                            @JsonProperty("name") String name) {
+                            @JsonProperty("name") String name,
+                            @JsonProperty("user") String user,
+                            @JsonProperty("date") LocalDate date) {
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
         this.documentComment = documentComment;
@@ -115,5 +125,7 @@ public class AdoptionDocument {
         this.documentCategory = documentCategory;
         this.role = role;
         this.name = name;
+        this.user = user;
+        this.date = date;
     }
 }

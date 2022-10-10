@@ -15,24 +15,7 @@ public class ReviewDocuments implements CcdPageConfiguration {
         pageBuilder.page("scannedDocumentPage1")
             .pageLabel(SCANNED_DOCUMENT)
             .mandatory(CaseData::getLaDocumentsUploaded)
-            /*.mandatory(AdoptionUploadDocument::getDocumentLink)
-            .mandatory(AdoptionUploadDocument::getDocumentComment)
-            .mandatory(AdoptionUploadDocument::getDocumentCategory)*/
             .done();
-
-        /*pageBuilder.page("scannedDocumentPage2")
-            .pageLabel("Who submitted the document?")
-            .label("uploadDocumentPage2Label","Who submitted the document?")
-            .mandatory(CaseData::getName)
-            .mandatory(CaseData::getRole)
-            .done();*/
-
-        /*pageBuilder.page("uploadDocumentPage2")
-            .pageLabel("Who submitted the document?")
-            .label("uploadDocumentPage2Label","Who submitted the document?")
-            .mandatory(CaseData::getName)
-            .mandatory(CaseData::getRole)
-            .done();*/
 
     }
 }
