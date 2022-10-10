@@ -92,12 +92,14 @@ public class AdoptionDocument {
     private String name;
 
     @CCD(
-        label = "User"
+        label = "User",
+        showCondition = "documentLink=\"\""
     )
     private String user;
 
     @CCD(
-        label = "Date added"
+        label = "Date added",
+        showCondition = "documentLink=\"\""
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
