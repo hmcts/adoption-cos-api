@@ -302,18 +302,18 @@ public class CaseData {
 
 
     @CCD(label = "Local authority worker statement of truth full name",
-        access = {SystemUpdateAccess.class}
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
     )
     private String laSotFullName;
 
     @CCD(label = "Local authority worker job title",
-        access = {SystemUpdateAccess.class}
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
     )
     private String laSotJobtitle;
 
 
     @CCD(label = "Local authority worker job title",
-        access = {SystemUpdateAccess.class}
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
     )
     private String laNameSot;
 
