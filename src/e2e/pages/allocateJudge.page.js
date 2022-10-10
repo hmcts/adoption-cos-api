@@ -27,10 +27,10 @@ module.exports = {
   async verifyAllocateJudgePageFunctionality(){
    await I.retry(3).fillField(this.fields.allocateJudgeTextBox, "");
    await I.retry(3).click(this.fields.continueButton);
-   await I.retry(3).seeElement(this.fields.errorMessage);
+   await I.retry(6).seeElement(this.fields.errorMessage);
    await I.retry(3).fillField(this.fields.allocateJudgeTextBox, "Test Judge name");
-   await I.retry(3).click(this.fields.continueButton);
-   await I.retry(3).click(this.fields.continueButton);
-   await I.retry(3).seeElement(this.fields.alertMessage);
+   await I.retry(5).click(this.fields.continueButton);
+   await I.retry(5).click(this.fields.continueButton);
+   await I.retry(5).seeElement(this.fields.alertMessage);
   },
 }
