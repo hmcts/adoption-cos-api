@@ -17,12 +17,17 @@ import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Component
@@ -31,6 +36,12 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
 
     @Autowired
     private Clock clock;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private IdamService idamService;
 
     public static final String CASEWORKER_REVIEW_DOCUMENT = "caseworker-review-document";
     public static final String SCANNED_DOCUMENT = "Review all documents";
@@ -62,9 +73,12 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
         log.info("Callback invoked for {}", CASEWORKER_REVIEW_DOCUMENT);
 
         var caseData = details.getData();
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
 
         caseData.getLaDocumentsUploaded().stream()
                 .forEach(laUploadedDocument -> {
+                    laUploadedDocument.getValue().setDate(LocalDate.now(clock));
+                    laUploadedDocument.getValue().setUser(caseworkerUser.getUserDetails().getFullName());
                     switch (laUploadedDocument.getValue().getDocumentCategory()) {
                         case APPLICATION_DOCUMENTS -> {
                             caseData.setApplicationDocumentsCategory(addDocumentToListOfSpecificCategory(

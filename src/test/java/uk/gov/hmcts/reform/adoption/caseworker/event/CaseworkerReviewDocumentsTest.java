@@ -21,10 +21,16 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,14 +38,23 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerReviewDocuments.CASEWORKER_REVIEW_DOCUMENT;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
 public class CaseworkerReviewDocumentsTest {
 
     @Mock
+    private HttpServletRequest httpServletRequest;
+
+    @Mock
     private Clock clock;
+
+    @Mock
+    private IdamService idamService;
 
     @InjectMocks
     CaseworkerReviewDocuments caseworkerReviewDocuments;
@@ -47,6 +62,7 @@ public class CaseworkerReviewDocumentsTest {
     @Test
     public void shouldSuccessfullyCategoriseDocumentsForApplicationDocuments() {
         var caseDetails = getCaseDetails(DocumentCategory.APPLICATION_DOCUMENTS);
+        setTimeAndIdamUser();
         var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
     }
@@ -55,8 +71,62 @@ public class CaseworkerReviewDocumentsTest {
     public void shouldSuccessfullyCategoriseDocumentsForApplicationDocumentsExisting() {
         var caseDetails = getCaseDetails(DocumentCategory.APPLICATION_DOCUMENTS);
         createApplicationDocumentsCategoryList(caseDetails);
+        setTimeAndIdamUser();
         var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyCategoriseDocumentsForCourtOrders() {
+        var caseDetails = getCaseDetails(DocumentCategory.COURT_ORDERS);
+        setTimeAndIdamUser();
+        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getCourtOrdersDocumentCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyCategoriseDocumentsForReports() {
+        var caseDetails = getCaseDetails(DocumentCategory.REPORTS);
+        setTimeAndIdamUser();
+        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getReportsDocumentCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyCategoriseDocumentsForStatements() {
+        var caseDetails = getCaseDetails(DocumentCategory.STATEMENTS);
+        setTimeAndIdamUser();
+        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getStatementsDocumentCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyCategoriseDocumentsForCorrespondence() {
+        var caseDetails = getCaseDetails(DocumentCategory.CORRESPONDENCE);
+        setTimeAndIdamUser();
+        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getCorrespondenceDocumentCategory()).isNotNull();
+    }
+
+    @Test
+    public void shouldSuccessfullyCategoriseDocumentsForAdditionalDocuments() {
+        var caseDetails = getCaseDetails(DocumentCategory.ADDITIONAL_DOCUMENTS);
+        setTimeAndIdamUser();
+        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getAdditionalDocumentsCategory()).isNotNull();
+    }
+
+    private void setTimeAndIdamUser() {
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
     }
 
     private void createApplicationDocumentsCategoryList(CaseDetails<CaseData, State> caseDetails) {
@@ -69,41 +139,6 @@ public class CaseworkerReviewDocumentsTest {
         caseDetails.getData().setApplicationDocumentsCategory(listValues);
     }
 
-    @Test
-    public void shouldSuccessfullyCategoriseDocumentsForCourtOrders() {
-        var caseDetails = getCaseDetails(DocumentCategory.COURT_ORDERS);
-        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getCourtOrdersDocumentCategory()).isNotNull();
-    }
-
-    @Test
-    public void shouldSuccessfullyCategoriseDocumentsForReports() {
-        var caseDetails = getCaseDetails(DocumentCategory.REPORTS);
-        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getReportsDocumentCategory()).isNotNull();
-    }
-
-    @Test
-    public void shouldSuccessfullyCategoriseDocumentsForStatements() {
-        var caseDetails = getCaseDetails(DocumentCategory.STATEMENTS);
-        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getStatementsDocumentCategory()).isNotNull();
-    }
-
-    @Test
-    public void shouldSuccessfullyCategoriseDocumentsForCorrespondence() {
-        var caseDetails = getCaseDetails(DocumentCategory.CORRESPONDENCE);
-        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getCorrespondenceDocumentCategory()).isNotNull();
-    }
-
-    @Test
-    public void shouldSuccessfullyCategoriseDocumentsForAdditionalDocuments() {
-        var caseDetails = getCaseDetails(DocumentCategory.ADDITIONAL_DOCUMENTS);
-        var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getAdditionalDocumentsCategory()).isNotNull();
-    }
-
     private CaseDetails<CaseData, State> getCaseDetails(DocumentCategory documentCategory) {
         final var details = new CaseDetails<CaseData, State>();
         final var data = caseData();
@@ -112,7 +147,6 @@ public class CaseworkerReviewDocumentsTest {
         data.setLaDocumentsUploaded(adoptionDocumentList);
         details.setData(data);
         details.setId(1L);
-
         return details;
     }
 
@@ -168,5 +202,15 @@ public class CaseworkerReviewDocumentsTest {
                 }
             })
             .orElseThrow(() -> new AssertionError("Unable to find ConfigBuilderImpl.class method getEvents"));
+    }
+
+    private User getCaseworkerUser() {
+        UserDetails userDetails = UserDetails
+            .builder()
+            .forename("testFname")
+            .surname("testSname")
+            .build();
+
+        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
     }
 }
