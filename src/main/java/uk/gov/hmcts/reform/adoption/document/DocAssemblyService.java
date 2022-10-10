@@ -42,7 +42,7 @@ public class DocAssemblyService {
                                        final String filename) {
 
         final String templateName = docmosisTemplateProvider.templateNameFor(templateId, languagePreference);
-        log.info("Content request template : {}", new JSONObject(templateContent));
+        log.info("Content request template : {}", templateContent);
 
         final DocAssemblyRequest docAssemblyRequest =
                 DocAssemblyRequest
