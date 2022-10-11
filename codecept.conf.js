@@ -73,6 +73,8 @@ exports.config = {
     eventSummaryPage: './src/e2e/pages/eventSummary.page.js',
     caseViewPage: './src/e2e/pages/caseView.page.js',
     amendApplicationDetailsPage: './src/e2e/pages/amendApplicationDetails.page.js',
+    transferCourtPage: './src/e2e/pages/transferCourt.page.js',
+    amendCaseDetailsPage: './src/e2e/pages/amendCaseDetails.page.js'
 
   },
   plugins: {
