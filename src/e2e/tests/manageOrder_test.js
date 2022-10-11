@@ -13,6 +13,7 @@ async function setupScenario(I) {
   }
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
+
 Scenario('Verify Manage order details', async ({I,loginPage, caseListPage, caseViewPage, manageOrdersPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
