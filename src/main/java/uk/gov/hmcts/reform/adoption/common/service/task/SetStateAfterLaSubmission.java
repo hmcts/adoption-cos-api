@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.common.service.task;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
@@ -50,6 +51,15 @@ public class SetStateAfterLaSubmission implements CaseTask {
                 caseDetails.getData().setPlacementOrders(placementList.stream().filter(el -> !el.equals(item)).collect(
                     Collectors.toList()));
             });
+
+        caseDetails.getData().getLaDocumentsUploaded().stream()
+            .forEach(laUploadedDocument -> {
+                if (!StringUtils.isEmpty(caseDetails.getData().getLaSotFullName())) {
+                    laUploadedDocument.getValue().setUser(caseDetails.getData().getLaSotFullName());
+                }
+
+            });
+
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
 
         return caseDetails;
