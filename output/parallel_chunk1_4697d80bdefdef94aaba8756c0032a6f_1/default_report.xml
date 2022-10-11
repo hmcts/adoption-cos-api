@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="117.1350" tests="1" failures="0">
-  <testsuite name="Root Suite" timestamp="2022-09-15T11:57:56" tests="0" time="0.0000" failures="0">
-  </testsuite>
-  <testsuite name="Create case @smoke" timestamp="2022-09-15T11:57:56" tests="1" file="/Users/hajoras/Documents/adoption-cos-api/src/e2e/tests/smote_test.js" time="117.1300" failures="0">
-    <testcase name="Create case @smoke: Verify case created and able to search in ExUI" time="113.7450" classname="Verify case created and able to search in ExUI">
-    </testcase>
-  </testsuite>
-</testsuites>

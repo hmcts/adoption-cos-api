@@ -27,4 +27,13 @@ module.exports = {
     }, 'ccd-case-event-trigger', false);
   },
 
+  async navigateToTab(tabName){
+    await I.retry(retryCount).selectTab(tabName);
+    await I.wait(3);
+  },
+
+  async verifySuccessBanner(caseID, actionName){
+    await I.retry(retryCount).seeEventSubmissionConfirmation(caseID,actionName);
+  },
+
 };
