@@ -55,9 +55,9 @@ public class SetStateAfterLaSubmission implements CaseTask {
         caseDetails.getData().getLaDocumentsUploaded().stream()
             .forEach(laUploadedDocument -> {
                 if (!StringUtils.isEmpty(caseDetails.getData().getLaSotFullName())) {
+                    log.info("Setting LA Full name {}", caseDetails.getData().getLaSotFullName());
                     laUploadedDocument.getValue().setUser(caseDetails.getData().getLaSotFullName());
                 }
-
             });
 
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
