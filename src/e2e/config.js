@@ -21,6 +21,7 @@ module.exports = {
   administrationActions: {
     amendCaseDetails: 'Amend case details',
     amendApplicantDetails: 'Amend applicant details',
+    manageOrders: 'Manage orders',
     transferCourt: 'Transfer Court',
 
   },

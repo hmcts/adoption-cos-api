@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -10,8 +11,11 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 public class ManageOrders implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
-
-        pageBuilder.page("manageOrders").done();
-
+        pageBuilder.page("manageOrders1")
+            .mandatory(CaseData::getManageOrderActivity)
+            .page("mangeOrders2")
+            .showCondition("manageOrderActivity=\"createOrder\"")
+            .mandatory(CaseData::getManageOrderType)
+            .done();
     }
 }
