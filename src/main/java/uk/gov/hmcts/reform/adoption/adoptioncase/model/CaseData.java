@@ -517,6 +517,22 @@ public class CaseData {
     )
     private String name;
 
+    @CCD(
+        label = "What do you want to do?",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ManageOrderActivity"
+    )
+    private ManageOrderActivity manageOrderActivity;
+
+    @CCD(
+        label = "Select type of order",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ManageOrderType"
+    )
+    private ManageOrderType manageOrderType;
+
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
             return YesOrNo.NO;

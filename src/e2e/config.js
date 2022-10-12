@@ -23,6 +23,7 @@ module.exports = {
     amendApplicantDetails: 'Amend applicant details',
     manageOrders: 'Manage orders',
     allocateJudge: 'Allocate judge',
+    transferCourt: 'Transfer Court',
   },
   // tabs
   tabs: {

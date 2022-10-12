@@ -74,6 +74,7 @@ exports.config = {
     caseViewPage: './src/e2e/pages/caseView.page.js',
     amendApplicationDetailsPage: './src/e2e/pages/amendApplicationDetails.page.js',
     allocateJudgePage: './src/e2e/pages/allocateJudge.page.js',
+    manageOrdersPage: './src/e2e/pages/manageOrders.page.js',
     transferCourtPage: './src/e2e/pages/transferCourt.page.js',
     amendCaseDetailsPage: './src/e2e/pages/amendCaseDetails.page.js',
   },
