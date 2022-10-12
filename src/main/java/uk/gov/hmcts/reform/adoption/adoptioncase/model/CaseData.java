@@ -428,6 +428,10 @@ public class CaseData {
     )
     private YesOrNo findFamilyCourt;
 
+    @CCD(label = "Name of the judge",
+        access = {DefaultAccess.class})
+     private String allocatedJudge;
+
     @CCD(
         label = "Allocated court",
         access = {DefaultAccess.class}
@@ -439,13 +443,6 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private String familyCourtName;
-
-
-    @CCD(
-        label = "Enter court name",
-        access = {DefaultAccess.class}
-    )
-    private String transferCourt;
 
     @CCD(
         label = "Family court email",

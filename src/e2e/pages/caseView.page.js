@@ -2,10 +2,6 @@ const { I } = inject();
 module.exports = {
 
   fields: {
-    tabs: {
-      summary: 'Summary',
-      history: 'History',
-    },
     actionsDropdown: '#next-step',
     goButton: 'Go',
   },
