@@ -1,9 +1,9 @@
 const config = require('../config');
-const retryCount = 3;
 const laHelper = require('../helpers/la_portal_case');
-
 let caseId;
-Feature('Amend Case Details');
+
+Feature('Allocate Judge tests').retry(0);
+
 async function setupScenario(I) {
   if (!caseId) {
     caseId = await laHelper.createCompleteCase();
@@ -11,9 +11,10 @@ async function setupScenario(I) {
   }
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
-Scenario('Verify amend case details event', async ({I, caseViewPage,amendCaseDetailsPage }) => {
-  await setupScenario(I);
-  await caseViewPage.goToNewActions(config.administrationActions.amendCaseDetails);
-  await amendCaseDetailsPage.updateCaseDetails();
-});
 
+Scenario('Allocate Judge to a case', async ({I,loginPage, caseListPage, caseViewPage, allocateJudgePage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.allocateJudge);
+  await allocateJudgePage.verifyPageDetails();
+  await allocateJudgePage.verifyAllocateJudgePageFunctionality();
+});

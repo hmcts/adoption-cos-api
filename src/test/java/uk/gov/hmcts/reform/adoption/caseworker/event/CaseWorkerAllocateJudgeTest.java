@@ -10,7 +10,7 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerTransferCourt;
+import uk.gov.hmcts.reform.adoption.adoptioncase.event.CaseWorkerAllocateJudge;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -21,14 +21,14 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.event.CaseWorkerAllocateJudge.CASEWORKER_ALLOCATE_JUDGE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerTransferCourt.CASEWORKER_TRANSFER_COURT;
 
 @ExtendWith(MockitoExtension.class)
-public class CaseworkerTransferCourtTest {
+public class CaseWorkerAllocateJudgeTest {
 
     @InjectMocks
-    CaseworkerTransferCourt caseworkerTransferCourt;
+    CaseWorkerAllocateJudge caseWorkerAllocateJudge;
 
 
     /**
@@ -37,10 +37,10 @@ public class CaseworkerTransferCourtTest {
     @Test
     void shouldAddConfigurationToConfigBuilder() {
         final ConfigBuilderImpl<CaseData, State, UserRole> configBuilder = createCaseDataConfigBuilder();
-        caseworkerTransferCourt.configure(configBuilder);
+        caseWorkerAllocateJudge.configure(configBuilder);
         assertThat(getEventsFrom(configBuilder).values())
             .extracting(Event::getId)
-            .contains(CASEWORKER_TRANSFER_COURT);
+            .contains(CASEWORKER_ALLOCATE_JUDGE);
     }
 
 
@@ -73,16 +73,16 @@ public class CaseworkerTransferCourtTest {
     private CaseDetails<CaseData, State> getCaseDetails() {
         final var details = new CaseDetails<CaseData, State>();
         final var data = caseData();
-        data.setTransferCourt("TEST");
+        data.setAllocatedJudge("TEST");
         details.setData(data);
         details.setId(1L);
         return details;
     }
 
     @Test
-    public void shouldSuccessfullyTransferCourt() {
+    public void shouldSuccessfullyAllocateJudgeToCase() {
         var caseDetails = getCaseDetails();
-        var result = caseworkerTransferCourt.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getFamilyCourtName()).isNotNull();
+        var result = caseWorkerAllocateJudge.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getAllocatedJudge()).isNotNull();
     }
 }
