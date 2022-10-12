@@ -428,6 +428,10 @@ public class CaseData {
     )
     private YesOrNo findFamilyCourt;
 
+    @CCD(label = "Name of the judge",
+        access = {DefaultAccess.class})
+     private String allocatedJudge;
+
     @CCD(
         label = "Allocated court",
         access = {DefaultAccess.class}
@@ -512,6 +516,22 @@ public class CaseData {
         hint = "Add the name of the person who submitted the document."
     )
     private String name;
+
+    @CCD(
+        label = "What do you want to do?",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ManageOrderActivity"
+    )
+    private ManageOrderActivity manageOrderActivity;
+
+    @CCD(
+        label = "Select type of order",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ManageOrderType"
+    )
+    private ManageOrderType manageOrderType;
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {

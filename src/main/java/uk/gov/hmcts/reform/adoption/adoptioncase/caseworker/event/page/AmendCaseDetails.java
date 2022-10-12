@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -14,6 +16,12 @@ public class AmendCaseDetails implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("amendCaseDetails")
             .pageLabel(AMEND_CASE_DETAILS)
+            .label("amendCaseDetailsLabel","## Case details")
+            .mandatory(CaseData::getTypeOfAdoption)
+            .complex(CaseData::getApplication)
+            .mandatory(Application::getDateSubmitted)
+            .done()
+            .mandatory(CaseData::getDateChildMovedIn)
             .done();
     }
 }
