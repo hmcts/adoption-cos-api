@@ -3,6 +3,10 @@ const retryCount = 3;
 module.exports = {
 
   fields: {
+    tabs: {
+        summary: 'Summary',
+        history: 'History',
+     },
     actionsDropdown: '#next-step',
     goButton: 'Go',
   },
