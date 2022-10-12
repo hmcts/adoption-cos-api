@@ -33,6 +33,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
@@ -301,18 +302,18 @@ public class CaseData {
 
 
     @CCD(label = "Local authority worker statement of truth full name",
-        access = {SystemUpdateAccess.class}
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
     )
     private String laSotFullName;
 
     @CCD(label = "Local authority worker job title",
-        access = {SystemUpdateAccess.class}
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
     )
     private String laSotJobtitle;
 
 
     @CCD(label = "Local authority worker job title",
-        access = {SystemUpdateAccess.class}
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
     )
     private String laNameSot;
 
@@ -366,6 +367,14 @@ public class CaseData {
         access = {CollectionAccess.class}
     )
     private List<ListValue<AdoptionDocument>> documentsGenerated;
+
+    @CCD(
+        label = "Combined documents generated",
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionDocument",
+        access = {CollectionAccess.class}
+    )
+    private List<ListValue<AdoptionDocument>> combinedDocumentsGenerated;
 
     @CCD(
         label = "Applicant uploaded documents",
@@ -553,6 +562,15 @@ public class CaseData {
     }
 
     @JsonIgnore
+    public void addToCombinedDocumentsGenerated() {
+        setCombinedDocumentsGenerated(
+            this.getDocumentsGenerated()
+                .stream()
+                .filter(listValue -> listValue.getValue().getDocumentType()
+                    .equals(APPLICATION_LA_SUMMARY_EN)).collect(Collectors.toList()));
+    }
+
+    @JsonIgnore
     public void addToDocumentsGenerated(final ListValue<AdoptionDocument> listValue) {
 
         final List<ListValue<AdoptionDocument>> documents = getDocumentsGenerated();
@@ -564,6 +582,7 @@ public class CaseData {
         } else {
             documents.add(0, listValue); // always add to start top of list
         }
+        addToCombinedDocumentsGenerated();
     }
 
     public void sortUploadedDocuments(List<ListValue<AdoptionDocument>> previousDocuments) {

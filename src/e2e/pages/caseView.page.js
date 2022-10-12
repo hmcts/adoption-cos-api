@@ -1,4 +1,5 @@
 const { I } = inject();
+const retryCount = 3;
 module.exports = {
 
   fields: {
@@ -30,6 +31,10 @@ module.exports = {
 
   async verifySuccessBanner(caseID, actionName){
     await I.retry(retryCount).seeEventSubmissionConfirmation(caseID,actionName);
+  },
+
+  async verifyTableDataInsideTab(tableTitleRowNameArray, rowValue){
+    await I.retry(retryCount).seeInTab(tableTitleRowNameArray, rowValue);
   },
 
 };

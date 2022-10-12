@@ -213,4 +213,3 @@ ccd-case-document-am-api:
       IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
 LA_PORTAL_BASEURL: https://adoption-web-pr-${CHANGE_ID}.service.core-compute-preview.internal/la-portal/kba-case-ref
-
