@@ -260,7 +260,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("familyCourtName")
             .field("placementOrder")
             .field("placementOrders")
-            .field("siblings");
+            .field("siblings")
+            .field("allocatedJudge");
     }
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
