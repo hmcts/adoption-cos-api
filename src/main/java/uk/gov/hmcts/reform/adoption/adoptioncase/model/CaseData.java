@@ -432,7 +432,7 @@ public class CaseData {
 
 
     @CCD(
-        label = "Documents uploaded",
+        label = "Documents pending review",
         typeOverride = Collection,
         typeParameterOverride = "AdoptionDocument",
         access = { SystemUpdateAccess.class }

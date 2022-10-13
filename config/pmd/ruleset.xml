@@ -111,4 +111,10 @@
     </properties>
   </rule>
 
+  <rule ref="category/java/design.xml/ExcessiveParameterList">
+    <properties>
+      <property name="minimum" value="15.0" />
+    </properties>
+  </rule>
+
 </ruleset>
