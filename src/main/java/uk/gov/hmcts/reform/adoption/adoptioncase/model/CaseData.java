@@ -470,6 +470,12 @@ public class CaseData {
 
 
     @CCD(
+        label = "Enter court name",
+        access = {DefaultAccess.class}
+    )
+    private String transferCourt;
+
+    @CCD(
         label = "Family court email",
         access = {DefaultAccess.class}
     )

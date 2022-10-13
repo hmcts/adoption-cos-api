@@ -37,4 +37,8 @@ module.exports = {
     await I.retry(retryCount).seeEventSubmissionConfirmation(caseID,actionName);
   },
 
+  async verifyTableDataInsideTab(tableTitleRowNameArray, rowValue){
+    await I.retry(retryCount).seeInTab(tableTitleRowNameArray, rowValue);
+  },
+
 };
