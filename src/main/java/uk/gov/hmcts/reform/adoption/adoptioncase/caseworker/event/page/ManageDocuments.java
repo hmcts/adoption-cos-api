@@ -13,11 +13,9 @@ import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.Objects.nonNull;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument.MANAGE_DOCUMENT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.STRING_COLON;
@@ -89,7 +87,7 @@ public class ManageDocuments implements CcdPageConfiguration {
         listElements.add(adoptionAgencyOrLocalAuthority);
         log.info("adoptionAgencyOrLocalAuthority");
 
-        if(caseData.getOtherAdopAgencyOrLA()!=null && caseData.getOtherAdopAgencyOrLA().getOtherAdopAgencyOrLaName()!=null){
+        if (caseData.getOtherAdopAgencyOrLA() != null && caseData.getOtherAdopAgencyOrLA().getOtherAdopAgencyOrLaName() != null) {
             DynamicListElement otherAdoptionAgencyOrLocalAuthority = DynamicListElement.builder()
                 .label(String.join(BLANK_SPACE,DocumentSubmitter.OTHER_ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel(),
                                    STRING_COLON,
@@ -111,7 +109,8 @@ public class ManageDocuments implements CcdPageConfiguration {
 
         listElements.add(firstApplicant);
 
-        if(caseData.getApplicant2()!=null && caseData.getApplicant2().getFirstName()!=null && caseData.getApplicant2().getLastName()!=null){
+        if (caseData.getApplicant2() != null && caseData.getApplicant2().getFirstName() != null
+            && caseData.getApplicant2().getLastName() != null) {
             DynamicListElement secondApplicant = DynamicListElement.builder()
                 .label(String.join(BLANK_SPACE,DocumentSubmitter.SECOND_APPLICANT.getLabel(),
                                    STRING_COLON,
@@ -123,7 +122,8 @@ public class ManageDocuments implements CcdPageConfiguration {
             listElements.add(secondApplicant);
         }
 
-        if(caseData.getBirthMother()!=null && caseData.getBirthMother().getFirstName()!=null && caseData.getBirthMother().getLastName()!=null){
+        if (caseData.getBirthMother() != null && caseData.getBirthMother().getFirstName() != null
+            && caseData.getBirthMother().getLastName() != null) {
             DynamicListElement birthMother = DynamicListElement.builder()
                 .label(String.join(BLANK_SPACE,DocumentSubmitter.BIRTH_MOTHER.getLabel(),
                                    STRING_COLON,
@@ -134,7 +134,8 @@ public class ManageDocuments implements CcdPageConfiguration {
 
             listElements.add(birthMother);
         }
-        if(caseData.getBirthFather()!=null && caseData.getBirthFather().getFirstName()!=null && caseData.getBirthFather().getLastName()!=null) {
+        if (caseData.getBirthFather() != null && caseData.getBirthFather().getFirstName() != null
+            && caseData.getBirthFather().getLastName() != null) {
             DynamicListElement birthFather = DynamicListElement.builder()
                 .label(String.join(BLANK_SPACE, DocumentSubmitter.BIRTH_FATHER.getLabel(),
                                    STRING_COLON,
@@ -147,7 +148,8 @@ public class ManageDocuments implements CcdPageConfiguration {
             listElements.add(birthFather);
         }
 
-        if(caseData.getOtherParent()!=null && caseData.getOtherParent().getFirstName()!=null && caseData.getOtherParent().getLastName()!=null) {
+        if (caseData.getOtherParent() != null && caseData.getOtherParent().getFirstName() != null
+            && caseData.getOtherParent().getLastName() != null) {
             DynamicListElement personWithParentalResponsibility = DynamicListElement.builder()
                 .label(String.join(BLANK_SPACE, DocumentSubmitter.PERSON_WITH_PARENTAL_RESPONSIBILITY.getLabel(),
                                    STRING_COLON,
