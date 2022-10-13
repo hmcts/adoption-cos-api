@@ -74,6 +74,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
         caseData.getAdoptionUploadDocument().setName(caseData.getName());
         caseData.getAdoptionUploadDocument().setRole(caseData.getRole());
+        caseData.getAdoptionUploadDocument().setDocumentSubmitter(caseData.getDocumentSubmitter());
 
         switch (caseData.getAdoptionUploadDocument().getDocumentCategory()) {
             case APPLICATION_DOCUMENTS -> {
@@ -170,6 +171,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         }
         //Clear adoption document so that value doesn't persist while navigating to same screen subsequently
         caseData.setAdoptionUploadDocument(null);
+        caseData.setDocumentSubmitter(null);
         return adoptionDocumentList;
     }
 }

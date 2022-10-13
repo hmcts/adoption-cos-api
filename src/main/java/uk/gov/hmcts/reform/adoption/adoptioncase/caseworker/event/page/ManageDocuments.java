@@ -36,12 +36,13 @@ public class ManageDocuments implements CcdPageConfiguration {
             .mandatory(AdoptionUploadDocument::getDocumentCategory)
             .done()
             .done();
+
         pageBuilder.page("uploadDocumentPage2")
             .pageLabel("Who submitted the document?")
             .label("uploadDocumentPage2Label","Who submitted the document?")
             .mandatory(CaseData::getDocumentSubmitter)
-            .mandatory(CaseData::getName, "documentSubmitter=\"otherParty\"")
-            .mandatory(CaseData::getRole)
+            .mandatory(CaseData::getName, "documentSubmitter=\"00001111-2222-3333-4444-000000005555\"")
+            .mandatory(CaseData::getRole, "documentSubmitter=\"00001111-2222-3333-4444-000000005555\"")
             .done();
 
     }

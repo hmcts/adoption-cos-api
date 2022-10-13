@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.reform.adoption.document.DocumentCategory;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 
 import java.time.LocalDate;
 
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 
@@ -58,6 +60,13 @@ public class AdoptionUploadDocument {
     private DocumentCategory documentCategory;
 
     @CCD(
+        label = "Who submitted the document?",
+        typeOverride = DynamicRadioList
+    //typeParameterOverride = "DocumentSubmitter"
+    )
+    private DynamicList documentSubmitter;
+
+    @CCD(
         label = "Role",
         hint = "Add a role. For example, \"Child social worker\" or \"First applicant\""
     )
@@ -70,6 +79,8 @@ public class AdoptionUploadDocument {
     )
     private String name;
 
+
+
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
     public AdoptionUploadDocument(@JsonProperty("documentLink") Document documentLink,
@@ -77,6 +88,7 @@ public class AdoptionUploadDocument {
                                   @JsonProperty("documentComment") String documentComment,
                                   @JsonProperty("documentType") DocumentType documentType,
                                   @JsonProperty("documentCategory") DocumentCategory documentCategory,
+                                  @JsonProperty("documentSubmitter") DynamicList documentSubmitter,
                                   @JsonProperty("role") String role,
                                   @JsonProperty("name") String name) {
         this.documentLink = documentLink;
@@ -86,5 +98,6 @@ public class AdoptionUploadDocument {
         this.documentCategory = documentCategory;
         this.role = role;
         this.name = name;
+        this.documentSubmitter = documentSubmitter;
     }
 }
