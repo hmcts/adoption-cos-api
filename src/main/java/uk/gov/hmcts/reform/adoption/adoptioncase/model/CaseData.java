@@ -90,6 +90,7 @@ public class CaseData {
     )
     private YesOrNo isChildRepresentedByGuardian;
 
+
     @JsonUnwrapped(prefix = "localGuardian")
     @Builder.Default
     @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class})
@@ -334,6 +335,13 @@ public class CaseData {
     @Builder.Default
     private Application application = new Application();
 
+    @Builder.Default
+    @CCD(
+        label = "Payment",
+        access = {DefaultAccess.class}
+    )
+    private Payment successfulPayment = new Payment();
+
     @CCD(
         label = "PCQ ID",
         access = {DefaultAccess.class}
@@ -424,7 +432,7 @@ public class CaseData {
 
 
     @CCD(
-        label = "Documents uploaded",
+        label = "Documents pending review",
         typeOverride = Collection,
         typeParameterOverride = "AdoptionDocument",
         access = { SystemUpdateAccess.class }
@@ -532,6 +540,7 @@ public class CaseData {
     )
     private String name;
 
+
     @CCD(
         label = "What do you want to do?",
         access = {DefaultAccess.class},
@@ -547,6 +556,7 @@ public class CaseData {
         typeParameterOverride = "ManageOrderType"
     )
     private ManageOrderType manageOrderType;
+
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
