@@ -22,7 +22,6 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -75,7 +74,7 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
         var caseData = details.getData();
         final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
 
-        caseData.getLaDocumentsUploaded().stream()
+        /*caseData.getLaDocumentsUploaded().stream()
                 .forEach(laUploadedDocument -> {
                     laUploadedDocument.getValue().setDate(LocalDate.now(clock));
                     laUploadedDocument.getValue().setUser(caseworkerUser.getUserDetails().getFullName());
@@ -132,7 +131,7 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
                         default -> log.info("Document doesn't fall under any provided category");
                     }
 
-                });
+                });*/
         //Clear adoption document so that it's removed from the Documents tab
         caseData.setLaDocumentsUploaded(null);
 
@@ -150,11 +149,11 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
         log.info("Callback invoked for {}", CASEWORKER_REVIEW_DOCUMENT);
         AdoptionUploadDocument adoptionUploadDocument = new AdoptionUploadDocument();
         adoptionUploadDocument.setDocumentDateAdded(adoptionDocument.getDocumentDateAdded());
-        adoptionUploadDocument.setDocumentCategory(adoptionDocument.getDocumentCategory());
+        //adoptionUploadDocument.setDocumentCategory(adoptionDocument.getDocumentCategory());
         adoptionUploadDocument.setDocumentComment(adoptionDocument.getDocumentComment());
         adoptionUploadDocument.setDocumentLink(adoptionDocument.getDocumentLink());
-        adoptionUploadDocument.setName(adoptionDocument.getName());
-        adoptionUploadDocument.setRole(adoptionDocument.getRole());
+        //adoptionUploadDocument.setName(adoptionDocument.getName());
+        //adoptionUploadDocument.setRole(adoptionDocument.getRole());
 
         if (isEmpty(adoptionDocumentList)) {
             List<ListValue<AdoptionUploadDocument>> listValues = new ArrayList<>();
