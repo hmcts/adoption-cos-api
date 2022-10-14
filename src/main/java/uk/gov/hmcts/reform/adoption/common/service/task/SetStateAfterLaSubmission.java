@@ -51,7 +51,7 @@ public class SetStateAfterLaSubmission implements CaseTask {
                     Collectors.toList()));
             });
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
-
+        log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
         return caseDetails;
     }
 }
