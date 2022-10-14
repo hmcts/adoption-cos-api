@@ -1,13 +1,11 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ReviewDocuments;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -15,32 +13,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
-import uk.gov.hmcts.reform.adoption.idam.IdamService;
-import uk.gov.hmcts.reform.idam.client.models.User;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Component
 @Slf4j
 public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, UserRole> {
-
-    @Autowired
-    private Clock clock;
-
-    @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
-    private IdamService idamService;
 
     public static final String CASEWORKER_REVIEW_DOCUMENT = "caseworker-review-document";
     public static final String SCANNED_DOCUMENT = "Review all documents";
@@ -72,7 +48,7 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
         log.info("Callback invoked for {}", CASEWORKER_REVIEW_DOCUMENT);
 
         var caseData = details.getData();
-        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
+        //final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
 
         /*caseData.getLaDocumentsUploaded().stream()
                 .forEach(laUploadedDocument -> {
@@ -144,7 +120,7 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
      * This method will add the adoption document to list at the top of the list.
      * Based on whether the list was empty or already had other documents present.
      */
-    private List<ListValue<AdoptionUploadDocument>> addDocumentToListOfSpecificCategory(
+    /*private List<ListValue<AdoptionUploadDocument>> addDocumentToListOfSpecificCategory(
         CaseData caseData, List<ListValue<AdoptionUploadDocument>> adoptionDocumentList, AdoptionDocument adoptionDocument) {
         log.info("Callback invoked for {}", CASEWORKER_REVIEW_DOCUMENT);
         AdoptionUploadDocument adoptionUploadDocument = new AdoptionUploadDocument();
@@ -183,5 +159,5 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
         }
 
         return adoptionDocumentList;
-    }
+    }*/
 }
