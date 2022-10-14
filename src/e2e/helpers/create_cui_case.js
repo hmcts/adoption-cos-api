@@ -57,6 +57,7 @@ module.exports.createCase = async () => {
         });
 
         let event = { id: "citizen-create-application" };
+      
         data = {
             applicant1FirstName: "Will",
             applicant1LastName: "Smith",

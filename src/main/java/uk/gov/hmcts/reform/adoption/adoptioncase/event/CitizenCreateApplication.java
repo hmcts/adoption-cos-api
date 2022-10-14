@@ -10,6 +10,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 import uk.gov.hmcts.reform.adoption.common.AddSystemUpdateRole;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
 
         CaseData data = details.getData();
         details.getData().setStatus(Draft);
+        // Setting the default value so that its value is shown in Summary Tab and Amend Case details screen
+        details.getData().setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
         data.setHyphenatedCaseRef(data.formatCaseRef(details.getId()));
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()

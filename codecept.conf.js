@@ -71,7 +71,14 @@ exports.config = {
     openApplicationEventPage: './src/e2e/pages/events/openApplicationEvent.page.js',
     caseListPage: './src/e2e/pages/caseList.page.js',
     eventSummaryPage: './src/e2e/pages/eventSummary.page.js',
-    landingPage: './src/e2e/pages/LandingPage.js',
+    caseViewPage: './src/e2e/pages/caseView.page.js',
+    amendApplicationDetailsPage: './src/e2e/pages/amendApplicationDetails.page.js',
+    allocateJudgePage: './src/e2e/pages/allocateJudge.page.js',
+    manageOrdersPage: './src/e2e/pages/manageOrders.page.js',
+    transferCourtPage: './src/e2e/pages/transferCourt.page.js',
+    amendCaseDetailsPage: './src/e2e/pages/amendCaseDetails.page.js',
+    paymentDetailsPage: './src/e2e/pages/paymentDetailsTab.page.js',
+    caseDetailsSummaryPage: './src/e2e/pages/summaryDetailsTab.page.js',
   },
   plugins: {
     retryFailedStep: {

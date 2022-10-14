@@ -52,12 +52,13 @@ public class CaseDataDocumentService {
         log.info("Adding document to case data for templateId : {} case id: {}", templateId, caseId);
 
 
-        log.info("Document url: {}", documentInfo.getFileId());
+        log.info("Document url: {}", documentInfo);
 
         ListValue<AdoptionDocument> adoptionDocument = ListValue.<AdoptionDocument>builder()
             .id(documentIdProvider.documentId())
             .value(adoptionDocumentFrom(documentInfo, documentType))
             .build();
+        log.info("AdoptionDocument: {}", adoptionDocument);
 
         caseData.addToDocumentsGenerated(adoptionDocument);
     }

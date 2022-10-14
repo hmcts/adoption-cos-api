@@ -12,6 +12,9 @@ public final class CaseFieldsConstants {
 
     public static final String DATE_SUBMITTED = "dateSubmitted";
 
+    //Default value as of now to Post-placement as per ADOP-1399
+    public static final String TYPE_OF_ADOPTION = "Post-placement";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }
