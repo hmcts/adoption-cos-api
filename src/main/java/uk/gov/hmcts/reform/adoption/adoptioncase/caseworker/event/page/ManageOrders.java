@@ -52,9 +52,34 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelAdditionalParaValue3-Heading", "You can add any additional directions or paragraphs on a later screen.")
             .label("LabelCostOrders3-Heading", "### Cost orders")
             .optional(CaseData::getCostOrders)
+            .page("manageOrders4")
+            .showCondition("preambleDetails=\"*\" OR allocationJudge=\"allocatePreviousProceedingsJudge\" "
+                               + "OR allocationJudge=\"reallocateJudge\"")
+            .pageLabel("Case management order first directions")
+            .label("LabelAdditionalParaValue4-Heading", "Review the paragraphs to be inserted into the order. "
+                + "These are based on the options you chose on the previous page. "
+                + "If you would like to change an option, go back to the previous page.")
+            .label("LabelPreamble4-Heading", "### Preamble", "preambleDetails=\"*\"")
+            .label("LabelPreambleValue4-Heading", "${preambleDetails}", "preambleDetails=\"*\"")
+            .label("LabelAllocation4-Heading", "### Allocation",
+                   "allocationJudge=\"*\"")
+            .label("LabelAllocationValue14-Heading", "The case is allocated to His Honour Judge ${allocatedJudge}",
+                   "allocationJudge=\"allocatePreviousProceedingsJudge\"")
+            .label("LabelAllocationValue24-Heading", "The proceedings are reallocated to [Name of Judge].",
+                   "allocationJudge=\"reallocateJudge\"")
+            .label("LabelNameOfJudge-Heading", "### Name of judge",
+                   "allocationJudge=\"reallocateJudge\"")
+            .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             .done();
     }
 
+    /**
+     * Event method to validate the right selection options are selected by the User as per the Requirements.
+     *
+     * @param detailsBefore - Application CaseDetails for the previous page
+     * @param details - Application CaseDetails for the present page
+     * @return - AboutToStartOrSubmitResponse updated to use on further pages.
+     */
     public AboutToStartOrSubmitResponse<CaseData, State> midEvent(
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
