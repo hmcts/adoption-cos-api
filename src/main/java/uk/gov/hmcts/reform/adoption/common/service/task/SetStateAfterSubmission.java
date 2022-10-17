@@ -48,8 +48,8 @@ public class SetStateAfterSubmission implements CaseTask {
             //mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             //mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
             log.info("CaseData<<<<<<<<<<<<<<>>>>>>>>>>> {}", mapper.writeValueAsString(caseDetails));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error("Exception");
         }
 
 
