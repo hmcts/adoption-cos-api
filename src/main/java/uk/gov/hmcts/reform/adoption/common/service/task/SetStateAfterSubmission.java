@@ -1,5 +1,9 @@
 package uk.gov.hmcts.reform.adoption.common.service.task;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -37,6 +41,17 @@ public class SetStateAfterSubmission implements CaseTask {
         }
 
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JSR310Module());
+            mapper.registerModule(new JavaTimeModule());
+            //mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            //mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
+            log.info("CaseData<<<<<<<<<<<<<<>>>>>>>>>>> {}", mapper.writeValueAsString(caseDetails));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
 
         return caseDetails;
     }
