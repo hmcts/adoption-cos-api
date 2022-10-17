@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.document;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.applicationinsights.core.dependencies.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class DocAssemblyService {
                                        final String filename) {
 
         final String templateName = docmosisTemplateProvider.templateNameFor(templateId, languagePreference);
-
+        log.info("template id {} with data : {} ", templateId, new Gson().toJson(templateContent));
         final DocAssemblyRequest docAssemblyRequest =
                 DocAssemblyRequest
                         .builder()
