@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -127,6 +128,8 @@ public class CaseData {
     @Builder.Default
     @CCD(access = {SystemUpdateAccess.class})
     private Parent birthFather = new Parent();
+
+
 
     @CCD(
         label = "Is the birth father represented by a solicitor?",
@@ -609,6 +612,34 @@ public class CaseData {
     )
     private String nameOfJudge;
 
+    @CCD(
+        label = "Recipients",
+        access = {DefaultAccess.class}
+    )
+    private SortedSet<RecipientsInTheCase> recipientsInTheCase;
+
+    @CCD(
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ManageHearingOptions"
+    )
+    private ManageHearingOptions manageHearingOptions;
+
+    @CCD(
+        label = "Enter hearing details",
+        access = {DefaultAccess.class}
+    )
+    private ManageHearingDetails manageHearingDetails;
+
+
+    @CCD(
+        label = "New hearing",
+        typeOverride = Collection,
+        typeParameterOverride = "ManageHearingDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageHearingDetails>> newHearings;
+
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
             return YesOrNo.NO;
@@ -701,6 +732,36 @@ public class CaseData {
             setDocumentsUploaded(documentList);
         } else {
             documents.add(0, listValue); // always add to start top of list
+        }
+    }
+
+    public void archiveHearingInformation() {
+        ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
+
+        if (null != manageHearingDetails) {
+            if (isEmpty(this.getNewHearings())) {
+                List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
+                var listValue = ListValue
+                    .<ManageHearingDetails>builder()
+                    .id("1")
+                    .value(manageHearingDetails)
+                    .build();
+                listValues.add(listValue);
+                this.setNewHearings(listValues);
+
+            } else {
+                var listValue = ListValue
+                    .<ManageHearingDetails>builder()
+                    .value(manageHearingDetails)
+                    .build();
+                int listValueIndex = 0;
+                this.getNewHearings().add(0, listValue);
+                for (ListValue<ManageHearingDetails> asListValue : this.getNewHearings()) {
+                    asListValue.setId(String.valueOf(listValueIndex++));
+                }
+            }
+
+            this.setManageHearingDetails(null);
         }
     }
 
