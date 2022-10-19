@@ -93,7 +93,8 @@ public class ManageOrders implements CcdPageConfiguration {
             .mandatory(CaseData::getLengthOfHearingFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
             .label("LabelNameOfCourt435", "### Name of court",
                    "hearingNoticesCONTAINS\"listForFirstHearing\"")
-            .mandatory(CaseData::getNameOfCourtFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .mandatory(CaseData::getNameOfCourtFirstHearing,
+                       "hearingNoticesCONTAINS\"listForFirstHearing\"")
             //            HEARINGS - FURTHER HEARING
             .label("LabelHearings441", "The application is listed for a [listing type] on [date] at "
                        + "[time] with a time estimate of [length] at [court name].",
@@ -109,7 +110,8 @@ public class ManageOrders implements CcdPageConfiguration {
             .mandatory(CaseData::getLengthOfHearingFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
             .label("LabelNameOfCourt445", "### Name of court",
                    "hearingNoticesCONTAINS\"listForFurtherHearings\"")
-            .mandatory(CaseData::getNameOfCourtFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(CaseData::getNameOfCourtFurtherHearing,
+                       "hearingNoticesCONTAINS\"listForFurtherHearings\"")
             //            HEARINGS - HEARING DATE IN FUTURE
             .label("LabelHearings451", "The application is listed for [listing type] on a date and time to be fixed by the court.",
                    "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
