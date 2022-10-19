@@ -625,12 +625,10 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private String nameOfCourtFurtherHearing;
 
-    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes",
-        regex = "\\d+ hours \\d+ minutes")
+    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
     private String lengthOfHearingFirstHearing;
 
-    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes",
-        regex = "\\d+ hours \\d+ minutes")
+    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
     private String lengthOfHearingFurtherHearing;
 
     @CCD(access = {DefaultAccess.class})
@@ -670,6 +668,20 @@ public class CaseData {
         typeOverride = MultiSelectList,
         typeParameterOverride = "BirthParentAttendance")
     private Set<BirthParentAttendance> birthParentAttendance;
+
+    public String getNameOfCourtFirstHearing() {
+        if (Objects.nonNull(familyCourtName)) {
+            return familyCourtName;
+        }
+        return nameOfCourtFirstHearing;
+    }
+
+    public String getNameOfCourtFurtherHearing() {
+        if (Objects.nonNull(familyCourtName)) {
+            return familyCourtName;
+        }
+        return nameOfCourtFurtherHearing;
+    }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
