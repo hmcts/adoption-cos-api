@@ -139,6 +139,35 @@ public class ManageOrders implements CcdPageConfiguration {
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .mandatory(CaseData::getTimeForOption2, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .done();
+
+        pageBuilder.page("manageOrders5")
+            .showCondition("attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
+                               + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
+            //          ATTENDANCE DETAILS
+            .pageLabel("Case management order second directions")
+            .label("LabelAttendance51", "### Attendance",
+                   "attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
+                       + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
+            .label("LabelAttendanceValue52", "Choose the direction for the attendees",
+                   "attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
+                       + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
+            //          APPLICANT ATTENDANCE
+            .label("LabelApplicantAttendance511", "### Applicant attendance",
+                   "attendanceCONTAINS\"applicantsAttendance\"")
+            .mandatory(CaseData::getApplicantAttendance, "attendanceCONTAINS\"applicantsAttendance\"")
+            //          CHILD ATTENDANCE
+            .label("LabelChildAttendance521", "### Child attendance",
+                   "attendanceCONTAINS\"childAttendance\"")
+            .mandatory(CaseData::getChildAttendance, "attendanceCONTAINS\"childAttendance\"")
+            //          LA ATTENDANCE
+            .label("LabelChildAttendance531", "### Local authority attendance",
+                   "attendanceCONTAINS\"localAuthorityAttendance\"")
+            .mandatory(CaseData::getLaAttendance, "attendanceCONTAINS\"localAuthorityAttendance\"")
+            //          BIRTH PARENT ATTENDANCE
+            .label("LabelChildAttendance541", "### Birth parent attendance",
+                   "attendanceCONTAINS\"birthParentsAttendance\"")
+            .mandatory(CaseData::getBirthParentAttendance, "attendanceCONTAINS\"birthParentsAttendance\"")
+            .done();
     }
 
     /**

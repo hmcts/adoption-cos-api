@@ -650,6 +650,27 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private LocalDateTime timeForOption2;
 
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ApplicantAttendance")
+    private ApplicantAttendance applicantAttendance;
+
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ChildAttendance")
+    private ChildAttendance childAttendance;
+
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "LaAttendance")
+    private Set<LaAttendance> laAttendance;
+
+    @CCD(label = "Choose all that are relevant.",
+        access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "BirthParentAttendance")
+    private Set<BirthParentAttendance> birthParentAttendance;
+
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
             return YesOrNo.NO;
