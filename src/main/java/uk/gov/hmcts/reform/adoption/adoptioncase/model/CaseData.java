@@ -560,12 +560,12 @@ public class CaseData {
     )
     private ManageOrderType manageOrderType;
 
-
     @CCD(
         label = "Recipients",
         access = {DefaultAccess.class}
     )
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
+
 
     @CCD(
         access = {DefaultAccess.class},
@@ -576,7 +576,7 @@ public class CaseData {
 
     @CCD(
         label = "Enter hearing details",
-        access = {DefaultAccess.class}
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
     private ManageHearingDetails manageHearingDetails;
 
@@ -684,6 +684,7 @@ public class CaseData {
         }
     }
 
+    @JsonIgnore
     public void archiveHearingInformation() {
         ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
 
