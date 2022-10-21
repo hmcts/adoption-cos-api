@@ -15,6 +15,10 @@ public final class CaseFieldsConstants {
     //Default value as of now to Post-placement as per ADOP-1399
     public static final String TYPE_OF_ADOPTION = "Post-placement";
 
+    public static final String NOT_APPLICABLE_ERROR = " is not applicable";
+
+    public static final String MANDATORY_ERROR = " is mandatory";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }

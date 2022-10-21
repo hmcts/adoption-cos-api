@@ -19,7 +19,6 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Builder
 public class ManageHearingDetails {
 

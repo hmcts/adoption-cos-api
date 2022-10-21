@@ -56,6 +56,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                    .name(MANAGE_HEARINGS)
                                    .description(MANAGE_HEARINGS)
                                    .showSummary()
+                                   .aboutToSubmitCallback(this::aboutToSubmit)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
     }
