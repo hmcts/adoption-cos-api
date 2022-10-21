@@ -39,13 +39,15 @@ public class ManageHearingDetails {
     private LocalDateTime hearingDateAndTime;
 
     @CCD(
-        label = "Judge"
+        label = "Judge",
+        hint = "This should be the allocated judge"
 
     )
     private String judge;
 
     @CCD(
-        label = "Court"
+        label = "Court",
+        hint = "Enter the full name of the court "
     )
     private String court;
 
@@ -66,7 +68,8 @@ public class ManageHearingDetails {
 
     @CCD(
         label = "Accessibility requirements",
-        typeOverride = FieldType.TextArea
+        typeOverride = FieldType.TextArea,
+        hint = "List any accessibility requirements needed such as disabled access"
     )
     private String accessibilityRequirements;
 
