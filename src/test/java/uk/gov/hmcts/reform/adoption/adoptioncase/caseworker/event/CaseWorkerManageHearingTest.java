@@ -65,7 +65,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForApplyingWithAlone(){
+    void checkForInvalidCheckboxSelectionForApplyingWithAlone() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -75,7 +75,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForApplyingWithNotAlone(){
+    void checkForInvalidCheckboxSelectionForApplyingWithNotAlone() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplyingWith(ApplyingWith.WITH_SPOUSE_OR_CIVIL_PARTNER);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -83,7 +83,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForApplicantSolicitor(){
+    void checkForInvalidCheckboxSelectionForApplicantSolicitor() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsApplicantRepresentedBySolicitor(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -91,7 +91,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForNoApplicantSolicitor(){
+    void checkForInvalidCheckboxSelectionForNoApplicantSolicitor() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsApplicantRepresentedBySolicitor(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -99,7 +99,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForChildRepresentedByGuardian(){
+    void checkForInvalidCheckboxSelectionForChildRepresentedByGuardian() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsChildRepresentedByGuardian(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -107,7 +107,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForChildNotRepresentedByGuardian(){
+    void checkForInvalidCheckboxSelectionForChildNotRepresentedByGuardian() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsChildRepresentedByGuardian(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -115,7 +115,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForChildRepresentedBySolicitor(){
+    void checkForInvalidCheckboxSelectionForChildRepresentedBySolicitor() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsChildRepresentedBySolicitor(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -123,7 +123,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForChildNotRepresentedBySolicitor(){
+    void checkForInvalidCheckboxSelectionForChildNotRepresentedBySolicitor() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsChildRepresentedBySolicitor(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -131,7 +131,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForHasAnotherAdoptionAgencyYes(){
+    void checkForInvalidCheckboxSelectionForHasAnotherAdoptionAgencyYes() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -139,7 +139,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForHasAnotherAdoptionAgencyNo(){
+    void checkForInvalidCheckboxSelectionForHasAnotherAdoptionAgencyNo() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -147,7 +147,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForBirthMotherRespondantYes(){
+    void checkForInvalidCheckboxSelectionForBirthMotherRespondantYes() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().getBirthMother().setToBeServed(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -155,7 +155,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForBirthMotherRespondantNo(){
+    void checkForInvalidCheckboxSelectionForBirthMotherRespondantNo() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().getBirthMother().setToBeServed(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -165,7 +165,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForBirthMotherRepresentedBySolicitorYes(){
+    void checkForInvalidCheckboxSelectionForBirthMotherRepresentedBySolicitorYes() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsBirthMotherRepresentedBySolicitor(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -173,7 +173,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForBirthMotherRepresentedBySolicitorNo(){
+    void checkForInvalidCheckboxSelectionForBirthMotherRepresentedBySolicitorNo() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsBirthMotherRepresentedBySolicitor(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -181,7 +181,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForBirthFatherRespondantYes(){
+    void checkForInvalidCheckboxSelectionForBirthFatherRespondantYes() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().getBirthFather().setToBeServed(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -189,7 +189,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForBirthFatherRespondantNo(){
+    void checkForInvalidCheckboxSelectionForBirthFatherRespondantNo() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().getBirthFather().setToBeServed(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -199,7 +199,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForBirthFatherRepresentedBySolicitorYes(){
+    void checkForInvalidCheckboxSelectionForBirthFatherRepresentedBySolicitorYes() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsBirthFatherRepresentedBySolicitor(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -207,7 +207,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForBirthFatherRepresentedBySolicitorNo(){
+    void checkForInvalidCheckboxSelectionForBirthFatherRepresentedBySolicitorNo() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsBirthFatherRepresentedBySolicitor(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -215,7 +215,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForOtherParentRespondantYes(){
+    void checkForInvalidCheckboxSelectionForOtherParentRespondantYes() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().getOtherParent().setToBeServed(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -223,7 +223,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForOtherParentRespondantNo(){
+    void checkForInvalidCheckboxSelectionForOtherParentRespondantNo() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().getOtherParent().setToBeServed(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -233,7 +233,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForOtherParentRepresentedBySolicitorYes(){
+    void checkForInvalidCheckboxSelectionForOtherParentRepresentedBySolicitorYes() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsOtherParentRepresentedBySolicitor(YesOrNo.YES);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
@@ -241,7 +241,7 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
-    void checkForInvalidCheckboxSelectionForOtherParentRepresentedBySolicitorNo(){
+    void checkForInvalidCheckboxSelectionForOtherParentRepresentedBySolicitorNo() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsOtherParentRepresentedBySolicitor(YesOrNo.NO);
         AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
