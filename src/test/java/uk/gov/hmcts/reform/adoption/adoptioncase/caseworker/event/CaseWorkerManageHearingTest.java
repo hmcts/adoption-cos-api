@@ -10,6 +10,10 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
+import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplyingWith;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MethodOfHearing;
@@ -34,6 +38,7 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 @ExtendWith(MockitoExtension.class)
 class CaseWorkerManageHearingTest {
 
+    ManageHearings manageHearings = new ManageHearings();
 
     @InjectMocks
     private CaseWorkerManageHearing caseWorkerManageHearing;
@@ -57,6 +62,190 @@ class CaseWorkerManageHearingTest {
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getManageHearingDetails()).isNotNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForApplyingWithAlone(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+        response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForApplyingWithNotAlone(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setApplyingWith(ApplyingWith.WITH_SPOUSE_OR_CIVIL_PARTNER);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForApplicantSolicitor(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsApplicantRepresentedBySolicitor(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForNoApplicantSolicitor(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsApplicantRepresentedBySolicitor(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForChildRepresentedByGuardian(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsChildRepresentedByGuardian(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForChildNotRepresentedByGuardian(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsChildRepresentedByGuardian(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForChildRepresentedBySolicitor(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsChildRepresentedBySolicitor(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForChildNotRepresentedBySolicitor(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsChildRepresentedBySolicitor(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForHasAnotherAdoptionAgencyYes(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForHasAnotherAdoptionAgencyNo(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthMotherRespondantYes(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().getBirthMother().setToBeServed(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthMotherRespondantNo(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().getBirthMother().setToBeServed(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+        response =  manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthMotherRepresentedBySolicitorYes(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsBirthMotherRepresentedBySolicitor(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthMotherRepresentedBySolicitorNo(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsBirthMotherRepresentedBySolicitor(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthFatherRespondantYes(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().getBirthFather().setToBeServed(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthFatherRespondantNo(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().getBirthFather().setToBeServed(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+        response =  manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthFatherRepresentedBySolicitorYes(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsBirthFatherRepresentedBySolicitor(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthFatherRepresentedBySolicitorNo(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsBirthFatherRepresentedBySolicitor(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForOtherParentRespondantYes(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().getOtherParent().setToBeServed(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForOtherParentRespondantNo(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().getOtherParent().setToBeServed(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+        response =  manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForOtherParentRepresentedBySolicitorYes(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsOtherParentRepresentedBySolicitor(YesOrNo.YES);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForOtherParentRepresentedBySolicitorNo(){
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsOtherParentRepresentedBySolicitor(YesOrNo.NO);
+        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.midEvent(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNull();
     }
 
 
