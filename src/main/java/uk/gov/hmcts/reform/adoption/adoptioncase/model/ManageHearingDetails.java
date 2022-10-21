@@ -1,8 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,58 +23,45 @@ public class ManageHearingDetails {
 
     @CCD(
         label = "Type of hearing",
-        access = {DefaultAccess.class},
-        hint = "For example, a first hearing",
-        displayOrder = 0
+        hint = "For example, a first hearing"
 
     )
     private String typeOfHearing;
 
     @CCD(
-        label = "Hearing Date & Time",
-        access = {DefaultAccess.class},
-        displayOrder = 1
+        label = "Hearing date & time"
     )
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime hearingDate;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    private LocalDateTime hearingDateAndTime;
 
     @CCD(
-        label = "Judge",
-        access = {DefaultAccess.class},
-        displayOrder = 3
+        label = "Judge"
+
     )
     private String judge;
 
     @CCD(
-        label = "Court",
-        access = {DefaultAccess.class},
-        displayOrder = 4
+        label = "Court"
     )
     private String court;
 
 
     @CCD(
         label = "is an interpreter needed?",
-        access = {DefaultAccess.class},
-        hint = "Given details of the interpretation needed for example, sign language or Hindu translator",
-        displayOrder = 5
+        hint = "Given details of the interpretation needed for example, sign language or Hindu translator"
     )
     private String isInterpreterNeeded;
 
     @CCD(
         label = "Method of hearing",
-        access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
-        typeParameterOverride = "MethodOfHearing",
-        displayOrder = 6
+        typeParameterOverride = "MethodOfHearing"
     )
     private MethodOfHearing methodOfHearing;
 
 
     @CCD(
         label = "Accessibility requirements",
-        access = {DefaultAccess.class},
-        displayOrder = 7,
         typeOverride = FieldType.TextArea
     )
     private String accessibilityRequirements;
@@ -85,37 +70,12 @@ public class ManageHearingDetails {
         label = "Hearing directions",
         access = {DefaultAccess.class},
         typeOverride = FieldType.MultiSelectList,
-        typeParameterOverride = "HearingDirections",
-        displayOrder = 8
+        typeParameterOverride = "HearingDirections"
     )
     private SortedSet<HearingDirections> hearingDirections;
 
-
-    @CCD(label = "Hearing duration",
-        access = {DefaultAccess.class})
-    private HearingDuration hearingDuration;
-
-
-    @CCD(label = "Hearing length, in hours",
-        access = {DefaultAccess.class},
-        showCondition = "hearingDuration = \"hoursAndMinutes\"")
-    private Integer hours;
-
-    @CCD(label = "Hearing length, in minutes",
-        access = {DefaultAccess.class},
-        showCondition = "hearingDuration = \"hoursAndMinutes\"")
-    private Integer minutes;
-
-    @CCD(label = "Number of days",
-        access = {DefaultAccess.class},
-        showCondition = "hearingDuration = \"numberOfDays\"")
-    private Integer numberOfDays;
-
-    @CCD(label = "Hearing end date & time",
-        access = {DefaultAccess.class},
-        showCondition = "hearingDuration = \"hearingEndDateAndTime\"")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime hearingEndDateAndTime;
-
+    @CCD(label = " Length of hearing",
+         hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
+    private String lengthOfHearing;
 
 }

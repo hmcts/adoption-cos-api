@@ -9,15 +9,11 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum HearingDuration implements HasLabel {
 
-    @JsonProperty("hoursAndMinutes")
-    HOURS_AND_MINUTES("Set number of hours and  minutes"),
-
     @JsonProperty("numberOfDays")
     NUMBER_OF_DAYS("Set number of days"),
 
-    @JsonProperty("hearingEndDateAndTime")
-    DATE_AND_TIME("Specific end date and time");
-
+    @JsonProperty("hoursAndMinutes")
+    HOURS_AND_MINUTES("Set number of hours and  minutes");
 
     private String label;
 }

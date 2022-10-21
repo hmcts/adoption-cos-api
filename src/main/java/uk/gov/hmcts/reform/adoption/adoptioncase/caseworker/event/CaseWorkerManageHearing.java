@@ -61,19 +61,16 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
     }
 
-
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
-        final CaseDetails<CaseData, State> details,
-        final CaseDetails<CaseData, State> beforeDetails
-    ) {
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> beforeDetails) {
+
         log.info("Callback invoked for {}", CASEWORKER_MANAGE_HEARING);
-
-        var caseData = details.getData().toBuilder().build();
-
-        caseData.archiveHearingInformation();
-
+        var caseData = details.getData();
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
     }
+
+
 }
