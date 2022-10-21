@@ -687,6 +687,8 @@ public class CaseData {
     @JsonIgnore
     public void archiveHearingInformation() {
         ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
+        manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
+        manageHearingDetails.setHearingId(UUID.randomUUID().toString());
 
         if (null != manageHearingDetails) {
             if (isEmpty(this.getNewHearings())) {
@@ -712,6 +714,8 @@ public class CaseData {
             }
 
             this.setManageHearingDetails(null);
+            this.setManageHearingOptions(null);
+            this.setRecipientsInTheCase(null);
         }
     }
 
