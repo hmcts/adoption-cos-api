@@ -13,12 +13,14 @@ async function setupScenario(I) {
   }
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
-Scenario('Verify Manage order details', async ({I,loginPage, caseListPage, caseViewPage, manageOrdersPage }) => {
+Scenario('Verify case management order details', async ({I, caseViewPage, manageOrdersPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.verifyCaseDetails();
   await manageOrdersPage.verifyErrorMessage();
   await manageOrdersPage.verifyTypeOfOrdersListed();
-  await manageOrdersPage.verifyTypeOfOrdersListed();
-  await manageOrdersPage.selectCaseManagementOrderAndVerify();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addPreambleAndReallocateJudgeInCaseManagementOrder();
+  await manageOrdersPage.caseManagementOrderCYAPage();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
