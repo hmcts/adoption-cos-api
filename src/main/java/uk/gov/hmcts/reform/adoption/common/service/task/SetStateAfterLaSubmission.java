@@ -62,8 +62,11 @@ public class SetStateAfterLaSubmission implements CaseTask {
             });
 
         caseDetails.getData().getCombinedDocumentsGenerated().stream()
-            .filter(listValue -> listValue.getValue().getDocumentType()
-                .equals(APPLICATION_LA_SUMMARY_EN)).collect(Collectors.toList());
+            .forEach(listValue -> {
+                listValue.getValue().getDocumentType()
+                .equals(APPLICATION_LA_SUMMARY_EN);
+                caseDetails.getData().getLaDocumentsUploaded().add(listValue);
+            });
 
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
 
