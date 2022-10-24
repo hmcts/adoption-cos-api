@@ -77,49 +77,51 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         caseData.getAdoptionUploadDocument().setRole(caseData.getRole());
 
         switch (caseData.getAdoptionUploadDocument().getDocumentCategory()) {
-            case APPLICATION_DOCUMENTS -> {
+            case APPLICATION_DOCUMENTS:
                 caseData.setApplicationDocumentsCategory(addDocumentToListOfSpecificCategory(
                     caseData,
                     caseData.getApplicationDocumentsCategory()
                 ));
                 break;
-            }
-            case COURT_ORDERS -> {
+
+            case COURT_ORDERS:
                 caseData.setCourtOrdersDocumentCategory(addDocumentToListOfSpecificCategory(
                     caseData,
                     caseData.getCourtOrdersDocumentCategory()
                 ));
                 break;
-            }
-            case REPORTS -> {
+
+            case REPORTS:
                 caseData.setReportsDocumentCategory(addDocumentToListOfSpecificCategory(
                     caseData,
                     caseData.getReportsDocumentCategory()
                 ));
                 break;
-            }
-            case STATEMENTS -> {
+
+            case STATEMENTS:
                 caseData.setStatementsDocumentCategory(addDocumentToListOfSpecificCategory(
                     caseData,
                     caseData.getStatementsDocumentCategory()
                 ));
                 break;
-            }
-            case CORRESPONDENCE -> {
+
+            case CORRESPONDENCE:
                 caseData.setCorrespondenceDocumentCategory(addDocumentToListOfSpecificCategory(
                     caseData,
                     caseData.getCorrespondenceDocumentCategory()
                 ));
                 break;
-            }
-            case ADDITIONAL_DOCUMENTS -> {
+
+            case ADDITIONAL_DOCUMENTS:
                 caseData.setAdditionalDocumentsCategory(addDocumentToListOfSpecificCategory(
                     caseData,
                     caseData.getAdditionalDocumentsCategory()
                 ));
                 break;
-            }
-            default -> log.info("Document doesn't fall under any provided category");
+
+            default:
+                log.info("Document doesn't fall under any provided category");
+                break;
         }
 
         caseData.setRole(null);
