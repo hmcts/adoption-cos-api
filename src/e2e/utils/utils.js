@@ -121,7 +121,7 @@ module.exports = {
         "documentsUploaded": [],
         "dueDate": null,
         "familyCourtEmailId": "adoptionproject@mailinator.com",
-        "familyCourtName": "xyz",
+        "familyCourtName": "Swansea",
         "findFamilyCourt": "Yes",
         "hasAnotherAdopAgencyOrLA": "No",
         "localAuthorityContactEmail": "agency1@email.co.uk",

@@ -13,12 +13,26 @@ async function setupScenario(I) {
   }
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
-Scenario('Verify Manage order details', async ({I,loginPage, caseListPage, caseViewPage, manageOrdersPage }) => {
+Scenario('Verify Preamble and Reallocate Judge in Case Management Order details', async ({I, caseViewPage, manageOrdersPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.verifyCaseDetails();
   await manageOrdersPage.verifyErrorMessage();
   await manageOrdersPage.verifyTypeOfOrdersListed();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addPreambleAndReallocateJudgeInCaseManagementOrder();
+  await manageOrdersPage.caseManagementOrderPreambleAndReallocateJudgeCYAPage();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
+});
+
+Scenario('Verify Case management order first directions details', async ({I, caseViewPage, manageOrdersPage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
+  await manageOrdersPage.verifyCaseDetails();
+  await manageOrdersPage.verifyErrorMessage();
   await manageOrdersPage.verifyTypeOfOrdersListed();
-  await manageOrdersPage.selectCaseManagementOrderAndVerify();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.caseManagementOrderFirstDirections();
+  await manageOrdersPage.caseManagementOrderFirstDirectionsCYAPage();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
