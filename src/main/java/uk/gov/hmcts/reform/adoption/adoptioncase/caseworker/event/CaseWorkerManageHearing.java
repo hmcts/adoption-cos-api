@@ -66,6 +66,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         CaseDetails<CaseData, State> beforeDetails) {
 
         log.info("Callback invoked for {}", CASEWORKER_MANAGE_HEARING);
+        log.info("Callback invoked for {}", CASEWORKER_MANAGE_HEARING);
         var caseData = details.getData();
         caseData.archiveHearingInformation();
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
