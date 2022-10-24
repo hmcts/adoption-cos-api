@@ -45,6 +45,7 @@ public class ManageHearings implements CcdPageConfiguration {
             .done();
     }
 
+    @SuppressWarnings({"unchecked"})
     public AboutToStartOrSubmitResponse<CaseData, State> midEvent(
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
@@ -65,6 +66,7 @@ public class ManageHearings implements CcdPageConfiguration {
             .build();
     }
 
+    @SuppressWarnings({"unchecked"})
     public AboutToStartOrSubmitResponse<CaseData, State> midEventAfterRecipientSelection(
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
