@@ -33,6 +33,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -89,7 +90,6 @@ public class CaseData {
         access = {SystemUpdateAccess.class}
     )
     private YesOrNo isChildRepresentedByGuardian;
-
 
     @JsonUnwrapped(prefix = "localGuardian")
     @Builder.Default
@@ -542,7 +542,6 @@ public class CaseData {
     )
     private String name;
 
-
     @CCD(
         label = "What do you want to do?",
         access = {DefaultAccess.class},
@@ -587,6 +586,59 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
+
+    @CCD(label = "Copy and paste or type directly into the text box",
+        typeOverride = TextArea,
+        access = {DefaultAccess.class})
+    private String preambleDetails;
+
+    @CCD(
+        label = "Choose which judge to allocate to",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "AllocationJudge")
+    private AllocationJudge allocationJudge;
+
+    @CCD(label = "You can choose one or 2 options here",
+        access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "HearingNotices")
+    private Set<HearingNotices> hearingNotices;
+
+    @CCD(label = "Select mode of hearing to choose between in-person or remote hearings.",
+        access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "ModeOfHearing")
+    private Set<ModeOfHearing> modeOfHearing;
+
+    @CCD(label = "If relevant",
+        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "SelectedLocalAuthority")
+    private Set<SelectedLocalAuthority> selectedLocalAuthority;
+
+    @CCD(label = "You are choosing which parties are issued with a direction on whether or not they can attend the"
+        + "\nhearing. You can choose more than one option.",
+        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "Attendance")
+    private Set<Attendance> attendance;
+
+    @CCD(label = "If relevant",
+        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "LeaveToOppose")
+    private Set<LeaveToOppose> leaveToOppose;
+
+    @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "CostOrders")
+    private Set<CostOrders> costOrders;
+
+    @CCD(label = "Enter the full name and title of the judge as it would appear on the order",
+        access = {DefaultAccess.class, SystemUpdateAccess.class}
+    )
+    private String nameOfJudge;
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {

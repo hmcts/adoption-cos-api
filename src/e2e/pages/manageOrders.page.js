@@ -37,13 +37,14 @@ module.exports = {
     await I.retry(3).seeElement(this.fields.finalAdoptionOrder);
   },
 
-  async selectCaseManagementOrderAndVerify(){
+  async selectCaseManagementOrderAndVerify(caseId){
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
     await I.retry(3).seeElement(this.fields.errorMessage);
     await I.retry(3).click(this.fields.caseManagementOrder);
     await I.retry(3).click(this.fields.continueButton);
     await I.retry(3).click(this.fields.continueButton);
-    await I.retry(3).seeElement(this.fields.manageOrdersUpdate);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
   },
 };
