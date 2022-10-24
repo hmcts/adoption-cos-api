@@ -36,14 +36,14 @@ public class ManageHearingDetails {
 
     @CCD(
         label = "Judge",
-        hint = "This should be the allocated judge"
+        hint = "This should be the allocated judge, if possible."
 
     )
     private String judge;
 
     @CCD(
         label = "Court",
-        hint = "Enter the full name of the court "
+        hint = "Enter the full name of the court where the hearing will be held "
     )
     private String court;
 
