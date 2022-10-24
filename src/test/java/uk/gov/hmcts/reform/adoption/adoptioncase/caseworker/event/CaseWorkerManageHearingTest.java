@@ -12,6 +12,7 @@ import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MethodOfHearing;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -70,6 +71,7 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setCourt("test court");
         manageHearingDetails.setJudge("test judge");
         data.setManageHearingDetails(manageHearingDetails);
+        data.setManageHearingOptions(ManageHearingOptions.ADD_NEW_HEARING);
         details.setData(data);
         details.setId(1L);
         return details;

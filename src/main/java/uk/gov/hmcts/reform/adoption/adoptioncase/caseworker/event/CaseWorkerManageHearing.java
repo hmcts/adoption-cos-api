@@ -8,6 +8,7 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
@@ -67,7 +68,11 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
 
         log.info("Callback invoked for {}", CASEWORKER_MANAGE_HEARING);
         var caseData = details.getData();
-        caseData.archiveHearingInformation();
+        if (ManageHearingOptions.ADD_NEW_HEARING.equals(caseData.getManageHearingOptions())) {
+            caseData.archiveHearingInformation();
+        } else if (ManageHearingOptions.VACATE_HEARING.equals(caseData.getManageHearingOptions())) {
+            caseData.updateVacatedHearings();
+        }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
