@@ -5,14 +5,12 @@ const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 
 let caseId;
 
-Feature('Manage order tests').retry(1);
+Feature('Manage order tests').retry(0);
 
 async function setupScenario(I) {
-  if (!caseId) {
     caseId = await laHelper.createCompleteCase();
     console.log('CCD Case number - '+ caseId);
-  }
-  await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
+    await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 Scenario('Verify case management order Preamble and Reallocation details', async ({I, caseViewPage, manageOrdersPage }) => {
   await setupScenario(I);
