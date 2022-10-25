@@ -18,9 +18,9 @@ Scenario('Verify case management order Preamble and Reallocation details', async
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.verifyCaseDetails();
-  await manageOrdersPage.verifyErrorMessage();
+  await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
-  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.selectCaseManagementOrderAndVerify();
   await manageOrdersPage.addPreambleAndReallocateJudgeInCaseManagementOrder();
   await manageOrdersPage.caseManagementOrderPreambleReAllocatedCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
@@ -29,10 +29,9 @@ Scenario('Verify case management order Preamble and Reallocation details', async
 Scenario('Verify case management order Preamble and allocation details', async ({I, caseViewPage, manageOrdersPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
-  await manageOrdersPage.verifyCaseDetails();
-  await manageOrdersPage.verifyErrorMessage();
+  await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
-  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.selectCaseManagementOrderAndVerify();
   await manageOrdersPage.addPreambleAndPreviousAllocateJudgeInCaseManagementOrder();
   await manageOrdersPage.caseManagementOrderPreambleAllocatedCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);

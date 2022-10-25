@@ -7,6 +7,7 @@ module.exports = {
       ChildName: 'h3:nth-child(2)',
       continueButton: 'button[type="submit"]',
       manageOrderTypeErrorMessage: '#manageOrderType .error-message',
+      manageOrderActivityErrorMessage: '#manageOrderActivity .error-message',
       createOrder:'#manageOrderActivity-createOrder',
       caseManagementOrder: '#manageOrderType-caseManagementOrder',
       generalDirectionsOrder: '#manageOrderType-generalDirectionsOrder',
@@ -26,14 +27,14 @@ module.exports = {
     await I.retry(3).seeElement(this.fields.ChildName);
   },
 
-  async verifyErrorMessage(){
+  async selectCreateNewOrder(){
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
-    await I.retry(3).seeElement(this.fields.errorMessage);
+    await I.wait(3);
+    await I.retry(3).see('What do you want to do? is required',this.fields.manageOrderActivityErrorMessage);
     await I.retry(3).click(this.fields.createOrder);
     await I.retry(3).click(this.fields.continueButton);
   },
-
 
   async verifyTypeOfOrdersListed(){
     await I.wait(3);
@@ -42,7 +43,7 @@ module.exports = {
     await I.retry(3).seeElement(this.fields.finalAdoptionOrder);
   },
 
-  async selectCaseManagementOrderAndVerify(caseId){
+  async selectCaseManagementOrderAndVerify(){
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
