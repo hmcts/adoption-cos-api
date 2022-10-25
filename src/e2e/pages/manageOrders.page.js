@@ -6,7 +6,7 @@ module.exports = {
       caseId: 'h3:nth-child(1)',
       ChildName: 'h3:nth-child(2)',
       continueButton: 'button[type="submit"]',
-      errorMessage: '//span[starts-with(@class,"error-message")]',
+      manageOrderTypeErrorMessage: '#manageOrderType .error-message',
       createOrder:'#manageOrderActivity-createOrder',
       caseManagementOrder: '#manageOrderType-caseManagementOrder',
       generalDirectionsOrder: '#manageOrderType-generalDirectionsOrder',
@@ -45,8 +45,8 @@ module.exports = {
   async selectCaseManagementOrderAndVerify(caseId){
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
-    await I.retry(3).seeElement(this.fields.errorMessage);
     await I.wait(3);
+    await I.retry(3).see('Select type of order is required',this.fields.manageOrderTypeErrorMessage);
     await I.retry(3).click(this.fields.caseManagementOrder);
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
