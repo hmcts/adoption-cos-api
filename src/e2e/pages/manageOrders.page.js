@@ -46,6 +46,7 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
     await I.retry(3).seeElement(this.fields.errorMessage);
+    await I.wait(3);
     await I.retry(3).click(this.fields.caseManagementOrder);
     await I.retry(3).click(this.fields.continueButton);
   },
@@ -82,6 +83,7 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.preamble);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.nameOfAllocatedJudge);
+    await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
   },
 
@@ -89,6 +91,7 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.preamble);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.nameOfAllocatedJudge);
+    await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
   },
 };
