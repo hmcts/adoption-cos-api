@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
-import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 
 @Component
@@ -61,7 +60,8 @@ public class SetStateAfterLaSubmission implements CaseTask {
                 }
             });
 
-        caseDetails.getData().getCombinedDocumentsGenerated().stream()
+
+        /*caseDetails.getData().getCombinedDocumentsGenerated().stream()
             .forEach(listValue -> {
                 log.info("DocumentType: {}", listValue.getValue().getDocumentType());
                 listValue.getValue().getDocumentType()
@@ -71,7 +71,7 @@ public class SetStateAfterLaSubmission implements CaseTask {
                 caseDetails.getData().getLaDocumentsUploaded().add(listValue);
                 log.info("LaUploadedDocuments list after: {}",caseDetails.getData().getLaDocumentsUploaded());
                 log.info("LaUploadedDocuments list size after: {}",caseDetails.getData().getLaDocumentsUploaded().size());
-            });
+            });*/
 
         log.info("State set to {}, CaseID {}", caseDetails.getState(), caseDetails.getId());
 

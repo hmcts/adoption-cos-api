@@ -666,6 +666,17 @@ public class CaseData {
                 .stream()
                 .filter(listValue -> listValue.getValue().getDocumentType()
                     .equals(APPLICATION_LA_SUMMARY_EN)).collect(Collectors.toList()));
+        this.getCombinedDocumentsGenerated().stream()
+            .forEach(listValue -> {
+                //log.info("DocumentType: {}", listValue.getValue().getDocumentType());
+                listValue.getValue().getDocumentType()
+                    .equals(APPLICATION_LA_SUMMARY_EN);
+                //log.info("LaUploadedDocuments list before: {}",caseDetails.getData().getLaDocumentsUploaded());
+                //log.info("LaUploadedDocuments list size before: {}",caseDetails.getData().getLaDocumentsUploaded().size());
+                this.getLaDocumentsUploaded().add(listValue);
+                //log.info("LaUploadedDocuments list after: {}",caseDetails.getData().getLaDocumentsUploaded());
+                //log.info("LaUploadedDocuments list size after: {}",caseDetails.getData().getLaDocumentsUploaded().size());
+            });
     }
 
     @JsonIgnore
