@@ -19,6 +19,5 @@ Scenario('Verify Manage order details', async ({I,loginPage, caseListPage, caseV
   await manageOrdersPage.verifyCaseDetails();
   await manageOrdersPage.verifyErrorMessage();
   await manageOrdersPage.verifyTypeOfOrdersListed();
-  await manageOrdersPage.verifyTypeOfOrdersListed();
-  await manageOrdersPage.selectCaseManagementOrderAndVerify();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
 });

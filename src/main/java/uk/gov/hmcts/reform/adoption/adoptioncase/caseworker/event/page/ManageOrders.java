@@ -31,6 +31,27 @@ public class ManageOrders implements CcdPageConfiguration {
             .pageLabel("Manage orders and directions")
             .showCondition("manageOrderActivity=\"createOrder\"")
             .mandatory(CaseData::getManageOrderType)
+            .page("manageOrders3", this::midEvent)
+            .showCondition("manageOrderType=\"caseManagementOrder\"")
+            .pageLabel("Create case management (gatekeeping) order")
+            .label("LabelPreamble3-Heading", "### Preamble")
+            .optional(CaseData::getPreambleDetails)
+            .label("LabelAllocation3-Heading", "### Allocation")
+            .optional(CaseData::getAllocationJudge)
+            .label("LabelHearing3-Heading", "### Hearings")
+            .optional(CaseData::getHearingNotices)
+            .label("LabelModeOfHearing3-Heading", "### Mode of hearing")
+            .optional(CaseData::getModeOfHearing)
+            .label("LabelLA3-Heading", "### Local authority")
+            .optional(CaseData::getSelectedLocalAuthority)
+            .label("LabelAttendance3-Heading", "### Attendance")
+            .optional(CaseData::getAttendance)
+            .label("LabelLeaveToOppose3-Heading", "### Leave to oppose")
+            .optional(CaseData::getLeaveToOppose)
+            .label("LabelAdditionalPara3-Heading", "### Additional paragraphs")
+            .label("LabelAdditionalParaValue3-Heading", "You can add any additional directions or paragraphs on a later screen.")
+            .label("LabelCostOrders3-Heading", "### Cost orders")
+            .optional(CaseData::getCostOrders)
             .done();
 
         pageBuilder.page("manageOrders3", this::midEvent)
@@ -179,6 +200,26 @@ public class ManageOrders implements CcdPageConfiguration {
      * @param details - Application CaseDetails for the present page
      * @return - AboutToStartOrSubmitResponse updated to use on further pages.
      */
+    public AboutToStartOrSubmitResponse<CaseData, State> midEvent(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
+        CaseData caseData = details.getData();
+        final List<String> errors = new ArrayList<>();
+
+        Set<HearingNotices> selectedHearingNotices = caseData.getHearingNotices();
+
+        if (isNotEmpty(selectedHearingNotices)
+            && selectedHearingNotices.contains(HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE)
+            && (isNotEmpty(caseData.getModeOfHearing()) || selectedHearingNotices.size() > 1)) {
+            errors.add(ERROR_CHECK_HEARINGS_SELECTION);
+        }
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(errors)
+            .build();
+    }
+
     public AboutToStartOrSubmitResponse<CaseData, State> midEvent(
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
