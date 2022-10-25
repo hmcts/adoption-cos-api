@@ -81,6 +81,8 @@ module.exports = {
 
   async caseManagementOrderCYAPage(){
     await I.wait(3);
+    await I.retry(3).waitForText('Check your answers',30);
+    await I.retry(3).see('Check the information below carefully.');
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.preamble);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.nameOfAllocatedJudge);
     await I.wait(3);
@@ -89,9 +91,12 @@ module.exports = {
 
   async caseManagementOrderPreambleAllocatedCYAPage(){
     await I.wait(3);
+    await I.retry(3).waitForText('Check your answers',30);
+    await I.retry(3).see('Check the information below carefully.');
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.preamble);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.nameOfAllocatedJudge);
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
   },
 };
