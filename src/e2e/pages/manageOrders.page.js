@@ -79,12 +79,12 @@ module.exports = {
     await I.retry(3).click(this.fields.continueButton);
   },
 
-  async caseManagementOrderCYAPage(){
+  async caseManagementOrderPreambleReAllocatedCYAPage(){
     await I.wait(3);
     await I.retry(3).waitForText('Check your answers',30);
     await I.retry(3).see('Check the information below carefully.');
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.preamble);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.nameOfAllocatedJudge);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.nameOfReallocatedJudge);
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
   },

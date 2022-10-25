@@ -22,7 +22,7 @@ Scenario('Verify case management order Preamble and Reallocation details', async
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
   await manageOrdersPage.addPreambleAndReallocateJudgeInCaseManagementOrder();
-  await manageOrdersPage.caseManagementOrderCYAPage();
+  await manageOrdersPage.caseManagementOrderPreambleReAllocatedCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
 
