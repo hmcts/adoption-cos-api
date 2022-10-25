@@ -48,6 +48,7 @@ module.exports = {
     await I.retry(3).seeElement(this.fields.errorMessage);
     await I.wait(3);
     await I.retry(3).click(this.fields.caseManagementOrder);
+    await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
   },
   async addPreambleAndReallocateJudgeInCaseManagementOrder(){
