@@ -5,6 +5,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
+/**
+ * Contains method to add Page Configuration for ExUI.
+ * Display the Manage hearings Details screen with all required fields.
+ */
 public class ManageHearings implements CcdPageConfiguration {
 
     @Override
