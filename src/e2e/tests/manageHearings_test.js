@@ -18,4 +18,6 @@ Scenario('Manage Hearings of a case - Add new Hearing ', async ({I,loginPage, ca
   await manageHearingsPage.verifyPageDetails();
   await manageHearingsPage.verifyManageHearingsPageFunctionality();
   await manageHearingsPage.addNewHearingOptions();
+  await manageHearingsPage.addRecepientDetails();
+  await manageHearingsPage.verifyAddNewHearingCheckYourAnswers();
 });
