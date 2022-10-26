@@ -50,6 +50,7 @@ module.exports = {
       output.debug(`Logged in as ${user.email}`);
       currentUser = user;
     I.grabCurrentUrl();
+    I.wait(3);
   },
 
   async goToPage(url) {
