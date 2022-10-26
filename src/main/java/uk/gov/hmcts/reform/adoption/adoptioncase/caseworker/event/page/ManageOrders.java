@@ -130,7 +130,7 @@ public class ManageOrders implements CcdPageConfiguration {
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .label("LabelLocalAuthority472", "The Local Authority shall:<br>"
                        + "<p>**1.** By HH:MM on DD:MM:YY file the Annex A report; and<br>"
-                       + "**2.** By HH:MM on the (date in 14 days from the date above) detailing the following:</p>"
+                       + "**2.** By HH:MM on DD:MM:YY (date in 14 days from the date above) detailing the following:</p>"
                        + "&emsp;**a.** The date the Local Authority most recently ascertained the views of the "
                        + "birth parents in relation to this application;"
                        + "<br>&emsp;**b.** The steps taken to confirm the current accuracy of the addresses provided? "
@@ -140,7 +140,7 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelLocalAuthority473", "### Date and time for option 1",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .mandatory(CaseData::getDateAndTimeForOption1, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
-            .label("LabelLocalAuthority474", "### Time for option 2",
+            .label("LabelLocalAuthority474", "### Date and time for option 2",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .mandatory(CaseData::getTimeForOption2, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .done();
