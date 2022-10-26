@@ -87,5 +87,7 @@ module.exports = {
     I.see("Respondent(birth mother)");
     I.see("Respondent(birth father)");
     I.see("Add a new hearing");
+    await I.retry(5).click(this.fields.continueButton);
+    await I.retry(5).seeElement(this.fields.alertMessage);
   }
 };
