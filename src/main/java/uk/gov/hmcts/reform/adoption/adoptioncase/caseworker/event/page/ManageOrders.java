@@ -71,13 +71,14 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelPreamble412", "### Preamble", "preambleDetails=\"*\"")
             .label("LabelPreambleValue413", "${preambleDetails}", "preambleDetails=\"*\"")
             //          ALLOCATION DETAILS
-            .label("LabelAllocation421", "### Allocation",
+            .label("LabelAllocation4-Heading", "### Allocation",
                    "allocationJudge=\"*\"")
-            .label("LabelAllocationValue422", "The case is allocated to His Honour Judge ${allocatedJudge}",
+            .label("LabelAllocationValue14-Heading", "The case is allocated to [Name of the judge].",
                    "allocationJudge=\"allocatePreviousProceedingsJudge\"")
-            .label("LabelAllocationValue423", "The proceedings are reallocated to [Name of Judge].",
+            .mandatory(CaseData::getAllocatedJudge, "allocationJudge=\"allocatePreviousProceedingsJudge\"")
+            .label("LabelAllocationValue24-Heading", "The proceedings are reallocated to [Name of Judge].",
                    "allocationJudge=\"reallocateJudge\"")
-            .label("LabelNameOfJudge424", "### Name of judge",
+            .label("LabelNameOfJudge-Heading", "### Name of judge",
                    "allocationJudge=\"reallocateJudge\"")
             .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             //            HEARINGS - FIRST HEARING
