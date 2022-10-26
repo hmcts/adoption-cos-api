@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -19,6 +20,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.HearingNotices.HEA
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage orders Details screen with all required fields.
  */
+@Slf4j
 public class ManageOrders implements CcdPageConfiguration {
 
     public static final String ERROR_CHECK_HEARINGS_SELECTION = "Please check your selection for Hearings";
@@ -55,6 +57,25 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelAdditionalParaValue39", "You can add any additional directions or paragraphs on a later screen.")
             .label("LabelCostOrders30", "### Cost orders")
             .optional(CaseData::getCostOrders)
+            .page("manageOrders4")
+            .showCondition("preambleDetails=\"*\" OR allocationJudge=\"allocatePreviousProceedingsJudge\" "
+                               + "OR allocationJudge=\"reallocateJudge\"")
+            .pageLabel("Case management order first directions")
+            .label("LabelAdditionalParaValue4-Heading", "Review the paragraphs to be inserted into the order. "
+                + "These are based on the options you chose on the previous page. "
+                + "If you would like to change an option, go back to the previous page.")
+            .label("LabelPreamble4-Heading", "### Preamble", "preambleDetails=\"*\"")
+            .label("LabelPreambleValue4-Heading", "${preambleDetails}", "preambleDetails=\"*\"")
+            .label("LabelAllocation4-Heading", "### Allocation",
+                   "allocationJudge=\"*\"")
+            .label("LabelAllocationValue14-Heading", "The case is allocated to [Name of the judge].",
+                   "allocationJudge=\"allocatePreviousProceedingsJudge\"")
+            .mandatory(CaseData::getAllocatedJudge, "allocationJudge=\"allocatePreviousProceedingsJudge\"")
+            .label("LabelAllocationValue24-Heading", "The proceedings are reallocated to [Name of Judge].",
+                   "allocationJudge=\"reallocateJudge\"")
+            .label("LabelNameOfJudge-Heading", "### Name of judge",
+                   "allocationJudge=\"reallocateJudge\"")
+            .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             .done();
 
         pageBuilder.page("manageOrders4")
@@ -158,6 +179,7 @@ public class ManageOrders implements CcdPageConfiguration {
         CaseData caseData = details.getData();
         final List<String> errors = new ArrayList<>();
 
+        caseData.setAllocatedJudge(detailsBefore.getData().getAllocatedJudge());
         Set<HearingNotices> selectedHearingNotices = caseData.getHearingNotices();
 
         if (isNotEmpty(selectedHearingNotices)
