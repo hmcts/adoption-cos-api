@@ -21,11 +21,11 @@ public enum BirthParentAttendance implements HasLabel {
 
     @JsonProperty("birthParentAttendanceCourtArrange")
     BIRTH_PARENT_ATTENDANCE_COURT_ARRANGE("3. the court shall arrange personal service of notice of the "
-                                              + "hearing/this order on the respondent parents"),
+                                              + "hearing/this order on the respondent parents."),
 
     @JsonProperty("birthParentAttendanceLaArrange")
     BIRTH_PARENT_ATTENDANCE_LA_ARRANGE("4. the local authority shall arrange personal service of notice of the "
-                                              + "hearing/this order on the respondent parents"),
+                                              + "hearing/this order on the respondent parents."),
 
     @JsonProperty("birthParentAttendanceReceiptOfOrder")
     BIRTH_PARENT_ATTENDANCE_RECEIPT_OF_ORDER("5. Upon receipt of this order the birth mother and father must "
@@ -47,7 +47,7 @@ public enum BirthParentAttendance implements HasLabel {
                                            + "copy of this order; and, if so"
                                            + "                                        "
                                            + "b. consider whether a final order "
-                                           + "should be made at that hearing"),
+                                           + "should be made at that hearing."),
 
     @JsonProperty("birthParentAttendanceOrderMade")
     BIRTH_PARENT_ATTENDANCE_ORDER_MADE("8. If  the court considers that a Final Order should be made the  First Hearing "
