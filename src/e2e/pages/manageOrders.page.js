@@ -123,7 +123,7 @@ module.exports = {
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
   },
-  async caseManagementOrderFirstDirections(){
+  async caseManagementOrderListForFirstHearing(){
       await I.wait(3);
       await I.retry(3).click(this.fields.listForFirstHearing);
       await I.retry(3).click(this.fields.continueButton);
@@ -137,13 +137,8 @@ module.exports = {
       await I.retry(3).fillField(this.fields.lengthOfHearingFirstHearing, manageOrderDetails.caseManagementOrderDetails.lengthOfHearingFirstHearing);
       await I.retry(3).click(this.fields.continueButton);
     },
-    async caseManagementOrderPreambleAndReallocateJudgeCYAPage(){
-        await I.wait(3);
-        await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.preamble);
-        await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.nameOfReallocatedJudge);
-        await I.retry(3).click(this.fields.continueButton);
-      },
-      async caseManagementOrderFirstDirectionsCYAPage(){
+
+      async caseManagementOrderListForFirstHearingCYAPage(){
           await I.wait(3);
           await I.retry(3).see('1 Jan 2050, 12:00:00 AM');
           await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.lengthOfHearingFirstHearing);
