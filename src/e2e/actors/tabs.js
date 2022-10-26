@@ -57,6 +57,23 @@ function getTabSelector(tab){
   return `//*[@role="tab"]/div[text() = "${tab}"]`;
 }
 
+function pageFieldSelector(pathToField) {
+    let path = [].concat(pathToField);
+    let fieldName = path.splice(-1, 1)[0];
+    let selector = TAB_CLASS_SELECTOR;
+
+    // if it is a simple case field then it will not have a complex-panel-[title|simple-field] class
+    if (path.length === 0) {
+      return `${selector}//tr[.//th/div[text()="${fieldName}"]]`;
+
+    }
+    path.forEach(step => {
+      selector = `//*[@class="complex-panel" and .//*[@class="complex-panel-title" and .//*[text()="${step}"]]]`;
+
+    });
+    return `${selector}//*[contains(@class,"complex-panel-simple-field") and .//th/span[text()="${fieldName}"]]`;
+  }
+
 module.exports = {
   seeInTab: function (pathToField, fieldValue) {
     const fieldSelector = tabFieldSelector(pathToField);
@@ -218,5 +235,10 @@ module.exports = {
 
   async dontSeeTab(tab){
     this.dontSeeElement(getTabSelector(tab));
-  }
+  },
+
+  seeTextInPage(pathToField) {
+      const fieldSelector = pageFieldSelector(pathToField);
+      this.seeElement(locate(fieldSelector));
+    }
 };

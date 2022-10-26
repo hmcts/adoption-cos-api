@@ -58,9 +58,9 @@ public class ManageOrders implements CcdPageConfiguration {
 
         pageBuilder.page("manageOrders4")
             .showCondition("preambleDetails=\"*\" OR allocationJudge=\"*\" "
-                + "OR hearingNoticesCONTAINS\"listForFirstHearing\" OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
-                + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" OR modeOfHearingCONTAINS\"setModeOfHearing\" "
-                + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+                               + "OR hearingNoticesCONTAINS\"listForFirstHearing\" OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
+                               + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" OR modeOfHearingCONTAINS\"setModeOfHearing\" "
+                               + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             //          PREAMBLE DETAILS
             .pageLabel("Case management order first directions")
             .label("LabelAdditionalParaValue411", "Review the paragraphs to be inserted into the order. "
@@ -122,6 +122,24 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelNameOfCourt461", "### Mode of hearing",
                    "modeOfHearingCONTAINS\"setModeOfHearing\"")
             .mandatory(CaseData::getModeOfHearings, "modeOfHearingCONTAINS\"setModeOfHearing\"")
+            //            LOCAL AUTHORITY
+            .label("LabelLocalAuthority471", "### Local authority",
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .label("LabelLocalAuthority472", "The Local Authority shall:<br>"
+                       + "<p>**1.** By HH:MM on DD:MM:YY file the Annex A report; and<br>"
+                       + "**2.** By HH:MM on the (date in 14 days from the date above) detailing the following:</p>"
+                       + "&emsp;**a.** The date the Local Authority most recently ascertained the views of the "
+                       + "birth parents in relation to this application;"
+                       + "<br>&emsp;**b.** The steps taken to confirm the current accuracy of the addresses provided? "
+                       + "Whether the addresses provided for the birth parents upon issue of the application are accurate?"
+                       + "<br>&emsp;**c.** Whether the parents are aware of the date of the hearing in section 3 above?",
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .label("LabelLocalAuthority473", "### Date and time for option 1",
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .mandatory(CaseData::getDateAndTimeForOption1, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .label("LabelLocalAuthority474", "### Time for option 2",
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .mandatory(CaseData::getTimeForOption2, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .done();
     }
 
