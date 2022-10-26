@@ -24,6 +24,7 @@ module.exports = {
     manageOrders: 'Manage orders',
     allocateJudge: 'Allocate judge',
     transferCourt: 'Transfer Court',
+    manageHearings: 'Manage hearings',
   },
   // tabs
   tabs: {
