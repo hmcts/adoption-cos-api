@@ -13,7 +13,7 @@ public enum ReasonForVacatingHearing implements HasLabel {
     AGREEMENT_OR_CONSENT_ORDER_MADE("Agreement or consent order made"),
 
     @JsonProperty("caseWithdrawn")
-    CASE_WITHDRAWN("Case withdraw"),
+    CASE_WITHDRAWN("Case withdrawn"),
 
     @JsonProperty("caseDismissed")
     CASE_DISMISSED("Case dismissed");

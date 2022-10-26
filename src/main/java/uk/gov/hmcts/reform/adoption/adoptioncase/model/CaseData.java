@@ -646,7 +646,7 @@ public class CaseData {
     private ManageHearingDetails manageHearingDetails;
 
     @CCD(
-        label = "Reason for vacating hearing",
+        label = "Reason for vacating a hearing",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
     private ReasonForVacatingHearing reasonForVacatingHearing;
