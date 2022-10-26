@@ -133,8 +133,6 @@ public class CaseData {
     @CCD(access = {SystemUpdateAccess.class})
     private Parent birthFather = new Parent();
 
-
-
     @CCD(
         label = "Is the birth father represented by a solicitor?",
         access = {SystemUpdateAccess.class}

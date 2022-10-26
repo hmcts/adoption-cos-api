@@ -12,8 +12,12 @@ async function setupScenario(I) {
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 
-Scenario('Manage Hearings of a case', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage }) => {
+Scenario('Manage Hearings of a case - Add new Hearing ', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
   await manageHearingsPage.verifyPageDetails();
+  await manageHearingsPage.verifyManageHearingsPageFunctionality();
+  await manageHearingsPage.addNewHearingOptions();
+  await manageHearingsPage.addRecepientDetails();
+  await manageHearingsPage.verifyAddNewHearingCheckYourAnswers();
 });

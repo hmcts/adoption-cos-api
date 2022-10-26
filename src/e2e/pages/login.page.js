@@ -14,7 +14,7 @@ module.exports = {
     await I.retry(3).waitForSelector(this.fields.username);
     await I.retry(3).fillField(this.fields.username, user.email);
     await I.retry(3).fillField(this.fields.password, user.password);
-    await I.retry(3).waitForSelector(this.submitButton);
+    await I.retry(3).waitForSelector(this.fields.submitButton);
     await I.retry(3).click(this.fields.submitButton);
     await I.wait(5);
   },

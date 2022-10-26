@@ -18,6 +18,10 @@ import java.util.UUID;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 
+/**
+ * Contains method to add Page Configuration for ExUI.
+ * Display the Manage hearings Details screen with all required fields.
+ */
 public class ManageHearings implements CcdPageConfiguration {
 
     @Override

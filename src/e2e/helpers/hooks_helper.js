@@ -31,7 +31,6 @@ module.exports = class HooksHelpers extends Helper {
   }
 
   _beforeStep(step) {
-    console.log('I am in before step');
     const helper = this.getHelper();
     if (step.name !== 'amOnPage') {
       return helper.waitForInvisible('xuilib-loading-spinner', 30);
