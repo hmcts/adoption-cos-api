@@ -58,8 +58,10 @@ public class ManageOrders implements CcdPageConfiguration {
 
         pageBuilder.page("manageOrders4")
             .showCondition("preambleDetails=\"*\" OR allocationJudge=\"*\" "
-                               + "OR hearingNoticesCONTAINS\"listForFirstHearing\" OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
-                               + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" OR modeOfHearingCONTAINS\"setModeOfHearing\" "
+                               + "OR hearingNoticesCONTAINS\"listForFirstHearing\" "
+                               + "OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
+                               + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" "
+                               + "OR modeOfHearingCONTAINS\"setModeOfHearing\" "
                                + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             //          PREAMBLE DETAILS
             .pageLabel("Case management order first directions")
