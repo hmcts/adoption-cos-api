@@ -58,9 +58,11 @@ public class ManageOrders implements CcdPageConfiguration {
 
         pageBuilder.page("manageOrders4")
             .showCondition("preambleDetails=\"*\" OR allocationJudge=\"*\" "
-                + "OR hearingNoticesCONTAINS\"listForFirstHearing\" OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
-                + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" OR modeOfHearingCONTAINS\"setModeOfHearing\" "
-                + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+                               + "OR hearingNoticesCONTAINS\"listForFirstHearing\" "
+                               + "OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
+                               + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" "
+                               + "OR modeOfHearingCONTAINS\"setModeOfHearing\" "
+                               + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             //          PREAMBLE DETAILS
             .pageLabel("Case management order first directions")
             .label("LabelAdditionalParaValue411", "Review the paragraphs to be inserted into the order. "
@@ -69,13 +71,14 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelPreamble412", "### Preamble", "preambleDetails=\"*\"")
             .label("LabelPreambleValue413", "${preambleDetails}", "preambleDetails=\"*\"")
             //          ALLOCATION DETAILS
-            .label("LabelAllocation421", "### Allocation",
+            .label("LabelAllocation4-Heading", "### Allocation",
                    "allocationJudge=\"*\"")
-            .label("LabelAllocationValue422", "The case is allocated to His Honour Judge ${allocatedJudge}",
+            .label("LabelAllocationValue14-Heading", "The case is allocated to [Name of the judge].",
                    "allocationJudge=\"allocatePreviousProceedingsJudge\"")
-            .label("LabelAllocationValue423", "The proceedings are reallocated to [Name of Judge].",
+            .mandatory(CaseData::getAllocatedJudge, "allocationJudge=\"allocatePreviousProceedingsJudge\"")
+            .label("LabelAllocationValue24-Heading", "The proceedings are reallocated to [Name of Judge].",
                    "allocationJudge=\"reallocateJudge\"")
-            .label("LabelNameOfJudge424", "### Name of judge",
+            .label("LabelNameOfJudge-Heading", "### Name of judge",
                    "allocationJudge=\"reallocateJudge\"")
             .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             //            HEARINGS - FIRST HEARING
@@ -127,7 +130,7 @@ public class ManageOrders implements CcdPageConfiguration {
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .label("LabelLocalAuthority472", "The Local Authority shall:<br>"
                        + "<p>**1.** By HH:MM on DD:MM:YY file the Annex A report; and<br>"
-                       + "**2.** By HH:MM on the (date in 14 days from the date above) detailing the following:</p>"
+                       + "**2.** By HH:MM on DD:MM:YY (date in 14 days from the date above) detailing the following:</p>"
                        + "&emsp;**a.** The date the Local Authority most recently ascertained the views of the "
                        + "birth parents in relation to this application;"
                        + "<br>&emsp;**b.** The steps taken to confirm the current accuracy of the addresses provided? "
@@ -137,7 +140,7 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelLocalAuthority473", "### Date and time for option 1",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .mandatory(CaseData::getDateAndTimeForOption1, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
-            .label("LabelLocalAuthority474", "### Time for option 2",
+            .label("LabelLocalAuthority474", "### Date and time for option 2",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .mandatory(CaseData::getTimeForOption2, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .done();
@@ -185,7 +188,7 @@ public class ManageOrders implements CcdPageConfiguration {
     ) {
         CaseData caseData = details.getData();
         final List<String> errors = new ArrayList<>();
-
+        caseData.setAllocatedJudge(detailsBefore.getData().getAllocatedJudge());
         Set<HearingNotices> selectedHearingNotices = caseData.getHearingNotices();
 
         if (isNotEmpty(selectedHearingNotices)

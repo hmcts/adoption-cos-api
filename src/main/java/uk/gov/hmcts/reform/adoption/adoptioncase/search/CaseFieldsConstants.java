@@ -15,6 +15,10 @@ public final class CaseFieldsConstants {
     //Default value as of now to Post-placement as per ADOP-1399
     public static final String TYPE_OF_ADOPTION = "Post-placement";
 
+    public static final String STRING_COLON = ":";
+
+    public static final String BLANK_SPACE = " ";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }

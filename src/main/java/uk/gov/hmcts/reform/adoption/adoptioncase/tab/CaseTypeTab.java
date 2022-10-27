@@ -95,6 +95,16 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildTabWithLocalGuardianAndSolicitorDetails(tabBuilderForOtherParties);
         buildTabWithAgencyAndLocalAuthorityDetails(tabBuilderForOtherParties);
         buildTabWithRespondentDetails(tabBuilderForOtherParties);
+        buildHearingsTab(configBuilder);
+    }
+
+    private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+
+        configBuilder.tab("hearings","Hearings")
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .label("labelSummary-managehearing", null, "[Manage hearings](/cases/case-details/${[CASE_REFERENCE]}"
+                + "/trigger/caseworker-manage-hearing/caseworker-manage-hearingmanageOrders1)")
+            .field(CaseData::getNewHearings);
     }
 
     private void buildTabWithRespondentDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {

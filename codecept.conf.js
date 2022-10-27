@@ -79,6 +79,8 @@ exports.config = {
     amendCaseDetailsPage: './src/e2e/pages/amendCaseDetails.page.js',
     paymentDetailsPage: './src/e2e/pages/paymentDetailsTab.page.js',
     caseDetailsSummaryPage: './src/e2e/pages/summaryDetailsTab.page.js',
+    manageHearingsPage: './src/e2e/pages/manageHearings.page.js',
+    manageHearingsTabPage: './src/e2e/pages/manageHearingsTab.page.js',
   },
   plugins: {
     retryFailedStep: {
