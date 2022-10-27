@@ -159,7 +159,7 @@ public class ManageOrders implements CcdPageConfiguration {
     ) {
         CaseData caseData = details.getData();
         final List<String> errors = new ArrayList<>();
-
+        caseData.setAllocatedJudge(detailsBefore.getData().getAllocatedJudge());
         Set<HearingNotices> selectedHearingNotices = caseData.getHearingNotices();
 
         if (isNotEmpty(selectedHearingNotices)
