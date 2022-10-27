@@ -34,25 +34,28 @@ public class ManageOrders implements CcdPageConfiguration {
             .showCondition("manageOrderActivity=\"createOrder\"")
             .mandatory(CaseData::getManageOrderType)
             .page("manageOrders3", this::midEvent)
+            .done();
+
+        pageBuilder.page("manageOrders3", this::midEvent)
             .showCondition("manageOrderType=\"caseManagementOrder\"")
             .pageLabel("Create case management (gatekeeping) order")
-            .label("LabelPreamble3-Heading", "### Preamble")
+            .label("LabelPreamble31", "### Preamble")
             .optional(CaseData::getPreambleDetails)
-            .label("LabelAllocation3-Heading", "### Allocation")
+            .label("LabelAllocation32", "### Allocation")
             .optional(CaseData::getAllocationJudge)
-            .label("LabelHearing3-Heading", "### Hearings")
+            .label("LabelHearings33", "### Hearings")
             .optional(CaseData::getHearingNotices)
-            .label("LabelModeOfHearing3-Heading", "### Mode of hearing")
+            .label("LabelModeOfHearing34", "### Mode of hearing")
             .optional(CaseData::getModeOfHearing)
-            .label("LabelLA3-Heading", "### Local authority")
+            .label("LabelLA35", "### Local authority")
             .optional(CaseData::getSelectedLocalAuthority)
-            .label("LabelAttendance3-Heading", "### Attendance")
+            .label("LabelAttendance36", "### Attendance")
             .optional(CaseData::getAttendance)
-            .label("LabelLeaveToOppose3-Heading", "### Leave to oppose")
+            .label("LabelLeaveToOppose37", "### Leave to oppose")
             .optional(CaseData::getLeaveToOppose)
-            .label("LabelAdditionalPara3-Heading", "### Additional paragraphs")
-            .label("LabelAdditionalParaValue3-Heading", "You can add any additional directions or paragraphs on a later screen.")
-            .label("LabelCostOrders3-Heading", "### Cost orders")
+            .label("LabelAdditionalPara38", "### Additional paragraphs")
+            .label("LabelAdditionalParaValue39", "You can add any additional directions or paragraphs on a later screen.")
+            .label("LabelCostOrders30", "### Cost orders")
             .optional(CaseData::getCostOrders)
             .page("manageOrders4")
             .showCondition("preambleDetails=\"*\" OR allocationJudge=\"allocatePreviousProceedingsJudge\" "
@@ -73,6 +76,92 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelNameOfJudge-Heading", "### Name of judge",
                    "allocationJudge=\"reallocateJudge\"")
             .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
+            .done();
+
+        pageBuilder.page("manageOrders4")
+            .showCondition("preambleDetails=\"*\" OR allocationJudge=\"*\" "
+                + "OR hearingNoticesCONTAINS\"listForFirstHearing\" OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
+                + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" OR modeOfHearingCONTAINS\"setModeOfHearing\" "
+                + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            //          PREAMBLE DETAILS
+            .pageLabel("Case management order first directions")
+            .label("LabelAdditionalParaValue411", "Review the paragraphs to be inserted into the order. "
+                + "These are based on the options you chose on the previous page. "
+                + "If you would like to change an option, go back to the previous page.")
+            .label("LabelPreamble412", "### Preamble", "preambleDetails=\"*\"")
+            .label("LabelPreambleValue413", "${preambleDetails}", "preambleDetails=\"*\"")
+            //          ALLOCATION DETAILS
+            .label("LabelAllocation421", "### Allocation",
+                   "allocationJudge=\"*\"")
+            .label("LabelAllocationValue422", "The case is allocated to His Honour Judge ${allocatedJudge}",
+                   "allocationJudge=\"allocatePreviousProceedingsJudge\"")
+            .label("LabelAllocationValue423", "The proceedings are reallocated to [Name of Judge].",
+                   "allocationJudge=\"reallocateJudge\"")
+            .label("LabelNameOfJudge424", "### Name of judge",
+                   "allocationJudge=\"reallocateJudge\"")
+            .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
+            //            HEARINGS - FIRST HEARING
+            .label("LabelHearings431", "### Hearings",
+                   "hearingNoticesCONTAINS\"listForFirstHearing\" OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
+                       + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" OR modeOfHearingCONTAINS\"setModeOfHearing\"")
+            .label("LabelHearings432", "The application is listed for a first hearing on [date] "
+                       + "at [time] (with a time estimate of [length]) at [court name].",
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .label("LabelHearings433", "### Date and time",
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .mandatory(CaseData::getDateAndTimeFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .label("LabelHearings434", "### Length of hearing",
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .mandatory(CaseData::getLengthOfHearingFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .label("LabelNameOfCourt435", "### Name of court",
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .mandatory(CaseData::getNameOfCourtFirstHearing,
+                       "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            //            HEARINGS - FURTHER HEARING
+            .label("LabelHearings441", "The application is listed for a [listing type] on [date] at "
+                       + "[time] with a time estimate of [length] at [court name].",
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .label("LabelNameOfCourt442", "### Listing type",
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(CaseData::getListingTypeFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .label("LabelHearings443", "### Date and time",
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(CaseData::getDateAndTimeFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .label("LabelHearings444", "### Length of hearing",
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(CaseData::getLengthOfHearingFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .label("LabelNameOfCourt445", "### Name of court",
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(CaseData::getNameOfCourtFurtherHearing,
+                       "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            //            HEARINGS - HEARING DATE IN FUTURE
+            .label("LabelHearings451", "The application is listed for [listing type] on a date and time to be fixed by the court.",
+                   "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
+            .label("LabelNameOfCourt452", "### Listing type",
+                   "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
+            .mandatory(CaseData::getListingTypeHearingInFutureDate, "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
+            //            HEARINGS - MODE OF HEARINGS
+            .label("LabelNameOfCourt461", "### Mode of hearing",
+                   "modeOfHearingCONTAINS\"setModeOfHearing\"")
+            .mandatory(CaseData::getModeOfHearings, "modeOfHearingCONTAINS\"setModeOfHearing\"")
+            //            LOCAL AUTHORITY
+            .label("LabelLocalAuthority471", "### Local authority",
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .label("LabelLocalAuthority472", "The Local Authority shall:<br>"
+                       + "<p>**1.** By HH:MM on DD:MM:YY file the Annex A report; and<br>"
+                       + "**2.** By HH:MM on DD:MM:YY (date in 14 days from the date above) detailing the following:</p>"
+                       + "&emsp;**a.** The date the Local Authority most recently ascertained the views of the "
+                       + "birth parents in relation to this application;"
+                       + "<br>&emsp;**b.** The steps taken to confirm the current accuracy of the addresses provided? "
+                       + "Whether the addresses provided for the birth parents upon issue of the application are accurate?"
+                       + "<br>&emsp;**c.** Whether the parents are aware of the date of the hearing in section 3 above?",
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .label("LabelLocalAuthority473", "### Date and time for option 1",
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .mandatory(CaseData::getDateAndTimeForOption1, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .label("LabelLocalAuthority474", "### Date and time for option 2",
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .mandatory(CaseData::getTimeForOption2, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .done();
     }
 

@@ -22,16 +22,18 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -47,6 +49,9 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class CaseData {
+
+    public static final String NUMERIC_REGEX = "\\d+";
+
     @CCD(
         label = "Applying with",
         access = {DefaultAccess.class},
@@ -586,31 +591,31 @@ public class CaseData {
     private Set<ModeOfHearing> modeOfHearing;
 
     @CCD(label = "If relevant",
-        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "SelectedLocalAuthority")
     private Set<SelectedLocalAuthority> selectedLocalAuthority;
 
     @CCD(label = "You are choosing which parties are issued with a direction on whether or not they can attend the"
         + "\nhearing. You can choose more than one option.",
-        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "Attendance")
     private Set<Attendance> attendance;
 
     @CCD(label = "If relevant",
-        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "LeaveToOppose")
     private Set<LeaveToOppose> leaveToOppose;
 
-    @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class},
+    @CCD(access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "CostOrders")
     private Set<CostOrders> costOrders;
 
     @CCD(label = "Enter the full name and title of the judge as it would appear on the order",
-        access = {DefaultAccess.class, SystemUpdateAccess.class}
+        access = {DefaultAccess.class}
     )
     private String nameOfJudge;
 
@@ -671,6 +676,55 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime dateAndTimeFirstHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime dateAndTimeFurtherHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private String nameOfCourtFirstHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private String nameOfCourtFurtherHearing;
+
+    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
+    private String lengthOfHearingFirstHearing;
+
+    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
+    private String lengthOfHearingFurtherHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private String listingTypeFurtherHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private String listingTypeHearingInFutureDate;
+
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ModeOfHearings")
+    private ModeOfHearings modeOfHearings;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime dateAndTimeForOption1;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime timeForOption2;
+
+    public String getNameOfCourtFirstHearing() {
+        if (Objects.nonNull(familyCourtName)) {
+            return familyCourtName;
+        }
+        return nameOfCourtFirstHearing;
+    }
+
+    public String getNameOfCourtFurtherHearing() {
+        if (Objects.nonNull(familyCourtName)) {
+            return familyCourtName;
+        }
+        return nameOfCourtFurtherHearing;
+    }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
