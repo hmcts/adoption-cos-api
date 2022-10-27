@@ -56,7 +56,8 @@ class CaseWorkerManageHearingTest {
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNotNull();
+        assertThat(result.getData().getManageHearingDetails()).isNull();
+        assertThat(result.getData().getNewHearings()).isNotNull();
     }
 
 

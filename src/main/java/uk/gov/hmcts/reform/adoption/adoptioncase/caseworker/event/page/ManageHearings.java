@@ -16,7 +16,8 @@ public class ManageHearings implements CcdPageConfiguration {
         pageBuilder.page("manageOrders1")
             .mandatory(CaseData::getManageHearingOptions)
             .page("manageOrders2")
-            .label("addNewHearing1","## Add new hearing")
+            .showCondition("manageHearingOptions=\"addNewHearing\"")
+            .label("addNewHearing1", "## Add new hearing")
             .complex(CaseData::getManageHearingDetails)
             .mandatory(ManageHearingDetails::getTypeOfHearing)
             .mandatory(ManageHearingDetails::getHearingDateAndTime)
@@ -29,6 +30,7 @@ public class ManageHearings implements CcdPageConfiguration {
             .optional(ManageHearingDetails::getHearingDirections)
             .done()
             .page("manageOrders3")
+            .showCondition("manageHearingOptions=\"addNewHearing\"")
             .mandatory(CaseData::getRecipientsInTheCase)
             .done();
     }

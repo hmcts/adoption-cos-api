@@ -20,6 +20,10 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 @Builder
 public class ManageHearingDetails {
 
+    @CCD(
+        showCondition = "methodOfHearing=\"never\""
+    )
+    private String hearingId;
 
     @CCD(
         label = "Type of hearing",
@@ -80,5 +84,12 @@ public class ManageHearingDetails {
     @CCD(label = " Length of hearing",
          hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
     private String lengthOfHearing;
+
+    @CCD(
+        label = "Recipients",
+        access = {DefaultAccess.class},
+        displayOrder = 10
+    )
+    private SortedSet<RecipientsInTheCase> recipientsInTheCase;
 
 }
