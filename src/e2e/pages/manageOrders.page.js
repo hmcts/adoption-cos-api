@@ -203,7 +203,7 @@ module.exports = {
     await I.retry(3).click(this.fields.continueButton);
 
   },
-  async caseManagementOrderLocalAuthorityCYAPage(){
+  async caseManagementOrderAttendanceCYAPage(){
     await I.wait(3);
     await I.retry(3).waitForText('Check your answers',30);
     await I.retry(3).see('Check your answers');
@@ -211,6 +211,12 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.childAttendanceNotBeBroughtOption);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.localAuthorityAttendanceOption);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthParentAttendanceCourtOption);
+    await I.retry(3).click(this.fields.continueButton);
+  },
+  async caseManagementOrderLocalAuthorityCYAPage(){
+    await I.wait(3);
+    await I.retry(3).see('1 Jan 2029, 12:00:00 AM');
+    await I.retry(3).see('1 Jan 2030, 12:00:00 AM');
     await I.retry(3).click(this.fields.continueButton);
   },
 };

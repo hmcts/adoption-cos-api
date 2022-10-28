@@ -62,7 +62,7 @@ Scenario('Verify Case management order Attendance details', async ({I, caseViewP
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
   await manageOrdersPage.caseManagementOrderAttendance();
-  await manageOrdersPage.caseManagementOrderLocalAuthorityCYAPage();
+  await manageOrdersPage.caseManagementOrderAttendanceCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
 
