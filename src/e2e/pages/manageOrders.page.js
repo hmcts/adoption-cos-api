@@ -181,12 +181,6 @@ module.exports = {
      await I.retry(3).click(this.fields.continueButton);
    },
 
-  async caseManagementOrderLocalAuthorityCYAPage(){
-      await I.wait(3);
-      await I.retry(3).see('1 Jan 2029, 12:00:00 AM');
-      await I.retry(3).see('1 Jan 2030, 12:00:00 AM');
-      await I.retry(3).click(this.fields.continueButton);
-    },
   async caseManagementOrderAttendance(){
     await I.retry(3).click(this.fields.attendance.applicantsAttendance);
     await I.retry(3).click(this.fields.attendance.childAttendance);
