@@ -19,7 +19,7 @@ public enum Attendance implements HasLabel {
     LOCAL_AUTHORITY_ATTENDANCE("Local authority attendance"),
 
     @JsonProperty("birthParentsAttendance")
-    BIRTH_PARENTS_ATTENDANCE("Birth parents attendance)");
+    BIRTH_PARENTS_ATTENDANCE("Birth parents attendance");
 
     private final String label;
 }

@@ -10,7 +10,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 public enum ManageOrderType implements HasLabel {
 
     @JsonProperty("caseManagementOrder")
-    CASE_MANAGEMENT_ORDER("Case Management Order"),
+    CASE_MANAGEMENT_ORDER("Case Management Order (gatekeeping order)"),
 
     @JsonProperty("generalDirectionsOrder")
     GENERAL_DIRECTIONS_ORDER("General Directions Order"),
