@@ -23,13 +23,6 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 @ToString
 public class AdoptionDocument {
 
-    /*@CCD(
-        label = "Add content to be emailed",
-        typeOverride = TextArea,
-        ignore = true
-    )
-    private String documentEmailContent;*/
-
     @CCD(
         label = "Document",
         hint = "The selected file must be smaller than 1GB"
