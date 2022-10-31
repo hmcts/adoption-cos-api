@@ -1,17 +1,12 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.validation;
 
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.LocalAuthority;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.time.temporal.ChronoUnit.WEEKS;
 import static java.util.Collections.emptyList;
@@ -128,6 +123,6 @@ public final class ValidationUtil {
 
     @SafeVarargs
     public static <E> List<E> flattenLists(List<E>... lists) {
-        return Stream.of(lists).flatMap(Collection::stream).collect(Collectors.toList());
+        return Arrays.stream(lists).flatMap(Collection::stream).toList();
     }
 }
