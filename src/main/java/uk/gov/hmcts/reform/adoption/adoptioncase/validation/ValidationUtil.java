@@ -1,13 +1,10 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.validation;
 
-//import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-//import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
-//import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 
 import java.time.LocalDate;
@@ -42,18 +39,6 @@ public final class ValidationUtil {
             validateDateChildMovedIn(caseData.getDateChildMovedIn(), "DateChildMovedIn"),
             validateApplicant1(caseData),
             validateApplicant2(applyingAlone, caseData)
-        /*    validateChildren(caseData.getChildren()),
-            notNull(caseData.getBirthMother().getFirstName(), "BirthMotherFirstName"),
-            notNull(caseData.getBirthMother().getLastName(), "BirthMotherLastName"),
-            validateBirthFather(caseData.getBirthFather()),
-            validateOtherParent(caseData.getOtherParent()),
-            validatePlacementOrders(caseData.getPlacementOrders()),
-            validateSocialWorker(caseData.getChildSocialWorker()),
-            validateLocalAuthorityAndAdoptionAgency(
-                caseData.getLocalAuthority(),
-                caseData.getAdopAgencyOrLA(),
-                caseData.getHasAnotherAdopAgencyOrLA()
-            )*/
         );
     }
 
@@ -80,11 +65,6 @@ public final class ValidationUtil {
         );
     }
 
-    /*private static List<String> validatePlacementOrders(List<ListValue<PlacementOrder>> placementOrders) {
-        boolean emptyPlacementOrderNumber = nonNull(placementOrders) && placementOrders
-            .stream().anyMatch(placementOrderListValue -> isEmpty(placementOrderListValue.getValue().getPlacementOrderNumber()));
-        return emptyPlacementOrderNumber ? List.of("PlacementOrderNumber" + EMPTY) : emptyList();
-    }*/
 
     public static List<String> validateBirthFather(Parent birthFather) {
         if (YES.equalsIgnoreCase(birthFather.getNameOnCertificate())) {
