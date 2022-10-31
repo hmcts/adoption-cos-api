@@ -28,6 +28,12 @@ module.exports = {
     backupNotice: '#manageHearingDetails_hearingDirections-backupNotice',
     recipientsBirthMother: '#recipientsInTheCase-respondentBirthMother',
     recipientsBirthFather: '#recipientsInTheCase-respondentBirthFather',
+    vacateHearingToSelect: '//input[@type="radio"]',
+    vacateHearingReasonAgreement: '#reasonForVacatingHearing-agreementConsentOrderMade',
+    vacateHearingReasonWithDrawn: '#reasonForVacatingHearing-caseWithdrawn',
+    vacateHearingReasonDismissed: '#reasonForVacatingHearing-caseDismissed',
+    reListingYes: '#isTheHearingNeedsRelisting_Yes',
+    reListingNo: '#isTheHearingNeedsRelisting_No',
   },
 
   async verifyPageDetails() {
@@ -87,5 +93,26 @@ module.exports = {
     I.see("Respondent(birth mother)");
     I.see("Respondent(birth father)");
     I.see("Add a new hearing");
+    await I.retry(5).click(this.fields.continueButton);
+    await I.retry(5).seeElement(this.fields.alertMessage);
+  },
+
+  async selectVacateHearingOptionWithAgreementAndRelisting(){
+   await I.retry(5).click(this.fields.vacateHearing);
+   await I.retry(5).click(this.fields.continueButton);
+   await I.retry(5).click(this.fields.vacateHearingToSelect);
+   await I.retry(5).click(this.fields.continueButton);
+   await I.retry(5).seeElement(this.fields.vacateHearingReasonAgreement);
+   await I.retry(5).seeElement(this.fields.vacateHearingReasonWithDrawn);
+   await I.retry(5).seeElement(this.fields.vacateHearingReasonDismissed);
+   await I.retry(5).click(this.fields.vacateHearingReasonAgreement);
+   await I.retry(5).click(this.fields.continueButton);
+   await I.retry(5).seeElement(this.fields.reListingYes);
+   await I.retry(5).seeElement(this.fields.reListingNo);
+   await I.retry(5).click(this.fields.reListingYes);
+   await I.retry(5).click(this.fields.continueButton);
+   /*check your answers page and options from re listing to be covered in next sprint*/
+   await I.retry(5).click(this.fields.continueButton);
+   await I.retry(5).seeElement(this.fields.alertMessage);
   }
 };

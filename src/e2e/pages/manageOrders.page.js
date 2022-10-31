@@ -39,6 +39,23 @@ module.exports = {
       dateAndTimeForOption2Error:'#timeForOption2 .error-message',
 
     },
+    attendance: {
+      applicantsAttendance: '#attendance-applicantsAttendance',
+      childAttendance: '#attendance-childAttendance',
+      localAuthorityAttendance: '#attendance-localAuthorityAttendance',
+      birthParentsAttendance: '#attendance-birthParentsAttendance',
+      applicantAttendanceNotAttend: '#applicantAttendance-applicantAttendanceNotAttend',
+      childAttendanceNotBeBrought: '#childAttendance-childAttendanceNotBeBrought',
+      laAttendanceAttend: '#laAttendance-laAttendanceAttend',
+      birthParentAttendanceCourtArrange: '#birthParentAttendance-birthParentAttendanceCourtArrange',
+      applicantAttendanceError: '#applicantAttendance .error-message',
+      childAttendanceError: '#childAttendance .error-message',
+      laAttendanceError: '#laAttendance .error-message',
+      birthParentAttendanceError: '#birthParentAttendance .error-message',
+
+
+
+    },
 
   },
 
@@ -164,10 +181,42 @@ module.exports = {
      await I.retry(3).click(this.fields.continueButton);
    },
 
+  async caseManagementOrderAttendance(){
+    await I.retry(3).click(this.fields.attendance.applicantsAttendance);
+    await I.retry(3).click(this.fields.attendance.childAttendance);
+    await I.retry(3).click(this.fields.attendance.localAuthorityAttendance);
+    await I.retry(3).click(this.fields.attendance.birthParentsAttendance);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).waitForText('Choose the direction for the attendees',30);
+    await I.retry(3).see('Choose the direction for the attendees');
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.applicantAttendanceError);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.childAttendanceError);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.laAttendanceError);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.chooseAllErrorMessage,this.fields.attendance.birthParentAttendanceError);
+    await I.retry(3).click(this.fields.attendance.applicantAttendanceNotAttend);
+    await I.retry(3).click(this.fields.attendance.childAttendanceNotBeBrought);
+    await I.retry(3).click(this.fields.attendance.laAttendanceAttend);
+    await I.retry(3).click(this.fields.attendance.birthParentAttendanceCourtArrange);
+    await I.retry(3).click(this.fields.continueButton);
+
+  },
+  async caseManagementOrderAttendanceCYAPage(){
+    await I.wait(3);
+    await I.retry(3).waitForText('Check your answers',30);
+    await I.retry(3).see('Check your answers');
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicantAttendanceNotAttendOption);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.childAttendanceNotBeBroughtOption);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.localAuthorityAttendanceOption);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthParentAttendanceCourtOption);
+    await I.retry(3).click(this.fields.continueButton);
+  },
   async caseManagementOrderLocalAuthorityCYAPage(){
-      await I.wait(3);
-      await I.retry(3).see('1 Jan 2029, 12:00:00 AM');
-      await I.retry(3).see('1 Jan 2030, 12:00:00 AM');
-      await I.retry(3).click(this.fields.continueButton);
-    },
+    await I.wait(3);
+    await I.retry(3).see('1 Jan 2029, 12:00:00 AM');
+    await I.retry(3).see('1 Jan 2030, 12:00:00 AM');
+    await I.retry(3).click(this.fields.continueButton);
+  },
 };

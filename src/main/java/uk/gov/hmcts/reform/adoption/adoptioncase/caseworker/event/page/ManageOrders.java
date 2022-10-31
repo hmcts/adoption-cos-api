@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
-import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -20,7 +19,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.HearingNotices.HEA
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage orders Details screen with all required fields.
  */
-@Slf4j
 public class ManageOrders implements CcdPageConfiguration {
 
     public static final String ERROR_CHECK_HEARINGS_SELECTION = "Please check your selection for Hearings";
@@ -33,7 +31,6 @@ public class ManageOrders implements CcdPageConfiguration {
             .pageLabel("Manage orders and directions")
             .showCondition("manageOrderActivity=\"createOrder\"")
             .mandatory(CaseData::getManageOrderType)
-            .page("manageOrders3", this::midEvent)
             .done();
 
         pageBuilder.page("manageOrders3", this::midEvent)
@@ -57,32 +54,15 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelAdditionalParaValue39", "You can add any additional directions or paragraphs on a later screen.")
             .label("LabelCostOrders30", "### Cost orders")
             .optional(CaseData::getCostOrders)
-            .page("manageOrders4")
-            .showCondition("preambleDetails=\"*\" OR allocationJudge=\"allocatePreviousProceedingsJudge\" "
-                               + "OR allocationJudge=\"reallocateJudge\"")
-            .pageLabel("Case management order first directions")
-            .label("LabelAdditionalParaValue4-Heading", "Review the paragraphs to be inserted into the order. "
-                + "These are based on the options you chose on the previous page. "
-                + "If you would like to change an option, go back to the previous page.")
-            .label("LabelPreamble4-Heading", "### Preamble", "preambleDetails=\"*\"")
-            .label("LabelPreambleValue4-Heading", "${preambleDetails}", "preambleDetails=\"*\"")
-            .label("LabelAllocation4-Heading", "### Allocation",
-                   "allocationJudge=\"*\"")
-            .label("LabelAllocationValue14-Heading", "The case is allocated to [Name of the judge].",
-                   "allocationJudge=\"allocatePreviousProceedingsJudge\"")
-            .mandatory(CaseData::getAllocatedJudge, "allocationJudge=\"allocatePreviousProceedingsJudge\"")
-            .label("LabelAllocationValue24-Heading", "The proceedings are reallocated to [Name of Judge].",
-                   "allocationJudge=\"reallocateJudge\"")
-            .label("LabelNameOfJudge-Heading", "### Name of judge",
-                   "allocationJudge=\"reallocateJudge\"")
-            .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             .done();
 
         pageBuilder.page("manageOrders4")
             .showCondition("preambleDetails=\"*\" OR allocationJudge=\"*\" "
-                + "OR hearingNoticesCONTAINS\"listForFirstHearing\" OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
-                + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" OR modeOfHearingCONTAINS\"setModeOfHearing\" "
-                + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+                               + "OR hearingNoticesCONTAINS\"listForFirstHearing\" "
+                               + "OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
+                               + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" "
+                               + "OR modeOfHearingCONTAINS\"setModeOfHearing\" "
+                               + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             //          PREAMBLE DETAILS
             .pageLabel("Case management order first directions")
             .label("LabelAdditionalParaValue411", "Review the paragraphs to be inserted into the order. "
@@ -91,13 +71,14 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelPreamble412", "### Preamble", "preambleDetails=\"*\"")
             .label("LabelPreambleValue413", "${preambleDetails}", "preambleDetails=\"*\"")
             //          ALLOCATION DETAILS
-            .label("LabelAllocation421", "### Allocation",
+            .label("LabelAllocation4-Heading", "### Allocation",
                    "allocationJudge=\"*\"")
-            .label("LabelAllocationValue422", "The case is allocated to His Honour Judge ${allocatedJudge}",
+            .label("LabelAllocationValue14-Heading", "The case is allocated to [Name of the judge].",
                    "allocationJudge=\"allocatePreviousProceedingsJudge\"")
-            .label("LabelAllocationValue423", "The proceedings are reallocated to [Name of Judge].",
+            .mandatory(CaseData::getAllocatedJudge, "allocationJudge=\"allocatePreviousProceedingsJudge\"")
+            .label("LabelAllocationValue24-Heading", "The proceedings are reallocated to [Name of Judge].",
                    "allocationJudge=\"reallocateJudge\"")
-            .label("LabelNameOfJudge424", "### Name of judge",
+            .label("LabelNameOfJudge-Heading", "### Name of judge",
                    "allocationJudge=\"reallocateJudge\"")
             .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             //            HEARINGS - FIRST HEARING
@@ -163,6 +144,35 @@ public class ManageOrders implements CcdPageConfiguration {
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .mandatory(CaseData::getTimeForOption2, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .done();
+
+        pageBuilder.page("manageOrders5")
+            .showCondition("attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
+                               + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
+            //          ATTENDANCE DETAILS
+            .pageLabel("Case management order second directions")
+            .label("LabelAttendance51", "### Attendance",
+                   "attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
+                       + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
+            .label("LabelAttendanceValue52", "Choose the direction for the attendees",
+                   "attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
+                       + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
+            //          APPLICANT ATTENDANCE
+            .label("LabelApplicantAttendance511", "### Applicant attendance",
+                   "attendanceCONTAINS\"applicantsAttendance\"")
+            .mandatory(CaseData::getApplicantAttendance, "attendanceCONTAINS\"applicantsAttendance\"")
+            //          CHILD ATTENDANCE
+            .label("LabelChildAttendance521", "### Child attendance",
+                   "attendanceCONTAINS\"childAttendance\"")
+            .mandatory(CaseData::getChildAttendance, "attendanceCONTAINS\"childAttendance\"")
+            //          LA ATTENDANCE
+            .label("LabelChildAttendance531", "### Local authority attendance",
+                   "attendanceCONTAINS\"localAuthorityAttendance\"")
+            .mandatory(CaseData::getLaAttendance, "attendanceCONTAINS\"localAuthorityAttendance\"")
+            //          BIRTH PARENT ATTENDANCE
+            .label("LabelChildAttendance541", "### Birth parent attendance",
+                   "attendanceCONTAINS\"birthParentsAttendance\"")
+            .mandatory(CaseData::getBirthParentAttendance, "attendanceCONTAINS\"birthParentsAttendance\"")
+            .done();
     }
 
     /**
@@ -178,7 +188,6 @@ public class ManageOrders implements CcdPageConfiguration {
     ) {
         CaseData caseData = details.getData();
         final List<String> errors = new ArrayList<>();
-
         caseData.setAllocatedJudge(detailsBefore.getData().getAllocatedJudge());
         Set<HearingNotices> selectedHearingNotices = caseData.getHearingNotices();
 

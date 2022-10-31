@@ -55,5 +55,15 @@ Scenario('Verify case management order Preamble and pre allocation judge details
   await I.selectTab(caseViewPage.fields.tabs.summary);
   await I.seeInTab('Name of the judge', manageOrderDetails.caseManagementOrderDetails.nameOfAllocatedJudge);
 });
+Scenario('Verify Case management order Attendance details', async ({I, caseViewPage, manageOrdersPage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
+  await manageOrdersPage.selectCreateNewOrder();
+  await manageOrdersPage.verifyTypeOfOrdersListed();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.caseManagementOrderAttendance();
+  await manageOrdersPage.caseManagementOrderAttendanceCYAPage();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
+});
 
 
