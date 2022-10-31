@@ -158,7 +158,6 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
             templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
         }
-        //templateVars.put(CHILD_FULL_NAME, caseData.getChildren().getFirstName() + " " + caseData.getChildren().getLastName());
         return templateVars;
     }
 
