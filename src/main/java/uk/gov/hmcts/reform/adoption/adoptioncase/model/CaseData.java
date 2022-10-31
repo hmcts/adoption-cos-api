@@ -633,7 +633,6 @@ public class CaseData {
 
     @CCD(
         typeOverride = DynamicRadioList,
-        name = "Hearing list",
         label = "Select a hearing you want to vacate\n"
     )
     private DynamicList hearingsList;
