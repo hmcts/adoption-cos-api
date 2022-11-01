@@ -73,6 +73,12 @@ sourceSets {
 
 }
 
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
+
 idea {
   module {
     testSourceDirs += file('src/integrationTest/java')
@@ -92,6 +98,10 @@ configurations {
 
 tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+}
+
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 tasks.withType(Test) {
@@ -179,7 +189,7 @@ jacocoTestReport {
 }
 
 jacoco {
-  toolVersion = "0.8.5"
+  toolVersion = "0.8.8"
 }
 
 jacocoTestCoverageVerification {
