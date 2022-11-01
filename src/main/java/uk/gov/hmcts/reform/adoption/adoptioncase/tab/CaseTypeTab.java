@@ -22,6 +22,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildOtherPartiesTab(configBuilder);
         buildDocumentsTab(configBuilder);
         buildConfidentialTab(configBuilder);
+        //buildServiceRequestTab(configBuilder);
         buildPaymentsTab(configBuilder);
     }
 
@@ -30,7 +31,15 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("serviceRequest","Payment")
             .showCondition(TabShowCondition.showForState(State.Submitted, State.LaSubmitted))
             .field("successfulPayment");
+
     }
+
+    /*private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("serviceRequest", "Service Request")
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .field("serviceRequest");
+    }*/
+
 
     public void buildApplicantsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationDetails", "Applicants")

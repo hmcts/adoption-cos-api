@@ -621,6 +621,11 @@ public class CaseData {
     )
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
 
+    /*@CCD(
+        access = {DefaultAccess.class}
+    )
+    private WaysToPay serviceRequest;*/
+
 
     @CCD(
         access = {DefaultAccess.class},
