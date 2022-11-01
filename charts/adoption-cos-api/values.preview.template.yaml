@@ -29,6 +29,8 @@ java:
           alias: CASEWORKER_USERNAME
         - name: caseworker-password
           alias: CASEWORKER_PASSWORD
+        - name: AppInsightsInstrumentationKey
+          alias: APP_INSIGHTS_KEY
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
