@@ -8,7 +8,7 @@ java:
     CASE_DATA_STORE_BASEURL: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-data-store-api
     CASE_DOCUMENT_AM_BASEURL: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-case-document-am-api
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
-    APP_INSIGHTS_KEY: 273cc8cd-c511-49ae-9988-9debe01d54d5
+    APP_INSIGHTS_KEY: ${APP_INSIGHTS_KEY}
 
   keyVaults:
     adoption:
