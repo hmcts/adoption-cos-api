@@ -21,12 +21,12 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
 
     private void buildPageWithChildDetails(PageBuilder pageBuilder) {
         pageBuilder.page("amendOtherParties")
-            .complex(CaseData::getChildren).label("childDetaillabel1", "### Child Details")
-            .label("childDetaillabel2", "### Child")
+            .complex(CaseData::getChildren).label("childDetaillabel1", "### Child Details",null,true)
+            .label("childDetaillabel2", "### Child",null,true)
             .mandatory(Children::getFirstName).mandatory(Children::getLastName)
             .mandatory(Children::getDateOfBirth).mandatory(Children::getSexAtBirth).mandatory(Children::getNationality)
             .mandatory(Children::getFirstNameAfterAdoption).mandatory(Children::getLastNameAfterAdoption)
-            .done().label("localGuardianLabel1", "### Legal guardian (CAFCASS)")
+            .done().label("localGuardianLabel1", "### Legal guardian (CAFCASS)",null,true)
             .mandatoryWithLabel(CaseData::getIsChildRepresentedByGuardian, "Is the child represented by a guardian?")
             .complex(CaseData::getLocalGuardian)
             .mandatory(Guardian::getName, "isChildRepresentedByGuardian=\"Yes\"")
@@ -34,7 +34,7 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(Guardian::getPhoneNumber, "isChildRepresentedByGuardian=\"Yes\"")
             .mandatory(Guardian::getEmail, "isChildRepresentedByGuardian=\"Yes\"")
             .done()
-            .label("childDetaillabel3", "### Solicitor","isChildRepresentedByGuardian=\"Yes\"")
+            .label("childDetaillabel3", "### Solicitor","isChildRepresentedByGuardian=\"Yes\"",true)
             .mandatory(CaseData::getIsChildRepresentedBySolicitor, "isChildRepresentedByGuardian=\"Yes\"")
             .complex(CaseData::getChildSolicitor)
             .mandatory(Solicitor::getSolicitorFirm, "isChildRepresentedByGuardian=\"Yes\" AND isChildRepresentedBySolicitor=\"Yes\"")
@@ -44,8 +44,8 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(Solicitor::getEmail, "isChildRepresentedByGuardian=\"Yes\" AND isChildRepresentedBySolicitor=\"Yes\"")
             .done()
             .complex(CaseData::getAdopAgencyOrLA)
-            .label("localauthorylable1", "### Agencies/Local authorities details")
-            .label("localauthorylable2", "### Adoption agency")
+            .label("localauthorylable1", "### Agencies/Local authorities details",null,true)
+            .label("localauthorylable2", "### Adoption agency",null,true)
             .mandatory(AdoptionAgencyOrLocalAuthority::getAdopAgencyOrLaName)
             .mandatory(AdoptionAgencyOrLocalAuthority::getAdopAgencyOrLaContactName)
             .mandatory(AdoptionAgencyOrLocalAuthority::getAdopAgencyAddressLine1)
@@ -58,7 +58,7 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(AdoptionAgencyOrLocalAuthority::getAdopAgencyOrLaPhoneNumber)
             .mandatory(AdoptionAgencyOrLocalAuthority::getAdopAgencyOrLaContactEmail)
             .done()
-            .label("otherAdopAgencylable1", "### Other adoption agency")
+            .label("otherAdopAgencylable1", "### Other adoption agency",null,true)
             .mandatoryWithLabel(CaseData::getHasAnotherAdopAgencyOrLAinXui, "Is there any other adoption agency?")
             .complex(CaseData::getOtherAdopAgencyOrLA)
             .mandatory(
@@ -83,7 +83,7 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             )
             .done()
             .complex(CaseData::getChildSocialWorker)
-            .label("childLocalAuthoritylable1", "### Child's local authority")
+            .label("childLocalAuthoritylable1", "### Child's local authority",null,true)
             .mandatory(SocialWorker::getSocialWorkerName).mandatory(SocialWorker::getLocalAuthority)
             .mandatory(SocialWorker::getSocialWorkerAddressLine1).optional(SocialWorker::getSocialWorkerAddressLine2)
             .optional(SocialWorker::getSocialWorkerAddressLine3).mandatory(SocialWorker::getSocialWorkerTown)
@@ -92,7 +92,7 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(SocialWorker::getLocalAuthorityEmail)
             .done()
             .complex(CaseData::getApplicantSocialWorker)
-            .label("applicantsocilaworkerlabel1", "### Applicant's local authority")
+            .label("applicantsocilaworkerlabel1", "### Applicant's local authority",null,true)
             .mandatory(SocialWorker::getSocialWorkerName).mandatory(SocialWorker::getLocalAuthority)
             .mandatory(SocialWorker::getSocialWorkerAddressLine1)
             .optional(SocialWorker::getSocialWorkerAddressLine2).optional(SocialWorker::getSocialWorkerAddressLine3)
@@ -100,8 +100,8 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(SocialWorker::getSocialWorkerPostcode).mandatory(SocialWorker::getSocialWorkerCountry)
             .mandatory(SocialWorker::getSocialWorkerPhoneNumber).mandatory(SocialWorker::getLocalAuthorityEmail)
             .done()
-            .label("RespondentDetailsLabel1", "### Respondent details")
-            .label("birthMotherLabel1", "### Birth mother")
+            .label("RespondentDetailsLabel1", "### Respondent details",null,true)
+            .label("birthMotherLabel1", "### Birth mother",null,true)
             .complex(CaseData::getBirthMother)
             .mandatory(Parent::getFirstName).mandatory(Parent::getLastName)
             .mandatory(Parent::getDeceased).mandatory(Parent::getAddress1)
@@ -110,7 +110,7 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(Parent::getAddressPostCode).mandatory(Parent::getAddressCountry)
             .mandatory(Parent::getLastAddressDate).mandatory(Parent::getToBeServed, "", "Yes")
             .done()
-            .label("birthMotherSolicitorLab1", "### Solicitor")
+            .label("birthMotherSolicitorLab1", "### Solicitor",null,true)
             .mandatoryWithLabel(CaseData::getIsBirthMotherRepresentedBySolicitor,
                                 "Is the birth mother represented by a solicitor?")
             .complex(CaseData::getBirthMotherSolicitor)
@@ -120,7 +120,7 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(Solicitor::getPhoneNumber, "isBirthMotherRepresentedBySolicitor=\"Yes\"")
             .mandatory(Solicitor::getEmail, "isBirthMotherRepresentedBySolicitor=\"Yes\"")
             .done()
-            .label("birthFatherLabel1", "### Birth Father")
+            .label("birthFatherLabel1", "### Birth Father",null,true)
             .complex(CaseData::getBirthFather)
             .mandatory(Parent::getFirstName).mandatory(Parent::getLastName)
             .mandatory(Parent::getDeceased).mandatory(Parent::getAddress1)
@@ -138,7 +138,7 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(Solicitor::getPhoneNumber, "isBirthFatherRepresentedBySolicitor=\"Yes\"")
             .mandatory(Solicitor::getEmail, "isBirthFatherRepresentedBySolicitor=\"Yes\"")
             .done()
-            .label("otherpersonlable1", "### Other person with parental responsibility")
+            .label("otherpersonlable1", "### Other person with parental responsibility",null,true)
             .mandatory(CaseData::getIsThereAnyOtherPersonWithParentalResponsibility)
             .complex(CaseData::getOtherParent)
             .mandatory(Parent::getFirstName, "isThereAnyOtherPersonWithParentalResponsibility=\"Yes\"")
@@ -157,7 +157,8 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .label(
                 "otherParentSolicitorlabel1",
                 "### Solicitor",
-                "isThereAnyOtherPersonWithParentalResponsibility=\"Yes\""
+                "isThereAnyOtherPersonWithParentalResponsibility=\"Yes\"",
+                true
             )
             .mandatory(CaseData::getIsOtherParentRepresentedBySolicitor,
                        "isThereAnyOtherPersonWithParentalResponsibility=\"Yes\"")
