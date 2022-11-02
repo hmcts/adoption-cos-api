@@ -21,25 +21,25 @@ public class OtherAdoptionAgencyOrLocalAuthority {
 
     @CCD(label = "Name",
         access = {DefaultAccess.class})
-    private String otherAdopAgencyOrLaName;
+    private String agencyOrLaName;
 
     @CCD(label = "Contact",
         access = {DefaultAccess.class})
-    private String otherAdopAgencyOrLaContactName;
+    private String agencyOrLaContactName;
 
     @CCD(label = "Address",
         access = {DefaultAccess.class})
-    private AddressUK otherAdopAgencyAddress;
+    private AddressUK agencyAddress;
 
     @CCD(label = "Phone number",
         access = {DefaultAccess.class}
     )
-    private String otherAdopAgencyOrLaPhoneNumber;
+    private String agencyOrLaPhoneNumber;
 
     @CCD(label = "Email",
         typeOverride = Email,
         access = {DefaultAccess.class}
     )
-    private String otherAdopAgencyOrLaContactEmail;
+    private String agencyOrLaContactEmail;
 
 }

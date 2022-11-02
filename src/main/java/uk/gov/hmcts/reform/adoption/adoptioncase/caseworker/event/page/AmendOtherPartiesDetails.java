@@ -60,25 +60,25 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .done()
             .label("otherAdopAgencylable1", "### Other adoption agency")
             .mandatoryWithLabel(CaseData::getHasAnotherAdopAgencyOrLAinXui, "Is there any other adoption agency?")
-            .complex(CaseData::getOtherAdopAgencyOrLA)
+            .complex(CaseData::getOtherAdoptionAgencyOrLA)
             .mandatory(
-                OtherAdoptionAgencyOrLocalAuthority::getOtherAdopAgencyOrLaName,
+                OtherAdoptionAgencyOrLocalAuthority::getAgencyOrLaName,
                 "hasAnotherAdopAgencyOrLAinXui=\"Yes\""
             )
             .mandatory(
-                OtherAdoptionAgencyOrLocalAuthority::getOtherAdopAgencyOrLaContactName,
+                OtherAdoptionAgencyOrLocalAuthority::getAgencyOrLaContactName,
                 "hasAnotherAdopAgencyOrLAinXui=\"Yes\""
             )
             .mandatory(
-                OtherAdoptionAgencyOrLocalAuthority::getOtherAdopAgencyAddress,
+                OtherAdoptionAgencyOrLocalAuthority::getAgencyAddress,
                 "hasAnotherAdopAgencyOrLAinXui=\"Yes\""
             )
             .mandatory(
-                OtherAdoptionAgencyOrLocalAuthority::getOtherAdopAgencyOrLaPhoneNumber,
+                OtherAdoptionAgencyOrLocalAuthority::getAgencyOrLaPhoneNumber,
                 "hasAnotherAdopAgencyOrLAinXui=\"Yes\""
             )
             .mandatory(
-                OtherAdoptionAgencyOrLocalAuthority::getOtherAdopAgencyOrLaContactEmail,
+                OtherAdoptionAgencyOrLocalAuthority::getAgencyOrLaContactEmail,
                 "hasAnotherAdopAgencyOrLAinXui=\"Yes\""
             )
             .done()

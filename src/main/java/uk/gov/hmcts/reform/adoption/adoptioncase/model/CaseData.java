@@ -238,10 +238,10 @@ public class CaseData {
     )
     private YesOrNo hasAnotherAdopAgencyOrLAinXui;
 
-    @JsonUnwrapped(prefix = "otheradopAgency")
+    @JsonUnwrapped(prefix = "otherAdoption")
     @Builder.Default
     @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
-    private OtherAdoptionAgencyOrLocalAuthority otherAdopAgencyOrLA = new OtherAdoptionAgencyOrLocalAuthority();
+    private OtherAdoptionAgencyOrLocalAuthority otherAdoptionAgencyOrLA = new OtherAdoptionAgencyOrLocalAuthority();
 
     @CCD(label = "Selected Adoption Agency ID",
         access = {DefaultAccess.class}
