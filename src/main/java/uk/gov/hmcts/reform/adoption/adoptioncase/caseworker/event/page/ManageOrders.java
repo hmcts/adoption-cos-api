@@ -23,6 +23,11 @@ public class ManageOrders implements CcdPageConfiguration {
 
     public static final String ERROR_CHECK_HEARINGS_SELECTION = "Please check your selection for Hearings";
 
+    /**
+     * Overridden method to define page design and flow for entire event / Journey.
+     *
+     * @param pageBuilder - Application PageBuilder for the event pages
+     */
     @Override
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders1")
@@ -32,7 +37,17 @@ public class ManageOrders implements CcdPageConfiguration {
             .showCondition("manageOrderActivity=\"createOrder\"")
             .mandatory(CaseData::getManageOrderType)
             .done();
+        getGatekeepingOrderPage(pageBuilder);
+        getFirstDirectionsPage(pageBuilder);
+        getSecondDirectionsPage(pageBuilder);
+    }
 
+    /**
+     * Helper method to support page design and flow to List complete list of Optional Fields.
+     *
+     * @param pageBuilder - Application PageBuilder for the event pages
+     */
+    private void getGatekeepingOrderPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders3", this::midEvent)
             .showCondition("manageOrderType=\"caseManagementOrder\"")
             .pageLabel("Create case management (gatekeeping) order")
@@ -46,23 +61,34 @@ public class ManageOrders implements CcdPageConfiguration {
             .optional(CaseData::getModeOfHearing)
             .label("LabelLA35", "### Local authority")
             .optional(CaseData::getSelectedLocalAuthority)
-            .label("LabelAttendance36", "### Attendance")
+            .label("LabelLA36", "### Cafcass")
+            .optional(CaseData::getCafcass)
+            .label("LabelAttendance37", "### Attendance")
             .optional(CaseData::getAttendance)
-            .label("LabelLeaveToOppose37", "### Leave to oppose")
+            .label("LabelLeaveToOppose38", "### Leave to oppose")
             .optional(CaseData::getLeaveToOppose)
-            .label("LabelAdditionalPara38", "### Additional paragraphs")
-            .label("LabelAdditionalParaValue39", "You can add any additional directions or paragraphs on a later screen.")
-            .label("LabelCostOrders30", "### Cost orders")
+            .label("LabelAdditionalPara39", "### Additional paragraphs")
+            .label("LabelAdditionalParaValue30", "You can add any additional directions or paragraphs on a later screen.")
+            .label("LabelCostOrders301", "### Cost orders")
             .optional(CaseData::getCostOrders)
             .done();
+    }
 
+    /**
+     * Helper method to support page design and flow to Display respective options for Part1 fields selection.
+     * PreambleDetails, AllocationJudge, HearingNotices, ModeOfHearing, LocalAuthority and CAFCASS
+     * @param pageBuilder - Application PageBuilder for the event pages
+     */
+    private void getFirstDirectionsPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders4")
             .showCondition("preambleDetails=\"*\" OR allocationJudge=\"*\" "
                                + "OR hearingNoticesCONTAINS\"listForFirstHearing\" "
                                + "OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
                                + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" "
                                + "OR modeOfHearingCONTAINS\"setModeOfHearing\" "
-                               + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+                               + "OR selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\" "
+                               + "OR cafcassCONTAINS\"reportingOfficer\" "
+                               + "OR cafcassCONTAINS\"childrensGuardian\"")
             //          PREAMBLE DETAILS
             .pageLabel("Case management order first directions")
             .label("LabelAdditionalParaValue411", "Review the paragraphs to be inserted into the order. "
@@ -71,14 +97,14 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelPreamble412", "### Preamble", "preambleDetails=\"*\"")
             .label("LabelPreambleValue413", "${preambleDetails}", "preambleDetails=\"*\"")
             //          ALLOCATION DETAILS
-            .label("LabelAllocation4-Heading", "### Allocation",
+            .label("LabelAllocation421", "### Allocation",
                    "allocationJudge=\"*\"")
-            .label("LabelAllocationValue14-Heading", "The case is allocated to [Name of the judge].",
+            .label("LabelAllocationValue422", "The case is allocated to [Name of the judge].",
                    "allocationJudge=\"allocatePreviousProceedingsJudge\"")
             .mandatory(CaseData::getAllocatedJudge, "allocationJudge=\"allocatePreviousProceedingsJudge\"")
-            .label("LabelAllocationValue24-Heading", "The proceedings are reallocated to [Name of Judge].",
+            .label("LabelAllocationValue423", "The proceedings are reallocated to [Name of Judge].",
                    "allocationJudge=\"reallocateJudge\"")
-            .label("LabelNameOfJudge-Heading", "### Name of judge",
+            .label("LabelNameOfJudge424", "### Name of judge",
                    "allocationJudge=\"reallocateJudge\"")
             .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             //            HEARINGS - FIRST HEARING
@@ -143,11 +169,41 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelLocalAuthority474", "### Date and time for option 2",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .mandatory(CaseData::getTimeForOption2, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            //            CAFCASS REPORTING OFFICER
+            .label("LabelCafcass481", "### Cafcass",
+                   "cafcassCONTAINS\"reportingOfficer\" OR cafcassCONTAINS\"childrensGuardian\"")
+            .label("LabelCafcass482", "<p>[Cafcass/Cafcass Cymru] are directed to appoint a reporting officer. "
+                       + "The reporting officer is requested to file a brief report together with the relevant consent forms "
+                       + "witnessing the consent of the birth parents by [time] on [date].</p>"
+                       + "<p>The Adoption Agency (Annex A) report may be disclosed to the reporting officer.</p>",
+                   "cafcassCONTAINS\"reportingOfficer\"")
+            .label("LabelCafcass483", "### Select reporting officer",
+                   "cafcassCONTAINS\"reportingOfficer\"")
+            .mandatory(CaseData::getReportingOfficer, "cafcassCONTAINS\"reportingOfficer\"")
+            .label("LabelCafcass484", "### Date and time",
+                   "cafcassCONTAINS\"reportingOfficer\"")
+            .mandatory(CaseData::getDateAndTimeRO, "cafcassCONTAINS\"reportingOfficer\"")
+            //            CAFCASS CHILDRENS GUARDIAN
+            .label("LabelCafcass485", "<p>The child is made a respondent to the application and a children's guardian "
+                       + "is appointed and [Cafcass/Cafcass Cymru] shall use their best endeavours to appoint the same guardian "
+                       + "appointed within the previous proceedings case number [case number].</p>",
+                   "cafcassCONTAINS\"childrensGuardian\"")
+            .label("LabelCafcass486", "### Select reporting officer",
+                   "cafcassCONTAINS\"childrensGuardian\"")
+            .mandatory(CaseData::getChildrensGuardian, "cafcassCONTAINS\"childrensGuardian\"")
+            .label("LabelCafcass487", "### Case number",
+                   "cafcassCONTAINS\"childrensGuardian\"")
+            .mandatory(CaseData::getCaseNumberCG, "cafcassCONTAINS\"childrensGuardian\"")
             .done();
+    }
 
+    /**
+     * Helper method to support page design and flow to Display respective options for Part1 fields selection.
+     * Attendance, Leave To Oppose, Additional Paragraphs and Cost Orders
+     * @param pageBuilder - Application PageBuilder for the event pages
+     */
+    private void getSecondDirectionsPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders5")
-            .showCondition("attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
-                               + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
             //          ATTENDANCE DETAILS
             .pageLabel("Case management order second directions")
             .label("LabelAttendance51", "### Attendance",
@@ -176,12 +232,12 @@ public class ManageOrders implements CcdPageConfiguration {
     }
 
     /**
-     * Event method to validate the right selection options are selected by the User as per the Requirements.
-     *
-     * @param detailsBefore - Application CaseDetails for the previous page
-     * @param details - Application CaseDetails for the present page
-     * @return - AboutToStartOrSubmitResponse updated to use on further pages.
-     */
+    * Event method to validate the right selection options are selected by the User as per the Requirements.
+    *
+    * @param detailsBefore - Application CaseDetails for the previous page
+    * @param details - Application CaseDetails for the present page
+    * @return - AboutToStartOrSubmitResponse updated to use on further pages.
+    */
     public AboutToStartOrSubmitResponse<CaseData, State> midEvent(
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore

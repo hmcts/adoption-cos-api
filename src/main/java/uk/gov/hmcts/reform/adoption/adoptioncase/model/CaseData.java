@@ -56,7 +56,6 @@ public class CaseData {
     )
     private ApplyingWith applyingWith;
 
-
     @CCD(
         label = "Are the applicants represented by a solicitor?",
         access = {DefaultAccess.class}
@@ -181,7 +180,6 @@ public class CaseData {
     )
     private PlacementOrder placementOrder;
 
-
     @CCD(
         label = "Add Another Placement Order",
         access = {SystemUpdateAccess.class}
@@ -191,7 +189,6 @@ public class CaseData {
     @CCD(label = "Selected Placement Order Id",
         access = {SystemUpdateAccess.class})
     String selectedPlacementOrderId;
-
 
     @JsonUnwrapped(prefix = "child")
     @Builder.Default
@@ -423,7 +420,6 @@ public class CaseData {
     )
     private String applicant1CannotUpload;
 
-
     @CCD(
         label = "LA can not upload",
         access = { SystemUpdateAccess.class }
@@ -435,7 +431,6 @@ public class CaseData {
         access = { SystemUpdateAccess.class }
     )
     private Set<DocumentType> laCannotUploadSupportingDocument;
-
 
     @CCD(
         label = "Documents pending review",
@@ -592,6 +587,11 @@ public class CaseData {
         typeParameterOverride = "SelectedLocalAuthority")
     private Set<SelectedLocalAuthority> selectedLocalAuthority;
 
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "Cafcass")
+    private Set<Cafcass> cafcass;
+
     @CCD(label = "You are choosing which parties are issued with a direction on whether or not they can attend the"
         + "\nhearing. You can choose more than one option.",
         access = {DefaultAccess.class},
@@ -621,20 +621,12 @@ public class CaseData {
     )
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
 
-    /*@CCD(
-        access = {DefaultAccess.class}
-    )
-    private WaysToPay serviceRequest;*/
-
-
     @CCD(
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "ManageHearingOptions"
     )
     private ManageHearingOptions manageHearingOptions;
-
-
 
     @CCD(
         typeOverride = DynamicRadioList,
@@ -667,7 +659,6 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageHearingDetails>> vacatedHearings;
-
 
     @CCD(
         label = "New hearing",
@@ -714,22 +705,47 @@ public class CaseData {
 
     @CCD(access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
+        typeParameterOverride = "ReportingOfficer")
+    private ReportingOfficer reportingOfficer;
+
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ReportingOfficer")
+    private ReportingOfficer childrensGuardian;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime dateAndTimeRO;
+
+    @CCD(access = {DefaultAccess.class})
+    private String caseNumberCG;
+
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
         typeParameterOverride = "ApplicantAttendance")
     private ApplicantAttendance applicantAttendance;
+
     @CCD(access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "ChildAttendance")
     private ChildAttendance childAttendance;
+
     @CCD(access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "LaAttendance")
     private Set<LaAttendance> laAttendance;
+
     @CCD(label = "Choose all that are relevant.",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "BirthParentAttendance")
     private Set<BirthParentAttendance> birthParentAttendance;
 
+    @CCD(access = {DefaultAccess.class})
+    private List<ListValue<AdditionalParagraph>> additionalPara;
+
+    @CCD(label = "Enter the name of the person issuing this order",
+        access = {DefaultAccess.class})
+    private String orderedBy;
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
