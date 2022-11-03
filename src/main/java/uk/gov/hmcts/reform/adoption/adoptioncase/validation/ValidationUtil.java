@@ -135,6 +135,7 @@ public final class ValidationUtil {
         return Stream.of(lists).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void checkForInvalidCheckboxSelection(CaseData caseData, List<String> error, RecipientsInTheCase recipientsInTheCase) {
         Optional<RecipientsInTheCase> optionalRecipient = caseData.getRecipientsInTheCase().stream()
             .filter(e -> e.equals(recipientsInTheCase))
@@ -144,6 +145,7 @@ public final class ValidationUtil {
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void settingApplicantRelatedRecipients(CaseData caseData) {
         if (ApplyingWith.ALONE.equals(caseData.getApplyingWith())) {
             caseData.getRecipientsInTheCase().add(RecipientsInTheCase.APPLICANT1);
@@ -156,6 +158,7 @@ public final class ValidationUtil {
         caseData.getRecipientsInTheCase().add(RecipientsInTheCase.APPLICANT_LOCAL_AUTHORITY);
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void settingOtherPersonRelatedRecipients(CaseData caseData) {
         /* Check if Other Parent has selected To Be Served as Yes */
         if (YesOrNo.YES.equals(caseData.getOtherParent().getToBeServed())) {
@@ -163,6 +166,7 @@ public final class ValidationUtil {
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void settingAdoptionAgencyRelatedRecipients(CaseData caseData) {
         /* Adoption Agency is by default selected */
         caseData.getRecipientsInTheCase().add(RecipientsInTheCase.ADOPTION_AGENCY);
@@ -173,6 +177,7 @@ public final class ValidationUtil {
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void settingParentRelatedRecipients(CaseData caseData) {
         /* Check if Birth Mother has selected To Be Served as Yes */
         if (YesOrNo.YES.equals(caseData.getBirthMother().getToBeServed())) {
@@ -185,6 +190,7 @@ public final class ValidationUtil {
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void settingChildRelatedRecipients(CaseData caseData) {
         /* Check if Child is represented by Guardian */
         if (YesOrNo.YES.equals(caseData.getIsChildRepresentedByGuardian())) {
@@ -195,12 +201,14 @@ public final class ValidationUtil {
         caseData.getRecipientsInTheCase().add(RecipientsInTheCase.CHILD_LOCAL_AUTHORITY);
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void checkingAdoptionAgencyRelatedSelectedRecipients(CaseData caseData, List<String> error) {
         if (YesOrNo.NO.equals(caseData.getHasAnotherAdopAgencyOrLAinXui()) || caseData.getHasAnotherAdopAgencyOrLAinXui() == null) {
             checkForInvalidCheckboxSelection(caseData, error, RecipientsInTheCase.OTHER_ADOPTION_AGENCY);
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void checkingOtherPersonRelatedSelectedRecipients(CaseData caseData, List<String> error) {
         if (YesOrNo.NO.equals(caseData.getOtherParent().getToBeServed())
             || caseData.getOtherParent().getToBeServed() == null) {
@@ -208,6 +216,7 @@ public final class ValidationUtil {
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void checkingParentRelatedSelectedRecipients(CaseData caseData, List<String> error) {
         if (YesOrNo.NO.equals(caseData.getBirthMother().getToBeServed()) || caseData.getBirthMother().getToBeServed() == null) {
             checkForInvalidCheckboxSelection(caseData, error, RecipientsInTheCase.RESPONDENT_MOTHER);
@@ -218,12 +227,14 @@ public final class ValidationUtil {
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void checkingChildRelatedSelectedRecipient(CaseData caseData, List<String> error) {
         if (YesOrNo.NO.equals(caseData.getIsChildRepresentedByGuardian()) || caseData.getIsChildRepresentedByGuardian() == null) {
             checkForInvalidCheckboxSelection(caseData, error, RecipientsInTheCase.LEGAL_GUARDIAN);
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     public static void checkingApplicantRelatedSelectedRecipients(CaseData caseData, List<String> error) {
         if (ApplyingWith.ALONE.equals(caseData.getApplyingWith())) {
             checkForInvalidCheckboxSelection(caseData, error, RecipientsInTheCase.APPLICANT2);
