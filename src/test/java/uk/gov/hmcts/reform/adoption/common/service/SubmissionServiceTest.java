@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.common.service;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,7 +36,7 @@ class SubmissionServiceTest {
     private SubmissionService submissionService;
 
 
-    @Test
+
     public void shouldProcessSubmissionCaseTasks() {
 
         final CaseDetails<CaseData, State> caseDetails = new CaseDetails<>();
