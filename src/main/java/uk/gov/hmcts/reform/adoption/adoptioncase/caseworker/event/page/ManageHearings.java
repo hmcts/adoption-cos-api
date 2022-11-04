@@ -8,7 +8,7 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil;
+import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -98,11 +98,11 @@ public class ManageHearings implements CcdPageConfiguration {
         /* Check if Application is applied alone or with someone
         and based on that display proper Recipient */
         caseData.setRecipientsInTheCase(new TreeSet<>());
-        ValidationUtil.settingApplicantRelatedRecipients(caseData);
-        ValidationUtil.settingChildRelatedRecipients(caseData);
-        ValidationUtil.settingParentRelatedRecipients(caseData);
-        ValidationUtil.settingAdoptionAgencyRelatedRecipients(caseData);
-        ValidationUtil.settingOtherPersonRelatedRecipients(caseData);
+        RecipientValidationUtil.settingApplicantRelatedRecipients(caseData);
+        RecipientValidationUtil.settingChildRelatedRecipients(caseData);
+        RecipientValidationUtil.settingParentRelatedRecipients(caseData);
+        RecipientValidationUtil.settingAdoptionAgencyRelatedRecipients(caseData);
+        RecipientValidationUtil.settingOtherPersonRelatedRecipients(caseData);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
@@ -121,11 +121,11 @@ public class ManageHearings implements CcdPageConfiguration {
         var caseData = details.getData();
         List<String> error = new ArrayList<>();
 
-        ValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
-        ValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
-        ValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
-        ValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
-        ValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
+        RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
