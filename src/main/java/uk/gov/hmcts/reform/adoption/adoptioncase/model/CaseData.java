@@ -616,7 +616,8 @@ public class CaseData {
     private String nameOfJudge;
 
     @CCD(
-        label = "Recipients",
+        label = "Case management order recipients",
+        hint = "Only select people who are party to this case and who need a copy of this order.",
         access = {DefaultAccess.class}
     )
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
@@ -771,6 +772,12 @@ public class CaseData {
                 .stream()
                 .filter(listValue -> listValue.getValue().getDocumentType()
                     .equals(APPLICATION_LA_SUMMARY_EN)).collect(Collectors.toList()));
+        this.getCombinedDocumentsGenerated().stream()
+            .forEach(listValue -> {
+                listValue.getValue().getDocumentType()
+                    .equals(APPLICATION_LA_SUMMARY_EN);
+                this.getLaDocumentsUploaded().add(listValue);
+            });
     }
 
     @JsonIgnore
