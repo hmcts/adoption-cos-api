@@ -24,57 +24,6 @@ public final class RecipientValidationUtil {
         }
     }
 
-    public static void settingApplicantRelatedRecipients(CaseData caseData) {
-        if (ApplyingWith.ALONE.equals(caseData.getApplyingWith())) {
-            caseData.getRecipientsInTheCase().add(RecipientsInTheCase.APPLICANT1);
-        } else {
-            caseData.getRecipientsInTheCase().add(RecipientsInTheCase.APPLICANT1);
-            caseData.getRecipientsInTheCase().add(RecipientsInTheCase.APPLICANT2);
-        }
-
-        /* Applicant Local Authority is by default selected */
-        caseData.getRecipientsInTheCase().add(RecipientsInTheCase.APPLICANT_LOCAL_AUTHORITY);
-    }
-
-    public static void settingOtherPersonRelatedRecipients(CaseData caseData) {
-        /* Check if Other Parent has selected To Be Served as Yes */
-        if (YesOrNo.YES.equals(caseData.getOtherParent().getToBeServed())) {
-            caseData.getRecipientsInTheCase().add(RecipientsInTheCase.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITIES);
-        }
-    }
-
-    public static void settingAdoptionAgencyRelatedRecipients(CaseData caseData) {
-        /* Adoption Agency is by default selected */
-        caseData.getRecipientsInTheCase().add(RecipientsInTheCase.ADOPTION_AGENCY);
-
-        /* Check if application has another adoption agency Or Local Authority */
-        if (YesOrNo.YES.equals(caseData.getHasAnotherAdopAgencyOrLAinXui())) {
-            caseData.getRecipientsInTheCase().add(RecipientsInTheCase.OTHER_ADOPTION_AGENCY);
-        }
-    }
-
-    public static void settingParentRelatedRecipients(CaseData caseData) {
-        /* Check if Birth Mother has selected To Be Served as Yes */
-        if (YesOrNo.YES.equals(caseData.getBirthMother().getToBeServed())) {
-            caseData.getRecipientsInTheCase().add(RecipientsInTheCase.RESPONDENT_MOTHER);
-        }
-
-        /* Check if Birth Father has selected To Be Served as Yes */
-        if (YesOrNo.YES.equals(caseData.getBirthFather().getToBeServed())) {
-            caseData.getRecipientsInTheCase().add(RecipientsInTheCase.RESPONDENT_FATHER);
-        }
-    }
-
-    public static void settingChildRelatedRecipients(CaseData caseData) {
-        /* Check if Child is represented by Guardian */
-        if (YesOrNo.YES.equals(caseData.getIsChildRepresentedByGuardian())) {
-            caseData.getRecipientsInTheCase().add(RecipientsInTheCase.LEGAL_GUARDIAN);
-        }
-
-        /* Child Local Authority is by default selected */
-        caseData.getRecipientsInTheCase().add(RecipientsInTheCase.CHILD_LOCAL_AUTHORITY);
-    }
-
     public static void checkingAdoptionAgencyRelatedSelectedRecipients(CaseData caseData, List<String> error) {
         if (YesOrNo.NO.equals(caseData.getHasAnotherAdopAgencyOrLAinXui()) || caseData.getHasAnotherAdopAgencyOrLAinXui() == null) {
             checkForInvalidCheckboxSelection(caseData, error, RecipientsInTheCase.OTHER_ADOPTION_AGENCY);

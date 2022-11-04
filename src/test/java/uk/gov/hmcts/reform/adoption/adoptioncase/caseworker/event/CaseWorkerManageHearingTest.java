@@ -74,9 +74,10 @@ class CaseWorkerManageHearingTest {
     void checkForInvalidCheckboxSelectionForAloneSuccess() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
-        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.setRecipientsMidEvent(caseDetails, caseDetails);
-        assertThat(response.getErrors()).isNull();
-        response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -84,9 +85,10 @@ class CaseWorkerManageHearingTest {
     void checkForInvalidCheckboxSelectionForNotAloneSuccess() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplyingWith(ApplyingWith.WITH_SPOUSE_OR_CIVIL_PARTNER);
-        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.setRecipientsMidEvent(caseDetails, caseDetails);
-        assertThat(response.getErrors()).isNull();
-        response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -94,9 +96,10 @@ class CaseWorkerManageHearingTest {
     void checkForInvalidCheckboxSelectionForAnotherAdoptionAgencySuccess() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
-        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.setRecipientsMidEvent(caseDetails, caseDetails);
-        assertThat(response.getErrors()).isNull();
-        response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -104,9 +107,10 @@ class CaseWorkerManageHearingTest {
     void checkForInvalidCheckboxSelectionForChildRepresentedByGuardianSuccess() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsChildRepresentedByGuardian(YesOrNo.YES);
-        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.setRecipientsMidEvent(caseDetails, caseDetails);
-        assertThat(response.getErrors()).isNull();
-        response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -116,9 +120,10 @@ class CaseWorkerManageHearingTest {
         caseDetails.getData().getOtherParent().setToBeServed(YesOrNo.NO);
         caseDetails.getData().getBirthMother().setToBeServed(YesOrNo.NO);
         caseDetails.getData().getBirthFather().setToBeServed(YesOrNo.NO);
-        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.setRecipientsMidEvent(caseDetails, caseDetails);
-        assertThat(response.getErrors()).isNull();
-        response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -126,13 +131,10 @@ class CaseWorkerManageHearingTest {
     void checkForInvalidCheckboxSelectionForAloneFailure() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
-
-        AboutToStartOrSubmitResponse<CaseData, State> response =  manageHearings.setRecipientsMidEvent(caseDetails, caseDetails);
-        assertThat(response.getErrors()).isNull();
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT2);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
-        response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isNotNull();
     }
 

@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 import java.util.UUID;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
@@ -30,7 +29,7 @@ public class ManageHearings implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders1", this::midEvent)
             .mandatory(CaseData::getManageHearingOptions)
-            .page("manageOrders2", this::setRecipientsMidEvent)
+            .page("manageOrders2")
             .showCondition("manageHearingOptions=\"addNewHearing\"")
             .label("addNewHearing1", "## Add new hearing")
             .complex(CaseData::getManageHearingDetails)
@@ -85,29 +84,6 @@ public class ManageHearings implements CcdPageConfiguration {
             .build();
     }
 
-    /*
-    This MidEvent will be used to pre-select all the applicable
-    Recipients for the respective case.
-     */
-    public AboutToStartOrSubmitResponse<CaseData, State> setRecipientsMidEvent(
-        CaseDetails<CaseData, State> details,
-        CaseDetails<CaseData, State> detailsBefore
-    ) {
-        var caseData = details.getData();
-
-        /* Check if Application is applied alone or with someone
-        and based on that display proper Recipient */
-        caseData.setRecipientsInTheCase(new TreeSet<>());
-        RecipientValidationUtil.settingApplicantRelatedRecipients(caseData);
-        RecipientValidationUtil.settingChildRelatedRecipients(caseData);
-        RecipientValidationUtil.settingParentRelatedRecipients(caseData);
-        RecipientValidationUtil.settingAdoptionAgencyRelatedRecipients(caseData);
-        RecipientValidationUtil.settingOtherPersonRelatedRecipients(caseData);
-
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseData)
-            .build();
-    }
 
     /*
     This MidEvent will validate if any incorrect selection of Recipients is made.
