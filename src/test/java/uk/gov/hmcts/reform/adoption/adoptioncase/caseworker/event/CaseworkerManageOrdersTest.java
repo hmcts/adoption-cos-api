@@ -12,8 +12,7 @@ import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.HearingNotices;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ModeOfHearing;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -28,10 +27,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerManageOrders.CASEWORKER_MANAGE_ORDERS;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders.ERROR_CHECK_HEARINGS_SELECTION;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.HearingNotices.LIST_FOR_FURTHER_HEARINGS;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.HearingNotices.LIST_FOR_FIRST_HEARING;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ModeOfHearing.SET_MODE_OF_HEARING;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ModeOfHearing.SET_MODE_OF_HEARING;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.LIST_FOR_FIRST_HEARING;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.LIST_FOR_FURTHER_HEARINGS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 /**
@@ -60,9 +59,9 @@ class CaseworkerManageOrdersTest {
     @Test
     public void shouldValidateHearingDateToBeSpecifiedInTheFutureSelectedByUser() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
-        Set<HearingNotices> hearingNotices = new HashSet<>();
+        Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE);
-        caseDetails.getData().setHearingNotices(hearingNotices);
+        caseDetails.getData().getManageOrdersData().setHearingNotices(hearingNotices);
         AboutToStartOrSubmitResponse<CaseData, State> response = page.midEvent(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
@@ -70,14 +69,14 @@ class CaseworkerManageOrdersTest {
     @Test
     public void shouldValidateValuesSelectedByUser() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
-        Set<HearingNotices> hearingNotices = new HashSet<>();
+        Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(LIST_FOR_FIRST_HEARING);
         hearingNotices.add(LIST_FOR_FURTHER_HEARINGS);
-        caseDetails.getData().setHearingNotices(hearingNotices);
+        caseDetails.getData().getManageOrdersData().setHearingNotices(hearingNotices);
 
-        Set<ModeOfHearing> modeOfHearings = new HashSet<>();
+        Set<ManageOrdersData.ModeOfHearing> modeOfHearings = new HashSet<>();
         modeOfHearings.add(SET_MODE_OF_HEARING);
-        caseDetails.getData().setModeOfHearing(modeOfHearings);
+        caseDetails.getData().getManageOrdersData().setModeOfHearing(modeOfHearings);
 
         AboutToStartOrSubmitResponse<CaseData, State> response = page.midEvent(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
@@ -86,15 +85,15 @@ class CaseworkerManageOrdersTest {
     @Test
     public void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithAll() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
-        Set<HearingNotices> hearingNotices = new HashSet<>();
+        Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(LIST_FOR_FIRST_HEARING);
         hearingNotices.add(LIST_FOR_FURTHER_HEARINGS);
         hearingNotices.add(HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE);
-        caseDetails.getData().setHearingNotices(hearingNotices);
+        caseDetails.getData().getManageOrdersData().setHearingNotices(hearingNotices);
 
-        Set<ModeOfHearing> modeOfHearings = new HashSet<>();
+        Set<ManageOrdersData.ModeOfHearing> modeOfHearings = new HashSet<>();
         modeOfHearings.add(SET_MODE_OF_HEARING);
-        caseDetails.getData().setModeOfHearing(modeOfHearings);
+        caseDetails.getData().getManageOrdersData().setModeOfHearing(modeOfHearings);
 
         AboutToStartOrSubmitResponse<CaseData, State> response = page.midEvent(caseDetails, caseDetails);
         assertThat(response.getErrors())
@@ -104,13 +103,13 @@ class CaseworkerManageOrdersTest {
     @Test
     public void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithModeOfHearing() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
-        Set<HearingNotices> hearingNotices = new HashSet<>();
+        Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE);
-        caseDetails.getData().setHearingNotices(hearingNotices);
+        caseDetails.getData().getManageOrdersData().setHearingNotices(hearingNotices);
 
-        Set<ModeOfHearing> modeOfHearings = new HashSet<>();
+        Set<ManageOrdersData.ModeOfHearing> modeOfHearings = new HashSet<>();
         modeOfHearings.add(SET_MODE_OF_HEARING);
-        caseDetails.getData().setModeOfHearing(modeOfHearings);
+        caseDetails.getData().getManageOrdersData().setModeOfHearing(modeOfHearings);
 
         AboutToStartOrSubmitResponse<CaseData, State> response = page.midEvent(caseDetails, caseDetails);
         assertThat(response.getErrors())
@@ -120,11 +119,11 @@ class CaseworkerManageOrdersTest {
     @Test
     public void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithHearingNoticesOptions() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
-        Set<HearingNotices> hearingNotices = new HashSet<>();
+        Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(LIST_FOR_FIRST_HEARING);
         hearingNotices.add(LIST_FOR_FURTHER_HEARINGS);
         hearingNotices.add(HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE);
-        caseDetails.getData().setHearingNotices(hearingNotices);
+        caseDetails.getData().getManageOrdersData().setHearingNotices(hearingNotices);
 
         AboutToStartOrSubmitResponse<CaseData, State> response = page.midEvent(caseDetails, caseDetails);
         assertThat(response.getErrors())

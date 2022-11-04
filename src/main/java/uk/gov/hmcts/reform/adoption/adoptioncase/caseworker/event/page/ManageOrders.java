@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.HearingNotices;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
 
 /**
  * Contains method to add Page Configuration for ExUI.
@@ -31,11 +31,13 @@ public class ManageOrders implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders1")
-            .mandatory(CaseData::getManageOrderActivity)
+            .complex(CaseData::getManageOrdersData)
+            .mandatory(ManageOrdersData::getManageOrderActivity)
             .page("mangeOrders2")
-            .pageLabel("Manage orders and directions")
             .showCondition("manageOrderActivity=\"createOrder\"")
-            .mandatory(CaseData::getManageOrderType)
+            .pageLabel("Manage orders and directions")
+            .mandatory(ManageOrdersData::getManageOrderType, "manageOrderActivity=\"createOrder\"")
+            .done()
             .done();
         getGatekeepingOrderPage(pageBuilder);
         getFirstDirectionsPage(pageBuilder);
@@ -50,27 +52,29 @@ public class ManageOrders implements CcdPageConfiguration {
     private void getGatekeepingOrderPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders3", this::midEvent)
             .showCondition("manageOrderType=\"caseManagementOrder\"")
+            .complex(CaseData::getManageOrdersData)
             .pageLabel("Create case management (gatekeeping) order")
             .label("LabelPreamble31", "### Preamble")
-            .optional(CaseData::getPreambleDetails)
+            .optional(ManageOrdersData::getPreambleDetails)
             .label("LabelAllocation32", "### Allocation")
-            .optional(CaseData::getAllocationJudge)
+            .optional(ManageOrdersData::getAllocationJudge)
             .label("LabelHearings33", "### Hearings")
-            .optional(CaseData::getHearingNotices)
+            .optional(ManageOrdersData::getHearingNotices)
             .label("LabelModeOfHearing34", "### Mode of hearing")
-            .optional(CaseData::getModeOfHearing)
+            .optional(ManageOrdersData::getModeOfHearing)
             .label("LabelLA35", "### Local authority")
-            .optional(CaseData::getSelectedLocalAuthority)
+            .optional(ManageOrdersData::getSelectedLocalAuthority)
             .label("LabelLA36", "### Cafcass")
-            .optional(CaseData::getCafcass)
+            .optional(ManageOrdersData::getCafcass)
             .label("LabelAttendance37", "### Attendance")
-            .optional(CaseData::getAttendance)
+            .optional(ManageOrdersData::getAttendance)
             .label("LabelLeaveToOppose38", "### Leave to oppose")
-            .optional(CaseData::getLeaveToOppose)
+            .optional(ManageOrdersData::getLeaveToOppose)
             .label("LabelAdditionalPara39", "### Additional paragraphs")
             .label("LabelAdditionalParaValue30", "You can add any additional directions or paragraphs on a later screen.")
             .label("LabelCostOrders301", "### Cost orders")
-            .optional(CaseData::getCostOrders)
+            .optional(ManageOrdersData::getCostOrders)
+            .done()
             .done();
     }
 
@@ -106,22 +110,26 @@ public class ManageOrders implements CcdPageConfiguration {
                    "allocationJudge=\"reallocateJudge\"")
             .label("LabelNameOfJudge424", "### Name of judge",
                    "allocationJudge=\"reallocateJudge\"")
-            .mandatory(CaseData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
+            .complex(CaseData::getManageOrdersData)
+            .mandatory(ManageOrdersData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             //            HEARINGS - FIRST HEARING
             .label("LabelHearings431", "### Hearings",
-                   "hearingNoticesCONTAINS\"listForFirstHearing\" OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
-                       + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" OR modeOfHearingCONTAINS\"setModeOfHearing\"")
+                   "hearingNoticesCONTAINS\"listForFirstHearing\" "
+                       + "OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
+                       + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" "
+                       + "OR modeOfHearingCONTAINS\"setModeOfHearing\"")
             .label("LabelHearings432", "The application is listed for a first hearing on [date] "
                        + "at [time] (with a time estimate of [length]) at [court name].",
                    "hearingNoticesCONTAINS\"listForFirstHearing\"")
             .label("LabelHearings433", "### Date and time",
                    "hearingNoticesCONTAINS\"listForFirstHearing\"")
-            .mandatory(CaseData::getDateAndTimeFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .mandatory(ManageOrdersData::getDateAndTimeFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
             .label("LabelHearings434", "### Length of hearing",
                    "hearingNoticesCONTAINS\"listForFirstHearing\"")
-            .mandatory(CaseData::getLengthOfHearingFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .mandatory(ManageOrdersData::getLengthOfHearingFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
             .label("LabelNameOfCourt435", "### Name of court",
                    "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .done()
             .mandatory(CaseData::getNameOfCourtFirstHearing,
                        "hearingNoticesCONTAINS\"listForFirstHearing\"")
             //            HEARINGS - FURTHER HEARING
@@ -130,15 +138,18 @@ public class ManageOrders implements CcdPageConfiguration {
                    "hearingNoticesCONTAINS\"listForFurtherHearings\"")
             .label("LabelNameOfCourt442", "### Listing type",
                    "hearingNoticesCONTAINS\"listForFurtherHearings\"")
-            .mandatory(CaseData::getListingTypeFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .complex(CaseData::getManageOrdersData)
+            .mandatory(ManageOrdersData::getListingTypeFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
             .label("LabelHearings443", "### Date and time",
                    "hearingNoticesCONTAINS\"listForFurtherHearings\"")
-            .mandatory(CaseData::getDateAndTimeFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(ManageOrdersData::getDateAndTimeFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
             .label("LabelHearings444", "### Length of hearing",
                    "hearingNoticesCONTAINS\"listForFurtherHearings\"")
-            .mandatory(CaseData::getLengthOfHearingFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(ManageOrdersData::getLengthOfHearingFurtherHearing,
+                       "hearingNoticesCONTAINS\"listForFurtherHearings\"")
             .label("LabelNameOfCourt445", "### Name of court",
                    "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .done()
             .mandatory(CaseData::getNameOfCourtFurtherHearing,
                        "hearingNoticesCONTAINS\"listForFurtherHearings\"")
             //            HEARINGS - HEARING DATE IN FUTURE
@@ -146,11 +157,14 @@ public class ManageOrders implements CcdPageConfiguration {
                    "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
             .label("LabelNameOfCourt452", "### Listing type",
                    "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
-            .mandatory(CaseData::getListingTypeHearingInFutureDate, "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
+            .complex(CaseData::getManageOrdersData)
+            .mandatory(ManageOrdersData::getListingTypeHearingInFutureDate,
+                       "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
             //            HEARINGS - MODE OF HEARINGS
             .label("LabelNameOfCourt461", "### Mode of hearing",
                    "modeOfHearingCONTAINS\"setModeOfHearing\"")
-            .mandatory(CaseData::getModeOfHearings, "modeOfHearingCONTAINS\"setModeOfHearing\"")
+            .mandatory(ManageOrdersData::getModeOfHearings,
+                       "modeOfHearingCONTAINS\"setModeOfHearing\"")
             //            LOCAL AUTHORITY
             .label("LabelLocalAuthority471", "### Local authority",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
@@ -165,13 +179,16 @@ public class ManageOrders implements CcdPageConfiguration {
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .label("LabelLocalAuthority473", "### Date and time for option 1",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
-            .mandatory(CaseData::getDateAndTimeForOption1, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .mandatory(ManageOrdersData::getDateAndTimeForOption1,
+                       "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .label("LabelLocalAuthority474", "### Date and time for option 2",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
-            .mandatory(CaseData::getTimeForOption2, "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+            .mandatory(ManageOrdersData::getTimeForOption2,
+                       "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             //            CAFCASS REPORTING OFFICER
             .label("LabelCafcass481", "### Cafcass",
-                   "cafcassCONTAINS\"reportingOfficer\" OR cafcassCONTAINS\"childrensGuardian\"")
+                   "cafcassCONTAINS\"reportingOfficer\" "
+                       + "OR cafcassCONTAINS\"childrensGuardian\"")
             .label("LabelCafcass482", "<p>[Cafcass/Cafcass Cymru] are directed to appoint a reporting officer. "
                        + "The reporting officer is requested to file a brief report together with the relevant consent forms "
                        + "witnessing the consent of the birth parents by [time] on [date].</p>"
@@ -179,10 +196,12 @@ public class ManageOrders implements CcdPageConfiguration {
                    "cafcassCONTAINS\"reportingOfficer\"")
             .label("LabelCafcass483", "### Select reporting officer",
                    "cafcassCONTAINS\"reportingOfficer\"")
-            .mandatory(CaseData::getReportingOfficer, "cafcassCONTAINS\"reportingOfficer\"")
+            .mandatory(ManageOrdersData::getReportingOfficer,
+                       "cafcassCONTAINS\"reportingOfficer\"")
             .label("LabelCafcass484", "### Date and time",
                    "cafcassCONTAINS\"reportingOfficer\"")
-            .mandatory(CaseData::getDateAndTimeRO, "cafcassCONTAINS\"reportingOfficer\"")
+            .mandatory(ManageOrdersData::getDateAndTimeRO,
+                       "cafcassCONTAINS\"reportingOfficer\"")
             //            CAFCASS CHILDRENS GUARDIAN
             .label("LabelCafcass485", "<p>The child is made a respondent to the application and a children's guardian "
                        + "is appointed and [Cafcass/Cafcass Cymru] shall use their best endeavours to appoint the same guardian "
@@ -190,10 +209,12 @@ public class ManageOrders implements CcdPageConfiguration {
                    "cafcassCONTAINS\"childrensGuardian\"")
             .label("LabelCafcass486", "### Select reporting officer",
                    "cafcassCONTAINS\"childrensGuardian\"")
-            .mandatory(CaseData::getChildrensGuardian, "cafcassCONTAINS\"childrensGuardian\"")
+            .mandatory(ManageOrdersData::getChildrensGuardian,
+                       "cafcassCONTAINS\"childrensGuardian\"")
             .label("LabelCafcass487", "### Case number",
                    "cafcassCONTAINS\"childrensGuardian\"")
-            .mandatory(CaseData::getCaseNumberCG, "cafcassCONTAINS\"childrensGuardian\"")
+            .mandatory(ManageOrdersData::getCaseNumberCG, "cafcassCONTAINS\"childrensGuardian\"")
+            .done()
             .done();
     }
 
@@ -204,40 +225,80 @@ public class ManageOrders implements CcdPageConfiguration {
      */
     private void getSecondDirectionsPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders5")
+            .showCondition("attendanceCONTAINS\"applicantsAttendance\" "
+                               + "OR attendanceCONTAINS\"childAttendance\" "
+                               + "OR attendanceCONTAINS\"localAuthorityAttendance\" "
+                               + "OR attendanceCONTAINS\"birthParentsAttendance\"")
             //          ATTENDANCE DETAILS
             .pageLabel("Case management order second directions")
             .label("LabelAttendance51", "### Attendance",
-                   "attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
-                       + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
+                   "attendanceCONTAINS\"applicantsAttendance\" "
+                       + "OR attendanceCONTAINS\"childAttendance\" "
+                       + "OR attendanceCONTAINS\"localAuthorityAttendance\" "
+                       + "OR attendanceCONTAINS\"birthParentsAttendance\"")
             .label("LabelAttendanceValue52", "Choose the direction for the attendees",
-                   "attendanceCONTAINS\"applicantsAttendance\" OR attendanceCONTAINS\"childAttendance\" "
-                       + "OR attendanceCONTAINS\"localAuthorityAttendance\" OR attendanceCONTAINS\"birthParentsAttendance\"")
+                   "attendanceCONTAINS\"applicantsAttendance\" "
+                       + "OR attendanceCONTAINS\"childAttendance\" "
+                       + "OR attendanceCONTAINS\"localAuthorityAttendance\" "
+                       + "OR attendanceCONTAINS\"birthParentsAttendance\"")
             //          APPLICANT ATTENDANCE
             .label("LabelApplicantAttendance511", "### Applicant attendance",
                    "attendanceCONTAINS\"applicantsAttendance\"")
-            .mandatory(CaseData::getApplicantAttendance, "attendanceCONTAINS\"applicantsAttendance\"")
+            .complex(CaseData::getManageOrdersData)
+            .mandatory(ManageOrdersData::getApplicantAttendance,
+                       "attendanceCONTAINS\"applicantsAttendance\"")
             //          CHILD ATTENDANCE
             .label("LabelChildAttendance521", "### Child attendance",
                    "attendanceCONTAINS\"childAttendance\"")
-            .mandatory(CaseData::getChildAttendance, "attendanceCONTAINS\"childAttendance\"")
+            .mandatory(ManageOrdersData::getChildAttendance,
+                       "attendanceCONTAINS\"childAttendance\"")
             //          LA ATTENDANCE
             .label("LabelChildAttendance531", "### Local authority attendance",
                    "attendanceCONTAINS\"localAuthorityAttendance\"")
-            .mandatory(CaseData::getLaAttendance, "attendanceCONTAINS\"localAuthorityAttendance\"")
+            .mandatory(ManageOrdersData::getLaAttendance,
+                       "attendanceCONTAINS\"localAuthorityAttendance\"")
             //          BIRTH PARENT ATTENDANCE
             .label("LabelChildAttendance541", "### Birth parent attendance",
                    "attendanceCONTAINS\"birthParentsAttendance\"")
-            .mandatory(CaseData::getBirthParentAttendance, "attendanceCONTAINS\"birthParentsAttendance\"")
+            .mandatory(ManageOrdersData::getBirthParentAttendance,
+                       "attendanceCONTAINS\"birthParentsAttendance\"")
+            //          LEAVE TO OPPOSE
+            .label("LabelLeaveToOppose551", "### Leave to oppose",
+                   "leaveToOpposeCONTAINS\"leaveToOppose\"")
+            .label("LabelLeaveToOppose552", "<p>A birth parent who wants to oppose the making of an adoption order or seek "
+                       + "contact with the child is invited to notify the court in writing by (14 days from the date of this order).</p>"
+                       + "<p>A birth parent can only oppose the making of an Adoption Order if "
+                       + "they have first been given permission to do so by the Court.</p>"
+                       + "<p>A birth parent who wishes to apply to the court for permission to oppose the making of an adoption order must "
+                       + "send a statement to the court setting out how circumstances have changed since the date when the Placement "
+                       + "Order was made. If you have any certificates or other documents of courses completed or work, you have done "
+                       + "these should be attached to the statement.</p>"
+                       + "<p>The statement should then also explain to the court why it would be in the best interests of the child for "
+                       + "you to be given permission to oppose the adoption.</p>"
+                       + "<p>If no such application is made the case may proceed to a final hearing which may be dealt with without "
+                       + "attendance of the parties unless such an attendance is requested by any of the parties. If such a "
+                       + "request is made, the hearing may be conducted remotely unless this cannot be fairly undertaken.</p>",
+                   "leaveToOpposeCONTAINS\"leaveToOppose\"")
+            //          ADDITIONAL PARAGRAPHS
+            .label("LabelAdditionalPara561", "### Additional paragraphs")
+            .mandatory(ManageOrdersData::getAdditionalPara)
+            //          COST ORDERS
+            .label("LabelCostOrders571", "### Cost orders", "costOrdersCONTAINS\"noOrderForCosts\"")
+            .label("LabelCostOrders572", "No order for costs.", "costOrdersCONTAINS\"noOrderForCosts\"")
+            //          ORDERED BY
+            .label("LabelCostOrders581", "### Ordered by")
+            .mandatory(ManageOrdersData::getOrderedBy)
+            .done()
             .done();
     }
 
     /**
-    * Event method to validate the right selection options are selected by the User as per the Requirements.
-    *
-    * @param detailsBefore - Application CaseDetails for the previous page
-    * @param details - Application CaseDetails for the present page
-    * @return - AboutToStartOrSubmitResponse updated to use on further pages.
-    */
+     * Event method to validate the right selection options are selected by the User as per the Requirements.
+     *
+     * @param detailsBefore - Application CaseDetails for the previous page
+     * @param details - Application CaseDetails for the present page
+     * @return - AboutToStartOrSubmitResponse updated to use on further pages.
+     */
     public AboutToStartOrSubmitResponse<CaseData, State> midEvent(
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
@@ -245,13 +306,14 @@ public class ManageOrders implements CcdPageConfiguration {
         CaseData caseData = details.getData();
         final List<String> errors = new ArrayList<>();
         caseData.setAllocatedJudge(detailsBefore.getData().getAllocatedJudge());
-        Set<HearingNotices> selectedHearingNotices = caseData.getHearingNotices();
+        Set<ManageOrdersData.HearingNotices> selectedHearingNotices = caseData.getManageOrdersData().getHearingNotices();
 
         if (isNotEmpty(selectedHearingNotices)
             && selectedHearingNotices.contains(HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE)
-            && (isNotEmpty(caseData.getModeOfHearing()) || selectedHearingNotices.size() > 1)) {
+            && (isNotEmpty(caseData.getManageOrdersData().getModeOfHearing()) || selectedHearingNotices.size() > 1)) {
             errors.add(ERROR_CHECK_HEARINGS_SELECTION);
         }
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .errors(errors)
