@@ -597,6 +597,11 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private ManageOrdersData manageOrdersData = new ManageOrdersData();
 
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private AdoptionOrderData adoptionOrderData = new AdoptionOrderData();
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;

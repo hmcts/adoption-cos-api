@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -19,6 +21,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.H
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage orders Details screen with all required fields.
  */
+@Slf4j
 public class ManageOrders implements CcdPageConfiguration {
 
     public static final String ERROR_CHECK_HEARINGS_SELECTION = "Please check your selection for Hearings";
@@ -40,12 +43,15 @@ public class ManageOrders implements CcdPageConfiguration {
             .done()
             .done();
         getGatekeepingOrderPage(pageBuilder);
+        getFinalOrderPage(pageBuilder);
         getFirstDirectionsPage(pageBuilder);
         getSecondDirectionsPage(pageBuilder);
+        getServePartiesPage(pageBuilder);
     }
 
     /**
-     * Helper method to support page design and flow to List complete list of Optional Fields.
+     * Helper method to support page design and flow to display complete list of Optional Fields for further selection.
+     * Case Management Order
      *
      * @param pageBuilder - Application PageBuilder for the event pages
      */
@@ -79,7 +85,7 @@ public class ManageOrders implements CcdPageConfiguration {
     }
 
     /**
-     * Helper method to support page design and flow to Display respective options for Part1 fields selection.
+     * Helper method to support page design and flow to Display Fields for first directions screen.
      * PreambleDetails, AllocationJudge, HearingNotices, ModeOfHearing, LocalAuthority and CAFCASS
      * @param pageBuilder - Application PageBuilder for the event pages
      */
@@ -219,12 +225,13 @@ public class ManageOrders implements CcdPageConfiguration {
     }
 
     /**
-     * Helper method to support page design and flow to Display respective options for Part1 fields selection.
+     * Helper method to support page design and flow to Display Fields for second directions screen.
      * Attendance, Leave To Oppose, Additional Paragraphs and Cost Orders
      * @param pageBuilder - Application PageBuilder for the event pages
      */
     private void getSecondDirectionsPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders5")
+            .showCondition("manageOrderType=\"caseManagementOrder\"")
             //          ATTENDANCE DETAILS
             .pageLabel("Case management order second directions")
             .label("LabelAttendance51", "### Attendance",
@@ -289,7 +296,40 @@ public class ManageOrders implements CcdPageConfiguration {
     }
 
     /**
-     * Event method to validate the right selection options are selected by the User as per the Requirements.
+     * Helper method to support page design and flow to Display Fields for serve parties screen.
+     * Recipients
+     * @param pageBuilder - Application PageBuilder for the event pages
+     */
+    private void getServePartiesPage(PageBuilder pageBuilder) {
+        pageBuilder.page("manageOrders6")
+            .showCondition("manageOrderType=\"caseManagementOrder\"")
+            .pageLabel("Case management order recipients")
+            .complex(CaseData::getManageOrdersData)
+            .label("LabelRecipients661", "#### Select who to serve the order to")
+            .mandatory(ManageOrdersData::getRecipientsList)
+            .done()
+            .done();
+    }
+
+    /**
+     * Helper method to support page design and flow to display complete list of Optional Fields for further selection.
+     * Final Adoption Order
+     *
+     * @param pageBuilder - Application PageBuilder for the event pages
+     */
+    private void getFinalOrderPage(PageBuilder pageBuilder) {
+        pageBuilder.page("manageOrders7")
+            .showCondition("manageOrderType=\"finalAdoptionOrder\"")
+            .complex(CaseData::getAdoptionOrderData)
+            .label("LabelPreamble71", "### Preamble")
+            .optional(AdoptionOrderData::getPreambleDetailsFO)
+            .done()
+            .done();
+    }
+
+    /**
+     * Event method to validate the right selection options done by the User as per the Requirements for Hearing Notices.
+     * Gatekeeping Order Page
      *
      * @param detailsBefore - Application CaseDetails for the previous page
      * @param details - Application CaseDetails for the present page

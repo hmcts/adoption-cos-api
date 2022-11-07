@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
@@ -40,7 +40,7 @@ public class ManageOrdersData {
     )
     private ManageOrderType manageOrderType;
 
-    @CCD(label = "Copy and paste or type directly into the text box",
+    @CCD(hint = "Copy and paste or type directly into the text box",
         typeOverride = TextArea,
         access = {DefaultAccess.class})
     private String preambleDetails;
@@ -176,6 +176,14 @@ public class ManageOrdersData {
     @CCD(label = "Enter the name of the person issuing this order",
         access = {DefaultAccess.class})
     private String orderedBy;
+
+    @CCD(
+        typeOverride = MultiSelectList,
+        hint = "You can select more than one person. It is important that recipients are "
+            + "checked carefully to make sure this order is not served to the wrong person.",
+        typeParameterOverride = "Recipients"
+    )
+    private Recipients recipientsList;
 
     @Getter
     @AllArgsConstructor
@@ -417,6 +425,37 @@ public class ManageOrdersData {
         @JsonProperty("birthParentAttendanceOrderMade")
         BIRTH_PARENT_ATTENDANCE_ORDER_MADE("8. If  the court considers that a Final Order should be made the  First Hearing "
                                                + "shall be treated as a Final Hearing and an Adoption Order shall be made.");
+        private final String label;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum Recipients implements HasLabel {
+
+        @JsonProperty("birthMother")
+        BIRTH_MOTHER("Birth mother"),
+
+        @JsonProperty("birthFather")
+        BIRTH_FATHER("Birth father"),
+
+        @JsonProperty("applicants")
+        APPLICANTS("Applicants"),
+
+        @JsonProperty("childsLocalAuthority")
+        CHILDS_LOCAL_AUTHORITY("Child's local authority"),
+
+        @JsonProperty("applicantsLocalAuthority")
+        APPLICANTS_LOCAL_AUTHORITY("Applicant's local authority"),
+
+        @JsonProperty("otherAdoptionAgency")
+        OTHER_ADOPTION_AGENCY("Other adoption agency"),
+
+        @JsonProperty("otherPersonWithParentalResponsibility")
+        OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility"),
+
+        @JsonProperty("cafcass")
+        CAFCASS("Cafcass");
+
         private final String label;
     }
 }
