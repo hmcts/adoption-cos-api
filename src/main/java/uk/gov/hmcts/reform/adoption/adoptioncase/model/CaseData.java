@@ -850,10 +850,10 @@ public class CaseData {
     @JsonIgnore
     public void archiveHearingInformation() {
         ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
-        manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
-        manageHearingDetails.setHearingId(UUID.randomUUID().toString());
 
         if (null != manageHearingDetails) {
+            manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
+            manageHearingDetails.setHearingId(UUID.randomUUID().toString());
             if (isEmpty(this.getNewHearings())) {
                 List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
                 var listValue = ListValue
@@ -890,7 +890,7 @@ public class CaseData {
             hearingsList.getValue().getCode().toString()
         )).findFirst();
 
-        if (!vacatedHearings.contains(vacatedHearingDetails.get())) {
+        if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
             vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(reasonForVacatingHearing);
 
             if (isEmpty(this.getVacatedHearings())) {
