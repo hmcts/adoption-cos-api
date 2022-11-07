@@ -225,10 +225,6 @@ public class ManageOrders implements CcdPageConfiguration {
      */
     private void getSecondDirectionsPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders5")
-            .showCondition("attendanceCONTAINS\"applicantsAttendance\" "
-                               + "OR attendanceCONTAINS\"childAttendance\" "
-                               + "OR attendanceCONTAINS\"localAuthorityAttendance\" "
-                               + "OR attendanceCONTAINS\"birthParentsAttendance\"")
             //          ATTENDANCE DETAILS
             .pageLabel("Case management order second directions")
             .label("LabelAttendance51", "### Attendance",
