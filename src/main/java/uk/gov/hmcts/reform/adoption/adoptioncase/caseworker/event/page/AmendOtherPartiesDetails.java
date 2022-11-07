@@ -130,7 +130,7 @@ public class AmendOtherPartiesDetails implements CcdPageConfiguration {
             .mandatory(Parent::getLastAddressDate)
             .mandatory(Parent::getToBeServed, "", "Yes")
             .done()
-            .label("birthMotherSolicitorLab1", "### Solicitor",null,true)
+            .label("birthFatherSolicitorLab1", "### Solicitor",null,true)
             .mandatory(CaseData::getIsBirthFatherRepresentedBySolicitor)
             .complex(CaseData::getBirthFatherSolicitor)
             .mandatory(Solicitor::getSolicitorFirm, "isBirthFatherRepresentedBySolicitor=\"Yes\"")
