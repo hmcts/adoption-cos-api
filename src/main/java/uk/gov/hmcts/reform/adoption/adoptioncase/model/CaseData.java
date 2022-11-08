@@ -643,6 +643,12 @@ public class CaseData {
     private DynamicList hearingsList;
 
     @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Who do you need to contact\n"
+    )
+    private DynamicList seekFurtherInformationLust;
+
+    @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
