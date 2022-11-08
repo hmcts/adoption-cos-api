@@ -45,26 +45,25 @@ public class ManageOrdersData {
         access = {DefaultAccess.class})
     private String preambleDetails;
 
-    @CCD(
-        label = "Choose which judge to allocate to",
+    @CCD(hint = "Choose which judge to allocate to",
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "AllocationJudge")
     private AllocationJudge allocationJudge;
 
-    @CCD(label = "You can choose one or 2 options here",
+    @CCD(hint = "You can choose one or 2 options here",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "HearingNotices")
     private Set<HearingNotices> hearingNotices;
 
-    @CCD(label = "Select mode of hearing to choose between in-person or remote hearings.",
+    @CCD(hint = "Select mode of hearing to choose between in-person or remote hearings.",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "ModeOfHearing")
     private Set<ModeOfHearing> modeOfHearing;
 
-    @CCD(label = "If relevant",
+    @CCD(hint = "If relevant",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "LocalAuthority")
@@ -75,14 +74,14 @@ public class ManageOrdersData {
         typeParameterOverride = "Cafcass")
     private Set<Cafcass> cafcass;
 
-    @CCD(label = "You are choosing which parties are issued with a direction on whether or not they can attend the"
+    @CCD(hint = "You are choosing which parties are issued with a direction on whether or not they can attend the"
         + "\nhearing. You can choose more than one option.",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "Attendance")
     private Set<Attendance> attendance;
 
-    @CCD(label = "If relevant",
+    @CCD(hint = "If relevant",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "LeaveToOppose")
@@ -93,7 +92,7 @@ public class ManageOrdersData {
         typeParameterOverride = "CostOrders")
     private Set<CostOrders> costOrders;
 
-    @CCD(label = "Enter the full name and title of the judge as it would appear on the order",
+    @CCD(hint = "Enter the full name and title of the judge as it would appear on the order",
         access = {DefaultAccess.class}
     )
     private String nameOfJudge;
@@ -164,7 +163,7 @@ public class ManageOrdersData {
         typeParameterOverride = "LaAttendance")
     private Set<LaAttendance> laAttendance;
 
-    @CCD(label = "Choose all that are relevant.",
+    @CCD(hint = "Choose all that are relevant.",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "BirthParentAttendance")
@@ -173,7 +172,7 @@ public class ManageOrdersData {
     @CCD(access = {DefaultAccess.class})
     private List<ListValue<ManageOrdersDataAdditionalParagraph>> additionalPara;
 
-    @CCD(label = "Enter the name of the person issuing this order",
+    @CCD(hint = "Enter the name of the person issuing this order",
         access = {DefaultAccess.class})
     private String orderedBy;
 
