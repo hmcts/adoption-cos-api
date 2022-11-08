@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
-import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -21,7 +20,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.H
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage orders Details screen with all required fields.
  */
-@Slf4j
 public class ManageOrders implements CcdPageConfiguration {
 
     public static final String ERROR_CHECK_HEARINGS_SELECTION = "Please check your selection for Hearings";
@@ -62,24 +60,24 @@ public class ManageOrders implements CcdPageConfiguration {
             .pageLabel("Create case management (gatekeeping) order")
             .label("LabelPreamble31", "### Preamble", "manageOrderType=\"caseManagementOrder\"", true)
             .optional(ManageOrdersData::getPreambleDetails)
-            .label("LabelAllocation32", "### Allocation", "manageOrderType=\"caseManagementOrder\"", true)
-            .optional(ManageOrdersData::getAllocationJudge)
-            .label("LabelHearings33", "### Hearings", "manageOrderType=\"caseManagementOrder\"", true)
-            .optional(ManageOrdersData::getHearingNotices)
+            .label("LabelAllocation32", "### Allocation")
+            .optionalNoSummary(ManageOrdersData::getAllocationJudge)
+            .label("LabelHearings33", "### Hearings")
+            .optionalNoSummary(ManageOrdersData::getHearingNotices)
             .label("LabelModeOfHearing34", "### Mode of hearing")
-            .optional(ManageOrdersData::getModeOfHearing)
-            .label("LabelLA35", "### Local authority", "manageOrderType=\"caseManagementOrder\"", true)
-            .optional(ManageOrdersData::getSelectedLocalAuthority)
-            .label("LabelLA36", "### Cafcass", "manageOrderType=\"caseManagementOrder\"", true)
-            .optional(ManageOrdersData::getCafcass)
-            .label("LabelAttendance37", "### Attendance", "manageOrderType=\"caseManagementOrder\"", true)
-            .optional(ManageOrdersData::getAttendance)
-            .label("LabelLeaveToOppose38", "### Leave to oppose", "manageOrderType=\"caseManagementOrder\"", true)
-            .optional(ManageOrdersData::getLeaveToOppose)
+            .optionalNoSummary(ManageOrdersData::getModeOfHearing)
+            .label("LabelLA35", "### Local authority")
+            .optionalNoSummary(ManageOrdersData::getSelectedLocalAuthority)
+            .label("LabelLA36", "### Cafcass")
+            .optionalNoSummary(ManageOrdersData::getCafcass)
+            .label("LabelAttendance37", "### Attendance")
+            .optionalNoSummary(ManageOrdersData::getAttendance)
+            .label("LabelLeaveToOppose38", "### Leave to oppose")
+            .optionalNoSummary(ManageOrdersData::getLeaveToOppose)
             .label("LabelAdditionalPara39", "### Additional paragraphs")
             .label("LabelAdditionalParaValue30", "You can add any additional directions or paragraphs on a later screen.")
-            .label("LabelCostOrders301", "### Cost orders", "manageOrderType=\"caseManagementOrder\"", true)
-            .optional(ManageOrdersData::getCostOrders)
+            .label("LabelCostOrders301", "### Cost orders")
+            .optionalNoSummary(ManageOrdersData::getCostOrders)
             .done()
             .done();
     }
@@ -110,12 +108,12 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelAllocation421", "### Allocation",
                    "allocationJudge=\"*\"", true)
             .label("LabelAllocationValue422", "The case is allocated to [Name of the judge].",
-                   "allocationJudge=\"allocatePreviousProceedingsJudge\"")
+                   "allocationJudge=\"allocatePreviousProceedingsJudge\"", true)
             .mandatory(CaseData::getAllocatedJudge, "allocationJudge=\"allocatePreviousProceedingsJudge\"")
             .label("LabelAllocationValue423", "The proceedings are reallocated to [Name of Judge].",
-                   "allocationJudge=\"reallocateJudge\"")
-            .label("LabelNameOfJudge424", "### Name of judge",
                    "allocationJudge=\"reallocateJudge\"", true)
+            .label("LabelNameOfJudge424", "### Name of judge",
+                   "allocationJudge=\"reallocateJudge\"")
             .complex(CaseData::getManageOrdersData)
             .mandatory(ManageOrdersData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             //            HEARINGS - FIRST HEARING
@@ -126,7 +124,7 @@ public class ManageOrders implements CcdPageConfiguration {
                        + "OR modeOfHearingCONTAINS\"setModeOfHearing\"", true)
             .label("LabelHearings432", "The application is listed for a first hearing on [date] "
                        + "at [time] (with a time estimate of [length]) at [court name].",
-                   "hearingNoticesCONTAINS\"listForFirstHearing\"")
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true)
             .label("LabelHearings433", "### Date and time",
                    "hearingNoticesCONTAINS\"listForFirstHearing\"", true)
             .mandatory(ManageOrdersData::getDateAndTimeFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
@@ -141,7 +139,7 @@ public class ManageOrders implements CcdPageConfiguration {
             //            HEARINGS - FURTHER HEARING
             .label("LabelHearings441", "The application is listed for a [listing type] on [date] at "
                        + "[time] with a time estimate of [length] at [court name].",
-                   "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true)
             .label("LabelNameOfCourt442", "### Listing type",
                    "hearingNoticesCONTAINS\"listForFurtherHearings\"", true)
             .complex(CaseData::getManageOrdersData)
@@ -160,7 +158,7 @@ public class ManageOrders implements CcdPageConfiguration {
                        "hearingNoticesCONTAINS\"listForFurtherHearings\"")
             //            HEARINGS - HEARING DATE IN FUTURE
             .label("LabelHearings451", "The application is listed for [listing type] on a date and time to be fixed by the court.",
-                   "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
+                   "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"", true)
             .label("LabelNameOfCourt452", "### Listing type",
                    "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"", true)
             .complex(CaseData::getManageOrdersData)
@@ -182,7 +180,7 @@ public class ManageOrders implements CcdPageConfiguration {
                        + "<br>&emsp;**b.** The steps taken to confirm the current accuracy of the addresses provided? "
                        + "Whether the addresses provided for the birth parents upon issue of the application are accurate?"
                        + "<br>&emsp;**c.** Whether the parents are aware of the date of the hearing mentioned in this order?",
-                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true)
             .label("LabelLocalAuthority473", "### Date and time for option 1",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true)
             .mandatory(ManageOrdersData::getDateAndTimeForOption1,
@@ -199,7 +197,7 @@ public class ManageOrders implements CcdPageConfiguration {
                        + "The reporting officer is requested to file a brief report together with the relevant consent forms "
                        + "witnessing the consent of the birth parents by [time] on [date].</p>"
                        + "<p>The Adoption Agency (Annex A) report may be disclosed to the reporting officer.</p>",
-                   "cafcassCONTAINS\"reportingOfficer\"")
+                   "cafcassCONTAINS\"reportingOfficer\"", true)
             .label("LabelCafcass483", "### Select reporting officer",
                    "cafcassCONTAINS\"reportingOfficer\"", true)
             .mandatory(ManageOrdersData::getReportingOfficer,
@@ -212,7 +210,7 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelCafcass485", "<p>The child is made a respondent to the application and a children's guardian "
                        + "is appointed and [Cafcass/Cafcass Cymru] shall use their best endeavours to appoint the same guardian "
                        + "appointed within the previous proceedings case number [case number].</p>",
-                   "cafcassCONTAINS\"childrensGuardian\"")
+                   "cafcassCONTAINS\"childrensGuardian\"", true)
             .label("LabelCafcass486", "### Select reporting officer",
                    "cafcassCONTAINS\"childrensGuardian\"", true)
             .mandatory(ManageOrdersData::getChildrensGuardian,
@@ -252,7 +250,7 @@ public class ManageOrders implements CcdPageConfiguration {
                        "attendanceCONTAINS\"applicantsAttendance\"")
             //          CHILD ATTENDANCE
             .label("LabelChildAttendance521", "### Child attendance",
-                   "attendanceCONTAINS\"childAttendance\"")
+                   "attendanceCONTAINS\"childAttendance\"", true)
             .mandatory(ManageOrdersData::getChildAttendance,
                        "attendanceCONTAINS\"childAttendance\"", true)
             //          LA ATTENDANCE
@@ -281,13 +279,13 @@ public class ManageOrders implements CcdPageConfiguration {
                        + "<p>If no such application is made the case may proceed to a final hearing which may be dealt with without "
                        + "attendance of the parties unless such an attendance is requested by any of the parties. If such a "
                        + "request is made, the hearing may be conducted remotely unless this cannot be fairly undertaken.</p>",
-                   "leaveToOpposeCONTAINS\"leaveToOppose\"")
+                   "leaveToOpposeCONTAINS\"leaveToOppose\"", true)
             //          ADDITIONAL PARAGRAPHS
             .label("LabelAdditionalPara561", "### Additional paragraphs", null, true)
             .mandatory(ManageOrdersData::getAdditionalPara)
             //          COST ORDERS
-            .label("LabelCostOrders571", "### Cost orders", "costOrdersCONTAINS\"noOrderForCosts\"")
-            .label("LabelCostOrders572", "No order for costs.", "costOrdersCONTAINS\"noOrderForCosts\"")
+            .label("LabelCostOrders571", "### Cost orders", "costOrdersCONTAINS\"noOrderForCosts\"", true)
+            .label("LabelCostOrders572", "No order for costs.", "costOrdersCONTAINS\"noOrderForCosts\"", true)
             //          ORDERED BY
             .label("LabelCostOrders581", "### Ordered by", null, true)
             .mandatory(ManageOrdersData::getOrderedBy)
