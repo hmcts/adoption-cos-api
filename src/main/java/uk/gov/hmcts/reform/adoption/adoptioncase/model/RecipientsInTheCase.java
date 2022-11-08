@@ -25,10 +25,10 @@ public enum RecipientsInTheCase implements HasLabel {
     LEGAL_GUARDIAN("Legal guardian (CAFCASS)"),
 
     @JsonProperty("childLocalAuthority")
-    CHILD_LOCAL_AUTHORITY("Child local authority"),
+    CHILD_LOCAL_AUTHORITY("Child's local authority"),
 
     @JsonProperty("applicantLocalAuthority")
-    APPLICANT_LOCAL_AUTHORITY("Applicant local authority"),
+    APPLICANT_LOCAL_AUTHORITY("Applicant's local authority"),
 
     @JsonProperty("adoptionAgency")
     ADOPTION_AGENCY("Adoption agency"),
