@@ -14,6 +14,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Component
 public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, State, UserRole> {
@@ -47,7 +50,14 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
-                                                                       CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
-       return null;
+                                                                       CaseDetails<CaseData, State> caseDataStateCaseDetailsBefore) {
+
+        CaseData caseData = caseDataStateCaseDetails.getData();
+        final List<String> errors = new ArrayList<>();
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(errors)
+            .build();
     }
 }
