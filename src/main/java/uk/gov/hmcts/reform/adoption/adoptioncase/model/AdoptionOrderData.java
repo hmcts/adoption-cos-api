@@ -18,6 +18,13 @@ public class AdoptionOrderData {
     @CCD(hint = "Copy and paste or type directly into the text box",
         typeOverride = TextArea,
         access = {DefaultAccess.class})
-    private String preambleDetailsFO;
+    private String preambleDetailsFinalAdoptionOrder;
+
+    @CCD(hint = "Enter the name of the judge issuing this order",
+        access = {DefaultAccess.class})
+    private String orderedByFinalAdoptionOrder;
+
+    @CCD(access = {DefaultAccess.class})
+    private String costOrdersFinalAdoptionOrder;
 
 }
