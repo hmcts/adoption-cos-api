@@ -19,8 +19,6 @@ public class SeekFurtherInformation implements CcdPageConfiguration {
         pageBuilder.page("pageSeekFurtherInformation",this::seekFurtherInformationData)
             .pageLabel("Who do you need to contact?")
             .label("seekFurtherInformationLabel","## Who do you need to contact?")
-            .mandatory(CaseData::getName)
-            .mandatory(CaseData::getRole)
             .done();
     }
 
@@ -30,7 +28,7 @@ public class SeekFurtherInformation implements CcdPageConfiguration {
         List<DynamicListElement> listElements = new ArrayList<>();
         listElements.add(new DynamicListElement(UUID.randomUUID(), "TEST"));
 
-        caseData.setHearingsList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setSeekFurtherInformationLust(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
