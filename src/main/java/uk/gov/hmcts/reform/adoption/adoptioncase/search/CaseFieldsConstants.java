@@ -16,7 +16,6 @@ public final class CaseFieldsConstants {
     public static final String TYPE_OF_ADOPTION = "Post-placement";
 
     public static final String STRING_COLON = ":";
-
     public static final String BLANK_SPACE = " ";
 
     // required for Checkstyle

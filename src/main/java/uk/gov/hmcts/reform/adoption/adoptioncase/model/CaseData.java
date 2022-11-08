@@ -646,7 +646,7 @@ public class CaseData {
         typeOverride = DynamicRadioList,
         label = "Who do you need to contact\n"
     )
-    private DynamicList seekFurtherInformationLust;
+    private DynamicList seekFurtherInformationList;
 
     @CCD(
         label = "Enter hearing details",
