@@ -649,6 +649,11 @@ public class CaseData {
     )
     private DynamicList seekFurtherInformationList;
 
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "FurtherInformation")
+    private Set<FurtherInformation> furtherInformation;
+
     @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}

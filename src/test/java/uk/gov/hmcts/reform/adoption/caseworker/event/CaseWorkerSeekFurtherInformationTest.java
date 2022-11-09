@@ -40,6 +40,15 @@ public class CaseWorkerSeekFurtherInformationTest {
             .contains(CASEWORKER_SEEK_FURTHER_INFORMATION);
     }
 
+    @Test
+    void caseSeekFurtherInformationDataTest_Ok() {
+        var caseDetails = getCaseDetails();
+        var result = caseworkerSeekFurtherInformation.seekFurtherInformationData(caseDetails);
+        assertThat(result.getData().getSeekFurtherInformationList()).isNotNull();
+        assertThat(result.getData().getSeekFurtherInformationList().equals(caseDetails.getData().getSeekFurtherInformationList()));
+    }
+
+
 
 
     private CaseDetails<CaseData, State> getCaseDetails() {

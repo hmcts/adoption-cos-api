@@ -57,7 +57,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
-    private AboutToStartOrSubmitResponse<CaseData, State> seekFurtherInformationData(CaseDetails<CaseData, State> details) {
+    public AboutToStartOrSubmitResponse<CaseData, State> seekFurtherInformationData(CaseDetails<CaseData, State> details) {
         CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
 
@@ -169,11 +169,8 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetailsBefore) {
 
         CaseData caseData = caseDataStateCaseDetails.getData();
-        final List<String> errors = new ArrayList<>();
-
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
-            .errors(errors)
             .build();
     }
 }

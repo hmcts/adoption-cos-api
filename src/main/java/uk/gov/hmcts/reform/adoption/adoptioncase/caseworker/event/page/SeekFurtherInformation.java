@@ -10,8 +10,13 @@ public class SeekFurtherInformation implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("pageSeekFurtherInformation")
-            .label("seekFurtherInformationLabel","## Who do you need to contact?")
             .mandatory(CaseData::getSeekFurtherInformationList)
+            .page("pageSeekFurtherInformation1")
+            .done();
+
+        pageBuilder.page("pageSeekFurtherInformation2")
+            .pageLabel("What information do you need?")
+            .mandatory(CaseData::getFurtherInformation)
             .done();
     }
 
