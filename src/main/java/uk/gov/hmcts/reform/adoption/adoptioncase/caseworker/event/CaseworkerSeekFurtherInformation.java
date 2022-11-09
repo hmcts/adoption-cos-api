@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
