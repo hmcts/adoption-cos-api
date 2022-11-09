@@ -42,6 +42,7 @@ module.exports = {
     vacateHearingReasonDismissed: '#reasonForVacatingHearing-caseDismissed',
     reListingYes: '#isTheHearingNeedsRelisting_Yes',
     reListingNo: '#isTheHearingNeedsRelisting_No',
+    recipientsTitle: '//span[contains(text(),"Hearing notice recipients")]',
   },
 
   async verifyPageDetails() {
@@ -80,6 +81,9 @@ module.exports = {
   },
 
   async addRecepientDetails(){
+     await I.retry(3).seeElement(this.fields.childNameHeader);
+     await I.retry(3).seeElement(this.fields.recipientsTitle);
+     await I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
      await I.retry(5).click(this.fields.firstApplicant);
      await I.retry(5).click(this.fields.secondApplicant);
      await I.retry(5).click(this.fields.recipientsBirthMother);
@@ -126,6 +130,7 @@ module.exports = {
   async selectVacateHearingOptionWithAgreementAndRelisting(){
    await I.retry(5).click(this.fields.vacateHearing);
    await I.retry(5).click(this.fields.continueButton);
+   await I.wait(3);
    await I.retry(5).click(this.fields.vacateHearingToSelect);
    await I.retry(5).click(this.fields.continueButton);
    await I.retry(5).seeElement(this.fields.vacateHearingReasonAgreement);
