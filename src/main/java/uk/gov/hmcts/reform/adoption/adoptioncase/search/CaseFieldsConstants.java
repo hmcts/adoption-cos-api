@@ -19,6 +19,8 @@ public final class CaseFieldsConstants {
 
     public static final String BLANK_SPACE = " ";
 
+    public static final String COMMA = ",";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }
