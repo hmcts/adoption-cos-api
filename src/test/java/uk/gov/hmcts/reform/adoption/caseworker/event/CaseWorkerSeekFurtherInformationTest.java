@@ -10,8 +10,10 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
+import uk.gov.hmcts.ccd.sdk.type.AddressUK;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSeekFurtherInformation;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherAdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
@@ -41,11 +43,23 @@ public class CaseWorkerSeekFurtherInformationTest {
     }
 
     @Test
-    void caseSeekFurtherInformationDataTest_Ok() {
+    void seekFurtherInformationInitialDataTest_Ok() {
         var caseDetails = getCaseDetails();
-        var result = caseworkerSeekFurtherInformation.seekFurtherInformationData(caseDetails);
+        var result = caseworkerSeekFurtherInformation
+            .seekFurtherInformationData(caseDetails);
         assertThat(result.getData().getSeekFurtherInformationList()).isNotNull();
-        assertThat(result.getData().getSeekFurtherInformationList().equals(caseDetails.getData().getSeekFurtherInformationList()));
+    }
+
+    @Test
+    void seekFurtherInformationOtherAdoptionAgencyDetails_Ok() {
+        var caseDetails = getCaseDetails();
+        var otherAdoptionAgencyData =
+            new OtherAdoptionAgencyOrLocalAuthority("Other Adoption Agency",
+            "Adoption Agency", new AddressUK(),
+            "07978656212","test@gov.uk");
+        caseDetails.getData().setOtherAdoptionAgencyOrLA(otherAdoptionAgencyData);
+        var result = caseworkerSeekFurtherInformation.seekFurtherInformationData(caseDetails);
+        assertThat(result.getData().getSeekFurtherInformationList().getListItems()).hasSize(5);
     }
 
 
