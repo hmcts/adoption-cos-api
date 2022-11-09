@@ -21,7 +21,11 @@ import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.HashSet;
@@ -592,6 +596,27 @@ public class CaseData {
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
 
+    @CCD(
+        typeOverride = Collection,
+        typeParameterOverride = "ManageOrdersData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageOrdersData>> manageOrderList;
+
+    @CCD(
+        typeOverride = Collection,
+        typeParameterOverride = "DirectionsOrderData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<DirectionsOrderData>> directionsOrderList;
+
+    @CCD(
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionOrderData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionOrderData>> adoptionOrderList;
+
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
@@ -601,6 +626,11 @@ public class CaseData {
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
     private AdoptionOrderData adoptionOrderData = new AdoptionOrderData();
+
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
@@ -709,6 +739,64 @@ public class CaseData {
         } else {
             documents.add(0, listValue); // always add to start top of list
         }
+    }
+
+    @JsonIgnore
+    public <T> List<ListValue<T>> archiveManageOrdersHelper(List<ListValue<T>> list, T object) {
+        if (isEmpty(list)) {
+            List<ListValue<T>> listValues = new ArrayList<>();
+            var listValue = ListValue
+                .<T>builder()
+                .id("1")
+                .value(object)
+                .build();
+
+            listValues.add(listValue);
+            return listValues;
+        } else {
+            AtomicInteger listValueIndex = new AtomicInteger(0);
+            var listValue = ListValue
+                .<T>builder()
+                .value(object)
+                .build();
+            // always add new Adoption Document as first element so that it is displayed on top
+            list.add(
+                0,
+                listValue
+            );
+            list.forEach(listValueObj -> listValueObj
+                .setId(String.valueOf(listValueIndex.incrementAndGet())));
+        }
+        return list;
+    }
+
+    @JsonIgnore
+    public void archiveManageOrders() {
+        switch (this.getManageOrdersData().getManageOrderType()) {
+            case CASE_MANAGEMENT_ORDER:
+                this.getManageOrdersData().setSubmittedDateManageOrder(
+                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.setManageOrderList(archiveManageOrdersHelper(
+                    this.getManageOrderList(), this.getManageOrdersData()));
+                break;
+            case GENERAL_DIRECTIONS_ORDER:
+                this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
+                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.setDirectionsOrderList(archiveManageOrdersHelper(
+                    this.getDirectionsOrderList(), this.getDirectionsOrderData()));
+                break;
+            case FINAL_ADOPTION_ORDER:
+                this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
+                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.setAdoptionOrderList(archiveManageOrdersHelper(
+                    this.getAdoptionOrderList(), this.getAdoptionOrderData()));
+                break;
+            default:
+                break;
+        }
+        this.setManageOrdersData(new ManageOrdersData());
+        this.setDirectionsOrderData(new DirectionsOrderData());
+        this.setAdoptionOrderData(new AdoptionOrderData());
     }
 
     @JsonIgnore

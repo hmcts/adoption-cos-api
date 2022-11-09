@@ -3,7 +3,9 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
+import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
+import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -11,6 +13,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+
+import java.util.ArrayList;
 
 /**
  * Contains method to define Event Configuration for ExUI.
@@ -56,8 +60,31 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                                    .name(MANAGE_ORDERS)
                                    .description(MANAGE_ORDERS)
                                    .showSummary()
+                                   .aboutToSubmitCallback(this::aboutToSubmit)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
     }
 
+    /**
+     * Event method to reset the values for allowing any no.of new orders.
+     * Gatekeeping Order, Directions Order & Final Adoption Order
+     *
+     * @param beforeDetails - Application CaseDetails for the previous page
+     * @param details - Application CaseDetails for the present page
+     * @return - AboutToStartOrSubmitResponse updated to use on further pages.
+     */
+    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> beforeDetails) {
+        log.info("Callback invoked for {}", CASEWORKER_MANAGE_ORDERS);
+        CaseData caseData = details.getData();
+        caseData.archiveManageOrders();
+        log.info("caseData.getManageOrderList for {}", caseData.getManageOrderList());
+        log.info("caseData.getAdoptionOrderList for {}", caseData.getAdoptionOrderList());
+        log.info("caseData.getDirectionsOrderList for {}", caseData.getDirectionsOrderList());
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(new ArrayList<>())
+            .build();
+    }
 }
