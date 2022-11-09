@@ -654,6 +654,14 @@ public class CaseData {
         typeParameterOverride = "FurtherInformation")
     private Set<FurtherInformation> furtherInformation;
 
+    @CCD(access = {DefaultAccess.class},
+            typeOverride = TextArea)
+    private String askForAdditionalDocumentText;
+
+    @CCD(access = {DefaultAccess.class},
+            typeOverride = TextArea)
+    private String askAQuestionText;
+
     @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}

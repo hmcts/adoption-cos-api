@@ -41,6 +41,13 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         seekFurtherInformation.addTo(pageBuilder);
     }
 
+
+    /**
+     * Helper method to make custom changes to the CCD Config in order to add the event to respective Page Configuration.
+     *
+     * @param configBuilder - Base CCD Config Builder updated to add Event for Page
+     * @return - PageBuilder updated to use on overridden method.
+     */
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
                             UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
@@ -57,14 +64,19 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
+    /**
+     * Method to fetch Seek Further Information list.
+     *
+     * @param details is type of Case Data
+     * @return will return about to submit response
+     */
     public AboutToStartOrSubmitResponse<CaseData, State> seekFurtherInformationData(CaseDetails<CaseData, State> details) {
         CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
 
         DynamicListElement childSocialWorker = DynamicListElement.builder()
-            .label(String.join(BLANK_SPACE, DocumentSubmitter.CHILD_SOCIAL_WORKER.getLabel(),
-                               STRING_COLON,
-                               caseData.getChildSocialWorker().getSocialWorkerName()))
+            .label(joinDynamicListLabel(DocumentSubmitter.CHILD_SOCIAL_WORKER,
+             caseData.getChildSocialWorker().getSocialWorkerName()))
             .code(UUID.randomUUID())
             .build();
 
@@ -72,9 +84,8 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         log.info("childSocialWorker");
 
         DynamicListElement adoptionAgencyOrLocalAuthority = DynamicListElement.builder()
-            .label(String.join(BLANK_SPACE,DocumentSubmitter.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel(),
-                               STRING_COLON,
-                               caseData.getLocalAuthority().getLocalAuthorityName()))
+            .label(joinDynamicListLabel(DocumentSubmitter.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY,
+             caseData.getLocalAuthority().getLocalAuthorityName()))
             .code(UUID.randomUUID())
             .build();
 
@@ -83,9 +94,8 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
         if (caseData.getOtherAdoptionAgencyOrLA() != null && caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName() != null) {
             DynamicListElement otherAdoptionAgencyOrLocalAuthority = DynamicListElement.builder()
-                .label(String.join(BLANK_SPACE,DocumentSubmitter.OTHER_ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel(),
-                                   STRING_COLON,
-                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName()))
+                .label(joinDynamicListLabel(DocumentSubmitter.OTHER_ADOPTION_AGENCY_OR_LOCAL_AUTHORITY,
+                 caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName()))
                 .code(UUID.randomUUID())
                 .build();
 
@@ -94,10 +104,8 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         }
 
         DynamicListElement firstApplicant = DynamicListElement.builder()
-            .label(String.join(BLANK_SPACE,DocumentSubmitter.FIRST_APPLICANT.getLabel(),
-                               STRING_COLON,
-                               caseData.getApplicant1().getFirstName(),
-                               caseData.getApplicant1().getLastName()))
+            .label(joinDynamicListLabel(DocumentSubmitter.FIRST_APPLICANT,
+             String.join(caseData.getApplicant1().getFirstName(), caseData.getApplicant1().getLastName())))
             .code(UUID.randomUUID())
             .build();
 
@@ -106,10 +114,8 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         if (caseData.getApplicant2() != null && caseData.getApplicant2().getFirstName() != null
             && caseData.getApplicant2().getLastName() != null) {
             DynamicListElement secondApplicant = DynamicListElement.builder()
-                .label(String.join(BLANK_SPACE,DocumentSubmitter.SECOND_APPLICANT.getLabel(),
-                                   STRING_COLON,
-                                   caseData.getApplicant2().getFirstName(),
-                                   caseData.getApplicant2().getLastName()))
+                .label(joinDynamicListLabel(DocumentSubmitter.SECOND_APPLICANT,
+                 String.join(caseData.getApplicant2().getFirstName(), caseData.getApplicant2().getLastName())))
                 .code(UUID.randomUUID())
                 .build();
 
@@ -119,10 +125,8 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         if (caseData.getBirthMother() != null && caseData.getBirthMother().getFirstName() != null
             && caseData.getBirthMother().getLastName() != null) {
             DynamicListElement birthMother = DynamicListElement.builder()
-                .label(String.join(BLANK_SPACE,DocumentSubmitter.BIRTH_MOTHER.getLabel(),
-                                   STRING_COLON,
-                                   caseData.getBirthMother().getFirstName(),
-                                   caseData.getBirthMother().getLastName()))
+                .label(joinDynamicListLabel(DocumentSubmitter.BIRTH_MOTHER,
+                 String.join(caseData.getBirthMother().getFirstName(), caseData.getBirthMother().getLastName())))
                 .code(UUID.randomUUID())
                 .build();
 
@@ -131,11 +135,8 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         if (caseData.getBirthFather() != null && caseData.getBirthFather().getFirstName() != null
             && caseData.getBirthFather().getLastName() != null) {
             DynamicListElement birthFather = DynamicListElement.builder()
-                .label(String.join(BLANK_SPACE, DocumentSubmitter.BIRTH_FATHER.getLabel(),
-                                   STRING_COLON,
-                                   caseData.getBirthFather().getFirstName(),
-                                   caseData.getBirthFather().getLastName()
-                ))
+                .label(joinDynamicListLabel(DocumentSubmitter.BIRTH_FATHER,
+                String.join(caseData.getBirthFather().getFirstName(), caseData.getBirthFather().getLastName())))
                 .code(UUID.randomUUID())
                 .build();
 
@@ -145,11 +146,8 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         if (caseData.getOtherParent() != null && caseData.getOtherParent().getFirstName() != null
             && caseData.getOtherParent().getLastName() != null) {
             DynamicListElement personWithParentalResponsibility = DynamicListElement.builder()
-                .label(String.join(BLANK_SPACE, DocumentSubmitter.PERSON_WITH_PARENTAL_RESPONSIBILITY.getLabel(),
-                                   STRING_COLON,
-                                   caseData.getOtherParent().getFirstName(),
-                                   caseData.getOtherParent().getLastName()
-                ))
+                .label(joinDynamicListLabel(DocumentSubmitter.PERSON_WITH_PARENTAL_RESPONSIBILITY,
+                String.join(caseData.getOtherParent().getFirstName(), caseData.getOtherParent().getLastName())))
                 .code(UUID.randomUUID())
                 .build();
 
@@ -165,6 +163,17 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             .build();
     }
 
+    /**
+     * Method will return String after concatenation.
+     *
+     * @param enumLabel is typeof Document Submitter
+     * @param detail is typeof label
+     * @return will return String after join
+     */
+    private String joinDynamicListLabel(DocumentSubmitter enumLabel, String detail) {
+        return String.join(BLANK_SPACE,enumLabel.getLabel(),STRING_COLON, detail);
+    }
+
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetailsBefore) {
 
@@ -173,4 +182,6 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             .data(caseData)
             .build();
     }
+
+
 }
