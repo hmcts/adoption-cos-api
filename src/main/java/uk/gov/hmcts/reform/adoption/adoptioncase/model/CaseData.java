@@ -644,7 +644,8 @@ public class CaseData {
 
     @CCD(
         typeOverride = DynamicRadioList,
-        label = "Who do you need to contact\n"
+        label = "Who do you need to contact\n",
+        typeParameterOverride = "DocumentSubmitter"
     )
     private DynamicList seekFurtherInformationList;
 
