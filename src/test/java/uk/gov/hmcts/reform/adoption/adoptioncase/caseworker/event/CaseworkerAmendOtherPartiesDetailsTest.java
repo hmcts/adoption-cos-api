@@ -70,7 +70,6 @@ class CaseworkerAmendOtherPartiesDetailsTest {
 
     @Test
     void caseworkerAmendOtherPartiesEventTest() {
-
         var caseDetails = getCaseDetails();
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
@@ -79,8 +78,10 @@ class CaseworkerAmendOtherPartiesDetailsTest {
         assertThat(result.getData().getChildren()).isNotNull();
         assertThat(result.getData().getChildSocialWorker()).isNotNull();
         assertThat(result.getData().getApplicantSocialWorker()).isNotNull();
-        assertThat(result.getData().getBirthFather().getStillAlive() == YesOrNo.YES);
-        assertThat(result.getData().getBirthMother().getStillAlive() == YesOrNo.YES);
+        boolean birthFatherRes = result.getData().getBirthFather().getStillAlive() == YesOrNo.YES;
+        assertThat(birthFatherRes).isTrue();
+        boolean birthMotherRes = result.getData().getBirthMother().getStillAlive() == YesOrNo.YES;
+        assertThat(birthMotherRes).isTrue();
     }
 
 

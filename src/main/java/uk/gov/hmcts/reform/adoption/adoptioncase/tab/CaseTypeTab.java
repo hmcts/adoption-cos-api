@@ -22,6 +22,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildOtherPartiesTab(configBuilder);
         buildDocumentsTab(configBuilder);
         buildConfidentialTab(configBuilder);
+        //buildServiceRequestTab(configBuilder);
         buildPaymentsTab(configBuilder);
     }
 
@@ -30,7 +31,15 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("serviceRequest","Payment")
             .showCondition(TabShowCondition.showForState(State.Submitted, State.LaSubmitted))
             .field("successfulPayment");
+
     }
+
+    /*private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("serviceRequest", "Service Request")
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .field("serviceRequest");
+    }*/
+
 
     public void buildApplicantsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationDetails", "Applicants")
@@ -95,6 +104,16 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildTabWithLocalGuardianAndSolicitorDetails(tabBuilderForOtherParties);
         buildTabWithAgencyAndLocalAuthorityDetails(tabBuilderForOtherParties);
         buildTabWithRespondentDetails(tabBuilderForOtherParties);
+        buildHearingsTab(configBuilder);
+    }
+
+    private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+
+        configBuilder.tab("hearings","Hearings")
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .label("labelSummary-managehearing", null, "[Manage hearings](/cases/case-details/${[CASE_REFERENCE]}"
+                + "/trigger/caseworker-manage-hearing/caseworker-manage-hearingmanageOrders1)")
+            .field(CaseData::getNewHearings);
     }
 
     private void buildTabWithRespondentDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
@@ -188,11 +207,11 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("adopAgencyOrLaContactEmail")
             .label("labelSummary-otherAdoptionAgency", null, "#### Other adoption agency")
             .field("hasAnotherAdopAgencyOrLAinXui")
-            .field("otheradopAgencyOtherAdopAgencyOrLaName")
-            .field("otheradopAgencyOtherAdopAgencyOrLaContactName")
-            .field("otheradopAgencyOtherAdopAgencyAddress")
-            .field("otheradopAgencyOtherAdopAgencyOrLaPhoneNumber")
-            .field("otheradopAgencyOtherAdopAgencyOrLaContactEmail")
+            .field("otherAdoptionAgencyOrLaName")
+            .field("otherAdoptionAgencyOrLaContactName")
+            .field("otherAdoptionAgencyAddress")
+            .field("otherAdoptionAgencyOrLaPhoneNumber")
+            .field("otherAdoptionAgencyOrLaContactEmail")
             .label("labelSummary-childLA", null, "### Child’s Local Authority")
             .field("childSocialWorkerName")
             .field("childLocalAuthority")

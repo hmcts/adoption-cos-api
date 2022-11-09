@@ -20,4 +20,16 @@ Scenario('Manage Hearings of a case - Add new Hearing ', async ({I,loginPage, ca
   await manageHearingsPage.addNewHearingOptions();
   await manageHearingsPage.addRecepientDetails();
   await manageHearingsPage.verifyAddNewHearingCheckYourAnswers();
+  });
+
+ Scenario('Manage Hearings of a case - Vacate Hearing with Agreement and Relisting', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage }) => {
+    await setupScenario(I);
+    await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+    await manageHearingsPage.verifyPageDetails();
+    await manageHearingsPage.verifyManageHearingsPageFunctionality();
+    await manageHearingsPage.addNewHearingOptions();
+    await manageHearingsPage.addRecepientDetails();
+    await manageHearingsPage.verifyAddNewHearingCheckYourAnswers();
+    await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+    await manageHearingsPage.selectVacateHearingOptionWithAgreementAndRelisting(manageHearingsPage.fields.vacateHearingReasonAgreement);
 });

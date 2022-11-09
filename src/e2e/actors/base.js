@@ -50,6 +50,8 @@ module.exports = {
       output.debug(`Logged in as ${user.email}`);
       currentUser = user;
     I.grabCurrentUrl();
+    await this.waitForSelector('#search-result',30);
+    await this.wait(3);
   },
 
   async goToPage(url) {

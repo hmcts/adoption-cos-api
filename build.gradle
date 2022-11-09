@@ -28,7 +28,7 @@ plugins {
   id 'org.springframework.boot' version '2.7.0'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.222'
-  id 'hmcts.ccd.sdk' version '3.0.3'
+  id 'hmcts.ccd.sdk' version '5.1.0'
   id 'au.com.dius.pact' version '4.3.8'
 }
 
@@ -356,6 +356,8 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.68'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.68'
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 

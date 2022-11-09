@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
@@ -20,18 +22,21 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
+import java.util.Optional;
 import java.util.SortedSet;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
@@ -128,8 +133,6 @@ public class CaseData {
     @Builder.Default
     @CCD(access = {SystemUpdateAccess.class})
     private Parent birthFather = new Parent();
-
-
 
     @CCD(
         label = "Is the birth father represented by a solicitor?",
@@ -235,10 +238,10 @@ public class CaseData {
     )
     private YesOrNo hasAnotherAdopAgencyOrLAinXui;
 
-    @JsonUnwrapped(prefix = "otheradopAgency")
+    @JsonUnwrapped(prefix = "otherAdoption")
     @Builder.Default
     @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
-    private OtherAdoptionAgencyOrLocalAuthority otherAdopAgencyOrLA = new OtherAdoptionAgencyOrLocalAuthority();
+    private OtherAdoptionAgencyOrLocalAuthority otherAdoptionAgencyOrLA = new OtherAdoptionAgencyOrLocalAuthority();
 
     @CCD(label = "Selected Adoption Agency ID",
         access = {DefaultAccess.class}
@@ -584,31 +587,31 @@ public class CaseData {
     private Set<ModeOfHearing> modeOfHearing;
 
     @CCD(label = "If relevant",
-        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "SelectedLocalAuthority")
     private Set<SelectedLocalAuthority> selectedLocalAuthority;
 
     @CCD(label = "You are choosing which parties are issued with a direction on whether or not they can attend the"
         + "\nhearing. You can choose more than one option.",
-        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "Attendance")
     private Set<Attendance> attendance;
 
     @CCD(label = "If relevant",
-        access = {DefaultAccess.class, SystemUpdateAccess.class},
+        access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "LeaveToOppose")
     private Set<LeaveToOppose> leaveToOppose;
 
-    @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class},
+    @CCD(access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "CostOrders")
     private Set<CostOrders> costOrders;
 
     @CCD(label = "Enter the full name and title of the judge as it would appear on the order",
-        access = {DefaultAccess.class, SystemUpdateAccess.class}
+        access = {DefaultAccess.class}
     )
     private String nameOfJudge;
 
@@ -618,6 +621,11 @@ public class CaseData {
     )
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
 
+    /*@CCD(
+        access = {DefaultAccess.class}
+    )
+    private WaysToPay serviceRequest;*/
+
 
     @CCD(
         access = {DefaultAccess.class},
@@ -626,11 +634,39 @@ public class CaseData {
     )
     private ManageHearingOptions manageHearingOptions;
 
+
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Select a hearing you want to vacate\n"
+    )
+    private DynamicList hearingsList;
+
     @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
     private ManageHearingDetails manageHearingDetails;
+
+    @CCD(
+        label = "Reason for vacating a hearing",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private ReasonForVacatingHearing reasonForVacatingHearing;
+
+    @CCD(
+        label = "Does the hearing need to be relisted",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private YesOrNo isTheHearingNeedsRelisting;
+
+    @CCD(
+        label = "Vacated hearing",
+        typeOverride = Collection,
+        typeParameterOverride = "ManageHearingDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageHearingDetails>> vacatedHearings;
 
 
     @CCD(
@@ -640,6 +676,74 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime dateAndTimeFirstHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime dateAndTimeFurtherHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private String nameOfCourtFirstHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private String nameOfCourtFurtherHearing;
+
+    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
+    private String lengthOfHearingFirstHearing;
+
+    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
+    private String lengthOfHearingFurtherHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private String listingTypeFurtherHearing;
+
+    @CCD(access = {DefaultAccess.class})
+    private String listingTypeHearingInFutureDate;
+
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ModeOfHearings")
+    private ModeOfHearings modeOfHearings;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime dateAndTimeForOption1;
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime timeForOption2;
+
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ApplicantAttendance")
+    private ApplicantAttendance applicantAttendance;
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ChildAttendance")
+    private ChildAttendance childAttendance;
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "LaAttendance")
+    private Set<LaAttendance> laAttendance;
+    @CCD(label = "Choose all that are relevant.",
+        access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "BirthParentAttendance")
+    private Set<BirthParentAttendance> birthParentAttendance;
+
+
+    public String getNameOfCourtFirstHearing() {
+        if (Objects.nonNull(familyCourtName)) {
+            return familyCourtName;
+        }
+        return nameOfCourtFirstHearing;
+    }
+
+    public String getNameOfCourtFurtherHearing() {
+        if (Objects.nonNull(familyCourtName)) {
+            return familyCourtName;
+        }
+        return nameOfCourtFurtherHearing;
+    }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
@@ -739,6 +843,8 @@ public class CaseData {
     @JsonIgnore
     public void archiveHearingInformation() {
         ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
+        manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
+        manageHearingDetails.setHearingId(UUID.randomUUID().toString());
 
         if (null != manageHearingDetails) {
             if (isEmpty(this.getNewHearings())) {
@@ -764,7 +870,45 @@ public class CaseData {
             }
 
             this.setManageHearingDetails(null);
+            this.setManageHearingOptions(null);
+            this.setRecipientsInTheCase(null);
         }
+    }
+
+    @JsonIgnore
+    public void updateVacatedHearings() {
+
+        Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
+            hearing.getValue().getHearingId(),
+            hearingsList.getValue().getCode().toString()
+        )).findFirst();
+
+        if (!vacatedHearings.contains(vacatedHearingDetails.get())) {
+            vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(reasonForVacatingHearing);
+
+            if (isEmpty(this.getVacatedHearings())) {
+                List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
+                var listValue = ListValue
+                    .<ManageHearingDetails>builder()
+                    .id("1")
+                    .value(vacatedHearingDetails.get().getValue())
+                    .build();
+                listValues.add(listValue);
+                this.setVacatedHearings(listValues);
+            } else {
+                var listValue = ListValue
+                    .<ManageHearingDetails>builder()
+                    .value(vacatedHearingDetails.get().getValue())
+                    .build();
+                int listValueIndex = 0;
+                this.getVacatedHearings().add(0, listValue);
+                for (ListValue<ManageHearingDetails> asListValue : this.getNewHearings()) {
+                    asListValue.setId(String.valueOf(listValueIndex++));
+                }
+            }
+            newHearings.remove(vacatedHearingDetails.get());
+        }
+        this.setManageHearingOptions(null);
     }
 
 }

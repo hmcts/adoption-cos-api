@@ -9,17 +9,17 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum Attendance implements HasLabel {
 
-    @JsonProperty("applicants")
+    @JsonProperty("applicantsAttendance")
     APPLICANTS_ATTENDANCE("Applicants attendance"),
 
-    @JsonProperty("child")
+    @JsonProperty("childAttendance")
     CHILD_ATTENDANCE("Child attendance"),
 
     @JsonProperty("localAuthorityAttendance")
     LOCAL_AUTHORITY_ATTENDANCE("Local authority attendance"),
 
-    @JsonProperty("respondents")
-    BIRTH_PARENTS_ATTENDANCE("Birth parents attendance)");
+    @JsonProperty("birthParentsAttendance")
+    BIRTH_PARENTS_ATTENDANCE("Birth parents attendance");
 
     private final String label;
 }
