@@ -24,6 +24,10 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @AllArgsConstructor
 @Builder
 public class ManageOrdersData {
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime submittedDateManageOrder;
+
     @CCD(
         label = "What do you want to do?",
         access = {DefaultAccess.class},
@@ -182,7 +186,7 @@ public class ManageOrdersData {
             + "checked carefully to make sure this order is not served to the wrong person.",
         typeParameterOverride = "Recipients"
     )
-    private Recipients recipientsList;
+    private Set<Recipients> recipientsList;
 
     @Getter
     @AllArgsConstructor

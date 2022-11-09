@@ -15,14 +15,14 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AdoptionOrderData {
+public class DirectionsOrderData {
 
     @CCD(access = {DefaultAccess.class})
-    private LocalDateTime submittedDateAdoptionOrder;
+    private LocalDateTime submittedDateDirectionsOrder;
 
     @CCD(hint = "Copy and paste or type directly into the text box",
         typeOverride = TextArea,
         access = {DefaultAccess.class})
-    private String preambleDetailsFO;
+    private String preambleDetailsDO;
 
 }
