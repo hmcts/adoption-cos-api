@@ -31,5 +31,12 @@ module.exports = {
     additionalParagraphsOne: 'Additional paragraphs one',
     additionalParagraphsTwo: 'Additional paragraphs two',
     orderedBy: 'Paul Neal',
+    cafcassReportingOfficer: {
+      day: '01',
+      month: '01',
+      year: '2023',
+      hour:'10',
+    },
+    cafcassCaseNumber:'123456789',
   },
 };

@@ -76,4 +76,14 @@ Scenario('Verify Case management order Leave to oppose and Cost orders details',
 
 });
 
+Scenario('Verify Case management order CAFCASS details', async ({I, caseViewPage, manageOrdersPage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
+  await manageOrdersPage.selectCreateNewOrder();
+  await manageOrdersPage.verifyTypeOfOrdersListed();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.caseManagementOrderCafcass();
+
+});
+
 

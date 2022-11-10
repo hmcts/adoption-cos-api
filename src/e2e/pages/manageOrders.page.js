@@ -63,6 +63,20 @@ module.exports = {
       orderedBy: '#orderedBy',
 
     },
+    cafcass: {
+      reportingOfficer: '#cafcass-reportingOfficer',
+      childrensGuardian: '#cafcass-childrensGuardian',
+      reportingOfficerCafcass: '#reportingOfficer-cafcass',
+      childrensGuardianCafcass: '#childrensGuardian-cafcass',
+      caseNumberCG: '#caseNumberCG',
+      dateAndTimeRODay: '#dateAndTimeRO-day',
+      dateAndTimeROMonth: '#dateAndTimeRO-month',
+      dateAndTimeROYear: '#dateAndTimeRO-year',
+      dateAndTimeROHour: '#dateAndTimeRO-hour',
+
+    },
+
+
 
   },
 
@@ -257,5 +271,25 @@ module.exports = {
     await I.retry(3).fillField(this.fields.leaveToOppose.additionalParagraphTA1, manageOrderDetails.caseManagementOrderDetails.additionalParagraphsTwo);
     await I.retry(3).fillField(this.fields.costOrders.orderedBy, manageOrderDetails.caseManagementOrderDetails.orderedBy);
     await I.wait(3);
+  },
+
+  async caseManagementOrderCafcass(){
+    await I.wait(3);
+    await I.retry(3).click(this.fields.cafcass.reportingOfficer);
+    await I.retry(3).click(this.fields.cafcass.childrensGuardian);
+    await I.wait(3);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see('Case management order first directions');
+    await I.retry(3).click(this.fields.cafcass.reportingOfficerCafcass);
+    await I.retry(3).fillField(this.fields.cafcass.dateAndTimeRODay, manageOrderDetails.caseManagementOrderDetails.cafcassReportingOfficer.day);
+    await I.retry(3).fillField(this.fields.cafcass.dateAndTimeROMonth, manageOrderDetails.caseManagementOrderDetails.cafcassReportingOfficer.month);
+    await I.retry(3).fillField(this.fields.cafcass.dateAndTimeROYear, manageOrderDetails.caseManagementOrderDetails.cafcassReportingOfficer.year);
+    await I.retry(3).fillField(this.fields.cafcass.dateAndTimeROHour, manageOrderDetails.caseManagementOrderDetails.cafcassReportingOfficer.hour);
+    await I.retry(3).click(this.fields.cafcass.childrensGuardianCafcass);
+    await I.retry(3).fillField(this.fields.cafcass.caseNumberCG, manageOrderDetails.caseManagementOrderDetails.cafcassCaseNumber);
+    await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
+    await I.retry(3).click(this.fields.continueButton);
   },
 };
