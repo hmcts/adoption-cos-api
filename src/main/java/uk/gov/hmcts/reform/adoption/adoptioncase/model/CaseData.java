@@ -650,17 +650,26 @@ public class CaseData {
     private DynamicList seekFurtherInformationList;
 
     @CCD(access = {DefaultAccess.class},
+        label = "What information do you need?\n",
         typeOverride = MultiSelectList,
         typeParameterOverride = "FurtherInformation")
     private Set<FurtherInformation> furtherInformation;
 
     @CCD(access = {DefaultAccess.class},
-            typeOverride = TextArea)
+        label = "List the documents you need",
+        typeOverride = TextArea)
     private String askForAdditionalDocumentText;
 
     @CCD(access = {DefaultAccess.class},
-            typeOverride = TextArea)
+        label = "List the questions you need",
+        typeOverride = TextArea)
     private String askAQuestionText;
+
+    @CCD(label = "When is the information needed by?",
+        access = {SystemUpdateAccess.class,
+            DefaultAccess.class}
+    )
+    private LocalDateTime date;
 
     @CCD(
         label = "Enter hearing details",

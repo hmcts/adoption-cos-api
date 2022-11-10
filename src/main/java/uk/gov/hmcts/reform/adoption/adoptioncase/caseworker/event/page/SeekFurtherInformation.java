@@ -8,7 +8,6 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 @Slf4j
 public class SeekFurtherInformation implements CcdPageConfiguration {
 
-
     @Override
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("pageSeekFurtherInformation")
@@ -21,11 +20,14 @@ public class SeekFurtherInformation implements CcdPageConfiguration {
             .mandatory(CaseData::getFurtherInformation)
             .mandatoryWithoutDefaultValue(CaseData::getAskForAdditionalDocumentText,
             "furtherInformation CONTAINS \"askForAdditionalDocument\"",
-            "List the documents you need")
+            null)
             .mandatoryWithoutDefaultValue(CaseData::getAskAQuestionText,
             "furtherInformation CONTAINS \"askAQuestion\"",
-            "List the questions you need")
+            null)
+            .done();
+
+        pageBuilder.page("pageSeekFurtherInformation3")
+            .mandatory(CaseData::getDate)
             .done();
     }
-
 }
