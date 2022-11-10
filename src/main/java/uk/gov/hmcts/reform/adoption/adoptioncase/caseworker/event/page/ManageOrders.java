@@ -169,13 +169,13 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelLocalAuthority471", "### Local authority",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .label("LabelLocalAuthority472", "The Local Authority shall:<br>"
-                       + "<p>**1.** By HH:MM on DD:MM:YY file the Annex A report; and<br>"
-                       + "**2.** By HH:MM on DD:MM:YY (date in 14 days from the date above) detailing the following:</p>"
+                       + "<p>**1.** By [time] on [date] file the Adoption Agency Report (Annex A); and<br>"
+                       + "**2.** By [time] on the (date in 14 days from the date above) file a statement detailing the following:</p>"
                        + "&emsp;**a.** The date the Local Authority most recently ascertained the views of the "
                        + "birth parents in relation to this application;"
                        + "<br>&emsp;**b.** The steps taken to confirm the current accuracy of the addresses provided? "
                        + "Whether the addresses provided for the birth parents upon issue of the application are accurate?"
-                       + "<br>&emsp;**c.** Whether the parents are aware of the date of the hearing in section 3 above?",
+                       + "<br>&emsp;**c.** Whether the parents are aware of the date of the hearing mentioned in this order?",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
             .label("LabelLocalAuthority473", "### Date and time for option 1",
                    "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
@@ -225,10 +225,6 @@ public class ManageOrders implements CcdPageConfiguration {
      */
     private void getSecondDirectionsPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders5")
-            .showCondition("attendanceCONTAINS\"applicantsAttendance\" "
-                               + "OR attendanceCONTAINS\"childAttendance\" "
-                               + "OR attendanceCONTAINS\"localAuthorityAttendance\" "
-                               + "OR attendanceCONTAINS\"birthParentsAttendance\"")
             //          ATTENDANCE DETAILS
             .pageLabel("Case management order second directions")
             .label("LabelAttendance51", "### Attendance",

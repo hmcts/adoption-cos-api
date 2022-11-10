@@ -27,6 +27,9 @@ module.exports = {
     applicantAttendanceNotAttendOption: 'The child will not be brought to this hearing.',
     childAttendanceNotBeBroughtOption: 'The applicants are NOT to attend the next hearing',
     localAuthorityAttendanceOption: 'A representative of the Local Authority shall attend the next hearing.',
-    birthParentAttendanceCourtOption: '3. the court shall arrange personal service of notice of the hearing/this order on the respondent parents'
+    birthParentAttendanceCourtOption: '3. the court shall arrange personal service of notice of the hearing/this order on the respondent parents',
+    additionalParagraphsOne: 'Additional paragraphs one',
+    additionalParagraphsTwo: 'Additional paragraphs two',
+    orderedBy: 'Paul Neal',
   },
 };
