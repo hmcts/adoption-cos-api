@@ -662,7 +662,7 @@ public class CaseData {
     private YesOrNo isTheHearingNeedsRelisting;
 
     @CCD(
-        label = "Vacated hearing",
+        label = "Vacated hearings",
         typeOverride = Collection,
         typeParameterOverride = "ManageHearingDetails",
         access = {DefaultAccess.class}
