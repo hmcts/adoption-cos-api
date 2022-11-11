@@ -616,7 +616,7 @@ public class CaseData {
     private String nameOfJudge;
 
     @CCD(
-        label = "Case management order recipients",
+        label = "Hearing notice recipients",
         hint = "Only select people who are party to this case and who need a copy of this order.",
         access = {DefaultAccess.class}
     )
