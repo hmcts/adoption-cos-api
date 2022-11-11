@@ -200,6 +200,7 @@ class CaseworkerManageOrdersTest {
      *
      * @return - ConfigBuilderImpl
      */
+
     private CaseDetails<CaseData, State> getCaseDetails() {
         return CaseDetails.<CaseData, State>builder()
             .data(caseData())
