@@ -11,6 +11,8 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.AddressUK;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -180,6 +182,19 @@ class CaseworkerManageOrdersTest {
             .contains(ERROR_CHECK_HEARINGS_SELECTION);
     }
 
+    @Test
+    public void shouldCreateDynamicList() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        AddressUK addressUK = new AddressUK();
+        caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
+        caseDetails.getData().getOtherAdoptionAgencyOrLA().setAgencyOrLaName("TEST_NAME");
+        caseDetails.getData().getOtherAdoptionAgencyOrLA().setAgencyAddress(addressUK);
+        caseDetails.getData().getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostTown("TEST_TOWN");
+        caseDetails.getData().getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostCode("TEST_POST_CODE");
+        AboutToStartOrSubmitResponse<CaseData, State> response = page.midEventForDynamicList(caseDetails, caseDetails);
+        assertThat(response.getErrors())
+            .isNull();
+    }
     /**
      * Helper method to build CaseDetails .
      *
