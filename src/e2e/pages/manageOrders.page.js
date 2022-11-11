@@ -52,8 +52,15 @@ module.exports = {
       childAttendanceError: '#childAttendance .error-message',
       laAttendanceError: '#laAttendance .error-message',
       birthParentAttendanceError: '#birthParentAttendance .error-message',
-
-
+    },
+    leaveToOppose: {
+      leaveToOppose: '#leaveToOppose-leaveToOppose',
+      additionalParagraphTA0: '#additionalPara_0_additionalParagraphTA',
+      additionalParagraphTA1: '#additionalPara_1_additionalParagraphTA',
+    },
+    costOrders: {
+      noOrderForCosts: '#costOrders-noOrderForCosts',
+      orderedBy: '#orderedBy',
 
     },
 
@@ -102,6 +109,8 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.preamble);
     await I.retry(3).fillField(this.fields.nameOfJudge, manageOrderDetails.caseManagementOrderDetails.nameOfReallocatedJudge);
     await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
+    await I.retry(3).click(this.fields.continueButton);
   },
 
   async addPreambleAndPreviousAllocateJudgeInCaseManagementOrder(){
@@ -117,6 +126,8 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).see('Name of the judge is required');
     await I.retry(3).fillField(this.fields.allocatedJudge, manageOrderDetails.caseManagementOrderDetails.nameOfAllocatedJudge);
+    await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
     await I.retry(3).click(this.fields.continueButton);
   },
 
@@ -153,6 +164,8 @@ module.exports = {
       await I.retry(3).fillField(this.fields.hearingDetails.dateAndTimeFirstHearingYear, manageOrderDetails.caseManagementOrderDetails.hearingDate.year);
       await I.retry(3).fillField(this.fields.lengthOfHearingFirstHearing, manageOrderDetails.caseManagementOrderDetails.lengthOfHearingFirstHearing);
       await I.retry(3).click(this.fields.continueButton);
+      await this.addLeaveToOpposeAndCostOrder();
+      await I.retry(3).click(this.fields.continueButton);
     },
 
       async caseManagementOrderListForFirstHearingCYAPage(){
@@ -179,6 +192,8 @@ module.exports = {
      await I.retry(3).fillField(this.fields.localAuthority.dateAndTimeForOption2Month, manageOrderDetails.caseManagementOrderDetails.localAuthorityOption2.month);
      await I.retry(3).fillField(this.fields.localAuthority.dateAndTimeForOption2Year, manageOrderDetails.caseManagementOrderDetails.localAuthorityOption2.year);
      await I.retry(3).click(this.fields.continueButton);
+     await this.addLeaveToOpposeAndCostOrder();
+     await I.retry(3).click(this.fields.continueButton);
    },
 
   async caseManagementOrderAttendance(){
@@ -201,6 +216,8 @@ module.exports = {
     await I.retry(3).click(this.fields.attendance.laAttendanceAttend);
     await I.retry(3).click(this.fields.attendance.birthParentAttendanceCourtArrange);
     await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
+    await I.retry(3).click(this.fields.continueButton);
 
   },
   async caseManagementOrderAttendanceCYAPage(){
@@ -218,5 +235,27 @@ module.exports = {
     await I.retry(3).see('1 Jan 2029, 12:00:00 AM');
     await I.retry(3).see('1 Jan 2030, 12:00:00 AM');
     await I.retry(3).click(this.fields.continueButton);
+  },
+
+  async caseManagementOrderLeaveToOpposeAndCostOrder(){
+    await I.wait(3);
+    await I.retry(3).click(this.fields.leaveToOppose.leaveToOppose);
+    await I.retry(3).click(this.fields.costOrders.noOrderForCosts);
+    await I.wait(3);
+    await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
+    await I.retry(3).click(this.fields.continueButton);
+  },
+
+  async addLeaveToOpposeAndCostOrder(){
+    await I.wait(3);
+    await I.retry(3).click('Add new');
+    await I.wait(3);
+    await I.retry(3).fillField(this.fields.leaveToOppose.additionalParagraphTA0, manageOrderDetails.caseManagementOrderDetails.additionalParagraphsOne);
+    await I.retry(3).click('Add new');
+    await I.wait(3);
+    await I.retry(3).fillField(this.fields.leaveToOppose.additionalParagraphTA1, manageOrderDetails.caseManagementOrderDetails.additionalParagraphsTwo);
+    await I.retry(3).fillField(this.fields.costOrders.orderedBy, manageOrderDetails.caseManagementOrderDetails.orderedBy);
+    await I.wait(3);
   },
 };

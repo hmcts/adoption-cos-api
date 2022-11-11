@@ -62,6 +62,7 @@ module.exports = {
   },
 
   async addNewHearingOptions(){
+    I.waitForVisible(this.fields.hearingType, 30);
     await I.fillField(this.fields.hearingType, manageHearingFormData.typeOfHearing);
     await I.fillField(this.fields.hearingDay, manageHearingFormData.dayOfHearing);
     await I.fillField(this.fields.hearingMonth, manageHearingFormData.monthOfHearing);
@@ -78,6 +79,7 @@ module.exports = {
     await I.retry(5).click(this.fields.hearingDelay);
     await I.retry(5).click(this.fields.backupNotice);
     await I.retry(5).click(this.fields.continueButton);
+    await I.wait(5);
   },
 
   async addRecepientDetails(){
@@ -128,6 +130,7 @@ module.exports = {
   },
 
   async selectVacateHearingOptionWithAgreementAndRelisting(){
+   I.waitForVisible(this.fields.vacateHearing, 30);
    await I.retry(5).click(this.fields.vacateHearing);
    await I.retry(5).click(this.fields.continueButton);
    await I.wait(3);

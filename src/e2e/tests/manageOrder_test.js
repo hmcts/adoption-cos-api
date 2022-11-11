@@ -5,7 +5,7 @@ const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 
 let caseId;
 
-Feature('Manage order tests').retry(1);
+Feature('Manage order tests').retry(0);
 
 async function setupScenario(I) {
     caseId = await laHelper.createCompleteCase();
@@ -64,6 +64,16 @@ Scenario('Verify Case management order Attendance details', async ({I, caseViewP
   await manageOrdersPage.caseManagementOrderAttendance();
   await manageOrdersPage.caseManagementOrderAttendanceCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
+});
+
+Scenario('Verify Case management order Leave to oppose and Cost orders details', async ({I, caseViewPage, manageOrdersPage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
+  await manageOrdersPage.selectCreateNewOrder();
+  await manageOrdersPage.verifyTypeOfOrdersListed();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.caseManagementOrderLeaveToOpposeAndCostOrder();
+
 });
 
 
