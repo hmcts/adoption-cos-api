@@ -110,5 +110,12 @@ public class ManageHearingDetails {
     )
     private ReasonForVacatingHearing reasonForVacatingHearing;
 
+    @CCD(
+        label = "Reason for adjournment",
+        access = { SystemUpdateAccess.class,DefaultAccess.class},
+        displayOrder = 13
+    )
+    private ReasonForAdjournHearing reasonForAdjournHearing;
+
 
 }

@@ -85,13 +85,24 @@ class CaseWorkerManageHearingTest {
 
     @Test
     void caseworkerManageHearingAboutToSubmitVacateHearingTest() {
-        var caseDetails = getCaseDetailsForVacateHearing();
+        var caseDetails = getCaseDetailsForHearing();
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
+    }
+
+    @Test
+    void caseworkerManageHearingAboutToSubmitAdjournTest() {
+        var caseDetails = getCaseDetailsForHearing();
+        CaseData data = caseDetails.getData();
+        data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
+        var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
+        assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
+        assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
     }
 
     @Test
@@ -178,7 +189,7 @@ class CaseWorkerManageHearingTest {
         return details;
     }
 
-    private CaseDetails<CaseData, State> getCaseDetailsForVacateHearing() {
+    private CaseDetails<CaseData, State> getCaseDetailsForHearing() {
         final var details = new CaseDetails<CaseData, State>();
         final var data = caseData();
         ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
@@ -208,7 +219,9 @@ class CaseWorkerManageHearingTest {
                 .build();
             dynamicListElements.add(listElement1);
         });
-        data.setHearingsList(DynamicList.builder().listItems(dynamicListElements).value(dynamicListElements.get(0)).build());
+        data.setHearingListThatCanBeVacated(DynamicList.builder().listItems(dynamicListElements).value(dynamicListElements.get(0)).build());
+        data.setHearingListThatCanBeAdjourned(DynamicList.builder().listItems(dynamicListElements).value(
+            dynamicListElements.get(0)).build());
         details.setData(data);
         details.setId(1L);
         return details;

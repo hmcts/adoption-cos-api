@@ -641,7 +641,14 @@ public class CaseData {
         typeOverride = DynamicRadioList,
         label = "Select a hearing you want to vacate\n"
     )
-    private DynamicList hearingsList;
+    private DynamicList hearingListThatCanBeVacated;
+
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Select a hearing you want to adjourn\n"
+    )
+    private DynamicList hearingListThatCanBeAdjourned;
 
     @CCD(
         label = "Enter hearing details",
@@ -656,18 +663,33 @@ public class CaseData {
     private ReasonForVacatingHearing reasonForVacatingHearing;
 
     @CCD(
+        label = "Reason for adjournment",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private ReasonForAdjournHearing reasonForAdjournHearing;
+
+    @CCD(
         label = "Does the hearing need to be relisted",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
     private YesOrNo isTheHearingNeedsRelisting;
 
     @CCD(
-        label = "Vacated hearing",
+        label = "Vacated hearings",
         typeOverride = Collection,
         typeParameterOverride = "ManageHearingDetails",
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageHearingDetails>> vacatedHearings;
+
+
+    @CCD(
+        label = "Adjourn hearing",
+        typeOverride = Collection,
+        typeParameterOverride = "ManageHearingDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageHearingDetails>> adjournHearings;
 
 
     @CCD(
@@ -887,7 +909,7 @@ public class CaseData {
 
         Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
             hearing.getValue().getHearingId(),
-            hearingsList.getValue().getCode().toString()
+            hearingListThatCanBeVacated.getValue().getCode().toString()
         )).findFirst();
 
         if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
@@ -918,4 +940,38 @@ public class CaseData {
         this.setManageHearingOptions(null);
     }
 
+    public void updateAdjournHearings() {
+
+        Optional<ListValue<ManageHearingDetails>> adjournHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
+            hearing.getValue().getHearingId(),
+            hearingListThatCanBeAdjourned.getValue().getCode().toString()
+        )).findFirst();
+
+        if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
+            adjournHearingDetails.get().getValue().setReasonForAdjournHearing(reasonForAdjournHearing);
+
+            if (isEmpty(this.getVacatedHearings())) {
+                List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
+                var listValue = ListValue
+                    .<ManageHearingDetails>builder()
+                    .id("1")
+                    .value(adjournHearingDetails.get().getValue())
+                    .build();
+                listValues.add(listValue);
+                this.setAdjournHearings(listValues);
+            } else {
+                var listValue = ListValue
+                    .<ManageHearingDetails>builder()
+                    .value(adjournHearingDetails.get().getValue())
+                    .build();
+                int listValueIndex = 0;
+                this.getAdjournHearings().add(0, listValue);
+                for (ListValue<ManageHearingDetails> asListValue : this.getNewHearings()) {
+                    asListValue.setId(String.valueOf(listValueIndex++));
+                }
+            }
+            newHearings.remove(adjournHearingDetails.get());
+        }
+        this.setManageHearingOptions(null);
+    }
 }
