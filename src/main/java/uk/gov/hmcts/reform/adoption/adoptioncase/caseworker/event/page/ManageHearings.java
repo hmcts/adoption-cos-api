@@ -8,6 +8,7 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -42,7 +43,7 @@ public class ManageHearings implements CcdPageConfiguration {
             .optional(ManageHearingDetails::getAccessibilityRequirements)
             .optional(ManageHearingDetails::getHearingDirections)
             .done()
-            .page("manageOrders3")
+            .page("manageOrders3", this::midEventAfterRecipientSelection)
             .showCondition("manageHearingOptions=\"addNewHearing\"")
             .mandatory(CaseData::getRecipientsInTheCase)
             .page("manageOrders4")
@@ -59,7 +60,7 @@ public class ManageHearings implements CcdPageConfiguration {
             .done();
     }
 
-    private AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State> details,
+    public AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State> details,
                                                                    CaseDetails<CaseData, State> detailsBefore) {
         CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
@@ -82,4 +83,33 @@ public class ManageHearings implements CcdPageConfiguration {
             .data(caseData)
             .build();
     }
+
+
+    /*
+    This MidEvent will validate if any incorrect selection of Recipients is made.
+    In case any non-applicable Recipient is selected
+    System will throw an error.
+     */
+    public AboutToStartOrSubmitResponse<CaseData, State> midEventAfterRecipientSelection(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
+        var caseData = details.getData();
+        List<String> error = new ArrayList<>();
+
+        RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
+        RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(error)
+            .build();
+    }
+
+
+
+
 }
