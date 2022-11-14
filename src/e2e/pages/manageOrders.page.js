@@ -233,7 +233,7 @@ module.exports = {
   },
 
 
-  async addAdditionalParagraph() {
+  async caseManagementOrderAddAdditionalParagraph() {
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(10);
@@ -242,12 +242,11 @@ module.exports = {
     await I.retry(3).fillField(this.fields.additionalParagraph, "additional text");
     await I.retry(3).fillField(this.fields.orderBy, "James Bond");
     await I.retry(3).click(this.fields.continueButton);
-
+    await I.wait(3);
   },
 
 
-  async serveParties() {
-    await I.wait(3);
+  async caseManagementOrderServeParties() {
     await I.retry(3).waitForText('Case management order recipients', 30);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.partiesToServerOrder);
     await I.retry(3).click(this.fields.continueButton);

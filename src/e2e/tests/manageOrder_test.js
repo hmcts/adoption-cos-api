@@ -72,8 +72,8 @@ Scenario('Verify Case management order Serve Parties', async ({I, caseViewPage, 
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
-  await manageOrdersPage.addAdditionalParagraph()
-  await manageOrdersPage.serveParties();
+  await manageOrdersPage.caseManagementOrderAddAdditionalParagraph();
+  await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderServePartiesCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
