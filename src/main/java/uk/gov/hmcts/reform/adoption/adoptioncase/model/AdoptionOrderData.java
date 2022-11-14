@@ -8,7 +8,6 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -98,7 +97,7 @@ public class AdoptionOrderData {
     private String registrationDistrict;
 
     @CCD(
-       access = {DefaultAccess.class}
+        access = {DefaultAccess.class}
     )
     private String registrationSubDistrict;
 

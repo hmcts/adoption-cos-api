@@ -361,10 +361,12 @@ public class ManageOrders implements CcdPageConfiguration {
             .mandatory(AdoptionOrderData::getTypeOfCertificate,"placeOfBirthProved=\"Yes\"")
             .label("pageLabel84","#### Choose the country of birth","placeOfBirthProved=\"Yes\"", true)
             .mandatory(AdoptionOrderData::getCountryOfBirthForPlaceOfBirthYes,"placeOfBirthProved=\"Yes\"")
-            .mandatory(AdoptionOrderData::getOtherCountryOfOriginForPlaceOfBirthYes,"countryOfBirthForPlaceOfBirthYes=\"outsideTheUK\" AND placeOfBirthProved=\"Yes\"")
+            .mandatory(AdoptionOrderData::getOtherCountryOfOriginForPlaceOfBirthYes,
+                       "countryOfBirthForPlaceOfBirthYes=\"outsideTheUK\" AND placeOfBirthProved=\"Yes\"")
             .label("pageLabel85","#### Choose a probable birth location","placeOfBirthProved=\"No\"", true)
             .mandatory(AdoptionOrderData::getCountryOfBirthForPlaceOfBirthNo,"placeOfBirthProved=\"No\"")
-            .mandatory(AdoptionOrderData::getOtherCountryOfOriginForPlaceOfBirthNo,"countryOfBirthForPlaceOfBirthNo=\"outsideTheUK\" AND placeOfBirthProved=\"No\"")
+            .mandatory(AdoptionOrderData::getOtherCountryOfOriginForPlaceOfBirthNo,
+                       "countryOfBirthForPlaceOfBirthNo=\"outsideTheUK\" AND placeOfBirthProved=\"No\"")
             .label("pageLabel86","### Is time of birth known?", null, true)
             .mandatory(AdoptionOrderData::getTimeOfBirthKnown)
             .label("pageLabel87","#### Time of birth","timeOfBirthKnown=\"Yes\"", true)
