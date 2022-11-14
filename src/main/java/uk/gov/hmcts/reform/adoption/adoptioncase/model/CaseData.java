@@ -22,7 +22,6 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.HashSet;
@@ -39,7 +38,6 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -55,7 +53,6 @@ public class CaseData {
         typeParameterOverride = "ApplyingWith"
     )
     private ApplyingWith applyingWith;
-
 
     @CCD(
         label = "Are the applicants represented by a solicitor?",
@@ -181,7 +178,6 @@ public class CaseData {
     )
     private PlacementOrder placementOrder;
 
-
     @CCD(
         label = "Add Another Placement Order",
         access = {SystemUpdateAccess.class}
@@ -191,7 +187,6 @@ public class CaseData {
     @CCD(label = "Selected Placement Order Id",
         access = {SystemUpdateAccess.class})
     String selectedPlacementOrderId;
-
 
     @JsonUnwrapped(prefix = "child")
     @Builder.Default
@@ -423,7 +418,6 @@ public class CaseData {
     )
     private String applicant1CannotUpload;
 
-
     @CCD(
         label = "LA can not upload",
         access = { SystemUpdateAccess.class }
@@ -435,7 +429,6 @@ public class CaseData {
         access = { SystemUpdateAccess.class }
     )
     private Set<DocumentType> laCannotUploadSupportingDocument;
-
 
     @CCD(
         label = "Documents pending review",
@@ -547,86 +540,11 @@ public class CaseData {
     private String name;
 
     @CCD(
-        label = "What do you want to do?",
-        access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "ManageOrderActivity"
-    )
-    private ManageOrderActivity manageOrderActivity;
-
-    @CCD(
-        label = "Select type of order",
-        access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "ManageOrderType"
-    )
-    private ManageOrderType manageOrderType;
-
-    @CCD(label = "Copy and paste or type directly into the text box",
-        typeOverride = TextArea,
-        access = {DefaultAccess.class})
-    private String preambleDetails;
-
-    @CCD(
-        label = "Choose which judge to allocate to",
-        access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "AllocationJudge")
-    private AllocationJudge allocationJudge;
-
-    @CCD(label = "You can choose one or 2 options here",
-        access = {DefaultAccess.class},
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "HearingNotices")
-    private Set<HearingNotices> hearingNotices;
-
-    @CCD(label = "Select mode of hearing to choose between in-person or remote hearings.",
-        access = {DefaultAccess.class},
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "ModeOfHearing")
-    private Set<ModeOfHearing> modeOfHearing;
-
-    @CCD(label = "If relevant",
-        access = {DefaultAccess.class},
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "SelectedLocalAuthority")
-    private Set<SelectedLocalAuthority> selectedLocalAuthority;
-
-    @CCD(label = "You are choosing which parties are issued with a direction on whether or not they can attend the"
-        + "\nhearing. You can choose more than one option.",
-        access = {DefaultAccess.class},
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "Attendance")
-    private Set<Attendance> attendance;
-
-    @CCD(label = "If relevant",
-        access = {DefaultAccess.class},
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "LeaveToOppose")
-    private Set<LeaveToOppose> leaveToOppose;
-
-    @CCD(access = {DefaultAccess.class},
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "CostOrders")
-    private Set<CostOrders> costOrders;
-
-    @CCD(label = "Enter the full name and title of the judge as it would appear on the order",
-        access = {DefaultAccess.class}
-    )
-    private String nameOfJudge;
-
-    @CCD(
         label = "Hearing notice recipients",
         hint = "Only select people who are party to this case and who need a copy of this order.",
         access = {DefaultAccess.class}
     )
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
-
-    /*@CCD(
-        access = {DefaultAccess.class}
-    )
-    private WaysToPay serviceRequest;*/
-
 
     @CCD(
         access = {DefaultAccess.class},
@@ -634,8 +552,6 @@ public class CaseData {
         typeParameterOverride = "ManageHearingOptions"
     )
     private ManageHearingOptions manageHearingOptions;
-
-
 
     @CCD(
         typeOverride = DynamicRadioList,
@@ -682,7 +598,6 @@ public class CaseData {
     )
     private List<ListValue<ManageHearingDetails>> vacatedHearings;
 
-
     @CCD(
         label = "Adjourn hearing",
         typeOverride = Collection,
@@ -700,72 +615,23 @@ public class CaseData {
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
 
+    @JsonUnwrapped
+    @Builder.Default
     @CCD(access = {DefaultAccess.class})
-    private LocalDateTime dateAndTimeFirstHearing;
-
-    @CCD(access = {DefaultAccess.class})
-    private LocalDateTime dateAndTimeFurtherHearing;
-
-    @CCD(access = {DefaultAccess.class})
-    private String nameOfCourtFirstHearing;
-
-    @CCD(access = {DefaultAccess.class})
-    private String nameOfCourtFurtherHearing;
-
-    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
-    private String lengthOfHearingFirstHearing;
-
-    @CCD(hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes")
-    private String lengthOfHearingFurtherHearing;
-
-    @CCD(access = {DefaultAccess.class})
-    private String listingTypeFurtherHearing;
-
-    @CCD(access = {DefaultAccess.class})
-    private String listingTypeHearingInFutureDate;
-
-    @CCD(access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "ModeOfHearings")
-    private ModeOfHearings modeOfHearings;
-
-    @CCD(access = {DefaultAccess.class})
-    private LocalDateTime dateAndTimeForOption1;
-
-    @CCD(access = {DefaultAccess.class})
-    private LocalDateTime timeForOption2;
-
-    @CCD(access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "ApplicantAttendance")
-    private ApplicantAttendance applicantAttendance;
-    @CCD(access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "ChildAttendance")
-    private ChildAttendance childAttendance;
-    @CCD(access = {DefaultAccess.class},
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "LaAttendance")
-    private Set<LaAttendance> laAttendance;
-    @CCD(label = "Choose all that are relevant.",
-        access = {DefaultAccess.class},
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "BirthParentAttendance")
-    private Set<BirthParentAttendance> birthParentAttendance;
-
+    private ManageOrdersData manageOrdersData = new ManageOrdersData();
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
         }
-        return nameOfCourtFirstHearing;
+        return manageOrdersData.getNameOfCourtFirstHearing();
     }
 
     public String getNameOfCourtFurtherHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
         }
-        return nameOfCourtFurtherHearing;
+        return manageOrdersData.getNameOfCourtFurtherHearing();
     }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {

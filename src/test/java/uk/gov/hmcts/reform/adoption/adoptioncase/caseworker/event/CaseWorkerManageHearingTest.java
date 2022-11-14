@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.ccd.sdk.ConfigBuilderImpl;
 import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
@@ -55,9 +54,6 @@ class CaseWorkerManageHearingTest {
 
     @InjectMocks
     private CaseWorkerManageHearing caseWorkerManageHearing;
-
-    @Mock
-    private CaseData caseData;
 
     ManageHearings manageHearings = new ManageHearings();
 
