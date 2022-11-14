@@ -27,6 +27,16 @@ module.exports = {
     applicantAttendanceNotAttendOption: 'The child will not be brought to this hearing.',
     childAttendanceNotBeBroughtOption: 'The applicants are NOT to attend the next hearing',
     localAuthorityAttendanceOption: 'A representative of the Local Authority shall attend the next hearing.',
-    birthParentAttendanceCourtOption: '3. the court shall arrange personal service of notice of the hearing/this order on the respondent parents'
+    birthParentAttendanceCourtOption: '3. the court shall arrange personal service of notice of the hearing/this order on the respondent parents',
+    partiesToServerOrder: 'Select who to serve the order to',
+    applicantLocalAuthority: 'Applicant\'s local authority',
+    birthMother: 'Birth mother',
+    birthFather: 'Birth father',
+    applicants: 'Applicants',
+    childLocalAuthority: 'Child\'s local authority',
+    otherAdoptionAgency: 'Other adoption agency',
+    otherPersonWithParentalResponsibility: 'Other person with parental responsibility',
+    cafCass: 'Cafcass'
+
   },
 };

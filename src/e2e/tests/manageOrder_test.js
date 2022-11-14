@@ -66,4 +66,16 @@ Scenario('Verify Case management order Attendance details', async ({I, caseViewP
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
 
+Scenario('Verify Case management order Serve Parties', async ({I, caseViewPage, manageOrdersPage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
+  await manageOrdersPage.selectCreateNewOrder();
+  await manageOrdersPage.verifyTypeOfOrdersListed();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addAdditionalParagraph()
+  await manageOrdersPage.serveParties();
+  await manageOrdersPage.caseManagementOrderServePartiesCYAPage();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
+});
+
 
