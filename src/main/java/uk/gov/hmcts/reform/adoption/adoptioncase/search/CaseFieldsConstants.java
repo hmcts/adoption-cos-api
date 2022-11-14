@@ -21,6 +21,8 @@ public final class CaseFieldsConstants {
 
     public static final String NOT_APPLICABLE_ERROR = " is not applicable";
 
+    public static final String COMMA = ",";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }
