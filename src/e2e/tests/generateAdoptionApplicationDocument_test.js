@@ -13,6 +13,5 @@ async function setupScenario(I) {
 Scenario('Verify Combined Document Generated', async ({I, caseViewPage }) => {
   await setupScenario(I);
   await caseViewPage.navigateToTab(config.tabs.documentsTab);
-  await caseViewPage.verifyTableDataInsideTab(['Combined documents generated 1','Document'], 'adoption-laapplication')
-
+  await caseViewPage.verifyTableDataInsideTab(['Documents pending review 1','Document'], 'adoption-laapplication');
 });
