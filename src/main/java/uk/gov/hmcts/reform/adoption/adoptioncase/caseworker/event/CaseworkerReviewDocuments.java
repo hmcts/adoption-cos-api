@@ -80,56 +80,58 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
                     laUploadedDocument.getValue().setDate(LocalDate.now(clock));
                     laUploadedDocument.getValue().setUser(caseworkerUser.getUserDetails().getFullName());
                     switch (laUploadedDocument.getValue().getDocumentCategory()) {
-                        case APPLICATION_DOCUMENTS -> {
+                        case APPLICATION_DOCUMENTS:
                             caseData.setApplicationDocumentsCategory(addDocumentToListOfSpecificCategory(
                                 caseData,
                                 caseData.getApplicationDocumentsCategory(),
                                 laUploadedDocument.getValue()
                             ));
                             break;
-                        }
-                        case COURT_ORDERS -> {
+
+                        case COURT_ORDERS :
                             caseData.setCourtOrdersDocumentCategory(addDocumentToListOfSpecificCategory(
                                 caseData,
                                 caseData.getCourtOrdersDocumentCategory(),
                                 laUploadedDocument.getValue()
                             ));
                             break;
-                        }
-                        case REPORTS -> {
+
+                        case REPORTS:
                             caseData.setReportsDocumentCategory(addDocumentToListOfSpecificCategory(
                                 caseData,
                                 caseData.getReportsDocumentCategory(),
                                 laUploadedDocument.getValue()
                             ));
                             break;
-                        }
-                        case STATEMENTS -> {
+
+                        case STATEMENTS:
                             caseData.setStatementsDocumentCategory(addDocumentToListOfSpecificCategory(
                                 caseData,
                                 caseData.getStatementsDocumentCategory(),
                                 laUploadedDocument.getValue()
                             ));
                             break;
-                        }
-                        case CORRESPONDENCE -> {
+
+                        case CORRESPONDENCE:
                             caseData.setCorrespondenceDocumentCategory(addDocumentToListOfSpecificCategory(
                                 caseData,
                                 caseData.getCorrespondenceDocumentCategory(),
                                 laUploadedDocument.getValue()
                             ));
                             break;
-                        }
-                        case ADDITIONAL_DOCUMENTS -> {
+
+                        case ADDITIONAL_DOCUMENTS:
                             caseData.setAdditionalDocumentsCategory(addDocumentToListOfSpecificCategory(
                                 caseData,
                                 caseData.getAdditionalDocumentsCategory(),
                                 laUploadedDocument.getValue()
                             ));
                             break;
-                        }
 
-                        default -> log.info("Document doesn't fall under any provided category");
+
+                        default:
+                            log.info("Document doesn't fall under any provided category");
+                            break;
                     }
 
                 });
