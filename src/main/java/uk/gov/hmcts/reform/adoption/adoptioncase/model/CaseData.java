@@ -544,7 +544,8 @@ public class CaseData {
     private String name;
 
     @CCD(
-        label = "Recipients",
+        label = "Hearing notice recipients",
+        hint = "Only select people who are party to this case and who need a copy of this order.",
         access = {DefaultAccess.class}
     )
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
@@ -581,7 +582,7 @@ public class CaseData {
     private YesOrNo isTheHearingNeedsRelisting;
 
     @CCD(
-        label = "Vacated hearing",
+        label = "Vacated hearings",
         typeOverride = Collection,
         typeParameterOverride = "ManageHearingDetails",
         access = {DefaultAccess.class}
@@ -808,10 +809,10 @@ public class CaseData {
     @JsonIgnore
     public void archiveHearingInformation() {
         ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
-        manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
-        manageHearingDetails.setHearingId(UUID.randomUUID().toString());
 
         if (null != manageHearingDetails) {
+            manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
+            manageHearingDetails.setHearingId(UUID.randomUUID().toString());
             if (isEmpty(this.getNewHearings())) {
                 List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
                 var listValue = ListValue
@@ -848,7 +849,7 @@ public class CaseData {
             hearingsList.getValue().getCode().toString()
         )).findFirst();
 
-        if (!vacatedHearings.contains(vacatedHearingDetails.get())) {
+        if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
             vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(reasonForVacatingHearing);
 
             if (isEmpty(this.getVacatedHearings())) {

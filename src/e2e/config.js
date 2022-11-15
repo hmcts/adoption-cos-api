@@ -25,6 +25,7 @@ module.exports = {
     allocateJudge: 'Allocate judge',
     transferCourt: 'Transfer Court',
     manageHearings: 'Manage hearings',
+    amendOtherPartiesDetails: 'Amend other parties details',
   },
   // tabs
   tabs: {
