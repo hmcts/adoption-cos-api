@@ -307,7 +307,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
                    "[Review all documents](/cases/case-details/${[CASE_REFERENCE]}"
                        + "/trigger/caseworker-review-document/caseworker-review-documentuploadDocument)"
             )
-            .field(CaseData::getCombinedDocumentsGenerated)
             .field(CaseData::getApplicationDocumentsCategory)
             .field(CaseData::getReportsDocumentCategory)
             .field(CaseData::getStatementsDocumentCategory)
