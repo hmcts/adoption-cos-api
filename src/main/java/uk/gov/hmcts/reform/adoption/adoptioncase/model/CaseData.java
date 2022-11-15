@@ -22,22 +22,22 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.time.LocalDate;
-import java.util.stream.Collectors;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.Set;
 import java.util.Optional;
+import java.util.HashSet;
 import java.util.SortedSet;
+import java.util.Objects;
+import java.util.Map;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -592,6 +592,40 @@ public class CaseData {
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
 
+    // ------------------- Send And Reply Messages Objects Start ----------------- //
+    @CCD(
+        label = "Send and reply to messages",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "MessagesAction")
+    private MessagesAction messageAction;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private ManageSendMessagesDetails manageSendMessagesDetails;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private MessageDetails messageDetails;
+
+    @CCD(
+        label = "Send Messages",
+        typeOverride = Collection,
+        typeParameterOverride = "ManageSendMessagesDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageSendMessagesDetails>> listOfSendMessages;
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Reply a message\n"
+    )
+    private DynamicList messagesList;
+
+
+    // ------------------- Send And Reply Messages Objects Start ----------------- //
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
@@ -613,7 +647,7 @@ public class CaseData {
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
-            return YesOrNo.NO;
+            return uk.gov.hmcts.ccd.sdk.type.YesOrNo.NO;
         }
         return isApplicantRepresentedBySolicitor;
     }
@@ -704,6 +738,32 @@ public class CaseData {
         } else {
             documents.add(0, listValue); // always add to start top of list
         }
+    }
+
+    @JsonIgnore
+    public void storeSendMessages() {
+        ManageSendMessagesDetails sendMessagesDetails = this.manageSendMessagesDetails;
+        sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
+        if (null != sendMessagesDetails) {
+            if (isEmpty(this.getListOfSendMessages())) {
+                List<ListValue<ManageSendMessagesDetails>> listValues = new ArrayList<>();
+                var listValue = ListValue.<ManageSendMessagesDetails>builder().id("1")
+                    .value(manageSendMessagesDetails).build();
+                listValues.add(listValue);
+
+                this.setListOfSendMessages(listValues);
+            } else {
+                var listValue = ListValue.<ManageSendMessagesDetails>builder()
+                    .value(manageSendMessagesDetails).build();
+                int listValueIndex = 0;
+                this.getListOfSendMessages().add(0, listValue);
+                for (ListValue<ManageSendMessagesDetails> asListValue : this.getListOfSendMessages()) {
+                    asListValue.setId(String.valueOf(listValueIndex++));
+                }
+            }
+            this.setManageSendMessagesDetails(null);
+        }
+
     }
 
     @JsonIgnore
