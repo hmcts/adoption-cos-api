@@ -139,7 +139,7 @@ public class SendAndReply implements CcdPageConfiguration {
                 }
                 caseData.setMessageDetails(messageDetails);
             }
-           
+
 
         }
         log.info("MidEvent Complete");
