@@ -603,6 +603,7 @@ public class CaseData {
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
+    @JsonUnwrapped
     private ManageSendMessagesDetails manageSendMessagesDetails;
 
     @CCD(
@@ -625,7 +626,7 @@ public class CaseData {
     private DynamicList messagesList;
 
 
-    // ------------------- Send And Reply Messages Objects Start ----------------- //
+    // ------------------- Send And Reply Messages Objects End ----------------- //
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})

@@ -47,7 +47,7 @@ public class SendAndReply implements CcdPageConfiguration {
             .mandatory(ManageSendMessagesDetails::getMessageUrgencyList)
             .mandatory(ManageSendMessagesDetails::getMessage)
             .mandatory(ManageSendMessagesDetails::getAttachDocument)
-            .mandatory(ManageSendMessagesDetails::getDocumentList)
+            .mandatory(ManageSendMessagesDetails::getDocumentList, "attachDocument=\"Yes\"")
             .done();
     }
 
@@ -127,15 +127,15 @@ public class SendAndReply implements CcdPageConfiguration {
             var selectedObject = caseData.getListOfSendMessages().stream()
                 .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getMessagesList().getValue()
                 .getLabel())).findAny();
-            if(selectedObject.isPresent()){
+            if (selectedObject.isPresent()) {
                 messageDetails.setMessageId(selectedObject.get().getValue().getMessageId());
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
                 messageDetails.setMessage(selectedObject.get().getValue().getMessage());
                 messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                if (selectedObject.get().getValue() != null) {
+                if (selectedObject.get().getValue().getDocumentList() != null && CollectionUtils.isNotEmpty(messageDocumentLists)) {
                     messageDetails.setDocumentLink(messageDocumentLists.stream().filter(item ->
-                                                                                            item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getDocumentList()
-                                                                                                                                     .getValue().getCode().toString())).findFirst().get().getDocumentLink());
+                        item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getDocumentList()
+                        .getValue().getCode().toString())).findFirst().get().getDocumentLink());
                 }
                 caseData.setMessageDetails(messageDetails);
             }

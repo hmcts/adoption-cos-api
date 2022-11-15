@@ -47,14 +47,15 @@ public class ManageSendMessagesDetails {
     private MessageUrgency messageUrgencyList;
 
     @CCD(label = "Message",
-        typeOverride = TextArea
+        typeOverride = TextArea,
+        access = {SystemUpdateAccess.class, DefaultAccess.class}
     )
     private String message;
 
 
     @CCD(
         label = "Attach document for this case to this message?",
-        access = {SystemUpdateAccess.class}
+        access = {SystemUpdateAccess.class, DefaultAccess.class}
     )
     private YesNo attachDocument;
 
