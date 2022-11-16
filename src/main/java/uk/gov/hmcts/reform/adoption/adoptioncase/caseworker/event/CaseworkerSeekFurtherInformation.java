@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -8,7 +9,9 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SeekFurtherInformation;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionSeekFurtherInformation;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -17,10 +20,13 @@ import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.STRING_COLON;
 
@@ -33,6 +39,9 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
     public static final String SEEK_FURTHER_INFORMATION_HEADING = "Seek further information";
 
     private final CcdPageConfiguration seekFurtherInformation = new SeekFurtherInformation();
+
+    @Autowired
+    private Clock clock;
 
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -153,8 +162,10 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
             listElements.add(personWithParentalResponsibility);
         }
-
-        caseData.setSeekFurtherInformationList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        var adoptionSeekFutherInfo = new AdoptionSeekFurtherInformation();
+        adoptionSeekFutherInfo.setSeekFurtherInformationList(
+            DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setAdoptionSeekFurtherInformation(adoptionSeekFutherInfo);
         log.info("MidEvent Triggered");
 
 
@@ -176,11 +187,52 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetailsBefore) {
+        var adoptionSeekFurtherInfo = new AdoptionSeekFurtherInformation();
         CaseData caseData = caseDataStateCaseDetails.getData();
+        adoptionSeekFurtherInfo.setDate(caseData.getDate());
+//        if(CollectionUtils.isEmpty(caseData.getAdoptionSeekFurtherInformationList())) {
+//            caseData.setAdoptionSeekFurtherInformationList(addSeekInformationData(caseData,
+//            caseData.getAdoptionSeekFurtherInformationList()));
+//        }
+        caseData.setSeekFurtherInfoList(addSeekInformationData(caseData,
+                caseData.getSeekFurtherInfoList()));
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
     }
 
 
+    /**
+     *
+     * @param caseData
+     * @param adoptionSeekFurtherList
+     * @return
+     */
+    private List<ListValue<AdoptionSeekFurtherInformation>> addSeekInformationData(CaseData caseData,
+            List<ListValue<AdoptionSeekFurtherInformation>> adoptionSeekFurtherList) {
+        AdoptionSeekFurtherInformation manageSeekFurtherInformation = caseData.getAdoptionSeekFurtherInformation();
+        manageSeekFurtherInformation.setDate(caseData.getDate());
+        if(isEmpty(adoptionSeekFurtherList)) {
+            List<ListValue<AdoptionSeekFurtherInformation>> listValues = new ArrayList<>();
+            var listValue = ListValue.
+                <AdoptionSeekFurtherInformation>builder().id("1").value(manageSeekFurtherInformation).build();
+            listValues.add(listValue);
+            return listValues;
+        } else {
+            AtomicInteger listValueIndex = new AtomicInteger(0);
+            var listValue = ListValue
+                .<AdoptionSeekFurtherInformation>builder()
+                .value(manageSeekFurtherInformation)
+                .build();
+            adoptionSeekFurtherList.add(
+                0,
+                listValue
+            );
+
+            adoptionSeekFurtherList.forEach(adoptionDocumentListValue ->
+                                                adoptionDocumentListValue.setId(
+                                                    String.valueOf(listValueIndex.incrementAndGet())));
+        }
+        return adoptionSeekFurtherList;
+    }
 }

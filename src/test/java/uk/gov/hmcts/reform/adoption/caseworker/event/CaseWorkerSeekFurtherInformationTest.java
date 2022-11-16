@@ -47,7 +47,7 @@ public class CaseWorkerSeekFurtherInformationTest {
         var caseDetails = getCaseDetails();
         var result = caseworkerSeekFurtherInformation
             .seekFurtherInformationData(caseDetails);
-        assertThat(result.getData().getSeekFurtherInformationList()).isNotNull();
+        assertThat(result.getData().getAdoptionSeekFurtherInformation().getSeekFurtherInformationList()).isNotNull();
     }
 
     @Test
@@ -59,7 +59,7 @@ public class CaseWorkerSeekFurtherInformationTest {
             "07978656212","test@gov.uk");
         caseDetails.getData().setOtherAdoptionAgencyOrLA(otherAdoptionAgencyData);
         var result = caseworkerSeekFurtherInformation.seekFurtherInformationData(caseDetails);
-        assertThat(result.getData().getSeekFurtherInformationList().getListItems()).hasSize(5);
+        assertThat(result.getData().getAdoptionSeekFurtherInformation().getSeekFurtherInformationList().getListItems()).hasSize(5);
     }
 
 
