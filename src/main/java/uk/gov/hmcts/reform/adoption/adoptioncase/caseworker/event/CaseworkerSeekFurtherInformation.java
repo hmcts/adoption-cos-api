@@ -122,38 +122,6 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             listElements.add(secondApplicant);
         }
 
-        if (caseData.getBirthMother() != null && caseData.getBirthMother().getFirstName() != null
-            && caseData.getBirthMother().getLastName() != null) {
-            DynamicListElement birthMother = DynamicListElement.builder()
-                .label(joinDynamicListLabel(DocumentSubmitter.BIRTH_MOTHER,
-                 String.join(caseData.getBirthMother().getFirstName(), caseData.getBirthMother().getLastName())))
-                .code(UUID.randomUUID())
-                .build();
-
-            listElements.add(birthMother);
-        }
-        if (caseData.getBirthFather() != null && caseData.getBirthFather().getFirstName() != null
-            && caseData.getBirthFather().getLastName() != null) {
-            DynamicListElement birthFather = DynamicListElement.builder()
-                .label(joinDynamicListLabel(DocumentSubmitter.BIRTH_FATHER,
-                String.join(caseData.getBirthFather().getFirstName(), caseData.getBirthFather().getLastName())))
-                .code(UUID.randomUUID())
-                .build();
-
-            listElements.add(birthFather);
-        }
-
-        if (caseData.getOtherParent() != null && caseData.getOtherParent().getFirstName() != null
-            && caseData.getOtherParent().getLastName() != null) {
-            DynamicListElement personWithParentalResponsibility = DynamicListElement.builder()
-                .label(joinDynamicListLabel(DocumentSubmitter.PERSON_WITH_PARENTAL_RESPONSIBILITY,
-                String.join(caseData.getOtherParent().getFirstName(), caseData.getOtherParent().getLastName())))
-                .code(UUID.randomUUID())
-                .build();
-
-            listElements.add(personWithParentalResponsibility);
-        }
-
         caseData.setSeekFurtherInformationList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         log.info("MidEvent Triggered");
 
