@@ -145,6 +145,10 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetailsBefore) {
         CaseData caseData = caseDataStateCaseDetails.getData();
+        caseData.setDate(null);
+        caseData.setAskAQuestionText(null);
+        caseData.setAskForAdditionalDocumentText(null);
+        caseData.setFurtherInformation(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
