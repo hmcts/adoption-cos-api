@@ -31,13 +31,20 @@ public class ManageHearings implements CcdPageConfiguration {
             .mandatory(CaseData::getManageHearingOptions)
             .page("manageHearing2")
             .showCondition("manageHearingOptions=\"vacateHearing\"")
-            .label("vacateHearingLabel1","## Vacate a hearing")
-            .mandatory(CaseData::getHearingsList)
+            .label("vacateHearingLabel1","## Vacate a hearing", "manageHearingOptions=\"vacateHearing\"")
+            .mandatory(CaseData::getHearingListThatCanBeVacated,"manageHearingOptions=\"vacateHearing\"")
+            .page("manageHearing2.1")
+            .showCondition("manageHearingOptions= \"adjournHearing\"")
+            .label("vacateHearingLabel2","## Adjourn a hearing", "manageHearingOptions=\"adjournHearing\"")
+            .mandatory(CaseData::getHearingListThatCanBeAdjourned)
             .page("manageHearing3")
             .showCondition("manageHearingOptions=\"vacateHearing\"")
             .mandatory(CaseData::getReasonForVacatingHearing)
+            .page("manageHearing31")
+            .showCondition("manageHearingOptions=\"adjournHearing\"")
+            .mandatory(CaseData::getReasonForAdjournHearing)
             .page("manageHearing4")
-            .showCondition("manageHearingOptions=\"vacateHearing\"")
+            .showCondition("manageHearingOptions=\"vacateHearing\" OR manageHearingOptions=\"adjournHearing\"")
             .label("relistingLabel1","## Relisting")
             .mandatory(CaseData::getIsTheHearingNeedsRelisting)
             .page("manageHearing5")
@@ -79,7 +86,8 @@ public class ManageHearings implements CcdPageConfiguration {
             });
 
         }
-        caseData.setHearingsList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setHearingListThatCanBeVacated(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setHearingListThatCanBeAdjourned(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
