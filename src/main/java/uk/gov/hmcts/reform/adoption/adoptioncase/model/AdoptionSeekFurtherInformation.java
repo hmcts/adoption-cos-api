@@ -26,7 +26,7 @@ public class AdoptionSeekFurtherInformation {
         label = "Date"
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate documentDateAdded;
+    private LocalDate seekFurtherInfoDateAdded;
 
     @CCD(
         typeOverride = DynamicRadioList,

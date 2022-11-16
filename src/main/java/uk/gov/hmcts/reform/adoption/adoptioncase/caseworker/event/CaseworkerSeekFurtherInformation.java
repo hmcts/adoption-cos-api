@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -189,7 +190,9 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetailsBefore) {
         var adoptionSeekFurtherInfo = new AdoptionSeekFurtherInformation();
         CaseData caseData = caseDataStateCaseDetails.getData();
+        adoptionSeekFurtherInfo.setSeekFurtherInfoDateAdded(LocalDate.now(clock));
         adoptionSeekFurtherInfo.setDate(caseData.getDate());
+
 //        if(CollectionUtils.isEmpty(caseData.getAdoptionSeekFurtherInformationList())) {
 //            caseData.setAdoptionSeekFurtherInformationList(addSeekInformationData(caseData,
 //            caseData.getAdoptionSeekFurtherInformationList()));
