@@ -13,7 +13,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @AllArgsConstructor
 @Builder
 public class ManageOrdersDataAdditionalParagraph {
-    @CCD(label = "Copy and paste or type any additional orders directly into the text box. "
+    @CCD(hint = "Copy and paste or type any additional orders directly into the text box. "
         + "You can include any orders for step parents, for example, or inclusion of other parties to attend.",
         typeOverride = TextArea)
     private String additionalParagraphTA;

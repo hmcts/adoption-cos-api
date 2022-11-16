@@ -27,11 +27,29 @@ public class ManageHearings implements CcdPageConfiguration {
 
     @Override
     public void addTo(PageBuilder pageBuilder) {
-        pageBuilder.page("manageOrders1", this::midEvent)
+        pageBuilder.page("manageHearing1", this::midEvent)
             .mandatory(CaseData::getManageHearingOptions)
-            .page("manageOrders2")
-            .showCondition("manageHearingOptions=\"addNewHearing\"")
-            .label("addNewHearing1", "## Add new hearing")
+            .page("manageHearing2")
+            .showCondition("manageHearingOptions=\"vacateHearing\"")
+            .label("vacateHearingLabel1","## Vacate a hearing", "manageHearingOptions=\"vacateHearing\"")
+            .mandatory(CaseData::getHearingListThatCanBeVacated,"manageHearingOptions=\"vacateHearing\"")
+            .page("manageHearing2.1")
+            .showCondition("manageHearingOptions= \"adjournHearing\"")
+            .label("vacateHearingLabel2","## Adjourn a hearing", "manageHearingOptions=\"adjournHearing\"")
+            .mandatory(CaseData::getHearingListThatCanBeAdjourned)
+            .page("manageHearing3")
+            .showCondition("manageHearingOptions=\"vacateHearing\"")
+            .mandatory(CaseData::getReasonForVacatingHearing)
+            .page("manageHearing31")
+            .showCondition("manageHearingOptions=\"adjournHearing\"")
+            .mandatory(CaseData::getReasonForAdjournHearing)
+            .page("manageHearing4")
+            .showCondition("manageHearingOptions=\"vacateHearing\" OR manageHearingOptions=\"adjournHearing\"")
+            .label("relistingLabel1","## Relisting")
+            .mandatory(CaseData::getIsTheHearingNeedsRelisting)
+            .page("manageHearing5")
+            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
+            .label("addNewHearing2", "## Add new hearing")
             .complex(CaseData::getManageHearingDetails)
             .mandatory(ManageHearingDetails::getTypeOfHearing)
             .mandatory(ManageHearingDetails::getHearingDateAndTime)
@@ -43,21 +61,11 @@ public class ManageHearings implements CcdPageConfiguration {
             .optional(ManageHearingDetails::getAccessibilityRequirements)
             .optional(ManageHearingDetails::getHearingDirections)
             .done()
-            .page("manageOrders3", this::midEventAfterRecipientSelection)
-            .showCondition("manageHearingOptions=\"addNewHearing\"")
+            .page("manageHearing6",this::midEventAfterRecipientSelection)
+            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
-            .page("manageOrders4")
-            .showCondition("manageHearingOptions=\"vacateHearing\"")
-            .label("vacateHearingLabel1","## Vacate a hearing")
-            .mandatory(CaseData::getHearingsList)
-            .page("manageOrders5")
-            .showCondition("manageHearingOptions=\"vacateHearing\"")
-            .mandatory(CaseData::getReasonForVacatingHearing)
-            .page("manageOrders6")
-            .showCondition("manageHearingOptions=\"vacateHearing\"")
-            .label("relistingLabel1","## Relisting")
-            .mandatory(CaseData::getIsTheHearingNeedsRelisting)
-            .done();
+            .done()
+            .build();
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State> details,
@@ -78,7 +86,8 @@ public class ManageHearings implements CcdPageConfiguration {
             });
 
         }
-        caseData.setHearingsList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setHearingListThatCanBeVacated(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setHearingListThatCanBeAdjourned(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();

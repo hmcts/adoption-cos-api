@@ -81,7 +81,8 @@ exports.config = {
     caseDetailsSummaryPage: './src/e2e/pages/summaryDetailsTab.page.js',
     manageHearingsPage: './src/e2e/pages/manageHearings.page.js',
     manageHearingsTabPage: './src/e2e/pages/manageHearingsTab.page.js',
-    finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js'
+    finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js',
+    amendOtherPartiesDetailsPage: './src/e2e/pages/amendOtherPartiesDetails.page.js',
   },
   plugins: {
     retryFailedStep: {
