@@ -580,7 +580,7 @@ public class CaseData {
     private String askForAdditionalDocumentText;
 
     @CCD(access = {DefaultAccess.class},
-        label = "List the questions you need",
+        label = "List the questions you want to ask",
         typeOverride = TextArea)
     private String askAQuestionText;
 
