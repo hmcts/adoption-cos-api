@@ -11,6 +11,9 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplyingWith;
@@ -27,15 +30,21 @@ import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseWorkerManageHearing.CASEWORKER_MANAGE_HEARING;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
@@ -68,6 +77,17 @@ class CaseWorkerManageHearingTest {
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings()).isNotNull();
+    }
+
+    @Test
+    void caseworkerManageHearingAboutToSubmitVacateHearingTest() {
+        var caseDetails = getCaseDetailsForVacateHearing();
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
+        assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
+        assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
 
     @Test
@@ -149,6 +169,42 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setJudge("test judge");
         data.setManageHearingDetails(manageHearingDetails);
         data.setManageHearingOptions(ManageHearingOptions.ADD_NEW_HEARING);
+        details.setData(data);
+        details.setId(1L);
+        return details;
+    }
+
+    private CaseDetails<CaseData, State> getCaseDetailsForVacateHearing() {
+        final var details = new CaseDetails<CaseData, State>();
+        final var data = caseData();
+        ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
+        manageHearingDetails.setHearingId(UUID.randomUUID().toString());
+        manageHearingDetails.setLengthOfHearing("2hrs 30min");
+        manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
+        manageHearingDetails.setCourt("test court");
+        manageHearingDetails.setJudge("test judge");
+        manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
+        data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
+        List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
+        var listValue = ListValue
+            .<ManageHearingDetails>builder()
+            .id("1")
+            .value(manageHearingDetails)
+            .build();
+        listValues.add(listValue);
+        data.setNewHearings(listValues);
+        List<DynamicListElement> dynamicListElements = new ArrayList<>();
+        data.getNewHearings().forEach(hearing -> {
+            DynamicListElement listElement1 = DynamicListElement.builder()
+                .label(String.join(BLANK_SPACE, hearing.getValue().getTypeOfHearing(),
+                                   "-",
+                                   hearing.getValue().getHearingDateAndTime().format(DateTimeFormatter.ofPattern(
+                                       "dd MMM yyyy',' hh:mm:ss a")).replace("pm", "PM").replace("am", "PM")
+                )).code(UUID.fromString(hearing.getValue().getHearingId()))
+                .build();
+            dynamicListElements.add(listElement1);
+        });
+        data.setHearingsList(DynamicList.builder().listItems(dynamicListElements).value(dynamicListElements.get(0)).build());
         details.setData(data);
         details.setId(1L);
         return details;
