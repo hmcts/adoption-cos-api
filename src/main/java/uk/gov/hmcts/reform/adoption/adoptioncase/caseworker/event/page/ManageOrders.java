@@ -18,7 +18,11 @@ import java.util.UUID;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOPTION_AGENCY_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
 
 /**
  * Contains method to add Page Configuration for ExUI.
@@ -352,12 +356,14 @@ public class ManageOrders implements CcdPageConfiguration {
         details.getData().getChildren().setLastNameAfterAdoption(detailsBefore.getData().getChildren().getLastNameAfterAdoption());
         List<DynamicListElement> listElements = new ArrayList<>();
 
+
+
         if (caseData.getAdopAgencyOrLA() != null) {
             DynamicListElement adoptionAgency = DynamicListElement.builder()
                 .label(String.join(COMMA, caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName(),
                                    caseData.getAdopAgencyOrLA().getAdopAgencyTown(),
                                    caseData.getAdopAgencyOrLA().getAdopAgencyPostcode()))
-                .code(UUID.randomUUID())
+                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
                 .build();
 
             listElements.add(adoptionAgency);
@@ -368,7 +374,7 @@ public class ManageOrders implements CcdPageConfiguration {
                 .label(String.join(COMMA, caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName(),
                                    caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostTown(),
                                    caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostCode()))
-                .code(UUID.randomUUID())
+                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
                 .build();
 
             listElements.add(otherAdoptionAgency);
@@ -379,7 +385,7 @@ public class ManageOrders implements CcdPageConfiguration {
                 .label(String.join(COMMA, caseData.getChildSocialWorker().getSocialWorkerName(),
                                    caseData.getChildSocialWorker().getSocialWorkerTown(),
                                    caseData.getChildSocialWorker().getSocialWorkerPostcode()))
-                .code(UUID.randomUUID())
+                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
                 .build();
             listElements.add(childLocalAuthority);
         }
@@ -389,7 +395,7 @@ public class ManageOrders implements CcdPageConfiguration {
                 .label(String.join(COMMA, caseData.getApplicantSocialWorker().getSocialWorkerName(),
                                    caseData.getApplicantSocialWorker().getSocialWorkerTown(),
                                    caseData.getApplicantSocialWorker().getSocialWorkerPostcode()))
-                .code(UUID.randomUUID())
+                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
                 .build();
             listElements.add(applicantLocalAuthority);
         }
