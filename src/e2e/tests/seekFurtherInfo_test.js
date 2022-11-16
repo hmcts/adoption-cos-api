@@ -13,13 +13,13 @@ async function setupScenario(I) {
     await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 
-//Common
+/*//Common
 Scenario('Verify seek further Info Who do you need to contact details Cancel Link', async ({I, caseViewPage, seekFurtherInfoPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
   await seekFurtherInfoPage.verifyWhoDoYouNeedToContact();
   await seekFurtherInfoPage.verifyCancelLink();
-});
+});*/
 
 //Screen 1 Who do you need to contact
 Scenario('Verify seek further Info Who do you need to contact Submit', async ({I, caseViewPage, seekFurtherInfoPage }) => {
@@ -28,29 +28,29 @@ Scenario('Verify seek further Info Who do you need to contact Submit', async ({I
   await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
 });
 
-//Screen 2 What information do you need?
+/*//Screen 2 What information do you need?
 Scenario('Verify seek further Info What information do you need Verify', async ({I, caseViewPage, seekFurtherInfoPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
   await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
   await seekFurtherInfoPage.verifyWhatInformationDoYouNeed();
-});
+});*/
 
-Scenario('Verify seek further Info What information do you need Submit', async ({I, caseViewPage, seekFurtherInfoPage }) => {
+/*Scenario('Verify seek further Info What information do you need Submit', async ({I, caseViewPage, seekFurtherInfoPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
   await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
   await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
-});
+});*/
 
-//Screen 3 When is the information needed by?
+/*//Screen 3 When is the information needed by?
 Scenario('Verify seek further Info When is the information needed by Verify', async ({I, caseViewPage, seekFurtherInfoPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
   await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
   await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
   await seekFurtherInfoPage.verifyWhenIsTheInformationNeededBy();
-});
+});*/
 
 Scenario('Verify seek further Info When is the information needed by Submit', async ({I, caseViewPage, seekFurtherInfoPage }) => {
   await setupScenario(I);
@@ -60,7 +60,7 @@ Scenario('Verify seek further Info When is the information needed by Submit', as
   await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
 });
 
-//Screen 4 CYA
+/*//Screen 4 CYA
 Scenario('Verify seek further Info CYA Verify', async ({I, caseViewPage, seekFurtherInfoPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
@@ -68,4 +68,16 @@ Scenario('Verify seek further Info CYA Verify', async ({I, caseViewPage, seekFur
   await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
   await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
   await seekFurtherInfoPage.navigationCheckCYA();
-});
+});*/
+
+//Screen 5 CYA
+Scenario('Verify seek further Info Check your Answers of seek Further Info', async ({I, caseViewPage, seekFurtherInfoPage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
+  await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
+  await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
+  await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
+  await seekFurtherInfoPage.verifyCheckYourAnswersSeekFurtherInfo();
+  await seekFurtherInfoPage.verifySuccessfulAlertMessage();
+  });
+

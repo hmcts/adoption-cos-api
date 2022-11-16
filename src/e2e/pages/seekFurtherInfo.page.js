@@ -25,7 +25,7 @@ module.exports = {
       askForAdditionalDocumentListOption: '#furtherInformation-askForAdditionalDocument',
       askAQuestionListOption: '#furtherInformation-askAQuestion',
       askForAdditionalDocumentErrorMessage: '//span[contains(text(),"List the documents you need is required")]',
-      askAQuestionErrorMessage: '//span[contains(text(),"List the questions you need is required")]',
+      askAQuestionErrorMessage: '//span[contains(text(),"List the questions you want to ask is required")]',
       askForAdditionalDocumentText: '#askForAdditionalDocumentText',
       askAQuestionText: '#askAQuestionText',
 
@@ -44,6 +44,7 @@ module.exports = {
       //Screen 4 CYA
       labelMessageCYA: '//span[contains(text(),"Check the information below carefully.")]',
       labelMessageCYA: '//span[contains(text(),"Check the information below carefully.")]',
+      alertMessage: '//div[@class="alert-message"]',
 
   },
 
@@ -123,12 +124,14 @@ module.exports = {
   async fulfillWhatInformationDoYouNeed(){
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
     await I.retry(3).see('What information do you need? is required', this.fields.whatInformationDoYouNeedListErrorMessage);
     await I.retry(3).click(this.fields.askForAdditionalDocumentListOption);
     await I.retry(3).click(this.fields.askAQuestionListOption);
     await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
     await I.retry(3).see('List the documents you need is required', this.fields.askForAdditionalDocumentErrorMessage);
-    await I.retry(3).see('List the questions you need is required', this.fields.askAQuestionErrorMessage);
+    await I.retry(3).see('List the questions you want to ask is required', this.fields.askAQuestionErrorMessage);
     await I.fillField(this.fields.askForAdditionalDocumentText, seekFurtherInfoDetails.askForAdditionalDocumentText);
     await I.fillField(this.fields.askAQuestionText, seekFurtherInfoDetails.askAQuestionText);
     await I.retry(3).click(this.fields.continueButton);
@@ -153,5 +156,23 @@ module.exports = {
     await I.retry(3).fillField(this.fields.whenIsTheInformationNeededByDateText.minute, seekFurtherInfoDetails.seekFurtherInfoDate.minute);
     await I.retry(3).fillField(this.fields.whenIsTheInformationNeededByDateText.second, seekFurtherInfoDetails.seekFurtherInfoDate.second);
     await I.retry(3).click(this.fields.continueButton);
+  },
+
+  async verifyCheckYourAnswersSeekFurtherInfo(){
+  await I.wait(3);
+  await I.see("Child's social worker : social worker");
+  await I.see("Ask a question");
+  await I.see("Ask for additional documents");
+  await I.see("");
+  await I.see(seekFurtherInfoDetails.askForAdditionalDocumentText);
+  await I.see(seekFurtherInfoDetails.askAQuestionText);
+  await I.see("1 Jan 2050, 3:15:00 PM");
+  },
+
+  async verifySuccessfulAlertMessage(){
+  await I.wait(3);
+  await I.retry(3).click(this.fields.continueButton);
+  await I.wait(3);
+  await I.retry(5).seeElement(this.fields.alertMessage);
   },
 };
