@@ -43,6 +43,10 @@ module.exports = {
     reListingYes: '#isTheHearingNeedsRelisting_Yes',
     reListingNo: '#isTheHearingNeedsRelisting_No',
     recipientsTitle: '//span[contains(text(),"Hearing notice recipients")]',
+    adjournHearingCourtJudgeUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
+    adjournHearingPartiesUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
+    adjournHearingLateFiling: '#reasonForAdjournHearing-lateFillingOfDocuments',
+    adjournHearingDateToAvoid: '#reasonForAdjournHearing-caseListedOnDatesToAvoid',
   },
 
   verifyPageDetails() {
@@ -228,4 +232,39 @@ module.exports = {
     await I.retry(5).click(this.fields.continueButton);
     await I.retry(5).seeElement(this.fields.alertMessage);
   },
+
+  async selectAdjournHearingNoRelisting(){
+      await I.retry(5).click(this.fields.adjournHearing);
+      await I.retry(5).click(this.fields.continueButton);
+      await I.wait(3);
+      await I.retry(5).click(this.fields.continueButton);
+      await I.retry(3).see('Select a hearing you want to adjourn is required');
+      await I.retry(5).click(this.fields.vacateHearingToSelect);
+      await I.retry(5).click(this.fields.continueButton);
+      await I.retry(5).seeElement(this.fields.adjournHearingCourtJudgeUnavailable);
+      await I.retry(5).seeElement(this.fields.adjournHearingPartiesUnavailable);
+      await I.retry(5).seeElement(this.fields.adjournHearingLateFiling);
+      await I.retry(5).seeElement(this.fields.adjournHearingDateToAvoid);
+      await I.retry(5).click(this.fields.continueButton);
+      await I.retry(3).see('Reason for adjournment is required');
+      await I.retry(5).click(this.fields.adjournHearingLateFiling);
+      await I.retry(5).click(this.fields.continueButton);
+      await I.retry(5).seeElement(this.fields.reListingYes);
+      await I.retry(5).seeElement(this.fields.reListingNo);
+      await I.retry(5).click(this.fields.continueButton);
+      await I.retry(3).see('Does the hearing need to be relisted is required');
+      await I.retry(5).click(this.fields.reListingNo);
+      await I.retry(5).click(this.fields.continueButton);
+    },
+
+    async verifyAdjournHearingNoRelistingCheckYourAnswers(){
+        await I.wait(3);
+        I.see(manageHearingFormData.checkYourAnswers.adjournHearingOption);
+        I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
+        I.see(manageHearingFormData.checkYourAnswers.adjournHearingReason);
+        I.see(manageHearingFormData.checkYourAnswers.relistingNo);
+        await I.retry(5).click(this.fields.continueButton);
+        await I.wait(3);
+        await I.retry(5).seeElement(this.fields.alertMessage);
+      },
 };
