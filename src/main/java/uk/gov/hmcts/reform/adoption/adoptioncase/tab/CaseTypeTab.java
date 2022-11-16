@@ -113,7 +113,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-managehearing", null, "[Manage hearings](/cases/case-details/${[CASE_REFERENCE]}"
                 + "/trigger/caseworker-manage-hearing/caseworker-manage-hearingmanageOrders1)")
-            .field(CaseData::getNewHearings);
+            .field(CaseData::getNewHearings)
+            .field(CaseData::getVacatedHearings);
     }
 
     private void buildTabWithRespondentDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
