@@ -12,7 +12,6 @@ module.exports = {
       previousButton: 'button[type="button"]',
       cancelLink: '//a[text()="Cancel"]',
       actionsDropdown: '#next-step',
-      goButton: 'Go',
 
       //Screen 1 Who do you need to contact
       labelMessageWhoDoYouNeedToContact: '//span[contains(text(),"Who do you need to contact")]',
@@ -51,7 +50,7 @@ module.exports = {
   async verifyCommon() {
     await I.wait(3);
     await I.retry(3).waitForSelector(this.fields.pageHeader1);
-    await I.retry(3).waitForSelector(this.fields.caseId);
+    await I.retry(3).seeElement(this.fields.pageHeader1);
     await I.retry(3).seeElement(this.fields.caseId);
     await I.retry(3).seeElement(this.fields.ChildName);
     await I.retry(3).seeElement(this.fields.continueButton);
@@ -64,24 +63,23 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).waitForSelector(this.fields.actionsDropdown);
     await I.retry(3).seeElement(this.fields.actionsDropdown);
-    await I.retry(3).seeElement(this.fields.goButton);
   },
 
   async verifyWhoDoYouNeedToContact() {
-    await verifyCommon();
+    await this.verifyCommon();
     await I.retry(3).seeElement(this.fields.labelMessageWhoDoYouNeedToContact);
     await I.retry(3).seeElement(this.fields.whoDoYouNeedToContactList);
   },
 
   async verifyWhatInformationDoYouNeed() {
-    await verifyCommon();
+    await this.verifyCommon();
     await I.retry(3).seeElement(this.fields.labelMessageWhatInformationDoYouNeed);
     await I.retry(3).seeElement(this.fields.askForAdditionalDocumentListOption);
     await I.retry(3).seeElement(this.fields.askAQuestionListOption);
   },
 
   async verifyWhenIsTheInformationNeededBy() {
-    await verifyCommon();
+    await this.verifyCommon();
     await I.retry(3).seeElement(this.fields.labelMessageWhenIsTheInformationNeededBy);
     await I.retry(3).seeElement(this.fields.whenIsTheInformationNeededByDateText.day);
     await I.retry(3).seeElement(this.fields.whenIsTheInformationNeededByDateText.month);
@@ -105,12 +103,7 @@ module.exports = {
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
-    await verifyCommon();
-    await I.retry(3).click(this.fields.continueButton);
-    await I.wait(3);
-    await I.retry(3).waitForSelector(this.fields.actionsDropdown);
-    await I.retry(3).seeElement(this.fields.actionsDropdown);
-    await I.retry(3).seeElement(this.fields.goButton);
+    await this.verifyCommon();
   },
 
   async fulfillWhoDoYouNeedToContact(){
