@@ -2,7 +2,7 @@ const config = require('../config');
 const laHelper = require('../helpers/la_portal_case');
 let caseId;
 
-Feature('Manage Hearings tests').retry(1);
+Feature('Manage Hearings tests').retry(0);
 
 async function setupScenario(I) {
   if (!caseId) {
@@ -12,24 +12,28 @@ async function setupScenario(I) {
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 
-Scenario('Manage Hearings of a case - Add new Hearing ', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage }) => {
+Scenario('Manage Hearings of a case - Add new Hearing', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
-  await manageHearingsPage.verifyPageDetails();
-  await manageHearingsPage.verifyManageHearingsPageFunctionality();
-  await manageHearingsPage.addNewHearingOptions();
-  await manageHearingsPage.addRecepientDetails();
-  await manageHearingsPage.verifyAddNewHearingCheckYourAnswers();
+  await manageHearingsPage.genericAddNewHearing();
   });
 
  Scenario('Manage Hearings of a case - Vacate Hearing with Agreement and Relisting', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage }) => {
     await setupScenario(I);
     await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
-    await manageHearingsPage.verifyPageDetails();
-    await manageHearingsPage.verifyManageHearingsPageFunctionality();
-    await manageHearingsPage.addNewHearingOptions();
-    await manageHearingsPage.addRecepientDetails();
-    await manageHearingsPage.verifyAddNewHearingCheckYourAnswers();
+    await manageHearingsPage.genericAddNewHearing();
     await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
-    await manageHearingsPage.selectVacateHearingOptionWithAgreementAndRelisting(manageHearingsPage.fields.vacateHearingReasonAgreement);
+    await manageHearingsPage.selectVacateHearingOptionWithAgreementAndRelisting();
+    await manageHearingsPage.addNewHearingForVacateHearingOptions();
+    await manageHearingsPage.addRecepientDetails();
+    await manageHearingsPage.verifyVacateHearingWithRelistingCheckYourAnswers();
+});
+
+Scenario('Manage Hearings of a case - Vacate Hearing with NO Relisting', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage }) => {
+    await setupScenario(I);
+    await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+    await manageHearingsPage.genericAddNewHearing();
+    await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+    await manageHearingsPage.selectVacateHearingOptionWithAgreementAndNoRelisting();
+    await manageHearingsPage.verifyVacateHearingNoRelistingCheckYourAnswers();
 });

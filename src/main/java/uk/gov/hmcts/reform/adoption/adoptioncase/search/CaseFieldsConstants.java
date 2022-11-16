@@ -19,6 +19,8 @@ public final class CaseFieldsConstants {
 
     public static final String BLANK_SPACE = " ";
 
+    public static final String NOT_APPLICABLE_ERROR = " is not applicable";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }
