@@ -302,5 +302,50 @@ module.exports = {
     await I.retry(3).click(this.fields.continueButton);
     await this.addLeaveToOpposeAndCostOrder();
     await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+  },
+  async caseManagementOrderAddAdditionalParagraph() {
+    await I.wait(3);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(10);
+    await I.retry(3).see('Additional paragraphs');
+    await I.retry(3).click('Add new');
+    await I.retry(3).fillField(this.fields.additionalParagraph, "additional text");
+    await I.retry(3).fillField(this.fields.orderBy, "James Bond");
+    await I.retry(3).click(this.fields.continueButton);
+
+  },
+
+
+  async caseManagementOrderServeParties() {
+    await I.wait(3);
+    await I.retry(3).waitForText('Case management order recipients', 30);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.partiesToServerOrder);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage);
+    await I.retry(3).click(this.fields.serveParties.birthMother);
+    await I.retry(3).click(this.fields.serveParties.birthFather);
+    await I.retry(3).click(this.fields.serveParties.applicants);
+    await I.retry(3).click(this.fields.serveParties.childLocalAuthority);
+    await I.retry(3).click(this.fields.serveParties.applicantLocalAuthority);
+    await I.retry(3).click(this.fields.serveParties.otherAdoptionAgency);
+    await I.retry(3).click(this.fields.serveParties.otherPersonWithParentalResponsibility);
+    await I.retry(3).click(this.fields.serveParties.cafCass);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+  },
+  async caseManagementOrderServePartiesCYAPage() {
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.partiesToServerOrder);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicantLocalAuthority);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthMother);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthFather);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicants);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.childLocalAuthority);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
   },
 };
