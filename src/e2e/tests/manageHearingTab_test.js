@@ -23,3 +23,28 @@ Scenario('Verify details of manage hearing tab when a new hearing is added', asy
   await caseViewPage.navigateToTab('Hearings');
   await manageHearingsTabPage.verifyAddNewHearingTabDetails();
 });
+
+ Scenario('Hearings Tab - Vacate Hearing with Agreement and Relisting', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage, manageHearingsTabPage }) => {
+    await setupScenario(I);
+    await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+    await manageHearingsPage.genericAddNewHearing();
+    await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+    await manageHearingsPage.selectVacateHearingOptionWithAgreementAndRelisting();
+    await manageHearingsPage.addNewHearingForVacateHearingOptions();
+    await manageHearingsPage.addRecepientDetails();
+    await manageHearingsPage.verifyVacateHearingWithRelistingCheckYourAnswers();
+    await caseViewPage.navigateToTab('Hearings');
+    await manageHearingsTabPage.verifyNewHearingForVacateHearingWithRelisting();
+    await manageHearingsTabPage.verifyVacatedHearingForVacateHearingWithRelisting();
+});
+
+Scenario('Hearings Tab - Vacate Hearing with NO Relisting', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage, manageHearingsTabPage }) => {
+    await setupScenario(I);
+    await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+    await manageHearingsPage.genericAddNewHearing();
+    await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+    await manageHearingsPage.selectVacateHearingOptionWithAgreementAndNoRelisting();
+    await manageHearingsPage.verifyVacateHearingNoRelistingCheckYourAnswers();
+    await caseViewPage.navigateToTab('Hearings');
+    await manageHearingsTabPage.verifyVacatedHearingForVacateHearingWithRelisting();
+});

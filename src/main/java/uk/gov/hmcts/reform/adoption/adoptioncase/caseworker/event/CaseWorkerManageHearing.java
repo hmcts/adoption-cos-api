@@ -72,6 +72,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         if (ManageHearingOptions.VACATE_HEARING.equals(caseData.getManageHearingOptions())) {
             caseData.updateVacatedHearings();
         }
+        if (ManageHearingOptions.ADJOURN_HEARING.equals(caseData.getManageHearingOptions())) {
+            caseData.updateAdjournHearings();
+        }
         if (ManageHearingOptions.ADD_NEW_HEARING.equals(caseData.getManageHearingOptions())
             || YesOrNo.YES == caseData.getIsTheHearingNeedsRelisting()) {
             caseData.archiveHearingInformation();
