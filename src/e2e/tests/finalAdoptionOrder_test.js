@@ -6,7 +6,7 @@ const finalAdoptionOrderDetails = require('../fixtures/finalAdoptionOrderDetails
 
 let caseId;
 
-Feature('Manage order tests').retry(1);
+Feature('Manage order tests').retry(0);
 
 async function setupScenario(I) {
   caseId = await laHelper.createCompleteCase();

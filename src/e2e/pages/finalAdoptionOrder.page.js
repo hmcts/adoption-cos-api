@@ -216,8 +216,9 @@ module.exports = {
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.applicantLocalAuthority);
     await I.wait(1);
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.adoptionAgency);
+    await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
-    await I.wait(1);
+    await I.wait(3);
   }
 
 }
