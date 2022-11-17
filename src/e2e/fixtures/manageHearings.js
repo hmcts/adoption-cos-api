@@ -40,6 +40,7 @@ module.exports = {
     checkYourAnswers: {
       vacateHearingOption: 'Vacate a hearing',
       addNewHearingOption: 'Add a new hearing',
+      adjournHearingOption: 'Adjourn a hearing',
       vacateHearingName: 'type of Hearing - 15 Oct 2025, 11:15:55 PM',
       vacateHearingReason: 'Agreement or consent order made',
       relistingNo: 'No',
@@ -52,5 +53,6 @@ module.exports = {
       recipientApplicantLA: 'Applicant\'s local authority',
       recipientAdopAgency: 'Adoption agency',
       recipientOtherParentalResponsibility: 'Other person with parental responsibility',
+      adjournHearingReason: 'Late filing of documents',
     }
 };

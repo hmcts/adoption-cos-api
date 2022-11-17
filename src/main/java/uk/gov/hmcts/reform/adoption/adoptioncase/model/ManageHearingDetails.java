@@ -42,10 +42,15 @@ public class ManageHearingDetails {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime hearingDateAndTime;
 
+    @CCD(label = " Length of hearing",
+        hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes",
+        displayOrder = 4)
+    private String lengthOfHearing;
+
     @CCD(
         label = "Judge",
         hint = "This should be the allocated judge, if possible.",
-        displayOrder = 4
+        displayOrder = 5
 
     )
     private String judge;
@@ -53,7 +58,7 @@ public class ManageHearingDetails {
     @CCD(
         label = "Court",
         hint = "Enter the full name of the court where the hearing will be held ",
-        displayOrder = 5
+        displayOrder = 6
     )
     private String court;
 
@@ -61,7 +66,7 @@ public class ManageHearingDetails {
     @CCD(
         label = "Is an interpreter needed?",
         hint = "Given details of the interpretation needed for example, sign language or Hindu translator",
-        displayOrder = 6
+        displayOrder = 7
     )
     private String isInterpreterNeeded;
 
@@ -69,7 +74,7 @@ public class ManageHearingDetails {
         label = "Method of hearing",
         typeOverride = FixedRadioList,
         typeParameterOverride = "MethodOfHearing",
-        displayOrder = 7
+        displayOrder = 8
     )
     private MethodOfHearing methodOfHearing;
 
@@ -78,7 +83,7 @@ public class ManageHearingDetails {
         label = "Accessibility requirements",
         typeOverride = FieldType.TextArea,
         hint = "List any accessibility requirements needed such as disabled access",
-        displayOrder = 8
+        displayOrder = 9
     )
     private String accessibilityRequirements;
 
@@ -87,14 +92,10 @@ public class ManageHearingDetails {
         access = {DefaultAccess.class},
         typeOverride = FieldType.MultiSelectList,
         typeParameterOverride = "HearingDirections",
-        displayOrder = 9
+        displayOrder = 10
     )
     private SortedSet<HearingDirections> hearingDirections;
 
-    @CCD(label = " Length of hearing",
-         hint = "Insert the length of the hearing in hours and minutes, for example 2 hours 30 minutes",
-         displayOrder = 10)
-    private String lengthOfHearing;
 
     @CCD(
         label = "Recipients",
@@ -109,6 +110,13 @@ public class ManageHearingDetails {
         displayOrder = 12
     )
     private ReasonForVacatingHearing reasonForVacatingHearing;
+
+    @CCD(
+        label = "Reason for adjournment",
+        access = { SystemUpdateAccess.class,DefaultAccess.class},
+        displayOrder = 13
+    )
+    private ReasonForAdjournHearing reasonForAdjournHearing;
 
 
 }
