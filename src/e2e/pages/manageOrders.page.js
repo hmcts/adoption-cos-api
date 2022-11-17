@@ -235,7 +235,6 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.applicantAttendanceError);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.childAttendanceError);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.laAttendanceError);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.chooseAllErrorMessage,this.fields.attendance.birthParentAttendanceError);
     await I.retry(3).click(this.fields.attendance.applicantAttendanceNotAttend);
     await I.retry(3).click(this.fields.attendance.childAttendanceNotBeBrought);
     await I.retry(3).click(this.fields.attendance.laAttendanceAttend);
