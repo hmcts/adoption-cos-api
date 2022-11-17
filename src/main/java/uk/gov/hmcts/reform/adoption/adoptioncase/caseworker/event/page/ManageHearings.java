@@ -8,6 +8,7 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -26,11 +27,29 @@ public class ManageHearings implements CcdPageConfiguration {
 
     @Override
     public void addTo(PageBuilder pageBuilder) {
-        pageBuilder.page("manageOrders1", this::midEvent)
+        pageBuilder.page("manageHearing1", this::midEvent)
             .mandatory(CaseData::getManageHearingOptions)
-            .page("manageOrders2")
-            .showCondition("manageHearingOptions=\"addNewHearing\"")
-            .label("addNewHearing1", "## Add new hearing")
+            .page("manageHearing2")
+            .showCondition("manageHearingOptions=\"vacateHearing\"")
+            .label("vacateHearingLabel1","## Vacate a hearing", "manageHearingOptions=\"vacateHearing\"")
+            .mandatory(CaseData::getHearingListThatCanBeVacated,"manageHearingOptions=\"vacateHearing\"")
+            .page("manageHearing2.1")
+            .showCondition("manageHearingOptions= \"adjournHearing\"")
+            .label("vacateHearingLabel2","## Adjourn a hearing", "manageHearingOptions=\"adjournHearing\"")
+            .mandatory(CaseData::getHearingListThatCanBeAdjourned)
+            .page("manageHearing3")
+            .showCondition("manageHearingOptions=\"vacateHearing\"")
+            .mandatory(CaseData::getReasonForVacatingHearing)
+            .page("manageHearing31")
+            .showCondition("manageHearingOptions=\"adjournHearing\"")
+            .mandatory(CaseData::getReasonForAdjournHearing)
+            .page("manageHearing4")
+            .showCondition("manageHearingOptions=\"vacateHearing\" OR manageHearingOptions=\"adjournHearing\"")
+            .label("relistingLabel1","## Relisting")
+            .mandatory(CaseData::getIsTheHearingNeedsRelisting)
+            .page("manageHearing5")
+            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
+            .label("addNewHearing2", "## Add new hearing")
             .complex(CaseData::getManageHearingDetails)
             .mandatory(ManageHearingDetails::getTypeOfHearing)
             .mandatory(ManageHearingDetails::getHearingDateAndTime)
@@ -42,24 +61,14 @@ public class ManageHearings implements CcdPageConfiguration {
             .optional(ManageHearingDetails::getAccessibilityRequirements)
             .optional(ManageHearingDetails::getHearingDirections)
             .done()
-            .page("manageOrders3")
-            .showCondition("manageHearingOptions=\"addNewHearing\"")
+            .page("manageHearing6",this::midEventAfterRecipientSelection)
+            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
-            .page("manageOrders4")
-            .showCondition("manageHearingOptions=\"vacateHearing\"")
-            .label("vacateHearingLabel1","## Vacate a hearing")
-            .mandatory(CaseData::getHearingsList)
-            .page("manageOrders5")
-            .showCondition("manageHearingOptions=\"vacateHearing\"")
-            .mandatory(CaseData::getReasonForVacatingHearing)
-            .page("manageOrders6")
-            .showCondition("manageHearingOptions=\"vacateHearing\"")
-            .label("relistingLabel1","## Relisting")
-            .mandatory(CaseData::getIsTheHearingNeedsRelisting)
-            .done();
+            .done()
+            .build();
     }
 
-    private AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State> details,
+    public AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State> details,
                                                                    CaseDetails<CaseData, State> detailsBefore) {
         CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
@@ -77,9 +86,39 @@ public class ManageHearings implements CcdPageConfiguration {
             });
 
         }
-        caseData.setHearingsList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setHearingListThatCanBeVacated(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setHearingListThatCanBeAdjourned(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
     }
+
+
+    /*
+    This MidEvent will validate if any incorrect selection of Recipients is made.
+    In case any non-applicable Recipient is selected
+    System will throw an error.
+     */
+    public AboutToStartOrSubmitResponse<CaseData, State> midEventAfterRecipientSelection(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
+        var caseData = details.getData();
+        List<String> error = new ArrayList<>();
+
+        RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
+        RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
+        RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(error)
+            .build();
+    }
+
+
+
+
 }
