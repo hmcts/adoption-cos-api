@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
-import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
@@ -27,7 +26,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage orders Details screen with all required fields.
  */
-@Slf4j
 public class ManageOrders implements CcdPageConfiguration {
 
     public static final String ERROR_CHECK_HEARINGS_SELECTION = "Please check your selection for Hearings";
@@ -300,8 +298,6 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelCostOrders581", "### Ordered by", null, true)
             .mandatory(ManageOrdersData::getOrderedBy)
             .done()
-
-
             .done();
     }
 
