@@ -360,12 +360,12 @@ class CaseworkerManageOrdersTest {
         assertThat(response.getErrors())
             .isNull();
     }
+
     /**
      * Helper method to build CaseDetails .
      *
      * @return - ConfigBuilderImpl
      */
-
     private CaseDetails<CaseData, State> getCaseDetails() {
         return CaseDetails.<CaseData, State>builder()
             .data(caseData())
