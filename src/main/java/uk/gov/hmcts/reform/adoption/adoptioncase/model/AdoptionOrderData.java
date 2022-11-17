@@ -6,11 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
@@ -39,5 +42,73 @@ public class AdoptionOrderData {
         hint = "Agency or local authority which placed the child for adoption"
     )
     private DynamicList placementOfTheChildList;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo placeOfBirthProved;
+
+    @CCD(
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "TypeOfCertificate",
+        access = {DefaultAccess.class}
+    )
+    private TypeOfCertificate typeOfCertificate;
+
+    @CCD(
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "CountryOfBirth",
+        access = {DefaultAccess.class}
+    )
+    private CountryOfBirth countryOfBirthForPlaceOfBirthYes;
+
+    @CCD(
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "CountryOfBirth",
+        access = {DefaultAccess.class}
+    )
+    private CountryOfBirth countryOfBirthForPlaceOfBirthNo;
+
+    @CCD
+    private String otherCountryOfOriginForPlaceOfBirthYes;
+
+    @CCD
+    private String otherCountryOfOriginForPlaceOfBirthNo;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo timeOfBirthKnown;
+
+    @CCD(
+        hint = "Add time of birth in a 24 hour format such as 14:01",
+        access = {DefaultAccess.class}
+    )
+    private String timeOfBirth;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private String birthAdoptionRegistrationNumber;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private String registrationDistrict;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private String registrationSubDistrict;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private String registrationCounty;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private LocalDate adoptionRegistrationDate;
 
 }
