@@ -24,7 +24,12 @@ Scenario('Verify final adoption order screen', async ({I, caseViewPage, manageOr
   await finalOrderPage.addJudgeNameAndChildAdoptionName();
 });
 
-Scenario('Verify final adoption place and time of Birth', async ({I, caseViewPage, manageOrdersPage, finalOrderPage}) => {
+Scenario('Verify final adoption place and time of Birth', async ({
+                                                                   I,
+                                                                   caseViewPage,
+                                                                   manageOrdersPage,
+                                                                   finalOrderPage
+                                                                 }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.verifyCaseDetails();
@@ -37,7 +42,12 @@ Scenario('Verify final adoption place and time of Birth', async ({I, caseViewPag
 
 });
 
-Scenario('Verify final adoption order recipients and CYA', async ({I, caseViewPage, manageOrdersPage, finalOrderPage}) => {
+Scenario('Verify final adoption order recipients and CYA', async ({
+                                                                    I,
+                                                                    caseViewPage,
+                                                                    manageOrdersPage,
+                                                                    finalOrderPage
+                                                                  }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.verifyCaseDetails();
@@ -49,6 +59,6 @@ Scenario('Verify final adoption order recipients and CYA', async ({I, caseViewPa
   await finalOrderPage.verifyFinalAdoptionRegistrationDetails();
   await finalOrderPage.verifyFinalAdoptionOrderRecipients();
   await finalOrderPage.verifyFinalAdoptionOrderRecipientsCYA();
-  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
+  await I.retry(3).seeEventSubmissionConfirmation(caseId, config.administrationActions.manageOrders);
 
 });

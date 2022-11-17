@@ -11,8 +11,6 @@ module.exports = {
     placeOfBirth: 'Has place of birth been proved?',
     timeOfBirthKnown: 'Is time of birth known?',
     birthTime: 'Time of birth',
-    birthAdoptionRegNumber: 'Birth adoption registration number',
-    birthAdoptionRegistrationDate: 'Birth/Adoption registration date',
     registrationDistrict: 'Registration district',
     registrationSubDistrict: 'Registration sub-distri',
     registrationCounty: 'Registration county',
@@ -20,12 +18,6 @@ module.exports = {
     selectWhoToServeOrderTo: 'Select who to serve the order to',
     finalOrderRecipientsError: 'Recipients of Final adoption order is required',
     finalOrderError: 'Legal guardian (CAFCASS) not applicable for the case',
-    birthAdoptionRegistrationDate: {
-      day: '01',
-      month: '01',
-      year: '2029',
-    },
-
     timeOfBirth: '12:12:20',
     locationOfBirth: 'France',
     countryOfBirth: 'France',
@@ -33,7 +25,14 @@ module.exports = {
     adoptionRegDistrict: 'Lodon',
     adoptionSubDistrict: 'Lodon',
     adoptionRegCounty: 'Lodon',
+
+    birthAdoptionRegistrationDate: {
+      day: '01',
+      month: '01',
+      year: '2029',
+    },
   },
+
 
   checkYourAnswers: {
     finalAdoptionOrderRecipients: 'Final adoption order recipients',
@@ -45,7 +44,7 @@ module.exports = {
     birthMother: 'Respondent (Birth mother)',
     childLocalAuthority: 'Child\'s local authority',
     applicantLocalAuthority: 'Applicant\'s local authority',
-    checkYourAnswers: 'Check your answers'
+    checkYAnswers: 'Check your answers'
 
 
   }

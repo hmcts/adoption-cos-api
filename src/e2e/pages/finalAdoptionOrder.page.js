@@ -42,7 +42,7 @@ module.exports = {
       adoptionRegCountyError: 'ccd-field-write[field_id=\'registrationCounty\'] .error-message',
       adoptionRegDateError: '#adoptionRegistrationDate .error-message',
     },
-      finalOrderRecipients:{
+    finalOrderRecipients: {
       FAORecipientsError: '#errors',
       FAORecipientFirstApplicant: '#recipientsListA76-firstApplicant',
       FAORecipientSecondApplicant: '#recipientsListA76-secondApplicant',
@@ -180,12 +180,12 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
-    await I.retry(3).click(this.fields.continueButton);
-    await I.wait(3);
+    // await I.retry(3).click(this.fields.continueButton);
+    // await I.wait(3);
   },
 
   async verifyFinalAdoptionOrderRecipientsCYA() {
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.checkYourAnswers);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.checkYAnswers);
     await I.wait(1);
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.childFirstNameAfterAdoption);
     await I.wait(1);
@@ -201,21 +201,21 @@ module.exports = {
     await I.wait(1);
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.adoptionRegCounty);
     await I.wait(1);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.selectWhoToServeOrderTo);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.selectWhoToServeOrderTo);
     await I.wait(1);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.firstApplicant);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.firstApplicant);
     await I.wait(1);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.secondApplicant);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.secondApplicant);
     await I.wait(1);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.birthFather);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthFather);
     await I.wait(1);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.birthMother);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthMother);
     await I.wait(1);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.childLocalAuthority);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.childLocalAuthority);
     await I.wait(1);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.applicantLocalAuthority);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.applicantLocalAuthority);
     await I.wait(1);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.checkYourAnswers.adoptionAgency);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.adoptionAgency);
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
