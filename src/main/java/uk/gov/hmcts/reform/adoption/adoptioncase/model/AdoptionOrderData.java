@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDateTime;
 
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
@@ -31,5 +33,11 @@ public class AdoptionOrderData {
 
     @CCD(access = {DefaultAccess.class})
     private String costOrdersFinalAdoptionOrder;
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        hint = "Agency or local authority which placed the child for adoption"
+    )
+    private DynamicList placementOfTheChildList;
 
 }

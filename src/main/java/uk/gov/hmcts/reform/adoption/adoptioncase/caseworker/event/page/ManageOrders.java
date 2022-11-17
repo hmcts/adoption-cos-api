@@ -2,6 +2,9 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
@@ -13,9 +16,11 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
 /**
  * Contains method to add Page Configuration for ExUI.
@@ -35,9 +40,11 @@ public class ManageOrders implements CcdPageConfiguration {
         pageBuilder.page("manageOrders1")
             .complex(CaseData::getManageOrdersData)
             .mandatory(ManageOrdersData::getManageOrderActivity)
-            .page("mangeOrders2")
+            .done()
+            .page("mangeOrders2", this::midEventForDynamicList)
             .showCondition("manageOrderActivity=\"createOrder\"")
             .pageLabel("Manage orders and directions")
+            .complex(CaseData::getManageOrdersData)
             .mandatory(ManageOrdersData::getManageOrderType, "manageOrderActivity=\"createOrder\"")
             .done()
             .done();
@@ -327,14 +334,16 @@ public class ManageOrders implements CcdPageConfiguration {
             .optional(AdoptionOrderData::getPreambleDetailsFinalAdoptionOrder)
             .label("LabelOrderedBy72","### Ordered by")
             .mandatory(AdoptionOrderData::getOrderedByFinalAdoptionOrder)
+            .label("LabelOrderedBy73","### Placement of the child")
+            .mandatory(AdoptionOrderData::getPlacementOfTheChildList)
             .done()
-            .label("LabelChildFullNameAfterAdoption73","### Child's full name after adoption")
             .complex(CaseData::getChildren)
+            .label("LabelChildFullNameAfterAdoption74","### Child's full name after adoption")
             .mandatory(Children::getFirstNameAfterAdoption)
             .mandatory(Children::getLastNameAfterAdoption)
             .done()
             .complex(CaseData::getAdoptionOrderData)
-            .label("LabelCostOrders74","### Cost orders")
+            .label("LabelCostOrders75","### Cost orders")
             .optional(AdoptionOrderData::getCostOrdersFinalAdoptionOrder)
             .done();
     }
@@ -365,6 +374,65 @@ public class ManageOrders implements CcdPageConfiguration {
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .errors(errors)
+            .build();
+    }
+
+    public AboutToStartOrSubmitResponse<CaseData, State> midEventForDynamicList(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
+        CaseData caseData = details.getData();
+        details.getData().getChildren().setFirstNameAfterAdoption(detailsBefore.getData().getChildren().getFirstNameAfterAdoption());
+        details.getData().getChildren().setLastNameAfterAdoption(detailsBefore.getData().getChildren().getLastNameAfterAdoption());
+        List<DynamicListElement> listElements = new ArrayList<>();
+
+        if (caseData.getAdopAgencyOrLA() != null) {
+            DynamicListElement adoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName(),
+                                   caseData.getAdopAgencyOrLA().getAdopAgencyTown(),
+                                   caseData.getAdopAgencyOrLA().getAdopAgencyPostcode()))
+                .code(UUID.randomUUID())
+                .build();
+
+            listElements.add(adoptionAgency);
+        }
+
+        if (YesOrNo.YES.equals(caseData.getHasAnotherAdopAgencyOrLAinXui())) {
+            DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName(),
+                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostTown(),
+                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostCode()))
+                .code(UUID.randomUUID())
+                .build();
+
+            listElements.add(otherAdoptionAgency);
+        }
+
+        if (caseData.getChildSocialWorker() != null) {
+            DynamicListElement childLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, caseData.getChildSocialWorker().getSocialWorkerName(),
+                                   caseData.getChildSocialWorker().getSocialWorkerTown(),
+                                   caseData.getChildSocialWorker().getSocialWorkerPostcode()))
+                .code(UUID.randomUUID())
+                .build();
+            listElements.add(childLocalAuthority);
+        }
+
+        if (caseData.getApplicantSocialWorker() != null) {
+            DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, caseData.getApplicantSocialWorker().getSocialWorkerName(),
+                                   caseData.getApplicantSocialWorker().getSocialWorkerTown(),
+                                   caseData.getApplicantSocialWorker().getSocialWorkerPostcode()))
+                .code(UUID.randomUUID())
+                .build();
+            listElements.add(applicantLocalAuthority);
+        }
+
+        caseData.getAdoptionOrderData().setPlacementOfTheChildList(DynamicList.builder()
+                .listItems(listElements).value(DynamicListElement.EMPTY).build());
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
             .build();
     }
 }
