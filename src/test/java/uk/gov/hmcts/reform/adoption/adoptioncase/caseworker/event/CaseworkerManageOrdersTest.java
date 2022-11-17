@@ -13,6 +13,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.AddressUK;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AdoptionOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -57,9 +58,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.APPLICANTS_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA76.FIRST_APPLICANT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA76.SECOND_APPLICANT;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
@@ -276,51 +274,6 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    void caseworkerManageOrdersAboutToSubmitManageOrderList() {
-        var caseDetails = getCaseDetails();
-        caseDetails.getData().getManageOrdersData().setManageOrderType(CASE_MANAGEMENT_ORDER);
-        var result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageOrderList().size()).isEqualTo(1);
-        caseDetails.getData().getManageOrdersData().setManageOrderType(CASE_MANAGEMENT_ORDER);
-        result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageOrderList().size()).isEqualTo(2);
-        assertThat(result.getData().getDirectionsOrderList()).isNull();
-        assertThat(result.getData().getAdoptionOrderList()).isNull();
-        result.getData().getManageOrderList().forEach(listValueObj -> assertTrue(
-            listValueObj.getValue().getSubmittedDateManageOrder().isBefore(LocalDateTime.now())));
-    }
-
-    @Test
-    void caseworkerManageOrdersAboutToSubmitDirectionsOrderList() {
-        var caseDetails = getCaseDetails();
-        caseDetails.getData().getManageOrdersData().setManageOrderType(GENERAL_DIRECTIONS_ORDER);
-        var result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getDirectionsOrderList().size()).isEqualTo(1);
-        caseDetails.getData().getManageOrdersData().setManageOrderType(GENERAL_DIRECTIONS_ORDER);
-        result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getDirectionsOrderList().size()).isEqualTo(2);
-        assertThat(result.getData().getManageOrderList()).isNull();
-        assertThat(result.getData().getAdoptionOrderList()).isNull();
-        result.getData().getDirectionsOrderList().forEach(listValueObj -> assertTrue(
-            listValueObj.getValue().getSubmittedDateDirectionsOrder().isBefore(LocalDateTime.now())));
-    }
-
-    @Test
-    void caseworkerManageOrdersAboutToSubmitAdoptionOrderList() {
-        var caseDetails = getCaseDetails();
-        caseDetails.getData().getManageOrdersData().setManageOrderType(FINAL_ADOPTION_ORDER);
-        var result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getAdoptionOrderList().size()).isEqualTo(1);
-        caseDetails.getData().getManageOrdersData().setManageOrderType(FINAL_ADOPTION_ORDER);
-        result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getAdoptionOrderList().size()).isEqualTo(2);
-        assertThat(result.getData().getDirectionsOrderList()).isNull();
-        assertThat(result.getData().getManageOrderList()).isNull();
-        result.getData().getAdoptionOrderList().forEach(listValueObj -> assertTrue(
-            listValueObj.getValue().getSubmittedDateAdoptionOrder().isBefore(LocalDateTime.now())));
-    }
-
-    @Test
     public void shouldValidateHearingDateToBeSpecifiedInTheFutureSelectedByUser() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
@@ -407,6 +360,7 @@ class CaseworkerManageOrdersTest {
         assertThat(response.getErrors())
             .isNull();
     }
+
     /**
      * Helper method to build CaseDetails .
      *

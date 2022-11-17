@@ -25,7 +25,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
 /**
  * Contains method to add Page Configuration for ExUI.
