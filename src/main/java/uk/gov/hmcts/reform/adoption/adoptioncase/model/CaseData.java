@@ -42,6 +42,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -569,6 +570,35 @@ public class CaseData {
         label = "Select a hearing you want to adjourn\n"
     )
     private DynamicList hearingListThatCanBeAdjourned;
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Who do you need to contact\n",
+        typeParameterOverride = "DocumentSubmitter"
+    )
+    private DynamicList seekFurtherInformationList;
+
+    @CCD(access = {DefaultAccess.class},
+        label = "What information do you need?\n",
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "FurtherInformation")
+    private Set<FurtherInformation> furtherInformation;
+
+    @CCD(access = {DefaultAccess.class},
+        label = "List the documents you need",
+        typeOverride = TextArea)
+    private String askForAdditionalDocumentText;
+
+    @CCD(access = {DefaultAccess.class},
+        label = "List the questions you want to ask",
+        typeOverride = TextArea)
+    private String askAQuestionText;
+
+    @CCD(label = "When is the information needed by?",
+        access = {SystemUpdateAccess.class,
+            DefaultAccess.class}
+    )
+    private LocalDateTime date;
 
     @CCD(
         label = "Enter hearing details",
