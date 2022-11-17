@@ -3,27 +3,29 @@ const { I } = inject();
 const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 module.exports = {
   fields: {
-      caseId: 'h3:nth-child(1)',
-      ChildName: 'h3:nth-child(2)',
-      continueButton: 'button[type="submit"]',
-      manageOrderTypeErrorMessage: '#manageOrderType .error-message',
-      manageOrderActivityErrorMessage: '#manageOrderActivity .error-message',
-      createOrder:'#manageOrderActivity-createOrder',
-      caseManagementOrder: '#manageOrderType-caseManagementOrder',
-      generalDirectionsOrder: '#manageOrderType-generalDirectionsOrder',
-      finalAdoptionOrder: '#manageOrderType-finalAdoptionOrder',
-      manageOrdersUpdate: '//div[contains(text(), "has been updated with event: Manage orders")]',
-      preambleDetails: '#preambleDetails',
-      allocatedJudge: '#allocatedJudge',
-      reallocateJudge: '#allocationJudge-reallocateJudge',
-      nameOfJudge: '#nameOfJudge',
-      allocatePreviousProceedingsJudge: '#allocationJudge-allocatePreviousProceedingsJudge',
-      listForFirstHearing: '#hearingNotices-listForFirstHearing',
-      hearingDetails:{
-        dateAndTimeFirstHearingErrorMessage: '#dateAndTimeFirstHearing .error-message',
-        dateAndTimeFirstHearingDay: '#dateAndTimeFirstHearing-day',
-        dateAndTimeFirstHearingMonth: '#dateAndTimeFirstHearing-month',
-        dateAndTimeFirstHearingYear: '#dateAndTimeFirstHearing-year',
+    caseId: 'h3:nth-child(1)',
+    ChildName: 'h3:nth-child(2)',
+    continueButton: 'button[type="submit"]',
+    manageOrderTypeErrorMessage: '#manageOrderType .error-message',
+    manageOrderActivityErrorMessage: '#manageOrderActivity .error-message',
+    createOrder: '#manageOrderActivity-createOrder',
+    caseManagementOrder: '#manageOrderType-caseManagementOrder',
+    generalDirectionsOrder: '#manageOrderType-generalDirectionsOrder',
+    finalAdoptionOrder: '#manageOrderType-finalAdoptionOrder',
+    manageOrdersUpdate: '//div[contains(text(), "has been updated with event: Manage orders")]',
+    preambleDetails: '#preambleDetails',
+    allocatedJudge: '#allocatedJudge',
+    reallocateJudge: '#allocationJudge-reallocateJudge',
+    nameOfJudge: '#nameOfJudge',
+    allocatePreviousProceedingsJudge: '#allocationJudge-allocatePreviousProceedingsJudge',
+    listForFirstHearing: '#hearingNotices-listForFirstHearing',
+    additionalParagraph: '#additionalPara_0_additionalParagraphTA',
+    orderBy: '#orderedBy',
+    hearingDetails: {
+      dateAndTimeFirstHearingErrorMessage: '#dateAndTimeFirstHearing .error-message',
+      dateAndTimeFirstHearingDay: '#dateAndTimeFirstHearing-day',
+      dateAndTimeFirstHearingMonth: '#dateAndTimeFirstHearing-month',
+      dateAndTimeFirstHearingYear: '#dateAndTimeFirstHearing-year',
     },
     lengthOfHearingFirstHearing: '#lengthOfHearingFirstHearing',
     lengthOfHearingFirstHearingErrorMessage: 'ccd-field-write[field_id=\'lengthOfHearingFirstHearing\'] .error-message',
@@ -35,8 +37,8 @@ module.exports = {
       dateAndTimeForOption2Day: '#timeForOption2-day',
       dateAndTimeForOption2Month: '#timeForOption2-month',
       dateAndTimeForOption2Year: '#timeForOption2-year',
-      dateAndTimeForOption1Error:'#dateAndTimeForOption1 .error-message',
-      dateAndTimeForOption2Error:'#timeForOption2 .error-message',
+      dateAndTimeForOption1Error: '#dateAndTimeForOption1 .error-message',
+      dateAndTimeForOption2Error: '#timeForOption2 .error-message',
 
     },
     attendance: {
@@ -52,8 +54,38 @@ module.exports = {
       childAttendanceError: '#childAttendance .error-message',
       laAttendanceError: '#laAttendance .error-message',
       birthParentAttendanceError: '#birthParentAttendance .error-message',
+    },
+    leaveToOppose: {
+      leaveToOppose: '#leaveToOppose-leaveToOppose',
+      additionalParagraphTA0: '#additionalPara_0_additionalParagraphTA',
+      additionalParagraphTA1: '#additionalPara_1_additionalParagraphTA',
+    },
+    costOrders: {
+      noOrderForCosts: '#costOrders-noOrderForCosts',
+      orderedBy: '#orderedBy',
 
+    },
+    cafcass: {
+      reportingOfficer: '#cafcass-reportingOfficer',
+      childrensGuardian: '#cafcass-childrensGuardian',
+      reportingOfficerCafcass: '#reportingOfficer-cafcass',
+      childrensGuardianCafcass: '#childrensGuardian-cafcass',
+      caseNumberCG: '#caseNumberCG',
+      dateAndTimeRODay: '#dateAndTimeRO-day',
+      dateAndTimeROMonth: '#dateAndTimeRO-month',
+      dateAndTimeROYear: '#dateAndTimeRO-year',
+      dateAndTimeROHour: '#dateAndTimeRO-hour',
 
+    },
+    serveParties: {
+      birthMother: '#recipientsList-birthMother',
+      birthFather: '#recipientsList-birthFather',
+      applicants: '#recipientsList-applicants',
+      childLocalAuthority: '#recipientsList-childsLocalAuthority',
+      applicantLocalAuthority: '#recipientsList-applicantsLocalAuthority',
+      otherAdoptionAgency: '#recipientsList-otherAdoptionAgency',
+      otherPersonWithParentalResponsibility: '#recipientsList-otherPersonWithParentalResponsibility',
+      cafCass: '#recipientsList-cafcass'
 
     },
 
@@ -102,6 +134,8 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.preamble);
     await I.retry(3).fillField(this.fields.nameOfJudge, manageOrderDetails.caseManagementOrderDetails.nameOfReallocatedJudge);
     await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
+    await I.retry(3).click(this.fields.continueButton);
   },
 
   async addPreambleAndPreviousAllocateJudgeInCaseManagementOrder(){
@@ -117,6 +151,8 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).see('Name of the judge is required');
     await I.retry(3).fillField(this.fields.allocatedJudge, manageOrderDetails.caseManagementOrderDetails.nameOfAllocatedJudge);
+    await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
     await I.retry(3).click(this.fields.continueButton);
   },
 
@@ -153,6 +189,8 @@ module.exports = {
       await I.retry(3).fillField(this.fields.hearingDetails.dateAndTimeFirstHearingYear, manageOrderDetails.caseManagementOrderDetails.hearingDate.year);
       await I.retry(3).fillField(this.fields.lengthOfHearingFirstHearing, manageOrderDetails.caseManagementOrderDetails.lengthOfHearingFirstHearing);
       await I.retry(3).click(this.fields.continueButton);
+      await this.addLeaveToOpposeAndCostOrder();
+      await I.retry(3).click(this.fields.continueButton);
     },
 
       async caseManagementOrderListForFirstHearingCYAPage(){
@@ -179,6 +217,8 @@ module.exports = {
      await I.retry(3).fillField(this.fields.localAuthority.dateAndTimeForOption2Month, manageOrderDetails.caseManagementOrderDetails.localAuthorityOption2.month);
      await I.retry(3).fillField(this.fields.localAuthority.dateAndTimeForOption2Year, manageOrderDetails.caseManagementOrderDetails.localAuthorityOption2.year);
      await I.retry(3).click(this.fields.continueButton);
+     await this.addLeaveToOpposeAndCostOrder();
+     await I.retry(3).click(this.fields.continueButton);
    },
 
   async caseManagementOrderAttendance(){
@@ -195,11 +235,12 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.applicantAttendanceError);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.childAttendanceError);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage,this.fields.attendance.laAttendanceError);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.chooseAllErrorMessage,this.fields.attendance.birthParentAttendanceError);
     await I.retry(3).click(this.fields.attendance.applicantAttendanceNotAttend);
     await I.retry(3).click(this.fields.attendance.childAttendanceNotBeBrought);
     await I.retry(3).click(this.fields.attendance.laAttendanceAttend);
     await I.retry(3).click(this.fields.attendance.birthParentAttendanceCourtArrange);
+    await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
     await I.retry(3).click(this.fields.continueButton);
 
   },
@@ -218,5 +259,92 @@ module.exports = {
     await I.retry(3).see('1 Jan 2029, 12:00:00 AM');
     await I.retry(3).see('1 Jan 2030, 12:00:00 AM');
     await I.retry(3).click(this.fields.continueButton);
+  },
+
+  async caseManagementOrderLeaveToOpposeAndCostOrder(){
+    await I.wait(3);
+    await I.retry(3).click(this.fields.leaveToOppose.leaveToOppose);
+    await I.retry(3).click(this.fields.costOrders.noOrderForCosts);
+    await I.wait(3);
+    await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
+    await I.retry(3).click(this.fields.continueButton);
+  },
+
+  async addLeaveToOpposeAndCostOrder(){
+    await I.wait(3);
+    await I.retry(3).click('Add new');
+    await I.wait(3);
+    await I.retry(3).fillField(this.fields.leaveToOppose.additionalParagraphTA0, manageOrderDetails.caseManagementOrderDetails.additionalParagraphsOne);
+    await I.retry(3).click('Add new');
+    await I.wait(3);
+    await I.retry(3).fillField(this.fields.leaveToOppose.additionalParagraphTA1, manageOrderDetails.caseManagementOrderDetails.additionalParagraphsTwo);
+    await I.retry(3).fillField(this.fields.costOrders.orderedBy, manageOrderDetails.caseManagementOrderDetails.orderedBy);
+    await I.wait(3);
+  },
+
+  async caseManagementOrderCafcass(){
+    await I.wait(3);
+    await I.retry(3).click(this.fields.cafcass.reportingOfficer);
+    await I.retry(3).click(this.fields.cafcass.childrensGuardian);
+    await I.wait(3);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see('Case management order first directions');
+    await I.retry(3).click(this.fields.cafcass.reportingOfficerCafcass);
+    await I.retry(3).fillField(this.fields.cafcass.dateAndTimeRODay, manageOrderDetails.caseManagementOrderDetails.cafcassReportingOfficer.day);
+    await I.retry(3).fillField(this.fields.cafcass.dateAndTimeROMonth, manageOrderDetails.caseManagementOrderDetails.cafcassReportingOfficer.month);
+    await I.retry(3).fillField(this.fields.cafcass.dateAndTimeROYear, manageOrderDetails.caseManagementOrderDetails.cafcassReportingOfficer.year);
+    await I.retry(3).fillField(this.fields.cafcass.dateAndTimeROHour, manageOrderDetails.caseManagementOrderDetails.cafcassReportingOfficer.hour);
+    await I.retry(3).click(this.fields.cafcass.childrensGuardianCafcass);
+    await I.retry(3).fillField(this.fields.cafcass.caseNumberCG, manageOrderDetails.caseManagementOrderDetails.cafcassCaseNumber);
+    await I.retry(3).click(this.fields.continueButton);
+    await this.addLeaveToOpposeAndCostOrder();
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+  },
+  async caseManagementOrderAddAdditionalParagraph() {
+    await I.wait(3);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(10);
+    await I.retry(3).see('Additional paragraphs');
+    await I.retry(3).click('Add new');
+    await I.retry(3).fillField(this.fields.additionalParagraph, "additional text");
+    await I.retry(3).fillField(this.fields.orderBy, "James Bond");
+    await I.retry(3).click(this.fields.continueButton);
+
+  },
+
+
+  async caseManagementOrderServeParties() {
+    await I.wait(3);
+    await I.retry(3).waitForText('Case management order recipients', 30);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.partiesToServerOrder);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage);
+    await I.retry(3).click(this.fields.serveParties.birthMother);
+    await I.retry(3).click(this.fields.serveParties.birthFather);
+    await I.retry(3).click(this.fields.serveParties.applicants);
+    await I.retry(3).click(this.fields.serveParties.childLocalAuthority);
+    await I.retry(3).click(this.fields.serveParties.applicantLocalAuthority);
+    await I.retry(3).click(this.fields.serveParties.otherAdoptionAgency);
+    await I.retry(3).click(this.fields.serveParties.otherPersonWithParentalResponsibility);
+    await I.retry(3).click(this.fields.serveParties.cafCass);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+  },
+  async caseManagementOrderServePartiesCYAPage() {
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.partiesToServerOrder);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicantLocalAuthority);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthMother);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthFather);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicants);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.childLocalAuthority);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
+    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
   },
 };

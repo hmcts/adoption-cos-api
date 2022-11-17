@@ -6,6 +6,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
@@ -68,11 +69,17 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
 
         log.info("Callback invoked for {}", CASEWORKER_MANAGE_HEARING);
         var caseData = details.getData();
-        if (ManageHearingOptions.ADD_NEW_HEARING.equals(caseData.getManageHearingOptions())) {
-            caseData.archiveHearingInformation();
-        } else if (ManageHearingOptions.VACATE_HEARING.equals(caseData.getManageHearingOptions())) {
+        if (ManageHearingOptions.VACATE_HEARING.equals(caseData.getManageHearingOptions())) {
             caseData.updateVacatedHearings();
         }
+        if (ManageHearingOptions.ADJOURN_HEARING.equals(caseData.getManageHearingOptions())) {
+            caseData.updateAdjournHearings();
+        }
+        if (ManageHearingOptions.ADD_NEW_HEARING.equals(caseData.getManageHearingOptions())
+            || YesOrNo.YES == caseData.getIsTheHearingNeedsRelisting()) {
+            caseData.archiveHearingInformation();
+        }
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
