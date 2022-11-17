@@ -21,8 +21,12 @@ import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.HashSet;
@@ -560,7 +564,43 @@ public class CaseData {
         typeOverride = DynamicRadioList,
         label = "Select a hearing you want to vacate\n"
     )
-    private DynamicList hearingsList;
+    private DynamicList hearingListThatCanBeVacated;
+
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Select a hearing you want to adjourn\n"
+    )
+    private DynamicList hearingListThatCanBeAdjourned;
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Who do you need to contact\n",
+        typeParameterOverride = "DocumentSubmitter"
+    )
+    private DynamicList seekFurtherInformationList;
+
+    @CCD(access = {DefaultAccess.class},
+        label = "What information do you need?\n",
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "FurtherInformation")
+    private Set<FurtherInformation> furtherInformation;
+
+    @CCD(access = {DefaultAccess.class},
+        label = "List the documents you need",
+        typeOverride = TextArea)
+    private String askForAdditionalDocumentText;
+
+    @CCD(access = {DefaultAccess.class},
+        label = "List the questions you want to ask",
+        typeOverride = TextArea)
+    private String askAQuestionText;
+
+    @CCD(label = "When is the information needed by?",
+        access = {SystemUpdateAccess.class,
+            DefaultAccess.class}
+    )
+    private LocalDateTime date;
 
     @CCD(
         typeOverride = DynamicRadioList,
@@ -604,6 +644,12 @@ public class CaseData {
     private ReasonForVacatingHearing reasonForVacatingHearing;
 
     @CCD(
+        label = "Reason for adjournment",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private ReasonForAdjournHearing reasonForAdjournHearing;
+
+    @CCD(
         label = "Does the hearing need to be relisted",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
@@ -616,6 +662,15 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageHearingDetails>> vacatedHearings;
+
+    @CCD(
+        label = "Adjourn hearing",
+        typeOverride = Collection,
+        typeParameterOverride = "ManageHearingDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageHearingDetails>> adjournHearings;
+
 
     @CCD(
         label = "New hearing",
@@ -638,10 +693,41 @@ public class CaseData {
     )
     private List<ListValue<AdoptionSeekFurtherInformation>> seekFurtherInfoList;
 
+    @CCD(
+        typeOverride = Collection,
+        typeParameterOverride = "ManageOrdersData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageOrdersData>> manageOrderList;
+
+    @CCD(
+        typeOverride = Collection,
+        typeParameterOverride = "DirectionsOrderData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<DirectionsOrderData>> directionsOrderList;
+
+    @CCD(
+        typeOverride = Collection,
+        typeParameterOverride = "AdoptionOrderData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<AdoptionOrderData>> adoptionOrderList;
+
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
     private ManageOrdersData manageOrdersData = new ManageOrdersData();
+
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private AdoptionOrderData adoptionOrderData = new AdoptionOrderData();
+
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD(access = {DefaultAccess.class})
+    private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
@@ -759,6 +845,64 @@ public class CaseData {
     }
 
     @JsonIgnore
+    public <T> List<ListValue<T>> archiveManageOrdersHelper(List<ListValue<T>> list, T object) {
+        if (isEmpty(list)) {
+            List<ListValue<T>> listValues = new ArrayList<>();
+            var listValue = ListValue
+                .<T>builder()
+                .id("1")
+                .value(object)
+                .build();
+
+            listValues.add(listValue);
+            return listValues;
+        } else {
+            AtomicInteger listValueIndex = new AtomicInteger(0);
+            var listValue = ListValue
+                .<T>builder()
+                .value(object)
+                .build();
+            // always add new Adoption Document as first element so that it is displayed on top
+            list.add(
+                0,
+                listValue
+            );
+            list.forEach(listValueObj -> listValueObj
+                .setId(String.valueOf(listValueIndex.incrementAndGet())));
+        }
+        return list;
+    }
+
+    @JsonIgnore
+    public void archiveManageOrders() {
+        switch (this.getManageOrdersData().getManageOrderType()) {
+            case CASE_MANAGEMENT_ORDER:
+                this.getManageOrdersData().setSubmittedDateManageOrder(
+                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.setManageOrderList(archiveManageOrdersHelper(
+                    this.getManageOrderList(), this.getManageOrdersData()));
+                break;
+            case GENERAL_DIRECTIONS_ORDER:
+                this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
+                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.setDirectionsOrderList(archiveManageOrdersHelper(
+                    this.getDirectionsOrderList(), this.getDirectionsOrderData()));
+                break;
+            case FINAL_ADOPTION_ORDER:
+                this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
+                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.setAdoptionOrderList(archiveManageOrdersHelper(
+                    this.getAdoptionOrderList(), this.getAdoptionOrderData()));
+                break;
+            default:
+                break;
+        }
+        this.setManageOrdersData(new ManageOrdersData());
+        this.setDirectionsOrderData(new DirectionsOrderData());
+        this.setAdoptionOrderData(new AdoptionOrderData());
+    }
+
+    @JsonIgnore
     public void archiveHearingInformation() {
         ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
 
@@ -798,7 +942,7 @@ public class CaseData {
 
         Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
             hearing.getValue().getHearingId(),
-            hearingsList.getValue().getCode().toString()
+            hearingListThatCanBeVacated.getValue().getCode().toString()
         )).findFirst();
 
         if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
@@ -829,5 +973,39 @@ public class CaseData {
         this.setManageHearingOptions(null);
     }
 
+    public void updateAdjournHearings() {
+
+        Optional<ListValue<ManageHearingDetails>> adjournHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
+            hearing.getValue().getHearingId(),
+            hearingListThatCanBeAdjourned.getValue().getCode().toString()
+        )).findFirst();
+
+        if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
+            adjournHearingDetails.get().getValue().setReasonForAdjournHearing(reasonForAdjournHearing);
+
+            if (isEmpty(this.getVacatedHearings())) {
+                List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
+                var listValue = ListValue
+                    .<ManageHearingDetails>builder()
+                    .id("1")
+                    .value(adjournHearingDetails.get().getValue())
+                    .build();
+                listValues.add(listValue);
+                this.setAdjournHearings(listValues);
+            } else {
+                var listValue = ListValue
+                    .<ManageHearingDetails>builder()
+                    .value(adjournHearingDetails.get().getValue())
+                    .build();
+                int listValueIndex = 0;
+                this.getAdjournHearings().add(0, listValue);
+                for (ListValue<ManageHearingDetails> asListValue : this.getNewHearings()) {
+                    asListValue.setId(String.valueOf(listValueIndex++));
+                }
+            }
+            newHearings.remove(adjournHearingDetails.get());
+        }
+        this.setManageHearingOptions(null);
+    }
 
 }
