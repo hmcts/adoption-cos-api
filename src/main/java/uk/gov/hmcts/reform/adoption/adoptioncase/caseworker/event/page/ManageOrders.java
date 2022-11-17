@@ -5,9 +5,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
@@ -321,10 +319,23 @@ public class ManageOrders implements CcdPageConfiguration {
     private void getFinalOrderPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders7")
             .showCondition("manageOrderType=\"finalAdoptionOrder\"")
+            .label("pageLabel71","Please select all the relevant options for this order."
+                +  " The directions attached to each option can be reviewed on the next screens. "
+                +  "You can change your options by returning to the previous screens.")
             .complex(CaseData::getAdoptionOrderData)
             .label("LabelPreamble71", "### Preamble")
-            .optional(AdoptionOrderData::getPreambleDetailsFO)
+            .optional(AdoptionOrderData::getPreambleDetailsFinalAdoptionOrder)
+            .label("LabelOrderedBy72","### Ordered by")
+            .mandatory(AdoptionOrderData::getOrderedByFinalAdoptionOrder)
             .done()
+            .label("LabelChildFullNameAfterAdoption73","### Child's full name after adoption")
+            .complex(CaseData::getChildren)
+            .mandatory(Children::getFirstNameAfterAdoption)
+            .mandatory(Children::getLastNameAfterAdoption)
+            .done()
+            .complex(CaseData::getAdoptionOrderData)
+            .label("LabelCostOrders74","### Cost orders")
+            .optional(AdoptionOrderData::getCostOrdersFinalAdoptionOrder)
             .done();
     }
 
