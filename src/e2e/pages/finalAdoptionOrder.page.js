@@ -58,8 +58,6 @@ module.exports = {
 
     }
 
-    orderedBy: '#orderedByFinalAdoptionOrder'
-
   },
 
   async selectFinalOrderAndVerify() {
