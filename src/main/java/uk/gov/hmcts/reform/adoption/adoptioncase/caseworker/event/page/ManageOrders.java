@@ -20,7 +20,11 @@ import java.util.UUID;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOPTION_AGENCY_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
 
 /**
  * Contains method to add Page Configuration for ExUI.
@@ -330,21 +334,54 @@ public class ManageOrders implements CcdPageConfiguration {
                 +  " The directions attached to each option can be reviewed on the next screens. "
                 +  "You can change your options by returning to the previous screens.")
             .complex(CaseData::getAdoptionOrderData)
-            .label("LabelPreamble71", "### Preamble")
+            .label("LabelPreamble71", "### Preamble", null, true)
             .optional(AdoptionOrderData::getPreambleDetailsFinalAdoptionOrder)
-            .label("LabelOrderedBy72","### Ordered by")
+            .label("LabelOrderedBy72","### Ordered by", null, true)
             .mandatory(AdoptionOrderData::getOrderedByFinalAdoptionOrder)
-            .label("LabelOrderedBy73","### Placement of the child")
+            .label("LabelOrderedBy73","### Placement of the child", null, true)
             .mandatory(AdoptionOrderData::getPlacementOfTheChildList)
             .done()
             .complex(CaseData::getChildren)
-            .label("LabelChildFullNameAfterAdoption74","### Child's full name after adoption")
+            .label("LabelChildFullNameAfterAdoption74","### Child's full name after adoption", null, true)
             .mandatory(Children::getFirstNameAfterAdoption)
             .mandatory(Children::getLastNameAfterAdoption)
             .done()
             .complex(CaseData::getAdoptionOrderData)
-            .label("LabelCostOrders75","### Cost orders")
+            .label("LabelCostOrders75","### Cost orders", null, true)
             .optional(AdoptionOrderData::getCostOrdersFinalAdoptionOrder)
+            .done();
+
+        pageBuilder.page("manageOrders8")
+            .showCondition("manageOrderType=\"finalAdoptionOrder\"")
+            .complex(CaseData::getAdoptionOrderData)
+            .label("pageLabel81","## Final adoption order date and place of birth")
+            .label("pageLabel82","### Has place of birth been proved?", null, true)
+            .mandatory(AdoptionOrderData::getPlaceOfBirthProved)
+            .label("pageLabel83","#### Choose the type of certificate","placeOfBirthProved=\"Yes\"", true)
+            .mandatory(AdoptionOrderData::getTypeOfCertificate,"placeOfBirthProved=\"Yes\"")
+            .label("pageLabel84","#### Choose the country of birth","placeOfBirthProved=\"Yes\"", true)
+            .mandatory(AdoptionOrderData::getCountryOfBirthForPlaceOfBirthYes,"placeOfBirthProved=\"Yes\"")
+            .mandatory(AdoptionOrderData::getOtherCountryOfOriginForPlaceOfBirthYes,
+                       "countryOfBirthForPlaceOfBirthYes=\"outsideTheUK\" AND placeOfBirthProved=\"Yes\"")
+            .label("pageLabel85","#### Choose a probable birth location","placeOfBirthProved=\"No\"", true)
+            .mandatory(AdoptionOrderData::getCountryOfBirthForPlaceOfBirthNo,"placeOfBirthProved=\"No\"")
+            .mandatory(AdoptionOrderData::getOtherCountryOfOriginForPlaceOfBirthNo,
+                       "countryOfBirthForPlaceOfBirthNo=\"outsideTheUK\" AND placeOfBirthProved=\"No\"")
+            .label("pageLabel86","### Is time of birth known?", null, true)
+            .mandatory(AdoptionOrderData::getTimeOfBirthKnown)
+            .label("pageLabel87","#### Time of birth","timeOfBirthKnown=\"Yes\"", true)
+            .mandatory(AdoptionOrderData::getTimeOfBirth,"timeOfBirthKnown=\"Yes\"")
+            .label("pageLabel88","### Birth adoption registration number", null,  true)
+            .mandatory(AdoptionOrderData::getBirthAdoptionRegistrationNumber)
+            .label("pageLabel89","### Birth/Adoption registration date", null, true)
+            .mandatory(AdoptionOrderData::getAdoptionRegistrationDate)
+            .label("pageLabel810","### Registration district", null, true)
+            .mandatory(AdoptionOrderData::getRegistrationDistrict)
+            .label("pageLabel811","### Registration sub-district",null, true)
+            .mandatory(AdoptionOrderData::getRegistrationSubDistrict)
+            .label("pageLabel812","### Registration county",null, true)
+            .mandatory(AdoptionOrderData::getRegistrationCounty)
+            .done()
             .done();
     }
 
@@ -386,12 +423,14 @@ public class ManageOrders implements CcdPageConfiguration {
         details.getData().getChildren().setLastNameAfterAdoption(detailsBefore.getData().getChildren().getLastNameAfterAdoption());
         List<DynamicListElement> listElements = new ArrayList<>();
 
+
+
         if (caseData.getAdopAgencyOrLA() != null) {
             DynamicListElement adoptionAgency = DynamicListElement.builder()
                 .label(String.join(COMMA, caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName(),
                                    caseData.getAdopAgencyOrLA().getAdopAgencyTown(),
                                    caseData.getAdopAgencyOrLA().getAdopAgencyPostcode()))
-                .code(UUID.randomUUID())
+                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
                 .build();
 
             listElements.add(adoptionAgency);
@@ -402,7 +441,7 @@ public class ManageOrders implements CcdPageConfiguration {
                 .label(String.join(COMMA, caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName(),
                                    caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostTown(),
                                    caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostCode()))
-                .code(UUID.randomUUID())
+                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
                 .build();
 
             listElements.add(otherAdoptionAgency);
@@ -413,7 +452,7 @@ public class ManageOrders implements CcdPageConfiguration {
                 .label(String.join(COMMA, caseData.getChildSocialWorker().getSocialWorkerName(),
                                    caseData.getChildSocialWorker().getSocialWorkerTown(),
                                    caseData.getChildSocialWorker().getSocialWorkerPostcode()))
-                .code(UUID.randomUUID())
+                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
                 .build();
             listElements.add(childLocalAuthority);
         }
@@ -423,7 +462,7 @@ public class ManageOrders implements CcdPageConfiguration {
                 .label(String.join(COMMA, caseData.getApplicantSocialWorker().getSocialWorkerName(),
                                    caseData.getApplicantSocialWorker().getSocialWorkerTown(),
                                    caseData.getApplicantSocialWorker().getSocialWorkerPostcode()))
-                .code(UUID.randomUUID())
+                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
                 .build();
             listElements.add(applicantLocalAuthority);
         }
