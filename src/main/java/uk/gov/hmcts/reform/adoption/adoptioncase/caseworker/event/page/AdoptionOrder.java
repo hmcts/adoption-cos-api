@@ -51,9 +51,6 @@ public class AdoptionOrder implements CcdPageConfiguration {
     public static final String OTHER_ADOP_AGENCY_NOT_APPLICABLE = "Other adoption agency not applicable for the case";
     public static final String OTHER_PARENT_AGENCY_NOT_APPLICABLE = "Other person with parental responsibility not applicable for the case";
 
-    public AdoptionOrder() {
-    }
-
     /**
      * Overridden method to define page design and flow for entire event / Journey.
      *
