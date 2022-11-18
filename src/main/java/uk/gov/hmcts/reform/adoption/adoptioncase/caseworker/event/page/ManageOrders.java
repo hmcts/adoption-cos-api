@@ -2,9 +2,13 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
@@ -12,9 +16,15 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOPTION_AGENCY_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
 
 /**
  * Contains method to add Page Configuration for ExUI.
@@ -34,9 +44,11 @@ public class ManageOrders implements CcdPageConfiguration {
         pageBuilder.page("manageOrders1")
             .complex(CaseData::getManageOrdersData)
             .mandatory(ManageOrdersData::getManageOrderActivity)
-            .page("mangeOrders2")
+            .done()
+            .page("mangeOrders2", this::midEventForDynamicList)
             .showCondition("manageOrderActivity=\"createOrder\"")
             .pageLabel("Manage orders and directions")
+            .complex(CaseData::getManageOrdersData)
             .mandatory(ManageOrdersData::getManageOrderType, "manageOrderActivity=\"createOrder\"")
             .done()
             .done();
@@ -318,9 +330,57 @@ public class ManageOrders implements CcdPageConfiguration {
     private void getFinalOrderPage(PageBuilder pageBuilder) {
         pageBuilder.page("manageOrders7")
             .showCondition("manageOrderType=\"finalAdoptionOrder\"")
+            .label("pageLabel71","Please select all the relevant options for this order."
+                +  " The directions attached to each option can be reviewed on the next screens. "
+                +  "You can change your options by returning to the previous screens.")
             .complex(CaseData::getAdoptionOrderData)
-            .label("LabelPreamble71", "### Preamble")
-            .optional(AdoptionOrderData::getPreambleDetailsFO)
+            .label("LabelPreamble71", "### Preamble", null, true)
+            .optional(AdoptionOrderData::getPreambleDetailsFinalAdoptionOrder)
+            .label("LabelOrderedBy72","### Ordered by", null, true)
+            .mandatory(AdoptionOrderData::getOrderedByFinalAdoptionOrder)
+            .label("LabelOrderedBy73","### Placement of the child", null, true)
+            .mandatory(AdoptionOrderData::getPlacementOfTheChildList)
+            .done()
+            .complex(CaseData::getChildren)
+            .label("LabelChildFullNameAfterAdoption74","### Child's full name after adoption", null, true)
+            .mandatory(Children::getFirstNameAfterAdoption)
+            .mandatory(Children::getLastNameAfterAdoption)
+            .done()
+            .complex(CaseData::getAdoptionOrderData)
+            .label("LabelCostOrders75","### Cost orders", null, true)
+            .optional(AdoptionOrderData::getCostOrdersFinalAdoptionOrder)
+            .done();
+
+        pageBuilder.page("manageOrders8")
+            .showCondition("manageOrderType=\"finalAdoptionOrder\"")
+            .complex(CaseData::getAdoptionOrderData)
+            .label("pageLabel81","## Final adoption order date and place of birth")
+            .label("pageLabel82","### Has place of birth been proved?", null, true)
+            .mandatory(AdoptionOrderData::getPlaceOfBirthProved)
+            .label("pageLabel83","#### Choose the type of certificate","placeOfBirthProved=\"Yes\"", true)
+            .mandatory(AdoptionOrderData::getTypeOfCertificate,"placeOfBirthProved=\"Yes\"")
+            .label("pageLabel84","#### Choose the country of birth","placeOfBirthProved=\"Yes\"", true)
+            .mandatory(AdoptionOrderData::getCountryOfBirthForPlaceOfBirthYes,"placeOfBirthProved=\"Yes\"")
+            .mandatory(AdoptionOrderData::getOtherCountryOfOriginForPlaceOfBirthYes,
+                       "countryOfBirthForPlaceOfBirthYes=\"outsideTheUK\" AND placeOfBirthProved=\"Yes\"")
+            .label("pageLabel85","#### Choose a probable birth location","placeOfBirthProved=\"No\"", true)
+            .mandatory(AdoptionOrderData::getCountryOfBirthForPlaceOfBirthNo,"placeOfBirthProved=\"No\"")
+            .mandatory(AdoptionOrderData::getOtherCountryOfOriginForPlaceOfBirthNo,
+                       "countryOfBirthForPlaceOfBirthNo=\"outsideTheUK\" AND placeOfBirthProved=\"No\"")
+            .label("pageLabel86","### Is time of birth known?", null, true)
+            .mandatory(AdoptionOrderData::getTimeOfBirthKnown)
+            .label("pageLabel87","#### Time of birth","timeOfBirthKnown=\"Yes\"", true)
+            .mandatory(AdoptionOrderData::getTimeOfBirth,"timeOfBirthKnown=\"Yes\"")
+            .label("pageLabel88","### Birth adoption registration number", null,  true)
+            .mandatory(AdoptionOrderData::getBirthAdoptionRegistrationNumber)
+            .label("pageLabel89","### Birth/Adoption registration date", null, true)
+            .mandatory(AdoptionOrderData::getAdoptionRegistrationDate)
+            .label("pageLabel810","### Registration district", null, true)
+            .mandatory(AdoptionOrderData::getRegistrationDistrict)
+            .label("pageLabel811","### Registration sub-district",null, true)
+            .mandatory(AdoptionOrderData::getRegistrationSubDistrict)
+            .label("pageLabel812","### Registration county",null, true)
+            .mandatory(AdoptionOrderData::getRegistrationCounty)
             .done()
             .done();
     }
@@ -351,6 +411,67 @@ public class ManageOrders implements CcdPageConfiguration {
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .errors(errors)
+            .build();
+    }
+
+    public AboutToStartOrSubmitResponse<CaseData, State> midEventForDynamicList(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
+        CaseData caseData = details.getData();
+        details.getData().getChildren().setFirstNameAfterAdoption(detailsBefore.getData().getChildren().getFirstNameAfterAdoption());
+        details.getData().getChildren().setLastNameAfterAdoption(detailsBefore.getData().getChildren().getLastNameAfterAdoption());
+        List<DynamicListElement> listElements = new ArrayList<>();
+
+
+
+        if (caseData.getAdopAgencyOrLA() != null) {
+            DynamicListElement adoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName(),
+                                   caseData.getAdopAgencyOrLA().getAdopAgencyTown(),
+                                   caseData.getAdopAgencyOrLA().getAdopAgencyPostcode()))
+                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
+                .build();
+
+            listElements.add(adoptionAgency);
+        }
+
+        if (YesOrNo.YES.equals(caseData.getHasAnotherAdopAgencyOrLAinXui())) {
+            DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName(),
+                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostTown(),
+                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostCode()))
+                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
+                .build();
+
+            listElements.add(otherAdoptionAgency);
+        }
+
+        if (caseData.getChildSocialWorker() != null) {
+            DynamicListElement childLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, caseData.getChildSocialWorker().getSocialWorkerName(),
+                                   caseData.getChildSocialWorker().getSocialWorkerTown(),
+                                   caseData.getChildSocialWorker().getSocialWorkerPostcode()))
+                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
+                .build();
+            listElements.add(childLocalAuthority);
+        }
+
+        if (caseData.getApplicantSocialWorker() != null) {
+            DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, caseData.getApplicantSocialWorker().getSocialWorkerName(),
+                                   caseData.getApplicantSocialWorker().getSocialWorkerTown(),
+                                   caseData.getApplicantSocialWorker().getSocialWorkerPostcode()))
+                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
+                .build();
+            listElements.add(applicantLocalAuthority);
+        }
+
+        caseData.getAdoptionOrderData().setPlacementOfTheChildList(DynamicList.builder()
+                .listItems(listElements).value(DynamicListElement.EMPTY).build());
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
             .build();
     }
 }
