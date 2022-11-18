@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
@@ -24,6 +24,10 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @AllArgsConstructor
 @Builder
 public class ManageOrdersData {
+
+    @CCD(access = {DefaultAccess.class})
+    private LocalDateTime submittedDateManageOrder;
+
     @CCD(
         label = "What do you want to do?",
         access = {DefaultAccess.class},
@@ -40,31 +44,30 @@ public class ManageOrdersData {
     )
     private ManageOrderType manageOrderType;
 
-    @CCD(label = "Copy and paste or type directly into the text box",
+    @CCD(hint = "Copy and paste or type directly into the text box",
         typeOverride = TextArea,
         access = {DefaultAccess.class})
     private String preambleDetails;
 
-    @CCD(
-        label = "Choose which judge to allocate to",
+    @CCD(hint = "Choose which judge to allocate to",
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "AllocationJudge")
     private AllocationJudge allocationJudge;
 
-    @CCD(label = "You can choose one or 2 options here",
+    @CCD(hint = "You can choose one or 2 options here",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "HearingNotices")
     private Set<HearingNotices> hearingNotices;
 
-    @CCD(label = "Select mode of hearing to choose between in-person or remote hearings.",
+    @CCD(hint = "Select mode of hearing to choose between in-person or remote hearings.",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "ModeOfHearing")
     private Set<ModeOfHearing> modeOfHearing;
 
-    @CCD(label = "If relevant",
+    @CCD(hint = "If relevant",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "LocalAuthority")
@@ -75,14 +78,14 @@ public class ManageOrdersData {
         typeParameterOverride = "Cafcass")
     private Set<Cafcass> cafcass;
 
-    @CCD(label = "You are choosing which parties are issued with a direction on whether or not they can attend the"
+    @CCD(hint = "You are choosing which parties are issued with a direction on whether or not they can attend the"
         + "\nhearing. You can choose more than one option.",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "Attendance")
     private Set<Attendance> attendance;
 
-    @CCD(label = "If relevant",
+    @CCD(hint = "If relevant",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "LeaveToOppose")
@@ -93,7 +96,7 @@ public class ManageOrdersData {
         typeParameterOverride = "CostOrders")
     private Set<CostOrders> costOrders;
 
-    @CCD(label = "Enter the full name and title of the judge as it would appear on the order",
+    @CCD(hint = "Enter the full name and title of the judge as it would appear on the order",
         access = {DefaultAccess.class}
     )
     private String nameOfJudge;
@@ -164,7 +167,7 @@ public class ManageOrdersData {
         typeParameterOverride = "LaAttendance")
     private Set<LaAttendance> laAttendance;
 
-    @CCD(label = "Choose all that are relevant.",
+    @CCD(hint = "Choose all that are relevant.",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "BirthParentAttendance")
@@ -173,9 +176,17 @@ public class ManageOrdersData {
     @CCD(access = {DefaultAccess.class})
     private List<ListValue<ManageOrdersDataAdditionalParagraph>> additionalPara;
 
-    @CCD(label = "Enter the name of the person issuing this order",
+    @CCD(hint = "Enter the name of the person issuing this order",
         access = {DefaultAccess.class})
     private String orderedBy;
+
+    @CCD(
+        typeOverride = MultiSelectList,
+        hint = "You can select more than one person. It is important that recipients are "
+            + "checked carefully to make sure this order is not served to the wrong person.",
+        typeParameterOverride = "Recipients"
+    )
+    private Set<Recipients> recipientsList;
 
     @Getter
     @AllArgsConstructor
@@ -417,6 +428,37 @@ public class ManageOrdersData {
         @JsonProperty("birthParentAttendanceOrderMade")
         BIRTH_PARENT_ATTENDANCE_ORDER_MADE("8. If  the court considers that a Final Order should be made the  First Hearing "
                                                + "shall be treated as a Final Hearing and an Adoption Order shall be made.");
+        private final String label;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum Recipients implements HasLabel {
+
+        @JsonProperty("birthMother")
+        BIRTH_MOTHER("Birth mother"),
+
+        @JsonProperty("birthFather")
+        BIRTH_FATHER("Birth father"),
+
+        @JsonProperty("applicants")
+        APPLICANTS("Applicants"),
+
+        @JsonProperty("childsLocalAuthority")
+        CHILDS_LOCAL_AUTHORITY("Child's local authority"),
+
+        @JsonProperty("applicantsLocalAuthority")
+        APPLICANTS_LOCAL_AUTHORITY("Applicant's local authority"),
+
+        @JsonProperty("otherAdoptionAgency")
+        OTHER_ADOPTION_AGENCY("Other adoption agency"),
+
+        @JsonProperty("otherPersonWithParentalResponsibility")
+        OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility"),
+
+        @JsonProperty("cafcass")
+        CAFCASS("Cafcass");
+
         private final String label;
     }
 }

@@ -75,13 +75,16 @@ exports.config = {
     amendApplicationDetailsPage: './src/e2e/pages/amendApplicationDetails.page.js',
     allocateJudgePage: './src/e2e/pages/allocateJudge.page.js',
     manageOrdersPage: './src/e2e/pages/manageOrders.page.js',
+    seekFurtherInfoPage: './src/e2e/pages/seekFurtherInfo.page.js',
     transferCourtPage: './src/e2e/pages/transferCourt.page.js',
     amendCaseDetailsPage: './src/e2e/pages/amendCaseDetails.page.js',
     paymentDetailsPage: './src/e2e/pages/paymentDetailsTab.page.js',
     caseDetailsSummaryPage: './src/e2e/pages/summaryDetailsTab.page.js',
     manageHearingsPage: './src/e2e/pages/manageHearings.page.js',
     manageHearingsTabPage: './src/e2e/pages/manageHearingsTab.page.js',
+    finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js',
     amendOtherPartiesDetailsPage: './src/e2e/pages/amendOtherPartiesDetails.page.js',
+    finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js'
   },
   plugins: {
     retryFailedStep: {

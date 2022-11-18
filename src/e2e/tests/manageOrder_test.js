@@ -5,7 +5,7 @@ const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 
 let caseId;
 
-Feature('Manage order tests').retry(0);
+Feature('Manage order tests').retry(1);
 
 async function setupScenario(I) {
     caseId = await laHelper.createCompleteCase();
@@ -20,6 +20,7 @@ Scenario('Verify case management order Preamble and Reallocation judge details',
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify();
   await manageOrdersPage.addPreambleAndReallocateJudgeInCaseManagementOrder();
+  await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderPreambleReAllocatedCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
@@ -30,6 +31,7 @@ Scenario('Verify Case management order Local authority File adoption agency repo
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
   await manageOrdersPage.caseManagementOrderLocalAuthority();
+  await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderLocalAuthorityCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
@@ -40,6 +42,7 @@ Scenario('Verify Case management order List for first hearing details', async ({
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
   await manageOrdersPage.caseManagementOrderListForFirstHearing();
+  await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderListForFirstHearingCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
@@ -50,6 +53,7 @@ Scenario('Verify case management order Preamble and pre allocation judge details
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify();
   await manageOrdersPage.addPreambleAndPreviousAllocateJudgeInCaseManagementOrder();
+  await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderPreambleAllocatedCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
   await I.selectTab(caseViewPage.fields.tabs.summary);
@@ -62,7 +66,20 @@ Scenario('Verify Case management order Attendance details', async ({I, caseViewP
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
   await manageOrdersPage.caseManagementOrderAttendance();
+  await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderAttendanceCYAPage();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
+});
+
+Scenario('Verify Case management order Serve Parties', async ({I, caseViewPage, manageOrdersPage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
+  await manageOrdersPage.selectCreateNewOrder();
+  await manageOrdersPage.verifyTypeOfOrdersListed();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.caseManagementOrderAddAdditionalParagraph();
+  await manageOrdersPage.caseManagementOrderServeParties();
+  await manageOrdersPage.caseManagementOrderServePartiesCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
 
@@ -73,6 +90,7 @@ Scenario('Verify Case management order Leave to oppose and Cost orders details',
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
   await manageOrdersPage.caseManagementOrderLeaveToOpposeAndCostOrder();
+  await manageOrdersPage.caseManagementOrderServeParties();
 
 });
 
@@ -83,6 +101,7 @@ Scenario('Verify Case management order CAFCASS details', async ({I, caseViewPage
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
   await manageOrdersPage.caseManagementOrderCafcass();
+  await manageOrdersPage.caseManagementOrderServeParties();
 
 });
 
