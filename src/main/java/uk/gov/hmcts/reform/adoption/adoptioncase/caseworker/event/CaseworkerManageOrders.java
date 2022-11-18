@@ -6,6 +6,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AdoptionOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -35,6 +36,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
     public static final String MANAGE_ORDERS = "Manage orders";
 
     private final CcdPageConfiguration manageOrders = new ManageOrders();
+    private final CcdPageConfiguration adoptionOrder = new AdoptionOrder();
 
 
     @Override
@@ -42,6 +44,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
         log.info("Inside configure method for Event {}", CASEWORKER_MANAGE_ORDERS);
         var pageBuilder = addEventConfig(configBuilder);
         manageOrders.addTo(pageBuilder);
+        adoptionOrder.addTo(pageBuilder);
     }
 
     /**
@@ -79,9 +82,6 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
         log.info("Callback invoked for {}", CASEWORKER_MANAGE_ORDERS);
         CaseData caseData = details.getData();
         caseData.archiveManageOrders();
-        log.info("caseData.getManageOrderList for {}", caseData.getManageOrderList());
-        log.info("caseData.getAdoptionOrderList for {}", caseData.getAdoptionOrderList());
-        log.info("caseData.getDirectionsOrderList for {}", caseData.getDirectionsOrderList());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .errors(new ArrayList<>())
