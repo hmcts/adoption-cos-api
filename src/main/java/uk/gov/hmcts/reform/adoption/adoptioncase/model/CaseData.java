@@ -25,24 +25,27 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.UUID;
+import java.util.SortedSet;
+import java.util.Optional;
+import java.util.Objects;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -657,6 +660,14 @@ public class CaseData {
     private List<ListValue<ManageOrdersData>> manageOrderList;
 
     @CCD(
+        label = "Orders",
+        typeOverride = Collection,
+        typeParameterOverride = "OrdersTabModel",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<OrdersTabModel>> ordersTabList;
+
+    @CCD(
         typeOverride = Collection,
         typeParameterOverride = "DirectionsOrderData",
         access = {DefaultAccess.class}
@@ -831,31 +842,72 @@ public class CaseData {
 
     @JsonIgnore
     public void archiveManageOrders() {
+        var tabModel = new OrdersTabModel();
         switch (this.getManageOrdersData().getManageOrderType()) {
             case CASE_MANAGEMENT_ORDER:
                 this.getManageOrdersData().setSubmittedDateManageOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
                 this.setManageOrderList(archiveManageOrdersHelper(
                     this.getManageOrderList(), this.getManageOrdersData()));
+
+                tabModel.setOrderedBy(this.getManageOrdersData().getOrderedBy());
+                tabModel.setDateIssued(this.getManageOrdersData().getSubmittedDateManageOrder());
+                tabModel.setOrderType(CASE_MANAGEMENT_ORDER.getLabel());
+                tabModel.setOrder(CASE_MANAGEMENT_ORDER.getLabel());
                 break;
             case GENERAL_DIRECTIONS_ORDER:
                 this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
                 this.setDirectionsOrderList(archiveManageOrdersHelper(
                     this.getDirectionsOrderList(), this.getDirectionsOrderData()));
+                tabModel.setDateIssued(this.getDirectionsOrderData().getSubmittedDateDirectionsOrder());
+                tabModel.setOrderType(GENERAL_DIRECTIONS_ORDER.getLabel());
+                tabModel.setOrder(GENERAL_DIRECTIONS_ORDER.getLabel());
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
                 this.setAdoptionOrderList(archiveManageOrdersHelper(
                     this.getAdoptionOrderList(), this.getAdoptionOrderData()));
+
+                tabModel.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
+                tabModel.setDateIssued(this.getAdoptionOrderData().getSubmittedDateAdoptionOrder());
+                tabModel.setOrderType(FINAL_ADOPTION_ORDER.getLabel());
+                tabModel.setOrder(FINAL_ADOPTION_ORDER.getLabel());
                 break;
             default:
                 break;
         }
+        this.storeOrderTabData(tabModel);
         this.setManageOrdersData(new ManageOrdersData());
         this.setDirectionsOrderData(new DirectionsOrderData());
         this.setAdoptionOrderData(new AdoptionOrderData());
+    }
+
+    @JsonIgnore
+    public void storeOrderTabData(OrdersTabModel tabModel) {
+        if (tabModel != null) {
+            if (isEmpty(this.getOrdersTabList())) {
+                List<ListValue<OrdersTabModel>> listValues = new ArrayList<>();
+                var listValue = ListValue
+                        .<OrdersTabModel>builder()
+                        .id("1")
+                        .value(tabModel)
+                        .build();
+                listValues.add(listValue);
+                this.setOrdersTabList(listValues);
+            }   else {
+                var listValue = ListValue
+                        .<OrdersTabModel>builder()
+                        .value(tabModel)
+                        .build();
+                int listValueIndex = 0;
+                this.getOrdersTabList().add(0, listValue);
+                for (ListValue<OrdersTabModel> asListValue : this.getOrdersTabList()) {
+                    asListValue.setId(String.valueOf(listValueIndex++));
+                }
+            }
+        }
     }
 
     @JsonIgnore
