@@ -1,28 +1,43 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 
 /**
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage orders Details screen with all required fields.
  */
 public class AdoptionOrder implements CcdPageConfiguration {
+
+    @Autowired
+    private CaseDataDocumentService caseDataDocumentService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public static final String ERROR_CHECK_RECIPIENTS_SELECTION = "Recipients of Final adoption order is required";
     public static final String FIRST_APPLICANT_NOT_APPLICABLE = "First Applicant not applicable for the case";
@@ -36,6 +51,9 @@ public class AdoptionOrder implements CcdPageConfiguration {
     public static final String OTHER_ADOP_AGENCY_NOT_APPLICABLE = "Other adoption agency not applicable for the case";
     public static final String OTHER_PARENT_AGENCY_NOT_APPLICABLE = "Other person with parental responsibility not applicable for the case";
 
+    public AdoptionOrder() {
+    }
+
     /**
      * Overridden method to define page design and flow for entire event / Journey.
      *
@@ -45,6 +63,7 @@ public class AdoptionOrder implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         getFinalOrderPage(pageBuilder);
         getRecipientsPage(pageBuilder);
+        getPreviewPage(pageBuilder);
     }
 
     /**
@@ -131,6 +150,21 @@ public class AdoptionOrder implements CcdPageConfiguration {
             .done();
     }
 
+    /**
+     * Helper method to support page design and flow to display Final Order Preview Draft.
+     * Final Adoption Order Preview
+     *
+     * @param pageBuilder - Application PageBuilder for the event pages
+     */
+    private void getPreviewPage(PageBuilder pageBuilder) {
+        pageBuilder.page("manageOrders10")
+            .showCondition("manageOrderType=\"finalAdoptionOrder\"")
+            .pageLabel("Preview the draft order")
+            .complex(CaseData::getAdoptionOrderData)
+            .optional(AdoptionOrderData::getDraftDocument)
+            .done()
+            .done();
+    }
 
     /**
      * Event method to validate the right selection options done by the User as per the Requirements for Recipients.
@@ -169,6 +203,20 @@ public class AdoptionOrder implements CcdPageConfiguration {
         }
         if (isNotEmpty(selectedRecipientsA206)) {
             selectedRecipientsA206.forEach(recipient -> Optional.ofNullable(isApplicableA206(recipient, caseData)).ifPresent(errors::add));
+        }
+        if (isNotEmpty(errors)) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+            caseData.getAdoptionOrderData().setDraftDocument(caseDataDocumentService.renderDocument(
+                templateContent,
+                details.getId(),
+                FINAL_ADOPTION_ORDER_A76,
+                LanguagePreference.ENGLISH,
+                formatDocumentName(
+                    details.getId(),
+                    FINAL_ADOPTION_ORDER_A76_FILE_NAME,
+                    LocalDateTime.now()
+                )));
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
