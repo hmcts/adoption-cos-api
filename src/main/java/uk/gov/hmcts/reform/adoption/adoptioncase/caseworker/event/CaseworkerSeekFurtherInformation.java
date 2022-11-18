@@ -132,43 +132,9 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             listElements.add(secondApplicant);
         }
 
-        if (caseData.getBirthMother() != null && caseData.getBirthMother().getFirstName() != null
-            && caseData.getBirthMother().getLastName() != null) {
-            DynamicListElement birthMother = DynamicListElement.builder()
-                .label(joinDynamicListLabel(DocumentSubmitter.BIRTH_MOTHER,
-                 String.join(caseData.getBirthMother().getFirstName(), caseData.getBirthMother().getLastName())))
-                .code(UUID.randomUUID())
-                .build();
-
-            listElements.add(birthMother);
-        }
-        if (caseData.getBirthFather() != null && caseData.getBirthFather().getFirstName() != null
-            && caseData.getBirthFather().getLastName() != null) {
-            DynamicListElement birthFather = DynamicListElement.builder()
-                .label(joinDynamicListLabel(DocumentSubmitter.BIRTH_FATHER,
-                String.join(caseData.getBirthFather().getFirstName(), caseData.getBirthFather().getLastName())))
-                .code(UUID.randomUUID())
-                .build();
-
-            listElements.add(birthFather);
-        }
-
-        if (caseData.getOtherParent() != null && caseData.getOtherParent().getFirstName() != null
-            && caseData.getOtherParent().getLastName() != null) {
-            DynamicListElement personWithParentalResponsibility = DynamicListElement.builder()
-                .label(joinDynamicListLabel(DocumentSubmitter.PERSON_WITH_PARENTAL_RESPONSIBILITY,
-                String.join(caseData.getOtherParent().getFirstName(), caseData.getOtherParent().getLastName())))
-                .code(UUID.randomUUID())
-                .build();
-
-            listElements.add(personWithParentalResponsibility);
-        }
-        var adoptionSeekFutherInfo = new AdoptionSeekFurtherInformation();
-        adoptionSeekFutherInfo.setSeekFurtherInformationList(
+        caseData.setSeekFurtherInformationList(
             DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
-        caseData.setAdoptionSeekFurtherInformation(adoptionSeekFutherInfo);
         log.info("MidEvent Triggered");
-
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
@@ -192,33 +158,30 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         CaseData caseData = caseDataStateCaseDetails.getData();
         adoptionSeekFurtherInfo.setSeekFurtherInfoDateAdded(LocalDate.now(clock));
         adoptionSeekFurtherInfo.setDate(caseData.getDate());
-
-//        if(CollectionUtils.isEmpty(caseData.getAdoptionSeekFurtherInformationList())) {
-//            caseData.setAdoptionSeekFurtherInformationList(addSeekInformationData(caseData,
-//            caseData.getAdoptionSeekFurtherInformationList()));
-//        }
         caseData.setSeekFurtherInfoList(addSeekInformationData(caseData,
                 caseData.getSeekFurtherInfoList()));
+        caseData.setDate(null);
+        caseData.setSeekFurtherInformationList(null);
+        caseData.setFurtherInformation(null);
+        caseData.setAskAQuestionText(null);
+        caseData.setAskForAdditionalDocumentText(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
     }
 
-
-    /**
-     *
-     * @param caseData
-     * @param adoptionSeekFurtherList
-     * @return
-     */
     private List<ListValue<AdoptionSeekFurtherInformation>> addSeekInformationData(CaseData caseData,
             List<ListValue<AdoptionSeekFurtherInformation>> adoptionSeekFurtherList) {
-        AdoptionSeekFurtherInformation manageSeekFurtherInformation = caseData.getAdoptionSeekFurtherInformation();
+        var manageSeekFurtherInformation = new AdoptionSeekFurtherInformation();
+        manageSeekFurtherInformation.setSeekFurtherInfoDateAdded(LocalDate.now(clock));
         manageSeekFurtherInformation.setDate(caseData.getDate());
-        if(isEmpty(adoptionSeekFurtherList)) {
+        manageSeekFurtherInformation.setQuestions(caseData.getAskAQuestionText());
+        manageSeekFurtherInformation.setDocumentRequired(caseData.getAskForAdditionalDocumentText());
+        manageSeekFurtherInformation.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
+        if (isEmpty(adoptionSeekFurtherList)) {
             List<ListValue<AdoptionSeekFurtherInformation>> listValues = new ArrayList<>();
-            var listValue = ListValue.
-                <AdoptionSeekFurtherInformation>builder().id("1").value(manageSeekFurtherInformation).build();
+            var listValue = ListValue
+                .<AdoptionSeekFurtherInformation>builder().id("1").value(manageSeekFurtherInformation).build();
             listValues.add(listValue);
             return listValues;
         } else {
