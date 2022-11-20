@@ -34,7 +34,7 @@ public class IdamService {
     }
 
     private String getIdamOauth2Token(String username, String password) {
-        return idamClient.getAccessToken(username, password);
+        return idamClient.getAccessToken(username, "");
     }
 
     private String getBearerToken(String token) {
