@@ -11,7 +11,6 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SeekFurtherInformation;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionSeekFurtherInformation;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -19,6 +18,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -154,12 +154,9 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetailsBefore) {
-        var adoptionSeekFurtherInfo = new AdoptionSeekFurtherInformation();
         CaseData caseData = caseDataStateCaseDetails.getData();
-        adoptionSeekFurtherInfo.setSeekFurtherInfoDateAdded(LocalDate.now(clock));
-        adoptionSeekFurtherInfo.setDate(caseData.getDate());
-        caseData.setSeekFurtherInfoList(addSeekInformationData(caseData,
-                caseData.getSeekFurtherInfoList()));
+        caseData.setCorrespondenceDocumentCategory(addSeekInformationData(caseData,
+                caseData.getCorrespondenceDocumentCategory()));
         caseData.setDate(null);
         caseData.setSeekFurtherInformationList(null);
         caseData.setFurtherInformation(null);
@@ -170,35 +167,34 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             .build();
     }
 
-    private List<ListValue<AdoptionSeekFurtherInformation>> addSeekInformationData(CaseData caseData,
-            List<ListValue<AdoptionSeekFurtherInformation>> adoptionSeekFurtherList) {
-        var manageSeekFurtherInformation = new AdoptionSeekFurtherInformation();
-        manageSeekFurtherInformation.setSeekFurtherInfoDateAdded(LocalDate.now(clock));
-        manageSeekFurtherInformation.setDate(caseData.getDate());
-        manageSeekFurtherInformation.setQuestions(caseData.getAskAQuestionText());
-        manageSeekFurtherInformation.setDocumentRequired(caseData.getAskForAdditionalDocumentText());
-        manageSeekFurtherInformation.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
-        if (isEmpty(adoptionSeekFurtherList)) {
-            List<ListValue<AdoptionSeekFurtherInformation>> listValues = new ArrayList<>();
+    private List<ListValue<AdoptionUploadDocument>> addSeekInformationData(CaseData caseData,
+                                                    List<ListValue<AdoptionUploadDocument>> correspondanceTabList) {
+        var adoptionUploadDocument = new AdoptionUploadDocument();
+        adoptionUploadDocument.setDocumentComment(SEEK_FURTHER_INFORMATION_HEADING);
+        adoptionUploadDocument.setDocumentLink(null);
+        adoptionUploadDocument.setDocumentDateAdded(LocalDate.now(clock));
+        adoptionUploadDocument.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
+        if (isEmpty(correspondanceTabList)) {
+            List<ListValue<AdoptionUploadDocument>> listValues = new ArrayList<>();
             var listValue = ListValue
-                .<AdoptionSeekFurtherInformation>builder().id("1").value(manageSeekFurtherInformation).build();
+                .<AdoptionUploadDocument>builder().id("1").value(adoptionUploadDocument).build();
             listValues.add(listValue);
             return listValues;
         } else {
             AtomicInteger listValueIndex = new AtomicInteger(0);
             var listValue = ListValue
-                .<AdoptionSeekFurtherInformation>builder()
-                .value(manageSeekFurtherInformation)
+                .<AdoptionUploadDocument>builder()
+                .value(adoptionUploadDocument)
                 .build();
-            adoptionSeekFurtherList.add(
+            correspondanceTabList.add(
                 0,
                 listValue
             );
 
-            adoptionSeekFurtherList.forEach(adoptionDocumentListValue ->
+            correspondanceTabList.forEach(adoptionDocumentListValue ->
                                                 adoptionDocumentListValue.setId(
                                                     String.valueOf(listValueIndex.incrementAndGet())));
         }
-        return adoptionSeekFurtherList;
+        return correspondanceTabList;
     }
 }

@@ -24,7 +24,6 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -652,18 +651,6 @@ public class CaseData {
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
 
-    @CCD(
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
-    )
-    private AdoptionSeekFurtherInformation adoptionSeekFurtherInformation;
-
-    @CCD(
-        label = "Seek Further Information List",
-        typeOverride = Collection,
-        typeParameterOverride = "AdoptionSeekFurtherInformation",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<AdoptionSeekFurtherInformation>> seekFurtherInfoList;
 
     @CCD(
         typeOverride = Collection,
