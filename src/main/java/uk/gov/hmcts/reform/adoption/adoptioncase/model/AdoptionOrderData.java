@@ -44,7 +44,7 @@ public class AdoptionOrderData {
         access = {DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateOrderMade;
+    private LocalDate dateOrderMadeFinalAdoptionOrder;
 
     @CCD(access = {DefaultAccess.class})
     private String costOrdersFinalAdoptionOrder;
