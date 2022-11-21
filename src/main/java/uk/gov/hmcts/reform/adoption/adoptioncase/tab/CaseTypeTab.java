@@ -26,7 +26,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     }
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.tab("serviceRequest", "Service Request")
+        configBuilder.tab("serviceRequest", "Payment")
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .field("waysToPay");
     }
