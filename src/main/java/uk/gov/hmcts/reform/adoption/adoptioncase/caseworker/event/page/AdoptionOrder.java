@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
@@ -31,6 +32,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentN
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage orders Details screen with all required fields.
  */
+@Slf4j
 public class AdoptionOrder implements CcdPageConfiguration {
 
     @Autowired
@@ -201,9 +203,10 @@ public class AdoptionOrder implements CcdPageConfiguration {
         if (isNotEmpty(selectedRecipientsA206)) {
             selectedRecipientsA206.forEach(recipient -> Optional.ofNullable(isApplicableA206(recipient, caseData)).ifPresent(errors::add));
         }
-        if (isNotEmpty(errors)) {
+        if (isEmpty(errors)) {
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+            log.info("templateContent {}", templateContent);
             caseData.getAdoptionOrderData().setDraftDocument(caseDataDocumentService.renderDocument(
                 templateContent,
                 details.getId(),
