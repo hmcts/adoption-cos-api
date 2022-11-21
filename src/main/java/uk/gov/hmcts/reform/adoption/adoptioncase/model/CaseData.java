@@ -850,19 +850,23 @@ public class CaseData {
                 this.setManageOrderList(archiveManageOrdersHelper(
                     this.getManageOrderList(), this.getManageOrdersData()));
 
+                tabModel.setDateOrderMate(this.getManageOrdersData().getDateOrderMade());
                 tabModel.setOrderedBy(this.getManageOrdersData().getOrderedBy());
-                tabModel.setDateIssued(this.getManageOrdersData().getSubmittedDateManageOrder());
                 tabModel.setOrderType(CASE_MANAGEMENT_ORDER.getLabel());
-                tabModel.setOrder(CASE_MANAGEMENT_ORDER.getLabel());
+                if (this.getManageOrdersData().getRecipientsList() != null) {
+                    tabModel.setRecipients(this.getManageOrdersData().getRecipientsList()
+                                               .stream()
+                                               .map(a -> String.valueOf(a.getLabel()))
+                                               .collect(Collectors.joining(", ")));
+                }
                 break;
             case GENERAL_DIRECTIONS_ORDER:
                 this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
                 this.setDirectionsOrderList(archiveManageOrdersHelper(
                     this.getDirectionsOrderList(), this.getDirectionsOrderData()));
-                tabModel.setDateIssued(this.getDirectionsOrderData().getSubmittedDateDirectionsOrder());
+                tabModel.setOrderedBy(this.getManageOrdersData().getOrderedBy());
                 tabModel.setOrderType(GENERAL_DIRECTIONS_ORDER.getLabel());
-                tabModel.setOrder(GENERAL_DIRECTIONS_ORDER.getLabel());
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
@@ -870,10 +874,15 @@ public class CaseData {
                 this.setAdoptionOrderList(archiveManageOrdersHelper(
                     this.getAdoptionOrderList(), this.getAdoptionOrderData()));
 
+                tabModel.setDateOrderMate(this.getAdoptionOrderData().getDateOrderMadeFinalAdoptionOrder());
                 tabModel.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
-                tabModel.setDateIssued(this.getAdoptionOrderData().getSubmittedDateAdoptionOrder());
                 tabModel.setOrderType(FINAL_ADOPTION_ORDER.getLabel());
-                tabModel.setOrder(FINAL_ADOPTION_ORDER.getLabel());
+                if (this.getAdoptionOrderData().getRecipientsListA206() != null) {
+                    tabModel.setRecipients(this.getAdoptionOrderData().getRecipientsListA206()
+                                               .stream()
+                                               .map(a -> String.valueOf(a.getLabel()))
+                                               .collect(Collectors.joining(", ")));
+                }
                 break;
             default:
                 break;
