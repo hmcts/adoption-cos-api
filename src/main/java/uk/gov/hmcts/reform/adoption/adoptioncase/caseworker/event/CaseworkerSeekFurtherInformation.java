@@ -24,6 +24,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -173,7 +174,9 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         adoptionUploadDocument.setDocumentComment(SEEK_FURTHER_INFORMATION_HEADING);
         adoptionUploadDocument.setDocumentLink(null);
         adoptionUploadDocument.setDocumentDateAdded(LocalDate.now(clock));
-        adoptionUploadDocument.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
+        if (!Objects.isNull(caseData.getSeekFurtherInformationList())) {
+            adoptionUploadDocument.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
+        }
         if (isEmpty(correspondanceTabList)) {
             List<ListValue<AdoptionUploadDocument>> listValues = new ArrayList<>();
             var listValue = ListValue
