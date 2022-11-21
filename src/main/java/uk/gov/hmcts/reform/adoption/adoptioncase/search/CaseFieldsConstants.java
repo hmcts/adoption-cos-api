@@ -22,6 +22,14 @@ public final class CaseFieldsConstants {
 
     public static final String COMMA = ",";
 
+    public static final String ADOPTION_AGENCY_STR = "ADOPTION_AGENCY";
+
+    public static final String OTHER_ADOPTION_AGENCY_STR = "OTHER_ADOPTION_AGENCY";
+
+    public static final String CHILD_SOCIAL_WORKER_STR = "CHILD_SOCIAL_WORKER";
+
+    public static final String APPLICANT_SOCIAL_WORKER_STR = "APPLICANT_SOCIAL_WORKER";
+
     // required for Checkstyle
     private CaseFieldsConstants() {
     }
