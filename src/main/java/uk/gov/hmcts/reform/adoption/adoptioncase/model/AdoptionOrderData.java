@@ -27,6 +27,9 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 @Builder
 public class AdoptionOrderData {
 
+    @CCD(showCondition = "submittedDateAdoptionOrder=\"never\"")
+    private String orderId;
+
     @CCD(access = {DefaultAccess.class})
     private LocalDateTime submittedDateAdoptionOrder;
 

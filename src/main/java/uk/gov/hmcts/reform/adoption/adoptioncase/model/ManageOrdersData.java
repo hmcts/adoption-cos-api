@@ -25,6 +25,9 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @Builder
 public class ManageOrdersData {
 
+    @CCD(showCondition = "submittedDateManageOrder=\"never\"")
+    private String orderId;
+
     @CCD(access = {DefaultAccess.class})
     private LocalDateTime submittedDateManageOrder;
 
