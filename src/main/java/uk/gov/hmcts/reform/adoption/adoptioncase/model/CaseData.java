@@ -670,6 +670,12 @@ public class CaseData {
     )
     private List<ListValue<AdoptionOrderData>> adoptionOrderList;
 
+    @CCD(
+        access = {DefaultAccess.class},
+        label = "Select the order you want to review"
+    )
+    private DynamicList checkAndSendOrderDropdownList;
+
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
@@ -835,18 +841,21 @@ public class CaseData {
             case CASE_MANAGEMENT_ORDER:
                 this.getManageOrdersData().setSubmittedDateManageOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.getManageOrdersData().setOrderId(UUID.randomUUID().toString());
                 this.setManageOrderList(archiveManageOrdersHelper(
                     this.getManageOrderList(), this.getManageOrdersData()));
                 break;
             case GENERAL_DIRECTIONS_ORDER:
                 this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setDirectionsOrderList(archiveManageOrdersHelper(
                     this.getDirectionsOrderList(), this.getDirectionsOrderData()));
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.getAdoptionOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setAdoptionOrderList(archiveManageOrdersHelper(
                     this.getAdoptionOrderList(), this.getAdoptionOrderData()));
                 break;
