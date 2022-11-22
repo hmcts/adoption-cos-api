@@ -2,7 +2,8 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
@@ -33,13 +34,9 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentN
  * Display the Manage orders Details screen with all required fields.
  */
 @Slf4j
-public class AdoptionOrder implements CcdPageConfiguration {
+public class AdoptionOrder implements CcdPageConfiguration, ApplicationContextAware {
 
-    @Autowired
-    private CaseDataDocumentService caseDataDocumentService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private static ApplicationContext applicationContext;
 
     public static final String ERROR_CHECK_RECIPIENTS_SELECTION = "Recipients of Final adoption order is required";
     public static final String FIRST_APPLICANT_NOT_APPLICABLE = "First Applicant not applicable for the case";
@@ -161,6 +158,8 @@ public class AdoptionOrder implements CcdPageConfiguration {
         pageBuilder.page("manageOrders10")
             .showCondition("manageOrderType=\"finalAdoptionOrder\"")
             .pageLabel("Preview the draft order")
+            .label("LabelPreview101","Preview and check the order in draft. "
+                + "You can make changes on the next page.")
             .complex(CaseData::getAdoptionOrderData)
             .optional(AdoptionOrderData::getDraftDocument)
             .done()
@@ -207,9 +206,11 @@ public class AdoptionOrder implements CcdPageConfiguration {
         }
         if (isEmpty(errors)) {
             @SuppressWarnings("unchecked")
-            Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+            Map<String, Object> templateContent =
+                applicationContext.getBean(ObjectMapper.class).convertValue(caseData, Map.class);
             log.info("templateContent {}", templateContent);
-            caseData.getAdoptionOrderData().setDraftDocument(caseDataDocumentService.renderDocument(
+            caseData.getAdoptionOrderData().setDraftDocument(
+                applicationContext.getBean(CaseDataDocumentService.class).renderDocument(
                 templateContent,
                 details.getId(),
                 FINAL_ADOPTION_ORDER_A76,
@@ -273,5 +274,10 @@ public class AdoptionOrder implements CcdPageConfiguration {
                 break;
         }
         return null;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext appContext) {
+        applicationContext = appContext;
     }
 }

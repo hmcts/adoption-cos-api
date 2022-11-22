@@ -1,11 +1,9 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.ccd.sdk.ConfigBuilderImpl;
 import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
@@ -26,7 +24,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
-import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
@@ -75,12 +72,6 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
  */
 @ExtendWith(MockitoExtension.class)
 class CaseworkerManageOrdersTest {
-
-    @Mock
-    private CaseDataDocumentService caseDataDocumentService;
-
-    @Mock
-    private ObjectMapper objectMapper;
 
     @InjectMocks
     private ManageOrders manageOrdersPage;
