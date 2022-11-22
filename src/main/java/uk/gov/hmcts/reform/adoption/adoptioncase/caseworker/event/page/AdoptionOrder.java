@@ -82,6 +82,8 @@ public class AdoptionOrder implements CcdPageConfiguration {
             .optional(AdoptionOrderData::getPreambleDetailsFinalAdoptionOrder)
             .label("LabelOrderedBy72","### Ordered by", null, true)
             .mandatory(AdoptionOrderData::getOrderedByFinalAdoptionOrder)
+            .label("LabelDateOrderMade76","### Date order made", null, true)
+            .mandatory(AdoptionOrderData::getDateOrderMadeFinalAdoptionOrder)
             .label("LabelOrderedBy73","### Placement of the child", null, true)
             .mandatory(AdoptionOrderData::getPlacementOfTheChildList)
             .done()
