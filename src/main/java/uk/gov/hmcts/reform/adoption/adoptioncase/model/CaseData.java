@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
@@ -705,6 +706,17 @@ public class CaseData {
         }
         return isApplicantRepresentedBySolicitor;
     }
+
+    @CCD(
+        label = "caseReference",
+        access = {DefaultAccess.class}
+    )
+    private String caseRef;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA90Document;
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {

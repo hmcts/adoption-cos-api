@@ -54,6 +54,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         // Setting the default value so that its value is shown in Summary Tab and Amend Case details screen
         details.getData().setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
         data.setHyphenatedCaseRef(data.formatCaseRef(details.getId()));
+        data.setCaseRef(details.getId().toString());
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)

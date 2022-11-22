@@ -6,10 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.SortedSet;
 
@@ -118,5 +120,12 @@ public class ManageHearingDetails {
     )
     private ReasonForAdjournHearing reasonForAdjournHearing;
 
+    @CCD
+    private LocalDate hearingCreationDate;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA90Document;
 
 }

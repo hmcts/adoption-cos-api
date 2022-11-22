@@ -1,29 +1,51 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 
 /**
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage hearings Details screen with all required fields.
  */
+@Slf4j
+@Component
 public class ManageHearings implements CcdPageConfiguration {
+
+    @Autowired
+    private CaseDataDocumentService caseDataDocumentService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public void addTo(PageBuilder pageBuilder) {
@@ -64,6 +86,10 @@ public class ManageHearings implements CcdPageConfiguration {
             .page("manageHearing6",this::midEventAfterRecipientSelection)
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
+            .page("manageHearing7")
+            .showCondition("recipientsInTheCase=\"applicant1\" OR recipientsInTheCase=\"applicant2\"")
+            .label("manageHearing71","Preview Draft",null, true)
+            .optional(CaseData::getHearingA90Document)
             .done()
             .build();
     }
@@ -111,6 +137,24 @@ public class ManageHearings implements CcdPageConfiguration {
         RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
+
+        if (isEmpty(error)) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+            log.info("templateContent {}", templateContent);
+            caseData.getManageHearingDetails().setHearingA90Document(caseDataDocumentService.renderDocument(
+                templateContent,
+                details.getId(),
+                MANAGE_HEARING_NOTICES_A90,
+                LanguagePreference.ENGLISH,
+                formatDocumentName(
+                    details.getId(),
+                    MANAGE_HEARING_NOTICES_A90_FILE_NAME,
+                    LocalDateTime.now()
+                )));
+            //TODO:  Set this value as null in aboutToSubmit callback
+            caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
+        }
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
