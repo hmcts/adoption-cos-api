@@ -686,6 +686,17 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
+    @CCD(
+        label = "caseReference",
+        access = {DefaultAccess.class}
+    )
+    private String caseRef;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA90Document;
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
@@ -706,17 +717,6 @@ public class CaseData {
         }
         return isApplicantRepresentedBySolicitor;
     }
-
-    @CCD(
-        label = "caseReference",
-        access = {DefaultAccess.class}
-    )
-    private String caseRef;
-
-    @CCD(
-        access = {DefaultAccess.class}
-    )
-    private Document hearingA90Document;
 
     @JsonIgnore
     public String formatCaseRef(long caseId) {
