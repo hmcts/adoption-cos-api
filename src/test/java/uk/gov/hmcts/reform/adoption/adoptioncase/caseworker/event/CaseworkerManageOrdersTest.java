@@ -13,7 +13,6 @@ import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.AddressUK;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AdoptionOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -75,9 +74,6 @@ class CaseworkerManageOrdersTest {
 
     @InjectMocks
     private ManageOrders manageOrdersPage;
-
-    @InjectMocks
-    private AdoptionOrder adoptionOrderPage;
 
     @InjectMocks
     private CaseworkerManageOrders caseworkerManageOrders;
@@ -144,7 +140,7 @@ class CaseworkerManageOrdersTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA76(null);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(null);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).contains(ERROR_CHECK_RECIPIENTS_SELECTION);
     }
 
@@ -155,7 +151,7 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA76> recipients = new HashSet<>();
         recipients.add(FIRST_APPLICANT);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA76(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(FIRST_APPLICANT_NOT_APPLICABLE);
     }
@@ -167,7 +163,7 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA76> recipients = new HashSet<>();
         recipients.add(SECOND_APPLICANT);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA76(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(SECOND_APPLICANT_NOT_APPLICABLE);
     }
@@ -179,7 +175,7 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
         recipients.add(RESPONDENT_BIRTH_MOTHER);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(BIRTH_MOTHER_NOT_APPLICABLE);
     }
@@ -191,7 +187,7 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
         recipients.add(RESPONDENT_BIRTH_FATHER);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(BIRTH_FATHER_NOT_APPLICABLE);
     }
@@ -203,7 +199,7 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
         recipients.add(LEGAL_GUARDIAN_CAFCASS);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(LEGAL_GUARDIAN_NOT_APPLICABLE);
     }
@@ -215,7 +211,7 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
         recipients.add(CHILDS_LOCAL_AUTHORITY);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(CHILDS_LA_NOT_APPLICABLE);
     }
@@ -227,7 +223,7 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
         recipients.add(APPLICANTS_LOCAL_AUTHORITY);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(APPLICANTS_LA_NOT_APPLICABLE);
     }
@@ -239,7 +235,7 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
         recipients.add(ADOPTION_AGENCY);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(ADOP_AGENCY_NOT_APPLICABLE);
     }
@@ -251,11 +247,11 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
         recipients.add(OTHER_ADOPTION_AGENCY);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(OTHER_ADOP_AGENCY_NOT_APPLICABLE);
         caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.NO);
-        response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(OTHER_ADOP_AGENCY_NOT_APPLICABLE);
     }
@@ -267,11 +263,11 @@ class CaseworkerManageOrdersTest {
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
         recipients.add(OTHER_PARENT_WITH_PARENT_RESPONSIBILITY);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(recipients);
-        AboutToStartOrSubmitResponse<CaseData, State> response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(OTHER_PARENT_AGENCY_NOT_APPLICABLE);
         caseDetails.getData().setIsThereAnyOtherPersonWithParentalResponsibility(YesOrNo.NO);
-        response = adoptionOrderPage.midEventRecipients(caseDetails, caseDetails);
+        response = caseworkerManageOrders.midEventRecipients(caseDetails, caseDetails);
         assertThat(response.getErrors()).doesNotContain(ERROR_CHECK_RECIPIENTS_SELECTION);
         assertThat(response.getErrors()).contains(OTHER_PARENT_AGENCY_NOT_APPLICABLE);
     }
