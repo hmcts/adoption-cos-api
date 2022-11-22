@@ -1,9 +1,11 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.ccd.sdk.ConfigBuilderImpl;
 import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
@@ -24,6 +26,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.MethodOfHearing;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
@@ -43,6 +46,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseWorkerManageHearing.CASEWORKER_MANAGE_HEARING;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
@@ -55,8 +59,13 @@ class CaseWorkerManageHearingTest {
     @InjectMocks
     private CaseWorkerManageHearing caseWorkerManageHearing;
 
-    ManageHearings manageHearings = new ManageHearings();
+    @Mock
+    private ObjectMapper objectMapper;
 
+    @Mock
+    private CaseDataDocumentService caseDataDocumentService;
+
+    ManageHearings manageHearings = new ManageHearings();
 
     @Test
     void addCaseworkerManageHearingsEventAutoconfigureBuilderTest() {
@@ -108,7 +117,8 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
-        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -119,7 +129,8 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
-        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -130,7 +141,8 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
-        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -141,7 +153,8 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
-        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -154,7 +167,10 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
-        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        Map<String, Object> templateVars = new HashMap<>();
+        when(objectMapper.convertValue(caseDetails.getData(), Map.class)).thenReturn(templateVars);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
     }
 
@@ -165,7 +181,8 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT2);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
-        AboutToStartOrSubmitResponse<CaseData, State> response = manageHearings.midEventAfterRecipientSelection(caseDetails, caseDetails);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isNotNull();
     }
 
