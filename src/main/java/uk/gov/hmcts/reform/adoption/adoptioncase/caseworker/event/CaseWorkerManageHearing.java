@@ -109,6 +109,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             caseData.archiveHearingInformation();
         }
 
+        caseData.setHearingA90Document(null);
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
@@ -146,7 +148,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                     MANAGE_HEARING_NOTICES_A90_FILE_NAME,
                     LocalDateTime.now()
                 )));
-            //TODO:  Set this value as null in aboutToSubmit callback
             caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
         }
 
