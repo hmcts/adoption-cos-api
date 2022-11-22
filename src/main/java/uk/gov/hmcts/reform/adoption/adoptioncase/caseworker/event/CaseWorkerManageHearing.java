@@ -65,7 +65,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .page("manageHearing7")
             .showCondition("recipientsInTheCase=\"applicant1\" OR recipientsInTheCase=\"applicant2\"")
             .label("manageHearing71","Preview Draft",null, true)
-            .optional(CaseData::getHearingA90Document)
+            .readonly(CaseData::getHearingA90Document)
             .done()
             .build();
 
