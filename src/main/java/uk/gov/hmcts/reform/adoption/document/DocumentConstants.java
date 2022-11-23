@@ -13,6 +13,14 @@ public final class DocumentConstants {
     public static final String ADOPTION_LA_APPLICATION_FILE_NAME = "adoption-laapplication-";
     public static final String ADOPTION_APPLICATION_SUMMARY = "ADOPTION_APPLICATION_SUMMARY";
     public static final String ADOPTION_LA_APPLICATION_SUMMARY = "ADOPTION_LA_APPLICATION_SUMMARY";
+
+    public static final String FINAL_ADOPTION_ORDER_A76 = "FINAL_ADOPTION_ORDER_A76";
+
+    public static final String FINAL_ADOPTION_ORDER_A76_FILE_NAME = "Link to open preview draft PDF (opens in a new tab)";
+
+    public static final String MANAGE_HEARING_NOTICES_A90 = "MANAGE_HEARING_NOTICES_A90";
+
+    public static final String MANAGE_HEARING_NOTICES_A90_FILE_NAME = "Link to open preview draft PDF (opens in a new tab)";
     public static final String ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME = "draft-adoption-application-";
     public static final String DOCUMENT_EXISTS_CHECK = "hasUploadedDocuments";
     public static final String DOCUMENT_EXISTS = "hasDocument";
