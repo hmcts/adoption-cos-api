@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -81,35 +82,42 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToStart(CaseDetails<CaseData, State> details) {
         CaseData caseData = details.getData();
         List<OrderData> checkAndSendOrderDataList = new ArrayList<>();
-        caseData.getManageOrderList().forEach(order -> {
-            if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
-                OrderData orderData = new OrderData();
-                orderData.setOrderId(order.getValue().getOrderId());
-                orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateManageOrder());
-                orderData.setManageOrderType(ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER);
-                checkAndSendOrderDataList.add(orderData);
-            }
-        });
 
-        caseData.getAdoptionOrderList().forEach(order -> {
-            if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
-                OrderData orderData = new OrderData();
-                orderData.setOrderId(order.getValue().getOrderId());
-                orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateAdoptionOrder());
-                orderData.setManageOrderType(ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER);
-                checkAndSendOrderDataList.add(orderData);
-            }
-        });
+        if (CollectionUtils.isNotEmpty(caseData.getManageOrderList())) {
+            caseData.getManageOrderList().forEach(order -> {
+                if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
+                    OrderData orderData = new OrderData();
+                    orderData.setOrderId(order.getValue().getOrderId());
+                    orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateManageOrder());
+                    orderData.setManageOrderType(ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER);
+                    checkAndSendOrderDataList.add(orderData);
+                }
+            });
+        }
 
-        caseData.getDirectionsOrderList().forEach(order -> {
-            if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
-                OrderData orderData = new OrderData();
-                orderData.setOrderId(order.getValue().getOrderId());
-                orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateDirectionsOrder());
-                orderData.setManageOrderType(ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER);
-                checkAndSendOrderDataList.add(orderData);
-            }
-        });
+        if (CollectionUtils.isNotEmpty(caseData.getAdoptionOrderList())) {
+            caseData.getAdoptionOrderList().forEach(order -> {
+                if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
+                    OrderData orderData = new OrderData();
+                    orderData.setOrderId(order.getValue().getOrderId());
+                    orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateAdoptionOrder());
+                    orderData.setManageOrderType(ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER);
+                    checkAndSendOrderDataList.add(orderData);
+                }
+            });
+        }
+
+        if (CollectionUtils.isNotEmpty(caseData.getDirectionsOrderList())) {
+            caseData.getDirectionsOrderList().forEach(order -> {
+                if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
+                    OrderData orderData = new OrderData();
+                    orderData.setOrderId(order.getValue().getOrderId());
+                    orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateDirectionsOrder());
+                    orderData.setManageOrderType(ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER);
+                    checkAndSendOrderDataList.add(orderData);
+                }
+            });
+        }
 
         Collections.sort(checkAndSendOrderDataList, Comparator.comparing(OrderData::getSubmittedDateAndTimeOfOrder));
         Collections.reverse(checkAndSendOrderDataList);

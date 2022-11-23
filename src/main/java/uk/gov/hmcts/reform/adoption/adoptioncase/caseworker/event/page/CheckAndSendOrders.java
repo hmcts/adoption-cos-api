@@ -9,8 +9,9 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
 
         pageBuilder.page("checkAndSendOrders1")
-            .pageLabel("Check And Send Orders")
-            .label("checkAndSendOrdersLabel1","## Orders for review")
+            .pageLabel("## Orders for review")
+            //.label("checkAndSendOrdersLabel1","## Orders for review")
+            .label("checkAndSendOrderLabel2","### Select the order you want to review",null,true)
             .mandatory(CaseData::getCheckAndSendOrderDropdownList)
             .done()
             .build();
