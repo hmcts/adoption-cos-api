@@ -671,7 +671,8 @@ public class CaseData {
     private List<ListValue<AdoptionOrderData>> adoptionOrderList;
 
     @CCD(
-        access = {DefaultAccess.class}
+        access = {DefaultAccess.class},
+        label = "Select the order you want to review"
     )
     private DynamicList checkAndSendOrderDropdownList;
 

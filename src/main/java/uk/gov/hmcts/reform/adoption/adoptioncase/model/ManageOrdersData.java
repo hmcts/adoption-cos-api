@@ -31,6 +31,9 @@ public class ManageOrdersData {
     @CCD(access = {DefaultAccess.class})
     private LocalDateTime submittedDateManageOrder;
 
+    @CCD(showCondition = "submittedDateManageOrder=\"never\"")
+    private OrderStatus orderStatus;
+
     @CCD(
         label = "What do you want to do?",
         access = {DefaultAccess.class},

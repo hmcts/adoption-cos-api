@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndS
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
@@ -32,11 +33,13 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
 
 
     /**
-     * The constant CASEWORKER_MANAGE_ORDERS.
+     * The constant CASEWORKER_CHECK_AND_SEND_ORDERS.
      */
     public static final String CASEWORKER_CHECK_AND_SEND_ORDERS = "caseworker-check-and-send-orders";
 
     private final CcdPageConfiguration checkAndSendOrders = new CheckAndSendOrders();
+
+    private static final String check_and_send_orders = "Check and send orders";
 
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -62,7 +65,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                             UserRole.DISTRICT_JUDGE
         );
         return new PageBuilder(configBuilder.event(CASEWORKER_CHECK_AND_SEND_ORDERS).forAllStates().name(
-            "Check and send orders").showSummary().aboutToStartCallback(this::aboutToStart).grant(
+            check_and_send_orders).showSummary().aboutToStartCallback(this::aboutToStart).grant(
             Permissions.CREATE_READ_UPDATE,
             UserRole.CASE_WORKER
         ).grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
@@ -70,36 +73,42 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
 
 
     /**
-     * Method to fetch Seek Further Information list.
+     * Method to fetch Check and send order list.
      *
      * @param details is type of Case Data
-     * @return will return about to submit response
+     * @return will return about to start response
      */
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToStart(CaseDetails<CaseData, State> details) {
         CaseData caseData = details.getData();
         List<OrderData> checkAndSendOrderDataList = new ArrayList<>();
         caseData.getManageOrderList().forEach(order -> {
-            OrderData orderData = new OrderData();
-            orderData.setOrderId(order.getValue().getOrderId());
-            orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateManageOrder());
-            orderData.setManageOrderType(ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER);
-            checkAndSendOrderDataList.add(orderData);
+            if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
+                OrderData orderData = new OrderData();
+                orderData.setOrderId(order.getValue().getOrderId());
+                orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateManageOrder());
+                orderData.setManageOrderType(ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER);
+                checkAndSendOrderDataList.add(orderData);
+            }
         });
 
         caseData.getAdoptionOrderList().forEach(order -> {
-            OrderData orderData = new OrderData();
-            orderData.setOrderId(order.getValue().getOrderId());
-            orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateAdoptionOrder());
-            orderData.setManageOrderType(ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER);
-            checkAndSendOrderDataList.add(orderData);
+            if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
+                OrderData orderData = new OrderData();
+                orderData.setOrderId(order.getValue().getOrderId());
+                orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateAdoptionOrder());
+                orderData.setManageOrderType(ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER);
+                checkAndSendOrderDataList.add(orderData);
+            }
         });
 
         caseData.getDirectionsOrderList().forEach(order -> {
-            OrderData orderData = new OrderData();
-            orderData.setOrderId(order.getValue().getOrderId());
-            orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateDirectionsOrder());
-            orderData.setManageOrderType(ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER);
-            checkAndSendOrderDataList.add(orderData);
+            if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
+                OrderData orderData = new OrderData();
+                orderData.setOrderId(order.getValue().getOrderId());
+                orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateDirectionsOrder());
+                orderData.setManageOrderType(ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER);
+                checkAndSendOrderDataList.add(orderData);
+            }
         });
 
         Collections.sort(checkAndSendOrderDataList, Comparator.comparing(OrderData::getSubmittedDateAndTimeOfOrder));

@@ -28,4 +28,7 @@ public class DirectionsOrderData {
         access = {DefaultAccess.class})
     private String preambleDetailsDO;
 
+    @CCD(showCondition = "submittedDateDirectionsOrder=\"never\"")
+    private OrderStatus orderStatus;
+
 }

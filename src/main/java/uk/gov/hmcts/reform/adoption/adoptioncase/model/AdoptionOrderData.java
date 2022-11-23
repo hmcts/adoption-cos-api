@@ -33,6 +33,9 @@ public class AdoptionOrderData {
     @CCD(access = {DefaultAccess.class})
     private LocalDateTime submittedDateAdoptionOrder;
 
+    @CCD(showCondition = "submittedDateAdoptionOrder=\"never\"")
+    private OrderStatus orderStatus;
+
     @CCD(hint = "Copy and paste or type directly into the text box",
         typeOverride = TextArea,
         access = {DefaultAccess.class})
