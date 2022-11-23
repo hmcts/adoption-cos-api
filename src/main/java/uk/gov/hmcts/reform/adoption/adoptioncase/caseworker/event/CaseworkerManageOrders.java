@@ -157,7 +157,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .label("LabelPreview101","Preview and check the order in draft. "
                 + "You can make changes on the next page.")
             .complex(CaseData::getAdoptionOrderData)
-            .optional(AdoptionOrderData::getDraftDocument)
+            .readonly(AdoptionOrderData::getDraftDocument)
             .done()
             .done();
     }
