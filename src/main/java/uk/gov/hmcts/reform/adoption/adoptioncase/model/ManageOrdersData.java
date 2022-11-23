@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -60,6 +62,12 @@ public class ManageOrdersData {
         typeOverride = FixedRadioList,
         typeParameterOverride = "AllocationJudge")
     private AllocationJudge allocationJudge;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOrderMade;
 
     @CCD(hint = "You can choose one or 2 options here",
         access = {DefaultAccess.class},
