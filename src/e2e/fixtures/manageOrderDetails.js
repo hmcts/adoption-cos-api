@@ -40,6 +40,13 @@ module.exports = {
     additionalParagraphsOne: 'Additional paragraphs one',
     additionalParagraphsTwo: 'Additional paragraphs two',
     orderedBy: 'Paul Neal',
+    dateOrderMade: 'Date order made',
+    dom: {
+      day: '12',
+      month:'03',
+      year: '2021'
+
+    },
     cafcassReportingOfficer: {
       day: '01',
       month: '01',
