@@ -8,6 +8,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AdoptionOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
@@ -20,8 +21,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
+import uk.gov.hmcts.reform.adoption.document.DraftApplicationRemovalService;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
-import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 
 /**
  * Contains method to define Event Configuration for ExUI.
@@ -45,6 +45,8 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
     @Autowired
     private CaseDataDocumentService caseDataDocumentService;
 
+    @Autowired
+    private DraftApplicationRemovalService draftApplicationRemovalService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -193,6 +195,12 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             selectedRecipientsA206.forEach(recipient -> Optional.ofNullable(isApplicableA206(recipient, caseData)).ifPresent(errors::add));
         }
         if (isEmpty(errors)) {
+
+            Document document = caseData.getAdoptionOrderData().getDraftDocument();
+            if (isNotEmpty(document)) {
+                draftApplicationRemovalService.removeDraftDocument(document);
+            }
+
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
@@ -203,11 +211,8 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                     details.getId(),
                     FINAL_ADOPTION_ORDER_A76,
                     LanguagePreference.ENGLISH,
-                    formatDocumentName(
-                        details.getId(),
-                        FINAL_ADOPTION_ORDER_A76_FILE_NAME,
-                        LocalDateTime.now()
-                    )));
+                    FINAL_ADOPTION_ORDER_A76_FILE_NAME
+                    ));
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
