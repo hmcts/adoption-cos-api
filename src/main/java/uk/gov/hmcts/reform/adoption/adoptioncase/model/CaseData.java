@@ -8,12 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.*;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
@@ -27,17 +25,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.SortedSet;
-import java.util.UUID;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -685,6 +676,27 @@ public class CaseData {
     )
     private DynamicList checkAndSendOrderDropdownList;
 
+
+    @CCD(
+        label = "Document to review",
+        hint = "The document will open in a new page when you select it."
+    )
+    private Document documentReview;
+
+    private Set<ManageOrdersData.Recipients> adoptionOrderRecipients;
+
+    private String manageOrderSelecType;
+
+    private Set<AdoptionOrderData.RecipientsA206> finalOrderRecipients;
+
+
+    @CCD(
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "OrderCheckAndSend"
+    )
+    private OrderCheckAndSend orderCheckAndSend;
+
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
@@ -981,4 +993,5 @@ public class CaseData {
         }
         this.setManageHearingOptions(null);
     }
+
 }
