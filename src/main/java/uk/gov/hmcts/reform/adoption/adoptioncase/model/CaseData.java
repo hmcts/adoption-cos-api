@@ -10,10 +10,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
@@ -690,6 +691,31 @@ public class CaseData {
     )
     private List<ListValue<AdoptionOrderData>> adoptionOrderList;
 
+    @CCD(
+        access = {DefaultAccess.class},
+        label = "Select the order you want to review"
+    )
+    private DynamicList checkAndSendOrderDropdownList;
+
+    @CCD(
+        label = "Document to review",
+        hint = "The document will open in a new page when you select it."
+    )
+    private Document documentReview;
+
+    private Set<ManageOrdersData.Recipients> adoptionOrderRecipients;
+
+    private ManageOrdersData.ManageOrderType manageOrderSelecType;
+
+    private Set<AdoptionOrderData.RecipientsA206> finalOrderRecipients;
+
+    @CCD(
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "OrderCheckAndSend"
+    )
+    private OrderCheckAndSend orderCheckAndSend;
+
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
@@ -856,6 +882,7 @@ public class CaseData {
             case CASE_MANAGEMENT_ORDER:
                 this.getManageOrdersData().setSubmittedDateManageOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.getManageOrdersData().setOrderId(UUID.randomUUID().toString());
                 this.setManageOrderList(archiveManageOrdersHelper(
                     this.getManageOrderList(), this.getManageOrdersData()));
 
@@ -872,6 +899,7 @@ public class CaseData {
             case GENERAL_DIRECTIONS_ORDER:
                 this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setDirectionsOrderList(archiveManageOrdersHelper(
                     this.getDirectionsOrderList(), this.getDirectionsOrderData()));
                 tabModel.setOrderedBy(this.getManageOrdersData().getOrderedBy());
@@ -880,6 +908,7 @@ public class CaseData {
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+                this.getAdoptionOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setAdoptionOrderList(archiveManageOrdersHelper(
                     this.getAdoptionOrderList(), this.getAdoptionOrderData()));
 
