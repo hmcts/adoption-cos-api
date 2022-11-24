@@ -19,6 +19,7 @@ Scenario('Verify case management order Preamble and Reallocation judge details',
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify();
+  await manageOrdersPage.addDateOrderMade();
   await manageOrdersPage.addPreambleAndReallocateJudgeInCaseManagementOrder();
   await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderPreambleReAllocatedCYAPage();
@@ -30,6 +31,7 @@ Scenario('Verify Case management order Local authority File adoption agency repo
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addDateOrderMade();
   await manageOrdersPage.caseManagementOrderLocalAuthority();
   await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderLocalAuthorityCYAPage();
@@ -41,6 +43,7 @@ Scenario('Verify Case management order List for first hearing details', async ({
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addDateOrderMade();
   await manageOrdersPage.caseManagementOrderListForFirstHearing();
   await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderListForFirstHearingCYAPage();
@@ -52,6 +55,7 @@ Scenario('Verify case management order Preamble and pre allocation judge details
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify();
+  await manageOrdersPage.addDateOrderMade();
   await manageOrdersPage.addPreambleAndPreviousAllocateJudgeInCaseManagementOrder();
   await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderPreambleAllocatedCYAPage();
@@ -65,21 +69,10 @@ Scenario('Verify Case management order Attendance details', async ({I, caseViewP
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addDateOrderMade();
   await manageOrdersPage.caseManagementOrderAttendance();
   await manageOrdersPage.caseManagementOrderServeParties();
   await manageOrdersPage.caseManagementOrderAttendanceCYAPage();
-  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
-});
-
-Scenario('Verify Case management order Serve Parties', async ({I, caseViewPage, manageOrdersPage }) => {
-  await setupScenario(I);
-  await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
-  await manageOrdersPage.selectCreateNewOrder();
-  await manageOrdersPage.verifyTypeOfOrdersListed();
-  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
-  await manageOrdersPage.caseManagementOrderAddAdditionalParagraph();
-  await manageOrdersPage.caseManagementOrderServeParties();
-  await manageOrdersPage.caseManagementOrderServePartiesCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
 
@@ -89,6 +82,7 @@ Scenario('Verify Case management order Leave to oppose and Cost orders details',
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addDateOrderMade();
   await manageOrdersPage.caseManagementOrderLeaveToOpposeAndCostOrder();
   await manageOrdersPage.caseManagementOrderServeParties();
 
@@ -100,9 +94,24 @@ Scenario('Verify Case management order CAFCASS details', async ({I, caseViewPage
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.verifyTypeOfOrdersListed();
   await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addDateOrderMade();
   await manageOrdersPage.caseManagementOrderCafcass();
   await manageOrdersPage.caseManagementOrderServeParties();
 
+});
+
+Scenario('Verify Case management order details add Serve Parties and CYA', async ({I, caseViewPage, manageOrdersPage }) => {
+  await setupScenario(I);
+  await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
+  await manageOrdersPage.selectCreateNewOrder();
+  await manageOrdersPage.verifyTypeOfOrdersListed();
+  await manageOrdersPage.selectCaseManagementOrderAndVerify(caseId);
+  await manageOrdersPage.addDateOrderMade();
+  await manageOrdersPage.caseManagementOrderAddAdditionalParagraph();
+  await manageOrdersPage.caseManagementOrderServeParties();
+  await manageOrdersPage.caseManagementOrderDateOrderMadeCYAPage();
+  await manageOrdersPage.caseManagementOrderServePartiesCYAPage();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
 });
 
 
