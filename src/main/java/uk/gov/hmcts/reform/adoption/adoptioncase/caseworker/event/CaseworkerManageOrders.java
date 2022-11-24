@@ -8,7 +8,6 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AdoptionOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
@@ -21,7 +20,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
-import uk.gov.hmcts.reform.adoption.document.DraftApplicationRemovalService;
 
 import java.util.Map;
 import java.util.List;
@@ -44,9 +42,6 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
 
     @Autowired
     private CaseDataDocumentService caseDataDocumentService;
-
-    @Autowired
-    private DraftApplicationRemovalService draftApplicationRemovalService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -195,16 +190,9 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             selectedRecipientsA206.forEach(recipient -> Optional.ofNullable(isApplicableA206(recipient, caseData)).ifPresent(errors::add));
         }
         if (isEmpty(errors)) {
-
-            Document document = caseData.getAdoptionOrderData().getDraftDocument();
-            if (isNotEmpty(document)) {
-                draftApplicationRemovalService.removeDraftDocument(document);
-            }
-
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            log.info("templateContent {}", templateContent);
             caseData.getAdoptionOrderData().setDraftDocument(
                 caseDataDocumentService.renderDocument(
                     templateContent,
