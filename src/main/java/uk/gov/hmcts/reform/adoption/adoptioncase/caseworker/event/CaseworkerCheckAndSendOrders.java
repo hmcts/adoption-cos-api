@@ -9,22 +9,26 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndSendOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Comparator;
+import java.util.Collections;
 import java.util.UUID;
 
 
@@ -69,8 +73,10 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             check_and_send_orders).showSummary().aboutToStartCallback(this::aboutToStart).grant(
             Permissions.CREATE_READ_UPDATE,
             UserRole.CASE_WORKER
-        ).grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
+        ).grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE).aboutToSubmitCallback(this::aboutToSubmit));
     }
+
+
 
 
     /**
@@ -131,6 +137,38 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             listElements.add(orderInfo);
         });
         caseData.setCheckAndSendOrderDropdownList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
+    }
+
+    private AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State>
+            caseDetails, CaseDetails<CaseData, State> caseDetails1) {
+        var caseData = caseDetails.getData();
+        switch (caseData.getManageOrderSelecType()) {
+            case CASE_MANAGEMENT_ORDER:
+                Optional<ListValue<ManageOrdersData>> gatekeepingOrderItem =  caseData.getManageOrderList().stream()
+                    .filter(item -> item.getValue().getOrderId()
+                    .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
+                    .findFirst();
+                gatekeepingOrderItem.get().getValue().setOrderStatus(OrderStatus.SERVED);
+                break;
+            case GENERAL_DIRECTIONS_ORDER:
+                Optional<ListValue<DirectionsOrderData>> directionOrderItem =  caseData.getDirectionsOrderList().stream()
+                    .filter(item -> item.getValue().getOrderId()
+                    .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
+                    .findFirst();
+                directionOrderItem.get().getValue().setOrderStatus(OrderStatus.SERVED);
+                break;
+            case FINAL_ADOPTION_ORDER:
+                Optional<ListValue<AdoptionOrderData>> finalAdoptionItem =  caseData.getAdoptionOrderList().stream()
+                    .filter(item -> item.getValue().getOrderId()
+                    .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
+                    .findFirst();
+                finalAdoptionItem.get().getValue().setOrderStatus(OrderStatus.SERVED);
+                break;
+            default:
+                break;
+        }
+        caseData.setManageOrderSelecType(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 

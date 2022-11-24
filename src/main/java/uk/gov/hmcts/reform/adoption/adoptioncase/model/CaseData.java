@@ -10,10 +10,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
@@ -684,6 +685,25 @@ public class CaseData {
         label = "Select the order you want to review"
     )
     private DynamicList checkAndSendOrderDropdownList;
+
+    @CCD(
+        label = "Document to review",
+        hint = "The document will open in a new page when you select it."
+    )
+    private Document documentReview;
+
+    private Set<ManageOrdersData.Recipients> adoptionOrderRecipients;
+
+    private ManageOrdersData.ManageOrderType manageOrderSelecType;
+
+    private Set<AdoptionOrderData.RecipientsA206> finalOrderRecipients;
+
+    @CCD(
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "OrderCheckAndSend"
+    )
+    private OrderCheckAndSend orderCheckAndSend;
 
     @JsonUnwrapped
     @Builder.Default
