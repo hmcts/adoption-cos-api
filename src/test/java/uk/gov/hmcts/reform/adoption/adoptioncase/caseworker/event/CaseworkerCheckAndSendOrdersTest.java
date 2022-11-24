@@ -11,12 +11,15 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
@@ -75,6 +78,26 @@ class CaseworkerCheckAndSendOrdersTest {
         assertThat(result.getData().getCheckAndSendOrderDropdownList().getListItems().size()).isEqualTo(6);
     }
 
+    @Test
+    void caseworkerAboutToSubmit_OK() {
+        ManageOrdersData manageOrdersData1 = getManageOrderData();
+        manageOrdersData1.setOrderId(UUID.randomUUID().toString());
+        manageOrdersData1.setManageOrderType(CASE_MANAGEMENT_ORDER);
+        List<ListValue<ManageOrdersData>> manageOrderList = new ArrayList<>();
+
+        var caseDetails = getCaseDetails();
+        CaseData data = caseDetails.getData();
+
+        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, manageOrdersData1);
+        data.setManageOrderList(manageOrderList);
+        data.setManageOrderSelecType(CASE_MANAGEMENT_ORDER);
+        prepareCheckAndSendDropdownList(manageOrderList, manageOrdersData1.getOrderId(),data);
+
+        var result = caseworkerCheckAndSendOrders.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageOrderList().get(0).getValue().getOrderStatus()).isEqualTo(OrderStatus.SERVED);
+        assertThat(result.getData().getManageOrderSelecType()).isNull();
+    }
+
     @NotNull
     private AdoptionOrderData getAdoptionOrderData() {
         AdoptionOrderData adoptionOrderData = new AdoptionOrderData();
@@ -121,6 +144,21 @@ class CaseworkerCheckAndSendOrdersTest {
             .data(caseData())
             .id(1L)
             .build();
+    }
+
+    @NotNull
+    private void prepareCheckAndSendDropdownList(List<ListValue<ManageOrdersData>>
+                                                     manageOrderList, String orderId, CaseData data) {
+        List<DynamicListElement> listElements = new ArrayList<>();
+        manageOrderList.forEach(order -> {
+            DynamicListElement orderInfo = DynamicListElement.builder().label(
+                order.getValue().getManageOrderType().getLabel()).code(
+                UUID.fromString(order.getValue().getOrderId())).build();
+            listElements.add(orderInfo);
+        });
+        var element = DynamicListElement.builder().code(UUID.fromString(orderId)).build();
+        data.setCheckAndSendOrderDropdownList(DynamicList.builder().listItems(listElements)
+            .value(element).build());
     }
 
 }

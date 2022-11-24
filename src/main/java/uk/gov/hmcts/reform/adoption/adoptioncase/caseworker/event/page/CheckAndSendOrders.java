@@ -14,6 +14,9 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import java.util.Optional;
 
 public class CheckAndSendOrders implements CcdPageConfiguration {
+
+    public static final String caseManageGateKeepingOrder = "Case Management Order (gatekeeping order)";
+
     @Override
     public void addTo(PageBuilder pageBuilder) {
 
@@ -31,7 +34,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .label("checkAndSendOrdersLabel5","## These recipients have been selected to receive this order",
                    null, true)
             .readonly(CaseData::getManageOrderSelecType,
-                      "checkAndSendOrderDropdownListCONTAINS\"Case Management Order (gatekeeping order)\"")
+                      "checkAndSendOrderDropdownListCONTAINS\" " + caseManageGateKeepingOrder + " \"")
             .readonly(CaseData::getAdoptionOrderRecipients,  "manageOrderSelecType=\"caseManagementOrder\"")
             .readonly(CaseData::getFinalOrderRecipients, "manageOrderSelecType=\"finalAdoptionOrder\"")
             .done();

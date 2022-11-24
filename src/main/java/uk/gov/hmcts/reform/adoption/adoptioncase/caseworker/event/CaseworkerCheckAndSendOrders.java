@@ -140,7 +140,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 
-    private AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State>
+    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State>
             caseDetails, CaseDetails<CaseData, State> caseDetails1) {
         var caseData = caseDetails.getData();
         switch (caseData.getManageOrderSelecType()) {
