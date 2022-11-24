@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
@@ -61,20 +60,6 @@ public class DraftApplicationRemovalService {
         log.info("Successfully removed application document from case data generated document list for case id {} ", caseId);
 
         return generatedDocumentsExcludingApplication;
-    }
-
-    public void removeDraftDocument(
-        final Document document
-    ) {
-        log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 removeDraftDocument");
-        final User systemUser = idamService.retrieveSystemUpdateUserDetails();
-        log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 BEFORE");
-        caseDocumentClient.deleteDocument(systemUser.getAuthToken(),
-                                          authTokenGenerator.generate(),
-                                          UUID.fromString(FilenameUtils.getName(document.getUrl())),
-                                          true);
-        log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 AFTER");
-        log.info("Successfully removed draft document from case data generated document list for case id");
     }
 
     private ListValue<AdoptionDocument> deleteDocumentFromDocumentStore(
