@@ -197,14 +197,16 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
         if (isEmpty(errors)) {
 
             Document document = caseData.getAdoptionOrderData().getDraftDocument();
+            log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 document {}", document);
             if (isNotEmpty(document)) {
+                log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 isNotEmpty(document)");
                 draftApplicationRemovalService.removeDraftDocument(document);
             }
 
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            log.info("templateContent {}", templateContent);
+            log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 templateContent {}", templateContent);
             caseData.getAdoptionOrderData().setDraftDocument(
                 caseDataDocumentService.renderDocument(
                     templateContent,

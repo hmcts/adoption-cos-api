@@ -66,11 +66,14 @@ public class DraftApplicationRemovalService {
     public void removeDraftDocument(
         final Document document
     ) {
+        log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 removeDraftDocument");
         final User systemUser = idamService.retrieveSystemUpdateUserDetails();
+        log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 BEFORE");
         caseDocumentClient.deleteDocument(systemUser.getAuthToken(),
                                           authTokenGenerator.generate(),
                                           UUID.fromString(FilenameUtils.getName(document.getUrl())),
                                           true);
+        log.info("TO BE DELETED - QA SUPPORT LOGS ONLY FOR THIS PR 572 AFTER");
         log.info("Successfully removed draft document from case data generated document list for case id");
     }
 
