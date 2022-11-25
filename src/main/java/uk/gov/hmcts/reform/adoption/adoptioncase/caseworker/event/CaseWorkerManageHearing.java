@@ -138,10 +138,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
 
         if (isEmpty(error)) {
+            caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
             log.info("templateContent {}", templateContent);
-            caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
             caseData.getManageHearingDetails().setHearingA90Document(caseDataDocumentService.renderDocument(
                 templateContent,
                 details.getId(),
