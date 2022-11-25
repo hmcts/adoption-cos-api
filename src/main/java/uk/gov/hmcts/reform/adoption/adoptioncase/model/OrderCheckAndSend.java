@@ -9,10 +9,10 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum OrderCheckAndSend implements HasLabel {
 
-    @JsonProperty("Serve the order")
+    @JsonProperty("serveTheOrder")
     SERVE_THE_ORDER("Serve the order"),
 
-    @JsonProperty("Return for amendments")
+    @JsonProperty("returnForAmendments")
     RETURN_FOR_AMENDMENTS("Return for amendments");
 
     private final String label;
