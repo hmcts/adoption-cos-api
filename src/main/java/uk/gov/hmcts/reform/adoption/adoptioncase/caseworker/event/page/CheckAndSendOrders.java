@@ -21,7 +21,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
 
         pageBuilder.page("checkAndSendOrders1",this::midEventCall)
-            .pageLabel("## Orders for review")
+            .pageLabel("Orders for review")
             //.label("checkAndSendOrdersLabel1","## Orders for review")
             .label("checkAndSendOrderLabel2","### Select the order you want to review",null,true)
             .mandatory(CaseData::getCheckAndSendOrderDropdownList)
@@ -29,18 +29,18 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .build();
 
         pageBuilder.page("checkAndSendOrders2")
-            .label("checkAndSendOrdersLabel2","## Review Order")
-            .readonly(CaseData::getDocumentReview)
+            .pageLabel("Review Order")
+            .readonlyNoSummary(CaseData::getDocumentReview)
             .label("checkAndSendOrdersLabel5","## These recipients have been selected to receive this order",
-                   null, true)
-            .readonly(CaseData::getManageOrderSelecType,
+                   null, false)
+            .readonlyNoSummary(CaseData::getManageOrderSelecType,
                       "checkAndSendOrderDropdownListCONTAINS\" " + caseManageGateKeepingOrder + " \"")
-            .readonly(CaseData::getAdoptionOrderRecipients,  "manageOrderSelecType=\"caseManagementOrder\"")
-            .readonly(CaseData::getFinalOrderRecipients, "manageOrderSelecType=\"finalAdoptionOrder\"")
+            .readonlyNoSummary(CaseData::getAdoptionOrderRecipients,  "manageOrderSelecType=\"caseManagementOrder\"")
+            .readonlyNoSummary(CaseData::getFinalOrderRecipients, "manageOrderSelecType=\"finalAdoptionOrder\"")
             .done();
 
         pageBuilder.page("checkAndSendOrders3")
-            .label("checkAndSendOrdersLabel3","## Review Order")
+            .pageLabel("Review Order")
             .label("checkAndSendOrdersLabel4","## Do you want to server the order or return for amendments?",
                    null, true)
             .mandatory(CaseData::getOrderCheckAndSend)
@@ -63,10 +63,15 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
                     .filter(item -> item.getValue().getOrderId()
                         .equalsIgnoreCase(data.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
+                data.setDocumentReview(finalAdoptionItem.get().getValue().getDraftDocument());
                 data.setFinalOrderRecipients(finalAdoptionItem.get().getValue().getRecipientsListA206());
                 data.setManageOrderSelecType(ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER);
+            } else {
+                data.setDocumentReview(directionOrderItem.get().getValue().getDraftDocument());
+                data.setManageOrderSelecType(ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER);
             }
         } else {
+            data.setDocumentReview(gatekeepingOrderItem.get().getValue().getDraftDocument());
             data.setAdoptionOrderRecipients(gatekeepingOrderItem.get().getValue().getRecipientsList());
             data.setManageOrderSelecType(ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER);
         }
