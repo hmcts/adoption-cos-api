@@ -28,15 +28,15 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.UUID;
-import java.util.SortedSet;
-import java.util.Optional;
-import java.util.Objects;
-import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.Optional;
+import java.util.HashSet;
+import java.util.SortedSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -46,9 +46,9 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -672,10 +672,10 @@ public class CaseData {
     @CCD(
         label = "Orders",
         typeOverride = Collection,
-        typeParameterOverride = "OrdersTabModel",
+        typeParameterOverride = "OrderData",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<OrdersTabModel>> ordersTabList;
+    private List<ListValue<OrderData>> commonOrderList;
 
     @CCD(
         typeOverride = Collection,
@@ -877,7 +877,7 @@ public class CaseData {
 
     @JsonIgnore
     public void archiveManageOrders() {
-        var tabModel = new OrdersTabModel();
+        OrderData data = new OrderData();
         switch (this.getManageOrdersData().getManageOrderType()) {
             case CASE_MANAGEMENT_ORDER:
                 this.getManageOrdersData().setSubmittedDateManageOrder(
@@ -886,15 +886,13 @@ public class CaseData {
                 this.setManageOrderList(archiveManageOrdersHelper(
                     this.getManageOrderList(), this.getManageOrdersData()));
 
-                tabModel.setDateOrderMate(this.getManageOrdersData().getDateOrderMade());
-                tabModel.setOrderedBy(this.getManageOrdersData().getOrderedBy());
-                tabModel.setOrderType(CASE_MANAGEMENT_ORDER.getLabel());
-                if (this.getManageOrdersData().getRecipientsList() != null) {
-                    tabModel.setRecipients(this.getManageOrdersData().getRecipientsList()
-                                               .stream()
-                                               .map(a -> String.valueOf(a.getLabel()))
-                                               .collect(Collectors.joining(", ")));
-                }
+                data.setOrderId(getManageOrdersData().getOrderId());
+                data.setManageOrderType(getManageOrdersData().getManageOrderType());
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setSubmittedDateAndTimeOfOrder(getManageOrdersData().getSubmittedDateManageOrder());
+                data.setDateOrderMate(getManageOrdersData().getDateOrderMade());
+                data.setOrderedBy(getManageOrdersData().getOrderedBy());
+                data.setAdoptionOrderRecipients(getManageOrdersData().getRecipientsList());
                 break;
             case GENERAL_DIRECTIONS_ORDER:
                 this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
@@ -902,8 +900,10 @@ public class CaseData {
                 this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setDirectionsOrderList(archiveManageOrdersHelper(
                     this.getDirectionsOrderList(), this.getDirectionsOrderData()));
-                tabModel.setOrderedBy(this.getManageOrdersData().getOrderedBy());
-                tabModel.setOrderType(GENERAL_DIRECTIONS_ORDER.getLabel());
+
+                data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setSubmittedDateAndTimeOfOrder(getDirectionsOrderData().getSubmittedDateDirectionsOrder());
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
@@ -912,50 +912,24 @@ public class CaseData {
                 this.setAdoptionOrderList(archiveManageOrdersHelper(
                     this.getAdoptionOrderList(), this.getAdoptionOrderData()));
 
-                tabModel.setDateOrderMate(this.getAdoptionOrderData().getDateOrderMadeFinalAdoptionOrder());
-                tabModel.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
-                tabModel.setOrderType(FINAL_ADOPTION_ORDER.getLabel());
-                if (this.getAdoptionOrderData().getRecipientsListA206() != null) {
-                    tabModel.setRecipients(this.getAdoptionOrderData().getRecipientsListA206()
-                                               .stream()
-                                               .map(a -> String.valueOf(a.getLabel()))
-                                               .collect(Collectors.joining(", ")));
-                }
+                data.setOrderId(getAdoptionOrderData().getOrderId());
+                data.setManageOrderType(FINAL_ADOPTION_ORDER);
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setDateOrderMate(getAdoptionOrderData().getDateOrderMadeFinalAdoptionOrder());
+                data.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
+                data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
+                data.setFinalOrderRecipients(getAdoptionOrderData().getRecipientsListA206());
                 break;
             default:
                 break;
         }
-        this.storeOrderTabData(tabModel);
+        this.setCommonOrderList(archiveManageOrdersHelper(
+            this.getCommonOrderList(), data));
         this.setManageOrdersData(new ManageOrdersData());
         this.setDirectionsOrderData(new DirectionsOrderData());
         this.setAdoptionOrderData(new AdoptionOrderData());
     }
 
-    @JsonIgnore
-    public void storeOrderTabData(OrdersTabModel tabModel) {
-        if (tabModel != null) {
-            if (isEmpty(this.getOrdersTabList())) {
-                List<ListValue<OrdersTabModel>> listValues = new ArrayList<>();
-                var listValue = ListValue
-                        .<OrdersTabModel>builder()
-                        .id("1")
-                        .value(tabModel)
-                        .build();
-                listValues.add(listValue);
-                this.setOrdersTabList(listValues);
-            }   else {
-                var listValue = ListValue
-                        .<OrdersTabModel>builder()
-                        .value(tabModel)
-                        .build();
-                int listValueIndex = 0;
-                this.getOrdersTabList().add(0, listValue);
-                for (ListValue<OrdersTabModel> asListValue : this.getOrdersTabList()) {
-                    asListValue.setId(String.valueOf(listValueIndex++));
-                }
-            }
-        }
-    }
 
     @JsonIgnore
     public void archiveHearingInformation() {

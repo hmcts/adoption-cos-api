@@ -2,16 +2,10 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-
-import java.util.Optional;
 
 public class CheckAndSendOrders implements CcdPageConfiguration {
 
@@ -22,7 +16,6 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
 
         pageBuilder.page("checkAndSendOrders1",this::midEventCall)
             .pageLabel("## Orders for review")
-            //.label("checkAndSendOrdersLabel1","## Orders for review")
             .label("checkAndSendOrderLabel2","### Select the order you want to review",null,true)
             .mandatory(CaseData::getCheckAndSendOrderDropdownList)
             .done()
@@ -49,26 +42,17 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
 
     private AboutToStartOrSubmitResponse<CaseData, State> midEventCall(CaseDetails<CaseData, State> caseData,
                                                                        CaseDetails<CaseData, State> caseData1) {
-        var data = caseData.getData();
-        Optional<ListValue<ManageOrdersData>> gatekeepingOrderItem =  data.getManageOrderList().stream()
-            .filter(item -> item.getValue().getOrderId()
-                .equalsIgnoreCase(data.getCheckAndSendOrderDropdownList().getValueCode().toString())).findFirst();
-        if (gatekeepingOrderItem.isEmpty()) {
-            Optional<ListValue<DirectionsOrderData>> directionOrderItem =  data.getDirectionsOrderList().stream()
-                .filter(item -> item.getValue().getOrderId()
-                    .equalsIgnoreCase(data.getCheckAndSendOrderDropdownList().getValueCode().toString())).findFirst();
 
-            if (directionOrderItem.isEmpty()) {
-                Optional<ListValue<AdoptionOrderData>> finalAdoptionItem =  data.getAdoptionOrderList().stream()
-                    .filter(item -> item.getValue().getOrderId()
-                        .equalsIgnoreCase(data.getCheckAndSendOrderDropdownList().getValueCode().toString()))
-                    .findFirst();
-                data.setFinalOrderRecipients(finalAdoptionItem.get().getValue().getRecipientsListA206());
-                data.setManageOrderSelecType(ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER);
-            }
-        } else {
-            data.setAdoptionOrderRecipients(gatekeepingOrderItem.get().getValue().getRecipientsList());
-            data.setManageOrderSelecType(ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER);
+        var data = caseData.getData();
+        var commonOrderItem =   data.getCommonOrderList().stream().filter(item ->
+                                                             item.getValue().getOrderId()
+                                                             .equalsIgnoreCase(data.getCheckAndSendOrderDropdownList()
+                                                             .getValueCode().toString())).findFirst();
+        if (commonOrderItem.isPresent()) {
+            data.setFinalOrderRecipients(commonOrderItem.get().getValue().getFinalOrderRecipients());
+            data.setManageOrderSelecType(commonOrderItem.get().getValue().getManageOrderType());
+            data.setAdoptionOrderRecipients(commonOrderItem.get().getValue().getAdoptionOrderRecipients());
+            data.setDocumentReview(commonOrderItem.get().getValue().getDocumentReview());
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)

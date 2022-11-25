@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -15,20 +15,20 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Comparator;
-import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -45,6 +45,9 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
     private final CcdPageConfiguration checkAndSendOrders = new CheckAndSendOrders();
 
     private static final String check_and_send_orders = "Check and send orders";
+
+    @Autowired
+    private Clock clock;
 
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -87,55 +90,21 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
      */
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToStart(CaseDetails<CaseData, State> details) {
         CaseData caseData = details.getData();
-        List<OrderData> checkAndSendOrderDataList = new ArrayList<>();
-
-        if (CollectionUtils.isNotEmpty(caseData.getManageOrderList())) {
-            caseData.getManageOrderList().forEach(order -> {
-                if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
-                    OrderData orderData = new OrderData();
-                    orderData.setOrderId(order.getValue().getOrderId());
-                    orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateManageOrder());
-                    orderData.setManageOrderType(ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER);
-                    checkAndSendOrderDataList.add(orderData);
-                }
-            });
-        }
-
-        if (CollectionUtils.isNotEmpty(caseData.getAdoptionOrderList())) {
-            caseData.getAdoptionOrderList().forEach(order -> {
-                if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
-                    OrderData orderData = new OrderData();
-                    orderData.setOrderId(order.getValue().getOrderId());
-                    orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateAdoptionOrder());
-                    orderData.setManageOrderType(ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER);
-                    checkAndSendOrderDataList.add(orderData);
-                }
-            });
-        }
-
-        if (CollectionUtils.isNotEmpty(caseData.getDirectionsOrderList())) {
-            caseData.getDirectionsOrderList().forEach(order -> {
-                if (OrderStatus.SERVED != order.getValue().getOrderStatus()) {
-                    OrderData orderData = new OrderData();
-                    orderData.setOrderId(order.getValue().getOrderId());
-                    orderData.setSubmittedDateAndTimeOfOrder(order.getValue().getSubmittedDateDirectionsOrder());
-                    orderData.setManageOrderType(ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER);
-                    checkAndSendOrderDataList.add(orderData);
-                }
-            });
-        }
-
-        Collections.sort(checkAndSendOrderDataList, Comparator.comparing(OrderData::getSubmittedDateAndTimeOfOrder));
-        Collections.reverse(checkAndSendOrderDataList);
 
         List<DynamicListElement> listElements = new ArrayList<>();
-        checkAndSendOrderDataList.forEach(order -> {
-            DynamicListElement orderInfo = DynamicListElement.builder().label(order.getSubmittedDateAndTimeOfOrder().format(
-                DateTimeFormatter.ofPattern(
-                    "dd/MM/yyyy',' HH:mm:ss")).concat(", ").concat(order.getManageOrderType().getLabel())).code(
-                UUID.fromString(order.getOrderId())).build();
-            listElements.add(orderInfo);
-        });
+        if (caseData.getCommonOrderList() != null) {
+            caseData.getCommonOrderList().forEach(order -> {
+                if (order.getValue().getStatus() != OrderStatus.SERVED) {
+                    DynamicListElement orderInfo = DynamicListElement.builder()
+                        .label(order.getValue().getSubmittedDateAndTimeOfOrder().format(
+                        DateTimeFormatter.ofPattern(
+                            "dd/MM/yyyy',' HH:mm:ss")).concat(", ")
+                                   .concat(order.getValue().getManageOrderType().getLabel())).code(
+                        UUID.fromString(order.getValue().getOrderId())).build();
+                    listElements.add(orderInfo);
+                }
+            });
+        }
         caseData.setCheckAndSendOrderDropdownList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
@@ -168,7 +137,17 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             default:
                 break;
         }
+        Optional<ListValue<OrderData>> commonOrderListItem =  caseData.getCommonOrderList().stream()
+            .filter(item -> item.getValue().getOrderId()
+                .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
+            .findFirst();
+        commonOrderListItem.get().getValue().setStatus(OrderStatus.SERVED);
+        commonOrderListItem.get().getValue().setDateServed(LocalDate.now(clock));
+        caseData.setAdoptionOrderRecipients(null);
+        caseData.setFinalOrderRecipients(null);
+        caseData.setDocumentReview(null);
         caseData.setManageOrderSelecType(null);
+        caseData.setDocumentReview(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 

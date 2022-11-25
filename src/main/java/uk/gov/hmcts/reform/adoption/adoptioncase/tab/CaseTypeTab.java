@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.tab;
 
+
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
@@ -110,11 +111,12 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     }
 
     private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        System.out.println("ORDER TAB CALLED");
         configBuilder.tab("orders","Orders")
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-orderview", null, "[Create new order](/cases/case-details/${[CASE_REFERENCE]}"
                 + "/trigger/caseworker-manage-orders/caseworker-manage-ordersmanageOrders1)")
-            .field(CaseData::getOrdersTabList);
+            .field(CaseData::getCommonOrderList);
     }
 
     private void buildTabWithRespondentDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
