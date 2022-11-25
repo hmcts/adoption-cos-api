@@ -45,4 +45,14 @@ public final class DocumentUtil {
             .add(localDateTime.format(FILE_NAME_DATE_TIME_FORMATTER))
             .toString();
     }
+
+    public static String formatDocumentName(
+        final Long caseId,
+        final String documentName
+    ) {
+        return new StringJoiner("-")
+            .add(documentName)
+            .add(String.valueOf(caseId))
+            .toString();
+    }
 }

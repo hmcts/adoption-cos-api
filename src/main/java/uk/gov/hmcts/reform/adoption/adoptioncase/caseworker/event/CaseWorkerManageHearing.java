@@ -21,7 +21,8 @@ import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
-import java.time.LocalDateTime;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
     @Autowired
     CaseDataDocumentService caseDataDocumentService;
 
+    @Autowired
+    private Clock clock;
+
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
@@ -63,7 +67,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
             .page("manageHearing7")
-            .showCondition("recipientsInTheCase=\"applicant1\" OR recipientsInTheCase=\"applicant2\"")
+            .showCondition("recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .label("manageHearing71","Preview Draft",null, true)
             .readonly(CaseData::getHearingA90Document)
             .done()
@@ -138,6 +142,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
             log.info("templateContent {}", templateContent);
+            caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
             caseData.getManageHearingDetails().setHearingA90Document(caseDataDocumentService.renderDocument(
                 templateContent,
                 details.getId(),
@@ -145,8 +150,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                 LanguagePreference.ENGLISH,
                 formatDocumentName(
                     details.getId(),
-                    MANAGE_HEARING_NOTICES_A90_FILE_NAME,
-                    LocalDateTime.now()
+                    MANAGE_HEARING_NOTICES_A90_FILE_NAME
                 )));
             caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
         }

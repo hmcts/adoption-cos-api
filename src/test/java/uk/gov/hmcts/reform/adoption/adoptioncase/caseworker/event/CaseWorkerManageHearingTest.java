@@ -17,7 +17,6 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplyingWith;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
@@ -31,6 +30,7 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -65,7 +65,8 @@ class CaseWorkerManageHearingTest {
     @Mock
     private CaseDataDocumentService caseDataDocumentService;
 
-    ManageHearings manageHearings = new ManageHearings();
+    @Mock
+    private Clock clock;
 
     @Test
     void addCaseworkerManageHearingsEventAutoconfigureBuilderTest() {
@@ -117,6 +118,10 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
         AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
             .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
@@ -129,6 +134,10 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
         AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
             .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
@@ -141,6 +150,10 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
         AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
             .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
@@ -153,6 +166,10 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
         AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
             .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
@@ -169,6 +186,10 @@ class CaseWorkerManageHearingTest {
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
         Map<String, Object> templateVars = new HashMap<>();
         when(objectMapper.convertValue(caseDetails.getData(), Map.class)).thenReturn(templateVars);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
         AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
             .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isEmpty();
