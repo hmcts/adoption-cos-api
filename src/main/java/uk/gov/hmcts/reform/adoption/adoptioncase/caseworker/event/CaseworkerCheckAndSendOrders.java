@@ -12,13 +12,14 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndSendOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
@@ -109,30 +110,34 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 
+
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State>
             caseDetails, CaseDetails<CaseData, State> caseDetails1) {
         var caseData = caseDetails.getData();
-        switch (caseData.getManageOrderSelecType()) {
+        switch (caseData.getSelectedOrder().getOrderType()) {
             case CASE_MANAGEMENT_ORDER:
                 Optional<ListValue<ManageOrdersData>> gatekeepingOrderItem =  caseData.getManageOrderList().stream()
                     .filter(item -> item.getValue().getOrderId()
                     .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
-                gatekeepingOrderItem.get().getValue().setOrderStatus(OrderStatus.SERVED);
+                gatekeepingOrderItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
+                    OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
                 break;
             case GENERAL_DIRECTIONS_ORDER:
                 Optional<ListValue<DirectionsOrderData>> directionOrderItem =  caseData.getDirectionsOrderList().stream()
                     .filter(item -> item.getValue().getOrderId()
                     .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
-                directionOrderItem.get().getValue().setOrderStatus(OrderStatus.SERVED);
+                directionOrderItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
+                    OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
                 break;
             case FINAL_ADOPTION_ORDER:
                 Optional<ListValue<AdoptionOrderData>> finalAdoptionItem =  caseData.getAdoptionOrderList().stream()
                     .filter(item -> item.getValue().getOrderId()
                     .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
-                finalAdoptionItem.get().getValue().setOrderStatus(OrderStatus.SERVED);
+                finalAdoptionItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
+                    OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
                 break;
             default:
                 break;
@@ -141,13 +146,10 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             .filter(item -> item.getValue().getOrderId()
                 .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
             .findFirst();
-        commonOrderListItem.get().getValue().setStatus(OrderStatus.SERVED);
+        commonOrderListItem.get().getValue().setStatus(caseData.getOrderCheckAndSend().equals(
+            OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
         commonOrderListItem.get().getValue().setDateServed(LocalDate.now(clock));
-        caseData.setAdoptionOrderRecipients(null);
-        caseData.setFinalOrderRecipients(null);
-        caseData.setDocumentReview(null);
-        caseData.setManageOrderSelecType(null);
-        caseData.setDocumentReview(null);
+        caseData.setSelectedOrder(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 
