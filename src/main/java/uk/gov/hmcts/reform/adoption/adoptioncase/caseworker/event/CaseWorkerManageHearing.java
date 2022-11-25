@@ -30,7 +30,6 @@ import java.util.Map;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90_FILE_NAME;
-import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 
 @Component
 @Slf4j
@@ -148,10 +147,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                 details.getId(),
                 MANAGE_HEARING_NOTICES_A90,
                 LanguagePreference.ENGLISH,
-                formatDocumentName(
-                    details.getId(),
-                    MANAGE_HEARING_NOTICES_A90_FILE_NAME
-                )));
+                MANAGE_HEARING_NOTICES_A90_FILE_NAME));
             caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
         }
 
