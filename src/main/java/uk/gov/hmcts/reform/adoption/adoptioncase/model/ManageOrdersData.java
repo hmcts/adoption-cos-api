@@ -32,6 +32,7 @@ public class ManageOrdersData {
         access = {DefaultAccess.class}
     )
     private Document draftDocument;
+
     @CCD(showCondition = "submittedDateManageOrder=\"never\"")
     private String orderId;
 
