@@ -47,6 +47,8 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -709,6 +711,41 @@ public class CaseData {
     )
     private OrderCheckAndSend orderCheckAndSend;
 
+    // ------------------- Send And Reply Messages Objects Start ----------------- //
+    @CCD(
+        label = "Send and reply to messages",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "MessagesAction")
+    private MessagesAction messageAction;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    @JsonUnwrapped
+    private ManageSendMessagesDetails manageSendMessagesDetails;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private MessageDetails messageDetails;
+
+    @CCD(
+        label = "Send Messages",
+        typeOverride = Collection,
+        typeParameterOverride = "ManageSendMessagesDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageSendMessagesDetails>> listOfSendMessages;
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Reply a message\n"
+    )
+    private DynamicList messagesList;
+
+
+    // ------------------- Send And Reply Messages Objects End ----------------- //
     @JsonUnwrapped
     @Builder.Default
     @CCD(access = {DefaultAccess.class})
@@ -923,6 +960,32 @@ public class CaseData {
         this.setAdoptionOrderData(new AdoptionOrderData());
     }
 
+
+    @JsonIgnore
+    public void storeSendMessages() {
+        ManageSendMessagesDetails sendMessagesDetails = this.manageSendMessagesDetails;
+        sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
+        if (null != sendMessagesDetails) {
+            if (isEmpty(this.getListOfSendMessages())) {
+                List<ListValue<ManageSendMessagesDetails>> listValues = new ArrayList<>();
+                var listValue = ListValue.<ManageSendMessagesDetails>builder().id("1")
+                    .value(manageSendMessagesDetails).build();
+                listValues.add(listValue);
+
+                this.setListOfSendMessages(listValues);
+            } else {
+                var listValue = ListValue.<ManageSendMessagesDetails>builder()
+                    .value(manageSendMessagesDetails).build();
+                int listValueIndex = 0;
+                this.getListOfSendMessages().add(0, listValue);
+                for (ListValue<ManageSendMessagesDetails> asListValue : this.getListOfSendMessages()) {
+                    asListValue.setId(String.valueOf(listValueIndex++));
+                }
+            }
+            this.setManageSendMessagesDetails(null);
+        }
+
+    }
 
     @JsonIgnore
     public void archiveHearingInformation() {
