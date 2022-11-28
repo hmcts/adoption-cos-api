@@ -19,7 +19,10 @@ import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.STRING_COLON;
@@ -44,6 +48,12 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
     @Autowired
     private Clock clock;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private IdamService idamService;
 
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -170,12 +180,14 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
     private List<ListValue<AdoptionUploadDocument>> addSeekInformationData(CaseData caseData,
                                                     List<ListValue<AdoptionUploadDocument>> correspondanceTabList) {
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
         var adoptionUploadDocument = new AdoptionUploadDocument();
         adoptionUploadDocument.setDocumentComment(SEEK_FURTHER_INFORMATION_HEADING);
         adoptionUploadDocument.setDocumentLink(null);
         adoptionUploadDocument.setDocumentDateAdded(LocalDate.now(clock));
         if (!Objects.isNull(caseData.getSeekFurtherInformationList())) {
-            adoptionUploadDocument.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
+            //  adoptionUploadDocument.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
+            adoptionUploadDocument.setUploadedBy(caseworkerUser.getUserDetails().getFullName());
         }
         if (isEmpty(correspondanceTabList)) {
             List<ListValue<AdoptionUploadDocument>> listValues = new ArrayList<>();

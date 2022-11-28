@@ -19,7 +19,11 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherAdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
 import java.time.Instant;
@@ -33,8 +37,10 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSeekFurtherInformation.CASEWORKER_SEEK_FURTHER_INFORMATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSeekFurtherInformation.SEEK_FURTHER_INFORMATION_HEADING;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,7 +50,13 @@ public class CaseWorkerSeekFurtherInformationTest {
     CaseworkerSeekFurtherInformation caseworkerSeekFurtherInformation;
 
     @Mock
+    private HttpServletRequest httpServletRequest;
+
+    @Mock
     private Clock clock;
+
+    @Mock
+    private IdamService idamService;
 
 
     @Test
@@ -84,11 +96,16 @@ public class CaseWorkerSeekFurtherInformationTest {
 
         when(clock.instant()).thenReturn(instant);
         when(clock.getZone()).thenReturn(zoneId);
+
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
+
         var adoptionUploadDocument = new AdoptionUploadDocument();
         adoptionUploadDocument.setDocumentComment(SEEK_FURTHER_INFORMATION_HEADING);
         adoptionUploadDocument.setDocumentLink(null);
         adoptionUploadDocument.setDocumentDateAdded(LocalDate.now(clock));
-        adoptionUploadDocument.setUploadedBy("Child Social Worker");
+        adoptionUploadDocument.setUploadedBy(getCaseworkerUser().getUserDetails().getFullName());
         List<ListValue<AdoptionUploadDocument>> listValues = new ArrayList<>();
 
         var listValue = ListValue
@@ -140,5 +157,15 @@ public class CaseWorkerSeekFurtherInformationTest {
                 }
             })
             .orElseThrow(() -> new AssertionError("Unable to find ConfigBuilderImpl.class method getEvents"));
+    }
+
+    private User getCaseworkerUser() {
+        UserDetails userDetails = UserDetails
+            .builder()
+            .forename("testFname")
+            .surname("testSname")
+            .build();
+
+        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
     }
 }
