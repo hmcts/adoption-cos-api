@@ -349,15 +349,15 @@ class CaseworkerManageOrdersTest {
     @Test
     public void shouldCreateDynamicList() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
         AddressUK addressUK = new AddressUK();
-        caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
-        caseDetails.getData().getOtherAdoptionAgencyOrLA().setAgencyOrLaName("TEST_NAME");
-        caseDetails.getData().getOtherAdoptionAgencyOrLA().setAgencyAddress(addressUK);
-        caseDetails.getData().getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostTown("TEST_TOWN");
-        caseDetails.getData().getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostCode("TEST_POST_CODE");
-        AboutToStartOrSubmitResponse<CaseData, State> response = manageOrdersPage.midEventForDynamicList(caseDetails, caseDetails);
-        assertThat(response.getErrors())
-            .isNull();
+        caseData.setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
+        caseData.getOtherAdoptionAgencyOrLA().setAgencyOrLaName("TEST_NAME");
+        caseData.getOtherAdoptionAgencyOrLA().setAgencyAddress(addressUK);
+        caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostTown("TEST_TOWN");
+        caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostCode("TEST_POST_CODE");
+        caseData.getPlacementOfTheChildList();
+        assertThat(caseData.getPlacementOfTheChildList().getListItems().size()).isEqualTo(4);
     }
 
     /**
