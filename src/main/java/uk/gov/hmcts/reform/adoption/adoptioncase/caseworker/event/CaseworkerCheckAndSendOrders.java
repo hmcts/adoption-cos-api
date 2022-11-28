@@ -101,7 +101,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     DynamicListElement orderInfo = DynamicListElement.builder()
                         .label(order.getValue().getSubmittedDateAndTimeOfOrder().format(
                         DateTimeFormatter.ofPattern(
-                            "dd/MM/yyyy',' HH:mm:ss")).concat(", ")
+                            CHECK_N_SEND_ORDER_DATE_FORMAT)).concat(COMMA)
                                    .concat(order.getValue().getManageOrderType().getLabel())).code(
                         UUID.fromString(order.getValue().getOrderId())).build();
                     listElements.add(orderInfo);
