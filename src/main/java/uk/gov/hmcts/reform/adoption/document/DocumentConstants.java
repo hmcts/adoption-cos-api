@@ -16,7 +16,7 @@ public final class DocumentConstants {
 
     public static final String FINAL_ADOPTION_ORDER_A76 = "FINAL_ADOPTION_ORDER_A76";
 
-    public static final String FINAL_ADOPTION_ORDER_A76_FILE_NAME = "final-adoption-order-a76";
+    public static final String FINAL_ADOPTION_ORDER_A76_FILE_NAME = "A76_Final adoption order_draft";
 
     public static final String MANAGE_HEARING_NOTICES_A90 = "MANAGE_HEARING_NOTICES_A90";
 

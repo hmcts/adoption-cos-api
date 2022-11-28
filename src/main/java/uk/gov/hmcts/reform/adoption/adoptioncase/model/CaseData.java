@@ -12,8 +12,11 @@ import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
@@ -44,6 +47,11 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOPTION_AGENCY_STR;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -553,6 +561,13 @@ public class CaseData {
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
 
     @CCD(
+        access = {DefaultAccess.class, CaseworkerAccess.class},
+        label = "Ways To Pay"
+    )
+    private WaysToPay waysToPay;
+
+
+    @CCD(
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "ManageHearingOptions"
@@ -703,6 +718,53 @@ public class CaseData {
             return familyCourtName;
         }
         return manageOrdersData.getNameOfCourtFurtherHearing();
+    }
+
+    public DynamicList getPlacementOfTheChildList() {
+        List<DynamicListElement> listElements = new ArrayList<>();
+
+        if (this.getAdopAgencyOrLA() != null) {
+            DynamicListElement adoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, this.getAdopAgencyOrLA().getAdopAgencyOrLaName(),
+                                   this.getAdopAgencyOrLA().getAdopAgencyTown(),
+                                   this.getAdopAgencyOrLA().getAdopAgencyPostcode()))
+                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
+                .build();
+            listElements.add(adoptionAgency);
+        }
+
+        if (YesOrNo.YES.equals(this.getHasAnotherAdopAgencyOrLAinXui())) {
+            DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, this.getOtherAdoptionAgencyOrLA().getAgencyOrLaName(),
+                                   this.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostTown(),
+                                   this.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostCode()))
+                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
+                .build();
+            listElements.add(otherAdoptionAgency);
+        }
+
+        if (this.getChildSocialWorker() != null) {
+            DynamicListElement childLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, this.getChildSocialWorker().getSocialWorkerName(),
+                                   this.getChildSocialWorker().getSocialWorkerTown(),
+                                   this.getChildSocialWorker().getSocialWorkerPostcode()))
+                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
+                .build();
+            listElements.add(childLocalAuthority);
+        }
+
+        if (this.getApplicantSocialWorker() != null) {
+            DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, this.getApplicantSocialWorker().getSocialWorkerName(),
+                                   this.getApplicantSocialWorker().getSocialWorkerTown(),
+                                   this.getApplicantSocialWorker().getSocialWorkerPostcode()))
+                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
+                .build();
+            listElements.add(applicantLocalAuthority);
+        }
+        adoptionOrderData.setPlacementOfTheChildList(DynamicList.builder()
+            .listItems(listElements).value(DynamicListElement.EMPTY).build());
+        return adoptionOrderData.getPlacementOfTheChildList();
     }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {

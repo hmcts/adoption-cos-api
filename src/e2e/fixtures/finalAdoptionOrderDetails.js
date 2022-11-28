@@ -29,10 +29,9 @@ module.exports = {
     birthAdoptionRegistrationDate: {
       day: '01',
       month: '01',
-      year: '2029',
+      year: '2021',
     },
   },
-
 
   checkYourAnswers: {
     finalAdoptionOrderRecipients: 'Final adoption order recipients',
@@ -45,7 +44,13 @@ module.exports = {
     childLocalAuthority: 'Child\'s local authority',
     applicantLocalAuthority: 'Applicant\'s local authority',
     checkYAnswers: 'Check your answers'
+  },
+  dateOrderMade: 'Date order made',
+  dom: {
+    day: '12',
+    month: '03',
+    year: '2021'
 
+  },
 
-  }
 };
