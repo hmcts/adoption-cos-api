@@ -740,7 +740,7 @@ public class CaseData {
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
-            return uk.gov.hmcts.ccd.sdk.type.YesOrNo.NO;
+            return YesOrNo.NO;
         }
         return isApplicantRepresentedBySolicitor;
     }

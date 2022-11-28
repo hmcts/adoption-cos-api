@@ -111,7 +111,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     }
 
     private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        System.out.println("ORDER TAB CALLED");
         configBuilder.tab("orders","Orders")
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-orderview", null, "[Create new order](/cases/case-details/${[CASE_REFERENCE]}"
