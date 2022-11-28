@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+
 
 @Component
 @Slf4j
@@ -66,18 +69,17 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
      * @return - PageBuilder updated to use on overridden method.
      */
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft,
-                            Permissions.READ_UPDATE,
-                            UserRole.CASE_WORKER,
-                            UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR,
-                            UserRole.DISTRICT_JUDGE
-        );
-        return new PageBuilder(configBuilder.event(CASEWORKER_CHECK_AND_SEND_ORDERS).forAllStates().name(
-            check_and_send_orders).showSummary().aboutToStartCallback(this::aboutToStart).grant(
-            Permissions.CREATE_READ_UPDATE,
-            UserRole.CASE_WORKER
-        ).grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE).aboutToSubmitCallback(this::aboutToSubmit));
+        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
+                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE);
+        return new PageBuilder(configBuilder
+                                   .event(CASEWORKER_CHECK_AND_SEND_ORDERS)
+                                   .forAllStates()
+                                   .name(check_and_send_orders)
+                                   .showSummary()
+                                   .aboutToStartCallback(this::aboutToStart)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
+                                   .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
 

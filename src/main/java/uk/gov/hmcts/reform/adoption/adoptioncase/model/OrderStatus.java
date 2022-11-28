@@ -12,7 +12,7 @@ public enum OrderStatus implements HasLabel {
     @JsonProperty("openOrder")
     OPEN("Open"),
 
-    @JsonProperty("serverOrder")
+    @JsonProperty("servedOrder")
     SERVED("Served"),
 
     @JsonProperty("returnForAmendments")

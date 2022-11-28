@@ -22,6 +22,8 @@ public final class CaseFieldsConstants {
 
     public static final String COMMA = ",";
 
+    public static final String CHECK_N_SEND_ORDER_DATE_FORMAT = "dd/MM/yyyy',' HH:mm:ss";
+
     public static final String ADOPTION_AGENCY_STR = "ADOPTION_AGENCY";
 
     public static final String OTHER_ADOPTION_AGENCY_STR = "OTHER_ADOPTION_AGENCY";

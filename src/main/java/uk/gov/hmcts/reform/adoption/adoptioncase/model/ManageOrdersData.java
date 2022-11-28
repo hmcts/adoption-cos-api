@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
@@ -26,6 +27,11 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @AllArgsConstructor
 @Builder
 public class ManageOrdersData {
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document draftDocument;
 
     @CCD(showCondition = "submittedDateManageOrder=\"never\"")
     private String orderId;
