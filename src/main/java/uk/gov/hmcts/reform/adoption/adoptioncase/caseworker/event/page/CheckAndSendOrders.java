@@ -5,6 +5,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.service.CommonPageBuilder;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -14,7 +15,6 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
 
     @Override
     public void addTo(PageBuilder pageBuilder) {
-
         pageBuilder.page("checkAndSendOrders1", this::midEventCall)
             .pageLabel("## Orders for review")
             .label("checkAndSendOrdersLabel1","## Orders for review")
@@ -41,6 +41,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .mandatory(CaseData::getOrderCheckAndSend)
             .done();
 
+        CommonPageBuilder.commonPage(pageBuilder, "orderCheckAndSend=\"returnForAmendments\"");
     }
 
     private AboutToStartOrSubmitResponse<CaseData, State> midEventCall(CaseDetails<CaseData, State> caseData,

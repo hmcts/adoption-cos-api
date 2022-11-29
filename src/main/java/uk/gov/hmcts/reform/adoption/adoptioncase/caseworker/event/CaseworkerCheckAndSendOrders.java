@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.util.Arrays.asList;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
@@ -50,16 +51,17 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
 
     private static final String check_and_send_orders = "Check and send orders";
 
+    private final List<CcdPageConfiguration> pages = asList(
+        new CheckAndSendOrders()
+    );
+
     @Autowired
     private Clock clock;
 
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        log.info("Inside configure method for Event {}", CASEWORKER_CHECK_AND_SEND_ORDERS);
-        var pageBuilder = addEventConfig(configBuilder);
-        checkAndSendOrders.addTo(pageBuilder);
-
-
+        final PageBuilder pageBuilder = addEventConfig(configBuilder);
+        pages.forEach(page -> page.addTo(pageBuilder));
     }
 
     /**

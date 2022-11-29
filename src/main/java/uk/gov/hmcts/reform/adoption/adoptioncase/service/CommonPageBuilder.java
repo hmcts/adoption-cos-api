@@ -1,63 +1,61 @@
-package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
+package uk.gov.hmcts.reform.adoption.adoptioncase.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDocumentList;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageSendMessagesDetails;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDetails;
-import uk.gov.hmcts.reform.adoption.adoptioncase.service.CommonPageBuilder;
-import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.*;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
-public class SendAndReply implements CcdPageConfiguration {
-    @Override
-    public void addTo(PageBuilder pageBuilder) {
-        CommonPageBuilder.commonPage(pageBuilder, "");
-//        pageBuilder
-//            .page("pageSendAndReply", this::midEvent)
-//            .pageLabel("Send And Reply to messages")
-//            .mandatory(CaseData::getMessageAction)
-//            .mandatory(CaseData::getMessagesList, "messageAction=\"replyMessage\"")
-//            .page("pageSendAndReply2")
-//            .showCondition("messageAction=\"replyMessage\"")
-//            .label("labelReplyMes", "## Reply a message")
-//            .complex(CaseData::getMessageDetails)
-//            .readonlyWithLabel(MessageDetails::getMessageId, "Message Id")
-//            .readonlyWithLabel(MessageDetails::getReasonForMessage, "Reason for message")
-//            .readonlyWithLabel(MessageDetails::getUrgency, "Urgency")
-//            .readonlyWithLabel(MessageDetails::getMessage, "Message")
-//            .readonlyWithLabel(MessageDetails::getDocumentLink, "View documents attached to message")
-//            .mandatory(MessageDetails::getReplyMessage)
-//            .done()
-//            .page("pageSendAndReply1")
-//            .showCondition("messageAction=\"sendMessage\"")
-//            .label("sendMessage","## Send a message")
-//            .complex(CaseData::getManageSendMessagesDetails)
-//            .mandatory(ManageSendMessagesDetails::getMessageReceiverRoles)
-//            .mandatory(ManageSendMessagesDetails::getMessageReasonList)
-//            .mandatory(ManageSendMessagesDetails::getMessageUrgencyList)
-//            .mandatory(ManageSendMessagesDetails::getMessage)
-//            .mandatory(ManageSendMessagesDetails::getAttachDocument)
-//            .mandatory(ManageSendMessagesDetails::getDocumentList, "attachDocument=\"Yes\"")
-//            .done();
+public class CommonPageBuilder {
+
+    private CommonPageBuilder() {
     }
 
+    public static void commonPage(PageBuilder pageBuilder, String type) {
+//        pageBuilder.page("tt")
+//            .showCondition(type)
+//            .mandatory(CaseData::getDate)
+//            .done();
+        pageBuilder
+            .page("pageSendAndReply", CommonPageBuilder::midEvent)
+            .showCondition(type)
+            .pageLabel("Send And Reply to messages")
+            .mandatory(CaseData::getMessageAction)
+            .mandatory(CaseData::getMessagesList, "messageAction=\"replyMessage\"")
+            .page("pageSendAndReply2")
+            .showCondition("messageAction=\"replyMessage\"")
+            .label("labelReplyMes", "## Reply a message")
+            .complex(CaseData::getMessageDetails)
+            .readonlyWithLabel(MessageDetails::getMessageId, "Message Id")
+            .readonlyWithLabel(MessageDetails::getReasonForMessage, "Reason for message")
+            .readonlyWithLabel(MessageDetails::getUrgency, "Urgency")
+            .readonlyWithLabel(MessageDetails::getMessage, "Message")
+            .readonlyWithLabel(MessageDetails::getDocumentLink, "View documents attached to message")
+            .mandatory(MessageDetails::getReplyMessage)
+            .done()
+            .page("pageSendAndReply1")
+            .showCondition("messageAction=\"sendMessage\"")
+            .label("sendMessage","## Send a message")
+            .complex(CaseData::getManageSendMessagesDetails)
+            .mandatory(ManageSendMessagesDetails::getMessageReceiverRoles)
+            .mandatory(ManageSendMessagesDetails::getMessageReasonList)
+            .mandatory(ManageSendMessagesDetails::getMessageUrgencyList)
+            .mandatory(ManageSendMessagesDetails::getMessage)
+            .mandatory(ManageSendMessagesDetails::getAttachDocument)
+            .mandatory(ManageSendMessagesDetails::getDocumentList, "attachDocument=\"Yes\"")
+            .done();
 
-    private AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State>
-        data, CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
+    }
+
+    private static AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State>
+                                                                       data, CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
         System.out.println("MID EVENT TRIGGERED");
-        log.info("MidEvent Triggered");
         CaseData caseData = data.getData();
 
         List<DynamicListElement> listElements = new ArrayList<>();
@@ -129,7 +127,7 @@ public class SendAndReply implements CcdPageConfiguration {
             var messageDetails = new MessageDetails();
             var selectedObject = caseData.getListOfSendMessages().stream()
                 .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getMessagesList().getValue()
-                .getLabel())).findAny();
+                                                                                    .getLabel())).findAny();
             if (selectedObject.isPresent()) {
                 messageDetails.setMessageId(selectedObject.get().getValue().getMessageId());
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
@@ -137,18 +135,16 @@ public class SendAndReply implements CcdPageConfiguration {
                 messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
                 if (selectedObject.get().getValue().getDocumentList() != null && CollectionUtils.isNotEmpty(messageDocumentLists)) {
                     messageDetails.setDocumentLink(messageDocumentLists.stream().filter(item ->
-                        item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getDocumentList()
-                        .getValue().getCode().toString())).findFirst().get().getDocumentLink());
+                                                                                            item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getDocumentList()
+                                                                                                                                     .getValue().getCode().toString())).findFirst().get().getDocumentLink());
                 }
                 caseData.setMessageDetails(messageDetails);
             }
 
 
         }
-        log.info("MidEvent Complete");
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
     }
-
 }
