@@ -60,9 +60,13 @@ public class OrderData {
         access = {DefaultAccess.class})
     private Set<ManageOrdersData.Recipients> adoptionOrderRecipients;
 
-    @CCD(label = "Recipients",
+    @CCD(label = "Recipients of Final adoption order (A76)",
         access = {DefaultAccess.class})
-    private Set<AdoptionOrderData.RecipientsA206> finalOrderRecipients;
+    private Set<AdoptionOrderData.RecipientsA76> finalOrderRecipientsA76;
+
+    @CCD(label = "Recipients of Final adoption order (A206)",
+        access = {DefaultAccess.class})
+    private Set<AdoptionOrderData.RecipientsA206> finalOrderRecipientsA206;
 
     @CCD(label = "Recipients",
         access = {DefaultAccess.class})

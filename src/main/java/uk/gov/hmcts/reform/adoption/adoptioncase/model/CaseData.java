@@ -700,9 +700,11 @@ public class CaseData {
         label = "Review Order",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
+    @JsonUnwrapped
     private SelectedOrder selectedOrder;
 
     @CCD(
+        label = "Do you want to server the order or return for amendments?",
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "OrderCheckAndSend"
@@ -911,7 +913,8 @@ public class CaseData {
                 data.setDateOrderMate(getAdoptionOrderData().getDateOrderMadeFinalAdoptionOrder());
                 data.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
-                data.setFinalOrderRecipients(getAdoptionOrderData().getRecipientsListA206());
+                data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
+                data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
                 break;
             default:
                 break;

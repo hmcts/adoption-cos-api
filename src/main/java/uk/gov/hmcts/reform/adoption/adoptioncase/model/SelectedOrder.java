@@ -34,10 +34,16 @@ public class SelectedOrder {
     private ManageOrdersData.ManageOrderType orderType;
 
     @CCD(
-        label = "These recipients have been selected to receive this order",
+        label = "Recipients of Final adoption order (A76)",
         access = { SystemUpdateAccess.class, DefaultAccess.class}
     )
-    private Set<AdoptionOrderData.RecipientsA206> finalOrderRecipients;
+    private Set<AdoptionOrderData.RecipientsA76> finalOrderRecipientsA76;
+
+    @CCD(
+        label = "Recipients of Final adoption order (A206)",
+        access = { SystemUpdateAccess.class, DefaultAccess.class}
+    )
+    private Set<AdoptionOrderData.RecipientsA206> finalOrderRecipientsA206;
 
     @CCD(
         access = { SystemUpdateAccess.class, DefaultAccess.class}
