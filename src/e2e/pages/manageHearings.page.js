@@ -267,4 +267,54 @@ module.exports = {
         await I.wait(3);
         await I.retry(5).seeElement(this.fields.alertMessage);
       },
+  async selectAdjournHearingYesRelisting(){
+        await I.retry(5).click(this.fields.adjournHearing);
+        await I.retry(5).click(this.fields.continueButton);
+        await I.wait(3);
+        await I.retry(5).click(this.fields.continueButton);
+        await I.retry(3).see('Select a hearing you want to adjourn is required');
+        await I.retry(5).click(this.fields.vacateHearingToSelect);
+        await I.retry(5).click(this.fields.continueButton);
+        await I.retry(5).seeElement(this.fields.adjournHearingCourtJudgeUnavailable);
+        await I.retry(5).seeElement(this.fields.adjournHearingPartiesUnavailable);
+        await I.retry(5).seeElement(this.fields.adjournHearingLateFiling);
+        await I.retry(5).seeElement(this.fields.adjournHearingDateToAvoid);
+        await I.retry(5).click(this.fields.continueButton);
+        await I.retry(3).see('Reason for adjournment is required');
+        await I.retry(5).click(this.fields.adjournHearingLateFiling);
+        await I.retry(5).click(this.fields.continueButton);
+        await I.retry(5).seeElement(this.fields.reListingYes);
+        await I.retry(5).seeElement(this.fields.reListingNo);
+        await I.retry(5).click(this.fields.continueButton);
+        await I.retry(3).see('Does the hearing need to be relisted is required');
+        await I.retry(5).click(this.fields.reListingYes);
+        await I.retry(5).click(this.fields.continueButton);
+      },
+
+  async verifyAdjournHearingWithRelistingCheckYourAnswers(){
+      await I.wait(3);
+      await I.see(manageHearingFormData.checkYourAnswers.adjournHearingOption);
+      await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
+      await I.see(manageHearingFormData.checkYourAnswers.adjournHearingReason);
+      await I.seeTextInPage(['Enter hearing details', 'Type of hearing'], manageHearingFormData.vacateHearing.typeOfHearingVacate);
+      await I.seeTextInPage(['Enter hearing details', 'Hearing date & time'], '31 Dec 2035, 8:30:00 AM');
+      await I.seeTextInPage(['Enter hearing details', 'Length of hearing'], manageHearingFormData.vacateHearing.lengthOfHearing);
+      await I.seeTextInPage(['Enter hearing details', 'Judge'], manageHearingFormData.vacateHearing.judgeOfHearing);
+      await I.seeTextInPage(['Enter hearing details', 'Court'], manageHearingFormData.vacateHearing.courtOfHearing);
+      await I.seeTextInPage(['Enter hearing details', 'Is an interpreter needed?'], manageHearingFormData.vacateHearing.interpreterRequired);
+      await I.seeTextInPage(['Enter hearing details', 'Method of hearing'], 'Remote (via video hearing)');
+      await I.seeTextInPage(['Enter hearing details', 'Accessibility requirements'], manageHearingFormData.vacateHearing.accessibilityRequired);
+      await I.seeTextInPage(['Enter hearing details', 'Hearing directions'], 'Hearing delay warning');
+      await I.seeTextInPage(['Enter hearing details', 'Hearing directions'], 'Backup notice');
+      await I.see(manageHearingFormData.checkYourAnswers.recipientApplicant1);
+      await I.see(manageHearingFormData.checkYourAnswers.recipientApplicant2);
+      await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
+      await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
+      await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
+      await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+      await I.wait(3);
+      await I.retry(5).click(this.fields.continueButton);
+      await I.wait(3);
+      await I.retry(5).seeElement(this.fields.alertMessage);
+    },
 };
