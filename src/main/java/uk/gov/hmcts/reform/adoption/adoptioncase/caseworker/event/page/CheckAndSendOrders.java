@@ -22,22 +22,25 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .done()
             .build();
 
-        pageBuilder.page("pageNote")
+        pageBuilder.page("checkAndSendOrder2")
+            .label("checkAndSendOrdersLabel2","## Review Order")
             .complex(CaseData::getSelectedOrder)
             .readonlyNoSummary(SelectedOrder::getDocumentReview)
+            .label("checkAndSendOrdersLabel5","### These recipients have been selected to receive this order",
+                   null, false)
             .readonlyNoSummary(
                 SelectedOrder::getOrderType,
                 "checkAndSendOrderDropdownListCONTAINS\" " + caseManageGateKeepingOrder + " \"")
             .readonlyNoSummary(SelectedOrder::getAdoptionOrderRecipients,
                       "orderType=\"caseManagementOrder\"")
-            .readonlyNoSummary(SelectedOrder::getFinalOrderRecipients,
+            .readonlyNoSummary(SelectedOrder::getFinalOrderRecipientsA76,
+                      "orderType=\"finalAdoptionOrder\"")
+            .readonlyNoSummary(SelectedOrder::getFinalOrderRecipientsA206,
                       "orderType=\"finalAdoptionOrder\"")
             .done();
 
-        pageBuilder.page("checkAndSendOrders3")
+        pageBuilder.page("checkAndSendOrder3")
             .label("checkAndSendOrdersLabel3","## Review Order")
-            .label("checkAndSendOrdersLabel4","## Do you want to server the order or return for amendments?",
-                   null, true)
             .mandatory(CaseData::getOrderCheckAndSend)
             .done();
 
@@ -54,7 +57,8 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
                                                              .getValueCode().toString())).findFirst();
         if (commonOrderItem.isPresent()) {
             var selectedItem = new SelectedOrder();
-            selectedItem.setFinalOrderRecipients(commonOrderItem.get().getValue().getFinalOrderRecipients());
+            selectedItem.setFinalOrderRecipientsA76(commonOrderItem.get().getValue().getFinalOrderRecipientsA76());
+            selectedItem.setFinalOrderRecipientsA206(commonOrderItem.get().getValue().getFinalOrderRecipientsA206());
             selectedItem.setOrderType(commonOrderItem.get().getValue().getManageOrderType());
             selectedItem.setAdoptionOrderRecipients(commonOrderItem.get().getValue().getAdoptionOrderRecipients());
             selectedItem.setDocumentReview(commonOrderItem.get().getValue().getDocumentReview());
