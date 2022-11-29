@@ -19,6 +19,6 @@ fields: {
   await I.retry(6).seeElement(this.fields.uploadCorrespondenceLink);
   I.seeTextInTab(['Correspondence 1', 'Date'], currentDate);
   I.seeTextInTab(['Correspondence 1', 'Document description'], 'Seek further information');
-  I.seeTextInTab(['Correspondence 1', 'Uploaded by'], 'Child\'s social worker : social worker');
+  I.seeTextInTab(['Correspondence 1', 'Uploaded by'], 'User Test');
   },
 };
