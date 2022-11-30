@@ -240,6 +240,7 @@ module.exports = {
       await I.retry(5).click(this.fields.continueButton);
       await I.wait(3);
       await I.retry(5).click(this.fields.continueButton);
+      await I.wait(3);
       await I.retry(3).see('Select a hearing you want to adjourn is required');
       await I.retry(5).click(this.fields.vacateHearingToSelect);
       await I.retry(5).click(this.fields.continueButton);
@@ -275,6 +276,7 @@ module.exports = {
         await I.retry(5).click(this.fields.continueButton);
         await I.wait(3);
         await I.retry(5).click(this.fields.continueButton);
+        await I.wait(3);
         await I.retry(3).see('Select a hearing you want to adjourn is required');
         await I.wait(3);
         await I.retry(5).click(this.fields.vacateHearingToSelect);
