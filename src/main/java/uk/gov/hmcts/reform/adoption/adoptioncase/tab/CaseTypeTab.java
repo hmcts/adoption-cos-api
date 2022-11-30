@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.tab;
 
+
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
@@ -96,6 +97,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildTabWithAgencyAndLocalAuthorityDetails(tabBuilderForOtherParties);
         buildTabWithRespondentDetails(tabBuilderForOtherParties);
         buildHearingsTab(configBuilder);
+        buildOrdersViewTab(configBuilder);
     }
 
     private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -106,6 +108,14 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
                 + "/trigger/caseworker-manage-hearing/caseworker-manage-hearingmanageOrders1)")
             .field(CaseData::getNewHearings)
             .field(CaseData::getVacatedHearings);
+    }
+
+    private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("orders","Orders")
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .label("labelSummary-orderview", null, "[Create new order](/cases/case-details/${[CASE_REFERENCE]}"
+                + "/trigger/caseworker-manage-orders/caseworker-manage-ordersmanageOrders1)")
+            .field(CaseData::getCommonOrderList);
     }
 
     private void buildTabWithRespondentDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
@@ -303,6 +313,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field(CaseData::getReportsDocumentCategory)
             .field(CaseData::getStatementsDocumentCategory)
             .field(CaseData::getAdditionalDocumentsCategory);
+
     }
 
     private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {

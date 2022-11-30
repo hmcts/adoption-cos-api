@@ -6,7 +6,7 @@ const finalAdoptionOrderDetails = require('../fixtures/finalAdoptionOrderDetails
 
 let caseId;
 
-Feature('Manage order tests').retry(1);
+Feature('Manage order tests').retry(0);
 
 async function setupScenario(I) {
   caseId = await laHelper.createCompleteCase();
@@ -25,6 +25,7 @@ Scenario('Verify final adoption order details check and send Orders and CYA', as
   await finalOrderPage.verifyFAODateAndPlaceOfBirth();
   await finalOrderPage.verifyFinalAdoptionRegistrationDetails();
   await finalOrderPage.verifyFinalAdoptionOrderRecipients();
+  await finalOrderPage.verifyOrderPreviewScreen();
   await finalOrderPage.finalAdoptionOrderManagementDateOrderMadeCYAPage();
   await finalOrderPage.verifyFinalAdoptionOrderRecipientsCYA();
   await I.retry(3).seeEventSubmissionConfirmation(caseId, config.administrationActions.manageOrders);

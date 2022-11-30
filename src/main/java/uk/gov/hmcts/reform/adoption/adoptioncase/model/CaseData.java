@@ -10,15 +10,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
-import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
@@ -28,24 +28,29 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.SortedSet;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOPTION_AGENCY_STR;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -535,6 +540,7 @@ public class CaseData {
     )
     private AdoptionUploadDocument adoptionUploadDocument;
 
+
     @CCD(
         label = "Role",
         hint = "What is their role? For example, first applicant or child's social worker."
@@ -610,6 +616,7 @@ public class CaseData {
     )
     private LocalDateTime date;
 
+
     @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
@@ -659,12 +666,21 @@ public class CaseData {
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
 
+
     @CCD(
         typeOverride = Collection,
         typeParameterOverride = "ManageOrdersData",
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageOrdersData>> manageOrderList;
+
+    @CCD(
+        label = "Orders",
+        typeOverride = Collection,
+        typeParameterOverride = "OrderData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<OrderData>> commonOrderList;
 
     @CCD(
         typeOverride = Collection,
@@ -686,19 +702,16 @@ public class CaseData {
     )
     private DynamicList checkAndSendOrderDropdownList;
 
+
     @CCD(
-        label = "Document to review",
-        hint = "The document will open in a new page when you select it."
+        label = "Review Order",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
-    private Document documentReview;
-
-    private Set<ManageOrdersData.Recipients> adoptionOrderRecipients;
-
-    private ManageOrdersData.ManageOrderType manageOrderSelecType;
-
-    private Set<AdoptionOrderData.RecipientsA206> finalOrderRecipients;
+    @JsonUnwrapped
+    private SelectedOrder selectedOrder;
 
     @CCD(
+        label = "Do you want to server the order or return for amendments?",
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "OrderCheckAndSend"
@@ -732,6 +745,53 @@ public class CaseData {
             return familyCourtName;
         }
         return manageOrdersData.getNameOfCourtFurtherHearing();
+    }
+
+    public DynamicList getPlacementOfTheChildList() {
+        List<DynamicListElement> listElements = new ArrayList<>();
+
+        if (this.getAdopAgencyOrLA() != null) {
+            DynamicListElement adoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, this.getAdopAgencyOrLA().getAdopAgencyOrLaName(),
+                                   this.getAdopAgencyOrLA().getAdopAgencyTown(),
+                                   this.getAdopAgencyOrLA().getAdopAgencyPostcode()))
+                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
+                .build();
+            listElements.add(adoptionAgency);
+        }
+
+        if (YesOrNo.YES.equals(this.getHasAnotherAdopAgencyOrLAinXui())) {
+            DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, this.getOtherAdoptionAgencyOrLA().getAgencyOrLaName(),
+                                   this.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostTown(),
+                                   this.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostCode()))
+                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
+                .build();
+            listElements.add(otherAdoptionAgency);
+        }
+
+        if (this.getChildSocialWorker() != null) {
+            DynamicListElement childLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, this.getChildSocialWorker().getSocialWorkerName(),
+                                   this.getChildSocialWorker().getSocialWorkerTown(),
+                                   this.getChildSocialWorker().getSocialWorkerPostcode()))
+                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
+                .build();
+            listElements.add(childLocalAuthority);
+        }
+
+        if (this.getApplicantSocialWorker() != null) {
+            DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, this.getApplicantSocialWorker().getSocialWorkerName(),
+                                   this.getApplicantSocialWorker().getSocialWorkerTown(),
+                                   this.getApplicantSocialWorker().getSocialWorkerPostcode()))
+                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
+                .build();
+            listElements.add(applicantLocalAuthority);
+        }
+        adoptionOrderData.setPlacementOfTheChildList(DynamicList.builder()
+            .listItems(listElements).value(DynamicListElement.EMPTY).build());
+        return adoptionOrderData.getPlacementOfTheChildList();
     }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
@@ -783,58 +843,6 @@ public class CaseData {
         addToCombinedDocumentsGenerated();
     }
 
-    public void sortUploadedDocuments(List<ListValue<AdoptionDocument>> previousDocuments) {
-        if (isEmpty(previousDocuments)) {
-            return;
-        }
-
-        Set<String> previousListValueIds = previousDocuments
-            .stream()
-            .map(ListValue::getId)
-            .collect(Collectors.toCollection(HashSet::new));
-
-        //Split the collection into two lists one without id's(newly added documents) and other with id's(existing documents)
-        Map<Boolean, List<ListValue<AdoptionDocument>>> documentsWithoutIds =
-            this.getDocumentsUploaded()
-                .stream()
-                .collect(Collectors.groupingBy(listValue -> !previousListValueIds.contains(listValue.getId())));
-
-        this.setDocumentsUploaded(sortDocuments(documentsWithoutIds));
-    }
-
-    private List<ListValue<AdoptionDocument>> sortDocuments(final Map<Boolean, List<ListValue<AdoptionDocument>>> documentsWithoutIds) {
-
-        final List<ListValue<AdoptionDocument>> sortedDocuments = new ArrayList<>();
-
-        final var newDocuments = documentsWithoutIds.get(true);
-        final var previousDocuments = documentsWithoutIds.get(false);
-
-        if (null != newDocuments) {
-            sortedDocuments.addAll(0, newDocuments); // add new documents to start of the list
-            sortedDocuments.addAll(1, previousDocuments);
-            sortedDocuments.forEach(
-                uploadedDocumentListValue -> uploadedDocumentListValue.setId(String.valueOf(UUID.randomUUID()))
-            );
-            return sortedDocuments;
-        }
-
-        return previousDocuments;
-    }
-
-    @JsonIgnore
-    public void addToDocumentsUploaded(final ListValue<AdoptionDocument> listValue) {
-
-        final List<ListValue<AdoptionDocument>> documents = getDocumentsUploaded();
-
-        if (isEmpty(documents)) {
-            final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
-            documentList.add(listValue);
-            setDocumentsUploaded(documentList);
-        } else {
-            documents.add(0, listValue); // always add to start top of list
-        }
-    }
-
     @JsonIgnore
     public <T> List<ListValue<T>> archiveManageOrdersHelper(List<ListValue<T>> list, T object) {
         if (isEmpty(list)) {
@@ -866,6 +874,7 @@ public class CaseData {
 
     @JsonIgnore
     public void archiveManageOrders() {
+        OrderData data = new OrderData();
         switch (this.getManageOrdersData().getManageOrderType()) {
             case CASE_MANAGEMENT_ORDER:
                 this.getManageOrdersData().setSubmittedDateManageOrder(
@@ -873,6 +882,15 @@ public class CaseData {
                 this.getManageOrdersData().setOrderId(UUID.randomUUID().toString());
                 this.setManageOrderList(archiveManageOrdersHelper(
                     this.getManageOrderList(), this.getManageOrdersData()));
+
+                data.setOrderId(getManageOrdersData().getOrderId());
+                data.setManageOrderType(getManageOrdersData().getManageOrderType());
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setSubmittedDateAndTimeOfOrder(getManageOrdersData().getSubmittedDateManageOrder());
+                data.setDateOrderMate(getManageOrdersData().getDateOrderMade());
+                data.setOrderedBy(getManageOrdersData().getOrderedBy());
+                data.setDocumentReview(getManageOrdersData().getDraftDocument());
+                data.setAdoptionOrderRecipients(getManageOrdersData().getRecipientsList());
                 break;
             case GENERAL_DIRECTIONS_ORDER:
                 this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
@@ -880,6 +898,11 @@ public class CaseData {
                 this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setDirectionsOrderList(archiveManageOrdersHelper(
                     this.getDirectionsOrderList(), this.getDirectionsOrderData()));
+
+                data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setDocumentReview(getDirectionsOrderData().getDraftDocument());
+                data.setSubmittedDateAndTimeOfOrder(getDirectionsOrderData().getSubmittedDateDirectionsOrder());
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
@@ -887,14 +910,27 @@ public class CaseData {
                 this.getAdoptionOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setAdoptionOrderList(archiveManageOrdersHelper(
                     this.getAdoptionOrderList(), this.getAdoptionOrderData()));
+
+                data.setOrderId(getAdoptionOrderData().getOrderId());
+                data.setManageOrderType(FINAL_ADOPTION_ORDER);
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setDateOrderMate(getAdoptionOrderData().getDateOrderMadeFinalAdoptionOrder());
+                data.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
+                data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
+                data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
+                data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
+                data.setDocumentReview(getAdoptionOrderData().getDraftDocument());
                 break;
             default:
                 break;
         }
+        this.setCommonOrderList(archiveManageOrdersHelper(
+            this.getCommonOrderList(), data));
         this.setManageOrdersData(new ManageOrdersData());
         this.setDirectionsOrderData(new DirectionsOrderData());
         this.setAdoptionOrderData(new AdoptionOrderData());
     }
+
 
     @JsonIgnore
     public void archiveHearingInformation() {
@@ -1001,4 +1037,5 @@ public class CaseData {
         }
         this.setManageHearingOptions(null);
     }
+
 }

@@ -29,19 +29,8 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 @Builder
 public class AdoptionOrderData {
 
-    @CCD(
-        access = {DefaultAccess.class}
-    )
-    private Document draftDocument;
-
-    @CCD(showCondition = "submittedDateAdoptionOrder=\"never\"")
-    private String orderId;
-
     @CCD(access = {DefaultAccess.class})
     private LocalDateTime submittedDateAdoptionOrder;
-
-    @CCD(showCondition = "submittedDateAdoptionOrder=\"never\"")
-    private OrderStatus orderStatus;
 
     @CCD(hint = "Copy and paste or type directly into the text box",
         typeOverride = TextArea,
@@ -80,6 +69,17 @@ public class AdoptionOrderData {
         typeParameterOverride = "RecipientsA206"
     )
     private Set<RecipientsA206> recipientsListA206;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document draftDocument;
+
+    @CCD(showCondition = "submittedDateAdoptionOrder=\"never\"")
+    private String orderId;
+
+    @CCD(showCondition = "submittedDateAdoptionOrder=\"never\"")
+    private OrderStatus orderStatus;
 
     @Getter
     @AllArgsConstructor

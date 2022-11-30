@@ -13,8 +13,13 @@ public enum OrderStatus implements HasLabel {
     OPEN("Open"),
 
     @JsonProperty("servedOrder")
-    SERVED("Served");
+    SERVED("Served"),
 
+    @JsonProperty("returnForAmendments")
+    RETURN_FOR_AMENDMENTS("Return for amendments"),
+
+    @JsonProperty("pendingCheckAndSend")
+    PENDING_CHECK_N_SEND("Pending Check & send");
     private String label;
 
 }
