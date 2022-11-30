@@ -1,44 +1,38 @@
 const config = require('../config');
-
 const laHelper = require('../helpers/la_portal_case');
-const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
-const finalAdoptionOrderDetails = require('../fixtures/finalAdoptionOrderDetails.js');
-
 let caseId;
 
-Feature('Manage order tests').retry(1);
+Feature('Check and Send orders tests').retry(0);
 
 async function setupScenario(I) {
   caseId = await laHelper.createCompleteCase();
   console.log('CCD Case number - ' + caseId);
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
+  await I.wait(2);
 }
 
-Scenario('Verify final adoption order details check and send Orders and CYA', async ({I, caseViewPage, manageOrdersPage, finalOrderPage,checkAndSendOrdersPage}) => {
+Scenario('Order Creation - send and check orders', async ({I, caseViewPage, manageOrdersPage,checkAndSendOrdersPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
-  await manageOrdersPage.verifyCaseDetails();
   await manageOrdersPage.selectCreateNewOrder();
-  await manageOrdersPage.verifyTypeOfOrdersListed();
-  await finalOrderPage.selectFinalOrderAndVerify();
-  await finalOrderPage.addJudgeNameChildAdoptionNameAndDateOrderMade()
-  await finalOrderPage.verifyFAODateAndPlaceOfBirth();
-  await finalOrderPage.verifyFinalAdoptionRegistrationDetails();
-  await finalOrderPage.verifyFinalAdoptionOrderRecipients();
-  await finalOrderPage.finalAdoptionOrderManagementDateOrderMadeCYAPage();
-  await finalOrderPage.verifyFinalAdoptionOrderRecipientsCYA();
-  await I.retry(3).seeEventSubmissionConfirmation(caseId, config.administrationActions.manageOrders);
-
+  await manageOrdersPage.selectCaseManagementOrderAndVerify();
+  await manageOrdersPage.addDateOrderMade();
+  await manageOrdersPage.addPreambleAndReallocateJudgeInCaseManagementOrder();
+  await manageOrdersPage.caseManagementOrderServeParties();
+  await manageOrdersPage.caseManagementOrderPreambleReAllocatedCYAPage();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
   await caseViewPage.goToNewActions(config.administrationActions.checkAndSendOrders);
   await checkAndSendOrdersPage.verifyCheckAndSendOrdersPageDetails();
   await caseViewPage.goToNewActions(config.administrationActions.checkAndSendOrders);
   await checkAndSendOrdersPage.selectOrderToReview();
   await checkAndSendOrdersPage.verifyOrderForReview();
-  await checkAndSendOrdersPage.FinalAdoptionOrderRecipients();
+  await checkAndSendOrdersPage.gateKeepingOrderRecipients();
   await checkAndSendOrdersPage.selectServerOrder();
+  await checkAndSendOrdersPage.verifyOrderForReview();
   await checkAndSendOrdersPage.verifyOrderTypeCYA();
   await checkAndSendOrdersPage.serverOrderCYA();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.checkAndSendOrders);
-
 });
+
+
 

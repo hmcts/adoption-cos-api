@@ -43,7 +43,8 @@ exports.config = {
       chrome: {
         ignoreHTTPSErrors: true,
         args: process.env.DISABLE_WEB_SECURITY === 'true' ? ['--disable-web-security'] : [],
-        devtools: process.env.SHOW_BROWSER_WINDOW || false,
+        //devtools: process.env.SHOW_BROWSER_WINDOW || false,
+
       },
       windowSize: '1280x960',
     },
@@ -82,9 +83,10 @@ exports.config = {
     caseDetailsSummaryPage: './src/e2e/pages/summaryDetailsTab.page.js',
     manageHearingsPage: './src/e2e/pages/manageHearings.page.js',
     manageHearingsTabPage: './src/e2e/pages/manageHearingsTab.page.js',
-    finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js',
+    finalOrderPage: './src/e2e/pages/.pagefinalAdoptionOrder.js',
     amendOtherPartiesDetailsPage: './src/e2e/pages/amendOtherPartiesDetails.page.js',
-    finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js'
+    finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js',
+    checkAndSendOrdersPage: './src/e2e/pages/checkAndSendOrders.page.js',
   },
   plugins: {
     retryFailedStep: {
