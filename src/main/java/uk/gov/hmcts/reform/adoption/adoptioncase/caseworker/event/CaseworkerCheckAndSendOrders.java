@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
+import uk.gov.hmcts.reform.adoption.adoptioncase.service.CommonPageBuilder;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -46,8 +47,6 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
      * The constant CASEWORKER_CHECK_AND_SEND_ORDERS.
      */
     public static final String CASEWORKER_CHECK_AND_SEND_ORDERS = "caseworker-check-and-send-orders";
-
-    private final CcdPageConfiguration checkAndSendOrders = new CheckAndSendOrders();
 
     private static final String check_and_send_orders = "Check and send orders";
 
@@ -150,10 +149,15 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             .filter(item -> item.getValue().getOrderId()
                 .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
             .findFirst();
+
+        if(caseData.getOrderCheckAndSend().getLabel().equals(OrderStatus.RETURN_FOR_AMENDMENTS.getLabel())) {
+            CommonPageBuilder.updateCasedataFSendAndReply(caseData);
+        }
         commonOrderListItem.get().getValue().setStatus(caseData.getOrderCheckAndSend().equals(
             OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
         commonOrderListItem.get().getValue().setDateServed(LocalDate.now(clock));
         caseData.setSelectedOrder(null);
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 

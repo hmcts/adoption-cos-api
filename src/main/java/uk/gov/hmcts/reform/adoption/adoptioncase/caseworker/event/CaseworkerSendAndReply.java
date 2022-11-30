@@ -11,10 +11,10 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendAndReply;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessagesAction;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
+import uk.gov.hmcts.reform.adoption.adoptioncase.service.CommonPageBuilder;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -79,10 +79,7 @@ public class CaseworkerSendAndReply implements CCDConfig<CaseData, State, UserRo
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
         var caseData = caseDataStateCaseDetails.getData();
 
-        if (caseData.getMessageAction().equals(MessagesAction.SEND_A_MESSAGE)) {
-            caseData.storeSendMessages();
-        }
-        caseData.setMessageAction(null);
+        CommonPageBuilder.updateCasedataFSendAndReply(caseData);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseDataStateCaseDetails.getData())
             .build();

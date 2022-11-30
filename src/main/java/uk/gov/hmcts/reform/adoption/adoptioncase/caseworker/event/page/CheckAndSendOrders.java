@@ -1,13 +1,20 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
+import org.apache.commons.collections4.CollectionUtils;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CommonPageBuilder;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class CheckAndSendOrders implements CcdPageConfiguration {
 
@@ -64,6 +71,21 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             selectedItem.setDocumentReview(commonOrderItem.get().getValue().getDocumentReview());
             selectedItem.setOrderStatus(commonOrderItem.get().getValue().getStatus());
             data.setSelectedOrder(selectedItem);
+        }
+
+        if(data.getListOfSendMessages() != null) {
+            List<DynamicListElement> listElements = new ArrayList<>();
+            if (CollectionUtils.isNotEmpty(data.getListOfSendMessages())) {
+                data.getListOfSendMessages().forEach(item -> {
+                    DynamicListElement listElement = DynamicListElement.builder()
+                        .label(item.getValue().getMessageId() != null ? item.getValue().getMessageId() : "No MESSAGE ID")
+                        .code(item.getValue().getMessageId() != null
+                                  ? UUID.fromString(item.getValue().getMessageId()) : UUID.randomUUID()).build();
+                    listElements.add(listElement);
+                });
+
+            }
+            data.setMessagesList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)

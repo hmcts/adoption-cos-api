@@ -18,10 +18,6 @@ public class CommonPageBuilder {
     }
 
     public static void commonPage(PageBuilder pageBuilder, String type) {
-//        pageBuilder.page("tt")
-//            .showCondition(type)
-//            .mandatory(CaseData::getDate)
-//            .done();
         pageBuilder
             .page("pageSendAndReply", CommonPageBuilder::midEvent)
             .showCondition(type)
@@ -146,5 +142,13 @@ public class CommonPageBuilder {
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
+    }
+
+
+    public static void updateCasedataFSendAndReply(CaseData caseData) {
+        if (caseData.getMessageAction().equals(MessagesAction.SEND_A_MESSAGE)) {
+            caseData.storeSendMessages();
+        }
+        caseData.setMessageAction(null);
     }
 }
