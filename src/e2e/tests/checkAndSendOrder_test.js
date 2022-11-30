@@ -22,13 +22,10 @@ Scenario('Order Creation - send and check orders', async ({I, caseViewPage, mana
   await manageOrdersPage.caseManagementOrderPreambleReAllocatedCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
   await caseViewPage.goToNewActions(config.administrationActions.checkAndSendOrders);
-  await checkAndSendOrdersPage.verifyCheckAndSendOrdersPageDetails();
-  await caseViewPage.goToNewActions(config.administrationActions.checkAndSendOrders);
   await checkAndSendOrdersPage.selectOrderToReview();
   await checkAndSendOrdersPage.verifyOrderForReview();
   await checkAndSendOrdersPage.gateKeepingOrderRecipients();
   await checkAndSendOrdersPage.selectServerOrder();
-  await checkAndSendOrdersPage.verifyOrderForReview();
   await checkAndSendOrdersPage.verifyOrderTypeCYA();
   await checkAndSendOrdersPage.serverOrderCYA();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.checkAndSendOrders);

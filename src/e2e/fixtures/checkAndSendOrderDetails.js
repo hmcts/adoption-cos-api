@@ -4,7 +4,7 @@ module.exports = {
   selectTheToReview: 'Select the order you want to review',
   documentsToReview: 'Document to review',
   selectedRecipientsToServerOrder: 'These recipients have been selected to receive this order',
-  serveOrderOrAmendment: 'Do you want to serve the order or return the amendments?',
+  serveOrderOrAmendment: 'Do you want to server the order or return for amendments?',
   selectOrderToreview: 'Select the order you want to review',
   serverTheOrder: 'Serve the order',
   gateKeepingOrder: 'Case Management Order (gatekeeping order)',

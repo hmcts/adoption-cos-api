@@ -2,6 +2,7 @@ const config = require('../config');
 const {I} = inject();
 const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 const checkAndSendOrderDetails = require('../fixtures/checkAndSendOrderDetails.js');
+let orderType;
 
 module.exports = {
   fields: {
@@ -22,34 +23,25 @@ module.exports = {
 
   async verifyCheckAndSendOrdersPageDetails() {
     await I.wait(3);
-    await I.retry(3).seeElement(this.fields.pageTitle);
-    await I.retry(3).seeElement(this.fields.childName);
-    await I.retry(3).seeElement(this.fields.ordersToReviewTitle);
-    await I.retry(3).seeElement(this.fields.ordersToReviewSubTitle);
+    await I.retry(3).waitForText('Orders for review', 30);
+    // await I.retry(3).seeElement(this.fields.pageTitle);
+    // await I.retry(3).seeElement(this.fields.childName);
+    // await I.retry(3).seeElement(this.fields.ordersToReviewTitle);
+    // await I.retry(3).seeElement(this.fields.ordersToReviewSubTitle);
     // await I.click(this.fields.continueButton);
     // await I.wait(3);
     // await I.retry(3).seeElement(this.fields.errorMessage);
     // await I.click(this.fields.cancelButton);
-    await I.wait(5);
   },
 
   async selectOrderToReview(){
-    //Implementation
-    const currentUrl = await I.grabCurrentUrl();
-    await I.retryUntilExists(async () => {
-      if(await I.waitForSelector(this.fields.ordersDropDown, 30) != null) {
-        await I.scrollToElement(this.fields.ordersDropDown);
-        await Iretry(3).selectOption(this.fields.ordersDropDown, '//select[@id="checkAndSendOrderDropdownList"]/option[2]');
-        await I.wait(3);
-       await  I.click(this.fields.continueButton);
-      } else {
-        const newUrl = await I.grabCurrentUrl();
-        if(newUrl === currentUrl || !newUrl.includes('http')){
-          console.log('Page refresh');
-          I.refreshPage();
-        }
-      }
-    }, 'ccd-case-event-trigger', false);
+
+    let delivery = locate('//select[@id="checkAndSendOrderDropdownList"]/option').at(2);
+     orderType = await I.grabTextFrom(delivery);
+    await I.wait(3);
+    await I.retry(3).selectOption(this.fields.ordersDropDown, orderType);
+    await I.click(this.fields.continueButton);
+    await I.wait(3);
   },
 
   async verifyOrderForReview(){
@@ -61,6 +53,8 @@ module.exports = {
 
   async selectServerOrder(){
     await I.retry().see(checkAndSendOrderDetails.serveOrderOrAmendment)
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage, this.fields.checkAndSendOrderErrorMessage);
     await I.retry(3).click(this.fields.serveOrderRadioBtn);
     await I.retry(3).click(this.fields.continueButton);
@@ -70,13 +64,13 @@ module.exports = {
   async verifyOrderTypeCYA(){
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Check your answers');
-    await I.retry().see(checkAndSendOrderDetails.gateKeepingOrder)
+    await I.retry().see(orderType);
   },
 
   async verifyFAOTypeCYA(){
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Check your answers');
-    await I.retry().see(checkAndSendOrderDetails.finalAdoptionOrder)
+    await I.retry().see(checkAndSendOrderDetails.finalAdoptionOrder);
   },
 
   async serverOrderCYA(){
