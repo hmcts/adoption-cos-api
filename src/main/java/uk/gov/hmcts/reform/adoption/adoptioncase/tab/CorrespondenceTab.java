@@ -29,6 +29,7 @@ public class CorrespondenceTab implements CCDConfig<CaseData, State, UserRole> {
                        + "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)"
             )
             .field(CaseData::getCorrespondenceDocumentCategory);
+
     }
 }
 
