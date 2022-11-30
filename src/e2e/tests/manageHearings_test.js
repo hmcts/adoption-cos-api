@@ -43,7 +43,7 @@ Scenario('Manage Hearings of a case - Adjourn Hearing with NO Relisting', async 
     await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
     await manageHearingsPage.genericAddNewHearing();
     await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
-    await manageHearingsPage.selectAdjournHearingNoRelisting(relistingNo);
+    await manageHearingsPage.selectAdjournHearingNoRelisting();
     await manageHearingsPage.verifyAdjournHearingNoRelistingCheckYourAnswers();
 });
 
