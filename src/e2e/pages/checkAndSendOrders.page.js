@@ -30,28 +30,12 @@ module.exports = {
   },
 
  async selectOrderToReview(){
- //Implementation
-    const currentUrl = await I.grabCurrentUrl();
-    await I.retryUntilExists(async () => {
-      if(await I.waitForSelector(this.fields.ordersDropDown, 30) != null) {
-        await I.scrollToElement(this.fields.ordersDropDown);
-        I.selectOption(this.fields.ordersDropDown, '//select[@id="checkAndSendOrderDropdownList"]/option[2]');
-        I.click(this.fields.continueButton);
-      } else {
-        const newUrl = await I.grabCurrentUrl();
-        if(newUrl === currentUrl || !newUrl.includes('http')){
-          console.log('Page refresh');
-          I.refreshPage();
-        }
-      }
-    }, 'ccd-case-event-trigger', false);
+   let delivery = locate('//select[@id="checkAndSendOrderDropdownList"]/option').at(2);
+   let orderType = await I.grabTextFrom(delivery);
+   await I.wait(3);
+   await I.retry(3).selectOption(this.fields.ordersDropDown, orderType);
+   await I.click(this.fields.continueButton);
+   await I.wait(3);
   },
 
- async verifyCheckYourAnswersPage(){
-  // To be implemented after developement
-  await I.wait(5);
-  I.click(this.fields.continueButton);
-  I.wait(3);
-  I.retry(5).seeElement(this.fields.alertMessage);
-  },
   };

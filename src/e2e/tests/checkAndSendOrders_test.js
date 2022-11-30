@@ -14,7 +14,6 @@ async function setupScenario(I) {
 
 Scenario('Order Creation - send and check orders', async ({I, caseViewPage, manageOrdersPage,checkAndSendOrdersPage }) => {
   await setupScenario(I);
-  await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.selectCreateNewOrder();
   await manageOrdersPage.selectCaseManagementOrderAndVerify();
@@ -27,5 +26,5 @@ Scenario('Order Creation - send and check orders', async ({I, caseViewPage, mana
   await checkAndSendOrdersPage.verifyCheckAndSendOrdersPageDetails();
   await caseViewPage.goToNewActions(config.administrationActions.checkAndSendOrders);
   await checkAndSendOrdersPage.selectOrderToReview();
-  await checkAndSendOrdersPage.verifyCheckYourAnswersPage();
+
 });
