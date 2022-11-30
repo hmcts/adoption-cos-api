@@ -106,6 +106,7 @@ module.exports = {
      I.retry(5).click(this.fields.legalGuardian);
      I.retry(5).click(this.fields.otherAdoptionAgency);
      I.retry(5).click(this.fields.continueButton);
+     I.wait(5);
    },
 
 
@@ -172,7 +173,7 @@ module.exports = {
  },
 
   async verifyVacateHearingWithRelistingCheckYourAnswers(){
-    await I.wait(3);
+    await I.wait(5);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingOption);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingReason);

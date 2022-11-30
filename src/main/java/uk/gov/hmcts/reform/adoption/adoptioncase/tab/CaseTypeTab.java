@@ -304,6 +304,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field(CaseData::getReportsDocumentCategory)
             .field(CaseData::getStatementsDocumentCategory)
             .field(CaseData::getAdditionalDocumentsCategory);
+
     }
 
     private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
