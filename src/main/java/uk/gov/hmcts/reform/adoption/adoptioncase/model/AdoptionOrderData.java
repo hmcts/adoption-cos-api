@@ -81,6 +81,11 @@ public class AdoptionOrderData {
     )
     private Set<RecipientsA206> recipientsListA206;
 
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document draftDocument;
+
     @Getter
     @AllArgsConstructor
     public enum RecipientsA76 implements HasLabel {
