@@ -25,7 +25,6 @@ public class SelectedOrder {
     private Document documentReview;
 
     @CCD(
-        label = "These recipients have been selected to receive this order",
         access = { SystemUpdateAccess.class, DefaultAccess.class}
     )
     private Set<ManageOrdersData.Recipients> adoptionOrderRecipients;
