@@ -5,17 +5,26 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
+import java.util.UUID;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 
 @Data
 @AllArgsConstructor
@@ -128,4 +137,21 @@ public class ManageHearingDetails {
     )
     private Document hearingA90Document;
 
+    public DynamicList getHearingList(List<ListValue<ManageHearingDetails>> hearings) {
+        List<DynamicListElement> listElements = new ArrayList<>();
+
+        if (CollectionUtils.isNotEmpty(hearings)) {
+            hearings.forEach(hearing -> {
+                DynamicListElement listElement = DynamicListElement.builder()
+                    .label(String.join(BLANK_SPACE, hearing.getValue().getTypeOfHearing(),
+                                       "-",
+                                       hearing.getValue().getHearingDateAndTime().format(DateTimeFormatter.ofPattern(
+                                           "dd MMM yyyy',' hh:mm:ss a")).replace("pm", "PM").replace("am", "PM")
+                    )).code(UUID.fromString(hearing.getValue().getHearingId()))
+                    .build();
+                listElements.add(listElement);
+            });
+        }
+        return DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build();
+    }
 }

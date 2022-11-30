@@ -723,6 +723,18 @@ public class CaseData {
         return manageOrdersData.getNameOfCourtFurtherHearing();
     }
 
+    public DynamicList getHearingListThatCanBeVacated() {
+        this.setHearingListThatCanBeVacated(
+            this.getManageHearingDetails().getHearingList(this.getNewHearings()));
+        return this.hearingListThatCanBeVacated;
+    }
+
+    public DynamicList getHearingListThatCanBeAdjourned() {
+        this.setHearingListThatCanBeAdjourned(
+            this.getManageHearingDetails().getHearingList(this.getNewHearings()));
+        return this.hearingListThatCanBeAdjourned;
+    }
+
     public DynamicList getPlacementOfTheChildList() {
         List<DynamicListElement> listElements = new ArrayList<>();
 
