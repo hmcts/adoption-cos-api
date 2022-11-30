@@ -5,18 +5,18 @@ const utils = require('../utils/utils.js');
 
 module.exports.createCase = async () => {
 
-    const clientId = process.env.ADOPTION_WEB_CLIENT_ID;
-    const s2sSecret = process.env.S2S_SECRET_WEB;
-    const idamSecret = process.env.IDAM_CLIENT_SECRET;
-    const url = process.env.CASE_DATA_STORE_BASEURL;
-    const s2sUrl = process.env.TEST_S2S_URL;
-    const idamUrl = process.env.IDAM_API_BASEURL;
-    const oneTimePassword = otplib.authenticator.generate(s2sSecret);
-    const callbackUrl = "http://localhost:3001/receiver";
+  const clientId = "adoption-web";
+  const s2sSecret = "MQDQXTSPJNLJ5U27";
+  const idamSecret = "fM6td7W^pnKX@**V";
+  const url = "https://ccd-data-store-api-adoption-cos-api-pr-572.service.core-compute-preview.internal";
+  const s2sUrl = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal";
+  const idamUrl = "https://idam-api.aat.platform.hmcts.net";
+  const oneTimePassword = otplib.authenticator.generate(s2sSecret);
+  const callbackUrl = "http://localhost:3001/receiver";
     let s2sAuth;
     let caseId;
-  
-    const agent = new https.Agent({  
+
+    const agent = new https.Agent({
       rejectUnauthorized: false
     });
 
@@ -35,7 +35,7 @@ module.exports.createCase = async () => {
     newUser.email = `adop-test.${Date.now()}@mailinator.com`;
 
     try {
-        let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": process.env.ADOPTION_WEB_MICROSERVICE, "oneTimePassword": oneTimePassword }, { httpsAgent: agent });
+        let s2sAuthRequest = await Axios.post(`${s2sUrl}/lease`, { "microservice": "adoption_web", "oneTimePassword": oneTimePassword });
         s2sAuth = s2sAuthRequest.data;
         let createdAccount = await Axios.post(`${idamUrl}/testing-support/accounts`, newUser, { httpsAgent: agent });
         let idamData = `username=${newUser.email}&password=${newUser.password}&client_id=${clientId}&client_secret=${idamSecret}&grant_type=password&redirect_uri=${callbackUrl}&scope=openid%20profile%20roles`;
@@ -51,13 +51,13 @@ module.exports.createCase = async () => {
                 Accept: '*/*',
                 'Content-Type': 'application/json',
             },
-            httpsAgent: new https.Agent({  
+            httpsAgent: new https.Agent({
               rejectUnauthorized: false
             })
         });
 
         let event = { id: "citizen-create-application" };
-      
+
         data = {
             applicant1FirstName: "Will",
             applicant1LastName: "Smith",

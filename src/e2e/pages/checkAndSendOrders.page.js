@@ -35,21 +35,26 @@ module.exports = {
 
   async selectOrderToReview(){
     //Implementation
-    const currentUrl = await I.grabCurrentUrl();
-    await I.retryUntilExists(async () => {
-      if(await I.waitForSelector(this.fields.ordersDropDown, 30) != null) {
-        await I.scrollToElement(this.fields.ordersDropDown);
-        await Iretry(3).selectOption(this.fields.ordersDropDown, '//select[@id="checkAndSendOrderDropdownList"]/option[2]');
-        await I.wait(3);
-       await  I.click(this.fields.continueButton);
-      } else {
-        const newUrl = await I.grabCurrentUrl();
-        if(newUrl === currentUrl || !newUrl.includes('http')){
-          console.log('Page refresh');
-          I.refreshPage();
-        }
-      }
-    }, 'ccd-case-event-trigger', false);
+    // const currentUrl = await I.grabCurrentUrl();
+    // await I.retryUntilExists(async () => {
+    //   if(await I.waitForSelector(this.fields.ordersDropDown, 30) != null) {
+    //     await I.scrollToElement(this.fields.ordersDropDown);
+    //     await Iretry(3).selectOption(this.fields.ordersDropDown, '//select[@id="checkAndSendOrderDropdownList"]/option[2]');
+    //     await I.wait(3);
+    //    await  I.click(this.fields.continueButton);
+    //   } else {
+    //     const newUrl = await I.grabCurrentUrl();
+    //     if(newUrl === currentUrl || !newUrl.includes('http')){
+    //       console.log('Page refresh');
+    //       I.refreshPage();
+    //     }
+    //   }
+    // }, 'ccd-case-event-trigger', false);
+
+    await I.click('#checkAndSendOrderDropdownList');
+    let delivery = locate ('//select[@id="checkAndSendOrderDropdownList"]/option').at(2);
+    await I.click (delivery);
+    await I.wait(3);
   },
 
   async verifyOrderForReview(){

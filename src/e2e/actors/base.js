@@ -31,7 +31,7 @@ module.exports = {
         await this.goToPage(baseUrl);
         I.grabCurrentUrl();
 
-        if (await this.waitForAnySelector([signedOutSelector, signedInSelector], 30) == null) {
+        if (await this.waitForAnySelector([signedOutSelector, signedInSelector], 50) == null) {
           await this.refreshPage();
           I.grabCurrentUrl();
         }
@@ -48,14 +48,14 @@ module.exports = {
       await this.rejectCookies();
       I.grabCurrentUrl();
       output.debug(`Logged in as ${user.email}`);
-      currentUser = user;
+       currentUser = user;
     I.grabCurrentUrl();
     await this.waitForSelector('#search-result',30);
     await this.wait(3);
   },
 
   async goToPage(url) {
-    this.amOnPage(url);
+    await this.amOnPage(url);
     await this.logWithHmctsAccount();
   },
 
@@ -68,11 +68,11 @@ module.exports = {
       }
       await within(hmctsLoginIn, () => {
         this.fillField('//input[@type="email"]', config.hmctsUser.email);
-        this.wait(0.2);
+        this.wait(2);
         this.click('Next');
         this.wait(0.2);
         this.fillField('//input[@type="password"]', config.hmctsUser.password);
-        this.wait(0.2);
+        this.wait(2);
         this.click('Sign in');
         this.click('Yes');
       });
