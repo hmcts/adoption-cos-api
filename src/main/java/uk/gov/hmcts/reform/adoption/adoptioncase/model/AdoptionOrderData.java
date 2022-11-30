@@ -11,17 +11,26 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOPTION_AGENCY_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
 
 @Data
 @NoArgsConstructor
@@ -187,4 +196,54 @@ public class AdoptionOrderData {
     )
     private LocalDate adoptionRegistrationDate;
 
+    public DynamicList getPlacementOfTheChildList(AdoptionAgencyOrLocalAuthority adopAgencyOrLA,
+                                                  YesOrNo hasAnotherAdopAgencyOrLAinXui,
+                                                  OtherAdoptionAgencyOrLocalAuthority otherAdoptionAgencyOrLA,
+                                                  SocialWorker childSocialWorker,
+                                                  SocialWorker applicantSocialWorker) {
+        List<DynamicListElement> listElements = new ArrayList<>();
+
+        if (adopAgencyOrLA != null) {
+            DynamicListElement adoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, adopAgencyOrLA.getAdopAgencyOrLaName(),
+                                   adopAgencyOrLA.getAdopAgencyTown(),
+                                   adopAgencyOrLA.getAdopAgencyPostcode()))
+                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
+                .build();
+            listElements.add(adoptionAgency);
+        }
+
+        if (YesOrNo.YES.equals(hasAnotherAdopAgencyOrLAinXui)) {
+            DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
+                .label(String.join(COMMA, otherAdoptionAgencyOrLA.getAgencyOrLaName(),
+                                   otherAdoptionAgencyOrLA.getAgencyAddress().getPostTown(),
+                                   otherAdoptionAgencyOrLA.getAgencyAddress().getPostCode()))
+                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
+                .build();
+            listElements.add(otherAdoptionAgency);
+        }
+
+        if (childSocialWorker != null) {
+            DynamicListElement childLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, childSocialWorker.getSocialWorkerName(),
+                                   childSocialWorker.getSocialWorkerTown(),
+                                   childSocialWorker.getSocialWorkerPostcode()))
+                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
+                .build();
+            listElements.add(childLocalAuthority);
+        }
+
+        if (applicantSocialWorker != null) {
+            DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
+                .label(String.join(COMMA, applicantSocialWorker.getSocialWorkerName(),
+                                   applicantSocialWorker.getSocialWorkerTown(),
+                                   applicantSocialWorker.getSocialWorkerPostcode()))
+                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
+                .build();
+            listElements.add(applicantLocalAuthority);
+        }
+        setPlacementOfTheChildList(DynamicList.builder()
+                                                         .listItems(listElements).value(DynamicListElement.EMPTY).build());
+        return getPlacementOfTheChildList();
+    }
 }
