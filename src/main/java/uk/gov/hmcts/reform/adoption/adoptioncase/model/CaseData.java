@@ -541,6 +541,7 @@ public class CaseData {
     )
     private AdoptionUploadDocument adoptionUploadDocument;
 
+
     @CCD(
         label = "Role",
         hint = "What is their role? For example, first applicant or child's social worker."
@@ -616,6 +617,7 @@ public class CaseData {
     )
     private LocalDateTime date;
 
+
     @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
@@ -664,6 +666,7 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
+
 
     @CCD(
         typeOverride = Collection,
@@ -1031,4 +1034,5 @@ public class CaseData {
         }
         this.setManageHearingOptions(null);
     }
+
 }
