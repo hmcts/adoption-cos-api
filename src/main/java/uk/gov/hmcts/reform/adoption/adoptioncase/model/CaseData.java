@@ -651,7 +651,7 @@ public class CaseData {
     private List<ListValue<ManageHearingDetails>> vacatedHearings;
 
     @CCD(
-        label = "Adjourn hearing",
+        label = "Adjourned hearing",
         typeOverride = Collection,
         typeParameterOverride = "ManageHearingDetails",
         access = {DefaultAccess.class}
