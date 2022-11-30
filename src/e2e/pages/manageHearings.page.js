@@ -47,6 +47,7 @@ module.exports = {
     adjournHearingPartiesUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
     adjournHearingLateFiling: '#reasonForAdjournHearing-lateFillingOfDocuments',
     adjournHearingDateToAvoid: '#reasonForAdjournHearing-caseListedOnDatesToAvoid',
+    previewDraftLink:'//ccd-read-document-field/a[contains(text(), \' Hearing notice_A90.pdf\')]'
   },
 
   verifyPageDetails() {
@@ -193,6 +194,7 @@ module.exports = {
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
     await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+    await I.retry(3).seeElement(this.fields.previewDraftLink);
     await I.wait(3);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
@@ -204,6 +206,7 @@ module.exports = {
     this.verifyManageHearingsPageFunctionality();
     this.addNewHearingOptions();
     this.addRecepientDetails();
+    this.verifyPreviewDraft();
     this.verifyAddNewHearingCheckYourAnswers();
   },
 
@@ -268,4 +271,30 @@ module.exports = {
         await I.wait(3);
         await I.retry(5).seeElement(this.fields.alertMessage);
       },
+
+  async addRecepientDetailsWithOutFirstAndSecondApplicant() {
+    I.retry(3).seeElement(this.fields.childNameHeader);
+    I.retry(3).seeElement(this.fields.recipientsTitle);
+    I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
+    I.retry(5).click(this.fields.recipientsBirthMother);
+    I.retry(5).click(this.fields.recipientsBirthFather);
+    I.retry(5).click(this.fields.legalGuardian);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see('Check your answers')
+
+  },
+
+  async verifyPreviewDraft(){
+    await I.wait(3);
+    await I.retry(3).see('Hearing Notice');
+    await I.retry(3).see('Preview Draft');
+    await I.retry(3).seeElement(this.fields.previewDraftLink);
+    await I.retry(5).click(this.fields.continueButton);
+    await I.wait(3);
+  }
+
+
+
+
 };
