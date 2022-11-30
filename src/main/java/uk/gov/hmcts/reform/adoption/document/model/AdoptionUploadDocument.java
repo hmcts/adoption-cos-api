@@ -70,6 +70,11 @@ public class AdoptionUploadDocument {
     )
     private String name;
 
+    @CCD(
+        label = "Uploaded by\n"
+    )
+    private String uploadedBy;
+
     //Add handwritten constructor as a workaround for @JsonUnwrapped prefix issue
     @JsonCreator
     public AdoptionUploadDocument(@JsonProperty("documentLink") Document documentLink,
@@ -78,7 +83,8 @@ public class AdoptionUploadDocument {
                                   @JsonProperty("documentType") DocumentType documentType,
                                   @JsonProperty("documentCategory") DocumentCategory documentCategory,
                                   @JsonProperty("role") String role,
-                                  @JsonProperty("name") String name) {
+                                  @JsonProperty("name") String name,
+                                  @JsonProperty("uploadedBy") String uploadedBy) {
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
         this.documentComment = documentComment;
@@ -86,5 +92,6 @@ public class AdoptionUploadDocument {
         this.documentCategory = documentCategory;
         this.role = role;
         this.name = name;
+        this.uploadedBy = uploadedBy;
     }
 }
