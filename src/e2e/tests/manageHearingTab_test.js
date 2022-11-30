@@ -19,6 +19,7 @@ Scenario('Verify details of manage hearing tab when a new hearing is added', asy
   await manageHearingsPage.verifyManageHearingsPageFunctionality();
   await manageHearingsPage.addNewHearingOptions();
   await manageHearingsPage.addRecepientDetails();
+  await manageHearingsPage.verifyPreviewDraft();
   await manageHearingsPage.verifyAddNewHearingCheckYourAnswers();
   await caseViewPage.navigateToTab('Hearings');
   await manageHearingsTabPage.verifyAddNewHearingTabDetails();
@@ -32,6 +33,7 @@ Scenario('Verify details of manage hearing tab when a new hearing is added', asy
     await manageHearingsPage.selectVacateHearingOptionWithAgreementAndRelisting();
     await manageHearingsPage.addNewHearingForVacateHearingOptions();
     await manageHearingsPage.addRecepientDetails();
+   await manageHearingsPage.verifyPreviewDraft();
     await manageHearingsPage.verifyVacateHearingWithRelistingCheckYourAnswers();
     await caseViewPage.navigateToTab('Hearings');
     await manageHearingsTabPage.verifyNewHearingForVacateHearingWithRelisting();
