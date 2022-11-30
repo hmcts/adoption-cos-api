@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,11 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @AllArgsConstructor
 @Builder
 public class DirectionsOrderData {
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document draftDocument;
 
     @CCD(showCondition = "submittedDateDirectionsOrder=\"never\"")
     private String orderId;

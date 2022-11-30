@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
@@ -26,6 +27,11 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @AllArgsConstructor
 @Builder
 public class ManageOrdersData {
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document draftDocument;
 
     @CCD(showCondition = "submittedDateManageOrder=\"never\"")
     private String orderId;
@@ -220,13 +226,13 @@ public class ManageOrdersData {
     @AllArgsConstructor
     public enum ManageOrderType implements HasLabel {
         @JsonProperty("caseManagementOrder")
-        CASE_MANAGEMENT_ORDER("Case Management Order (gatekeeping order)"),
+        CASE_MANAGEMENT_ORDER("Case management order (gatekeeping order)"),
 
         @JsonProperty("generalDirectionsOrder")
-        GENERAL_DIRECTIONS_ORDER("General Directions Order"),
+        GENERAL_DIRECTIONS_ORDER("General directions order"),
 
         @JsonProperty("finalAdoptionOrder")
-        FINAL_ADOPTION_ORDER("Final Adoption Order");
+        FINAL_ADOPTION_ORDER("Final adoption order");
 
         private final String label;
     }
