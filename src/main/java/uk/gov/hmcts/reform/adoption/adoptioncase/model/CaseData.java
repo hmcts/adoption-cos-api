@@ -944,6 +944,7 @@ public class CaseData {
                 data.setSubmittedDateAndTimeOfOrder(getManageOrdersData().getSubmittedDateManageOrder());
                 data.setDateOrderMate(getManageOrdersData().getDateOrderMade());
                 data.setOrderedBy(getManageOrdersData().getOrderedBy());
+                data.setDocumentReview(getManageOrdersData().getDraftDocument());
                 data.setAdoptionOrderRecipients(getManageOrdersData().getRecipientsList());
                 break;
             case GENERAL_DIRECTIONS_ORDER:
@@ -955,6 +956,7 @@ public class CaseData {
 
                 data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
                 data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setDocumentReview(getDirectionsOrderData().getDraftDocument());
                 data.setSubmittedDateAndTimeOfOrder(getDirectionsOrderData().getSubmittedDateDirectionsOrder());
                 break;
             case FINAL_ADOPTION_ORDER:
@@ -972,6 +974,7 @@ public class CaseData {
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
                 data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
                 data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
+                data.setDocumentReview(getAdoptionOrderData().getDraftDocument());
                 break;
             default:
                 break;
