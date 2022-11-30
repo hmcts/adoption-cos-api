@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -8,6 +9,7 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SeekFurtherInformation;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -16,11 +18,21 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
+import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.STRING_COLON;
 
@@ -33,6 +45,15 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
     public static final String SEEK_FURTHER_INFORMATION_HEADING = "Seek further information";
 
     private final CcdPageConfiguration seekFurtherInformation = new SeekFurtherInformation();
+
+    @Autowired
+    private Clock clock;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private IdamService idamService;
 
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -122,9 +143,9 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             listElements.add(secondApplicant);
         }
 
-        caseData.setSeekFurtherInformationList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setSeekFurtherInformationList(
+            DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         log.info("MidEvent Triggered");
-
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
@@ -145,14 +166,50 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetailsBefore) {
         CaseData caseData = caseDataStateCaseDetails.getData();
+        caseData.setCorrespondenceDocumentCategory(addSeekInformationData(caseData,
+                caseData.getCorrespondenceDocumentCategory()));
         caseData.setDate(null);
+        caseData.setSeekFurtherInformationList(null);
+        caseData.setFurtherInformation(null);
         caseData.setAskAQuestionText(null);
         caseData.setAskForAdditionalDocumentText(null);
-        caseData.setFurtherInformation(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
     }
 
+    private List<ListValue<AdoptionUploadDocument>> addSeekInformationData(CaseData caseData,
+                                                    List<ListValue<AdoptionUploadDocument>> correspondanceTabList) {
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
+        var adoptionUploadDocument = new AdoptionUploadDocument();
+        adoptionUploadDocument.setDocumentComment(SEEK_FURTHER_INFORMATION_HEADING);
+        adoptionUploadDocument.setDocumentLink(null);
+        adoptionUploadDocument.setDocumentDateAdded(LocalDate.now(clock));
+        if (!Objects.isNull(caseData.getSeekFurtherInformationList())) {
+            //  adoptionUploadDocument.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
+            adoptionUploadDocument.setUploadedBy(caseworkerUser.getUserDetails().getFullName());
+        }
+        if (isEmpty(correspondanceTabList)) {
+            List<ListValue<AdoptionUploadDocument>> listValues = new ArrayList<>();
+            var listValue = ListValue
+                .<AdoptionUploadDocument>builder().id("1").value(adoptionUploadDocument).build();
+            listValues.add(listValue);
+            return listValues;
+        } else {
+            AtomicInteger listValueIndex = new AtomicInteger(0);
+            var listValue = ListValue
+                .<AdoptionUploadDocument>builder()
+                .value(adoptionUploadDocument)
+                .build();
+            correspondanceTabList.add(
+                0,
+                listValue
+            );
 
+            correspondanceTabList.forEach(adoptionDocumentListValue ->
+                                                adoptionDocumentListValue.setId(
+                                                    String.valueOf(listValueIndex.incrementAndGet())));
+        }
+        return correspondanceTabList;
+    }
 }
