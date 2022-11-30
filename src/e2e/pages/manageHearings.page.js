@@ -86,6 +86,7 @@ module.exports = {
   },
 
   addRecepientDetails(){
+     I.wait(5);
      I.retry(3).seeElement(this.fields.childNameHeader);
      I.retry(3).seeElement(this.fields.recipientsTitle);
      I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
@@ -269,11 +270,13 @@ module.exports = {
         await I.retry(5).seeElement(this.fields.alertMessage);
       },
   async selectAdjournHearingYesRelisting(){
+        await I.wait(3);
         await I.retry(5).click(this.fields.adjournHearing);
         await I.retry(5).click(this.fields.continueButton);
         await I.wait(3);
         await I.retry(5).click(this.fields.continueButton);
         await I.retry(3).see('Select a hearing you want to adjourn is required');
+        await I.wait(3);
         await I.retry(5).click(this.fields.vacateHearingToSelect);
         await I.retry(5).click(this.fields.continueButton);
         await I.retry(5).seeElement(this.fields.adjournHearingCourtJudgeUnavailable);
