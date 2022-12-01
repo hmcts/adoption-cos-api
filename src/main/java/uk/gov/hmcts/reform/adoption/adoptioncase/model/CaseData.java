@@ -703,6 +703,42 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
+    // ------------------- Send And Reply Messages Objects Start ----------------- //
+    @CCD(
+        label = "Do you want to send or reply to message?",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "MessagesAction")
+    private MessagesAction messageAction;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    @JsonUnwrapped
+    private ManageSendMessagesDetails manageSendMessagesDetails;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private MessageDetails messageDetails;
+
+    @CCD(
+        label = "Send Messages",
+        typeOverride = Collection,
+        typeParameterOverride = "ManageSendMessagesDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<ManageSendMessagesDetails>> listOfSendMessages;
+
+    @CCD(
+        typeOverride = DynamicRadioList,
+        label = "Reply a message\n"
+    )
+    private DynamicList messagesList;
+
+
+    // ------------------- Send And Reply Messages Objects End ----------------- //
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
@@ -1027,6 +1063,32 @@ public class CaseData {
             newHearings.remove(adjournHearingDetails.get());
         }
         this.setManageHearingOptions(null);
+    }
+
+    @JsonIgnore
+    public void storeSendMessages() {
+        ManageSendMessagesDetails sendMessagesDetails = this.manageSendMessagesDetails;
+        sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
+        if (null != sendMessagesDetails) {
+            if (isEmpty(this.getListOfSendMessages())) {
+                List<ListValue<ManageSendMessagesDetails>> listValues = new ArrayList<>();
+                var listValue = ListValue.<ManageSendMessagesDetails>builder().id("1")
+                    .value(manageSendMessagesDetails).build();
+                listValues.add(listValue);
+
+                this.setListOfSendMessages(listValues);
+            } else {
+                var listValue = ListValue.<ManageSendMessagesDetails>builder()
+                    .value(manageSendMessagesDetails).build();
+                int listValueIndex = 0;
+                this.getListOfSendMessages().add(0, listValue);
+                for (ListValue<ManageSendMessagesDetails> asListValue : this.getListOfSendMessages()) {
+                    asListValue.setId(String.valueOf(listValueIndex++));
+                }
+            }
+            this.setManageSendMessagesDetails(null);
+        }
+
     }
 
 }
