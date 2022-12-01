@@ -46,6 +46,8 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
@@ -724,6 +726,14 @@ public class CaseData {
     @JsonUnwrapped
     private SelectedOrder selectedOrder;
 
+    @CCD(
+        label = "Do you want to server the order or return for amendments?",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "OrderCheckAndSend"
+    )
+    private OrderCheckAndSend orderCheckAndSend;
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
@@ -917,6 +927,7 @@ public class CaseData {
 
     @JsonIgnore
     public void archiveManageOrders() {
+        OrderData data = new OrderData();
         switch (this.getManageOrdersData().getManageOrderType()) {
             case CASE_MANAGEMENT_ORDER:
                 this.getManageOrdersData().setSubmittedDateManageOrder(
@@ -924,6 +935,14 @@ public class CaseData {
                 this.getManageOrdersData().setOrderId(UUID.randomUUID().toString());
                 this.setManageOrderList(archiveManageOrdersHelper(
                     this.getManageOrderList(), this.getManageOrdersData()));
+
+                data.setOrderId(getManageOrdersData().getOrderId());
+                data.setManageOrderType(getManageOrdersData().getManageOrderType());
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setSubmittedDateAndTimeOfOrder(getManageOrdersData().getSubmittedDateManageOrder());
+                data.setDateOrderMate(getManageOrdersData().getDateOrderMade());
+                data.setOrderedBy(getManageOrdersData().getOrderedBy());
+                data.setAdoptionOrderRecipients(getManageOrdersData().getRecipientsList());
                 break;
             case GENERAL_DIRECTIONS_ORDER:
                 this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
@@ -931,6 +950,10 @@ public class CaseData {
                 this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setDirectionsOrderList(archiveManageOrdersHelper(
                     this.getDirectionsOrderList(), this.getDirectionsOrderData()));
+
+                data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setSubmittedDateAndTimeOfOrder(getDirectionsOrderData().getSubmittedDateDirectionsOrder());
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
@@ -938,10 +961,21 @@ public class CaseData {
                 this.getAdoptionOrderData().setOrderId(UUID.randomUUID().toString());
                 this.setAdoptionOrderList(archiveManageOrdersHelper(
                     this.getAdoptionOrderList(), this.getAdoptionOrderData()));
+
+                data.setOrderId(getAdoptionOrderData().getOrderId());
+                data.setManageOrderType(FINAL_ADOPTION_ORDER);
+                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setDateOrderMate(getAdoptionOrderData().getDateOrderMadeFinalAdoptionOrder());
+                data.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
+                data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
+                data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
+                data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
                 break;
             default:
                 break;
         }
+        this.setCommonOrderList(archiveManageOrdersHelper(
+            this.getCommonOrderList(), data));
         this.setManageOrdersData(new ManageOrdersData());
         this.setDirectionsOrderData(new DirectionsOrderData());
         this.setAdoptionOrderData(new AdoptionOrderData());

@@ -38,6 +38,11 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .readonlyNoSummary(SelectedOrder::getFinalOrderRecipientsA206,
                                "orderType=\"finalAdoptionOrder\"")
             .done();
+
+        pageBuilder.page("checkAndSendOrder3")
+            .label("checkAndSendOrdersLabel3","## Review Order")
+            .mandatory(CaseData::getOrderCheckAndSend)
+            .done();
     }
 
     private AboutToStartOrSubmitResponse<CaseData, State> midEventCall(CaseDetails<CaseData, State> caseData,
