@@ -17,6 +17,9 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @Builder
 public class DirectionsOrderData {
 
+    @CCD(showCondition = "submittedDateDirectionsOrder=\"never\"")
+    private String orderId;
+
     @CCD(access = {DefaultAccess.class})
     private LocalDateTime submittedDateDirectionsOrder;
 
@@ -24,5 +27,8 @@ public class DirectionsOrderData {
         typeOverride = TextArea,
         access = {DefaultAccess.class})
     private String preambleDetailsDO;
+
+    @CCD(showCondition = "submittedDateDirectionsOrder=\"never\"")
+    private OrderStatus orderStatus;
 
 }

@@ -38,8 +38,14 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
 @Builder
 public class AdoptionOrderData {
 
+    @CCD(showCondition = "submittedDateAdoptionOrder=\"never\"")
+    private String orderId;
+
     @CCD(access = {DefaultAccess.class})
     private LocalDateTime submittedDateAdoptionOrder;
+
+    @CCD(showCondition = "submittedDateAdoptionOrder=\"never\"")
+    private OrderStatus orderStatus;
 
     @CCD(hint = "Copy and paste or type directly into the text box",
         typeOverride = TextArea,
