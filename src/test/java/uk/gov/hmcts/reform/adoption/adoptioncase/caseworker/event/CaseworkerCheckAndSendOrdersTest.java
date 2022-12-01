@@ -11,7 +11,6 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
@@ -20,9 +19,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,31 +46,6 @@ class CaseworkerCheckAndSendOrdersTest {
             .contains(CASEWORKER_CHECK_AND_SEND_ORDERS);
     }
 
-    @Test
-    void caseworkerCheckAndSendOrdersAboutToStart() {
-        ManageOrdersData manageOrdersData1 = getManageOrderData();
-        ManageOrdersData manageOrdersData2 = getManageOrderData();
-        ManageOrdersData manageOrdersData3 = getManageOrderData();
-        List<ListValue<ManageOrdersData>> manageOrderList = new ArrayList<>();
-        var caseDetails = getCaseDetails();
-        CaseData data = caseDetails.getData();
-        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, manageOrdersData1);
-        data.archiveManageOrdersHelper(manageOrderList, manageOrdersData2);
-        data.archiveManageOrdersHelper(manageOrderList, manageOrdersData3);
-        data.setManageOrderList(manageOrderList);
-        List<ListValue<AdoptionOrderData>> adoptionOrderList = new ArrayList<>();
-        AdoptionOrderData adoptionOrderData1 = getAdoptionOrderData();
-        adoptionOrderList = data.archiveManageOrdersHelper(adoptionOrderList, adoptionOrderData1);
-        AdoptionOrderData adoptionOrderData2 = getAdoptionOrderData();
-        adoptionOrderData2.setSubmittedDateAdoptionOrder(LocalDateTime.now());
-        data.archiveManageOrdersHelper(adoptionOrderList, adoptionOrderData2);
-        AdoptionOrderData adoptionOrderData3 = getAdoptionOrderData();
-        adoptionOrderData3.setSubmittedDateAdoptionOrder(LocalDateTime.now());
-        data.archiveManageOrdersHelper(adoptionOrderList, adoptionOrderData3);
-        data.setAdoptionOrderList(adoptionOrderList);
-        var result = caseworkerCheckAndSendOrders.aboutToStart(caseDetails);
-        assertThat(result.getData().getCheckAndSendOrderDropdownList().getListItems().size()).isEqualTo(6);
-    }
 
     @NotNull
     private AdoptionOrderData getAdoptionOrderData() {

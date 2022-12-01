@@ -717,6 +717,13 @@ public class CaseData {
     )
     private List<ListValue<OrderData>> commonOrderList;
 
+    @CCD(
+        label = "Review Order",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    @JsonUnwrapped
+    private SelectedOrder selectedOrder;
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
