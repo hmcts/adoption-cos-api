@@ -709,6 +709,14 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
+    @CCD(
+        label = "Common Order List",
+        typeOverride = Collection,
+        typeParameterOverride = "OrderData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<OrderData>> commonOrderList;
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
