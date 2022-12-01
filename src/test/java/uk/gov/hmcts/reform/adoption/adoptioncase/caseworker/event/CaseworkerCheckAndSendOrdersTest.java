@@ -17,14 +17,20 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +39,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerCheckAndSendOrders.CASEWORKER_CHECK_AND_SEND_ORDERS;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
@@ -72,6 +79,38 @@ class CaseworkerCheckAndSendOrdersTest {
 
         var result = caseworkerCheckAndSendOrders.aboutToStart(caseDetails);
         assertThat(result.getData().getCheckAndSendOrderDropdownList().getListItems().size()).isEqualTo(3);
+    }
+
+    @Test
+    void caseworkerAboutToSubmit_OK() {
+        OrderData orderData1 = getCommonOrderData();
+        ManageOrdersData manageOrderData1 = getManageOrderData();
+        manageOrderData1.setOrderId(UUID.randomUUID().toString());
+
+        orderData1.setManageOrderType(CASE_MANAGEMENT_ORDER);
+        orderData1.setOrderId(manageOrderData1.getOrderId());
+        List<ListValue<OrderData>> commonOrderList = new ArrayList<>();
+        List<ListValue<ManageOrdersData>> manageOrderList = new ArrayList<>();
+
+        var caseDetails = getCaseDetails();
+        CaseData data = caseDetails.getData();
+        data.setOrderCheckAndSend(OrderCheckAndSend.SERVE_THE_ORDER);
+        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, manageOrderData1);
+        commonOrderList = data.archiveManageOrdersHelper(commonOrderList, orderData1);
+        data.setCommonOrderList(commonOrderList);
+        data.setManageOrderList(manageOrderList);
+        var item = new SelectedOrder();
+        item.setOrderType(CASE_MANAGEMENT_ORDER);
+        data.setSelectedOrder(item);
+        prepareCheckAndSendDropdownList(commonOrderList, manageOrderData1.getOrderId(),data);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+        var result = caseworkerCheckAndSendOrders.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageOrderList().get(0).getValue().getOrderStatus()).isEqualTo(OrderStatus.SERVED);
+        assertThat(result.getData().getSelectedOrder()).isNull();
     }
 
 
