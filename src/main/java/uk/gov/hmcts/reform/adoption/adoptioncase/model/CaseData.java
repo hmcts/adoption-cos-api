@@ -17,12 +17,9 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
@@ -846,58 +843,6 @@ public class CaseData {
             documents.add(0, listValue); // always add to start top of list
         }
         addToCombinedDocumentsGenerated();
-    }
-
-    public void sortUploadedDocuments(List<ListValue<AdoptionDocument>> previousDocuments) {
-        if (isEmpty(previousDocuments)) {
-            return;
-        }
-
-        Set<String> previousListValueIds = previousDocuments
-            .stream()
-            .map(ListValue::getId)
-            .collect(Collectors.toCollection(HashSet::new));
-
-        //Split the collection into two lists one without id's(newly added documents) and other with id's(existing documents)
-        Map<Boolean, List<ListValue<AdoptionDocument>>> documentsWithoutIds =
-            this.getDocumentsUploaded()
-                .stream()
-                .collect(Collectors.groupingBy(listValue -> !previousListValueIds.contains(listValue.getId())));
-
-        this.setDocumentsUploaded(sortDocuments(documentsWithoutIds));
-    }
-
-    private List<ListValue<AdoptionDocument>> sortDocuments(final Map<Boolean, List<ListValue<AdoptionDocument>>> documentsWithoutIds) {
-
-        final List<ListValue<AdoptionDocument>> sortedDocuments = new ArrayList<>();
-
-        final var newDocuments = documentsWithoutIds.get(true);
-        final var previousDocuments = documentsWithoutIds.get(false);
-
-        if (null != newDocuments) {
-            sortedDocuments.addAll(0, newDocuments); // add new documents to start of the list
-            sortedDocuments.addAll(1, previousDocuments);
-            sortedDocuments.forEach(
-                uploadedDocumentListValue -> uploadedDocumentListValue.setId(String.valueOf(UUID.randomUUID()))
-            );
-            return sortedDocuments;
-        }
-
-        return previousDocuments;
-    }
-
-    @JsonIgnore
-    public void addToDocumentsUploaded(final ListValue<AdoptionDocument> listValue) {
-
-        final List<ListValue<AdoptionDocument>> documents = getDocumentsUploaded();
-
-        if (isEmpty(documents)) {
-            final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
-            documentList.add(listValue);
-            setDocumentsUploaded(documentList);
-        } else {
-            documents.add(0, listValue); // always add to start top of list
-        }
     }
 
     @JsonIgnore
