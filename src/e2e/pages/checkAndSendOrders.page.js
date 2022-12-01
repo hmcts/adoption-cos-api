@@ -47,13 +47,13 @@ module.exports = {
     //await I.retry(3).seeElement(this.fields.previewOrderDocmosisLink);
   },
 
-  async verifyOrderTypeCYA() {
+  async verifyOrderTypeCYA(){
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Check your answers');
     await I.retry().see(orderType)
   },
 
-  async serverOrderCYA() {
+  async serverOrderCYA(){
     await I.retry(3).see(checkAndSendOrderDetails.selectOrderToreview);
     await I.retry(3).see(checkAndSendOrderDetails.serveOrderOrAmendment)
     await I.retry(3).see(checkAndSendOrderDetails.serverTheOrder);
@@ -62,7 +62,7 @@ module.exports = {
   },
 
 
-  async gateKeepingOrderRecipients() {
+  async gateKeepingOrderRecipients(){
     await I.retry(3).see(checkAndSendOrderDetails.selectedRecipientsToServerOrder);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicantLocalAuthority);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthMother);
