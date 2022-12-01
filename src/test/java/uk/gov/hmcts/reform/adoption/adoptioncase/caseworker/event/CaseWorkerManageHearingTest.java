@@ -102,6 +102,46 @@ class CaseWorkerManageHearingTest {
     }
 
     @Test
+    void caseworkerManageHearingAboutToSubmitAdjournTestWithRelisting() {
+        var caseDetails = getCaseDetailsForHearing();
+        ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
+        manageHearingDetails.setHearingId(UUID.randomUUID().toString());
+        manageHearingDetails.setLengthOfHearing("2hrs 30min");
+        manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
+        manageHearingDetails.setCourt("test court");
+        manageHearingDetails.setJudge("test judge");
+        manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
+        CaseData data = caseDetails.getData();
+        data.setManageHearingDetails(manageHearingDetails);
+        data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
+        data.setIsTheHearingNeedsRelisting(YesOrNo.YES);
+        var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
+        assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
+        assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
+    }
+
+    @Test
+    void caseworkerManageHearingAboutToSubmitVacateTestWithRelisting() {
+        var caseDetails = getCaseDetailsForHearing();
+        ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
+        manageHearingDetails.setHearingId(UUID.randomUUID().toString());
+        manageHearingDetails.setLengthOfHearing("2hrs 30min");
+        manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
+        manageHearingDetails.setCourt("test court");
+        manageHearingDetails.setJudge("test judge");
+        manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
+        CaseData data = caseDetails.getData();
+        data.setManageHearingDetails(manageHearingDetails);
+        data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
+        data.setIsTheHearingNeedsRelisting(YesOrNo.YES);
+        var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
+        assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
+        assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
+    }
+
+    @Test
     void checkForInvalidCheckboxSelectionForAloneSuccess() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);

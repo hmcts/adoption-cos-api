@@ -55,8 +55,8 @@ module.exports = {
   },
 
   async goToPage(url) {
-    this.amOnPage(url);
-    await this.logWithHmctsAccount();
+    await this.amOnPage(url);
+  //  await this.logWithHmctsAccount();
   },
 
   async logWithHmctsAccount() {
