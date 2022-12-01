@@ -2,9 +2,6 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -14,15 +11,9 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOPTION_AGENCY_STR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
 
 /**
  * Contains method to add Page Configuration for ExUI.
@@ -43,7 +34,7 @@ public class ManageOrders implements CcdPageConfiguration {
             .complex(CaseData::getManageOrdersData)
             .mandatory(ManageOrdersData::getManageOrderActivity)
             .done()
-            .page("mangeOrders2", this::midEventForDynamicList)
+            .page("mangeOrders2")
             .showCondition("manageOrderActivity=\"createOrder\"")
             .pageLabel("Manage orders and directions")
             .complex(CaseData::getManageOrdersData)
@@ -71,7 +62,7 @@ public class ManageOrders implements CcdPageConfiguration {
             .optional(ManageOrdersData::getPreambleDetails)
             .label("LabelAllocation32", "### Allocation")
             .optionalNoSummary(ManageOrdersData::getAllocationJudge)
-            .label("LabelDateOrderMade40","### Date order made")
+            .label("LabelDateOrderMade40", "### Date order made")
             .mandatory(ManageOrdersData::getDateOrderMade)
             .label("LabelHearings33", "### Hearings")
             .optionalNoSummary(ManageOrdersData::getHearingNotices)
@@ -86,7 +77,10 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelLeaveToOppose38", "### Leave to oppose")
             .optionalNoSummary(ManageOrdersData::getLeaveToOppose)
             .label("LabelAdditionalPara39", "### Additional paragraphs")
-            .label("LabelAdditionalParaValue30", "You can add any additional directions or paragraphs on a later screen.")
+            .label(
+                "LabelAdditionalParaValue30",
+                "You can add any additional directions or paragraphs on a later screen."
+            )
             .label("LabelCostOrders301", "### Cost orders")
             .optionalNoSummary(ManageOrdersData::getCostOrders)
             .done()
@@ -96,6 +90,7 @@ public class ManageOrders implements CcdPageConfiguration {
     /**
      * Helper method to support page design and flow to Display Fields for first directions screen.
      * PreambleDetails, AllocationJudge, HearingNotices, ModeOfHearing, LocalAuthority and CAFCASS
+     *
      * @param pageBuilder - Application PageBuilder for the event pages
      */
     private void getFirstDirectionsPage(PageBuilder pageBuilder) {
@@ -117,14 +112,18 @@ public class ManageOrders implements CcdPageConfiguration {
             .label("LabelPreambleValue413", "${preambleDetails}", "preambleDetails=\"*\"")
             //          ALLOCATION DETAILS
             .label("LabelAllocation421", "### Allocation",
-                   "allocationJudge=\"*\"", true)
+                   "allocationJudge=\"*\"", true
+            )
             .label("LabelAllocationValue422", "The case is allocated to [Name of the judge].",
-                   "allocationJudge=\"allocatePreviousProceedingsJudge\"", true)
+                   "allocationJudge=\"allocatePreviousProceedingsJudge\"", true
+            )
             .mandatory(CaseData::getAllocatedJudge, "allocationJudge=\"allocatePreviousProceedingsJudge\"")
             .label("LabelAllocationValue423", "The proceedings are reallocated to [Name of Judge].",
-                   "allocationJudge=\"reallocateJudge\"", true)
+                   "allocationJudge=\"reallocateJudge\"", true
+            )
             .label("LabelNameOfJudge424", "### Name of judge",
-                   "allocationJudge=\"reallocateJudge\"")
+                   "allocationJudge=\"reallocateJudge\""
+            )
             .complex(CaseData::getManageOrdersData)
             .mandatory(ManageOrdersData::getNameOfJudge, "allocationJudge=\"reallocateJudge\"")
             //            HEARINGS - FIRST HEARING
@@ -132,57 +131,92 @@ public class ManageOrders implements CcdPageConfiguration {
                    "hearingNoticesCONTAINS\"listForFirstHearing\" "
                        + "OR hearingNoticesCONTAINS\"listForFurtherHearings\" "
                        + "OR hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\" "
-                       + "OR modeOfHearingCONTAINS\"setModeOfHearing\"", true)
+                       + "OR modeOfHearingCONTAINS\"setModeOfHearing\"", true
+            )
             .label("LabelHearings432", "The application is listed for a first hearing on [date] "
                        + "at [time] (with a time estimate of [length]) at [court name].",
-                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true)
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true
+            )
             .label("LabelHearings433", "### Date and time",
-                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true)
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true
+            )
             .mandatory(ManageOrdersData::getDateAndTimeFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
             .label("LabelHearings434", "### Length of hearing",
-                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true)
-            .mandatory(ManageOrdersData::getLengthOfHearingFirstHearing, "hearingNoticesCONTAINS\"listForFirstHearing\"")
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getLengthOfHearingFirstHearing,
+                "hearingNoticesCONTAINS\"listForFirstHearing\""
+            )
             .label("LabelNameOfCourt435", "### Name of court",
-                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true)
+                   "hearingNoticesCONTAINS\"listForFirstHearing\"", true
+            )
             .done()
-            .mandatory(CaseData::getNameOfCourtFirstHearing,
-                       "hearingNoticesCONTAINS\"listForFirstHearing\"")
+            .mandatory(
+                CaseData::getNameOfCourtFirstHearing,
+                "hearingNoticesCONTAINS\"listForFirstHearing\""
+            )
             //            HEARINGS - FURTHER HEARING
             .label("LabelHearings441", "The application is listed for a [listing type] on [date] at "
                        + "[time] with a time estimate of [length] at [court name].",
-                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true)
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true
+            )
             .label("LabelNameOfCourt442", "### Listing type",
-                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true)
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true
+            )
             .complex(CaseData::getManageOrdersData)
-            .mandatory(ManageOrdersData::getListingTypeFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(
+                ManageOrdersData::getListingTypeFurtherHearing,
+                "hearingNoticesCONTAINS\"listForFurtherHearings\""
+            )
             .label("LabelHearings443", "### Date and time",
-                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true)
-            .mandatory(ManageOrdersData::getDateAndTimeFurtherHearing, "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getDateAndTimeFurtherHearing,
+                "hearingNoticesCONTAINS\"listForFurtherHearings\""
+            )
             .label("LabelHearings444", "### Length of hearing",
-                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true)
-            .mandatory(ManageOrdersData::getLengthOfHearingFurtherHearing,
-                       "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getLengthOfHearingFurtherHearing,
+                "hearingNoticesCONTAINS\"listForFurtherHearings\""
+            )
             .label("LabelNameOfCourt445", "### Name of court",
-                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true)
+                   "hearingNoticesCONTAINS\"listForFurtherHearings\"", true
+            )
             .done()
-            .mandatory(CaseData::getNameOfCourtFurtherHearing,
-                       "hearingNoticesCONTAINS\"listForFurtherHearings\"")
+            .mandatory(
+                CaseData::getNameOfCourtFurtherHearing,
+                "hearingNoticesCONTAINS\"listForFurtherHearings\""
+            )
             //            HEARINGS - HEARING DATE IN FUTURE
-            .label("LabelHearings451", "The application is listed for [listing type] on a date and time to be fixed by the court.",
-                   "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"", true)
+            .label("LabelHearings451",
+                   "The application is listed for [listing type] on a date and time to be fixed by the court.",
+                   "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"",
+                   true
+            )
             .label("LabelNameOfCourt452", "### Listing type",
-                   "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"", true)
+                   "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"", true
+            )
             .complex(CaseData::getManageOrdersData)
-            .mandatory(ManageOrdersData::getListingTypeHearingInFutureDate,
-                       "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\"")
+            .mandatory(
+                ManageOrdersData::getListingTypeHearingInFutureDate,
+                "hearingNoticesCONTAINS\"hearingDateToBeSpecifiedInTheFuture\""
+            )
             //            HEARINGS - MODE OF HEARINGS
             .label("LabelNameOfCourt461", "### Mode of hearing",
-                   "modeOfHearingCONTAINS\"setModeOfHearing\"", true)
-            .mandatory(ManageOrdersData::getModeOfHearings,
-                       "modeOfHearingCONTAINS\"setModeOfHearing\"")
+                   "modeOfHearingCONTAINS\"setModeOfHearing\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getModeOfHearings,
+                "modeOfHearingCONTAINS\"setModeOfHearing\""
+            )
             //            LOCAL AUTHORITY
             .label("LabelLocalAuthority471", "### Local authority",
-                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true)
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true
+            )
             .label("LabelLocalAuthority472", "The Local Authority shall:<br>"
                        + "<p>**1.** By [time] on [date] file the Adoption Agency Report (Annex A); and<br>"
                        + "**2.** By [time] on the (date in 14 days from the date above) file a statement detailing the following:</p>"
@@ -191,43 +225,63 @@ public class ManageOrders implements CcdPageConfiguration {
                        + "<br>&emsp;**b.** The steps taken to confirm the current accuracy of the addresses provided? "
                        + "Whether the addresses provided for the birth parents upon issue of the application are accurate?"
                        + "<br>&emsp;**c.** Whether the parents are aware of the date of the hearing mentioned in this order?",
-                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true)
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true
+            )
             .label("LabelLocalAuthority473", "### Date and time for option 1",
-                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true)
-            .mandatory(ManageOrdersData::getDateAndTimeForOption1,
-                       "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getDateAndTimeForOption1,
+                "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\""
+            )
             .label("LabelLocalAuthority474", "### Date and time for option 2",
-                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true)
-            .mandatory(ManageOrdersData::getTimeForOption2,
-                       "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"")
+                   "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getTimeForOption2,
+                "selectedLocalAuthorityCONTAINS\"fileAdoptionAgencyReport\""
+            )
             //            CAFCASS REPORTING OFFICER
             .label("LabelCafcass481", "### Cafcass",
                    "cafcassCONTAINS\"reportingOfficer\" "
-                       + "OR cafcassCONTAINS\"childrensGuardian\"", true)
+                       + "OR cafcassCONTAINS\"childrensGuardian\"", true
+            )
             .label("LabelCafcass482", "<p>[Cafcass/Cafcass Cymru] are directed to appoint a reporting officer. "
                        + "The reporting officer is requested to file a brief report together with the relevant consent forms "
                        + "witnessing the consent of the birth parents by [time] on [date].</p>"
                        + "<p>The Adoption Agency (Annex A) report may be disclosed to the reporting officer.</p>",
-                   "cafcassCONTAINS\"reportingOfficer\"", true)
+                   "cafcassCONTAINS\"reportingOfficer\"", true
+            )
             .label("LabelCafcass483", "### Select reporting officer",
-                   "cafcassCONTAINS\"reportingOfficer\"", true)
-            .mandatory(ManageOrdersData::getReportingOfficer,
-                       "cafcassCONTAINS\"reportingOfficer\"")
+                   "cafcassCONTAINS\"reportingOfficer\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getReportingOfficer,
+                "cafcassCONTAINS\"reportingOfficer\""
+            )
             .label("LabelCafcass484", "### Date and time",
-                   "cafcassCONTAINS\"reportingOfficer\"", true)
-            .mandatory(ManageOrdersData::getDateAndTimeRO,
-                       "cafcassCONTAINS\"reportingOfficer\"")
+                   "cafcassCONTAINS\"reportingOfficer\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getDateAndTimeRO,
+                "cafcassCONTAINS\"reportingOfficer\""
+            )
             //            CAFCASS CHILDRENS GUARDIAN
             .label("LabelCafcass485", "<p>The child is made a respondent to the application and a children's guardian "
                        + "is appointed and [Cafcass/Cafcass Cymru] shall use their best endeavours to appoint the same guardian "
                        + "appointed within the previous proceedings case number [case number].</p>",
-                   "cafcassCONTAINS\"childrensGuardian\"", true)
+                   "cafcassCONTAINS\"childrensGuardian\"", true
+            )
             .label("LabelCafcass486", "### Select reporting officer",
-                   "cafcassCONTAINS\"childrensGuardian\"", true)
-            .mandatory(ManageOrdersData::getChildrensGuardian,
-                       "cafcassCONTAINS\"childrensGuardian\"")
+                   "cafcassCONTAINS\"childrensGuardian\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getChildrensGuardian,
+                "cafcassCONTAINS\"childrensGuardian\""
+            )
             .label("LabelCafcass487", "### Case number",
-                   "cafcassCONTAINS\"childrensGuardian\"", true)
+                   "cafcassCONTAINS\"childrensGuardian\"", true
+            )
             .mandatory(ManageOrdersData::getCaseNumberCG, "cafcassCONTAINS\"childrensGuardian\"")
             .done()
             .done();
@@ -236,6 +290,7 @@ public class ManageOrders implements CcdPageConfiguration {
     /**
      * Helper method to support page design and flow to Display Fields for second directions screen.
      * Attendance, Leave To Oppose, Additional Paragraphs and Cost Orders
+     *
      * @param pageBuilder - Application PageBuilder for the event pages
      */
     private void getSecondDirectionsPage(PageBuilder pageBuilder) {
@@ -247,37 +302,52 @@ public class ManageOrders implements CcdPageConfiguration {
                    "attendanceCONTAINS\"applicantsAttendance\" "
                        + "OR attendanceCONTAINS\"childAttendance\" "
                        + "OR attendanceCONTAINS\"localAuthorityAttendance\" "
-                       + "OR attendanceCONTAINS\"birthParentsAttendance\"")
+                       + "OR attendanceCONTAINS\"birthParentsAttendance\""
+            )
             .label("LabelAttendanceValue52", "Choose the direction for the attendees",
                    "attendanceCONTAINS\"applicantsAttendance\" "
                        + "OR attendanceCONTAINS\"childAttendance\" "
                        + "OR attendanceCONTAINS\"localAuthorityAttendance\" "
-                       + "OR attendanceCONTAINS\"birthParentsAttendance\"")
+                       + "OR attendanceCONTAINS\"birthParentsAttendance\""
+            )
             //          APPLICANT ATTENDANCE
             .label("LabelApplicantAttendance511", "### Applicant attendance",
-                   "attendanceCONTAINS\"applicantsAttendance\"", true)
+                   "attendanceCONTAINS\"applicantsAttendance\"", true
+            )
             .complex(CaseData::getManageOrdersData)
-            .mandatory(ManageOrdersData::getApplicantAttendance,
-                       "attendanceCONTAINS\"applicantsAttendance\"")
+            .mandatory(
+                ManageOrdersData::getApplicantAttendance,
+                "attendanceCONTAINS\"applicantsAttendance\""
+            )
             //          CHILD ATTENDANCE
             .label("LabelChildAttendance521", "### Child attendance",
-                   "attendanceCONTAINS\"childAttendance\"", true)
+                   "attendanceCONTAINS\"childAttendance\"", true
+            )
             .mandatory(ManageOrdersData::getChildAttendance,
-                       "attendanceCONTAINS\"childAttendance\"", true)
+                       "attendanceCONTAINS\"childAttendance\"", true
+            )
             //          LA ATTENDANCE
             .label("LabelChildAttendance531", "### Local authority attendance",
-                   "attendanceCONTAINS\"localAuthorityAttendance\"", true)
-            .mandatory(ManageOrdersData::getLaAttendance,
-                       "attendanceCONTAINS\"localAuthorityAttendance\"")
+                   "attendanceCONTAINS\"localAuthorityAttendance\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getLaAttendance,
+                "attendanceCONTAINS\"localAuthorityAttendance\""
+            )
             //          BIRTH PARENT ATTENDANCE
             .label("LabelChildAttendance541", "### Birth parent attendance",
-                   "attendanceCONTAINS\"birthParentsAttendance\"", true)
-            .mandatory(ManageOrdersData::getBirthParentAttendance,
-                       "attendanceCONTAINS\"birthParentsAttendance\"")
+                   "attendanceCONTAINS\"birthParentsAttendance\"", true
+            )
+            .mandatory(
+                ManageOrdersData::getBirthParentAttendance,
+                "attendanceCONTAINS\"birthParentsAttendance\""
+            )
             //          LEAVE TO OPPOSE
             .label("LabelLeaveToOppose551", "### Leave to oppose",
-                   "leaveToOpposeCONTAINS\"leaveToOppose\"", true)
-            .label("LabelLeaveToOppose552", "<p>A birth parent who wants to oppose the making of an adoption order or seek "
+                   "leaveToOpposeCONTAINS\"leaveToOppose\"", true
+            )
+            .label("LabelLeaveToOppose552",
+                   "<p>A birth parent who wants to oppose the making of an adoption order or seek "
                        + "contact with the child is invited to notify the court in writing by (14 days from the date of this order).</p>"
                        + "<p>A birth parent can only oppose the making of an Adoption Order if "
                        + "they have first been given permission to do so by the Court.</p>"
@@ -290,7 +360,9 @@ public class ManageOrders implements CcdPageConfiguration {
                        + "<p>If no such application is made the case may proceed to a final hearing which may be dealt with without "
                        + "attendance of the parties unless such an attendance is requested by any of the parties. If such a "
                        + "request is made, the hearing may be conducted remotely unless this cannot be fairly undertaken.</p>",
-                   "leaveToOpposeCONTAINS\"leaveToOppose\"", true)
+                   "leaveToOpposeCONTAINS\"leaveToOppose\"",
+                   true
+            )
             //          ADDITIONAL PARAGRAPHS
             .label("LabelAdditionalPara561", "### Additional paragraphs", null, true)
             .mandatory(ManageOrdersData::getAdditionalPara)
@@ -307,6 +379,7 @@ public class ManageOrders implements CcdPageConfiguration {
     /**
      * Helper method to support page design and flow to Display Fields for serve parties screen.
      * Recipients
+     *
      * @param pageBuilder - Application PageBuilder for the event pages
      */
     private void getServePartiesPage(PageBuilder pageBuilder) {
@@ -326,7 +399,7 @@ public class ManageOrders implements CcdPageConfiguration {
      * Gatekeeping Order Page
      *
      * @param detailsBefore - Application CaseDetails for the previous page
-     * @param details - Application CaseDetails for the present page
+     * @param details       - Application CaseDetails for the present page
      * @return - AboutToStartOrSubmitResponse updated to use on further pages.
      */
     public AboutToStartOrSubmitResponse<CaseData, State> midEvent(
@@ -347,67 +420,6 @@ public class ManageOrders implements CcdPageConfiguration {
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .errors(errors)
-            .build();
-    }
-
-    public AboutToStartOrSubmitResponse<CaseData, State> midEventForDynamicList(
-        CaseDetails<CaseData, State> details,
-        CaseDetails<CaseData, State> detailsBefore
-    ) {
-        CaseData caseData = details.getData();
-        details.getData().getChildren().setFirstNameAfterAdoption(detailsBefore.getData().getChildren().getFirstNameAfterAdoption());
-        details.getData().getChildren().setLastNameAfterAdoption(detailsBefore.getData().getChildren().getLastNameAfterAdoption());
-        List<DynamicListElement> listElements = new ArrayList<>();
-
-
-
-        if (caseData.getAdopAgencyOrLA() != null) {
-            DynamicListElement adoptionAgency = DynamicListElement.builder()
-                .label(String.join(COMMA, caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName(),
-                                   caseData.getAdopAgencyOrLA().getAdopAgencyTown(),
-                                   caseData.getAdopAgencyOrLA().getAdopAgencyPostcode()))
-                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
-                .build();
-
-            listElements.add(adoptionAgency);
-        }
-
-        if (YesOrNo.YES.equals(caseData.getHasAnotherAdopAgencyOrLAinXui())) {
-            DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
-                .label(String.join(COMMA, caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName(),
-                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostTown(),
-                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostCode()))
-                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
-                .build();
-
-            listElements.add(otherAdoptionAgency);
-        }
-
-        if (caseData.getChildSocialWorker() != null) {
-            DynamicListElement childLocalAuthority = DynamicListElement.builder()
-                .label(String.join(COMMA, caseData.getChildSocialWorker().getSocialWorkerName(),
-                                   caseData.getChildSocialWorker().getSocialWorkerTown(),
-                                   caseData.getChildSocialWorker().getSocialWorkerPostcode()))
-                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
-                .build();
-            listElements.add(childLocalAuthority);
-        }
-
-        if (caseData.getApplicantSocialWorker() != null) {
-            DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
-                .label(String.join(COMMA, caseData.getApplicantSocialWorker().getSocialWorkerName(),
-                                   caseData.getApplicantSocialWorker().getSocialWorkerTown(),
-                                   caseData.getApplicantSocialWorker().getSocialWorkerPostcode()))
-                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
-                .build();
-            listElements.add(applicantLocalAuthority);
-        }
-
-        caseData.getAdoptionOrderData().setPlacementOfTheChildList(DynamicList.builder()
-                .listItems(listElements).value(DynamicListElement.EMPTY).build());
-
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseData)
             .build();
     }
 }
