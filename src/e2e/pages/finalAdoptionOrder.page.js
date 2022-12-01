@@ -11,6 +11,7 @@ module.exports = {
     childLastNameAfterAdoption: '#childrenLastNameAfterAdoption',
     finalAdoptionOrder: '#manageOrderType-finalAdoptionOrder',
     orderedBy: '#orderedByFinalAdoptionOrder',
+    previewOrderLink: '//a[contains(text(),"A76_Final adoption order_draft.pdf")]',
     placeAndDateOfBirth: {
       placeOfBirthProvidedYes: '#placeOfBirthProved_Yes',
       placeOfBirthProvidedNo: '#placeOfBirthProved_No',
@@ -175,6 +176,7 @@ module.exports = {
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.childLocalAuthority);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.applicantLocalAuthority);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.adoptionAgency);
+    await I.retry(3).seeElement(this.fields.previewOrderLink)
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
   },
@@ -199,7 +201,15 @@ module.exports = {
   async finalAdoptionOrderManagementDateOrderMadeCYAPage() {
     await I.wait(3);
     await I.retry(3).see('12 Mar 2021');
-  }
+  },
 
+  async verifyOrderPreviewScreen(){
+    await I.wait(3);
+    await I.retry(3).see('Preview the draft order');
+    await I.retry(3).see('Preview and check the order in draft. You can make changes on the next page');
+    await I.retry().seeElement(this.fields.previewOrderLink)
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+  }
 
 }

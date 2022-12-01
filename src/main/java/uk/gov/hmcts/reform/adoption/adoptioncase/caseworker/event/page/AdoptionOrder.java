@@ -1,28 +1,17 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
-import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
-import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
-import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 /**
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage orders Details screen with all required fields.
  */
 public class AdoptionOrder implements CcdPageConfiguration {
+
 
     public static final String ERROR_CHECK_RECIPIENTS_SELECTION = "Recipients of Final adoption order is required";
     public static final String FIRST_APPLICANT_NOT_APPLICABLE = "First Applicant not applicable for the case";
@@ -44,7 +33,6 @@ public class AdoptionOrder implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
         getFinalOrderPage(pageBuilder);
-        getRecipientsPage(pageBuilder);
     }
 
     /**
@@ -67,8 +55,8 @@ public class AdoptionOrder implements CcdPageConfiguration {
             .label("LabelDateOrderMade76","### Date order made", null, true)
             .mandatory(AdoptionOrderData::getDateOrderMadeFinalAdoptionOrder)
             .label("LabelOrderedBy73","### Placement of the child", null, true)
-            .mandatory(AdoptionOrderData::getPlacementOfTheChildList)
             .done()
+            .mandatory(CaseData::getPlacementOfTheChildList)
             .complex(CaseData::getChildren)
             .label("LabelChildFullNameAfterAdoption74","### Child's full name after adoption", null, true)
             .mandatory(Children::getFirstNameAfterAdoption)
@@ -111,119 +99,5 @@ public class AdoptionOrder implements CcdPageConfiguration {
             .mandatory(AdoptionOrderData::getRegistrationCounty)
             .done()
             .done();
-    }
-
-    /**
-     * Helper method to support page design and flow to display Final Order Recipients List in 2 categories.
-     * Final Adoption Order Recipients
-     *
-     * @param pageBuilder - Application PageBuilder for the event pages
-     */
-    private void getRecipientsPage(PageBuilder pageBuilder) {
-        pageBuilder.page("manageOrders9", this::midEventRecipients)
-            .showCondition("manageOrderType=\"finalAdoptionOrder\"")
-            .pageLabel("Final adoption order recipients")
-            .complex(CaseData::getAdoptionOrderData)
-            .label("LabelRecipients91", "#### Select who to serve the order to", null, true)
-            .label("LabelRecipients92", "###### <p>Only select people who are party to this case and who "
-                + "need a copy of this order. The General Register Office will be automatically sent a copy.</p>")
-            .optional(AdoptionOrderData::getRecipientsListA76)
-            .optional(AdoptionOrderData::getRecipientsListA206)
-            .done()
-            .done();
-    }
-
-
-    /**
-     * Event method to validate the right selection options done by the User as per the Requirements for Recipients.
-     * Final Adoption Order Recipients
-     *
-     * @param detailsBefore - Application CaseDetails for the previous page
-     * @param details - Application CaseDetails for the present page
-     * @return - AboutToStartOrSubmitResponse updated to use on further pages.
-     */
-    public AboutToStartOrSubmitResponse<CaseData, State> midEventRecipients(
-        CaseDetails<CaseData, State> details,
-        CaseDetails<CaseData, State> detailsBefore
-    ) {
-        CaseData caseData = details.getData();
-        final List<String> errors = new ArrayList<>();
-        caseData.setAllocatedJudge(detailsBefore.getData().getAllocatedJudge());
-        Set<AdoptionOrderData.RecipientsA76> selectedRecipientsA76 = caseData.getAdoptionOrderData().getRecipientsListA76();
-        Set<AdoptionOrderData.RecipientsA206> selectedRecipientsA206 = caseData.getAdoptionOrderData().getRecipientsListA206();
-
-        if (isEmpty(selectedRecipientsA76) && isEmpty(selectedRecipientsA206)) {
-            errors.add(ERROR_CHECK_RECIPIENTS_SELECTION);
-            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-                .data(caseData)
-                .errors(errors)
-                .build();
-        }
-        if (isNotEmpty(selectedRecipientsA76)) {
-            if (selectedRecipientsA76.contains(AdoptionOrderData.RecipientsA76.FIRST_APPLICANT)
-                && isNotEmpty(caseData.getApplicant1()) && isEmpty(caseData.getApplicant1().getFirstName())) {
-                errors.add(FIRST_APPLICANT_NOT_APPLICABLE);
-            }
-            if (selectedRecipientsA76.contains(AdoptionOrderData.RecipientsA76.SECOND_APPLICANT)
-                && isNotEmpty(caseData.getApplicant2()) && isEmpty(caseData.getApplicant2().getFirstName())) {
-                errors.add(SECOND_APPLICANT_NOT_APPLICABLE);
-            }
-        }
-        if (isNotEmpty(selectedRecipientsA206)) {
-            selectedRecipientsA206.forEach(recipient -> Optional.ofNullable(isApplicableA206(recipient, caseData)).ifPresent(errors::add));
-        }
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseData)
-            .errors(errors)
-            .build();
-    }
-
-    private String isApplicableA206(AdoptionOrderData.RecipientsA206 choice, CaseData caseData) {
-        switch (choice) {
-            case RESPONDENT_BIRTH_MOTHER:
-                if (isEmpty(caseData.getBirthMother().getFirstName())) {
-                    return BIRTH_MOTHER_NOT_APPLICABLE;
-                }
-                break;
-            case RESPONDENT_BIRTH_FATHER:
-                if (isEmpty(caseData.getBirthFather().getFirstName())) {
-                    return BIRTH_FATHER_NOT_APPLICABLE;
-                }
-                break;
-            case LEGAL_GUARDIAN_CAFCASS:
-                if (isEmpty(caseData.getIsChildRepresentedByGuardian())
-                    || caseData.getIsChildRepresentedByGuardian().equals(YesOrNo.NO)) {
-                    return LEGAL_GUARDIAN_NOT_APPLICABLE;
-                }
-                break;
-            case CHILDS_LOCAL_AUTHORITY:
-                if (isEmpty(caseData.getChildSocialWorker().getLocalAuthority())) {
-                    return CHILDS_LA_NOT_APPLICABLE;
-                }
-                break;
-            case APPLICANTS_LOCAL_AUTHORITY:
-                if (isEmpty(caseData.getApplicantSocialWorker().getLocalAuthority())) {
-                    return APPLICANTS_LA_NOT_APPLICABLE;
-                }
-                break;
-            case ADOPTION_AGENCY:
-                if (isEmpty(caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName())) {
-                    return ADOP_AGENCY_NOT_APPLICABLE;
-                }
-                break;
-            case OTHER_ADOPTION_AGENCY:
-                if (isEmpty(caseData.getHasAnotherAdopAgencyOrLAinXui())
-                    || caseData.getHasAnotherAdopAgencyOrLAinXui().equals(YesOrNo.NO)) {
-                    return OTHER_ADOP_AGENCY_NOT_APPLICABLE;
-                }
-                break;
-            default:
-                if (isEmpty(caseData.getIsThereAnyOtherPersonWithParentalResponsibility())
-                    || caseData.getIsThereAnyOtherPersonWithParentalResponsibility().equals(YesOrNo.NO)) {
-                    return OTHER_PARENT_AGENCY_NOT_APPLICABLE;
-                }
-                break;
-        }
-        return null;
     }
 }
