@@ -5,12 +5,12 @@ const utils = require('../utils/utils.js');
 
 module.exports.createCase = async () => {
 
-  const clientId = "adoption-web";
-  const s2sSecret = "MQDQXTSPJNLJ5U27";
-  const idamSecret = "fM6td7W^pnKX@**V";
-  const url = "https://ccd-data-store-api-adoption-cos-api-pr-572.service.core-compute-preview.internal";
-  const s2sUrl = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal";
-  const idamUrl = "https://idam-api.aat.platform.hmcts.net";
+  const clientId = process.env.ADOPTION_WEB_CLIENT_ID;
+  const s2sSecret = process.env.S2S_SECRET_WEB;
+  const idamSecret = process.env.IDAM_CLIENT_SECRET;
+  const url = process.env.CASE_DATA_STORE_BASEURL;
+  const s2sUrl = process.env.TEST_S2S_URL;
+  const idamUrl = process.env.IDAM_API_BASEURL;
   const oneTimePassword = otplib.authenticator.generate(s2sSecret);
   const callbackUrl = "http://localhost:3001/receiver";
     let s2sAuth;
