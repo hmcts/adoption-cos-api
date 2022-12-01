@@ -912,6 +912,7 @@ public class CaseData {
                 data.setOrderId(getAdoptionOrderData().getOrderId());
                 data.setManageOrderType(FINAL_ADOPTION_ORDER);
                 data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setDocumentReview(getAdoptionOrderData().getDraftDocument());
                 data.setDateOrderMate(getAdoptionOrderData().getDateOrderMadeFinalAdoptionOrder());
                 data.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
