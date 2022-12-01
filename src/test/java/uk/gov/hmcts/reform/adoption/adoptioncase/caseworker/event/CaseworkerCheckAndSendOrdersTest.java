@@ -5,21 +5,29 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.ccd.sdk.ConfigBuilderImpl;
 import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -32,6 +40,8 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 @ExtendWith(MockitoExtension.class)
 class CaseworkerCheckAndSendOrdersTest {
 
+    @Mock
+    private Clock clock;
 
     @InjectMocks
     private CaseworkerCheckAndSendOrders caseworkerCheckAndSendOrders;
@@ -46,6 +56,31 @@ class CaseworkerCheckAndSendOrdersTest {
             .contains(CASEWORKER_CHECK_AND_SEND_ORDERS);
     }
 
+
+    @Test
+    void caseworkerCheckAndSendOrdersAboutToStart() {
+        OrderData orderData1 = getCommonOrderData();
+        OrderData orderData2 = getCommonOrderData();
+        OrderData orderData3 = getCommonOrderData();
+        List<ListValue<OrderData>> manageOrderList = new ArrayList<>();
+        var caseDetails = getCaseDetails();
+        CaseData data = caseDetails.getData();
+        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, orderData1);
+        data.archiveManageOrdersHelper(manageOrderList, orderData2);
+        data.archiveManageOrdersHelper(manageOrderList, orderData3);
+        data.setCommonOrderList(manageOrderList);
+
+        var result = caseworkerCheckAndSendOrders.aboutToStart(caseDetails);
+        assertThat(result.getData().getCheckAndSendOrderDropdownList().getListItems().size()).isEqualTo(3);
+    }
+
+
+    private OrderData getCommonOrderData() {
+        OrderData orderData = new OrderData().builder().manageOrderType(CASE_MANAGEMENT_ORDER).build();
+        orderData.setSubmittedDateAndTimeOfOrder(LocalDateTime.now());
+        orderData.setOrderId(UUID.randomUUID().toString());
+        return orderData;
+    }
 
     @NotNull
     private AdoptionOrderData getAdoptionOrderData() {
@@ -93,6 +128,21 @@ class CaseworkerCheckAndSendOrdersTest {
             .data(caseData())
             .id(1L)
             .build();
+    }
+
+    @NotNull
+    private void prepareCheckAndSendDropdownList(List<ListValue<OrderData>>
+                                                     commonOrderList, String orderId, CaseData data) {
+        List<DynamicListElement> listElements = new ArrayList<>();
+        commonOrderList.forEach(order -> {
+            DynamicListElement orderInfo = DynamicListElement.builder().label(
+                order.getValue().getManageOrderType().getLabel()).code(
+                UUID.fromString(order.getValue().getOrderId())).build();
+            listElements.add(orderInfo);
+        });
+        var element = DynamicListElement.builder().code(UUID.fromString(orderId)).build();
+        data.setCheckAndSendOrderDropdownList(DynamicList.builder().listItems(listElements)
+                                                  .value(element).build());
     }
 
 }
