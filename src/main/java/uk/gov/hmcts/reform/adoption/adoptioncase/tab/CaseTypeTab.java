@@ -25,6 +25,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildConfidentialTab(configBuilder);
         buildServiceRequestTab(configBuilder);
         buildHearingsTab(configBuilder);
+        buildOrdersViewTab(configBuilder);
     }
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -97,8 +98,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildTabWithLocalGuardianAndSolicitorDetails(tabBuilderForOtherParties);
         buildTabWithAgencyAndLocalAuthorityDetails(tabBuilderForOtherParties);
         buildTabWithRespondentDetails(tabBuilderForOtherParties);
-        buildHearingsTab(configBuilder);
-        buildOrdersViewTab(configBuilder);
+
     }
 
     private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
