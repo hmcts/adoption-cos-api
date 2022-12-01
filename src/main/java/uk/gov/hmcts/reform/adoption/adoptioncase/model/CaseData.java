@@ -710,7 +710,7 @@ public class CaseData {
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
     @CCD(
-        label = "Common Order List",
+        label = "Orders",
         typeOverride = Collection,
         typeParameterOverride = "OrderData",
         access = {DefaultAccess.class}
