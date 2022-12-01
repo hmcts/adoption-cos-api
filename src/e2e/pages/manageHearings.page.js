@@ -280,12 +280,12 @@ module.exports = {
 
 
   async addRecepientDetailsWithOutFirstAndSecondApplicant() {
-    I.retry(3).seeElement(this.fields.childNameHeader);
-    I.retry(3).seeElement(this.fields.recipientsTitle);
-    I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
-    I.retry(5).click(this.fields.recipientsBirthMother);
-    I.retry(5).click(this.fields.recipientsBirthFather);
-    I.retry(5).click(this.fields.legalGuardian);
+    await I.retry(3).seeElement(this.fields.childNameHeader);
+    await I.retry(3).seeElement(this.fields.recipientsTitle);
+    await I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
+    await I.retry(5).click(this.fields.recipientsBirthMother);
+    await I.retry(5).click(this.fields.recipientsBirthFather);
+    await I.retry(5).click(this.fields.legalGuardian);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
     await I.retry(3).see('Check your answers')
@@ -299,7 +299,7 @@ module.exports = {
     await I.retry(3).seeElement(this.fields.previewDraftLink);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
-  }
+  },
 
 
   async selectAdjournHearingYesRelisting(){
