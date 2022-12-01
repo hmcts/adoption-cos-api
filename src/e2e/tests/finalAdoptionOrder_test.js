@@ -32,7 +32,6 @@ Scenario('Verify final adoption order details check and send Orders and CYA', as
 
   await caseViewPage.goToNewActions(config.administrationActions.checkAndSendOrders);
   await checkAndSendOrdersPage.verifyCheckAndSendOrdersPageDetails();
-  await checkAndSendOrdersPage.selectOrderToReview();
   await checkAndSendOrdersPage.verifyOrderForReview();
   await checkAndSendOrdersPage.FinalAdoptionOrderRecipients();
   await checkAndSendOrdersPage.selectServerOrder();

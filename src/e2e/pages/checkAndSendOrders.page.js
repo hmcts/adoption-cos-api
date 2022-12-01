@@ -2,7 +2,9 @@ const config = require('../config');
 const {I} = inject();
 const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 const checkAndSendOrderDetails = require('../fixtures/checkAndSendOrderDetails.js');
+const finalAdoptionOrderDetails = require("../fixtures/finalAdoptionOrderDetails");
 
+let orderType;
 module.exports = {
   fields: {
     pageTitle: '//h1[text()="Check and send orders"]',
@@ -26,65 +28,32 @@ module.exports = {
     await I.retry(3).seeElement(this.fields.childName);
     await I.retry(3).seeElement(this.fields.ordersToReviewTitle);
     await I.retry(3).seeElement(this.fields.ordersToReviewSubTitle);
-    // await I.click(this.fields.continueButton);
-    // await I.wait(3);
-    // await I.retry(3).seeElement(this.fields.errorMessage);
-    // await I.click(this.fields.cancelButton);
+    await I.click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).seeElement(this.fields.errorMessage);
+
+    let delivery = locate('//select[@id="checkAndSendOrderDropdownList"]/option').at(2);
+    orderType = await I.grabTextFrom(delivery);
+    await I.wait(3);
+    await I.retry(3).selectOption(this.fields.ordersDropDown, orderType);
+    await I.click(this.fields.continueButton);
     await I.wait(5);
   },
 
-  async selectOrderToReview(){
-    //Implementation
-    // const currentUrl = await I.grabCurrentUrl();
-    // await I.retryUntilExists(async () => {
-    //   if(await I.waitForSelector(this.fields.ordersDropDown, 30) != null) {
-    //     await I.scrollToElement(this.fields.ordersDropDown);
-    //     await Iretry(3).selectOption(this.fields.ordersDropDown, '//select[@id="checkAndSendOrderDropdownList"]/option[2]');
-    //     await I.wait(3);
-    //    await  I.click(this.fields.continueButton);
-    //   } else {
-    //     const newUrl = await I.grabCurrentUrl();
-    //     if(newUrl === currentUrl || !newUrl.includes('http')){
-    //       console.log('Page refresh');
-    //       I.refreshPage();
-    //     }
-    //   }
-    // }, 'ccd-case-event-trigger', false);
-
-    await I.click('#checkAndSendOrderDropdownList');
-    let delivery = locate ('//select[@id="checkAndSendOrderDropdownList"]/option').at(2);
-    await I.click (delivery);
-    await I.wait(3);
-  },
-
-  async verifyOrderForReview(){
+  async verifyOrderForReview() {
     await I.wait(3);
     await I.retry(3).see('Review Order');
     await I.retry(3).see(checkAndSendOrderDetails.documentsToReview);
     //await I.retry(3).seeElement(this.fields.previewOrderDocmosisLink);
-    },
-
-  async selectServerOrder(){
-    await I.retry().see(checkAndSendOrderDetails.serveOrderOrAmendment)
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage, this.fields.checkAndSendOrderErrorMessage);
-    await I.retry(3).click(this.fields.serveOrderRadioBtn);
-    await I.retry(3).click(this.fields.continueButton);
-    await I.wait(3);
   },
 
-  async verifyOrderTypeCYA(){
+  async verifyOrderTypeCYA() {
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Check your answers');
-    await I.retry().see(checkAndSendOrderDetails.gateKeepingOrder)
+    await I.retry().see(orderType)
   },
 
-  async verifyFAOTypeCYA(){
-    await I.retry(3).waitForText('Check your answers', 30);
-    await I.retry(3).see('Check your answers');
-    await I.retry().see(checkAndSendOrderDetails.finalAdoptionOrder)
-  },
-
-  async serverOrderCYA(){
+  async serverOrderCYA() {
     await I.retry(3).see(checkAndSendOrderDetails.selectOrderToreview);
     await I.retry(3).see(checkAndSendOrderDetails.serveOrderOrAmendment)
     await I.retry(3).see(checkAndSendOrderDetails.serverTheOrder);
@@ -93,7 +62,7 @@ module.exports = {
   },
 
 
-  async gateKeepingOrderRecipients(){
+  async gateKeepingOrderRecipients() {
     await I.retry(3).see(checkAndSendOrderDetails.selectedRecipientsToServerOrder);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicantLocalAuthority);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthMother);
@@ -107,14 +76,28 @@ module.exports = {
     await I.wait(3);
   },
 
-  async FinalAdoptionOrderRecipients(){
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientFirstApplicant);
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientSecondApplicant);
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientBirthMother);
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientBirthFather);
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientChildLocalAuthority);
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientApplicantLocalAuthority);
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientAdoptionAgency);
+  async selectServerOrder() {
+    await I.wait(3);
+    await I.retry().see(checkAndSendOrderDetails.serveOrderOrAmendment)
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see(checkAndSendOrderDetails.serverOrderError, this.fields.checkAndSendOrderErrorMessage);
+    await I.retry(3).click(this.fields.serveOrderRadioBtn);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+  },
+
+  async FinalAdoptionOrderRecipients() {
+    await I.retry(3).see(checkAndSendOrderDetails.selectedRecipientsToServerOrder);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.firstApplicant);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.secondApplicant);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthFather);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthMother);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.childLocalAuthority);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.applicantLocalAuthority);
+    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.adoptionAgency);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
 
   }
 }
