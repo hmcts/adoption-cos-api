@@ -85,7 +85,9 @@ exports.config = {
     finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js',
     amendOtherPartiesDetailsPage: './src/e2e/pages/amendOtherPartiesDetails.page.js',
     finalOrderPage: './src/e2e/pages/finalAdoptionOrder.page.js',
+    checkAndSendOrdersPage: './src/e2e/pages/checkAndSendOrders.page.js',
     correspondenceTabPage: './src/e2e/pages/correspondenceTab.page.js',
+
   },
   plugins: {
     retryFailedStep: {
