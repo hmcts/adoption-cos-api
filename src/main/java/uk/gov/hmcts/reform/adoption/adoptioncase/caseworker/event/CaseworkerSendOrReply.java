@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
@@ -10,10 +11,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrReply;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessagesAction;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.*;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
@@ -68,7 +66,8 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
             });
 
         }
-        caseData.setMessagesList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(listElements)
+                                            .value(DynamicListElement.EMPTY).build());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
@@ -77,9 +76,13 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
         var caseData = caseDataStateCaseDetails.getData();
-
         if (caseData.getMessageAction().equals(MessagesAction.SEND_A_MESSAGE)) {
-            caseData.storeSendMessages();
+            MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
+            sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
+            if (null != sendMessagesDetails) {
+                caseData.archiveManageOrdersHelper(caseData.getListOfSendMessages(), caseData.getMessageSendDetails());
+                caseData.setMessageSendDetails(null);
+            }
         }
         caseData.setMessageAction(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()

@@ -10,13 +10,15 @@ import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.*;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ManageSendMessagesDetails {
+public class MessageSendDetails {
 
     @CCD(
         displayOrder = 1
@@ -30,7 +32,7 @@ public class ManageSendMessagesDetails {
         typeParameterOverride = "MessageReceiverRoles")
     private MessageReceiverRoles messageReceiverRoles;
 
-    @CCD(label = "Select reason for message",
+    @CCD(label = "Select reason for this message",
         typeOverride = FixedList,
         access = {DefaultAccess.class},
         typeParameterOverride = "MessageReason"
@@ -44,6 +46,12 @@ public class ManageSendMessagesDetails {
     )
     private MessageUrgency messageUrgencyList;
 
+    @CCD(
+        label = "Do you want to attach documents from this case?",
+        access = {SystemUpdateAccess.class, DefaultAccess.class}
+    )
+    private YesOrNo attachDocument;
+
     @CCD(label = "Message",
         typeOverride = TextArea,
         access = {SystemUpdateAccess.class, DefaultAccess.class}
@@ -52,14 +60,8 @@ public class ManageSendMessagesDetails {
 
 
     @CCD(
-        label = "Attach document for this case to this message?",
-        access = {SystemUpdateAccess.class, DefaultAccess.class}
+        access = {DefaultAccess.class},
+        label = "Select a document"
     )
-    private YesOrNo attachDocument;
-
-    @CCD(
-        typeOverride = DynamicRadioList,
-        label = "Documents\n"
-    )
-    private DynamicList documentList;
+    private DynamicList attachDocumentList;
 }

@@ -718,10 +718,16 @@ public class CaseData {
     private MessagesAction messageAction;
 
     @CCD(
+        label = "Reply a message\n"
+    )
+    private DynamicList replyMsgDynamicList;
+
+
+    @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
     @JsonUnwrapped
-    private ManageSendMessagesDetails manageSendMessagesDetails;
+    private MessageSendDetails messageSendDetails;
 
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
@@ -731,16 +737,10 @@ public class CaseData {
     @CCD(
         label = "Send Messages",
         typeOverride = Collection,
-        typeParameterOverride = "ManageSendMessagesDetails",
+        typeParameterOverride = "MessageSendDetails",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<ManageSendMessagesDetails>> listOfSendMessages;
-
-    @CCD(
-        typeOverride = DynamicRadioList,
-        label = "Reply a message\n"
-    )
-    private DynamicList messagesList;
+    private List<ListValue<MessageSendDetails>> listOfSendMessages;
 
 
     // ------------------- Send And Reply Messages Objects End ----------------- //

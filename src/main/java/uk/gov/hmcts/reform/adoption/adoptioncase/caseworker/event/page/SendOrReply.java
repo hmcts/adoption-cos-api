@@ -24,16 +24,16 @@ public class SendOrReply implements CcdPageConfiguration {
             .page("pageSendOrReply2")
             .showCondition("messageAction=\"sendMessage\"")
             .label("sendMessage","## Send a message")
-            .complex(CaseData::getManageSendMessagesDetails)
-            .mandatory(ManageSendMessagesDetails::getMessageReceiverRoles)
-            .mandatory(ManageSendMessagesDetails::getMessageReasonList)
-            .mandatory(ManageSendMessagesDetails::getMessageUrgencyList)
-            .mandatory(ManageSendMessagesDetails::getMessage)
-            .mandatory(ManageSendMessagesDetails::getAttachDocument)
-            .mandatory(ManageSendMessagesDetails::getDocumentList, "attachDocument=\"Yes\"")
+            .complex(CaseData::getMessageSendDetails)
+            .mandatory(MessageSendDetails::getMessageReceiverRoles)
+            .mandatory(MessageSendDetails::getMessageReasonList)
+            .mandatory(MessageSendDetails::getMessageUrgencyList)
+            .mandatory(MessageSendDetails::getAttachDocument)
+            .mandatory(MessageSendDetails::getAttachDocumentList, "attachDocument=\"Yes\"")
+            .mandatory(MessageSendDetails::getMessage)
             .done()
             .page("pageSendOrReply3")
-            .mandatory(CaseData::getMessagesList, "messageAction=\"replyMessage\"")
+            .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"")
             .showCondition("messageAction=\"replyMessage\"")
             .label("labelReplyMes", "## Reply a message")
             .complex(CaseData::getMessageDetails)
@@ -114,23 +114,23 @@ public class SendOrReply implements CcdPageConfiguration {
 
             });
         }
-        var messageSendDetails = new ManageSendMessagesDetails();
-        messageSendDetails.setDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
-        caseData.setManageSendMessagesDetails(messageSendDetails);
+        var messageSendDetails = new MessageSendDetails();
+        messageSendDetails.setAttachDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+        caseData.setMessageSendDetails(messageSendDetails);
 
-        if (CollectionUtils.isNotEmpty(caseData.getListOfSendMessages()) && caseData.getMessagesList() != null) {
+        if (CollectionUtils.isNotEmpty(caseData.getListOfSendMessages()) && caseData.getReplyMsgDynamicList() != null) {
             var messageDetails = new MessageDetails();
             var selectedObject = caseData.getListOfSendMessages().stream()
-                .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getMessagesList().getValue()
+                .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList().getValue()
                 .getLabel())).findAny();
             if (selectedObject.isPresent()) {
                 messageDetails.setMessageId(selectedObject.get().getValue().getMessageId());
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
                 messageDetails.setMessage(selectedObject.get().getValue().getMessage());
                 messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                if (selectedObject.get().getValue().getDocumentList() != null && CollectionUtils.isNotEmpty(messageDocumentLists)) {
+                if (selectedObject.get().getValue().getAttachDocumentList() != null && CollectionUtils.isNotEmpty(messageDocumentLists)) {
                     messageDetails.setDocumentLink(messageDocumentLists.stream().filter(item ->
-                        item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getDocumentList()
+                        item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getAttachDocumentList()
                         .getValue().getCode().toString())).findFirst().get().getDocumentLink());
                 }
                 caseData.setMessageDetails(messageDetails);
