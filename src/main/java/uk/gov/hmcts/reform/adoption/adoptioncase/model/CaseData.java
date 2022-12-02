@@ -728,7 +728,8 @@ public class CaseData {
     }
 
     public DynamicList getHearingListThatCanBeVacated() {
-        if (Objects.isNull(this.hearingListThatCanBeVacated)) {
+        if (Objects.isNull(this.hearingListThatCanBeVacated)
+            || this.hearingListThatCanBeVacated.getListItems().size() != this.getNewHearings().size()) {
             this.setHearingListThatCanBeVacated(
                 this.getHearingList(this.getNewHearings()));
         }
@@ -736,11 +737,12 @@ public class CaseData {
     }
 
     public DynamicList getHearingListThatCanBeAdjourned() {
-        if (Objects.isNull(this.hearingListThatCanBeVacated)) {
+        if (Objects.isNull(this.hearingListThatCanBeAdjourned)
+            || this.hearingListThatCanBeAdjourned.getListItems().size() != this.getNewHearings().size()) {
             this.setHearingListThatCanBeAdjourned(
                 this.getHearingList(this.getNewHearings()));
         }
-        return this.hearingListThatCanBeVacated;
+        return this.hearingListThatCanBeAdjourned;
     }
 
     public DynamicList getHearingList(List<ListValue<ManageHearingDetails>> hearings) {
