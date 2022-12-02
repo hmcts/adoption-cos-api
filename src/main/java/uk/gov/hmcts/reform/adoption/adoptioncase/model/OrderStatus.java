@@ -9,12 +9,17 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum OrderStatus implements HasLabel {
 
-    @JsonProperty("OpenOrder")
+    @JsonProperty("openOrder")
     OPEN("Open"),
 
-    @JsonProperty("ServedOrder")
-    SERVED("Served");
+    @JsonProperty("servedOrder")
+    SERVED("Served"),
 
+    @JsonProperty("returnForAmendments")
+    RETURN_FOR_AMENDMENTS("Return for amendments"),
+
+    @JsonProperty("pendingCheckAndSend")
+    PENDING_CHECK_N_SEND("Pending Check & send");
     private String label;
 
 }
