@@ -128,8 +128,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
     ) {
-        var caseData = details.getData();
-        List<String> error = new ArrayList<>();
         log.info("detailsBefore.getData().getHearingListThatCanBeVacated() {}",
                  detailsBefore.getData().getHearingListThatCanBeVacated());
         log.info("details.getData().getHearingListThatCanBeVacated() {}",
@@ -138,6 +136,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                  detailsBefore.getData().getHearingListThatCanBeAdjourned());
         log.info("details.getData().getHearingListThatCanBeAdjourned() {}",
                  details.getData().getHearingListThatCanBeAdjourned());
+
+        var caseData = details.getData();
+        List<String> error = new ArrayList<>();
 
         caseData.setHearingListThatCanBeVacated(detailsBefore.getData().getHearingListThatCanBeVacated());
         caseData.setHearingListThatCanBeAdjourned(detailsBefore.getData().getHearingListThatCanBeAdjourned());
