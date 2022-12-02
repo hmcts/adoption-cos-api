@@ -130,6 +130,17 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
     ) {
         var caseData = details.getData();
         List<String> error = new ArrayList<>();
+        log.info("detailsBefore.getData().getHearingListThatCanBeVacated() {}",
+                 detailsBefore.getData().getHearingListThatCanBeVacated());
+        log.info("details.getData().getHearingListThatCanBeVacated() {}",
+                 details.getData().getHearingListThatCanBeVacated());
+        log.info("detailsBefore.getData().getHearingListThatCanBeAdjourned() {}",
+                 detailsBefore.getData().getHearingListThatCanBeAdjourned());
+        log.info("details.getData().getHearingListThatCanBeAdjourned() {}",
+                 details.getData().getHearingListThatCanBeAdjourned());
+
+        caseData.setHearingListThatCanBeVacated(detailsBefore.getData().getHearingListThatCanBeVacated());
+        caseData.setHearingListThatCanBeAdjourned(detailsBefore.getData().getHearingListThatCanBeAdjourned());
 
         RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
@@ -141,7 +152,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
-            log.info("templateContent {}", templateContent);
             caseData.getManageHearingDetails().setHearingA90Document(caseDataDocumentService.renderDocument(
                 templateContent,
                 details.getId(),
