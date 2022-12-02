@@ -728,20 +728,23 @@ public class CaseData {
     }
 
     public DynamicList getHearingListThatCanBeVacated() {
-        this.setHearingListThatCanBeVacated(
-            this.getHearingList(this.getNewHearings()));
+        if (Objects.isNull(this.hearingListThatCanBeVacated)) {
+            this.setHearingListThatCanBeVacated(
+                this.getHearingList(this.getNewHearings()));
+        }
         return this.hearingListThatCanBeVacated;
     }
 
     public DynamicList getHearingListThatCanBeAdjourned() {
-        this.setHearingListThatCanBeAdjourned(
-            this.getHearingList(this.getNewHearings()));
-        return this.hearingListThatCanBeAdjourned;
+        if (Objects.isNull(this.hearingListThatCanBeVacated)) {
+            this.setHearingListThatCanBeAdjourned(
+                this.getHearingList(this.getNewHearings()));
+        }
+        return this.hearingListThatCanBeVacated;
     }
 
     public DynamicList getHearingList(List<ListValue<ManageHearingDetails>> hearings) {
         List<DynamicListElement> listElements = new ArrayList<>();
-
         if (CollectionUtils.isNotEmpty(hearings)) {
             hearings.forEach(hearing -> {
                 DynamicListElement listElement = DynamicListElement.builder()

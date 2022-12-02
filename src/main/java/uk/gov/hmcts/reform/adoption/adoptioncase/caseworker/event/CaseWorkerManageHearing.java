@@ -128,20 +128,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
     ) {
-        log.info("detailsBefore.getData().getHearingListThatCanBeVacated() {}",
-                 detailsBefore.getData().getHearingListThatCanBeVacated());
-        log.info("details.getData().getHearingListThatCanBeVacated() {}",
-                 details.getData().getHearingListThatCanBeVacated());
-        log.info("detailsBefore.getData().getHearingListThatCanBeAdjourned() {}",
-                 detailsBefore.getData().getHearingListThatCanBeAdjourned());
-        log.info("details.getData().getHearingListThatCanBeAdjourned() {}",
-                 details.getData().getHearingListThatCanBeAdjourned());
-
         var caseData = details.getData();
         List<String> error = new ArrayList<>();
-
-        caseData.setHearingListThatCanBeVacated(detailsBefore.getData().getHearingListThatCanBeVacated());
-        caseData.setHearingListThatCanBeAdjourned(detailsBefore.getData().getHearingListThatCanBeAdjourned());
 
         RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
