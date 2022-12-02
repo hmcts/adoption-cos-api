@@ -1,7 +1,9 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -11,27 +13,37 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndSendOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.UUID;
+import java.util.Comparator;
+
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
 
 
 @Component
 @Slf4j
 public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, UserRole> {
 
+    @Autowired
+    private CaseDataDocumentService caseDataDocumentService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * The constant CASEWORKER_CHECK_AND_SEND_ORDERS.
@@ -66,7 +78,11 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                             UserRole.DISTRICT_JUDGE
         );
         return new PageBuilder(configBuilder.event(CASEWORKER_CHECK_AND_SEND_ORDERS).forAllStates().name(
-            check_and_send_orders).showSummary().aboutToStartCallback(this::aboutToStart).grant(
+            check_and_send_orders)
+                                   .showSummary()
+                                   .aboutToStartCallback(this::aboutToStart)
+                                   .aboutToSubmitCallback(this::aboutToSubmit)
+                                   .grant(
             Permissions.CREATE_READ_UPDATE,
             UserRole.CASE_WORKER
         ).grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
@@ -134,4 +150,24 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 
+    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore) {
+        CaseData caseData = details.getData();
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object> templateContent =
+            objectMapper.convertValue(caseData, Map.class);
+        caseData.getAdoptionOrderData().setFinalDocument(
+            caseDataDocumentService.renderDocument(
+                templateContent,
+                details.getId(),
+                FINAL_ADOPTION_ORDER_A76,
+                LanguagePreference.ENGLISH,
+                FINAL_ADOPTION_ORDER_A76_FILE_NAME
+            ));
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .build();
+    }
 }
