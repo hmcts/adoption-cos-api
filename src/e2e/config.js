@@ -28,6 +28,7 @@ module.exports = {
     seekFurtherInfo: 'Seek further information',
     amendOtherPartiesDetails: 'Amend other parties details',
     checkAndSendOrders: 'Check and send orders',
+
   },
   // tabs
   tabs: {
