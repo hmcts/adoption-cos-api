@@ -150,8 +150,8 @@ module.exports = {
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.finalOrderRecipientsError, this.fields.finalOrderRecipients.FAORecipientsError);
     await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientFirstApplicant);
     await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientSecondApplicant);
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientBirthMother);
-    await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientBirthFather);
+    //await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientBirthMother);
+    //await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientBirthFather);
     await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientChildLocalAuthority);
     await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientApplicantLocalAuthority);
     await I.retry(3).click(this.fields.finalOrderRecipients.FAORecipientAdoptionAgency);
@@ -171,12 +171,12 @@ module.exports = {
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.selectWhoToServeOrderTo);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.firstApplicant);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.secondApplicant);
-    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthFather);
-    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthMother);
+    //await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthFather);
+    //await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthMother);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.childLocalAuthority);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.applicantLocalAuthority);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.adoptionAgency);
-    //await I.retry(3).seeElement(this.fields.previewOrderLink)
+    await I.retry(3).seeElement(this.fields.previewOrderLink)
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
   },
@@ -207,7 +207,7 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).see('Preview the draft order');
     await I.retry(3).see('Preview and check the order in draft. You can make changes on the next page');
-   // await I.retry().seeElement(this.fields.previewOrderLink)
+    await I.retry().seeElement(this.fields.previewOrderLink)
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
   }

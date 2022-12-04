@@ -14,7 +14,7 @@ async function setupScenario(I) {
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 
-Scenario('Verify final adoption order details check and send Orders and CYA', async ({I, caseViewPage, manageOrdersPage, finalOrderPage,checkAndSendOrdersPage}) => {
+Scenario('Verify final adoption order details check and send Orders and CYA', async ({I, caseViewPage, manageOrdersPage, finalOrderPage,checkAndSendOrdersPage, manageOrderTabPage}) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.verifyCaseDetails();
@@ -30,6 +30,12 @@ Scenario('Verify final adoption order details check and send Orders and CYA', as
   await finalOrderPage.verifyFinalAdoptionOrderRecipientsCYA();
   await I.retry(3).seeEventSubmissionConfirmation(caseId, config.administrationActions.manageOrders);
 
+  await manageOrderTabPage.selectOrderTab();
+  await manageOrderTabPage.verifyOrderDetailsUnderOrdersTabs();
+  await manageOrderTabPage.verifyFAOrderStatus()
+  await manageOrderTabPage.faOrderRecipients();
+
+
   await caseViewPage.goToNewActions(config.administrationActions.checkAndSendOrders);
   await checkAndSendOrdersPage.verifyCheckAndSendOrdersPageDetails();
   await checkAndSendOrdersPage.verifyOrderForReview();
@@ -38,6 +44,12 @@ Scenario('Verify final adoption order details check and send Orders and CYA', as
   await checkAndSendOrdersPage.verifyOrderTypeCYA();
   await checkAndSendOrdersPage.serverOrderCYA();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.checkAndSendOrders);
+
+  await manageOrderTabPage.selectOrderTab();
+  await manageOrderTabPage.verifyOrderDetailsUnderOrdersTabs();
+  await manageOrderTabPage.verifyOrderServed();
+  await manageOrderTabPage.faOrderRecipients();
+
 
 });
 

@@ -17,7 +17,7 @@ module.exports = {
     ordersDropDown: '#checkAndSendOrderDropdownList',
     orderToSelect: '//option[starts-with(@value, "1")]',
     alertMessage: '//div[@class="alert-message"]',
-    previewOrderDocmosisLink: '',
+    previewOrderDocmosisLink: '//a[text()=" A76_Final adoption order_draft.pdf "]',
     checkAndSendOrderErrorMessage: '#orderCheckAndSend .error-message',
     serveOrderRadioBtn: '#orderCheckAndSend-serveTheOrder'
   },
@@ -44,7 +44,6 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).see('Review Order');
     await I.retry(3).see(checkAndSendOrderDetails.documentsToReview);
-    //await I.retry(3).seeElement(this.fields.previewOrderDocmosisLink);
   },
 
   async verifyOrderTypeCYA(){
@@ -88,11 +87,12 @@ module.exports = {
   },
 
   async FinalAdoptionOrderRecipients() {
+    await I.retry(3).seeElement(this.fields.previewOrderDocmosisLink);
     await I.retry(3).see(checkAndSendOrderDetails.selectedRecipientsToServerOrder);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.firstApplicant);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.secondApplicant);
-    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthFather);
-    await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthMother);
+    //await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthFather);
+    //await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.birthMother);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.childLocalAuthority);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.applicantLocalAuthority);
     await I.retry(3).see(finalAdoptionOrderDetails.checkYourAnswers.adoptionAgency);
