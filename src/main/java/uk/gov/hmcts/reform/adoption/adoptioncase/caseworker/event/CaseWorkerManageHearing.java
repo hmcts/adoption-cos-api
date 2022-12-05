@@ -102,11 +102,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         log.info("Callback invoked for {}", CASEWORKER_MANAGE_HEARING);
         var caseData = details.getData();
         if (ManageHearingOptions.VACATE_HEARING.equals(caseData.getManageHearingOptions())) {
-            log.info("caseData.getHearingListThatCanBeVacated() {}", caseData.getHearingListThatCanBeVacated());
             caseData.updateVacatedHearings();
         }
         if (ManageHearingOptions.ADJOURN_HEARING.equals(caseData.getManageHearingOptions())) {
-            log.info("caseData.getHearingListThatCanBeAdjourned() {}", caseData.getHearingListThatCanBeAdjourned());
             caseData.updateAdjournHearings();
         }
         if (ManageHearingOptions.ADD_NEW_HEARING.equals(caseData.getManageHearingOptions())
