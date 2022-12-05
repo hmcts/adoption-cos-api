@@ -26,6 +26,7 @@ Scenario('Manage Hearings of a case - Add new Hearing', async ({I,loginPage, cas
     await manageHearingsPage.selectVacateHearingOptionWithAgreementAndRelisting();
     await manageHearingsPage.addNewHearingForVacateHearingOptions();
     await manageHearingsPage.addRecepientDetails();
+    await manageHearingsPage.verifyPreviewDraft()
     await manageHearingsPage.verifyVacateHearingWithRelistingCheckYourAnswers();
 });
 
