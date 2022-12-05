@@ -23,6 +23,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildDocumentsTab(configBuilder);
         buildConfidentialTab(configBuilder);
         buildServiceRequestTab(configBuilder);
+        buildHearingsTab(configBuilder);
     }
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -95,7 +96,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildTabWithLocalGuardianAndSolicitorDetails(tabBuilderForOtherParties);
         buildTabWithAgencyAndLocalAuthorityDetails(tabBuilderForOtherParties);
         buildTabWithRespondentDetails(tabBuilderForOtherParties);
-        buildHearingsTab(configBuilder);
     }
 
     private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -105,6 +105,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .label("labelSummary-managehearing", null, "[Manage hearings](/cases/case-details/${[CASE_REFERENCE]}"
                 + "/trigger/caseworker-manage-hearing/caseworker-manage-hearingmanageOrders1)")
             .field(CaseData::getNewHearings)
+            .field(CaseData::getAdjournHearings)
             .field(CaseData::getVacatedHearings);
     }
 

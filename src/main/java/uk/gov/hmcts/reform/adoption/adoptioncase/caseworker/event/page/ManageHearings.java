@@ -1,33 +1,23 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
-import org.apache.commons.collections4.CollectionUtils;
-import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
-import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 
 /**
  * Contains method to add Page Configuration for ExUI.
  * Display the Manage hearings Details screen with all required fields.
  */
+@Slf4j
+@Component
 public class ManageHearings implements CcdPageConfiguration {
 
     @Override
     public void addTo(PageBuilder pageBuilder) {
-        pageBuilder.page("manageHearing1", this::midEvent)
+        pageBuilder.page("manageHearing1")
             .mandatory(CaseData::getManageHearingOptions)
             .page("manageHearing2")
             .showCondition("manageHearingOptions=\"vacateHearing\"")
@@ -61,62 +51,11 @@ public class ManageHearings implements CcdPageConfiguration {
             .optional(ManageHearingDetails::getAccessibilityRequirements)
             .optional(ManageHearingDetails::getHearingDirections)
             .done()
-            .page("manageHearing6",this::midEventAfterRecipientSelection)
-            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
-            .mandatory(CaseData::getRecipientsInTheCase)
-            .done()
-            .build();
-    }
-
-    public AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State> details,
-                                                                   CaseDetails<CaseData, State> detailsBefore) {
-        CaseData caseData = details.getData();
-        List<DynamicListElement> listElements = new ArrayList<>();
-
-        if (CollectionUtils.isNotEmpty(caseData.getNewHearings())) {
-            caseData.getNewHearings().forEach(hearing -> {
-                DynamicListElement listElement = DynamicListElement.builder()
-                    .label(String.join(BLANK_SPACE, hearing.getValue().getTypeOfHearing(),
-                                       "-",
-                                       hearing.getValue().getHearingDateAndTime().format(DateTimeFormatter.ofPattern(
-                                           "dd MMM yyyy',' hh:mm:ss a")).replace("pm", "PM").replace("am", "PM")
-                    )).code(UUID.fromString(hearing.getValue().getHearingId()))
-                    .build();
-                listElements.add(listElement);
-            });
-
-        }
-        caseData.setHearingListThatCanBeVacated(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
-        caseData.setHearingListThatCanBeAdjourned(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseData)
             .build();
     }
 
 
-    /*
-    This MidEvent will validate if any incorrect selection of Recipients is made.
-    In case any non-applicable Recipient is selected
-    System will throw an error.
-     */
-    public AboutToStartOrSubmitResponse<CaseData, State> midEventAfterRecipientSelection(
-        CaseDetails<CaseData, State> details,
-        CaseDetails<CaseData, State> detailsBefore
-    ) {
-        var caseData = details.getData();
-        List<String> error = new ArrayList<>();
 
-        RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
-        RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
-
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseData)
-            .errors(error)
-            .build();
-    }
 
 
 

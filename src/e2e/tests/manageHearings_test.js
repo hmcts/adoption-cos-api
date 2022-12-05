@@ -26,6 +26,7 @@ Scenario('Manage Hearings of a case - Add new Hearing', async ({I,loginPage, cas
     await manageHearingsPage.selectVacateHearingOptionWithAgreementAndRelisting();
     await manageHearingsPage.addNewHearingForVacateHearingOptions();
     await manageHearingsPage.addRecepientDetails();
+    await manageHearingsPage.verifyPreviewDraft()
     await manageHearingsPage.verifyVacateHearingWithRelistingCheckYourAnswers();
 });
 
@@ -46,3 +47,14 @@ Scenario('Manage Hearings of a case - Adjourn Hearing with NO Relisting', async 
     await manageHearingsPage.selectAdjournHearingNoRelisting();
     await manageHearingsPage.verifyAdjournHearingNoRelistingCheckYourAnswers();
 });
+
+// Scenario('Manage Hearings of a case - Adjourn Hearing with Relisting', async ({I,loginPage, caseListPage, caseViewPage, manageHearingsPage }) => {
+//     await setupScenario(I);
+//     await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+//     await manageHearingsPage.genericAddNewHearing();
+//     await caseViewPage.goToNewActions(config.administrationActions.manageHearings);
+//     await manageHearingsPage.selectAdjournHearingYesRelisting();
+//     await manageHearingsPage.addNewHearingForVacateHearingOptions();
+//     await manageHearingsPage.addRecepientDetails();
+//     await manageHearingsPage.verifyAdjournHearingWithRelistingCheckYourAnswers();
+// });

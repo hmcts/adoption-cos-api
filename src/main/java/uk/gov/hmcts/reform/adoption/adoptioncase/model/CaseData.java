@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
@@ -28,6 +30,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.Set;
@@ -46,11 +49,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_SOCIAL_WORKER_STR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT_SOCIAL_WORKER_STR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOPTION_AGENCY_STR;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOPTION_AGENCY_STR;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -650,7 +649,7 @@ public class CaseData {
     private List<ListValue<ManageHearingDetails>> vacatedHearings;
 
     @CCD(
-        label = "Adjourn hearing",
+        label = "Adjourned hearing",
         typeOverride = Collection,
         typeParameterOverride = "ManageHearingDetails",
         access = {DefaultAccess.class}
@@ -709,6 +708,11 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA90Document;
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
@@ -723,51 +727,48 @@ public class CaseData {
         return manageOrdersData.getNameOfCourtFurtherHearing();
     }
 
-    public DynamicList getPlacementOfTheChildList() {
+    public DynamicList getHearingListThatCanBeVacated() {
+        if (Objects.isNull(this.hearingListThatCanBeVacated)
+            || this.hearingListThatCanBeVacated.getListItems().size() != this.getNewHearings().size()) {
+            this.setHearingListThatCanBeVacated(
+                this.getHearingList(this.getNewHearings()));
+        }
+        return this.hearingListThatCanBeVacated;
+    }
+
+    public DynamicList getHearingListThatCanBeAdjourned() {
+        if (Objects.isNull(this.hearingListThatCanBeAdjourned)
+            || this.hearingListThatCanBeAdjourned.getListItems().size() != this.getNewHearings().size()) {
+            this.setHearingListThatCanBeAdjourned(
+                this.getHearingList(this.getNewHearings()));
+        }
+        return this.hearingListThatCanBeAdjourned;
+    }
+
+    public DynamicList getHearingList(List<ListValue<ManageHearingDetails>> hearings) {
         List<DynamicListElement> listElements = new ArrayList<>();
-
-        if (this.getAdopAgencyOrLA() != null) {
-            DynamicListElement adoptionAgency = DynamicListElement.builder()
-                .label(String.join(COMMA, this.getAdopAgencyOrLA().getAdopAgencyOrLaName(),
-                                   this.getAdopAgencyOrLA().getAdopAgencyTown(),
-                                   this.getAdopAgencyOrLA().getAdopAgencyPostcode()))
-                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
-                .build();
-            listElements.add(adoptionAgency);
+        if (CollectionUtils.isNotEmpty(hearings)) {
+            hearings.forEach(hearing -> {
+                DynamicListElement listElement = DynamicListElement.builder()
+                    .label(String.join(BLANK_SPACE, hearing.getValue().getTypeOfHearing(),
+                                       "-",
+                                       hearing.getValue().getHearingDateAndTime().format(DateTimeFormatter.ofPattern(
+                                           "dd MMM yyyy',' hh:mm:ss a")).replace("pm", "PM").replace("am", "PM")
+                    )).code(UUID.fromString(hearing.getValue().getHearingId()))
+                    .build();
+                listElements.add(listElement);
+            });
         }
+        return DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build();
+    }
 
-        if (YesOrNo.YES.equals(this.getHasAnotherAdopAgencyOrLAinXui())) {
-            DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
-                .label(String.join(COMMA, this.getOtherAdoptionAgencyOrLA().getAgencyOrLaName(),
-                                   this.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostTown(),
-                                   this.getOtherAdoptionAgencyOrLA().getAgencyAddress().getPostCode()))
-                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
-                .build();
-            listElements.add(otherAdoptionAgency);
-        }
-
-        if (this.getChildSocialWorker() != null) {
-            DynamicListElement childLocalAuthority = DynamicListElement.builder()
-                .label(String.join(COMMA, this.getChildSocialWorker().getSocialWorkerName(),
-                                   this.getChildSocialWorker().getSocialWorkerTown(),
-                                   this.getChildSocialWorker().getSocialWorkerPostcode()))
-                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
-                .build();
-            listElements.add(childLocalAuthority);
-        }
-
-        if (this.getApplicantSocialWorker() != null) {
-            DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
-                .label(String.join(COMMA, this.getApplicantSocialWorker().getSocialWorkerName(),
-                                   this.getApplicantSocialWorker().getSocialWorkerTown(),
-                                   this.getApplicantSocialWorker().getSocialWorkerPostcode()))
-                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
-                .build();
-            listElements.add(applicantLocalAuthority);
-        }
-        adoptionOrderData.setPlacementOfTheChildList(DynamicList.builder()
-            .listItems(listElements).value(DynamicListElement.EMPTY).build());
-        return adoptionOrderData.getPlacementOfTheChildList();
+    public DynamicList getPlacementOfTheChildList() {
+        return this.getAdoptionOrderData().getPlacementOfTheChildList(
+            this.getAdopAgencyOrLA(),
+            this.getHasAnotherAdopAgencyOrLAinXui(),
+            this.getOtherAdoptionAgencyOrLA(),
+            this.getChildSocialWorker(),
+            this.getApplicantSocialWorker());
     }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
