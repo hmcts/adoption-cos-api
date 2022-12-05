@@ -23,23 +23,26 @@ public class MessageDetails {
     private String messageId;
 
     @CCD(
+        label = "Reason For message",
         displayOrder = 2
     )
     private String reasonForMessage;
 
     @CCD(
+        label = "Urgency",
         displayOrder = 3
     )
     private String urgency;
 
     @CCD(
+        label = "Message",
         displayOrder = 4
     )
     private String message;
 
 
     @CCD(
-        label = "Document",
+        label = "View document attached to this message",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
     private Document documentLink;

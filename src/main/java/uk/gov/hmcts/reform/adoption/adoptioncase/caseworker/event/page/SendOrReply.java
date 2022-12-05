@@ -25,6 +25,7 @@ public class SendOrReply implements CcdPageConfiguration {
         pageBuilder
             .page("pageSendOrReply1", this::midEvent)
             .mandatory(CaseData::getMessageAction)
+            .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"")
             .page("pageSendOrReply2")
             .showCondition("messageAction=\"sendMessage\"")
             .label("sendMessage","## Send a message")
@@ -37,7 +38,6 @@ public class SendOrReply implements CcdPageConfiguration {
             .mandatory(MessageSendDetails::getMessage)
             .done()
             .page("pageSendOrReply3")
-            .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"")
             .showCondition("messageAction=\"replyMessage\"")
             .label("labelReplyMes", "## Reply a message")
             .complex(CaseData::getMessageDetails)
@@ -125,14 +125,15 @@ public class SendOrReply implements CcdPageConfiguration {
         if (CollectionUtils.isNotEmpty(caseData.getListOfSendMessages()) && caseData.getReplyMsgDynamicList() != null) {
             var messageDetails = new MessageDetails();
             var selectedObject = caseData.getListOfSendMessages().stream()
-                .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList().getValue()
-                .getLabel())).findAny();
+                .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList()
+                                                                               .getValueCode().toString())).findFirst();
             if (selectedObject.isPresent()) {
                 messageDetails.setMessageId(selectedObject.get().getValue().getMessageId());
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
                 messageDetails.setMessage(selectedObject.get().getValue().getMessage());
                 messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                if (selectedObject.get().getValue().getAttachDocumentList() != null && CollectionUtils.isNotEmpty(messageDocumentLists)) {
+                if (selectedObject.get().getValue().getAttachDocumentList() != null
+                    && CollectionUtils.isNotEmpty(messageDocumentLists)) {
                     messageDetails.setDocumentLink(messageDocumentLists.stream().filter(item ->
                         item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getAttachDocumentList()
                         .getValue().getCode().toString())).findFirst().get().getDocumentLink());

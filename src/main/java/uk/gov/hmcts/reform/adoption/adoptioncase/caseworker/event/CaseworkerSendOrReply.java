@@ -11,18 +11,21 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrReply;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessagesAction;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.*;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
 
 @Slf4j
 @Component
@@ -62,11 +65,15 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
         List<DynamicListElement> listElements = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getListOfSendMessages())) {
             caseData.getListOfSendMessages().forEach(item -> {
-                DynamicListElement listElement = DynamicListElement.builder()
-                    .label(item.getValue().getMessageId() != null ? item.getValue().getMessageId() : "No MESSAGE ID")
-                    .code(item.getValue().getMessageId() != null
-                              ? UUID.fromString(item.getValue().getMessageId()) : UUID.randomUUID()).build();
-                listElements.add(listElement);
+                if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
+                    DynamicListElement orderInfo = DynamicListElement.builder()
+                        .label(item.getValue().getMessageSendDateNTime().format(
+                                DateTimeFormatter.ofPattern(
+                                    SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
+                                   .concat(item.getValue().getMessageReasonList().getLabel())).code(
+                            UUID.fromString(item.getValue().getMessageId())).build();
+                    listElements.add(orderInfo);
+                }
             });
 
         }
@@ -80,11 +87,15 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
                                                                        CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
         var caseData = caseDataStateCaseDetails.getData();
-        if (caseData.getMessageAction().equals(MessagesAction.SEND_A_MESSAGE)) {
+        if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.SEND_A_MESSAGE)) {
             MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
             sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
+            sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
+            sendMessagesDetails.setMessageSendDateNTime(
+                LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
             if (null != sendMessagesDetails) {
-                caseData.archiveManageOrdersHelper(caseData.getListOfSendMessages(), caseData.getMessageSendDetails());
+                caseData.setListOfSendMessages(caseData.archiveManageOrdersHelper
+                    (caseData.getListOfSendMessages(), sendMessagesDetails));
                 caseData.setMessageSendDetails(null);
             }
         }
