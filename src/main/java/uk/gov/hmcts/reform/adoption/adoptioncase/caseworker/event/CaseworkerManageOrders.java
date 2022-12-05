@@ -156,7 +156,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .showCondition("manageOrderType=\"finalAdoptionOrder\"")
             .pageLabel("Preview the draft order")
             .label("LabelPreview101","Preview and check the order in draft. "
-                + "You can make changes on the next page.")
+                + "You can make changes on the next page.", "manageOrderType=\"finalAdoptionOrder\"", true)
             .complex(CaseData::getAdoptionOrderData)
             .readonly(AdoptionOrderData::getDraftDocument)
             .done()
