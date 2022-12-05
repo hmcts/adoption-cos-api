@@ -123,18 +123,13 @@ public class ManageHearingDetails {
     @CCD
     private LocalDate hearingCreationDate;
 
-    @CCD(
-        access = {DefaultAccess.class}
-    )
+    @CCD
     private Document hearingA90Document;
 
-    @CCD(
-        access = {DefaultAccess.class}
-    )
+    @CCD
     private Document hearingA91DocumentMother;
 
-    @CCD(
-        access = {DefaultAccess.class}
-    )
+    @CCD
     private Document hearingA91DocumentFather;
+
 }

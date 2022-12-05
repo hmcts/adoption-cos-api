@@ -708,10 +708,20 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
-    @CCD(
-        access = {DefaultAccess.class}
-    )
+    @CCD
     private Document hearingA90Document;
+
+    @CCD
+    private Document hearingA91DocumentMother;
+
+    @CCD
+    private Document hearingA91DocumentFather;
+
+    @CCD
+    private YesOrNo hearingA91DocumentFlagMother;
+
+    @CCD
+    private YesOrNo hearingA91DocumentFlagFather;
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
