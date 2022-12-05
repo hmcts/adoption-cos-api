@@ -127,4 +127,14 @@ public class ManageHearingDetails {
         access = {DefaultAccess.class}
     )
     private Document hearingA90Document;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA91DocumentMother;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA91DocumentFather;
 }

@@ -10,8 +10,9 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -28,7 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90_FILE_NAME;
 
 @Component
@@ -66,12 +71,26 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
             .page("manageHearing7")
-            .showCondition("recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
-            .label("manageHearing71","Preview Draft",null, true)
-            .readonly(CaseData::getHearingA90Document)
+            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
+            .pageLabel("Preview the hearing notice")
+            .label("manageHearing71","### Document to review",null, true)
+            .label("manageHearing72","This document will open in a new page when you select it")
+            .complex(CaseData::getManageHearingDetails)
+            .label("manageHearing73","Respondent (birth mother)",
+                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
+            .readonly(ManageHearingDetails::getHearingA91DocumentMother,
+                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
+            .label("manageHearing74","Respondent (birth father)",
+                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
+            .readonly(ManageHearingDetails::getHearingA91DocumentFather,
+                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
+            .label("manageHearing75","Applicants",
+                   "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+            .readonly(ManageHearingDetails::getHearingA90Document,
+                      "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+            .label("manageHearing76","You can make changes to the notice by continuing to the next page")
             .done()
             .build();
-
     }
 
     /**
@@ -124,11 +143,13 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .build();
     }
 
-    /*
-        This MidEvent will validate if any incorrect selection of Recipients is made.
-        In case any non-applicable Recipient is selected
-        System will throw an error.
-         */
+    /**
+     * This MidEvent will validate if any incorrect selection of Recipients is made.
+     * In case any non-applicable Recipient is selected, System will throw an error.
+     * @param detailsBefore - Application CaseDetails for the previous page
+     * @param details - Application CaseDetails for the present page
+     * @return - AboutToStartOrSubmitResponse updated to use on further pages.
+     */
     public AboutToStartOrSubmitResponse<CaseData, State> midEventAfterRecipientSelection(
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
@@ -141,18 +162,58 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
-
+        ManageHearingDetails manageHearingDetails = caseData.getManageHearingDetails();
         if (isEmpty(error)) {
-            caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
+            manageHearingDetails.setHearingCreationDate(LocalDate.now(clock));
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
-            caseData.getManageHearingDetails().setHearingA90Document(caseDataDocumentService.renderDocument(
-                templateContent,
-                details.getId(),
-                MANAGE_HEARING_NOTICES_A90,
-                LanguagePreference.ENGLISH,
-                MANAGE_HEARING_NOTICES_A90_FILE_NAME));
-            caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
+            log.info("INFO LOG FOR PR QA SUPPORT templateContent {}", templateContent);
+
+            caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
+                switch (recipientsInTheCase) {
+
+                    case APPLICANT1: case APPLICANT2:
+                        manageHearingDetails.setHearingA90Document(
+                            caseDataDocumentService.renderDocument(
+                            templateContent,
+                            details.getId(),
+                            MANAGE_HEARING_NOTICES_A90,
+                            LanguagePreference.ENGLISH,
+                            MANAGE_HEARING_NOTICES_A90_FILE_NAME));
+                        break;
+
+                    case RESPONDENT_MOTHER:
+                        if (isNotEmpty(caseData.getBirthMother().getDeceased())
+                            && YesOrNo.NO.equals(caseData.getBirthMother().getDeceased())) {
+                            manageHearingDetails.setHearingA91DocumentMother(
+                                caseDataDocumentService.renderDocument(
+                                    templateContent,
+                                    details.getId(),
+                                    MANAGE_HEARING_NOTICES_A91,
+                                    LanguagePreference.ENGLISH,
+                                    MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER
+                            ));
+                        }
+                        break;
+
+                    case RESPONDENT_FATHER:
+                        if (isNotEmpty(caseData.getBirthFather().getDeceased())
+                            && YesOrNo.NO.equals(caseData.getBirthFather().getDeceased())) {
+                            manageHearingDetails.setHearingA91DocumentFather(
+                                caseDataDocumentService.renderDocument(
+                                    templateContent,
+                                    details.getId(),
+                                    MANAGE_HEARING_NOTICES_A91,
+                                    LanguagePreference.ENGLISH,
+                                    MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER
+                                ));
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            });
         }
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()

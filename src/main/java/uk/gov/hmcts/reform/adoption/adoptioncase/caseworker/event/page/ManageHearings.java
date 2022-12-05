@@ -53,11 +53,4 @@ public class ManageHearings implements CcdPageConfiguration {
             .done()
             .build();
     }
-
-
-
-
-
-
-
 }
