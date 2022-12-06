@@ -14,16 +14,16 @@ public enum GeneraDirectionsIncluded implements HasLabel {
     HEARING_DELAY("Hearing delay"),
 
     @JsonProperty("generalDirectionFillingBundles")
-    FILLING_BUNDLES("Filling bundles"),
+    FILLING_BUNDLES("Filing bundles"),
 
     @JsonProperty("generalDirectionFillingPDDocuments")
-    FILLING_PD_DOCUMENTS("Filling PD documents"),
+    FILLING_PD_DOCUMENTS("Filing PD documents"),
 
     @JsonProperty("generalDirectionBackUpNotice")
     BACKUP_NOTICE("Back up notice"),
 
     @JsonProperty("generalDirectionWarningNotice")
-    WARNING_NOTICE("Waring notice"),
+    WARNING_NOTICE("Warning notice"),
 
     @JsonProperty("generalDirectionPenalNotice")
     PENAL_NOTICE("Penal notice");

@@ -26,13 +26,13 @@ public class GeneralDirectionOrders implements CcdPageConfiguration {
             .optional(DirectionsOrderData::getGeneralDirectionBodyOfTheOrder)
             .label("generalDirectionCostOrders", "### Cost orders", null, true)
             .optional(DirectionsOrderData::getGeneralDirectionCostOfOrder)
-            .label("generalDirectionIncludedInTheOrder", "### Directions to include in the order",
+            .label("generalDirectionIncludedInTheOrder", "### Direction to include in the order",
                    null, true
             )
             .optional(DirectionsOrderData::getGeneraDirectionsIncluded)
             .label(
                 "generalDirectionOrderTypeYouNeedToSend",
-                "### Is there another order type you need to send instead",
+                "### Is there another order type you need to send instead?",
                 null,
                 true
             )
@@ -42,16 +42,17 @@ public class GeneralDirectionOrders implements CcdPageConfiguration {
             .page("manageOrderGD2")
             .showCondition(
                 "manageOrderType=\"generalDirectionsOrder\" AND generalDirectionOrderTypes=\"generalDirectionProductionOrder\"")
-            .label("manageOrderGdGov", "<p>To the governor<br>"
+            .label("manageOrderGdProductOrderTitle","## Production order")
+            .label("manageOrderGdGov", "<p>To The Governor<br>"
                 + "HMP{insert address}.</p>")
             .complex(CaseData::getDirectionsOrderData)
             .label("manageOrderGdGovLab", "### Name of prison", null, true)
             .mandatory(DirectionsOrderData::getGeneralDirectionNameOfPrison)
             .label("manageOrderGdGovLabAddOfPrison", "### Address of prison", null, true)
             .mandatory(DirectionsOrderData::getGeneralDirectionAddressOfPrison)
-            .label("manageOrderGdGovNameOfPrisoner", "<p>Please  arrange for the prisoner {insert name} <br>"
+            .label("manageOrderGdGovNameOfPrisoner", "<p>Please arrange for the prisoner {insert name} <br>"
                 + "(Prisoner number:{insert prisoner number}) to attend at {insert hearing venue} on<br>"
-                + "{insert heating date} at {insert hearing time} for a hearing the above case</p>")
+                + "{insert heating date} at {insert hearing time} for a hearing in the above case</p>")
             .label("manageOrderGdGovLabNameOfPrisoner", "### Name of prisoner", null, true)
             .mandatory(DirectionsOrderData::getGeneralDirectionNameOfThePrisoner)
             .label("manageOrderGdGovLabPrisonerNum", "### Prisoner number", null, true)
