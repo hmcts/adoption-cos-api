@@ -47,6 +47,7 @@ module.exports = {
     adjournHearingPartiesUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
     adjournHearingLateFiling: '#reasonForAdjournHearing-lateFillingOfDocuments',
     adjournHearingDateToAvoid: '#reasonForAdjournHearing-caseListedOnDatesToAvoid',
+    previewDraftLink:'//ccd-read-document-field/a[contains(text(), \' Hearing notice_A90.pdf\')]'
   },
 
   async verifyPageDetails() {
@@ -105,9 +106,10 @@ module.exports = {
      await I.wait(3);
      await I.see("Legal guardian (CAFCASS) is not applicable");
      await I.see("Other adoption agency is not applicable");
-    await I.wait(3);
+     await I.wait(3);
      await I.retry(5).click(this.fields.legalGuardian);
      await I.retry(5).click(this.fields.otherAdoptionAgency);
+     await I.wait(3);
      await I.retry(5).click(this.fields.continueButton);
      await I.wait(5);
    },
@@ -179,7 +181,7 @@ module.exports = {
   async verifyVacateHearingWithRelistingCheckYourAnswers(){
     await I.wait(5);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingOption);
-    await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
+   // await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingReason);
     await I.seeTextInPage(['Enter hearing details', 'Type of hearing'], manageHearingFormData.vacateHearing.typeOfHearingVacate);
     await I.seeTextInPage(['Enter hearing details', 'Hearing date & time'], '31 Dec 2035, 8:30:00 AM');
@@ -197,6 +199,7 @@ module.exports = {
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
     await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+    await I.retry(3).seeElement(this.fields.previewDraftLink);
     await I.wait(3);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
@@ -204,11 +207,14 @@ module.exports = {
   },
 
   async genericAddNewHearing(){
+
     await this.verifyPageDetails();
     await this.verifyManageHearingsPageFunctionality();
     await this.addNewHearingOptions();
     await this.addRecepientDetails();
+    await this.verifyPreviewDraft();
     await this.verifyAddNewHearingCheckYourAnswers();
+
   },
 
   async selectVacateHearingOptionWithAgreementAndNoRelisting(){
@@ -231,7 +237,7 @@ module.exports = {
   async verifyVacateHearingNoRelistingCheckYourAnswers(){
     await I.wait(3);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingOption);
-    await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
+  //  await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingReason);
     await I.see(manageHearingFormData.checkYourAnswers.relistingNo);
     await I.retry(5).click(this.fields.continueButton);
@@ -266,13 +272,37 @@ module.exports = {
     async verifyAdjournHearingNoRelistingCheckYourAnswers(){
         await I.wait(3);
         await I.see(manageHearingFormData.checkYourAnswers.adjournHearingOption);
-        await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
+     //   await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
         await I.see(manageHearingFormData.checkYourAnswers.adjournHearingReason);
         await I.see(manageHearingFormData.checkYourAnswers.relistingNo);
         await I.retry(5).click(this.fields.continueButton);
         await I.wait(3);
         await I.retry(5).seeElement(this.fields.alertMessage);
       },
+
+
+  async addRecepientDetailsWithOutFirstAndSecondApplicant() {
+    await I.retry(3).seeElement(this.fields.childNameHeader);
+    await I.retry(3).seeElement(this.fields.recipientsTitle);
+    await I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
+    await I.retry(5).click(this.fields.recipientsBirthMother);
+    await I.retry(5).click(this.fields.recipientsBirthFather);
+    await I.retry(5).click(this.fields.legalGuardian);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see('Check your answers')
+
+  },
+
+  async verifyPreviewDraft(){
+    await I.wait(3);
+    await I.retry(3).see('Preview Draft');
+    await I.retry(3).seeElement(this.fields.previewDraftLink);
+    await I.retry(5).click(this.fields.continueButton);
+    await I.wait(3);
+  },
+
+
   async selectAdjournHearingYesRelisting(){
         await I.wait(3);
         await I.retry(5).click(this.fields.adjournHearing);
@@ -303,7 +333,7 @@ module.exports = {
   async verifyAdjournHearingWithRelistingCheckYourAnswers(){
       await I.wait(3);
       await I.see(manageHearingFormData.checkYourAnswers.adjournHearingOption);
-      await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
+    //  await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
       await I.see(manageHearingFormData.checkYourAnswers.adjournHearingReason);
       await I.seeTextInPage(['Enter hearing details', 'Type of hearing'], manageHearingFormData.vacateHearing.typeOfHearingVacate);
       await I.seeTextInPage(['Enter hearing details', 'Hearing date & time'], '31 Dec 2035, 8:30:00 AM');
@@ -326,4 +356,5 @@ module.exports = {
       await I.wait(3);
       await I.retry(5).seeElement(this.fields.alertMessage);
     },
+
 };
