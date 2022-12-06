@@ -86,6 +86,8 @@ exports.config = {
     amendOtherPartiesDetailsPage: './src/e2e/pages/amendOtherPartiesDetails.page.js',
     checkAndSendOrdersPage: './src/e2e/pages/checkAndSendOrders.page.js',
     correspondenceTabPage: './src/e2e/pages/correspondenceTab.page.js',
+    generalDirectionOrderPage: './src/e2e/pages/generalDirectionOrder.page.js',
+
 
   },
   plugins: {
