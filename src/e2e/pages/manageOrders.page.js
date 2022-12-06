@@ -317,7 +317,7 @@ module.exports = {
     await I.retry(3).see('Additional paragraphs');
     await I.retry(3).click('Add new');
     await I.retry(3).fillField(this.fields.additionalParagraph, "additional text");
-    await I.retry(3).fillField(this.fields.orderBy, "James Bond");
+    await I.retry(3).fillField(this.fields.orderBy, manageOrderDetails.caseManagementOrderDetails.orderedBy);
     await I.retry(3).click(this.fields.continueButton);
 
   },

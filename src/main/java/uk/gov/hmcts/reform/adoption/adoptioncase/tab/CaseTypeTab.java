@@ -24,6 +24,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildConfidentialTab(configBuilder);
         buildServiceRequestTab(configBuilder);
         buildHearingsTab(configBuilder);
+        buildOrdersViewTab(configBuilder);
     }
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -107,6 +108,14 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field(CaseData::getNewHearings)
             .field(CaseData::getAdjournHearings)
             .field(CaseData::getVacatedHearings);
+    }
+
+    private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("orders","Orders")
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .label("labelSummary-orderview", null, "[Create new order](/cases/case-details/${[CASE_REFERENCE]}"
+                + "/trigger/caseworker-manage-orders/caseworker-manage-ordersmanageOrders1)")
+            .field(CaseData::getCommonOrderList);
     }
 
     private void buildTabWithRespondentDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {

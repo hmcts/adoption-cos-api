@@ -100,7 +100,7 @@ Scenario('Verify Case management order CAFCASS details', async ({I, caseViewPage
 
 });
 
-Scenario('Verify Case management order details add Serve Parties and CYA', async ({I, caseViewPage, manageOrdersPage }) => {
+Scenario('Verify Case management order Check and Send Orders and Manage Orders Tab', async ({I, caseViewPage, manageOrdersPage, checkAndSendOrdersPage,manageOrderTabPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.selectCreateNewOrder();
@@ -112,6 +112,25 @@ Scenario('Verify Case management order details add Serve Parties and CYA', async
   await manageOrdersPage.caseManagementOrderDateOrderMadeCYAPage();
   await manageOrdersPage.caseManagementOrderServePartiesCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
+
+  await manageOrderTabPage.selectOrderTab();
+  await manageOrderTabPage.verifyOrderDetailsUnderOrdersTabs();
+  await manageOrderTabPage.gateKeepingOrdersRecipients();
+  await manageOrderTabPage.verifyGateKeepingOrderTypeAndStatus()
+
+  await caseViewPage.goToNewActions(config.administrationActions.checkAndSendOrders);
+  await checkAndSendOrdersPage.verifyCheckAndSendOrdersPageDetails();
+  await checkAndSendOrdersPage.verifyOrderForReview();
+  await checkAndSendOrdersPage.gateKeepingOrderRecipients();
+  await checkAndSendOrdersPage.selectServerOrder();
+  await checkAndSendOrdersPage.verifyOrderTypeCYA();
+  await checkAndSendOrdersPage.serverOrderCYA();
+  await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.checkAndSendOrders);
+
+  await manageOrderTabPage.selectOrderTab();
+  await manageOrderTabPage.verifyOrderDetailsUnderOrdersTabs();
+  await manageOrderTabPage.gateKeepingOrdersRecipients();
+  await manageOrderTabPage.verifyOrderServed();
 });
 
 
