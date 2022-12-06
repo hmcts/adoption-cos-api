@@ -41,11 +41,10 @@ public class SendOrReply implements CcdPageConfiguration {
             .showCondition("messageAction=\"replyMessage\"")
             .label("labelReplyMes", "## Reply a message")
             .complex(CaseData::getMessageDetails)
-            .readonlyWithLabel(MessageDetails::getMessageId, "Message Id")
-            .readonlyWithLabel(MessageDetails::getReasonForMessage, "Reason for message")
-            .readonlyWithLabel(MessageDetails::getUrgency, "Urgency")
-            .readonlyWithLabel(MessageDetails::getMessage, "Message")
-            .readonlyWithLabel(MessageDetails::getDocumentLink, "View documents attached to message")
+            .readonly(MessageDetails::getReasonForMessage)
+            .readonly(MessageDetails::getUrgency)
+            .readonly(MessageDetails::getMessage)
+            .readonly(MessageDetails::getDocumentLink)
             .mandatory(MessageDetails::getReplyMessage)
             .done();
 
@@ -130,10 +129,11 @@ public class SendOrReply implements CcdPageConfiguration {
             if (selectedObject.isPresent()) {
                 messageDetails.setMessageId(selectedObject.get().getValue().getMessageId());
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
+                System.out.println("MESAGE DETAILS " + selectedObject.get().getValue().getMessage());
                 messageDetails.setMessage(selectedObject.get().getValue().getMessage());
                 messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                if (selectedObject.get().getValue().getAttachDocumentList() != null
-                    && CollectionUtils.isNotEmpty(messageDocumentLists)) {
+                if ((selectedObject.get().getValue().getAttachDocumentList() != null)
+                    && (CollectionUtils.isNotEmpty(messageDocumentLists))) {
                     messageDetails.setDocumentLink(messageDocumentLists.stream().filter(item ->
                         item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getAttachDocumentList()
                         .getValue().getCode().toString())).findFirst().get().getDocumentLink());

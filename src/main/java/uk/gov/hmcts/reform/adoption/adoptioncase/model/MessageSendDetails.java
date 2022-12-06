@@ -8,12 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
@@ -24,6 +26,11 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 @NoArgsConstructor
 @Builder
 public class MessageSendDetails {
+
+    @CCD(
+    )
+    private String messageFrom;
+
 
     @CCD(
         displayOrder = 1
@@ -79,6 +86,13 @@ public class MessageSendDetails {
     @CCD(
         access = {DefaultAccess.class})
     private LocalDateTime messageSendDateNTime;
+
+    @CCD(access = {DefaultAccess.class})
+    private String messageHistory;
+
+    @CCD(access = {DefaultAccess.class})
+    private List<Document> documentList;
+
 
     @Getter
     @AllArgsConstructor
