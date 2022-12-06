@@ -74,15 +74,15 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
-            .label("manageHearing73","Respondent (birth mother)",
+            .label("manageHearing73","### Respondent (birth mother)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             .readonly(CaseData::getHearingA91DocumentMother,
                       "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
-            .label("manageHearing74","Respondent (birth father)",
+            .label("manageHearing74","### Respondent (birth father)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
             .readonly(CaseData::getHearingA91DocumentFather,
                       "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
-            .label("manageHearing75","Applicants",
+            .label("manageHearing75","### Applicants",
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(CaseData::getHearingA90Document,
                       "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
@@ -162,8 +162,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
         if (isEmpty(error)) {
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
-            caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
-            caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
 
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
                 switch (recipientsInTheCase) {
@@ -171,7 +169,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                     case APPLICANT1: case APPLICANT2:
                         @SuppressWarnings("unchecked")
                         Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
-                        log.info("INFO LOG FOR PR QA SUPPORT templateContentApplicants {}", templateContentApplicants);
 
                         caseData.getManageHearingDetails().setHearingA90Document(
                             caseDataDocumentService.renderDocument(
@@ -184,10 +181,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         break;
 
                     case RESPONDENT_MOTHER:
+                        caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
                         caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
                         @SuppressWarnings("unchecked")
                         Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
-                        log.info("INFO LOG FOR PR QA SUPPORT templateContentMother {}", templateContentMother);
 
                         if (isNotEmpty(caseData.getBirthMother().getDeceased())
                             && YesOrNo.NO.equals(caseData.getBirthMother().getDeceased())) {
@@ -203,10 +200,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         break;
 
                     case RESPONDENT_FATHER:
+                        caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
                         caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
                         @SuppressWarnings("unchecked")
                         Map<String, Object> templateContentFather = objectMapper.convertValue(caseData, Map.class);
-                        log.info("INFO LOG FOR PR QA SUPPORT templateContentFather {}", templateContentFather);
 
                         if (isNotEmpty(caseData.getBirthFather().getDeceased())
                             && YesOrNo.NO.equals(caseData.getBirthFather().getDeceased())) {

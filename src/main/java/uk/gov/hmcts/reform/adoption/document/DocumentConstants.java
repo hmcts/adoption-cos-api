@@ -22,8 +22,8 @@ public final class DocumentConstants {
     public static final String MANAGE_HEARING_NOTICES_A91 = "MANAGE_HEARING_NOTICES_A91";
 
     public static final String MANAGE_HEARING_NOTICES_A90_FILE_NAME = "Applicants_hearing_notice";
-    public static final String MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER = "Birth_mother_hearing_notice";
-    public static final String MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER = "Birth_father_hearing_notice";
+    public static final String MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER = "Birth_mother_hearing_notice";
+    public static final String MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER = "Birth_father_hearing_notice";
     public static final String ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME = "draft-adoption-application-";
     public static final String DOCUMENT_EXISTS_CHECK = "hasUploadedDocuments";
     public static final String DOCUMENT_EXISTS = "hasDocument";
