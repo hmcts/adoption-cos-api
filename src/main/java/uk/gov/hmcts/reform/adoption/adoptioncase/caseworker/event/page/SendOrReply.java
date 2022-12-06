@@ -10,7 +10,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDocumentList;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDetails;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -40,12 +39,10 @@ public class SendOrReply implements CcdPageConfiguration {
             .page("pageSendOrReply3")
             .showCondition("messageAction=\"replyMessage\"")
             .label("labelReplyMes", "## Reply a message")
-            .complex(CaseData::getMessageDetails)
-            .readonly(MessageDetails::getReasonForMessage)
-            .readonly(MessageDetails::getUrgency)
-            .readonly(MessageDetails::getMessage)
-            .readonly(MessageDetails::getDocumentLink)
-            .mandatory(MessageDetails::getReplyMessage)
+            .complex(CaseData::getMessageSendDetails)
+            .readonly(MessageSendDetails::getMessageUrgencyList)
+            .readonly(MessageSendDetails::getMessage)
+            .readonly(MessageSendDetails::getAttachDocumentList)
             .done();
 
     }
@@ -70,10 +67,12 @@ public class SendOrReply implements CcdPageConfiguration {
         if (caseData.getCorrespondenceDocumentCategory() != null
             && caseData.getCorrespondenceDocumentCategory().size() > 0) {
             caseData.getCorrespondenceDocumentCategory().forEach(item -> {
-                UUID result = UUID.nameUUIDFromBytes(item.getValue().getName().getBytes());
-                listElements.add(DynamicListElement.builder()
-                                     .label(item.getValue().getDocumentLink().getFilename()).code(result).build());
-                messageDocumentLists.add(new MessageDocumentList(result.toString(), item.getValue().getDocumentLink()));
+                if(item.getValue().getName() != null) {
+                    UUID result = UUID.nameUUIDFromBytes(item.getValue().getName().getBytes());
+                    listElements.add(DynamicListElement.builder()
+                                         .label(item.getValue().getDocumentLink().getFilename()).code(result).build());
+                    messageDocumentLists.add(new MessageDocumentList(result.toString(), item.getValue().getDocumentLink()));
+                }
             });
         }
 
@@ -121,24 +120,12 @@ public class SendOrReply implements CcdPageConfiguration {
         messageSendDetails.setAttachDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         caseData.setMessageSendDetails(messageSendDetails);
 
-        if (CollectionUtils.isNotEmpty(caseData.getListOfSendMessages()) && caseData.getReplyMsgDynamicList() != null) {
-            var messageDetails = new MessageDetails();
-            var selectedObject = caseData.getListOfSendMessages().stream()
+        if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages()) && caseData.getReplyMsgDynamicList() != null) {
+            var selectedObject = caseData.getListOfOpenMessages().stream()
                 .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList()
                                                                                .getValueCode().toString())).findFirst();
             if (selectedObject.isPresent()) {
-                messageDetails.setMessageId(selectedObject.get().getValue().getMessageId());
-                messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
-                System.out.println("MESAGE DETAILS " + selectedObject.get().getValue().getMessage());
-                messageDetails.setMessage(selectedObject.get().getValue().getMessage());
-                messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                if ((selectedObject.get().getValue().getAttachDocumentList() != null)
-                    && (CollectionUtils.isNotEmpty(messageDocumentLists))) {
-                    messageDetails.setDocumentLink(messageDocumentLists.stream().filter(item ->
-                        item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getAttachDocumentList()
-                        .getValue().getCode().toString())).findFirst().get().getDocumentLink());
-                }
-                caseData.setMessageDetails(messageDetails);
+                caseData.setMessageSendDetails(selectedObject.get().getValue());
             }
 
 

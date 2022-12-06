@@ -66,8 +66,8 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
     private AboutToStartOrSubmitResponse<CaseData, State> beforeStartEvent(CaseDetails<CaseData, State> details) {
         var caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(caseData.getListOfSendMessages())) {
-            caseData.getListOfSendMessages().forEach(item -> {
+        if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
+            caseData.getListOfOpenMessages().forEach(item -> {
                 if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
                     DynamicListElement orderInfo = DynamicListElement.builder()
                         .label(item.getValue().getMessageSendDateNTime().format(
@@ -97,8 +97,8 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
             sendMessagesDetails.setMessageSendDateNTime(
                 LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
             if (null != sendMessagesDetails) {
-                caseData.setListOfSendMessages(caseData.archiveManageOrdersHelper(
-                    caseData.getListOfSendMessages(), sendMessagesDetails));
+                caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
+                    caseData.getListOfOpenMessages(), sendMessagesDetails));
                 caseData.setMessageSendDetails(null);
             }
         }
