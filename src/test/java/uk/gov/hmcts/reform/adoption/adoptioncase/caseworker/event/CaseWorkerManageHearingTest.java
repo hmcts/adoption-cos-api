@@ -224,8 +224,6 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
         caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
-        Map<String, Object> templateVars = new HashMap<>();
-        when(objectMapper.convertValue(caseDetails.getData(), Map.class)).thenReturn(templateVars);
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         when(clock.instant()).thenReturn(instant);

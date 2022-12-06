@@ -161,23 +161,33 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
         if (isEmpty(error)) {
+            caseData.setHearingA90Document(null);
+            caseData.setHearingA91DocumentMother(null);
+            caseData.setHearingA91DocumentMother(null);
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
 
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
                 switch (recipientsInTheCase) {
 
                     case APPLICANT1: case APPLICANT2:
-                        @SuppressWarnings("unchecked")
-                        Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
+                        if (isNotEmpty(caseData.getHearingA90Document())) {
 
-                        caseData.getManageHearingDetails().setHearingA90Document(
-                            caseDataDocumentService.renderDocument(
-                                templateContentApplicants,
-                            details.getId(),
-                            MANAGE_HEARING_NOTICES_A90,
-                            LanguagePreference.ENGLISH,
-                            MANAGE_HEARING_NOTICES_A90_FILE_NAME));
-                        caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> templateContentApplicants = objectMapper.convertValue(
+                                caseData,
+                                Map.class
+                            );
+
+                            caseData.getManageHearingDetails().setHearingA90Document(
+                                caseDataDocumentService.renderDocument(
+                                    templateContentApplicants,
+                                    details.getId(),
+                                    MANAGE_HEARING_NOTICES_A90,
+                                    LanguagePreference.ENGLISH,
+                                    MANAGE_HEARING_NOTICES_A90_FILE_NAME
+                                ));
+                            caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
+                        }
                         break;
 
                     case RESPONDENT_MOTHER:
