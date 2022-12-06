@@ -90,11 +90,6 @@ public class AdoptionOrderData {
     )
     private Document draftDocument;
 
-    @CCD(
-        access = {DefaultAccess.class}
-    )
-    private Document finalDocument;
-
     @Getter
     @AllArgsConstructor
     public enum RecipientsA76 implements HasLabel {

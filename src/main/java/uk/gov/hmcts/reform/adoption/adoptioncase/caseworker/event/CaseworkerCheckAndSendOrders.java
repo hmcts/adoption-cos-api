@@ -2,8 +2,6 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
@@ -12,20 +10,18 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.*;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndSendOrders;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
@@ -36,20 +32,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.List;
-import java.util.*;
-
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
-import java.util.Collections;
-import java.util.UUID;
-import java.util.Comparator;
-
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
@@ -133,7 +121,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State>
-                                                                           caseDetails, CaseDetails<CaseData, State> caseDetails1) {
+                                            caseDetails, CaseDetails<CaseData, State> caseDetailsBefore) {
         var caseData = caseDetails.getData();
         switch (caseData.getSelectedOrder().getOrderType()) {
             case CASE_MANAGEMENT_ORDER:
@@ -159,6 +147,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     .findFirst();
                 finalAdoptionItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
+                finalAdoptionItem.get().getValue().setDraftDocument(null);
                 break;
             default:
                 break;
@@ -170,20 +159,20 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         commonOrderListItem.get().getValue().setStatus(caseData.getOrderCheckAndSend().equals(
             OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
         commonOrderListItem.get().getValue().setDateServed(LocalDate.now(clock));
-        caseData.setSelectedOrder(null);
 
         @SuppressWarnings("unchecked")
         Map<String, Object> templateContent =
             objectMapper.convertValue(caseData, Map.class);
-        caseData.getAdoptionOrderData().setFinalDocument(
+        commonOrderListItem.get().getValue().setDocumentReview(
             caseDataDocumentService.renderDocument(
                 templateContent,
-                details.getId(),
+                caseDetails.getId(),
                 FINAL_ADOPTION_ORDER_A76,
                 LanguagePreference.ENGLISH,
                 FINAL_ADOPTION_ORDER_A76_FILE_NAME
             ));
 
+        caseData.setSelectedOrder(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 
