@@ -58,26 +58,23 @@ module.exports = {
     },
 
     async verifyGeneralDirectionOrderDetails() {
+      await I.retry(3).waitForText('General directions order', 30);
       await I.retry(3).see("General directions order");
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.hearingDetailsTitle);
       await I.retry(3).click(this.fields.continueButton);
       await I.wait(3);
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.orderByError);
       await I.retry(3).fillField(this.fields.orderBy, generalDirectionOrderDetails.gdOrderDetails.orderedBy)
-
       await I.retry(3).fillField(this.fields.preambleDetails, generalDirectionOrderDetails.gdOrderDetails.preamble);
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.dateOrderMadeError);
       await I.retry(3).fillField(this.fields.dateOrderMade.day, generalDirectionOrderDetails.gdOrderDetails.dom.day);
       await I.retry(3).fillField(this.fields.dateOrderMade.month, generalDirectionOrderDetails.gdOrderDetails.dom.month);
       await I.retry(3).fillField(this.fields.dateOrderMade.year, generalDirectionOrderDetails.gdOrderDetails.dom.year);
-
-
-      //await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.directionsToOrder);
+      await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.directionsToOrder);
       await I.retry(3).click(this.fields.directionToOrder.hearingDelay);
       await I.retry(3).click(this.fields.directionToOrder.fillingBundles);
       await I.retry(3).click(this.fields.directionToOrder.warningNotice);
-
-      //await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.anotherOrderTypeToSend);
+      await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.anotherOrderTypeToSend);
       await I.retry(3).click(this.fields.continueButton);
       await I.wait(3);
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.furtherOrderError);
@@ -91,29 +88,24 @@ module.exports = {
     },
 
     async verifyProductionOrderDetails() {
-      //await I.retry(3).see("Production order");
+      await I.retry(3).waitForText('Production order', 30);
+      await I.retry(3).see("Production order");
       await I.retry(3).click(this.fields.continueButton);
       await I.wait(3);
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.nameOfPrisonError);
       await I.retry(3).fillField(this.fields.nameOfPrison, generalDirectionOrderDetails.gdOrderDetails.prisionName);
-
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.addressOfPrisonError);
       await I.retry(3).fillField(this.fields.addressOfPrison, generalDirectionOrderDetails.gdOrderDetails.prisonAddress);
-
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.nameOfPrisonerError);
       await I.retry(3).fillField(this.fields.nameOfPrisoner, generalDirectionOrderDetails.gdOrderDetails.prisonerName);
-
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.prisonerNumberError);
       await I.retry(3).fillField(this.fields.prisonerNumber, generalDirectionOrderDetails.gdOrderDetails.prisonerNumber);
-
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.hearingVenueError);
       await I.retry(3).fillField(this.fields.hearingsVenue, generalDirectionOrderDetails.gdOrderDetails.hearingVenue);
-
       await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.hearingDateAndTimeError);
       await I.retry(3).fillField(this.fields.hearingDateTime.day, generalDirectionOrderDetails.gdOrderDetails.hearingDateAndTime.day);
       await I.retry(3).fillField(this.fields.hearingDateTime.month, generalDirectionOrderDetails.gdOrderDetails.hearingDateAndTime.month);
       await I.retry(3).fillField(this.fields.hearingDateTime.year, generalDirectionOrderDetails.gdOrderDetails.hearingDateAndTime.year);
       await I.retry(3).fillField(this.fields.hearingDateTime.hour, generalDirectionOrderDetails.gdOrderDetails.hearingDateAndTime.hour);
-
     }
 }

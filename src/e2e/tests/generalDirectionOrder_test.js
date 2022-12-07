@@ -10,7 +10,7 @@ Feature('Manage order tests').retry(0);
 async function setupScenario(I) {
   caseId = await laHelper.createCompleteCase();
   console.log('CCD Case number - '+ caseId);
-  await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, '1670329325005502');
+  await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 
 Scenario('verify General adoption Order details', async ({I, caseViewPage, manageOrdersPage, generalDirectionOrderPage }) => {
