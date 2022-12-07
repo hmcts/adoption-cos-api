@@ -981,7 +981,7 @@ public class CaseData {
         if (null != manageHearingDetails) {
             manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
             manageHearingDetails.setHearingId(UUID.randomUUID().toString());
-            archiveManageOrdersHelper(getNewHearings(), manageHearingDetails);
+            setNewHearings(archiveManageOrdersHelper(getNewHearings(), manageHearingDetails));
             this.setManageHearingDetails(null);
             this.setManageHearingOptions(null);
             this.setRecipientsInTheCase(null);
@@ -998,7 +998,7 @@ public class CaseData {
 
         if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
             vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(reasonForVacatingHearing);
-            archiveManageOrdersHelper(getVacatedHearings(), vacatedHearingDetails.get().getValue());
+            setVacatedHearings(archiveManageOrdersHelper(getVacatedHearings(), vacatedHearingDetails.get().getValue()));
             newHearings.remove(vacatedHearingDetails.get());
         }
         this.setManageHearingOptions(null);
@@ -1013,7 +1013,7 @@ public class CaseData {
 
         if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
             adjournHearingDetails.get().getValue().setReasonForAdjournHearing(reasonForAdjournHearing);
-            archiveManageOrdersHelper(getVacatedHearings(), adjournHearingDetails.get().getValue());
+            setAdjournHearings(archiveManageOrdersHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
             newHearings.remove(adjournHearingDetails.get());
         }
         this.setManageHearingOptions(null);
