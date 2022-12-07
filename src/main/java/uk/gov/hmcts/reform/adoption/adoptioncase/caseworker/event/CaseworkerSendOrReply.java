@@ -96,7 +96,9 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
         if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.SEND_A_MESSAGE)) {
             MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
             sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
-            sendMessagesDetails.setSelectedDocumentId(caseData.getAttachDocumentList().getValue().getCode().toString());
+            sendMessagesDetails.setSelectedDocumentId((caseData.getAttachDocumentList() != null
+                && caseData.getAttachDocumentList().getValue() != null)
+                ? caseData.getAttachDocumentList().getValue().getCode().toString() : null);
             sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
             sendMessagesDetails.setMessageSendDateNTime(
                 LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
