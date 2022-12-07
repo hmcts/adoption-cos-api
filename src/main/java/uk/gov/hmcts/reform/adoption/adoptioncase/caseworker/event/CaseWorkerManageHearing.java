@@ -171,13 +171,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
 
                     case APPLICANT1: case APPLICANT2:
                         if (isEmpty(caseData.getHearingA90Document())) {
-
                             @SuppressWarnings("unchecked")
-                            Map<String, Object> templateContentApplicants = objectMapper.convertValue(
-                                caseData,
-                                Map.class
-                            );
-
+                            Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
                             caseData.getManageHearingDetails().setHearingA90Document(
                                 caseDataDocumentService.renderDocument(
                                     templateContentApplicants,
@@ -191,13 +186,14 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         break;
 
                     case RESPONDENT_MOTHER:
-                        caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
-                        caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
-                        @SuppressWarnings("unchecked")
-                        Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
 
                         if (isNotEmpty(caseData.getBirthMother().getDeceased())
                             && YesOrNo.NO.equals(caseData.getBirthMother().getDeceased())) {
+                            caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
+                            caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
+
                             caseData.getManageHearingDetails().setHearingA91DocumentMother(
                                 caseDataDocumentService.renderDocument(
                                     templateContentMother,
@@ -210,13 +206,13 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         break;
 
                     case RESPONDENT_FATHER:
-                        caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
-                        caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
-                        @SuppressWarnings("unchecked")
-                        Map<String, Object> templateContentFather = objectMapper.convertValue(caseData, Map.class);
-
                         if (isNotEmpty(caseData.getBirthFather().getDeceased())
                             && YesOrNo.NO.equals(caseData.getBirthFather().getDeceased())) {
+                            caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
+                            caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> templateContentFather = objectMapper.convertValue(caseData, Map.class);
+
                             caseData.getManageHearingDetails().setHearingA91DocumentFather(
                                 caseDataDocumentService.renderDocument(
                                     templateContentFather,
@@ -227,7 +223,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             caseData.setHearingA91DocumentFather(caseData.getManageHearingDetails().getHearingA91DocumentFather());
                         }
                         break;
-
                     default:
                         break;
                 }
