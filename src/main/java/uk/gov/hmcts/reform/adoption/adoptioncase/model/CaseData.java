@@ -780,6 +780,29 @@ public class CaseData {
     )
     private Document hearingA90Document;
 
+    @CCD(
+        label = "Orders",
+        typeOverride = Collection,
+        typeParameterOverride = "OrderData",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<OrderData>> commonOrderList;
+
+    @CCD(
+        label = "Review Order",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    @JsonUnwrapped
+    private SelectedOrder selectedOrder;
+
+    @CCD(
+        label = "Do you want to serve the order or return for amendments?",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "OrderCheckAndSend"
+    )
+    private OrderCheckAndSend orderCheckAndSend;
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
