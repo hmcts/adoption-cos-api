@@ -1,7 +1,7 @@
 module.exports = {
   finalOrderDetails: {
     preamble: 'Test preamble details',
-    nameOfJudgeIssuingOrder: 'James Bond',
+    nameOfJudgeIssuingOrder: 'Paul Neal',
     errorMessage: 'Field is required',
     childFirstNameAfterAdoption: 'adoption first',
     childLastnameAfterAdoption: 'adoption last',
@@ -25,7 +25,10 @@ module.exports = {
     adoptionRegDistrict: 'Lodon',
     adoptionSubDistrict: 'Lodon',
     adoptionRegCounty: 'Lodon',
-
+    order: 'Order',
+    faoA76: 'Recipients of Final adoption order (A76)',
+    faoA206: 'Recipients of Final adoption order (A206)',
+    orderPDF: 'A76_Final adoption order_draft.pdf',
     birthAdoptionRegistrationDate: {
       day: '01',
       month: '01',
