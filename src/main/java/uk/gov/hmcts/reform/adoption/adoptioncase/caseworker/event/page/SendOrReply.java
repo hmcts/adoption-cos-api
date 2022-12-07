@@ -128,14 +128,9 @@ public class SendOrReply implements CcdPageConfiguration {
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
                 messageDetails.setMessage(selectedObject.get().getValue().getMessage());
                 messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                if (caseData.getAttachDocumentList() != null) {
-                    System.out.println(caseData.getAttachDocumentList().getValue());
-                    var doc = messageDocumentLists.stream().filter(item ->
-                                                  item.getMessageId()
-                                                      .equalsIgnoreCase(
-                                                          selectedObject.get().getValue().getSelectedDocumentId())).findFirst().get();
-                    messageDetails.setDocumentLink(doc.getDocumentLink());
-                }
+                messageDetails.setDocumentLink(caseData.getAttachDocumentList() != null ? messageDocumentLists.stream().filter(item ->
+                               item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getSelectedDocumentId()))
+                              .findFirst().get().getDocumentLink() : null);
                 caseData.setSelectedMessage(messageDetails);
             }
 
