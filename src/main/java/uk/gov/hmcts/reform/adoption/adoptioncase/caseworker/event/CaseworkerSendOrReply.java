@@ -12,10 +12,10 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrReply;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
+import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrReply;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -65,7 +65,10 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
 
     private AboutToStartOrSubmitResponse<CaseData, State> beforeStartEvent(CaseDetails<CaseData, State> details) {
         var caseData = details.getData();
-        List<DynamicListElement> listElements = new ArrayList<>();
+
+
+
+        List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
             caseData.getListOfOpenMessages().forEach(item -> {
                 if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
@@ -75,12 +78,12 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                                     SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
                                    .concat(item.getValue().getMessageReasonList().getLabel())).code(
                             UUID.fromString(item.getValue().getMessageId())).build();
-                    listElements.add(orderInfo);
+                    replyMessageList.add(orderInfo);
                 }
             });
 
         }
-        caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(listElements)
+        caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList)
                                             .value(DynamicListElement.EMPTY).build());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
@@ -93,6 +96,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
         if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.SEND_A_MESSAGE)) {
             MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
             sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
+            sendMessagesDetails.setSelectedDocumentId(caseData.getAttachDocumentList().getValue().getCode().toString());
             sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
             sendMessagesDetails.setMessageSendDateNTime(
                 LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
@@ -100,6 +104,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                 caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
                     caseData.getListOfOpenMessages(), sendMessagesDetails));
                 caseData.setMessageSendDetails(null);
+                caseData.setSelectedMessage(null);
             }
         }
         caseData.setMessageAction(null);

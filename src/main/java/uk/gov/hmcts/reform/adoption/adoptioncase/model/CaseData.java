@@ -722,16 +722,26 @@ public class CaseData {
     private DynamicList replyMsgDynamicList;
 
 
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    private MessageSendDetails messageSendDetails;
+
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
-    @JsonUnwrapped
-    private MessageSendDetails messageSendDetails;
+    private SelectedMessage selectedMessage;
 
-//    @CCD(
-//        access = { SystemUpdateAccess.class,DefaultAccess.class}
-//    )
-//    private MessageSendDetails messageDetails;
+    @CCD(
+        label = "Do you want to attach documents from this case?",
+        access = {SystemUpdateAccess.class, DefaultAccess.class}
+    )
+    private YesOrNo sendMessageAttachDocument;
+
+    @CCD(
+        access = {DefaultAccess.class},
+        label = "Select a document"
+    )
+    private DynamicList attachDocumentList;
+
 
     @CCD(
         label = "Send Messages",

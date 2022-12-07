@@ -8,14 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
-import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
@@ -64,24 +61,30 @@ public class MessageSendDetails {
     )
     private MessageUrgency messageUrgencyList;
 
+    @CCD(label = "Message",
+        typeOverride = TextArea,
+        access = {DefaultAccess.class,SystemUpdateAccess.class}
+    )
+    private String message;
+
     @CCD(
         label = "Do you want to attach documents from this case?",
         access = {SystemUpdateAccess.class, DefaultAccess.class}
     )
-    private YesOrNo attachDocument;
-
-    @CCD(label = "Message",
-        typeOverride = TextArea,
-        access = {SystemUpdateAccess.class, DefaultAccess.class}
-    )
-    private String message;
-
+    private YesNo sendMessageAttachDocument;
 
     @CCD(
-        access = {DefaultAccess.class},
-        label = "Select a document"
+        label = "Select a document",
+        access = {DefaultAccess.class,SystemUpdateAccess.class}
     )
     private DynamicList attachDocumentList;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private String selectedDocumentId;
+
+
 
     @CCD(
         access = {DefaultAccess.class})
@@ -90,8 +93,6 @@ public class MessageSendDetails {
     @CCD(access = {DefaultAccess.class})
     private String messageHistory;
 
-    @CCD(access = {DefaultAccess.class})
-    private List<Document> documentList;
 
 
     @Getter
@@ -173,6 +174,21 @@ public class MessageSendDetails {
 
         private final String label;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum YesNo implements HasLabel {
+
+        @JsonProperty("Yes")
+        YES("Yes"),
+        @JsonProperty("No")
+        NO("No");
+
+        private final String label;
+    }
+
+
+
 }
 
 
