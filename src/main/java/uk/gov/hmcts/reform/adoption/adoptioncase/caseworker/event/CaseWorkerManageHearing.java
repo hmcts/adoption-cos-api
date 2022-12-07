@@ -168,7 +168,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
 
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
                 switch (recipientsInTheCase) {
-
                     case APPLICANT1: case APPLICANT2:
                         if (isEmpty(caseData.getHearingA90Document())) {
                             @SuppressWarnings("unchecked")
@@ -184,11 +183,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
                         }
                         break;
-
                     case RESPONDENT_MOTHER:
-
                         if (isNotEmpty(caseData.getBirthMother().getDeceased())
-                            && YesOrNo.NO.equals(caseData.getBirthMother().getDeceased())) {
+                            && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
@@ -204,10 +201,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             caseData.setHearingA91DocumentMother(caseData.getManageHearingDetails().getHearingA91DocumentMother());
                         }
                         break;
-
                     case RESPONDENT_FATHER:
                         if (isNotEmpty(caseData.getBirthFather().getDeceased())
-                            && YesOrNo.NO.equals(caseData.getBirthFather().getDeceased())) {
+                            && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
@@ -228,7 +224,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                 }
             });
         }
-
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .errors(error)
