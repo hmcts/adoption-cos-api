@@ -129,6 +129,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     .filter(item -> item.getValue().getOrderId()
                         .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
+                caseData.setManageOrdersData(gatekeepingOrderItem.get().getValue());
                 gatekeepingOrderItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
                 break;
@@ -137,6 +138,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     .filter(item -> item.getValue().getOrderId()
                         .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
+                caseData.setDirectionsOrderData(directionOrderItem.get().getValue());
                 directionOrderItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
                 break;
@@ -145,6 +147,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     .filter(item -> item.getValue().getOrderId()
                         .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
+                caseData.setAdoptionOrderData(finalAdoptionItem.get().getValue());
                 finalAdoptionItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
                 finalAdoptionItem.get().getValue().setDraftDocument(null);
@@ -172,6 +175,9 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     FINAL_ADOPTION_ORDER_A76_FILE_NAME
                 ));
         }
+        caseData.setManageOrdersData(null);
+        caseData.setDirectionsOrderData(null);
+        caseData.setAdoptionOrderData(null);
         caseData.setSelectedOrder(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
