@@ -159,19 +159,19 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         commonOrderListItem.get().getValue().setStatus(caseData.getOrderCheckAndSend().equals(
             OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
         commonOrderListItem.get().getValue().setDateServed(LocalDate.now(clock));
-
-        @SuppressWarnings("unchecked")
-        Map<String, Object> templateContent =
-            objectMapper.convertValue(caseData, Map.class);
-        commonOrderListItem.get().getValue().setDocumentReview(
-            caseDataDocumentService.renderDocument(
-                templateContent,
-                caseDetails.getId(),
-                FINAL_ADOPTION_ORDER_A76,
-                LanguagePreference.ENGLISH,
-                FINAL_ADOPTION_ORDER_A76_FILE_NAME
-            ));
-
+        if (commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.SERVED)) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> templateContent =
+                objectMapper.convertValue(caseData, Map.class);
+            commonOrderListItem.get().getValue().setDocumentReview(
+                caseDataDocumentService.renderDocument(
+                    templateContent,
+                    caseDetails.getId(),
+                    FINAL_ADOPTION_ORDER_A76,
+                    LanguagePreference.ENGLISH,
+                    FINAL_ADOPTION_ORDER_A76_FILE_NAME
+                ));
+        }
         caseData.setSelectedOrder(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
