@@ -170,7 +170,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                 switch (recipientsInTheCase) {
 
                     case APPLICANT1: case APPLICANT2:
-                        if (isNotEmpty(caseData.getHearingA90Document())) {
+                        if (isEmpty(caseData.getHearingA90Document())) {
 
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentApplicants = objectMapper.convertValue(
