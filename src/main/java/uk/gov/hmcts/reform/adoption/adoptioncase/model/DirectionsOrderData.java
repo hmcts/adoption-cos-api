@@ -1,10 +1,14 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.api.HasLabel;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
@@ -90,6 +94,50 @@ public class DirectionsOrderData {
     @CCD(access = {DefaultAccess.class})
     private GeneralDirectionOrderState generalDirectionOrderState;
 
+    @CCD(access = {DefaultAccess.class},
+        typeOverride = MultiSelectList,
+        typeParameterOverride = "GeneralDirectionRecipients")
+    private Set<GeneralDirectionRecipients> generalDirectionRecipientsList;
 
+    @CCD(access = {DefaultAccess.class})
+    private Document draftDocument;
+
+
+    @Getter
+    @AllArgsConstructor
+    public enum GeneralDirectionRecipients implements HasLabel {
+
+        @JsonProperty("applicant1")
+        APPLICANT1("Applicant 1"),
+
+        @JsonProperty("applicant2")
+        APPLICANT2("Applicant 2"),
+
+        @JsonProperty("birthMother")
+        RESPONDENT_BIRTH_MOTHER("Birth mother"),
+
+        @JsonProperty("birthFather")
+        RESPONDENT_BIRTH_FATHER("Birth father"),
+
+        @JsonProperty("adoptionAgency")
+        ADOPTION_AGENCY("Adoption agency"),
+
+        @JsonProperty("childsLocalAuthority")
+        CHILDS_LOCAL_AUTHORITY("Child's local authority"),
+
+        @JsonProperty("applicantsLocalAuthority")
+        APPLICANTS_LOCAL_AUTHORITY("Applicant's local authority"),
+
+        @JsonProperty("otherAdoptionAgency")
+        OTHER_ADOPTION_AGENCY("Other adoption agency"),
+
+        @JsonProperty("otherPersonWithParentalResponsibility")
+        OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility"),
+
+        @JsonProperty("cafcass")
+        LEGAL_GUARDIAN_CAFCASS("Cafcass");
+
+        private final String label;
+    }
 
 }
