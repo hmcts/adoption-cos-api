@@ -25,20 +25,17 @@ public class SendOrReply implements CcdPageConfiguration {
         pageBuilder
             .page("pageSendOrReply1", this::midEvent)
             .mandatory(CaseData::getMessageAction)
-            .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"")
-            .page("pageSendOrReply3")
-            .showCondition("messageAction=\"replyMessage\"")
-            .label("labelReplyMes", "## Reply a message")
-            .complex(CaseData::getSelectedMessage)
-            .readonly(SelectedMessage::getReasonForMessage)
-            .readonly(SelectedMessage::getUrgency)
-            .readonly(SelectedMessage::getMessage)
-            .readonly(SelectedMessage::getDocumentLink)
-            .mandatory(SelectedMessage::getReplyMessage)
-            .done()
-            .page("pageSendOrReply2")
-            .showCondition("messageAction=\"sendMessage\"")
-            .label("sendMessage","## Send a message")
+            .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
+        sendMessageBuilder(pageBuilder, "messageAction=\"sendMessage\"");
+        replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
+        sendMessageBuilder(pageBuilder, "replyMessage=\"Yes\"");
+    }
+
+    public void sendMessageBuilder(PageBuilder pageBuilder, String condition) {
+        pageBuilder.page("pageSendOrReply2")
+            .showCondition(condition)
+            .label("sendMessage", condition.equalsIgnoreCase("messageAction=\"sendMessage\"")
+                ? "## Send a message" : "## Reply to message")
             .complex(CaseData::getMessageSendDetails)
             .mandatory(MessageSendDetails::getMessageReceiverRoles)
             .mandatory(MessageSendDetails::getMessageReasonList)
@@ -50,6 +47,19 @@ public class SendOrReply implements CcdPageConfiguration {
             .done();
     }
 
+    public void replyMessageBuilder(PageBuilder pageBuilder, String condition) {
+        pageBuilder.page("pageSendOrReply3")
+            .showCondition(condition)
+            .label("labelReplyMes", "## Reply a message")
+            .complex(CaseData::getSelectedMessage)
+            .readonly(SelectedMessage::getReasonForMessage)
+            .readonly(SelectedMessage::getUrgency)
+            .readonly(SelectedMessage::getMessage)
+            .readonly(SelectedMessage::getDocumentLink)
+            .mandatory(SelectedMessage::getReplyMessage)
+            .done();
+
+    }
 
     private AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State>
         data, CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
@@ -128,7 +138,7 @@ public class SendOrReply implements CcdPageConfiguration {
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
                 messageDetails.setMessage(selectedObject.get().getValue().getMessage());
                 messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                messageDetails.setDocumentLink(caseData.getAttachDocumentList() != null ? messageDocumentLists.stream().filter(item ->
+                messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocumentId() != null ? messageDocumentLists.stream().filter(item ->
                                item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getSelectedDocumentId()))
                               .findFirst().get().getDocumentLink() : null);
                 caseData.setSelectedMessage(messageDetails);

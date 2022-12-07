@@ -728,6 +728,7 @@ public class CaseData {
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
+    @JsonUnwrapped
     private SelectedMessage selectedMessage;
 
     @CCD(
