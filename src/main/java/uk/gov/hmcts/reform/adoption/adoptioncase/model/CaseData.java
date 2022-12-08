@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
@@ -709,13 +708,13 @@ public class CaseData {
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
     @CCD
-    private Document hearingA90Document;
+    private String hearingA90Document;
 
     @CCD
-    private Document hearingA91DocumentMother;
+    private String hearingA91DocumentMother;
 
     @CCD
-    private Document hearingA91DocumentFather;
+    private String hearingA91DocumentFather;
 
     @CCD
     private YesOrNo hearingA91DocumentFlagMother;
