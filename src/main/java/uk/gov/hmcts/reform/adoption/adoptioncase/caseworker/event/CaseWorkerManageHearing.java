@@ -178,9 +178,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
         if (isEmpty(error)) {
             Document emptyDocument = new Document();
-            emptyDocument.setBinaryUrl("");
-            emptyDocument.setFilename("");
-            emptyDocument.setUrl("");
+            emptyDocument.setBinaryUrl("URL");
+            emptyDocument.setFilename("FILENAME");
+            emptyDocument.setUrl("URL");
 
             caseData.setHearingA90Document(emptyDocument);
             caseData.setHearingA91DocumentMother(emptyDocument);
