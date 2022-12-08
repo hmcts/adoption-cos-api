@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 public class SendOrReply implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
@@ -79,7 +78,7 @@ public class SendOrReply implements CcdPageConfiguration {
         CaseData caseData = data.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
         List<MessageDocumentList> messageDocumentLists = new ArrayList<>();
-        if (caseData.getAdditionalDocumentsCategory() != null && caseData.getApplicationDocumentsCategory().size() > 0) {
+        if (CollectionUtils.isNotEmpty(caseData.getAdditionalDocumentsCategory())) {
             caseData.getAdditionalDocumentsCategory().forEach(item -> {
                 UUID result = UUID.nameUUIDFromBytes(item.getValue().getName().getBytes());
                 listElements.add(DynamicListElement.builder()
@@ -88,8 +87,7 @@ public class SendOrReply implements CcdPageConfiguration {
             });
         }
 
-        if (caseData.getCorrespondenceDocumentCategory() != null
-            && caseData.getCorrespondenceDocumentCategory().size() > 0) {
+        if (CollectionUtils.isNotEmpty(caseData.getCorrespondenceDocumentCategory())) {
             caseData.getCorrespondenceDocumentCategory().forEach(item -> {
                 if (item.getValue().getName() != null) {
                     UUID result = UUID.nameUUIDFromBytes(item.getValue().getName().getBytes());
@@ -100,8 +98,7 @@ public class SendOrReply implements CcdPageConfiguration {
             });
         }
 
-        if (caseData.getReportsDocumentCategory() != null
-            && caseData.getReportsDocumentCategory().size() > 0) {
+        if (CollectionUtils.isNotEmpty(caseData.getReportsDocumentCategory())) {
             caseData.getReportsDocumentCategory().forEach(item -> {
                 UUID result = UUID.nameUUIDFromBytes(item.getValue().getName().getBytes());
                 listElements.add(DynamicListElement.builder()
@@ -110,8 +107,7 @@ public class SendOrReply implements CcdPageConfiguration {
             });
         }
 
-        if (caseData.getStatementsDocumentCategory() != null
-            && caseData.getStatementsDocumentCategory().size() > 0) {
+        if (CollectionUtils.isNotEmpty(caseData.getStatementsDocumentCategory())) {
             caseData.getStatementsDocumentCategory().forEach(item -> {
                 UUID result = UUID.nameUUIDFromBytes(item.getValue().getName().getBytes());
                 listElements.add(DynamicListElement.builder()
@@ -120,8 +116,7 @@ public class SendOrReply implements CcdPageConfiguration {
             });
         }
 
-        if (caseData.getCourtOrdersDocumentCategory() != null
-            && caseData.getCourtOrdersDocumentCategory().size() > 0) {
+        if (CollectionUtils.isNotEmpty(caseData.getCourtOrdersDocumentCategory())) {
             caseData.getCourtOrdersDocumentCategory().forEach(item -> {
                 UUID result = UUID.nameUUIDFromBytes(item.getValue().getName().getBytes());
                 listElements.add(DynamicListElement.builder()
@@ -129,8 +124,7 @@ public class SendOrReply implements CcdPageConfiguration {
             });
         }
 
-        if (caseData.getApplicationDocumentsCategory() != null
-            && caseData.getApplicationDocumentsCategory().size() > 0) {
+        if (CollectionUtils.isNotEmpty(caseData.getApplicationDocumentsCategory())) {
             caseData.getApplicationDocumentsCategory().forEach(item -> {
                 UUID result = UUID.nameUUIDFromBytes(item.getValue().getName().getBytes());
                 listElements.add(DynamicListElement.builder()
@@ -150,7 +144,7 @@ public class SendOrReply implements CcdPageConfiguration {
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
                 messageDetails.setMessage(selectedObject.get().getValue().getMessage());
                 messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocumentId() != null
+                messageDetails.setDocumentLink(StringUtils.isNotEmpty(selectedObject.get().getValue().getSelectedDocumentId())
                                                    ? messageDocumentLists.stream().filter(item ->
                                item.getMessageId().equalsIgnoreCase(selectedObject.get().getValue().getSelectedDocumentId()))
                               .findFirst().get().getDocumentLink() : null);
