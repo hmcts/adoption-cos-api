@@ -89,7 +89,7 @@ public class CaseworkerSendOrReplyTest {
     void caseworkerSendOrReplyAboutToSubmit_OK() {
         var caseDetails = getCaseDetails();
         caseDetails.getData().setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
-        caseDetails.getData().setMessageSendDetails(new MessageSendDetails());
+        caseDetails.getData().setMessageSendDetails(getOpenMessageObject());
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
@@ -101,7 +101,7 @@ public class CaseworkerSendOrReplyTest {
     void caseworkerSendOrReplyAboutToStartEventTest_Ok() {
         var caseDetails = getCaseDetails();
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
-        caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage, getListOfOpenMessages());
+        caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage, getOpenMessageObject());
         caseDetails.getData().setListOfOpenMessages(listOfOpenMessage);
         var result = caseworkerSendOrReply.beforeStartEvent(caseDetails);
         assertThat(result.getData().getReplyMsgDynamicList()).isNotNull();
@@ -112,7 +112,7 @@ public class CaseworkerSendOrReplyTest {
 
 
     @NotNull
-    private MessageSendDetails getListOfOpenMessages() {
+    private MessageSendDetails getOpenMessageObject() {
         MessageSendDetails adoptionOrderData = new MessageSendDetails();
         adoptionOrderData.setMessageId(UUID.randomUUID().toString());
         adoptionOrderData.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);

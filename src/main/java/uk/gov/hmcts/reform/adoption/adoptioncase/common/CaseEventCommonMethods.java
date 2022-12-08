@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.adoptioncase.search;
+package uk.gov.hmcts.reform.adoption.adoptioncase.common;
 
 import org.apache.commons.collections4.CollectionUtils;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public final class CaseEventCommonMethods {
 
-    /**
-     *
-     * Method to prepare common document list
-     * @param caseData
-     * @return Method will return document list
-     */
+public final class CaseEventCommonMethods {
+    private CaseEventCommonMethods() {
+
+    }
+
     public static List<MessageDocumentList> prepareDocumentList(CaseData caseData) {
         List<MessageDocumentList> messageDocumentLists = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getAdditionalDocumentsCategory())) {

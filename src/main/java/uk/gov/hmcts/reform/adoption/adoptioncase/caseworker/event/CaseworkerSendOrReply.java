@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -11,17 +9,16 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrReply;
-import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseEventCommonMethods;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
-import uk.gov.hmcts.reform.adoption.idam.IdamService;
-import javax.servlet.http.HttpServletRequest;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -105,8 +102,8 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                                     .findFirst().get().getDocumentLink();
 
                 sendMessagesDetails.setSelectedDocument(doc);
-                sendMessagesDetails.setDocumentHistory
-                    (caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
+                sendMessagesDetails.setDocumentHistory(
+                    caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
             }
             sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
             sendMessagesDetails.setMessageSendDateNTime(
