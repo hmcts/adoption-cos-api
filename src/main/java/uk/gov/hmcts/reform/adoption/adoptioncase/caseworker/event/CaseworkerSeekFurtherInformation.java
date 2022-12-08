@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
@@ -12,11 +14,14 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SeekFurtherInformation;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
+import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
@@ -29,12 +34,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.STRING_COLON;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.SEEK_FURTHER_INFO_LETTER;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.SEEK_FURTHER_INFO_LETTER_FILE_NAME;
 
 @Slf4j
 @Component
@@ -55,11 +63,25 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
     @Autowired
     private IdamService idamService;
 
+    @Autowired
+    CaseDataDocumentService caseDataDocumentService;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         log.info("Inside configure method for Event {}", CASEWORKER_SEEK_FURTHER_INFORMATION);
         var pageBuilder = addEventConfig(configBuilder);
         seekFurtherInformation.addTo(pageBuilder);
+        pageBuilder.page("pageSeekFurtherInformation3", this::midEventAfterDateSelection)
+            .mandatory(CaseData::getDate)
+            .page("pageSeekFurtherInformation4")
+            .label("seekFurtherInfo4","Preview and check the letter",null, true)
+            .readonly(CaseData::getSeekFurtherInformationDocument)
+            .done()
+            .build();
+
     }
 
 
@@ -211,5 +233,29 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
                                                     String.valueOf(listValueIndex.incrementAndGet())));
         }
         return correspondanceTabList;
+    }
+
+    public AboutToStartOrSubmitResponse<CaseData, State> midEventAfterDateSelection(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
+        var caseData = details.getData();
+        List<String> error = new ArrayList<>();
+
+        if (ObjectUtils.isEmpty(error)) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+            caseData.setSeekFurtherInformationDocument(caseDataDocumentService.renderDocument(
+                templateContent,
+                details.getId(),
+                SEEK_FURTHER_INFO_LETTER,
+                LanguagePreference.ENGLISH,
+                SEEK_FURTHER_INFO_LETTER_FILE_NAME));
+        }
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(error)
+            .build();
     }
 }

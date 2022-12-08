@@ -23,6 +23,9 @@ public enum DocumentType implements HasLabel {
 
     @JsonProperty("manageHearingNoticesA90En")
     MANAGE_HEARING_NOTICES_A90_EN("manageHearingNoticesA90En"),
+    
+    @JsonProperty("seekFurtherInformationEn")
+    SEEK_FURTHER_INFORMATION_EN("seekFurtherInformationEn"),
 
     @JsonProperty("applicationSummaryEn")
     APPLICATION_SUMMARY_EN("applicationSummaryEn"),

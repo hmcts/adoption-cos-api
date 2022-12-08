@@ -615,6 +615,8 @@ public class CaseData {
     )
     private LocalDateTime date;
 
+    @CCD
+    private Document seekFurtherInformationDocument;
 
     @CCD(
         label = "Enter hearing details",
