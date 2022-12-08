@@ -49,7 +49,7 @@ public class MessageSendDetails {
         typeParameterOverride = "MessageReceiverRoles")
     private MessageReceiverRoles messageReceiverRoles;
 
-    @CCD(label = "Select reason for this message",
+    @CCD(label = "Select a reason for this message",
         typeOverride = FixedList,
         access = {DefaultAccess.class},
         typeParameterOverride = "MessageReason"
@@ -113,11 +113,11 @@ public class MessageSendDetails {
         @JsonProperty("localCourtAdmin")
         LOCAL_COURT_ADMIN("Local court admin"),
 
-        @JsonProperty("ctsTeamLeader")
-        CTS_TEAM_LEADER("CTS team leader"),
+        @JsonProperty("ctscTeamLeader")
+        CTSC_TEAM_LEADER("CTSC team leader"),
 
-        @JsonProperty("ctsTeamWorker")
-        CTS_TEAM_WORKER("CTS team worker");
+        @JsonProperty("ctscTeamWorker")
+        CTSC_CASE_WORKER("CTSC case worker");
 
         private final String label;
     }
