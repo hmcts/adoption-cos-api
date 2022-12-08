@@ -82,10 +82,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             // Due to above limitations below few lines were added as part of using the CaseFields
             // birthMotherDeceased / birthFatherDeceased in showConditions as demanded from requirements.
             .complex(CaseData::getBirthMother)
-            .readonly(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NOT TO DISPLAY ALWAYS CONDITION\"")
+            .readonly(Parent::getDeceased)
             .done()
             .complex(CaseData::getBirthFather)
-            .readonly(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NOT TO DISPLAY ALWAYS CONDITION\"")
+            .readonly(Parent::getDeceased)
             .done()
             // End of special segment.
             .label("manageHearing73","### Respondent (birth mother)",
