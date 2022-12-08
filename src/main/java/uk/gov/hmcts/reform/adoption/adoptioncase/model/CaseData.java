@@ -901,7 +901,10 @@ public class CaseData {
 
                 data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
                 data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setOrderId(getDirectionsOrderData().getOrderId());
+                data.setGeneralDirectionOrderRecipients(getDirectionsOrderData().getGeneralDirectionRecipientsList());
                 data.setSubmittedDateAndTimeOfOrder(getDirectionsOrderData().getSubmittedDateDirectionsOrder());
+                data.setOrderedBy(getDirectionsOrderData().getOrderBy());
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
