@@ -768,7 +768,7 @@ public class CaseData {
     private SelectedOrder selectedOrder;
 
     @CCD(
-        label = "Do you want to server the order or return for amendments?",
+        label = "Do you want to serve the order or return for amendments?",
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "OrderCheckAndSend"
