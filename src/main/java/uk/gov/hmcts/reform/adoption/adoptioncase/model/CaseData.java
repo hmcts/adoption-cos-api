@@ -559,6 +559,9 @@ public class CaseData {
     )
     private SortedSet<RecipientsInTheCase> recipientsInTheCase;
 
+    @CCD(access = {DefaultAccess.class})
+    private Set<RecipientsInTheCase> validRecipientsInTheCase;
+
     @CCD(
         access = {DefaultAccess.class, CaseworkerAccess.class},
         label = "Ways To Pay"

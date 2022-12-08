@@ -10,12 +10,12 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -27,6 +27,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
@@ -75,32 +77,20 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
-            // CCD current limitations
-            // 1.   The CaseField or Metadata value being evaluated must present somewhere on the UI,
-            //      otherwise the value is not sent to the Front end and so isn't available for comparison
-            // 2.   NULL values are not currently supported in show conditions
-            // Due to above limitations below few lines were added as part of using the CaseFields
-            // birthMotherDeceased / birthFatherDeceased in showConditions as demanded from requirements.
-            .complex(CaseData::getBirthMother)
-            .readonly(Parent::getDeceased)
-            .done()
-            .complex(CaseData::getBirthFather)
-            .readonly(Parent::getDeceased)
-            .done()
-            // End of special segment.
+            .readonly(CaseData::getValidRecipientsInTheCase)
             .label("manageHearing73","### Respondent (birth mother)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
+                   "validRecipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             .readonly(CaseData::getHearingA91DocumentMother,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
+                      "validRecipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             .label("manageHearing74","### Respondent (birth father)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
+                   "validRecipientsInTheCaseCONTAINS\"respondentBirthFather\"")
             .readonly(CaseData::getHearingA91DocumentFather,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
+                      "validRecipientsInTheCaseCONTAINS\"respondentBirthFather\"")
             // End of special segment usage in conditions
             .label("manageHearing75","### Applicants",
-                   "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+                   "validRecipientsInTheCaseCONTAINS\"applicant1\" OR validRecipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(CaseData::getHearingA90Document,
-                      "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+                      "validRecipientsInTheCaseCONTAINS\"applicant1\" OR validRecipientsInTheCaseCONTAINS\"applicant2\"")
             .label("manageHearing76","You can make changes to the notice by continuing to the next page")
             .done()
             .build();
@@ -180,10 +170,12 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             caseData.setHearingA91DocumentMother(null);
             caseData.setHearingA91DocumentFather(null);
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
+            Set<RecipientsInTheCase> validRecipientsInTheCase = new HashSet<>();
 
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
                 switch (recipientsInTheCase) {
                     case APPLICANT1: case APPLICANT2:
+                        validRecipientsInTheCase.add(recipientsInTheCase);
                         if (isEmpty(caseData.getHearingA90Document())) {
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
@@ -201,6 +193,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                     case RESPONDENT_MOTHER:
                         if (isNotEmpty(caseData.getBirthMother().getDeceased())
                             && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
+                            validRecipientsInTheCase.add(recipientsInTheCase);
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
@@ -219,6 +212,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                     case RESPONDENT_FATHER:
                         if (isNotEmpty(caseData.getBirthFather().getDeceased())
                             && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
+                            validRecipientsInTheCase.add(recipientsInTheCase);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
@@ -238,6 +232,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         break;
                 }
             });
+            caseData.setValidRecipientsInTheCase(validRecipientsInTheCase);
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
