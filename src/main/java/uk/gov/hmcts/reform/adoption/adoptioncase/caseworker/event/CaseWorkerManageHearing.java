@@ -10,11 +10,7 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.*;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -74,14 +70,28 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
+            // CCD current limitations
+            // 1.   The CaseField or Metadata value being evaluated must present somewhere on the UI,
+            //      otherwise the value is not sent to the Front end and so isn't available for comparison
+            // 2.   NULL values are not currently supported in show conditions
+            // Due to above limitations below few lines were added as part of using the CaseFields
+            // birthMotherDeceased / birthFatherDeceased in showConditions as demanded from requirements.
+            .complex(CaseData::getBirthMother)
+            .readonly(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NOT TO DISPLAY ALWAYS CONDITION\"")
+            .done()
+            .complex(CaseData::getBirthFather)
+            .readonly(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NOT TO DISPLAY ALWAYS CONDITION\"")
+            .done()
+            // End of special segment.
             .label("manageHearing73","### Respondent (birth mother)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
+                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
             .readonly(CaseData::getHearingA91DocumentMother,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
+                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
             .label("manageHearing74","### Respondent (birth father)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
+                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
             .readonly(CaseData::getHearingA91DocumentFather,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
+                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
+            // End of special segment usage in conditions
             .label("manageHearing75","### Applicants",
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(CaseData::getHearingA90Document,
