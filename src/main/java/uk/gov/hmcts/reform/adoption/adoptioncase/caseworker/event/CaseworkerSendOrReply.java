@@ -63,10 +63,8 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
-    private AboutToStartOrSubmitResponse<CaseData, State> beforeStartEvent(CaseDetails<CaseData, State> details) {
+    public AboutToStartOrSubmitResponse<CaseData, State> beforeStartEvent(CaseDetails<CaseData, State> details) {
         var caseData = details.getData();
-
-
 
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
