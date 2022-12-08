@@ -77,20 +77,19 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
-            .readonly(CaseData::getValidRecipientsInTheCase)
             .label("manageHearing73","### Respondent (birth mother)",
-                   "validRecipientsInTheCaseCONTAINS\"respondentBirthMother\"")
+                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             .readonly(CaseData::getHearingA91DocumentMother,
-                      "validRecipientsInTheCaseCONTAINS\"respondentBirthMother\"")
+                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             .label("manageHearing74","### Respondent (birth father)",
-                   "validRecipientsInTheCaseCONTAINS\"respondentBirthFather\"")
+                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
             .readonly(CaseData::getHearingA91DocumentFather,
-                      "validRecipientsInTheCaseCONTAINS\"respondentBirthFather\"")
+                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
             // End of special segment usage in conditions
             .label("manageHearing75","### Applicants",
-                   "validRecipientsInTheCaseCONTAINS\"applicant1\" OR validRecipientsInTheCaseCONTAINS\"applicant2\"")
+                   "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(CaseData::getHearingA90Document,
-                      "validRecipientsInTheCaseCONTAINS\"applicant1\" OR validRecipientsInTheCaseCONTAINS\"applicant2\"")
+                      "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .label("manageHearing76","You can make changes to the notice by continuing to the next page")
             .done()
             .build();
@@ -170,12 +169,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             caseData.setHearingA91DocumentMother(null);
             caseData.setHearingA91DocumentFather(null);
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
-            Set<RecipientsInTheCase> validRecipientsInTheCase = new HashSet<>();
 
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
                 switch (recipientsInTheCase) {
                     case APPLICANT1: case APPLICANT2:
-                        validRecipientsInTheCase.add(recipientsInTheCase);
                         if (isEmpty(caseData.getHearingA90Document())) {
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
@@ -193,7 +190,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                     case RESPONDENT_MOTHER:
                         if (isNotEmpty(caseData.getBirthMother().getDeceased())
                             && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
-                            validRecipientsInTheCase.add(recipientsInTheCase);
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
@@ -212,7 +208,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                     case RESPONDENT_FATHER:
                         if (isNotEmpty(caseData.getBirthFather().getDeceased())
                             && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
-                            validRecipientsInTheCase.add(recipientsInTheCase);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
@@ -232,7 +227,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         break;
                 }
             });
-            caseData.setValidRecipientsInTheCase(validRecipientsInTheCase);
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
