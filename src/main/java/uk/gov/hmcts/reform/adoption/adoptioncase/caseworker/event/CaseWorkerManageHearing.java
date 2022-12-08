@@ -8,7 +8,6 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -177,14 +176,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
         if (isEmpty(error)) {
-            Document emptyDocument = new Document();
-            emptyDocument.setBinaryUrl("URL");
-            emptyDocument.setFilename("FILENAME");
-            emptyDocument.setUrl("URL");
-
-            caseData.setHearingA90Document(emptyDocument);
-            caseData.setHearingA91DocumentMother(emptyDocument);
-            caseData.setHearingA91DocumentFather(emptyDocument);
+            caseData.setHearingA90Document(null);
+            caseData.setHearingA91DocumentMother(null);
+            caseData.setHearingA91DocumentFather(null);
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
 
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
