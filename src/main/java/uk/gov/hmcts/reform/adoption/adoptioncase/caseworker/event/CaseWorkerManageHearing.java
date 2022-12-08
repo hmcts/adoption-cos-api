@@ -8,6 +8,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -44,6 +45,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
      * The constant CASEWORKER_MANAGE_HEARINGS.
      */
     public static final String CASEWORKER_MANAGE_HEARING = "caseworker-manage-hearing";
+    private static final String DOC_URL = "http://localhost:4200/assets/59a54ccc-979f-11eb-a8b3-0242ac130003";
+    private static final String DOC_BINARY_URL = "http://localhost:4200/assets/59a54ccc-979f-11eb-a8b3-0242ac130003/binary";
+    private static final String PDF_FILENAME = "sample_adoption.pdf";
 
     /**
      * The constant MANAGE_HEARINGS.
@@ -82,10 +86,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             // Due to above limitations below few lines were added as part of using the CaseFields
             // birthMotherDeceased / birthFatherDeceased in showConditions as demanded from requirements.
             .complex(CaseData::getBirthMother)
-            .readonly(Parent::getDeceased)
+            .readonly(Parent::getDeceased, "isTheHearingNeedsRelisting=\"No\"")
             .done()
             .complex(CaseData::getBirthFather)
-            .readonly(Parent::getDeceased)
+            .readonly(Parent::getDeceased, "isTheHearingNeedsRelisting=\"No\"")
             .done()
             // End of special segment.
             .label("manageHearing73","### Respondent (birth mother)",
@@ -176,9 +180,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
         RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
         if (isEmpty(error)) {
-            caseData.setHearingA90Document(null);
-            caseData.setHearingA91DocumentMother(null);
-            caseData.setHearingA91DocumentFather(null);
+            caseData.setHearingA90Document(new Document(DOC_URL, PDF_FILENAME, DOC_BINARY_URL));
+            caseData.setHearingA91DocumentMother(new Document(DOC_URL, PDF_FILENAME, DOC_BINARY_URL));
+            caseData.setHearingA91DocumentFather(new Document(DOC_URL, PDF_FILENAME, DOC_BINARY_URL));
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
 
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
