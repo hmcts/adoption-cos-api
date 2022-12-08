@@ -10,6 +10,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
@@ -64,6 +65,7 @@ public class MessageSendDetails {
     private MessageUrgency messageUrgencyList;
 
     @CCD(label = "Message",
+        hint = "Enter your message",
         typeOverride = TextArea,
         access = {DefaultAccess.class,SystemUpdateAccess.class}
     )
@@ -89,7 +91,7 @@ public class MessageSendDetails {
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
-    private List<Document> documentHistory;
+    private List<ListValue<Document>> documentHistory;
 
     @CCD(
         access = {DefaultAccess.class})

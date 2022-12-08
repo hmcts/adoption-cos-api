@@ -3,14 +3,20 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 import org.apache.commons.collections4.CollectionUtils;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseEventCommonMethods;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class SendOrReply implements CcdPageConfiguration {
     @Override
@@ -27,7 +33,7 @@ public class SendOrReply implements CcdPageConfiguration {
     public void sendMessageBuilder(PageBuilder pageBuilder, String condition) {
         pageBuilder.page("pageSendOrReply2")
             .showCondition(condition)
-            .label("sendMessage", "messageAction=\"sendMessage\"")
+            .label("sendMessage", "## Send a message")
             .complex(CaseData::getMessageSendDetails)
             .mandatory(MessageSendDetails::getMessageReceiverRoles)
             .mandatory(MessageSendDetails::getMessageReasonList)
@@ -42,7 +48,7 @@ public class SendOrReply implements CcdPageConfiguration {
     public void replyMessageBuilder(PageBuilder pageBuilder, String condition) {
         pageBuilder.page("pageSendOrReply3")
             .showCondition(condition)
-            .label("labelReplyMes", "## Reply a message")
+            .label("labelReplyMes", "## Reply to a message")
             .complex(CaseData::getSelectedMessage)
             .readonly(SelectedMessage::getReasonForMessage)
             .readonly(SelectedMessage::getUrgency)
@@ -69,6 +75,11 @@ public class SendOrReply implements CcdPageConfiguration {
     private AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State>
         data, CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
         CaseData caseData = data.getData();
+        List<DynamicListElement> listElements = new ArrayList<>();
+        CaseEventCommonMethods.prepareDocumentList(caseData).forEach(item -> listElements.add(DynamicListElement.builder()
+                             .label(item.getDocumentLink().getFilename()).code(UUID.fromString(item.getMessageId())).build()));
+        caseData.setAttachDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages()) && caseData.getReplyMsgDynamicList() != null) {
             var messageDetails = new SelectedMessage();
             var selectedObject = caseData.getListOfOpenMessages().stream()

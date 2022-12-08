@@ -12,6 +12,7 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrReply;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -20,10 +21,15 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
@@ -79,27 +85,27 @@ public class CaseworkerSendOrReplyTest {
             .contains(CASEWORKER_SEND_OR_REPLY);
     }
 
-    //@Test
-    //void caseworkerSendOrReplyAboutToSubmit_OK() {
-    //    var caseDetails = getCaseDetails();
-    //    caseDetails.getData().setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
-    //    caseDetails.getData().setMessageSendDetails(new MessageSendDetails());
-    //    final var instant = Instant.now();
-    //    final var zoneId = ZoneId.systemDefault();
-    //    final var expectedDate = LocalDate.ofInstant(instant, zoneId);
-    //    var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
-    //    assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
-    //}
+    @Test
+    void caseworkerSendOrReplyAboutToSubmit_OK() {
+        var caseDetails = getCaseDetails();
+        caseDetails.getData().setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
+        caseDetails.getData().setMessageSendDetails(new MessageSendDetails());
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+        var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
+    }
 
-    //@Test
-    //void caseworkerSendOrReplyAboutToStartEventTest_Ok() {
-    //    var caseDetails = getCaseDetails();
-    //    List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
-    //    caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage, getListOfOpenMessages());
-    //    caseDetails.getData().setListOfOpenMessages(listOfOpenMessage);
-    //    var result = caseworkerSendOrReply.beforeStartEvent(caseDetails);
-    //    assertThat(result.getData().getReplyMsgDynamicList()).isNotNull();
-    //}
+    @Test
+    void caseworkerSendOrReplyAboutToStartEventTest_Ok() {
+        var caseDetails = getCaseDetails();
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage, getListOfOpenMessages());
+        caseDetails.getData().setListOfOpenMessages(listOfOpenMessage);
+        var result = caseworkerSendOrReply.beforeStartEvent(caseDetails);
+        assertThat(result.getData().getReplyMsgDynamicList()).isNotNull();
+    }
 
 
 
