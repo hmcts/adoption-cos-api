@@ -28,7 +28,7 @@ public class SendOrReply implements CcdPageConfiguration {
             .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
         sendMessageBuilder(pageBuilder, "messageAction=\"sendMessage\"");
         replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
-        sendMessageBuilder(pageBuilder, "replyMessage=\"Yes\"");
+
     }
 
     public void sendMessageBuilder(PageBuilder pageBuilder, String condition) {
@@ -58,12 +58,24 @@ public class SendOrReply implements CcdPageConfiguration {
             .readonly(SelectedMessage::getDocumentLink)
             .mandatory(SelectedMessage::getReplyMessage)
             .done();
+        pageBuilder.page("pageSendOrReply4")
+            .showCondition("replyMessage=\"Yes\"")
+            .label("sendMessage1", "## Reply to a message")
+            .complex(CaseData::getMessageSendDetails)
+            .mandatory(MessageSendDetails::getMessageReceiverRoles)
+            .mandatory(MessageSendDetails::getMessageReasonList)
+            .mandatory(MessageSendDetails::getMessageUrgencyList)
+            .mandatory(MessageSendDetails::getMessage)
+            .done()
+            .mandatory(CaseData::getSendMessageAttachDocument)
+            .mandatory(CaseData::getAttachDocumentList, "sendMessageAttachDocument=\"Yes\"")
+            .done();
+
 
     }
 
     private AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State>
         data, CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
-        log.info("MidEvent Triggered");
         CaseData caseData = data.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
         List<MessageDocumentList> messageDocumentLists = new ArrayList<>();
@@ -147,7 +159,6 @@ public class SendOrReply implements CcdPageConfiguration {
 
 
         }
-        log.info("MidEvent Complete");
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
