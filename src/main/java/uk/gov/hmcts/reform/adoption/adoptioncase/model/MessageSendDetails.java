@@ -8,11 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
@@ -82,9 +84,12 @@ public class MessageSendDetails {
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
-    private String selectedDocumentId;
+    private Document selectedDocument;
 
-
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private List<Document> documentHistory;
 
     @CCD(
         access = {DefaultAccess.class})

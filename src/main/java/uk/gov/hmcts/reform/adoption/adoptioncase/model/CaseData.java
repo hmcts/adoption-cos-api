@@ -710,7 +710,7 @@ public class CaseData {
 
     // ------------------- Send And Reply Messages Objects Start ----------------- //
     @CCD(
-        label = "Do you want to send or reply to message?",
+        label = "Do you want to send or reply to a message?",
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "MessagesAction")
@@ -1019,4 +1019,6 @@ public class CaseData {
         }
         this.setManageHearingOptions(null);
     }
+
+
 }
