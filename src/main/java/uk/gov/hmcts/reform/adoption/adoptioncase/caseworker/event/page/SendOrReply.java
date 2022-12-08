@@ -33,8 +33,7 @@ public class SendOrReply implements CcdPageConfiguration {
     public void sendMessageBuilder(PageBuilder pageBuilder, String condition) {
         pageBuilder.page("pageSendOrReply2")
             .showCondition(condition)
-            .label("sendMessage", condition.equalsIgnoreCase("messageAction=\"sendMessage\"")
-                ? "## Send a message" : "## Reply to message")
+            .label("sendMessage", "messageAction=\"sendMessage\"")
             .complex(CaseData::getMessageSendDetails)
             .mandatory(MessageSendDetails::getMessageReceiverRoles)
             .mandatory(MessageSendDetails::getMessageReasonList)
