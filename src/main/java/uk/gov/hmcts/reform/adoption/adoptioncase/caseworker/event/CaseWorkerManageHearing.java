@@ -74,10 +74,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
-            .readonly(CaseData::getBirthMother,
-                      "manageHearingOptions!=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"No\"")
-            .readonly(CaseData::getBirthFather,
-                      "manageHearingOptions!=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"No\"")
             .label("manageHearing73","### Respondent (birth mother)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             .readonly(CaseData::getHearingA91DocumentMother,
@@ -183,7 +179,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                     LanguagePreference.ENGLISH,
                                     MANAGE_HEARING_NOTICES_A90_FILE_NAME
                                 ));
-                            caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document().getUrl());
+                            caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
                         }
                         break;
                     case RESPONDENT_MOTHER:
@@ -201,7 +197,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                     MANAGE_HEARING_NOTICES_A91,
                                     LanguagePreference.ENGLISH,
                                     MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER));
-                            caseData.setHearingA91DocumentMother(caseData.getManageHearingDetails().getHearingA91DocumentMother().getUrl());
+                            caseData.setHearingA91DocumentMother(caseData.getManageHearingDetails().getHearingA91DocumentMother());
                         }
                         break;
                     case RESPONDENT_FATHER:
@@ -219,7 +215,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                     MANAGE_HEARING_NOTICES_A91,
                                     LanguagePreference.ENGLISH,
                                     MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER));
-                            caseData.setHearingA91DocumentFather(caseData.getManageHearingDetails().getHearingA91DocumentFather().getUrl());
+                            caseData.setHearingA91DocumentFather(caseData.getManageHearingDetails().getHearingA91DocumentFather());
                         }
                         break;
                     default:

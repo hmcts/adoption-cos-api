@@ -12,6 +12,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
@@ -614,12 +615,12 @@ public class CaseData {
     )
     private LocalDateTime date;
 
-
+    @Builder.Default
     @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
-    private ManageHearingDetails manageHearingDetails;
+    private ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
 
     @CCD(
         label = "Reason for vacating a hearing",
@@ -708,13 +709,13 @@ public class CaseData {
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
     @CCD
-    private String hearingA90Document;
+    private Document hearingA90Document;
 
     @CCD
-    private String hearingA91DocumentMother;
+    private Document hearingA91DocumentMother;
 
     @CCD
-    private String hearingA91DocumentFather;
+    private Document hearingA91DocumentFather;
 
     @CCD
     private YesOrNo hearingA91DocumentFlagMother;
