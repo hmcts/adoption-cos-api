@@ -152,7 +152,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .label("generalDirectionRecipientsListLabel", "## Recipients of this order")
             .label("generalDirectionWhomToServe", "### Select who to serve the order to")
             .complex(CaseData::getDirectionsOrderData)
-            .label("directionOrderReicipientsData","You can select more than one recipient. It is important to check the selected <br>"
+            .label("directionOrderRecipientsData","You can select more than one recipient. It is important to check the selected <br>"
                 + "recipients before you continue so this order is sent to the intended parties")
             .mandatory(DirectionsOrderData::getGeneralDirectionRecipientsList)
             .done();
@@ -167,7 +167,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
         Set<DirectionsOrderData.GeneralDirectionRecipients> generalDirectionRecipients = caseData.getDirectionsOrderData()
             .getGeneralDirectionRecipientsList();
 
-        if (isEmpty(generalDirectionRecipients) && isEmpty(generalDirectionRecipients)) {
+        if (isEmpty(generalDirectionRecipients)) {
             errors.add(ERROR_CHECK_RECIPIENTS_GENERAL_DIRECTION_SELECTION);
             return AboutToStartOrSubmitResponse.<CaseData, State>builder()
                 .data(caseData)
@@ -215,7 +215,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .label("generalDirectionPreviewDocsLab2","### Document to review")
             .label("generalDirectionPreviewDocsLab3","This document will open a new page when you select it")
             .complex(CaseData::getDirectionsOrderData)
-            .readonly(DirectionsOrderData::getDraftDocument)
+            .readonly(DirectionsOrderData::getGeneralDirectionDraftDocument)
             .done()
             .label("generalDirectionChangeAlert","If you want to make further changes, go back to the previous screen")
             .done();

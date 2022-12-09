@@ -904,7 +904,7 @@ public class CaseData {
                 data.setOrderId(getDirectionsOrderData().getOrderId());
                 data.setGeneralDirectionOrderRecipients(getDirectionsOrderData().getGeneralDirectionRecipientsList());
                 data.setSubmittedDateAndTimeOfOrder(getDirectionsOrderData().getSubmittedDateDirectionsOrder());
-                data.setOrderedBy(getDirectionsOrderData().getOrderBy());
+                data.setOrderedBy(getDirectionsOrderData().getDirectionOrderBy());
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(

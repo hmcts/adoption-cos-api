@@ -91,7 +91,7 @@ public final class RecipientValidationUtil {
                 return isValidParentForTheCase(caseData.getBirthFather()) ? BIRTH_FATHER_NOT_APPLICABLE : null;
 
             case LEGAL_GUARDIAN_CAFCASS:
-                return getChildReprasentedByLeglGurdianErrorMessage(caseData);
+                return getChildRepresentedByLegalGuardianErrorMessage(caseData);
 
             case CHILDS_LOCAL_AUTHORITY:
                 if (isEmpty(caseData.getChildSocialWorker().getLocalAuthority())) {
@@ -114,7 +114,7 @@ public final class RecipientValidationUtil {
                 }
                 break;
             default:
-                if (isThereAnyOtheerPersonWithParentalResponsibility(caseData)) {
+                if (isThereAnyOtherPersonWithParentalResponsibility(caseData)) {
                     return OTHER_PARENT_AGENCY_NOT_APPLICABLE;
                 }
                 break;
@@ -123,12 +123,12 @@ public final class RecipientValidationUtil {
         return null;
     }
 
-    private static String getChildReprasentedByLeglGurdianErrorMessage(CaseData caseData) {
+    private static String getChildRepresentedByLegalGuardianErrorMessage(CaseData caseData) {
         return isEmpty(caseData.getIsChildRepresentedByGuardian())
             || caseData.getIsChildRepresentedByGuardian().equals(YesOrNo.NO) ? LEGAL_GUARDIAN_NOT_APPLICABLE : null;
     }
 
-    private static boolean isThereAnyOtheerPersonWithParentalResponsibility(CaseData caseData) {
+    private static boolean isThereAnyOtherPersonWithParentalResponsibility(CaseData caseData) {
         return isEmpty(caseData.getIsThereAnyOtherPersonWithParentalResponsibility())
             || caseData.getIsThereAnyOtherPersonWithParentalResponsibility().equals(YesOrNo.NO);
     }

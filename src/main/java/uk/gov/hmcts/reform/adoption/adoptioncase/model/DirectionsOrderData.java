@@ -37,11 +37,11 @@ public class DirectionsOrderData {
     private String preambleDetailsDO;
 
     @CCD(showCondition = "submittedDateDirectionsOrder=\"never\"")
-    private OrderStatus orderStatus;
+    private OrderStatus generalDirectionOrderStatus;
 
     @CCD(hint = "Enter the name of the judge issuing this order",
         access = {DefaultAccess.class})
-    private String orderBy;
+    private String directionOrderBy;
 
     @CCD(access = {DefaultAccess.class})
     private LocalDate dateOfGeneralDirectionOrderMade;
@@ -100,7 +100,7 @@ public class DirectionsOrderData {
     private Set<GeneralDirectionRecipients> generalDirectionRecipientsList;
 
     @CCD(access = {DefaultAccess.class})
-    private Document draftDocument;
+    private Document generalDirectionDraftDocument;
 
 
     @Getter

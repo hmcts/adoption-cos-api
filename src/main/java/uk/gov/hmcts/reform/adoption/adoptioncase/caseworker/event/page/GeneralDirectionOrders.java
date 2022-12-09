@@ -17,7 +17,7 @@ public class GeneralDirectionOrders implements CcdPageConfiguration {
             .label("generalDirectionOrderLabel1", "## Enter hearing details")
             .complex(CaseData::getDirectionsOrderData)
             .label("generalDirectionOrderBy", "### Order by", null, true)
-            .mandatory(DirectionsOrderData::getOrderBy)
+            .mandatory(DirectionsOrderData::getDirectionOrderBy)
             .label("generalDirectionDateOfOrderMade", "### Date order made", null, true)
             .mandatory(DirectionsOrderData::getDateOfGeneralDirectionOrderMade)
             .label("generalDirectionPreamble", "### Preamble", null, true)
