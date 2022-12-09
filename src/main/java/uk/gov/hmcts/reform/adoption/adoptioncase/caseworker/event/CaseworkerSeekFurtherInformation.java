@@ -244,7 +244,11 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         if (ObjectUtils.isEmpty(error)) {
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
-            log.info("Template content", templateContent);
+            templateContent.keySet().forEach(k ->  {
+                log.info((k + ":" + templateContent.get(k)));
+                System.out.println((k + ":" + templateContent.get(k)));
+            });
+
             caseData.setSeekFurtherInformationDocument(caseDataDocumentService.renderDocument(
                 templateContent,
                 details.getId(),
