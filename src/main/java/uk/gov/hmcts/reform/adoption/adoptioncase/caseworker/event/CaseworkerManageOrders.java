@@ -32,8 +32,8 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME;
 
 /**
  * Contains method to define Event Configuration for ExUI.
@@ -200,7 +200,6 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            log.info("templateContent {}", templateContent);
 
             if (isNotEmpty(selectedRecipientsA76)) {
                 caseData.getAdoptionOrderData().setDraftDocumentA76(
@@ -218,9 +217,9 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                     caseDataDocumentService.renderDocument(
                         templateContent,
                         details.getId(),
-                        FINAL_ADOPTION_ORDER_A206,
+                        FINAL_ADOPTION_ORDER_A206_DRAFT,
                         LanguagePreference.ENGLISH,
-                        FINAL_ADOPTION_ORDER_A206_FILE_NAME
+                        FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME
                     ));
             }
         }
