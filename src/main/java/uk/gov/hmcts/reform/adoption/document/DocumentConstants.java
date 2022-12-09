@@ -18,6 +18,14 @@ public final class DocumentConstants {
 
     public static final String FINAL_ADOPTION_ORDER_A76_FILE_NAME = "A76_Final adoption order_draft";
 
+    public static final String FINAL_ADOPTION_ORDER_A206_DRAFT = "FINAL_ADOPTION_ORDER_A206_DRAFT";
+
+    public static final String FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME = "A206_Final adoption order_draft";
+
+    public static final String FINAL_ADOPTION_ORDER_A206 = "FINAL_ADOPTION_ORDER_A206";
+
+    public static final String FINAL_ADOPTION_ORDER_A206_FILE_NAME = "A206_Final adoption order";
+
     public static final String MANAGE_HEARING_NOTICES_A90 = "MANAGE_HEARING_NOTICES_A90";
 
     public static final String MANAGE_HEARING_NOTICES_A90_FILE_NAME = "Hearing notice_A90";
