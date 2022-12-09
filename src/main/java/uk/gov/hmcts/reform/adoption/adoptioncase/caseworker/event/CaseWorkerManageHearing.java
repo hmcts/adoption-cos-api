@@ -89,12 +89,18 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .done()
             // End of special segment.
             .label("manageHearing73","### Respondent (birth mother)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
+                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
+            .readonly(CaseData::getHearingA91DocumentMother,
+                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             .label("manageHearing74","### Respondent (birth father)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
+                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
+            .readonly(CaseData::getHearingA91DocumentFather,
+                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             // End of special segment usage in conditions
             .label("manageHearing75","### Applicants",
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+            .readonly(CaseData::getHearingA90Document,
+                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
             .label("manageHearing76","You can make changes to the notice by continuing to the next page")
             .done()
             .build();
