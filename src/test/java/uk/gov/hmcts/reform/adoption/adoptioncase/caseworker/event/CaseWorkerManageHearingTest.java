@@ -12,14 +12,17 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
+import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplyingWith;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MethodOfHearing;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
@@ -37,10 +40,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseWorkerManageHearing.CASEWORKER_MANAGE_HEARING;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
@@ -79,6 +85,7 @@ class CaseWorkerManageHearingTest {
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings()).isNotNull();
     }
 
@@ -88,6 +95,7 @@ class CaseWorkerManageHearingTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
@@ -98,6 +106,7 @@ class CaseWorkerManageHearingTest {
         CaseData data = caseDetails.getData();
         data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
     }
@@ -141,6 +150,103 @@ class CaseWorkerManageHearingTest {
         assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForAloneSuccess() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForNotAloneSuccess() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setApplyingWith(ApplyingWith.WITH_SPOUSE_OR_CIVIL_PARTNER);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForAnotherAdoptionAgencySuccess() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForChildRepresentedByGuardianSuccess() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setIsChildRepresentedByGuardian(YesOrNo.YES);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForParentServingSuccess() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().getOtherParent().setToBeServed(YesOrNo.NO);
+        caseDetails.getData().getBirthMother().setToBeServed(YesOrNo.NO);
+        caseDetails.getData().getBirthFather().setToBeServed(YesOrNo.NO);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        Map<String, Object> templateVars = new HashMap<>();
+        when(objectMapper.convertValue(caseDetails.getData(), Map.class)).thenReturn(templateVars);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForAloneFailure() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.APPLICANT2);
+        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isNotNull();
+    }
+
 
     private CaseDetails<CaseData, State> getCaseDetails() {
         final var details = new CaseDetails<CaseData, State>();

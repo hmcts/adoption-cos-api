@@ -615,12 +615,12 @@ public class CaseData {
     )
     private LocalDateTime date;
 
-    @Builder.Default
+
     @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
-    private ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
+    private ManageHearingDetails manageHearingDetails;
 
     @CCD(
         label = "Reason for vacating a hearing",
