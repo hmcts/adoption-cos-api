@@ -70,7 +70,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         pageBuilder.page("manageHearing6",this::midEventAfterRecipientSelection)
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
-            .page("manageHearing7")
+            .done();
+
+        pageBuilder.page("manageHearing7")
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
@@ -95,15 +97,14 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .label("manageHearing74","### Respondent (birth father)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
             .readonly(CaseData::getHearingA91DocumentFather,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
+                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
             // End of special segment usage in conditions
             .label("manageHearing75","### Applicants",
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(CaseData::getHearingA90Document,
                       "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
             .label("manageHearing76","You can make changes to the notice by continuing to the next page")
-            .done()
-            .build();
+            .done();
     }
 
     /**
