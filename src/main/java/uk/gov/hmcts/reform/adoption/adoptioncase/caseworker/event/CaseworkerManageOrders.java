@@ -158,7 +158,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .done();
     }
 
-    private AboutToStartOrSubmitResponse<CaseData, State> midEventGeneralDirectionRecipients(CaseDetails<CaseData, State> details,
+    public AboutToStartOrSubmitResponse<CaseData, State> midEventGeneralDirectionRecipients(CaseDetails<CaseData, State> details,
                                                                                              CaseDetails<CaseData, State> detailsBefore) {
 
         CaseData caseData = details.getData();
@@ -212,8 +212,8 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                 "manageOrderType=\"generalDirectionsOrder\" AND generalDirectionOrderTypes=\"generalDirectionProductionOrder\"")
             .pageLabel("Preview the draft order")
             .label("generalDirectionPreviewOrderLab","## Preview the order")
-            .label("generalDirectionPreviewDocsLab","### Document to review")
-            .label("generalDirectionPreviewDocsLab","This document will open a new page when you select it")
+            .label("generalDirectionPreviewDocsLab2","### Document to review")
+            .label("generalDirectionPreviewDocsLab3","This document will open a new page when you select it")
             .complex(CaseData::getDirectionsOrderData)
             .readonly(DirectionsOrderData::getDraftDocument)
             .done()

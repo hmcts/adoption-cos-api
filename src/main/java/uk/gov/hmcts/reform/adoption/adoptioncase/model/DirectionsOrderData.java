@@ -114,13 +114,13 @@ public class DirectionsOrderData {
         APPLICANT2("Applicant 2"),
 
         @JsonProperty("birthMother")
-        RESPONDENT_BIRTH_MOTHER("Birth mother"),
+        RESPONDENT_BIRTH_MOTHER("Respondent (Birth mother)"),
 
         @JsonProperty("birthFather")
-        RESPONDENT_BIRTH_FATHER("Birth father"),
+        RESPONDENT_BIRTH_FATHER("Respondent (Birth father)"),
+        @JsonProperty("cafcass")
+        LEGAL_GUARDIAN_CAFCASS("Legal guardian (CAFCASS)"),
 
-        @JsonProperty("adoptionAgency")
-        ADOPTION_AGENCY("Adoption agency"),
 
         @JsonProperty("childsLocalAuthority")
         CHILDS_LOCAL_AUTHORITY("Child's local authority"),
@@ -131,11 +131,11 @@ public class DirectionsOrderData {
         @JsonProperty("otherAdoptionAgency")
         OTHER_ADOPTION_AGENCY("Other adoption agency"),
 
-        @JsonProperty("otherPersonWithParentalResponsibility")
-        OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility"),
+        @JsonProperty("adoptionAgency")
+        ADOPTION_AGENCY("Adoption agency"),
 
-        @JsonProperty("cafcass")
-        LEGAL_GUARDIAN_CAFCASS("Cafcass");
+        @JsonProperty("otherPersonWithParentalResponsibility")
+        OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility");
 
         private final String label;
     }
