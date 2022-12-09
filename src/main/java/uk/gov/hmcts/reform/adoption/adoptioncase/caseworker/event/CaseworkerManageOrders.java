@@ -10,6 +10,7 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AdoptionOrder;
+import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.GeneralDirectionOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
@@ -68,6 +69,8 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
 
     private final CcdPageConfiguration manageOrders = new ManageOrders();
     private final CcdPageConfiguration adoptionOrder = new AdoptionOrder();
+    private final CcdPageConfiguration generalDirectionOrder = new GeneralDirectionOrders();
+
 
 
     @Override
@@ -76,6 +79,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
         var pageBuilder = addEventConfig(configBuilder);
         manageOrders.addTo(pageBuilder);
         adoptionOrder.addTo(pageBuilder);
+        generalDirectionOrder.addTo(pageBuilder);
         getRecipientsPage(pageBuilder);
         getPreviewPage(pageBuilder);
     }
