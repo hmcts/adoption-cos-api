@@ -70,24 +70,18 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
             .page("manageHearing7")
-            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
-            .label("manageHearing73","### Respondent (birth mother)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
-            .readonly(CaseData::getHearingA91DocumentMother,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
-            .label("manageHearing74","### Respondent (birth father)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
-            .readonly(CaseData::getHearingA91DocumentFather,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
-            .label("manageHearing75","### Applicants",
-                   "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
-            .readonly(CaseData::getHearingA90Document,
-                      "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+            .label("manageHearing73","### Respondent (birth mother)")
+            .readonly(CaseData::getHearingA91DocumentMother)
+            .label("manageHearing74","### Respondent (birth father)")
+            .readonly(CaseData::getHearingA91DocumentFather)
+            .label("manageHearing75","### Applicants")
+            .readonly(CaseData::getHearingA90Document)
             .label("manageHearing76","You can make changes to the notice by continuing to the next page")
-            .done();
+            .done()
+            .build();
     }
 
     /**
