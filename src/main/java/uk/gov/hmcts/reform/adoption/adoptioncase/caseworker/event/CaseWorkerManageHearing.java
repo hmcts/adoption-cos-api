@@ -87,7 +87,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .label("manageHearing75","### Applicants",
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(CaseData::getHearingA90Document,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
+                      "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .label("manageHearing76","You can make changes to the notice by continuing to the next page")
             .done();
     }
