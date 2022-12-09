@@ -223,6 +223,9 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                     ));
             }
         }
+        log.info("caseData.getAdoptionOrderData().setDraftDocumentA76 {}", caseData.getAdoptionOrderData().getDraftDocumentA76());
+        log.info("caseData.getAdoptionOrderData().setDraftDocumentA206 {}", caseData.getAdoptionOrderData().getDraftDocumentA206());
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .errors(errors)
