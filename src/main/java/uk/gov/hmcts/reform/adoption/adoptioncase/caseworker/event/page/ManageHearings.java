@@ -19,37 +19,25 @@ public class ManageHearings implements CcdPageConfiguration {
     public void addTo(PageBuilder pageBuilder) {
         pageBuilder.page("manageHearing1")
             .mandatory(CaseData::getManageHearingOptions)
-            .done();
-
-        pageBuilder.page("manageHearing2")
+            .page("manageHearing2")
             .showCondition("manageHearingOptions=\"vacateHearing\"")
             .label("vacateHearingLabel1","## Vacate a hearing", "manageHearingOptions=\"vacateHearing\"")
             .mandatory(CaseData::getHearingListThatCanBeVacated,"manageHearingOptions=\"vacateHearing\"")
-            .done();
-
-        pageBuilder.page("manageHearing2.1")
+            .page("manageHearing2.1")
             .showCondition("manageHearingOptions= \"adjournHearing\"")
             .label("vacateHearingLabel2","## Adjourn a hearing", "manageHearingOptions=\"adjournHearing\"")
             .mandatory(CaseData::getHearingListThatCanBeAdjourned)
-            .done();
-
-        pageBuilder.page("manageHearing3")
+            .page("manageHearing3")
             .showCondition("manageHearingOptions=\"vacateHearing\"")
             .mandatory(CaseData::getReasonForVacatingHearing)
-            .done();
-
-        pageBuilder.page("manageHearing31")
+            .page("manageHearing31")
             .showCondition("manageHearingOptions=\"adjournHearing\"")
             .mandatory(CaseData::getReasonForAdjournHearing)
-            .done();
-
-        pageBuilder.page("manageHearing4")
+            .page("manageHearing4")
             .showCondition("manageHearingOptions=\"vacateHearing\" OR manageHearingOptions=\"adjournHearing\"")
             .label("relistingLabel1","## Relisting")
             .mandatory(CaseData::getIsTheHearingNeedsRelisting)
-            .done();
-
-        pageBuilder.page("manageHearing5")
+            .page("manageHearing5")
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .label("addNewHearing2", "## Add new hearing")
             .complex(CaseData::getManageHearingDetails)
@@ -62,6 +50,7 @@ public class ManageHearings implements CcdPageConfiguration {
             .mandatory(ManageHearingDetails::getMethodOfHearing)
             .optional(ManageHearingDetails::getAccessibilityRequirements)
             .optional(ManageHearingDetails::getHearingDirections)
-            .done();
+            .done()
+            .build();
     }
 }

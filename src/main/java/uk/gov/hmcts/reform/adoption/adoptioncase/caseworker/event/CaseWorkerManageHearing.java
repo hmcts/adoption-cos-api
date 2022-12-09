@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -70,19 +69,15 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         pageBuilder.page("manageHearing6",this::midEventAfterRecipientSelection)
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
-            .done();
-
-        pageBuilder.page("manageHearing7")
+            .page("manageHearing7")
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
-            .complex(CaseData::getBirthMother)
-            .readonly(Parent::getDeceased)
-            .done()
-            .complex(CaseData::getBirthFather)
-            .readonly(Parent::getDeceased)
-            .done()
+            .readonly(CaseData::getBirthMother,
+                      "manageHearingOptions!=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"No\"")
+            .readonly(CaseData::getBirthFather,
+                      "manageHearingOptions!=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"No\"")
             .label("manageHearing73","### Respondent (birth mother)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
             .readonly(CaseData::getHearingA91DocumentMother,
