@@ -85,7 +85,6 @@ class CaseWorkerManageHearingTest {
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings()).isNotNull();
     }
 
@@ -95,7 +94,6 @@ class CaseWorkerManageHearingTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
@@ -106,7 +104,6 @@ class CaseWorkerManageHearingTest {
         CaseData data = caseDetails.getData();
         data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
     }
@@ -126,7 +123,6 @@ class CaseWorkerManageHearingTest {
         data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         data.setIsTheHearingNeedsRelisting(YesOrNo.YES);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
         assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
     }
@@ -146,7 +142,6 @@ class CaseWorkerManageHearingTest {
         data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
         data.setIsTheHearingNeedsRelisting(YesOrNo.YES);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
