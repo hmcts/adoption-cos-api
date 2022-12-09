@@ -200,6 +200,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
+            log.info("templateContent {}", templateContent);
 
             if (isNotEmpty(selectedRecipientsA76)) {
                 caseData.getAdoptionOrderData().setDraftDocumentA76(
