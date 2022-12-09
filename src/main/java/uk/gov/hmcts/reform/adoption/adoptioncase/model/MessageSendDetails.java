@@ -128,14 +128,17 @@ public class MessageSendDetails {
     @AllArgsConstructor
     public enum MessageReason implements HasLabel {
 
-        @JsonProperty("referToGatekeeper")
-        REFER_TO_GATEKEEPER("Refer to gatekeeper"),
+        @JsonProperty("listAHearing")
+        LIST_A_HEARING("List a hearing"),
 
-        @JsonProperty("referToJudge")
-        REFER_TO_JUDGE("Refer to judge"),
+        @JsonProperty("requestDocument")
+        REQUEST_DOCUMENT("Request document"),
 
-        @JsonProperty("requestReviewDocuments")
-        REQUEST_REVIEW_DOCUMENTS("Request review of documents");
+        @JsonProperty("createOrder")
+        CREATE_ORDER("Create order"),
+
+        @JsonProperty("returnOrderForAmendments")
+        RETURN_ORDER_FOR_DOCUMENTS("Return order for amendments");
 
         private final String label;
     }
