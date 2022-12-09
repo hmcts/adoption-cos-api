@@ -78,10 +78,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
             .complex(CaseData::getBirthMother)
-            .readonly(Parent::getDeceased, "manageHearingOptions!=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"No\"")
+            .readonly(Parent::getDeceased)
             .done()
             .complex(CaseData::getBirthFather)
-            .readonly(Parent::getDeceased, "manageHearingOptions!=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"No\"")
+            .readonly(Parent::getDeceased)
             .done()
             .label("manageHearing73","### Respondent (birth mother)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
