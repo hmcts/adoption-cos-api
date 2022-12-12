@@ -39,7 +39,7 @@ public class CaseEventCommonMethodsTest {
 
 
     @Test
-    public void verifyMessageDocumentList_RECORDNOTFOUND() {
+    public void verifyMessageDocumentList_recordNotFound() {
         List<MessageDocumentList> list = prepareDocumentList(getCaseDetails().getData());
         assertThat(list).hasSize(0);
         assertThat(list).isEmpty();
