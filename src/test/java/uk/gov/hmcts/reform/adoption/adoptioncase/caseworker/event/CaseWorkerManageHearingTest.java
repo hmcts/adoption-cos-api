@@ -116,8 +116,8 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setHearingId(UUID.randomUUID().toString());
         manageHearingDetails.setLengthOfHearing("2hrs 30min");
         manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setCourt("test court");
-        manageHearingDetails.setJudge("test judge");
+        manageHearingDetails.setManageHearingsCourt("test court");
+        manageHearingDetails.setManageHearingsJudge("test judge");
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
         CaseData data = caseDetails.getData();
         data.setManageHearingDetails(manageHearingDetails);
@@ -135,8 +135,8 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setHearingId(UUID.randomUUID().toString());
         manageHearingDetails.setLengthOfHearing("2hrs 30min");
         manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setCourt("test court");
-        manageHearingDetails.setJudge("test judge");
+        manageHearingDetails.setManageHearingsCourt("test court");
+        manageHearingDetails.setManageHearingsJudge("test judge");
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
         CaseData data = caseDetails.getData();
         data.setManageHearingDetails(manageHearingDetails);
@@ -250,8 +250,8 @@ class CaseWorkerManageHearingTest {
         ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
         manageHearingDetails.setLengthOfHearing("2hrs 30min");
         manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setCourt("test court");
-        manageHearingDetails.setJudge("test judge");
+        manageHearingDetails.setManageHearingsCourt("test court");
+        manageHearingDetails.setManageHearingsJudge("test judge");
         data.setManageHearingDetails(manageHearingDetails);
         data.setManageHearingOptions(ManageHearingOptions.ADD_NEW_HEARING);
         details.setData(data);
@@ -266,8 +266,8 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setHearingId(UUID.randomUUID().toString());
         manageHearingDetails.setLengthOfHearing("2hrs 30min");
         manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setCourt("test court");
-        manageHearingDetails.setJudge("test judge");
+        manageHearingDetails.setManageHearingsCourt("test court");
+        manageHearingDetails.setManageHearingsJudge("test judge");
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
         data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
         List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();

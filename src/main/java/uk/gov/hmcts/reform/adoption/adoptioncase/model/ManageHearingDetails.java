@@ -50,14 +50,14 @@ public class ManageHearingDetails {
         label = "Judge",
         hint = "This should be the allocated judge, if possible."
     )
-    private String judge;
+    private String manageHearingsJudge;
 
     @CCD(
         access = {DefaultAccess.class},
         label = "Court",
         hint = "Enter the full name of the court where the hearing will be held "
     )
-    private String court;
+    private String manageHearingsCourt;
 
 
     @CCD(
