@@ -208,9 +208,9 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         var adoptionUploadDocument = new AdoptionUploadDocument();
         adoptionUploadDocument.setDocumentComment(SEEK_FURTHER_INFORMATION_HEADING);
         adoptionUploadDocument.setDocumentLink(null);
+        adoptionUploadDocument.setDocumentLink(caseData.getSeekFurtherInformationDocument());
         adoptionUploadDocument.setDocumentDateAdded(LocalDate.now(clock));
         if (!Objects.isNull(caseData.getSeekFurtherInformationList())) {
-            //  adoptionUploadDocument.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
             adoptionUploadDocument.setUploadedBy(caseworkerUser.getUserDetails().getFullName());
         }
         if (isEmpty(correspondanceTabList)) {
@@ -253,11 +253,6 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         if (ObjectUtils.isEmpty(error)) {
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
-            templateContent.keySet().forEach(k ->  {
-                log.info((k + ":" + templateContent.get(k)));
-                System.out.println((k + ":" + templateContent.get(k)));
-            });
-
             caseData.setSeekFurtherInformationDocument(caseDataDocumentService.renderDocument(
                 templateContent,
                 details.getId(),
