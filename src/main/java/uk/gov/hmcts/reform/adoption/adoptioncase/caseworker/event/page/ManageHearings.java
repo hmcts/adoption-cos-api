@@ -42,14 +42,6 @@ public class ManageHearings implements CcdPageConfiguration {
             .label("addNewHearing2", "## Add new hearing")
             .complex(CaseData::getManageHearingDetails)
             .mandatory(ManageHearingDetails::getTypeOfHearing)
-            .mandatory(ManageHearingDetails::getHearingDateAndTime)
-            .mandatory(ManageHearingDetails::getLengthOfHearing)
-            .mandatory(ManageHearingDetails::getJudge)
-            .mandatory(ManageHearingDetails::getCourt)
-            .optional(ManageHearingDetails::getIsInterpreterNeeded)
-            .mandatory(ManageHearingDetails::getMethodOfHearing)
-            .optional(ManageHearingDetails::getAccessibilityRequirements)
-            .optional(ManageHearingDetails::getHearingDirections)
             .done()
             .build();
     }
