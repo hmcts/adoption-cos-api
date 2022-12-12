@@ -242,8 +242,10 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         CaseDetails<CaseData, State> detailsBefore
     ) {
         var caseData = details.getData();
-        caseData.setSeekFurtherInformationDocumentSubmitterName(caseData.getSeekFurtherInformationList().getValue().getLabel().split(":")[1]);
-        if(caseData.getSeekFurtherInformationList().getValue().getLabel().contains(DocumentSubmitter.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel())) {
+        caseData.setSeekFurtherInformationDocumentSubmitterName(caseData.getSeekFurtherInformationList()
+                                                                    .getValue().getLabel().split(":")[1]);
+        if (caseData.getSeekFurtherInformationList().getValue().getLabel().contains(DocumentSubmitter
+                                                                                        .ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel())) {
             caseData.setSeekFurtherInformationAdopOrLaSelected(YesOrNo.YES);
         } else {
             caseData.setSeekFurtherInformationAdopOrLaSelected(YesOrNo.NO);
