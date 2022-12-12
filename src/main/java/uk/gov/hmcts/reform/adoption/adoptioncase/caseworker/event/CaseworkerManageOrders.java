@@ -152,8 +152,8 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .label("generalDirectionRecipientsListLabel", "## Recipients of this order")
             .label("generalDirectionWhomToServe", "### Select who to serve the order to")
             .complex(CaseData::getDirectionsOrderData)
-            .label("directionOrderRecipientsData","You can select more than one recipient. It is important to check the selected <br>"
-                + "recipients before you continue so this order is sent to the intended parties")
+            .label("directionOrderRecipientsData","You can select more than one person. It is important that recipients are <br>"
+                + "checked carefully to make sure this order is not served to the wrong person")
             .mandatory(DirectionsOrderData::getGeneralDirectionRecipientsList)
             .done();
     }
