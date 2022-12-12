@@ -618,8 +618,9 @@ public class CaseData {
 
     @CCD(
         label = "Enter hearing details",
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
+        access = {DefaultAccess.class}
     )
+    @JsonUnwrapped
     private ManageHearingDetails manageHearingDetails;
 
     @CCD(
