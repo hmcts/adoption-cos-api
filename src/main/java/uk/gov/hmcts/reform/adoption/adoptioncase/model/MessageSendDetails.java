@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 import uk.gov.hmcts.ccd.sdk.type.Document;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
@@ -69,19 +68,7 @@ public class MessageSendDetails {
         typeOverride = TextArea,
         access = {DefaultAccess.class,SystemUpdateAccess.class}
     )
-    private String message;
-
-    @CCD(
-        label = "Do you want to attach documents from this case?",
-        access = {SystemUpdateAccess.class, DefaultAccess.class}
-    )
-    private YesNo sendMessageAttachDocument;
-
-    @CCD(
-        label = "Select a document",
-        access = {DefaultAccess.class,SystemUpdateAccess.class}
-    )
-    private DynamicList attachDocumentList;
+    private String messageText;
 
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
@@ -181,18 +168,6 @@ public class MessageSendDetails {
 
         @JsonProperty("closed")
         CLOSED("Closed");
-
-        private final String label;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public enum YesNo implements HasLabel {
-
-        @JsonProperty("Yes")
-        YES("Yes"),
-        @JsonProperty("No")
-        NO("No");
 
         private final String label;
     }
