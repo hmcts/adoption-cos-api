@@ -95,6 +95,7 @@ class CaseWorkerManageHearingTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
@@ -105,6 +106,7 @@ class CaseWorkerManageHearingTest {
         CaseData data = caseDetails.getData();
         data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
     }
@@ -116,14 +118,15 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setHearingId(UUID.randomUUID().toString());
         manageHearingDetails.setLengthOfHearing("2hrs 30min");
         manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setManageHearingsCourt("test court");
-        manageHearingDetails.setManageHearingsJudge("test judge");
+        manageHearingDetails.setCourt("test court");
+        manageHearingDetails.setJudge("test judge");
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
         CaseData data = caseDetails.getData();
         data.setManageHearingDetails(manageHearingDetails);
         data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         data.setIsTheHearingNeedsRelisting(YesOrNo.YES);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
         assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
     }
@@ -135,14 +138,15 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setHearingId(UUID.randomUUID().toString());
         manageHearingDetails.setLengthOfHearing("2hrs 30min");
         manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setManageHearingsCourt("test court");
-        manageHearingDetails.setManageHearingsJudge("test judge");
+        manageHearingDetails.setCourt("test court");
+        manageHearingDetails.setJudge("test judge");
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
         CaseData data = caseDetails.getData();
         data.setManageHearingDetails(manageHearingDetails);
         data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
         data.setIsTheHearingNeedsRelisting(YesOrNo.YES);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
@@ -250,8 +254,8 @@ class CaseWorkerManageHearingTest {
         ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
         manageHearingDetails.setLengthOfHearing("2hrs 30min");
         manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setManageHearingsCourt("test court");
-        manageHearingDetails.setManageHearingsJudge("test judge");
+        manageHearingDetails.setCourt("test court");
+        manageHearingDetails.setJudge("test judge");
         data.setManageHearingDetails(manageHearingDetails);
         data.setManageHearingOptions(ManageHearingOptions.ADD_NEW_HEARING);
         details.setData(data);
@@ -266,8 +270,8 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setHearingId(UUID.randomUUID().toString());
         manageHearingDetails.setLengthOfHearing("2hrs 30min");
         manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setManageHearingsCourt("test court");
-        manageHearingDetails.setManageHearingsJudge("test judge");
+        manageHearingDetails.setCourt("test court");
+        manageHearingDetails.setJudge("test judge");
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
         data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
         List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
