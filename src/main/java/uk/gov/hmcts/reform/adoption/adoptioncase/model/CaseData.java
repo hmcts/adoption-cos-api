@@ -621,7 +621,8 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     @JsonUnwrapped
-    private ManageHearingDetails manageHearingDetails;
+    @Builder.Default
+    private ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
 
     @CCD(
         label = "Reason for vacating a hearing",
