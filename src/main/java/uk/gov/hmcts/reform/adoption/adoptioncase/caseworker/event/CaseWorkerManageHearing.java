@@ -9,7 +9,6 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -17,7 +16,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
-import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
@@ -49,7 +47,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
      */
     public static final String MANAGE_HEARINGS = "Manage hearings";
 
-    private final CcdPageConfiguration manageHearings = new ManageHearings();
 
     @Autowired
     ObjectMapper objectMapper;
@@ -65,12 +62,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
 
         log.info("Inside configure method for Event {}", CASEWORKER_MANAGE_HEARING);
         var pageBuilder = addEventConfig(configBuilder);
-        manageHearings.addTo(pageBuilder);
         pageBuilder.page("manageHearing6",this::midEventAfterRecipientSelection)
-            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
             .page("manageHearing7")
-            .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
