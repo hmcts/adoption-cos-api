@@ -44,8 +44,8 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_PARENT_AGENCY_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SECOND_APPLICANT_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.isValidRecipientForGeneralOrder;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
 
 /**
  * Contains method to define Event Configuration for ExUI.
@@ -259,9 +259,9 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                 caseDataDocumentService.renderDocument(
                     templateContent,
                     details.getId(),
-                    FINAL_ADOPTION_ORDER_A76,
+                    FINAL_ADOPTION_ORDER_A76_DRAFT,
                     LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_FILE_NAME
+                    FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
                     ));
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()

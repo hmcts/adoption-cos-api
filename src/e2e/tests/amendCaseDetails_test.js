@@ -3,7 +3,7 @@ const retryCount = 3;
 const laHelper = require('../helpers/la_portal_case');
 
 let caseId;
-Feature('Amend Case Details');
+Feature('Amend Case Details').retry(1);;
 async function setupScenario(I) {
   if (!caseId) {
     caseId = await laHelper.createCompleteCase();

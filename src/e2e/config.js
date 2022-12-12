@@ -29,6 +29,7 @@ module.exports = {
     amendOtherPartiesDetails: 'Amend other parties details',
     checkAndSendOrders: 'Check and send orders',
     generalDirectionOrders: 'General directions order',
+    sendOrReplyToMessages:  'Send or reply to messages',
   },
   // tabs
   tabs: {
