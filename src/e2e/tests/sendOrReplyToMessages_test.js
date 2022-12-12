@@ -2,7 +2,7 @@ const config = require('../config');
 const laHelper = require('../helpers/la_portal_case');
 
 let caseId;
-Feature('Send or reply to messages Details').retry(0);
+Feature('Send or reply to messages Details').retry(1);
 async function setupScenario(I) {
   if (!caseId) {
     caseId = await laHelper.createCompleteCase();

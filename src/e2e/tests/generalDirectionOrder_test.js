@@ -5,7 +5,7 @@ const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 
 let caseId;
 
-Feature('Manage order tests').retry(0);
+Feature('Manage order tests').retry(1);
 
 async function setupScenario(I) {
   caseId = await laHelper.createCompleteCase();
