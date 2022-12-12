@@ -589,7 +589,7 @@ public class CaseData {
     @CCD(
         typeOverride = DynamicRadioList,
         label = "Who do you need to contact\n",
-        typeParameterOverride = "DocumentSubmitter"
+        typeParameterOverride = "SeekFurtherInformationList"
     )
     private DynamicList seekFurtherInformationList;
 
@@ -737,6 +737,10 @@ public class CaseData {
         typeParameterOverride = "OrderCheckAndSend"
     )
     private OrderCheckAndSend orderCheckAndSend;
+
+    private String seekFurtherInformationDocumentSubmitterName;
+
+    private YesOrNo seekFurtherInformationAdopOrLaSelected;
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {

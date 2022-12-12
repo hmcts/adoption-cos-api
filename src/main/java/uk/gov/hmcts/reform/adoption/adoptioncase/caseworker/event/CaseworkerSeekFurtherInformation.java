@@ -12,6 +12,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SeekFurtherInformation;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
@@ -189,11 +190,13 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         CaseData caseData = caseDataStateCaseDetails.getData();
         caseData.setCorrespondenceDocumentCategory(addSeekInformationData(caseData,
                 caseData.getCorrespondenceDocumentCategory()));
+
         caseData.setDate(null);
         caseData.setSeekFurtherInformationList(null);
         caseData.setFurtherInformation(null);
         caseData.setAskAQuestionText(null);
         caseData.setAskForAdditionalDocumentText(null);
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
@@ -239,6 +242,12 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         CaseDetails<CaseData, State> detailsBefore
     ) {
         var caseData = details.getData();
+        caseData.setSeekFurtherInformationDocumentSubmitterName(caseData.getSeekFurtherInformationList().getValue().getLabel().split(":")[1]);
+        if(caseData.getSeekFurtherInformationList().getValue().getLabel().contains(DocumentSubmitter.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel())) {
+            caseData.setSeekFurtherInformationAdopOrLaSelected(YesOrNo.YES);
+        } else {
+            caseData.setSeekFurtherInformationAdopOrLaSelected(YesOrNo.NO);
+        }
         List<String> error = new ArrayList<>();
 
         if (ObjectUtils.isEmpty(error)) {
