@@ -4,7 +4,7 @@ const laHelper = require('../helpers/la_portal_case');
 
 let caseId;
 
-Feature('case Details Summary tab tests').retry(0);
+Feature('case Details Summary tab tests').retry(1);
 
 async function setupScenario(I) {
     caseId = await laHelper.createCompleteCase();

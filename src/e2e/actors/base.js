@@ -34,9 +34,9 @@ module.exports = {
           await this.refreshPage();
         }
 
-        if (await this.hasSelector(signedInSelector)) {
-          await this.retryUntilExists(() => this.click('Sign out'), signedOutSelector, false, 10);
-        }
+        // if (await this.hasSelector(signedInSelector)) {
+        //   await this.retryUntilExists(() => this.click('Sign out'), signedOutSelector, false, 10);
+        // }
 
         await this.retryUntilExists(() =>  loginPage.loginToExUI(user), signedInSelector, false, 10);
 
