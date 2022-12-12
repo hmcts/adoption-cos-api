@@ -618,9 +618,11 @@ public class CaseData {
 
     @CCD(
         label = "Enter hearing details",
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
+        access = {DefaultAccess.class}
     )
-    private ManageHearingDetails manageHearingDetails;
+    @JsonUnwrapped
+    @Builder.Default
+    private ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
 
     @CCD(
         label = "Reason for vacating a hearing",

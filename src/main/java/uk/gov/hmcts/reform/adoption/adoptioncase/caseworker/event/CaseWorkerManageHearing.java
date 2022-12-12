@@ -66,10 +66,13 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         log.info("Inside configure method for Event {}", CASEWORKER_MANAGE_HEARING);
         var pageBuilder = addEventConfig(configBuilder);
         manageHearings.addTo(pageBuilder);
+
         pageBuilder.page("manageHearing6",this::midEventAfterRecipientSelection)
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .mandatory(CaseData::getRecipientsInTheCase)
-            .page("manageHearing7")
+            .done();
+
+        pageBuilder.page("manageHearing7")
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
@@ -87,7 +90,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .readonly(CaseData::getHearingA90Document,
                       "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .label("manageHearing76","You can make changes to the notice by continuing to the next page")
-            .done().build();
+            .done();
     }
 
     /**
