@@ -944,11 +944,11 @@ public class CaseData {
                 data.setAdoptionOrderRecipients(getManageOrdersData().getRecipientsList());
                 break;
             case GENERAL_DIRECTIONS_ORDER:
-                this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
+                getDirectionsOrderData().setSubmittedDateDirectionsOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-                this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
-                this.setDirectionsOrderList(archiveManageOrdersHelper(
-                    this.getDirectionsOrderList(), this.getDirectionsOrderData()));
+                getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
+                setDirectionsOrderList(archiveManageOrdersHelper(
+                    this.getDirectionsOrderList(), getDirectionsOrderData()));
 
                 data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
                 data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
@@ -977,7 +977,7 @@ public class CaseData {
         this.setCommonOrderList(archiveManageOrdersHelper(
             this.getCommonOrderList(), data));
         this.setManageOrdersData(new ManageOrdersData());
-        this.setDirectionsOrderData(new DirectionsOrderData());
+        setDirectionsOrderData(new DirectionsOrderData());
         this.setAdoptionOrderData(new AdoptionOrderData());
     }
 
