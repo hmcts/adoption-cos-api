@@ -971,7 +971,6 @@ public class CaseData {
             setNewHearings(archiveManageOrdersHelper(getNewHearings(),
                 cloneToTabObject(manageHearingDetails, new ManageHearingTabDetails())));
             this.setManageHearingDetails(null);
-            this.setManageHearingOptions(null);
             this.setRecipientsInTheCase(null);
         }
     }
@@ -989,7 +988,6 @@ public class CaseData {
             setVacatedHearings(archiveManageOrdersHelper(getVacatedHearings(), vacatedHearingDetails.get().getValue()));
             newHearings.remove(vacatedHearingDetails.get());
         }
-        this.setManageHearingOptions(null);
     }
 
     public void updateAdjournHearings() {
@@ -1003,7 +1001,6 @@ public class CaseData {
             setAdjournHearings(archiveManageOrdersHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
             newHearings.remove(adjournHearingDetails.get());
         }
-        this.setManageHearingOptions(null);
     }
 
 
