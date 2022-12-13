@@ -74,23 +74,22 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .page("manageHearing7")
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
             .pageLabel("Preview the hearing notice")
+            .complex(CaseData::getBirthMother, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
+            .readonly(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
+            .done()
+            .complex(CaseData::getBirthFather, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
+            .readonly(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
+            .done()
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
-            .complex(CaseData::getBirthMother)
-            .mandatory(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
             .label("manageHearing73","### Respondent (birth mother)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
-            .done()
             .readonly(CaseData::getHearingA91DocumentMother,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
-            .complex(CaseData::getBirthFather)
-            .mandatory(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
+                      "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
             .label("manageHearing74","### Respondent (birth father)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
-            .mandatory(Parent::getDeceased)
-            .done()
             .readonly(CaseData::getHearingA91DocumentFather,
-                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
+                      "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
             .label("manageHearing75","### Applicants",
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(CaseData::getHearingA90Document,
@@ -166,6 +165,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
 
         if (isEmpty(error)) {
             resetAll(caseData, false);
+            caseData.setBirthMother(detailsBefore.getData().getBirthMother());
+            caseData.setBirthFather(detailsBefore.getData().getBirthFather());
+
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
                 switch (recipientsInTheCase) {
@@ -184,8 +186,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         }
                         break;
                     case RESPONDENT_MOTHER:
-                        if (isNotEmpty(detailsBefore.getData().getBirthMother().getDeceased())
-                            && detailsBefore.getData().getBirthMother().getDeceased().equals(YesOrNo.NO)) {
+                        if (isNotEmpty(caseData.getBirthMother().getDeceased())
+                            && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
@@ -200,8 +202,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         }
                         break;
                     case RESPONDENT_FATHER:
-                        if (isNotEmpty(detailsBefore.getData().getBirthFather().getDeceased())
-                            && detailsBefore.getData().getBirthFather().getDeceased().equals(YesOrNo.NO)) {
+                        if (isNotEmpty(caseData.getBirthFather().getDeceased())
+                            && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
                             @SuppressWarnings("unchecked")
