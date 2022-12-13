@@ -17,14 +17,15 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplyingWith;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingTabDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MethodOfHearing;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplyingWith;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
@@ -266,19 +267,19 @@ class CaseWorkerManageHearingTest {
     private CaseDetails<CaseData, State> getCaseDetailsForHearing() {
         final var details = new CaseDetails<CaseData, State>();
         final var data = caseData();
-        ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
-        manageHearingDetails.setHearingId(UUID.randomUUID().toString());
-        manageHearingDetails.setLengthOfHearing("2hrs 30min");
-        manageHearingDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
-        manageHearingDetails.setCourt("test court");
-        manageHearingDetails.setJudge("test judge");
-        manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
+        ManageHearingTabDetails manageHearingTabDetails = new ManageHearingTabDetails();
+        manageHearingTabDetails.setHearingId(UUID.randomUUID().toString());
+        manageHearingTabDetails.setLengthOfHearing("2hrs 30min");
+        manageHearingTabDetails.setMethodOfHearing(MethodOfHearing.REMOTE);
+        manageHearingTabDetails.setCourt("test court");
+        manageHearingTabDetails.setJudge("test judge");
+        manageHearingTabDetails.setHearingDateAndTime(LocalDateTime.now());
         data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
-        List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
+        List<ListValue<ManageHearingTabDetails>> listValues = new ArrayList<>();
         var listValue = ListValue
-            .<ManageHearingDetails>builder()
+            .<ManageHearingTabDetails>builder()
             .id("1")
-            .value(manageHearingDetails)
+            .value(manageHearingTabDetails)
             .build();
         listValues.add(listValue);
         data.setNewHearings(listValues);

@@ -34,6 +34,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSendOrReply.CASEWORKER_SEND_OR_REPLY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseDataUtil.archiveManageOrdersHelper;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -101,7 +102,7 @@ public class CaseworkerSendOrReplyTest {
     void caseworkerSendOrReplyAboutToStartEventTest_Ok() {
         var caseDetails = getCaseDetails();
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
-        caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage, getOpenMessageObject());
+        archiveManageOrdersHelper(listOfOpenMessage, getOpenMessageObject());
         caseDetails.getData().setListOfOpenMessages(listOfOpenMessage);
         var result = caseworkerSendOrReply.beforeStartEvent(caseDetails);
         assertThat(result.getData().getReplyMsgDynamicList()).isNotNull();

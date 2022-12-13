@@ -31,7 +31,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.List;
@@ -47,6 +46,8 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseDataUtil.archiveManageOrdersHelper;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseDataUtil.cloneToTabObject;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
@@ -539,7 +540,6 @@ public class CaseData {
     )
     private AdoptionUploadDocument adoptionUploadDocument;
 
-
     @CCD(
         label = "Role",
         hint = "What is their role? For example, first applicant or child's social worker."
@@ -565,7 +565,6 @@ public class CaseData {
     )
     private WaysToPay waysToPay;
 
-
     @CCD(
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
@@ -578,7 +577,6 @@ public class CaseData {
         label = "Select a hearing you want to vacate\n"
     )
     private DynamicList hearingListThatCanBeVacated;
-
 
     @CCD(
         typeOverride = DynamicRadioList,
@@ -615,7 +613,6 @@ public class CaseData {
     )
     private LocalDateTime date;
 
-
     @CCD(
         label = "Enter hearing details",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
@@ -646,7 +643,7 @@ public class CaseData {
         typeParameterOverride = "ManageHearingDetails",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<ManageHearingDetails>> vacatedHearings;
+    private List<ListValue<ManageHearingTabDetails>> vacatedHearings;
 
     @CCD(
         label = "Adjourned hearing",
@@ -654,8 +651,7 @@ public class CaseData {
         typeParameterOverride = "ManageHearingDetails",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<ManageHearingDetails>> adjournHearings;
-
+    private List<ListValue<ManageHearingTabDetails>> adjournHearings;
 
     @CCD(
         label = "New hearing",
@@ -663,8 +659,7 @@ public class CaseData {
         typeParameterOverride = "ManageHearingDetails",
         access = {DefaultAccess.class}
     )
-    private List<ListValue<ManageHearingDetails>> newHearings;
-
+    private List<ListValue<ManageHearingTabDetails>> newHearings;
 
     @CCD(
         typeOverride = Collection,
@@ -721,7 +716,6 @@ public class CaseData {
     )
     private DynamicList replyMsgDynamicList;
 
-
     @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
     private MessageSendDetails messageSendDetails;
 
@@ -742,7 +736,6 @@ public class CaseData {
         label = "Select a document"
     )
     private DynamicList attachDocumentList;
-
 
     @CCD(
         label = "Send Messages",
@@ -833,7 +826,7 @@ public class CaseData {
         return this.hearingListThatCanBeAdjourned;
     }
 
-    public DynamicList getHearingList(List<ListValue<ManageHearingDetails>> hearings) {
+    public DynamicList getHearingList(List<ListValue<ManageHearingTabDetails>> hearings) {
         List<DynamicListElement> listElements = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(hearings)) {
             hearings.forEach(hearing -> {
@@ -908,36 +901,6 @@ public class CaseData {
         addToCombinedDocumentsGenerated();
     }
 
-
-    @JsonIgnore
-    public <T> List<ListValue<T>> archiveManageOrdersHelper(List<ListValue<T>> list, T object) {
-        if (isEmpty(list)) {
-            List<ListValue<T>> listValues = new ArrayList<>();
-            var listValue = ListValue
-                .<T>builder()
-                .id("1")
-                .value(object)
-                .build();
-
-            listValues.add(listValue);
-            return listValues;
-        } else {
-            AtomicInteger listValueIndex = new AtomicInteger(0);
-            var listValue = ListValue
-                .<T>builder()
-                .value(object)
-                .build();
-            // always add new Adoption Document as first element so that it is displayed on top
-            list.add(
-                0,
-                listValue
-            );
-            list.forEach(listValueObj -> listValueObj
-                .setId(String.valueOf(listValueIndex.incrementAndGet())));
-        }
-        return list;
-    }
-
     @JsonIgnore
     public void archiveManageOrders() {
         OrderData data = new OrderData();
@@ -1005,7 +968,8 @@ public class CaseData {
         if (null != manageHearingDetails) {
             manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
             manageHearingDetails.setHearingId(UUID.randomUUID().toString());
-            setNewHearings(archiveManageOrdersHelper(getNewHearings(), manageHearingDetails));
+            setNewHearings(archiveManageOrdersHelper(getNewHearings(),
+                cloneToTabObject(manageHearingDetails, new ManageHearingTabDetails())));
             this.setManageHearingDetails(null);
             this.setManageHearingOptions(null);
             this.setRecipientsInTheCase(null);
@@ -1015,7 +979,7 @@ public class CaseData {
     @JsonIgnore
     public void updateVacatedHearings() {
 
-        Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
+        Optional<ListValue<ManageHearingTabDetails>> vacatedHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
             hearing.getValue().getHearingId(),
             hearingListThatCanBeVacated.getValue().getCode().toString()
         )).findFirst();
@@ -1029,8 +993,7 @@ public class CaseData {
     }
 
     public void updateAdjournHearings() {
-
-        Optional<ListValue<ManageHearingDetails>> adjournHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
+        Optional<ListValue<ManageHearingTabDetails>> adjournHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
             hearing.getValue().getHearingId(),
             hearingListThatCanBeAdjourned.getValue().getCode().toString()
         )).findFirst();
@@ -1042,5 +1005,6 @@ public class CaseData {
         }
         this.setManageHearingOptions(null);
     }
+
 
 }

@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.prepareDocumentList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseDataUtil.archiveManageOrdersHelper;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 public class CaseEventCommonMethodsTest {
@@ -24,13 +25,13 @@ public class CaseEventCommonMethodsTest {
     public void verifyMessageDocumentList_OK() {
         var caseData = getCaseDetails().getData();
         List<ListValue<AdoptionUploadDocument>> applicationDocumentCatList = new ArrayList<>();
-        caseData.archiveManageOrdersHelper(applicationDocumentCatList, getApplicationDocumentCategory());
+        archiveManageOrdersHelper(applicationDocumentCatList, getApplicationDocumentCategory());
 
         List<ListValue<AdoptionUploadDocument>> correspondanceDocCatList = new ArrayList<>();
 
-        caseData.setApplicationDocumentsCategory(caseData.archiveManageOrdersHelper(applicationDocumentCatList,
+        caseData.setApplicationDocumentsCategory(archiveManageOrdersHelper(applicationDocumentCatList,
                                                                                     getApplicationDocumentCategory()));
-        caseData.setCorrespondenceDocumentCategory(caseData.archiveManageOrdersHelper(correspondanceDocCatList,
+        caseData.setCorrespondenceDocumentCategory(archiveManageOrdersHelper(correspondanceDocCatList,
                                                                                       getCorrespondanceDocumentCategory()));
         List<MessageDocumentList> list = prepareDocumentList(caseData);
         assertThat(list).hasSize(2);

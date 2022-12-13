@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseDataUtil.archiveManageOrdersHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
 
@@ -103,13 +104,13 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
 
                 sendMessagesDetails.setSelectedDocument(doc);
                 sendMessagesDetails.setDocumentHistory(
-                    caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
+                    archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
             }
             sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
             sendMessagesDetails.setMessageSendDateNTime(
                 LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
             sendMessagesDetails.setMessageHistory(sendMessagesDetails.getMessage());
-            caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
+            caseData.setListOfOpenMessages(archiveManageOrdersHelper(
                 caseData.getListOfOpenMessages(), sendMessagesDetails));
             caseData.setMessageSendDetails(null);
             caseData.setSelectedMessage(null);
