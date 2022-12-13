@@ -35,7 +35,7 @@ public class CaseEventCommonMethodsTest {
         caseData.setReportsDocumentCategory(caseData.archiveManageOrdersHelper(reportsDocumentCategory,
                                                                                       getReportsDocumentCategory()));
 
-        List<ListValue<AdoptionUploadDocument>> statementDocumentCategory= new ArrayList<>();
+        List<ListValue<AdoptionUploadDocument>> statementDocumentCategory = new ArrayList<>();
         caseData.setStatementsDocumentCategory(caseData.archiveManageOrdersHelper(statementDocumentCategory,
                                                                                       getStatementsDocumentCategory()));
 
