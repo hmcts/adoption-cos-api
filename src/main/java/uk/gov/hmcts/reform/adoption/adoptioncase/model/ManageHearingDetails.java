@@ -6,10 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
-import uk.gov.hmcts.reform.adoption.document.DocumentInfo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -126,15 +126,15 @@ public class ManageHearingDetails {
     @CCD(
         access = {DefaultAccess.class}
     )
-    private DocumentInfo hearingA90Document;
+    private Document hearingA90Document;
 
     @CCD(
         access = {DefaultAccess.class}
     )
-    private DocumentInfo hearingA91DocumentMother;
+    private Document hearingA91DocumentMother;
 
     @CCD(
         access = {DefaultAccess.class}
     )
-    private DocumentInfo hearingA91DocumentFather;
+    private Document hearingA91DocumentFather;
 }

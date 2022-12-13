@@ -8,6 +8,7 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -21,6 +22,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationU
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
+import uk.gov.hmcts.reform.adoption.document.DocumentInfo;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -173,16 +175,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                 switch (recipientsInTheCase) {
                     case APPLICANT1: case APPLICANT2:
                         if (isEmpty(caseData.getManageHearingDetails().getHearingA90Document())) {
-                            @SuppressWarnings("unchecked")
-                            Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
                             caseData.getManageHearingDetails().setHearingA90Document(
-                                caseDataDocumentService.renderDocument(
-                                templateContentApplicants,
-                                details.getId(),
-                                MANAGE_HEARING_NOTICES_A90,
-                                LanguagePreference.ENGLISH,
-                                MANAGE_HEARING_NOTICES_A90_FILE_NAME
-                            ));
+                                generateDocument(caseData, details.getId(),
+                                                 MANAGE_HEARING_NOTICES_A90, MANAGE_HEARING_NOTICES_A90_FILE_NAME));
                         }
                         break;
                     case RESPONDENT_MOTHER:
@@ -190,15 +185,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
-                            @SuppressWarnings("unchecked")
-                            Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
                             caseData.getManageHearingDetails().setHearingA91DocumentMother(
-                                caseDataDocumentService.renderDocument(
-                                templateContentMother,
-                                details.getId(),
-                                MANAGE_HEARING_NOTICES_A91,
-                                LanguagePreference.ENGLISH,
-                                MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER));
+                                generateDocument(caseData, details.getId(),
+                                                 MANAGE_HEARING_NOTICES_A91, MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER));
                         }
                         break;
                     case RESPONDENT_FATHER:
@@ -206,15 +195,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
-                            @SuppressWarnings("unchecked")
-                            Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
                             caseData.getManageHearingDetails().setHearingA91DocumentFather(
-                                caseDataDocumentService.renderDocument(
-                                templateContentMother,
-                                details.getId(),
-                                MANAGE_HEARING_NOTICES_A91,
-                                LanguagePreference.ENGLISH,
-                                MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER));
+                                generateDocument(caseData, details.getId(),
+                                                 MANAGE_HEARING_NOTICES_A91, MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER));
                         }
                         break;
                     default:
@@ -222,16 +205,16 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                 }
             });
             if (isNotEmpty(caseData.getManageHearingDetails().getHearingA90Document())) {
-                caseData.setHearingA90Document(documentFrom(
-                    caseData.getManageHearingDetails().getHearingA90Document()));
+                caseData.setHearingA90Document(
+                    caseData.getManageHearingDetails().getHearingA90Document());
             }
             if (isNotEmpty(caseData.getManageHearingDetails().getHearingA91DocumentMother())) {
-                caseData.setHearingA91DocumentMother(documentFrom(
-                    caseData.getManageHearingDetails().getHearingA91DocumentMother()));
+                caseData.setHearingA91DocumentMother(
+                    caseData.getManageHearingDetails().getHearingA91DocumentMother());
             }
             if (isNotEmpty(caseData.getManageHearingDetails().getHearingA91DocumentFather())) {
-                caseData.setHearingA91DocumentFather(documentFrom(
-                    caseData.getManageHearingDetails().getHearingA91DocumentFather()));
+                caseData.setHearingA91DocumentFather(
+                    caseData.getManageHearingDetails().getHearingA91DocumentFather());
             }
         }
 
@@ -239,6 +222,21 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .data(caseData)
             .errors(error)
             .build();
+    }
+
+    private Document generateDocument(CaseData caseData, long id, String docType, String filename) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
+        DocumentInfo documentInfo = caseDataDocumentService.renderDocument(
+            templateContentApplicants,
+            id,
+            docType,
+            LanguagePreference.ENGLISH,
+            filename);
+        if (isNotEmpty(documentInfo)) {
+            return documentFrom(documentInfo);
+        }
+        return null;
     }
 
     private void resetAll(CaseData caseData, boolean flag) {
