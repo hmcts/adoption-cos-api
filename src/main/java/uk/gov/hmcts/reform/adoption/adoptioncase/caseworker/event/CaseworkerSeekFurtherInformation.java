@@ -128,7 +128,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
         DynamicListElement adoptionAgencyOrLocalAuthority = DynamicListElement.builder()
             .label(joinDynamicListLabel(DocumentSubmitter.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY,
-             caseData.getLocalAuthority().getLocalAuthorityName()))
+             caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName()))
             .code(UUID.randomUUID())
             .build();
 
