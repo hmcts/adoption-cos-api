@@ -170,7 +170,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             caseData.getRecipientsInTheCase().forEach(recipientsInTheCase -> {
                 switch (recipientsInTheCase) {
                     case APPLICANT1: case APPLICANT2:
-                        if (isEmpty(caseData.getHearingA90Document())) {
+                        if (isEmpty(caseData.getManageHearingDetails().getHearingA90Document())) {
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
                             caseData.getManageHearingDetails().setHearingA90Document(
@@ -184,8 +184,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         }
                         break;
                     case RESPONDENT_MOTHER:
-                        if (isNotEmpty(caseData.getBirthMother().getDeceased())
-                            && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
+                        if (isNotEmpty(detailsBefore.getData().getBirthMother().getDeceased())
+                            && detailsBefore.getData().getBirthMother().getDeceased().equals(YesOrNo.NO)) {
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.NO);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
@@ -200,8 +200,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         }
                         break;
                     case RESPONDENT_FATHER:
-                        if (isNotEmpty(caseData.getBirthFather().getDeceased())
-                            && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
+                        if (isNotEmpty(detailsBefore.getData().getBirthFather().getDeceased())
+                            && detailsBefore.getData().getBirthFather().getDeceased().equals(YesOrNo.NO)) {
                             caseData.setHearingA91DocumentFlagFather(YesOrNo.YES);
                             caseData.setHearingA91DocumentFlagMother(YesOrNo.NO);
                             @SuppressWarnings("unchecked")
