@@ -6,8 +6,8 @@ module.exports = {
   fields: {
     generalDirectionsOrder: '#manageOrderType-generalDirectionsOrder',
     manageOrderTypeErrorMessage: '#manageOrderType .error-message',
-    orderByError: '[field_id=\'orderBy\'] .error-message',
-    orderBy: '#orderBy',
+    orderByError: '[field_id=\'directionOrderBy\'] .error-message',
+    orderBy: '#directionOrderBy',
     preambleDetails: '#generalDirectionOrderPreamble',
     bodyOfOrder: '#generalDirectionBodyOfTheOrder',
     costOrder: '#generalDirectionCostOfOrder',
@@ -44,6 +44,13 @@ module.exports = {
       year: '#generalDirectionHearingDateTime-year',
       hour: '#generalDirectionHearingDateTime-hour'
     },
+    recipientsList: {
+      error: '#generalDirectionRecipientsList .error-message',
+      generalDirectionRecipientsListApplicant1: '#generalDirectionRecipientsList-applicant1',
+      generalDirectionRecipientsListApplicant2: '#generalDirectionRecipientsList-applicant2',
+      generalDirectionRecipientsListBirthMother: '#generalDirectionRecipientsList-birthMother',
+    },
+
     continueButton: 'button[type="submit"]',
   },
 
@@ -107,5 +114,29 @@ module.exports = {
       await I.retry(3).fillField(this.fields.hearingDateTime.month, generalDirectionOrderDetails.gdOrderDetails.hearingDateAndTime.month);
       await I.retry(3).fillField(this.fields.hearingDateTime.year, generalDirectionOrderDetails.gdOrderDetails.hearingDateAndTime.year);
       await I.retry(3).fillField(this.fields.hearingDateTime.hour, generalDirectionOrderDetails.gdOrderDetails.hearingDateAndTime.hour);
-    }
+      await I.retry(3).click(this.fields.continueButton);
+      await I.wait(3);
+      },
+
+  async selectRecipientsOfThisOrderDetails() {
+    await I.retry(3).waitForText('Recipients of this order', 30);
+    await I.retry(3).see("Recipients of this order");
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see(generalDirectionOrderDetails.gdOrderDetails.errorMessage, this.fields.recipientsList.error);
+    await I.retry(3).click(this.fields.recipientsList.generalDirectionRecipientsListApplicant1);
+    await I.retry(3).click(this.fields.recipientsList.generalDirectionRecipientsListApplicant2);
+    await I.retry(3).click(this.fields.recipientsList.generalDirectionRecipientsListBirthMother);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+
+  },
+
+  async verifyPreviewTheOrderDetails() {
+    await I.retry(3).waitForText('Preview the order', 30);
+    await I.retry(3).see("Preview the order");
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+  },
+
 }
