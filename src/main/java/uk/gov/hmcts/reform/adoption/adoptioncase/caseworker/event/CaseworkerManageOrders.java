@@ -202,13 +202,13 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                 objectMapper.convertValue(caseData, Map.class);
 
             if (isNotEmpty(selectedRecipientsA76)) {
-            caseData.getAdoptionOrderData().setDraftDocumentA76(
-                caseDataDocumentService.renderDocument(
-                    templateContent,
-                    details.getId(),
-                    FINAL_ADOPTION_ORDER_A76_DRAFT,
-                    LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
+                caseData.getAdoptionOrderData().setDraftDocumentA76(
+                    caseDataDocumentService.renderDocument(
+                        templateContent,
+                        details.getId(),
+                        FINAL_ADOPTION_ORDER_A76_DRAFT,
+                        LanguagePreference.ENGLISH,
+                        FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
                     ));
             }
 
