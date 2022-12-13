@@ -79,6 +79,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             .page("pageSeekFurtherInformation4")
             .label("seekFurtherInfo4","Preview and check the letter",null, true)
             .readonly(CaseData::getSeekFurtherInformationDocument)
+            .label("seekFurtherInfo5","If you want to make changes, go back to previous screen.",null, false)
             .done()
             .build();
 
