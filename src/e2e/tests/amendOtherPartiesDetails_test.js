@@ -2,7 +2,7 @@ const config = require('../config');
 const laHelper = require('../helpers/la_portal_case');
 let caseId;
 
-Feature('Case Details Other parties tab tests').retry(0);
+Feature('Case Details Other parties tab tests').retry(1);
 
 async function setupScenario(I) {
   if (!caseId) {

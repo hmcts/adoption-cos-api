@@ -2,7 +2,7 @@ const config = require('../config');
 const laHelper = require('../helpers/la_portal_case');
 let caseId;
 
-Feature('Allocate Judge tests').retry(0);
+Feature('Allocate Judge tests').retry(1);
 
 async function setupScenario(I) {
   if (!caseId) {
