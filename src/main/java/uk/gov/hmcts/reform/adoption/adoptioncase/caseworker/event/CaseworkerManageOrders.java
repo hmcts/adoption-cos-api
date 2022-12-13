@@ -10,6 +10,7 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AdoptionOrder;
+import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.GeneralDirectionOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
@@ -29,8 +30,8 @@ import java.util.Optional;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
 
 /**
  * Contains method to define Event Configuration for ExUI.
@@ -68,6 +69,8 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
 
     private final CcdPageConfiguration manageOrders = new ManageOrders();
     private final CcdPageConfiguration adoptionOrder = new AdoptionOrder();
+    private final CcdPageConfiguration generalDirectionOrder = new GeneralDirectionOrders();
+
 
 
     @Override
@@ -76,6 +79,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
         var pageBuilder = addEventConfig(configBuilder);
         manageOrders.addTo(pageBuilder);
         adoptionOrder.addTo(pageBuilder);
+        generalDirectionOrder.addTo(pageBuilder);
         getRecipientsPage(pageBuilder);
         getPreviewPage(pageBuilder);
     }
@@ -197,9 +201,9 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                 caseDataDocumentService.renderDocument(
                     templateContent,
                     details.getId(),
-                    FINAL_ADOPTION_ORDER_A76,
+                    FINAL_ADOPTION_ORDER_A76_DRAFT,
                     LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_FILE_NAME
+                    FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
                     ));
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()

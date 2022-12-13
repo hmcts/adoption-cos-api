@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
+import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
@@ -49,6 +51,12 @@ class CaseworkerCheckAndSendOrdersTest {
 
     @Mock
     private Clock clock;
+
+    @Mock
+    private ObjectMapper objectMapper;
+
+    @Mock
+    private CaseDataDocumentService caseDataDocumentService;
 
     @InjectMocks
     private CaseworkerCheckAndSendOrders caseworkerCheckAndSendOrders;

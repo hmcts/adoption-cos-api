@@ -710,10 +710,50 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class})
     private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
 
+    // ------------------- Send And Reply Messages Objects Start ----------------- //
     @CCD(
+        label = "Do you want to send or reply to a message?",
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "MessagesAction")
+    private MessageSendDetails.MessagesAction messageAction;
+
+    @CCD(
+        label = "Reply a message\n"
+    )
+    private DynamicList replyMsgDynamicList;
+
+
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    private MessageSendDetails messageSendDetails;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    @JsonUnwrapped
+    private SelectedMessage selectedMessage;
+
+    @CCD(
+        label = "Do you want to attach documents from this case?",
+        access = {SystemUpdateAccess.class, DefaultAccess.class}
+    )
+    private YesOrNo sendMessageAttachDocument;
+
+    @CCD(
+        access = {DefaultAccess.class},
+        label = "Select a document"
+    )
+    private DynamicList attachDocumentList;
+
+
+    @CCD(
+        label = "Send Messages",
+        typeOverride = Collection,
+        typeParameterOverride = "MessageSendDetails",
         access = {DefaultAccess.class}
     )
-    private Document hearingA90Document;
+    private List<ListValue<MessageSendDetails>> listOfOpenMessages;
+    // ------------------- Send And Reply Messages Objects End ----------------- //
 
     @CCD(
         label = "Orders",
@@ -737,6 +777,11 @@ public class CaseData {
         typeParameterOverride = "OrderCheckAndSend"
     )
     private OrderCheckAndSend orderCheckAndSend;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA90Document;
 
     private String seekFurtherInformationDocumentSubmitterName;
 
@@ -943,28 +988,7 @@ public class CaseData {
         if (null != manageHearingDetails) {
             manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
             manageHearingDetails.setHearingId(UUID.randomUUID().toString());
-            if (isEmpty(this.getNewHearings())) {
-                List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
-                var listValue = ListValue
-                    .<ManageHearingDetails>builder()
-                    .id("1")
-                    .value(manageHearingDetails)
-                    .build();
-                listValues.add(listValue);
-                this.setNewHearings(listValues);
-
-            } else {
-                var listValue = ListValue
-                    .<ManageHearingDetails>builder()
-                    .value(manageHearingDetails)
-                    .build();
-                int listValueIndex = 0;
-                this.getNewHearings().add(0, listValue);
-                for (ListValue<ManageHearingDetails> asListValue : this.getNewHearings()) {
-                    asListValue.setId(String.valueOf(listValueIndex++));
-                }
-            }
-
+            setNewHearings(archiveManageOrdersHelper(getNewHearings(), manageHearingDetails));
             this.setManageHearingDetails(null);
             this.setManageHearingOptions(null);
             this.setRecipientsInTheCase(null);
@@ -981,27 +1005,7 @@ public class CaseData {
 
         if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
             vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(reasonForVacatingHearing);
-
-            if (isEmpty(this.getVacatedHearings())) {
-                List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
-                var listValue = ListValue
-                    .<ManageHearingDetails>builder()
-                    .id("1")
-                    .value(vacatedHearingDetails.get().getValue())
-                    .build();
-                listValues.add(listValue);
-                this.setVacatedHearings(listValues);
-            } else {
-                var listValue = ListValue
-                    .<ManageHearingDetails>builder()
-                    .value(vacatedHearingDetails.get().getValue())
-                    .build();
-                int listValueIndex = 0;
-                this.getVacatedHearings().add(0, listValue);
-                for (ListValue<ManageHearingDetails> asListValue : this.getNewHearings()) {
-                    asListValue.setId(String.valueOf(listValueIndex++));
-                }
-            }
+            setVacatedHearings(archiveManageOrdersHelper(getVacatedHearings(), vacatedHearingDetails.get().getValue()));
             newHearings.remove(vacatedHearingDetails.get());
         }
         this.setManageHearingOptions(null);
@@ -1016,27 +1020,7 @@ public class CaseData {
 
         if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
             adjournHearingDetails.get().getValue().setReasonForAdjournHearing(reasonForAdjournHearing);
-
-            if (isEmpty(this.getVacatedHearings())) {
-                List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
-                var listValue = ListValue
-                    .<ManageHearingDetails>builder()
-                    .id("1")
-                    .value(adjournHearingDetails.get().getValue())
-                    .build();
-                listValues.add(listValue);
-                this.setAdjournHearings(listValues);
-            } else {
-                var listValue = ListValue
-                    .<ManageHearingDetails>builder()
-                    .value(adjournHearingDetails.get().getValue())
-                    .build();
-                int listValueIndex = 0;
-                this.getAdjournHearings().add(0, listValue);
-                for (ListValue<ManageHearingDetails> asListValue : this.getNewHearings()) {
-                    asListValue.setId(String.valueOf(listValueIndex++));
-                }
-            }
+            setAdjournHearings(archiveManageOrdersHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
             newHearings.remove(adjournHearingDetails.get());
         }
         this.setManageHearingOptions(null);

@@ -5,7 +5,7 @@ const manageOrderDetails = require('../fixtures/manageHearings.js');
 
 let caseId;
 
-Feature('Manage Hearings Tab tests').retry(0);
+Feature('Manage Hearings Tab tests').retry(1);
 
 async function setupScenario(I) {
   caseId = await laHelper.createCompleteCase();

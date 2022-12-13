@@ -5,7 +5,7 @@ const manageOrderDetails = require('../fixtures/seekFurtherInfoDetails.js');
 
 let caseId;
 
-Feature('Seek Further Information tests').retry(0);
+Feature('Seek Further Information tests').retry(1);
 
 async function setupScenario(I) {
     caseId = await laHelper.createCompleteCase();

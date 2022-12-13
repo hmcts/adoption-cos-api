@@ -29,28 +29,22 @@ module.exports = {
       await this.retryUntilExists(async () => {
         //To mitigate situation when idam response with blank page
         await this.goToPage(baseUrl);
-        I.grabCurrentUrl();
 
-        if (await this.waitForAnySelector([signedOutSelector, signedInSelector], 30) == null) {
+        if (await this.waitForAnySelector([signedOutSelector, signedInSelector], 120) == null) {
           await this.refreshPage();
-          I.grabCurrentUrl();
         }
 
-        if (await this.hasSelector(signedInSelector)) {
-          await this.retryUntilExists(() => this.click('Sign out'), signedOutSelector, false, 10);
-          I.grabCurrentUrl();
-        }
+        // if (await this.hasSelector(signedInSelector)) {
+        //   await this.retryUntilExists(() => this.click('Sign out'), signedOutSelector, false, 10);
+        // }
 
         await this.retryUntilExists(() =>  loginPage.loginToExUI(user), signedInSelector, false, 10);
-        I.grabCurrentUrl();
 
       }, signedInSelector, false, 10);
       await this.rejectCookies();
-      I.grabCurrentUrl();
       output.debug(`Logged in as ${user.email}`);
       currentUser = user;
-    I.grabCurrentUrl();
-    await this.waitForSelector('#search-result',30);
+    await this.waitForSelector('#search-result',120);
     await this.wait(3);
   },
 

@@ -3,7 +3,7 @@ const tranferCourtData = require('../fixtures/tranferCourt');
 const laHelper = require('../helpers/la_portal_case');
 
 let caseId;
-Feature('Transfer court Details').retry(0);
+Feature('Transfer court Details').retry(1);
 async function setupScenario(I) {
   if (!caseId) {
     caseId = await laHelper.createCompleteCase();
