@@ -30,8 +30,8 @@ import java.util.Optional;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME;
 
@@ -202,13 +202,13 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                 objectMapper.convertValue(caseData, Map.class);
 
             if (isNotEmpty(selectedRecipientsA76)) {
-                caseData.getAdoptionOrderData().setDraftDocumentA76(
-                    caseDataDocumentService.renderDocument(
-                        templateContent,
-                        details.getId(),
-                        FINAL_ADOPTION_ORDER_A76,
-                        LanguagePreference.ENGLISH,
-                        FINAL_ADOPTION_ORDER_A76_FILE_NAME
+            caseData.getAdoptionOrderData().setDraftDocumentA76(
+                caseDataDocumentService.renderDocument(
+                    templateContent,
+                    details.getId(),
+                    FINAL_ADOPTION_ORDER_A76_DRAFT,
+                    LanguagePreference.ENGLISH,
+                    FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
                     ));
             }
 
@@ -223,9 +223,6 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
                     ));
             }
         }
-        log.info("caseData.getAdoptionOrderData().setDraftDocumentA76 {}", caseData.getAdoptionOrderData().getDraftDocumentA76());
-        log.info("caseData.getAdoptionOrderData().setDraftDocumentA206 {}", caseData.getAdoptionOrderData().getDraftDocumentA206());
-
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .errors(errors)

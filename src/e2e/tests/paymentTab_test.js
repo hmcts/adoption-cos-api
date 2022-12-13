@@ -4,7 +4,7 @@ const laHelper = require('../helpers/la_portal_case');
 
 let caseId;
 
-Feature('Payment Tab tests').retry(0);
+Feature('Payment Tab tests').retry(1);
 
 async function setupScenario(I) {
   if (!caseId) {
