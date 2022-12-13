@@ -23,6 +23,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_D
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.EMAIL;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
+import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.documentFrom;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.SAMPLE_DOCUMENT;
@@ -120,12 +121,12 @@ class CaseDataDocumentServiceTest {
                 filename))
             .thenReturn(new DocumentInfo(DOC_URL, PDF_FILENAME, DOC_BINARY_URL, FILE_ID));
 
-        final Document result = caseDataDocumentService.renderDocument(
+        final Document result = documentFrom(caseDataDocumentService.renderDocument(
             templateContent,
             TEST_CASE_ID,
             SAMPLE_DOCUMENT,
             ENGLISH,
-            filename);
+            filename));
 
         assertThat(result.getBinaryUrl()).isEqualTo(DOC_BINARY_URL);
         assertThat(result.getUrl()).isEqualTo(DOC_URL);

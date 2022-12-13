@@ -781,6 +781,26 @@ public class CaseData {
     )
     private Document hearingA90Document;
 
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA91DocumentMother;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA91DocumentFather;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo hearingA91DocumentFlagFather;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo hearingA91DocumentFlagMother;
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;

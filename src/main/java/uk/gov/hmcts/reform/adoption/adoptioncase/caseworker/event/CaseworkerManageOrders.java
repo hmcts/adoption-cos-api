@@ -32,6 +32,7 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.documentFrom;
 
 /**
  * Contains method to define Event Configuration for ExUI.
@@ -198,13 +199,13 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
             caseData.getAdoptionOrderData().setDraftDocument(
-                caseDataDocumentService.renderDocument(
+                documentFrom(caseDataDocumentService.renderDocument(
                     templateContent,
                     details.getId(),
                     FINAL_ADOPTION_ORDER_A76_DRAFT,
                     LanguagePreference.ENGLISH,
                     FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
-                    ));
+                    )));
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)

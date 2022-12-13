@@ -26,6 +26,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndS
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
+import uk.gov.hmcts.reform.adoption.document.DocumentInfo;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -36,10 +37,12 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.documentFrom;
 
 
 @Component
@@ -166,14 +169,17 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            commonOrderListItem.get().getValue().setDocumentReview(
-                caseDataDocumentService.renderDocument(
-                    templateContent,
-                    caseDetails.getId(),
-                    FINAL_ADOPTION_ORDER_A76,
-                    LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_FILE_NAME
-                ));
+            DocumentInfo documentInfo = caseDataDocumentService.renderDocument(
+                templateContent,
+                caseDetails.getId(),
+                FINAL_ADOPTION_ORDER_A76,
+                LanguagePreference.ENGLISH,
+                FINAL_ADOPTION_ORDER_A76_FILE_NAME
+            );
+            if (isNotEmpty(documentInfo)) {
+                commonOrderListItem.get().getValue().setDocumentReview(
+                    documentFrom(documentInfo));
+            }
         }
         caseData.setManageOrdersData(null);
         caseData.setDirectionsOrderData(null);
