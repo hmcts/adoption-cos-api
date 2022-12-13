@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHea
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
@@ -75,19 +76,26 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .pageLabel("Preview the hearing notice")
             .label("manageHearing71","### Document to review",null, true)
             .label("manageHearing72","This document will open in a new page when you select it")
+            .complex(CaseData::getBirthMother)
+            .mandatory(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
             .label("manageHearing73","### Respondent (birth mother)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
+                   "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
+            .done()
             .readonly(CaseData::getHearingA91DocumentMother,
                       "recipientsInTheCaseCONTAINS\"respondentBirthMother\"")
+            .complex(CaseData::getBirthFather)
+            .mandatory(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
             .label("manageHearing74","### Respondent (birth father)",
-                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
+                   "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
+            .mandatory(Parent::getDeceased)
+            .done()
             .readonly(CaseData::getHearingA91DocumentFather,
                       "recipientsInTheCaseCONTAINS\"respondentBirthFather\"")
             .label("manageHearing75","### Applicants",
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+            .label("manageHearing76","You can make changes to the notice by continuing to the next page")
             .readonly(CaseData::getHearingA90Document,
                       "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
-            .label("manageHearing76","You can make changes to the notice by continuing to the next page")
             .done()
             .build();
     }
