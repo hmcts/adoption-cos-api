@@ -635,7 +635,7 @@ public class CaseData {
     private ReasonForAdjournHearing reasonForAdjournHearing;
 
     @CCD(
-        label = "Does the hearing need to be relisted",
+        label = "Does the hearing need to be relisted?",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
     private YesOrNo isTheHearingNeedsRelisting;
