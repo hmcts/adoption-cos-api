@@ -184,6 +184,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         if (isEmpty(caseData.getManageHearingDetails().getHearingA90Document())) {
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
+                            log.info("templateContentApplicants {}", templateContentApplicants);
+
                             caseData.getManageHearingDetails().setHearingA90Document(
                                 caseDataDocumentService.renderDocument(
                                     templateContentApplicants,
@@ -200,6 +202,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             caseData.getManageHearingDetails().setHearingA91DocumentFlagMother(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
+                            log.info("templateContentMother {}", templateContentMother);
+
                             caseData.getManageHearingDetails().setHearingA91DocumentMother(
                                 caseDataDocumentService.renderDocument(
                                     templateContentMother,
@@ -216,6 +220,8 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             caseData.getManageHearingDetails().setHearingA91DocumentFlagMother(YesOrNo.NO);
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
+                            log.info("templateContentMother {}", templateContentMother);
+
                             caseData.getManageHearingDetails().setHearingA91DocumentFather(
                                 caseDataDocumentService.renderDocument(
                                     templateContentMother,
