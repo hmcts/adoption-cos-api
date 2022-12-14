@@ -128,18 +128,19 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         var caseData = details.getData();
         if (ManageHearingOptions.VACATE_HEARING.equals(caseData.getManageHearingOptions())) {
             caseData.updateVacatedHearings();
-            log.info("caseData.getVacatedHearings() {}", caseData.getVacatedHearings());
         }
         if (ManageHearingOptions.ADJOURN_HEARING.equals(caseData.getManageHearingOptions())) {
             caseData.updateAdjournHearings();
-            log.info("caseData.getAdjournHearings() {}", caseData.getAdjournHearings());
         }
         if (ManageHearingOptions.ADD_NEW_HEARING.equals(caseData.getManageHearingOptions())
             || YesOrNo.YES == caseData.getIsTheHearingNeedsRelisting()) {
             caseData.archiveHearingInformation();
-            log.info("caseData.getNewHearings() {}", caseData.getNewHearings());
         }
         resetAll(caseData, true);
+        log.info("caseData.getVacatedHearings() {}", caseData.getVacatedHearings());
+        log.info("caseData.getAdjournHearings() {}", caseData.getAdjournHearings());
+        log.info("caseData.getNewHearings() {}", caseData.getNewHearings());
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
