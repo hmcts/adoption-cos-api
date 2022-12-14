@@ -50,8 +50,7 @@ public final class CaseDataUtil {
         ManageHearingTabDetails manageHearingTabDetails) {
 
         BeanUtils.copyProperties(manageHearingDetails, manageHearingTabDetails,
-                                 "hearingId", "hearingA90Document",
-                                 "hearingA91DocumentMother", "hearingA91DocumentFather");
+                                 "hearingA90Document", "hearingA91DocumentMother", "hearingA91DocumentFather");
         if (isNotEmpty(manageHearingDetails.getHearingA90Document())) {
             manageHearingTabDetails.setHearingA90Document(documentFrom(manageHearingDetails.getHearingA90Document()));
         }

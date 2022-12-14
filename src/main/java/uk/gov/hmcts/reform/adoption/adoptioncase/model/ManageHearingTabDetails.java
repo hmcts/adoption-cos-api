@@ -22,6 +22,9 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 @Builder
 public class ManageHearingTabDetails {
 
+    @CCD
+    private String hearingId;
+
     @CCD(
         label = "Type of hearing"
     )
