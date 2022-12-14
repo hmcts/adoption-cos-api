@@ -30,7 +30,7 @@ module.exports = {
         //To mitigate situation when idam response with blank page
         await this.goToPage(baseUrl);
 
-        if (await this.waitForAnySelector([signedOutSelector, signedInSelector], 120) == null) {
+        if (await this.waitForAnySelector([signedOutSelector, signedInSelector], 180) == null) {
           await this.refreshPage();
         }
 
