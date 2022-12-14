@@ -15,6 +15,7 @@ import uk.gov.hmcts.ccd.sdk.type.AddressUK;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.GeneralDirectionOrderTypes;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
@@ -103,6 +104,18 @@ class CaseworkerManageOrdersTest {
         assertThat(result.getData().getAdoptionOrderList()).isNull();
         result.getData().getManageOrderList().forEach(listValueObj -> assertTrue(
             listValueObj.getValue().getSubmittedDateManageOrder().isBefore(LocalDateTime.now())));
+    }
+
+    @Test
+    void caseworkerMidEventGeneralDirectionRecipients() {
+        var caseDetails = getCaseDetails();
+        caseDetails.getData().getDirectionsOrderData()
+            .setGeneralDirectionOrderTypes(GeneralDirectionOrderTypes.GENERAL_DIRECTION_PRODUCTION_ORDER);
+        caseDetails.getData().getDirectionsOrderData().setGeneralDirectionRecipientsList(null);
+        var response = caseworkerManageOrders
+            .midEventGeneralDirectionRecipients(caseDetails, caseDetails);
+        assertThat(response.getErrors().size() > 1);
+
     }
 
     @Test
