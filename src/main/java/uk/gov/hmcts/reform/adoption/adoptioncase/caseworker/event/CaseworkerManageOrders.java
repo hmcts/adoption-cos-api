@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.GeneralDi
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -30,6 +31,19 @@ import java.util.Optional;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOP_AGENCY_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANTS_LA_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BIRTH_FATHER_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BIRTH_MOTHER_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILDS_LA_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ERROR_CHECK_RECIPIENTS_GENERAL_DIRECTION_SELECTION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ERROR_CHECK_RECIPIENTS_SELECTION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.FIRST_APPLICANT_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.LEGAL_GUARDIAN_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOP_AGENCY_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_PARENT_AGENCY_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SECOND_APPLICANT_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.isValidRecipientForGeneralOrder;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
 
@@ -50,17 +64,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
      * The constant CASEWORKER_MANAGE_ORDERS.
      */
     public static final String CASEWORKER_MANAGE_ORDERS = "caseworker-manage-orders";
-    public static final String ERROR_CHECK_RECIPIENTS_SELECTION = "Recipients of Final adoption order is required";
-    public static final String FIRST_APPLICANT_NOT_APPLICABLE = "First Applicant not applicable for the case";
-    public static final String SECOND_APPLICANT_NOT_APPLICABLE = "Second Applicant not applicable for the case";
-    public static final String BIRTH_MOTHER_NOT_APPLICABLE = "Recipient birth mother not applicable for the case";
-    public static final String BIRTH_FATHER_NOT_APPLICABLE = "Recipient birth father not applicable for the case";
-    public static final String LEGAL_GUARDIAN_NOT_APPLICABLE = "Legal guardian (CAFCASS) not applicable for the case";
-    public static final String CHILDS_LA_NOT_APPLICABLE = "Child local authority not applicable for the case";
-    public static final String APPLICANTS_LA_NOT_APPLICABLE = "Applicants local authority not applicable for the case";
-    public static final String ADOP_AGENCY_NOT_APPLICABLE = "Adoption agency not applicable for the case";
-    public static final String OTHER_ADOP_AGENCY_NOT_APPLICABLE = "Other adoption agency not applicable for the case";
-    public static final String OTHER_PARENT_AGENCY_NOT_APPLICABLE = "Other person with parental responsibility not applicable for the case";
+
 
     /**
      * The constant MANAGE_ORDERS.
@@ -70,8 +74,6 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
     private final CcdPageConfiguration manageOrders = new ManageOrders();
     private final CcdPageConfiguration adoptionOrder = new AdoptionOrder();
     private final CcdPageConfiguration generalDirectionOrder = new GeneralDirectionOrders();
-
-
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -143,7 +145,50 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .optional(AdoptionOrderData::getRecipientsListA206)
             .done()
             .done();
+
+        pageBuilder.page("manageOrderGdRecipients",this::midEventGeneralDirectionRecipients)
+            .showCondition(
+                "manageOrderType=\"generalDirectionsOrder\" AND generalDirectionOrderTypes=\"generalDirectionProductionOrder\"")
+            .label("generalDirectionRecipientsListLabel", "## Recipients of this order")
+            .label("generalDirectionWhomToServe", "### Select who to serve the order to")
+            .complex(CaseData::getDirectionsOrderData)
+            .label("directionOrderRecipientsData","You can select more than one person. It is important that recipients are <br>"
+                + "checked carefully to make sure this order is not served to the wrong person")
+            .mandatory(DirectionsOrderData::getGeneralDirectionRecipientsList)
+            .done();
     }
+
+    public AboutToStartOrSubmitResponse<CaseData, State> midEventGeneralDirectionRecipients(CaseDetails<CaseData, State> details,
+                                                                                             CaseDetails<CaseData, State> detailsBefore) {
+
+        CaseData caseData = details.getData();
+        final List<String> errors = new ArrayList<>();
+
+        Set<DirectionsOrderData.GeneralDirectionRecipients> generalDirectionRecipients = caseData.getDirectionsOrderData()
+            .getGeneralDirectionRecipientsList();
+
+        if (isEmpty(generalDirectionRecipients)) {
+            errors.add(ERROR_CHECK_RECIPIENTS_GENERAL_DIRECTION_SELECTION);
+            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+                .data(caseData)
+                .errors(errors)
+                .build();
+        }
+
+        if (isNotEmpty(generalDirectionRecipients)) {
+            generalDirectionRecipients.forEach(recipient -> Optional.ofNullable(isValidRecipientForGeneralOrder(
+                recipient,
+                caseData
+            )).ifPresent(errors::add));
+        }
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(errors)
+            .build();
+    }
+
+
 
     /**
      * Helper method to support page design and flow to display Final Order Preview Draft.
@@ -160,6 +205,19 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .complex(CaseData::getAdoptionOrderData)
             .readonly(AdoptionOrderData::getDraftDocument)
             .done()
+            .done();
+
+        pageBuilder.page("manageOrderGdPreview")
+            .showCondition(
+                "manageOrderType=\"generalDirectionsOrder\" AND generalDirectionOrderTypes=\"generalDirectionProductionOrder\"")
+            .pageLabel("Preview the draft order")
+            .label("generalDirectionPreviewOrderLab","## Preview the order")
+            .label("generalDirectionPreviewDocsLab2","### Document to review")
+            .label("generalDirectionPreviewDocsLab3","This document will open a new page when you select it")
+            .complex(CaseData::getDirectionsOrderData)
+            .readonly(DirectionsOrderData::getGeneralDirectionDraftDocument)
+            .done()
+            .label("generalDirectionChangeAlert","If you want to make further changes, go back to the previous screen")
             .done();
     }
 
