@@ -22,6 +22,8 @@ Scenario('verify General adoption Order details', async ({I, caseViewPage, manag
   await generalDirectionOrderPage.selectGeneralDirectionOrderAndVerify();
   await generalDirectionOrderPage.verifyGeneralDirectionOrderDetails();
   await generalDirectionOrderPage.verifyProductionOrderDetails();
+  await generalDirectionOrderPage.selectRecipientsOfThisOrderDetails();
+  await generalDirectionOrderPage.verifyPreviewTheOrderDetails();
 
 
 })

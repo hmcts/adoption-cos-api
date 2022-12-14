@@ -138,8 +138,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     .filter(item -> item.getValue().getOrderId()
                         .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
-                caseData.setDirectionsOrderData(directionOrderItem.get().getValue());
-                directionOrderItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
+                directionOrderItem.get().getValue().setGeneralDirectionOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
                 break;
             case FINAL_ADOPTION_ORDER:
