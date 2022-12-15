@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
@@ -47,7 +46,7 @@ public class OrderData {
         label = "Order",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
-    private List<ListValue<Document>> documentReview;
+    private List<Document> documentReview;
 
     @CCD(label = "Ordered by",
         access = {DefaultAccess.class})

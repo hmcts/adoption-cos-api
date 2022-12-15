@@ -31,15 +31,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Objects;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.UUID;
+import java.util.SortedSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.SortedSet;
-import java.util.UUID;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -975,10 +976,8 @@ public class CaseData {
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
                 data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
                 data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
-                data.setDocumentReview(archiveManageOrdersHelper(data.getDocumentReview(),
-                                                                 getAdoptionOrderData().getDraftDocumentA76()));
-                data.setDocumentReview(archiveManageOrdersHelper(data.getDocumentReview(),
-                                                                 getAdoptionOrderData().getDraftDocumentA206()));
+                data.setDocumentReview(Arrays.asList(getAdoptionOrderData().getDraftDocumentA76()));
+                data.setDocumentReview(Arrays.asList(getAdoptionOrderData().getDraftDocumentA206()));
                 break;
             default:
                 break;

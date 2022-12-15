@@ -30,10 +30,11 @@ import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import java.util.Arrays;
 import java.util.UUID;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
@@ -165,17 +166,14 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            commonOrderListItem.get().getValue().setDocumentReview(caseData
-                                                                       .archiveManageOrdersHelper(commonOrderListItem.get()
-                                                                                                      .getValue().getDocumentReview(),
-                                                                                                      caseDataDocumentService
-                                                                                                          .renderDocument(
-                                                                                                          templateContent,
-                                                                                                          caseDetails.getId(),
-                                                                                                          FINAL_ADOPTION_ORDER_A76,
-                                                                                                          LanguagePreference.ENGLISH,
-                                                                                                          FINAL_ADOPTION_ORDER_A76_FILE_NAME
-                                                                                                      )));
+            commonOrderListItem.get().getValue().setDocumentReview(Arrays.asList(caseDataDocumentService
+                                                                                       .renderDocument(
+                                                                                           templateContent,
+                                                                                           caseDetails.getId(),
+                                                                                           FINAL_ADOPTION_ORDER_A76,
+                                                                                           LanguagePreference.ENGLISH,
+                                                                                           FINAL_ADOPTION_ORDER_A76_FILE_NAME
+                                                                                       )));
         }
         caseData.setManageOrdersData(null);
         caseData.setDirectionsOrderData(null);
