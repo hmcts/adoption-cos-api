@@ -23,17 +23,32 @@ public class CaseEventCommonMethodsTest {
     @Test
     public void verifyMessageDocumentList_OK() {
         var caseData = getCaseDetails().getData();
-        List<ListValue<AdoptionUploadDocument>> applicationDocumentCatList = new ArrayList<>();
-        caseData.archiveManageOrdersHelper(applicationDocumentCatList, getApplicationDocumentCategory());
-
-        List<ListValue<AdoptionUploadDocument>> correspondanceDocCatList = new ArrayList<>();
-
-        caseData.setApplicationDocumentsCategory(caseData.archiveManageOrdersHelper(applicationDocumentCatList,
+        List<ListValue<AdoptionUploadDocument>> applicationDocumentCategory = new ArrayList<>();
+        caseData.setApplicationDocumentsCategory(caseData.archiveManageOrdersHelper(applicationDocumentCategory,
                                                                                     getApplicationDocumentCategory()));
-        caseData.setCorrespondenceDocumentCategory(caseData.archiveManageOrdersHelper(correspondanceDocCatList,
+
+        List<ListValue<AdoptionUploadDocument>> correspondenceDocCategory = new ArrayList<>();
+        caseData.setCorrespondenceDocumentCategory(caseData.archiveManageOrdersHelper(correspondenceDocCategory,
                                                                                       getCorrespondanceDocumentCategory()));
+
+        List<ListValue<AdoptionUploadDocument>> reportsDocumentCategory = new ArrayList<>();
+        caseData.setReportsDocumentCategory(caseData.archiveManageOrdersHelper(reportsDocumentCategory,
+                                                                                      getReportsDocumentCategory()));
+
+        List<ListValue<AdoptionUploadDocument>> statementDocumentCategory = new ArrayList<>();
+        caseData.setStatementsDocumentCategory(caseData.archiveManageOrdersHelper(statementDocumentCategory,
+                                                                                      getStatementsDocumentCategory()));
+
+        List<ListValue<AdoptionUploadDocument>> courtOrderCategory = new ArrayList<>();
+        caseData.setCourtOrdersDocumentCategory(caseData.archiveManageOrdersHelper(courtOrderCategory,
+                                                                                      getCourtOrdersDocumentCategory()));
+
+        List<ListValue<AdoptionUploadDocument>> additionalDocumentCategory = new ArrayList<>();
+        caseData.setAdditionalDocumentsCategory(caseData.archiveManageOrdersHelper(additionalDocumentCategory,
+                                                                                      getAdditionalDocumentsCategory()));
+
         List<MessageDocumentList> list = prepareDocumentList(caseData);
-        assertThat(list).hasSize(2);
+        assertThat(list).hasSize(6);
         assertThat(list).isNotEmpty();
     }
 
@@ -52,9 +67,40 @@ public class CaseEventCommonMethodsTest {
         return  uploadDocument;
     }
 
+    private AdoptionUploadDocument getReportsDocumentCategory() {
+        var uploadDocument = new AdoptionUploadDocument();
+        uploadDocument.setName("testdoc1.jpg");
+        uploadDocument.setDocumentLink(new Document());
+        return  uploadDocument;
+    }
+
+
+    private AdoptionUploadDocument getStatementsDocumentCategory() {
+        var uploadDocument = new AdoptionUploadDocument();
+        uploadDocument.setName("testdoc2.jpg");
+        uploadDocument.setDocumentLink(new Document());
+        return  uploadDocument;
+    }
+
+
+    private AdoptionUploadDocument getCourtOrdersDocumentCategory() {
+        var uploadDocument = new AdoptionUploadDocument();
+        uploadDocument.setName("testdoc3.jpg");
+        uploadDocument.setDocumentLink(new Document());
+        return  uploadDocument;
+    }
+
+
     private AdoptionUploadDocument getCorrespondanceDocumentCategory() {
         var uploadDocument = new AdoptionUploadDocument();
-        uploadDocument.setName("testdoc.jpg");
+        uploadDocument.setName("testdoc4.jpg");
+        uploadDocument.setDocumentLink(new Document());
+        return  uploadDocument;
+    }
+
+    private AdoptionUploadDocument getAdditionalDocumentsCategory() {
+        var uploadDocument = new AdoptionUploadDocument();
+        uploadDocument.setName("testdoc5.jpg");
         uploadDocument.setDocumentLink(new Document());
         return  uploadDocument;
     }

@@ -972,7 +972,7 @@ public class CaseData {
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
                 data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
                 data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
-                data.setDocumentReview(getAdoptionOrderData().getDraftDocument());
+                data.setDocumentReview(getAdoptionOrderData().getDraftDocumentA76());
                 break;
             default:
                 break;
