@@ -449,20 +449,20 @@ public class ManageOrdersData {
     @AllArgsConstructor
     public enum Recipients implements HasLabel {
 
-        @JsonProperty("applicant1")
-        APPLICANT1("Applicant 1"),
+        @JsonProperty("firstApplicant")
+        APPLICANT1("First applicant"),
 
-        @JsonProperty("applicant2")
-        APPLICANT2("Applicant 2"),
+        @JsonProperty("secondApplicant")
+        APPLICANT2("Second applicant"),
 
         @JsonProperty("birthMother")
-        RESPONDENT_BIRTH_MOTHER("Respondent (Birth mother)"),
+        RESPONDENT_BIRTH_MOTHER("Respondent (birth mother)"),
 
         @JsonProperty("birthFather")
-        RESPONDENT_BIRTH_FATHER("Respondent (Birth father)"),
+        RESPONDENT_BIRTH_FATHER("Respondent (birth father)"),
 
         @JsonProperty("cafcass")
-        LEGAL_GUARDIAN_CAFCASS("Legal guardian (CAFCASS)"),
+        LEGAL_GUARDIAN_CAFCASS("Legal guardian (Cafcass)"),
 
         @JsonProperty("childsLocalAuthority")
         CHILDS_LOCAL_AUTHORITY("Child's local authority"),
