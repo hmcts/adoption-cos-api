@@ -23,7 +23,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .build();
 
         pageBuilder.page("checkAndSendOrder2")
-            .label("checkAndSendOrdersLabel2","## Review order")
+            .label("checkAndSendOrdersLabel2","## Review Order")
             .complex(CaseData::getSelectedOrder)
             .readonlyNoSummary(SelectedOrder::getReviewDocumentLink)
             .label("checkAndSendOrdersLabel5","### These recipients have been selected to receive this order",
