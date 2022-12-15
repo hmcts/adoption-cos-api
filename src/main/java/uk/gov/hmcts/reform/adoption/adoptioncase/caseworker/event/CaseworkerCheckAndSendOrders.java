@@ -36,8 +36,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
@@ -149,10 +148,11 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     .filter(item -> item.getValue().getOrderId()
                         .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
-                caseData.setAdoptionOrderData(finalAdoptionItem.get().getValue());
-                finalAdoptionItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
+                AdoptionOrderData orderListItem = finalAdoptionItem.get().getValue();
+                caseData.setAdoptionOrderData(orderListItem);
+                orderListItem.setOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
-                finalAdoptionItem.get().getValue().setDraftDocumentA76(null);
+                orderListItem.setDraftDocumentA76(null);
                 break;
             default:
                 break;
@@ -165,34 +165,30 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         orderListItem.setStatus(caseData.getOrderCheckAndSend().equals(
             OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
         orderListItem.setDateServed(LocalDate.now(clock));
-        if (orderListItem.getStatus().equals(OrderStatus.SERVED) && isNotEmpty(orderListItem.getDocumentReview())) {
+        if (orderListItem.getStatus().equals(OrderStatus.SERVED)) {
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            orderListItem.getDocumentReview().forEach(documentListValue -> {
-                if (documentListValue.getValue().getFilename()
-                    .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME)) {
-                    orderListItem.setDocuments(
-                        archiveListHelper(orderListItem.getDocumentReview(),
-                            caseDataDocumentService.renderDocument(
-                                templateContent,
-                                caseDetails.getId(),
-                                FINAL_ADOPTION_ORDER_A76,
-                                LanguagePreference.ENGLISH,
-                                FINAL_ADOPTION_ORDER_A76_FILE_NAME)));
-                } else if (documentListValue.getValue().getFilename()
-                    .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME)) {
-                    orderListItem.setDocuments(
-                        archiveListHelper(orderListItem.getDocumentReview(),
-                            caseDataDocumentService.renderDocument(
-                                templateContent,
-                                caseDetails.getId(),
-                                FINAL_ADOPTION_ORDER_A206,
-                                LanguagePreference.ENGLISH,
-                                FINAL_ADOPTION_ORDER_A206_FILE_NAME)));
-                }
-            });
-            orderListItem.setDocumentReview(null);
+
+            if (isNotEmpty(orderListItem.getDocumentReview1()) && orderListItem.getDocumentReview1().getFilename()
+                .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME)) {
+                orderListItem.setDocumentReview1(
+                        caseDataDocumentService.renderDocument(
+                            templateContent,
+                            caseDetails.getId(),
+                            FINAL_ADOPTION_ORDER_A76,
+                            LanguagePreference.ENGLISH,
+                            FINAL_ADOPTION_ORDER_A76_FILE_NAME));
+            } else if (isNotEmpty(orderListItem.getDocumentReview2()) && orderListItem.getDocumentReview2().getFilename()
+                .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME)) {
+                orderListItem.setDocumentReview2(
+                        caseDataDocumentService.renderDocument(
+                            templateContent,
+                            caseDetails.getId(),
+                            FINAL_ADOPTION_ORDER_A206,
+                            LanguagePreference.ENGLISH,
+                            FINAL_ADOPTION_ORDER_A206_FILE_NAME));
+            }
         }
         caseData.setManageOrdersData(null);
         caseData.setDirectionsOrderData(null);

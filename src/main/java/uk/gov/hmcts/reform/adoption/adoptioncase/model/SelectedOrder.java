@@ -6,11 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,7 +22,10 @@ public class SelectedOrder {
         hint = "This document will open in a new page when you select it.",
         access = { SystemUpdateAccess.class, DefaultAccess.class}
     )
-    private List<ListValue<Document>> reviewDocumentLink;
+    private Document reviewDocumentLink1;
+
+    @CCD
+    private Document reviewDocumentLink2;
 
     @CCD(
         access = { SystemUpdateAccess.class, DefaultAccess.class}

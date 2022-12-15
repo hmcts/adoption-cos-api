@@ -26,7 +26,8 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
         pageBuilder.page("checkAndSendOrder2")
             .label("checkAndSendOrdersLabel2","## Review Order")
             .complex(CaseData::getSelectedOrder)
-            .readonlyNoSummary(SelectedOrder::getReviewDocumentLink)
+            .readonlyNoSummary(SelectedOrder::getReviewDocumentLink1)
+            .readonlyNoSummary(SelectedOrder::getReviewDocumentLink2)
             .label("checkAndSendOrdersLabel5","### These recipients have been selected to receive this order",
                    null, false)
             .readonlyNoSummary(
@@ -61,7 +62,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             selectedItem.setFinalOrderRecipientsA206(orderData.getFinalOrderRecipientsA206());
             selectedItem.setOrderType(orderData.getManageOrderType());
             selectedItem.setAdoptionOrderRecipients(orderData.getAdoptionOrderRecipients());
-            selectedItem.setReviewDocumentLink(orderData.getDocumentReview());
+            selectedItem.setReviewDocumentLink1(orderData.getDocumentReview1());
             selectedItem.setOrderStatus(orderData.getStatus());
             data.setSelectedOrder(selectedItem);
         }
