@@ -37,11 +37,11 @@ public class SelectedMessage {
         label = "Message",
         displayOrder = 4
     )
-    private String message;
+    private String messageContent;
 
 
     @CCD(
-        label = "Document",
+        label = "View document attached to this message",
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
     private Document documentLink;
