@@ -725,6 +725,7 @@ public class CaseData {
 
 
     @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    @JsonUnwrapped
     private MessageSendDetails messageSendDetails;
 
     @CCD(
@@ -753,6 +754,14 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<MessageSendDetails>> listOfOpenMessages;
+
+    @CCD(
+        label = "Closed Messages",
+        typeOverride = Collection,
+        typeParameterOverride = "MessageSendDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<MessageSendDetails>> closedMessages;
     // ------------------- Send And Reply Messages Objects End ----------------- //
 
     @CCD(

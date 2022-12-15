@@ -25,56 +25,46 @@ public class SendOrReply implements CcdPageConfiguration {
             .page("pageSendOrReply1", this::midEvent)
             .mandatory(CaseData::getMessageAction)
             .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
-        sendMessageBuilder(pageBuilder, "messageAction=\"sendMessage\"");
         replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
+        messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
 
     }
 
-    public void sendMessageBuilder(PageBuilder pageBuilder, String condition) {
-        pageBuilder.page("pageSendOrReply2")
+    public void messageBuilder(PageBuilder pageBuilder,String condition) {
+        pageBuilder.page("pageSendOrReply3")
             .showCondition(condition)
-            .label("sendMessage", "## Send a message")
+            .label("sendMessageLab", "## Send a message","messageAction=\"sendMessage\"")
+            .label("replyMessageLab", "## Reply to message","messageAction=\"replyMessage\"")
             .complex(CaseData::getMessageSendDetails)
             .mandatory(MessageSendDetails::getMessageReceiverRoles)
             .mandatory(MessageSendDetails::getMessageReasonList)
             .mandatory(MessageSendDetails::getMessageUrgencyList)
-            .mandatory(MessageSendDetails::getMessage)
             .done()
             .mandatory(CaseData::getSendMessageAttachDocument)
             .mandatory(CaseData::getAttachDocumentList, "sendMessageAttachDocument=\"Yes\"")
+            .complex(CaseData::getMessageSendDetails)
+            .mandatory(MessageSendDetails::getMessageText)
+            .done()
             .done();
     }
 
     public void replyMessageBuilder(PageBuilder pageBuilder, String condition) {
-        pageBuilder.page("pageSendOrReply3")
+        pageBuilder.page("pageSendOrReply2")
             .showCondition(condition)
-            .label("labelReplyMes", "## Reply to a message")
+            .label("labelReplyMes", "## Reply to message")
             .complex(CaseData::getSelectedMessage)
             .readonly(SelectedMessage::getReasonForMessage)
             .readonly(SelectedMessage::getUrgency)
-            .readonly(SelectedMessage::getMessage)
+            .readonly(SelectedMessage::getMessageContent)
             .readonly(SelectedMessage::getDocumentLink)
             .mandatory(SelectedMessage::getReplyMessage)
             .done();
-        pageBuilder.page("pageSendOrReply4")
-            .showCondition("replyMessage=\"Yes\"")
-            .label("sendMessage1", "## Reply to a message")
-            .complex(CaseData::getMessageSendDetails)
-            .mandatory(MessageSendDetails::getMessageReceiverRoles)
-            .mandatory(MessageSendDetails::getMessageReasonList)
-            .mandatory(MessageSendDetails::getMessageUrgencyList)
-            .mandatory(MessageSendDetails::getMessage)
-            .done()
-            .mandatory(CaseData::getSendMessageAttachDocument)
-            .mandatory(CaseData::getAttachDocumentList, "sendMessageAttachDocument=\"Yes\"")
-            .done();
-
 
     }
 
-    private AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State>
-        data, CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
-        CaseData caseData = data.getData();
+    private AboutToStartOrSubmitResponse<CaseData, State> midEvent(CaseDetails<CaseData, State> details,
+                                                                   CaseDetails<CaseData, State> detailsBefore) {
+        CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
         CaseEventCommonMethods.prepareDocumentList(caseData).forEach(item -> listElements.add(DynamicListElement.builder()
                              .label(item.getDocumentLink().getFilename()).code(UUID.fromString(item.getMessageId())).build()));
@@ -85,9 +75,9 @@ public class SendOrReply implements CcdPageConfiguration {
             var selectedObject = caseData.getListOfOpenMessages().stream()
                 .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList()
                                                                                .getValueCode().toString())).findFirst();
-            messageDetails.setMessageId(selectedObject.get().getValue().getMessageId());
+            messageDetails.setMessageId(selectedObject.get().getId().toString());
             messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
-            messageDetails.setMessage(selectedObject.get().getValue().getMessage());
+            messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
             messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
             if (!Objects.isNull(selectedObject.get().getValue().getSelectedDocument())) {
                 messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocument());
