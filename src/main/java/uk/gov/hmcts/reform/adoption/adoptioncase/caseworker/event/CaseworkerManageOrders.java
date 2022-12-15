@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.validateRecipients;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
@@ -218,19 +219,32 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            caseData.getAdoptionOrderData().setDraftDocument(
-                caseDataDocumentService.renderDocument(
-                    templateContent,
-                    details.getId(),
-                    FINAL_ADOPTION_ORDER_A76_DRAFT,
-                    LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
+
+            if (isNotEmpty(selectedRecipientsA76)) {
+                caseData.getAdoptionOrderData().setDraftDocumentA76(
+                    caseDataDocumentService.renderDocument(
+                        templateContent,
+                        details.getId(),
+                        FINAL_ADOPTION_ORDER_A76_DRAFT,
+                        LanguagePreference.ENGLISH,
+                        FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
                     ));
-            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-                .data(caseData)
-                .errors(errors)
-                .build();
+            }
+
+            if (isNotEmpty(selectedRecipientsA206)) {
+                caseData.getAdoptionOrderData().setDraftDocumentA206(
+                    caseDataDocumentService.renderDocument(
+                        templateContent,
+                        details.getId(),
+                        FINAL_ADOPTION_ORDER_A206_DRAFT,
+                        LanguagePreference.ENGLISH,
+                        FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME
+                    ));
+            }
         }
-        return aboutToStartOrSubmitResponse;
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(errors)
+            .build();
     }
 }
