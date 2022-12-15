@@ -55,8 +55,6 @@ Scenario('Hearings Tab - Vacate Hearing with Agreement and Relisting', async ({
 
 Scenario('Hearings Tab - Vacate Hearing with NO Relisting', async ({
                                                                      I,
-                                                                     loginPage,
-                                                                     caseListPage,
                                                                      caseViewPage,
                                                                      manageHearingsPage,
                                                                      manageHearingsTabPage

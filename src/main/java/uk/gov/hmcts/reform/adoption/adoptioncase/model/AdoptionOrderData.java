@@ -88,7 +88,12 @@ public class AdoptionOrderData {
     @CCD(
         access = {DefaultAccess.class}
     )
-    private Document draftDocument;
+    private Document draftDocumentA76;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document draftDocumentA206;
 
     @Getter
     @AllArgsConstructor

@@ -32,6 +32,8 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.validateRecipients;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME;
 
 /**
  * Contains method to define Event Configuration for ExUI.
@@ -181,7 +183,8 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .label("LabelPreview101","Preview and check the order in draft. "
                 + "You can make changes on the next page.", "manageOrderType=\"finalAdoptionOrder\"", true)
             .complex(CaseData::getAdoptionOrderData)
-            .readonly(AdoptionOrderData::getDraftDocument)
+            .readonly(AdoptionOrderData::getDraftDocumentA76)
+            .readonly(AdoptionOrderData::getDraftDocumentA206)
             .done()
             .done();
 
