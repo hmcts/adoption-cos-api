@@ -165,14 +165,17 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            commonOrderListItem.get().getValue().setDocumentReview(
-                caseDataDocumentService.renderDocument(
-                    templateContent,
-                    caseDetails.getId(),
-                    FINAL_ADOPTION_ORDER_A76,
-                    LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_FILE_NAME
-                ));
+            commonOrderListItem.get().getValue().setDocumentReview(caseData
+                                                                       .archiveManageOrdersHelper(commonOrderListItem.get()
+                                                                                                      .getValue().getDocumentReview(),
+                                                                                                      caseDataDocumentService
+                                                                                                          .renderDocument(
+                                                                                                          templateContent,
+                                                                                                          caseDetails.getId(),
+                                                                                                          FINAL_ADOPTION_ORDER_A76,
+                                                                                                          LanguagePreference.ENGLISH,
+                                                                                                          FINAL_ADOPTION_ORDER_A76_FILE_NAME
+                                                                                                      )));
         }
         caseData.setManageOrdersData(null);
         caseData.setDirectionsOrderData(null);

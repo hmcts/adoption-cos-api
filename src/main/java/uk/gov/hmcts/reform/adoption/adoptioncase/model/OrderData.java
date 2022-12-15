@@ -8,10 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -41,9 +44,10 @@ public class OrderData {
     private LocalDate dateServed;
 
     @CCD(
-        label = "Order"
+        label = "Order",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
-    private Document documentReview;
+    private List<ListValue<Document>> documentReview;
 
     @CCD(label = "Ordered by",
         access = {DefaultAccess.class})

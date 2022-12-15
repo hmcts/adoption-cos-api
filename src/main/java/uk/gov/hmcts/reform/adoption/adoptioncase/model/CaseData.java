@@ -975,7 +975,10 @@ public class CaseData {
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
                 data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
                 data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
-                data.setDocumentReview(getAdoptionOrderData().getDraftDocumentA76());
+                data.setDocumentReview(archiveManageOrdersHelper(data.getDocumentReview(),
+                                                                 getAdoptionOrderData().getDraftDocumentA76()));
+                data.setDocumentReview(archiveManageOrdersHelper(data.getDocumentReview(),
+                                                                 getAdoptionOrderData().getDraftDocumentA206()));
                 break;
             default:
                 break;
