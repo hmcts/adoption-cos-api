@@ -36,8 +36,14 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
@@ -68,8 +74,6 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         log.info("Inside configure method for Event {}", CASEWORKER_CHECK_AND_SEND_ORDERS);
         var pageBuilder = addEventConfig(configBuilder);
         checkAndSendOrders.addTo(pageBuilder);
-
-
     }
 
     /**
@@ -91,7 +95,6 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
-
 
     /**
      * Method to fetch Check and send order list.
@@ -158,21 +161,38 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             .filter(item -> item.getValue().getOrderId()
                 .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
             .findFirst();
-        commonOrderListItem.get().getValue().setStatus(caseData.getOrderCheckAndSend().equals(
+        OrderData orderListItem = commonOrderListItem.get().getValue();
+        orderListItem.setStatus(caseData.getOrderCheckAndSend().equals(
             OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
-        commonOrderListItem.get().getValue().setDateServed(LocalDate.now(clock));
-        if (commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.SERVED)) {
+        orderListItem.setDateServed(LocalDate.now(clock));
+        if (orderListItem.getStatus().equals(OrderStatus.SERVED) && isNotEmpty(orderListItem.getDocumentReview())) {
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            commonOrderListItem.get().getValue().setDocumentReview(
-                caseDataDocumentService.renderDocument(
-                    templateContent,
-                    caseDetails.getId(),
-                    FINAL_ADOPTION_ORDER_A76,
-                    LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_FILE_NAME
-                ));
+            orderListItem.getDocumentReview().forEach(documentListValue -> {
+                if (documentListValue.getValue().getFilename()
+                    .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME)) {
+                    orderListItem.setDocuments(
+                        archiveListHelper(orderListItem.getDocumentReview(),
+                            caseDataDocumentService.renderDocument(
+                                templateContent,
+                                caseDetails.getId(),
+                                FINAL_ADOPTION_ORDER_A76,
+                                LanguagePreference.ENGLISH,
+                                FINAL_ADOPTION_ORDER_A76_FILE_NAME)));
+                } else if (documentListValue.getValue().getFilename()
+                    .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME)) {
+                    orderListItem.setDocuments(
+                        archiveListHelper(orderListItem.getDocumentReview(),
+                            caseDataDocumentService.renderDocument(
+                                templateContent,
+                                caseDetails.getId(),
+                                FINAL_ADOPTION_ORDER_A206,
+                                LanguagePreference.ENGLISH,
+                                FINAL_ADOPTION_ORDER_A206_FILE_NAME)));
+                }
+            });
+            orderListItem.setDocumentReview(null);
         }
         caseData.setManageOrdersData(null);
         caseData.setDirectionsOrderData(null);
@@ -180,5 +200,4 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         caseData.setSelectedOrder(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
-
 }

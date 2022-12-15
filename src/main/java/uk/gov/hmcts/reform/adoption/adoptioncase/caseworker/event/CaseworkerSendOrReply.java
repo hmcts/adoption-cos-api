@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
 
@@ -107,7 +108,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
             MessageSendDetails selectedMessage = messageListValue.getValue();
             caseData.getListOfOpenMessages().remove(messageListValue);
             if (YesOrNo.NO.equals(caseData.getSelectedMessage().getReplyMessage())) {
-                caseData.setClosedMessages(caseData.archiveManageOrdersHelper(
+                caseData.setClosedMessages(archiveListHelper(
                     caseData.getClosedMessages(), selectedMessage));
 
             } else {
@@ -139,12 +140,12 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                 .findFirst().get().getDocumentLink();
             sendMessagesDetails.setSelectedDocument(doc);
             sendMessagesDetails.setDocumentHistory(
-                caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
+                archiveListHelper(sendMessagesDetails.getDocumentHistory(), doc));
         }
         sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         sendMessagesDetails.setMessageSendDateNTime(
             LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-        caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
+        caseData.setListOfOpenMessages(archiveListHelper(
             caseData.getListOfOpenMessages(), sendMessagesDetails));
         caseData.setMessageSendDetails(null);
         caseData.setAttachDocumentList(null);

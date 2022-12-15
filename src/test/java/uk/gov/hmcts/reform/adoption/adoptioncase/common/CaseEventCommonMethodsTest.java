@@ -13,45 +13,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.prepareDocumentList;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 public class CaseEventCommonMethodsTest {
 
-
-
     @Test
     public void verifyMessageDocumentList_OK() {
         var caseData = getCaseDetails().getData();
         List<ListValue<AdoptionUploadDocument>> applicationDocumentCategory = new ArrayList<>();
-        caseData.setApplicationDocumentsCategory(caseData.archiveManageOrdersHelper(applicationDocumentCategory,
-                                                                                    getApplicationDocumentCategory()));
+        caseData.setApplicationDocumentsCategory(archiveListHelper(
+            applicationDocumentCategory, getApplicationDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> correspondenceDocCategory = new ArrayList<>();
-        caseData.setCorrespondenceDocumentCategory(caseData.archiveManageOrdersHelper(correspondenceDocCategory,
-                                                                                      getCorrespondanceDocumentCategory()));
+        caseData.setCorrespondenceDocumentCategory(archiveListHelper(
+            correspondenceDocCategory, getCorrespondanceDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> reportsDocumentCategory = new ArrayList<>();
-        caseData.setReportsDocumentCategory(caseData.archiveManageOrdersHelper(reportsDocumentCategory,
-                                                                                      getReportsDocumentCategory()));
+        caseData.setReportsDocumentCategory(archiveListHelper(
+            reportsDocumentCategory, getReportsDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> statementDocumentCategory = new ArrayList<>();
-        caseData.setStatementsDocumentCategory(caseData.archiveManageOrdersHelper(statementDocumentCategory,
-                                                                                      getStatementsDocumentCategory()));
+        caseData.setStatementsDocumentCategory(archiveListHelper(
+            statementDocumentCategory, getStatementsDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> courtOrderCategory = new ArrayList<>();
-        caseData.setCourtOrdersDocumentCategory(caseData.archiveManageOrdersHelper(courtOrderCategory,
-                                                                                      getCourtOrdersDocumentCategory()));
+        caseData.setCourtOrdersDocumentCategory(archiveListHelper(
+            courtOrderCategory, getCourtOrdersDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> additionalDocumentCategory = new ArrayList<>();
-        caseData.setAdditionalDocumentsCategory(caseData.archiveManageOrdersHelper(additionalDocumentCategory,
-                                                                                      getAdditionalDocumentsCategory()));
+        caseData.setAdditionalDocumentsCategory(archiveListHelper(
+            additionalDocumentCategory, getAdditionalDocumentsCategory()));
 
         List<MessageDocumentList> list = prepareDocumentList(caseData);
         assertThat(list).hasSize(6);
         assertThat(list).isNotEmpty();
     }
-
 
     @Test
     public void verifyMessageDocumentList_recordNotFound() {
@@ -73,7 +71,6 @@ public class CaseEventCommonMethodsTest {
         uploadDocument.setDocumentLink(new Document());
         return  uploadDocument;
     }
-
 
     private AdoptionUploadDocument getStatementsDocumentCategory() {
         var uploadDocument = new AdoptionUploadDocument();

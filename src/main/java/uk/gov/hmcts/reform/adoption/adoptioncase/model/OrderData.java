@@ -8,11 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +27,12 @@ public class OrderData {
         displayOrder = 1
     )
     private String orderId;
+
+    @CCD(
+        showCondition = "orderId=\"never\"",
+        displayOrder = 2
+    )
+    private List<ListValue<Document>> documentReview;
 
     @CCD(
         label = "Date of the order",
@@ -43,7 +51,7 @@ public class OrderData {
     @CCD(
         label = "Order"
     )
-    private Document documentReview;
+    private List<ListValue<Document>> documents;
 
     @CCD(label = "Ordered by",
         access = {DefaultAccess.class})

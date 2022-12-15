@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -55,12 +56,13 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
                                                              .getValueCode().toString())).findFirst();
         if (commonOrderItem.isPresent()) {
             var selectedItem = new SelectedOrder();
-            selectedItem.setFinalOrderRecipientsA76(commonOrderItem.get().getValue().getFinalOrderRecipientsA76());
-            selectedItem.setFinalOrderRecipientsA206(commonOrderItem.get().getValue().getFinalOrderRecipientsA206());
-            selectedItem.setOrderType(commonOrderItem.get().getValue().getManageOrderType());
-            selectedItem.setAdoptionOrderRecipients(commonOrderItem.get().getValue().getAdoptionOrderRecipients());
-            selectedItem.setReviewDocumentLink(commonOrderItem.get().getValue().getDocumentReview());
-            selectedItem.setOrderStatus(commonOrderItem.get().getValue().getStatus());
+            OrderData orderData = commonOrderItem.get().getValue();
+            selectedItem.setFinalOrderRecipientsA76(orderData.getFinalOrderRecipientsA76());
+            selectedItem.setFinalOrderRecipientsA206(orderData.getFinalOrderRecipientsA206());
+            selectedItem.setOrderType(orderData.getManageOrderType());
+            selectedItem.setAdoptionOrderRecipients(orderData.getAdoptionOrderRecipients());
+            selectedItem.setReviewDocumentLink(orderData.getDocumentReview());
+            selectedItem.setOrderStatus(orderData.getStatus());
             data.setSelectedOrder(selectedItem);
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()

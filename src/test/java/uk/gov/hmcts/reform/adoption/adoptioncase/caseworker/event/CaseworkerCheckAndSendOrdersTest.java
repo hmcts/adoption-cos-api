@@ -43,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerCheckAndSendOrders.CASEWORKER_CHECK_AND_SEND_ORDERS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
@@ -78,11 +79,11 @@ class CaseworkerCheckAndSendOrdersTest {
         OrderData orderData2 = getCommonOrderData();
         OrderData orderData3 = getCommonOrderData();
         List<ListValue<OrderData>> manageOrderList = new ArrayList<>();
+        manageOrderList = archiveListHelper(manageOrderList, orderData1);
+        archiveListHelper(manageOrderList, orderData2);
+        archiveListHelper(manageOrderList, orderData3);
         var caseDetails = getCaseDetails();
         CaseData data = caseDetails.getData();
-        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, orderData1);
-        data.archiveManageOrdersHelper(manageOrderList, orderData2);
-        data.archiveManageOrdersHelper(manageOrderList, orderData3);
         data.setCommonOrderList(manageOrderList);
 
         var result = caseworkerCheckAndSendOrders.aboutToStart(caseDetails);
@@ -103,8 +104,8 @@ class CaseworkerCheckAndSendOrdersTest {
         var caseDetails = getCaseDetails();
         CaseData data = caseDetails.getData();
         data.setOrderCheckAndSend(OrderCheckAndSend.SERVE_THE_ORDER);
-        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, manageOrderData1);
-        commonOrderList = data.archiveManageOrdersHelper(commonOrderList, orderData1);
+        manageOrderList = archiveListHelper(manageOrderList, manageOrderData1);
+        commonOrderList = archiveListHelper(commonOrderList, orderData1);
         data.setCommonOrderList(commonOrderList);
         data.setManageOrderList(manageOrderList);
         var item = new SelectedOrder();
