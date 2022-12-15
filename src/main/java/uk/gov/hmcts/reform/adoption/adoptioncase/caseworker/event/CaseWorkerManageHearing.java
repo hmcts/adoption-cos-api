@@ -16,7 +16,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
-import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
@@ -28,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.validateRecipients;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90_FILE_NAME;
 
@@ -134,15 +134,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         CaseDetails<CaseData, State> detailsBefore
     ) {
         var caseData = details.getData();
-        List<String> error = new ArrayList<>();
-
-        RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
-        RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
-
-        if (isEmpty(error)) {
+        List<String> errors = new ArrayList<>();
+        AboutToStartOrSubmitResponse<CaseData, State> aboutToStartOrSubmitResponse =
+            validateRecipients(caseData.getRecipientsInTheCase(), null, caseData, errors);
+        if (isEmpty(aboutToStartOrSubmitResponse.getErrors())) {
             caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
@@ -153,11 +148,11 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                 LanguagePreference.ENGLISH,
                 MANAGE_HEARING_NOTICES_A90_FILE_NAME));
             caseData.setHearingA90Document(caseData.getManageHearingDetails().getHearingA90Document());
+            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+                .data(caseData)
+                .errors(errors)
+                .build();
         }
-
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseData)
-            .errors(error)
-            .build();
+        return aboutToStartOrSubmitResponse;
     }
 }
