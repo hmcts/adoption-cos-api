@@ -151,6 +151,14 @@ module.exports = {
     await I.retry(3).click(this.fields.continueButton);
   },
 
+
+
+  async verifyPreviewAndCheckTheLetter(){
+    await I.retry(3).waitForText('Preview and check the letter', 30);
+    await I.retry(3).see('Preview and check the letter');
+    await I.retry(3).see(seekFurtherInfoDetails.previewDraftLink);
+    await I.retry(3).click(this.fields.continueButton);
+  },
   async verifyCheckYourAnswersSeekFurtherInfo(){
   await I.wait(3);
   await I.see("Child's social worker : social worker");
@@ -168,4 +176,5 @@ module.exports = {
   await I.wait(3);
   await I.retry(5).seeElement(this.fields.alertMessage);
   },
+
 };

@@ -725,6 +725,7 @@ public class CaseData {
 
 
     @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    @JsonUnwrapped
     private MessageSendDetails messageSendDetails;
 
     @CCD(
@@ -753,6 +754,14 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<MessageSendDetails>> listOfOpenMessages;
+
+    @CCD(
+        label = "Closed Messages",
+        typeOverride = Collection,
+        typeParameterOverride = "MessageSendDetails",
+        access = {DefaultAccess.class}
+    )
+    private List<ListValue<MessageSendDetails>> closedMessages;
     // ------------------- Send And Reply Messages Objects End ----------------- //
 
     @CCD(
@@ -972,7 +981,7 @@ public class CaseData {
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
                 data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
                 data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
-                data.setDocumentReview(getAdoptionOrderData().getDraftDocument());
+                data.setDocumentReview(getAdoptionOrderData().getDraftDocumentA76());
                 break;
             default:
                 break;
