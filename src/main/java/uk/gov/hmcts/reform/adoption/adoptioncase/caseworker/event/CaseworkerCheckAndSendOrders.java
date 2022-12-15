@@ -149,7 +149,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                 caseData.setAdoptionOrderData(finalAdoptionItem.get().getValue());
                 finalAdoptionItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
-                finalAdoptionItem.get().getValue().setDraftDocument(null);
+                finalAdoptionItem.get().getValue().setDraftDocumentA76(null);
                 break;
             default:
                 break;
