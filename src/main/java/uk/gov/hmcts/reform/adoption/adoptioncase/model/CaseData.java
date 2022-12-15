@@ -955,7 +955,10 @@ public class CaseData {
 
                 data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
                 data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
+                data.setOrderId(getDirectionsOrderData().getOrderId());
+                data.setGeneralDirectionOrderRecipients(getDirectionsOrderData().getGeneralDirectionRecipientsList());
                 data.setSubmittedDateAndTimeOfOrder(getDirectionsOrderData().getSubmittedDateDirectionsOrder());
+                data.setOrderedBy(getDirectionsOrderData().getDirectionOrderBy());
                 break;
             case FINAL_ADOPTION_ORDER:
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
@@ -972,7 +975,7 @@ public class CaseData {
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
                 data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
                 data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
-                data.setDocumentReview(getAdoptionOrderData().getDraftDocument());
+                data.setDocumentReview(getAdoptionOrderData().getDraftDocumentA76());
                 break;
             default:
                 break;
