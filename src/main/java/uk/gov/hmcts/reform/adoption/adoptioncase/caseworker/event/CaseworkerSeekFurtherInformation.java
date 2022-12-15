@@ -75,7 +75,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         var pageBuilder = addEventConfig(configBuilder);
         seekFurtherInformation.addTo(pageBuilder);
         pageBuilder.page("pageSeekFurtherInformation3", this::midEventAfterDateSelection)
-            .mandatory(CaseData::getDate)
+            .mandatory(CaseData::getSeekInformationNeededDate)
             .page("pageSeekFurtherInformation4")
             .label("seekFurtherInfo4","Preview and check the letter",null, true)
             .readonly(CaseData::getSeekFurtherInformationDocument)
@@ -192,7 +192,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         caseData.setCorrespondenceDocumentCategory(addSeekInformationData(caseData,
                 caseData.getCorrespondenceDocumentCategory()));
 
-        caseData.setDate(null);
+        caseData.setSeekInformationNeededDate(null);
         caseData.setSeekFurtherInformationList(null);
         caseData.setFurtherInformation(null);
         caseData.setAskAQuestionText(null);
