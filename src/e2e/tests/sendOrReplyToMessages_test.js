@@ -10,11 +10,15 @@ async function setupScenario(I) {
   }
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
-Scenario('Verify send message to judge', async ({I, caseViewPage,sendOrReplyToMessagesPage }) => {
+Scenario('Verify send and reply message to judge', async ({I, caseViewPage,sendOrReplyToMessagesPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.sendOrReplyToMessages);
   await sendOrReplyToMessagesPage.sendMessageToJudge();
   await sendOrReplyToMessagesPage.verifySendMessageToJudgeCYA();
+  await I.seeEventSubmissionConfirmation(caseId,config.administrationActions.sendOrReplyToMessages);
+  await caseViewPage.goToNewActions(config.administrationActions.sendOrReplyToMessages);
+  await sendOrReplyToMessagesPage.verifyReplayMessageToJudge();
+  await sendOrReplyToMessagesPage.verifyReplyMessageToJudgeCYA();
   await I.seeEventSubmissionConfirmation(caseId,config.administrationActions.sendOrReplyToMessages);
 
 });

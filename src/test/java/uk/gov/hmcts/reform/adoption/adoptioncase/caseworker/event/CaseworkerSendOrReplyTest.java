@@ -1,7 +1,9 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import com.google.common.collect.ImmutableSet;
+import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,9 +14,13 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrReply;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
@@ -25,6 +31,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +41,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSendOrReply.CASEWORKER_SEND_OR_REPLY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -107,17 +116,101 @@ public class CaseworkerSendOrReplyTest {
         assertThat(result.getData().getReplyMsgDynamicList()).isNotNull();
     }
 
+    @Test
+    @DisplayName("Testing a scenario of replying to existing a  message")
+    void caseworkerSendOrReplyAboutToSubmitEventTest_ReplyMessage() {
+        var caseDetails = getCaseDetails();
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        caseDetails.getData().setListOfOpenMessages(caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage,
+                                                                                                    getOpenMessageObject()
+        ));
+        caseDetails.getData().setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
+        MessageSendDetails latestMessage = getOpenMessageObject();
+        latestMessage.setMessageText("latest");
+        caseDetails.getData().setMessageSendDetails(latestMessage);
+        SelectedMessage selectedMessage = new SelectedMessage();
+        MessageSendDetails messageSendDetails = getOpenMessageObject();
+        selectedMessage.setMessageId(messageSendDetails.getMessageId());
+        selectedMessage.setMessageContent(messageSendDetails.getMessageText());
+        selectedMessage.setReplyMessage(YesOrNo.YES);
+        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LIST_A_HEARING.toString());
+        caseDetails.getData().setSelectedMessage(selectedMessage);
+        List<DynamicListElement> replyMessageList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(caseDetails.getData().getListOfOpenMessages())) {
+            caseDetails.getData().getListOfOpenMessages().forEach(item -> {
+                if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
+                    DynamicListElement orderInfo = DynamicListElement.builder().label(item.getValue().getMessageSendDateNTime().format(
+                        DateTimeFormatter.ofPattern(SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
+                        .concat(item.getValue().getMessageReasonList().getLabel()))
+                        .code(UUID.fromString(item.getValue().getMessageId())).build();
+                    replyMessageList.add(orderInfo);
+                }
+            });
+
+        }
+        caseDetails.getData().setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList).value(
+            replyMessageList.get(0)).build());
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+        var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
+        assertThat(result.getData().getListOfOpenMessages().get(0).getValue().getMessageId().equals(selectedMessage.getMessageId()));
+    }
+
+    @Test
+    @DisplayName("Testing a scenario of closing a message without replying")
+    void caseworkerSendOrReplyAboutToSubmitEventTest_Ok_ReplyMessage_closed() {
+        var caseDetails = getCaseDetails();
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        MessageSendDetails messageSendDetails = getOpenMessageObject();
+        caseDetails.getData().setListOfOpenMessages(caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage,
+                                                                                                    getOpenMessageObject()
+        ));
+        caseDetails.getData().setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
+        SelectedMessage selectedMessage = new SelectedMessage();
+        selectedMessage.setMessageId(messageSendDetails.getMessageId());
+        selectedMessage.setMessageContent(messageSendDetails.getMessageText());
+        selectedMessage.setReplyMessage(YesOrNo.NO);
+        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LIST_A_HEARING.toString());
+        caseDetails.getData().setSelectedMessage(selectedMessage);
+        List<DynamicListElement> replyMessageList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(caseDetails.getData().getListOfOpenMessages())) {
+            caseDetails.getData().getListOfOpenMessages().forEach(item -> {
+                if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
+                    DynamicListElement orderInfo = DynamicListElement.builder().label(item.getValue().getMessageSendDateNTime().format(
+                            DateTimeFormatter.ofPattern(SEND_N_REPLY_DATE_FORMAT))
+                            .concat(COMMA).concat(item.getValue().getMessageReasonList().getLabel()))
+                            .code(UUID.fromString(item.getValue().getMessageId())).build();
+                    replyMessageList.add(orderInfo);
+                }
+            });
+
+        }
+        caseDetails.getData().setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList).value(
+            replyMessageList.get(0)).build());
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+        var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(caseDetails.getData().getListOfOpenMessages()).hasSize(0);
+        assertThat(caseDetails.getData().getClosedMessages()).hasSize(1);
+
+    }
+
 
 
 
 
     @NotNull
     private MessageSendDetails getOpenMessageObject() {
-        MessageSendDetails adoptionOrderData = new MessageSendDetails();
-        adoptionOrderData.setMessageId(UUID.randomUUID().toString());
-        adoptionOrderData.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
-        adoptionOrderData.setMessageSendDateNTime(LocalDateTime.now());
-        return adoptionOrderData;
+        MessageSendDetails message = new MessageSendDetails();
+        message.setMessageId(UUID.randomUUID().toString());
+        message.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
+        message.setMessageSendDateNTime(LocalDateTime.now());
+        message.setMessageText("message1");
+        message.setMessageReasonList(MessageSendDetails.MessageReason.LIST_A_HEARING);
+        return message;
     }
 
     private CaseDetails<CaseData, State> getCaseDetails() {
