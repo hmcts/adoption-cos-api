@@ -32,6 +32,10 @@ public class SelectedOrder {
     )
     private Set<ManageOrdersData.Recipients> adoptionOrderRecipients;
 
+    @CCD(
+        access = { SystemUpdateAccess.class, DefaultAccess.class})
+    private Set<DirectionsOrderData.GeneralDirectionRecipients> generalDirectionOrderRecipients;
+
 
     private ManageOrdersData.ManageOrderType orderType;
 

@@ -35,6 +35,8 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
                 "checkAndSendOrderDropdownListCONTAINS\" " + caseManageOrder + " \"")
             .readonlyNoSummary(SelectedOrder::getAdoptionOrderRecipients,
                                "orderType=\"caseManagementOrder\"")
+            .readonlyNoSummary(SelectedOrder::getGeneralDirectionOrderRecipients,
+                               "orderType=\"generalDirectionsOrder\"")
             .readonlyNoSummary(SelectedOrder::getFinalOrderRecipientsA76,
                                "orderType=\"finalAdoptionOrder\"")
             .readonlyNoSummary(SelectedOrder::getFinalOrderRecipientsA206,
@@ -64,6 +66,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             selectedItem.setAdoptionOrderRecipients(orderData.getAdoptionOrderRecipients());
             selectedItem.setReviewDocumentLink1(orderData.getDocumentReview1());
             selectedItem.setReviewDocumentLink2(orderData.getDocumentReview2());
+            selectedItem.setGeneralDirectionOrderRecipients(orderData.getGeneralDirectionOrderRecipients());
             selectedItem.setOrderStatus(orderData.getStatus());
             data.setSelectedOrder(selectedItem);
         }
