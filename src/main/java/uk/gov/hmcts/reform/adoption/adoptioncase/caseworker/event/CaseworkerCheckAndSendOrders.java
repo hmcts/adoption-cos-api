@@ -43,6 +43,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOP
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF_EXT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
@@ -171,7 +172,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                 objectMapper.convertValue(caseData, Map.class);
 
             if (isNotEmpty(orderListItem.getDocumentReview1()) && orderListItem.getDocumentReview1().getFilename()
-                .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME)) {
+                .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME+PDF_EXT)) {
                 orderListItem.setDocumentReview1(
                         caseDataDocumentService.renderDocument(
                             templateContent,
@@ -180,7 +181,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                             LanguagePreference.ENGLISH,
                             FINAL_ADOPTION_ORDER_A76_FILE_NAME));
             } else if (isNotEmpty(orderListItem.getDocumentReview2()) && orderListItem.getDocumentReview2().getFilename()
-                .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME)) {
+                .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME+PDF_EXT)) {
                 orderListItem.setDocumentReview2(
                         caseDataDocumentService.renderDocument(
                             templateContent,
