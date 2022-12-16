@@ -178,7 +178,6 @@ class CaseworkerCheckAndSendOrdersTest {
             .build();
     }
 
-    @NotNull
     private void prepareCheckAndSendDropdownList(List<ListValue<OrderData>>
                                                      commonOrderList, String orderId, CaseData data) {
         List<DynamicListElement> listElements = new ArrayList<>();
