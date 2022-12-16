@@ -149,7 +149,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
         DynamicListElement firstApplicant = DynamicListElement.builder()
             .label(joinDynamicListLabel(DocumentSubmitter.FIRST_APPLICANT,
-             String.join(caseData.getApplicant1().getFirstName(), caseData.getApplicant1().getLastName())))
+             caseData.getApplicant1().getFirstName().concat(" ").concat(caseData.getApplicant1().getLastName())))
             .code(UUID.randomUUID())
             .build();
 
@@ -159,7 +159,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             && caseData.getApplicant2().getLastName() != null) {
             DynamicListElement secondApplicant = DynamicListElement.builder()
                 .label(joinDynamicListLabel(DocumentSubmitter.SECOND_APPLICANT,
-                 String.join(caseData.getApplicant2().getFirstName(), caseData.getApplicant2().getLastName())))
+                 caseData.getApplicant2().getFirstName().concat(" ").concat(caseData.getApplicant2().getLastName())))
                 .code(UUID.randomUUID())
                 .build();
 
