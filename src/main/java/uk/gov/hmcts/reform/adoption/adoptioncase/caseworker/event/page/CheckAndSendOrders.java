@@ -63,6 +63,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             selectedItem.setOrderType(orderData.getManageOrderType());
             selectedItem.setAdoptionOrderRecipients(orderData.getAdoptionOrderRecipients());
             selectedItem.setReviewDocumentLink1(orderData.getDocumentReview1());
+            selectedItem.setReviewDocumentLink2(orderData.getDocumentReview2());
             selectedItem.setOrderStatus(orderData.getStatus());
             data.setSelectedOrder(selectedItem);
         }
