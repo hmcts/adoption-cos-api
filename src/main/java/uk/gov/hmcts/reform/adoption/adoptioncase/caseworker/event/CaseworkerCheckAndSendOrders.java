@@ -171,7 +171,6 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-
             if (isNotEmpty(orderListItem.getDocumentReview1()) && orderListItem.getDocumentReview1().getFilename()
                 .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME + PDF_EXT)) {
                 orderListItem.setDocumentReview1(
@@ -181,7 +180,8 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                             FINAL_ADOPTION_ORDER_A76,
                             LanguagePreference.ENGLISH,
                             FINAL_ADOPTION_ORDER_A76_FILE_NAME));
-            } else if (isNotEmpty(orderListItem.getDocumentReview2()) && orderListItem.getDocumentReview2().getFilename()
+            }
+            if (isNotEmpty(orderListItem.getDocumentReview2()) && orderListItem.getDocumentReview2().getFilename()
                 .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME + PDF_EXT)) {
                 orderListItem.setDocumentReview2(
                         caseDataDocumentService.renderDocument(
