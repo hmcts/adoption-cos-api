@@ -154,6 +154,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                 orderListItem.setOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
                 orderListItem.setDraftDocumentA76(null);
+                orderListItem.setDraftDocumentA206(null);
                 break;
             default:
                 break;
@@ -172,7 +173,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                 objectMapper.convertValue(caseData, Map.class);
 
             if (isNotEmpty(orderListItem.getDocumentReview1()) && orderListItem.getDocumentReview1().getFilename()
-                .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME+PDF_EXT)) {
+                .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME + PDF_EXT)) {
                 orderListItem.setDocumentReview1(
                         caseDataDocumentService.renderDocument(
                             templateContent,
@@ -181,7 +182,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                             LanguagePreference.ENGLISH,
                             FINAL_ADOPTION_ORDER_A76_FILE_NAME));
             } else if (isNotEmpty(orderListItem.getDocumentReview2()) && orderListItem.getDocumentReview2().getFilename()
-                .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME+PDF_EXT)) {
+                .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME + PDF_EXT)) {
                 orderListItem.setDocumentReview2(
                         caseDataDocumentService.renderDocument(
                             templateContent,
