@@ -12,8 +12,11 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerUploadDocument;
+import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageDocuments;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
@@ -44,6 +48,8 @@ public class CaseworkerUploadDocumentTest {
 
     @Mock
     private Clock clock;
+
+    private ManageDocuments manageDocuments = new ManageDocuments();
 
     @Test
     void shouldAddConfigurationToConfigBuilder() throws Exception {
@@ -70,6 +76,14 @@ public class CaseworkerUploadDocumentTest {
         caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.APPLICATION_DOCUMENTS));
         caseDetails.getData().getAdoptionUploadDocument().setName("TEST_NAME");
         caseDetails.getData().getAdoptionUploadDocument().setRole("TEST_ROLE");
+        setDynamicListForDocumentSubmitter(caseDetails);
+        caseDetails.getData().getBirthMother().setFirstName("MOTHER_FIRST_NAME");
+        caseDetails.getData().getBirthMother().setLastName("MOTHER_LAST_NAME");
+        caseDetails.getData().getBirthFather().setFirstName("FATHER_FIRST_NAME");
+        caseDetails.getData().getBirthFather().setLastName("FATHER_LAST_NAME");
+        caseDetails.getData().getOtherParent().setFirstName("OTHER_PARENT_FIRST_NAME");
+        caseDetails.getData().getOtherParent().setLastName("OTHER_PARENT_LAST_NAME");
+        manageDocuments.midEvent(caseDetails, caseDetails);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
         assertThat(result.getData().getApplicationDocumentsCategory())
@@ -99,6 +113,7 @@ public class CaseworkerUploadDocumentTest {
         List<ListValue<AdoptionUploadDocument>> applicationDocumentsCategoryList = new ArrayList<>();
         applicationDocumentsCategoryList.add(listValue);
         caseDetails.getData().setApplicationDocumentsCategory(applicationDocumentsCategoryList);
+        setDynamicListForDocumentSubmitter(caseDetails);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getApplicationDocumentsCategory()).isNotNull();
         assertThat(result.getData().getApplicationDocumentsCategory())
@@ -118,6 +133,7 @@ public class CaseworkerUploadDocumentTest {
 
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.COURT_ORDERS));
+        setDynamicListForDocumentSubmitter(caseDetails);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getCourtOrdersDocumentCategory()).isNotNull();
         assertThat(result.getData().getCourtOrdersDocumentCategory())
@@ -137,6 +153,7 @@ public class CaseworkerUploadDocumentTest {
 
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.REPORTS));
+        setDynamicListForDocumentSubmitter(caseDetails);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getReportsDocumentCategory()).isNotNull();
         assertThat(result.getData().getReportsDocumentCategory())
@@ -156,6 +173,7 @@ public class CaseworkerUploadDocumentTest {
 
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.STATEMENTS));
+        setDynamicListForDocumentSubmitter(caseDetails);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getStatementsDocumentCategory()).isNotNull();
         assertThat(result.getData().getStatementsDocumentCategory())
@@ -175,6 +193,7 @@ public class CaseworkerUploadDocumentTest {
 
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.CORRESPONDENCE));
+        setDynamicListForDocumentSubmitter(caseDetails);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getCorrespondenceDocumentCategory()).isNotNull();
         assertThat(result.getData().getCorrespondenceDocumentCategory())
@@ -194,6 +213,7 @@ public class CaseworkerUploadDocumentTest {
 
         var caseDetails = getCaseDetails();
         caseDetails.getData().setAdoptionUploadDocument(setAdoptionDocumentCategory(DocumentCategory.ADDITIONAL_DOCUMENTS));
+        setDynamicListForDocumentSubmitter(caseDetails);
         var result = caseworkerUploadDocument.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getAdditionalDocumentsCategory()).isNotNull();
         assertThat(result.getData().getAdditionalDocumentsCategory())
@@ -221,6 +241,17 @@ public class CaseworkerUploadDocumentTest {
                 .name("TEST_NAME")
                 .role("TEST_ROLE")
                 .build();
+    }
+
+    private void setDynamicListForDocumentSubmitter(CaseDetails<CaseData, State> caseDetails) {
+        DynamicList documentSubmitter = new DynamicList();
+        List<DynamicListElement> listElements = new ArrayList<>();
+        DynamicListElement testDynamicListELement = DynamicListElement.builder()
+            .label("TEST_LABEL")
+            .code(UUID.randomUUID())
+            .build();
+        listElements.add(testDynamicListELement);
+        caseDetails.getData().setDocumentSubmitter(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
     }
 
     public static ConfigBuilderImpl<CaseData, State, UserRole> createCaseDataConfigBuilder() {

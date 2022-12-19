@@ -615,6 +615,12 @@ public class CaseData {
     )
     private LocalDateTime date;
 
+    @CCD(
+        label = "Who submitted the document",
+        typeOverride = DynamicRadioList,
+        typeParameterOverride = "DocumentSubmitter"
+    )
+    private DynamicList documentSubmitter;
 
     @CCD(
         label = "Enter hearing details",

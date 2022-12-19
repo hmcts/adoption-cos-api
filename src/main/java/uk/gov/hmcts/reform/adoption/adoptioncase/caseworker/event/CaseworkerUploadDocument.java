@@ -73,6 +73,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
         var caseData = details.getData();
 
+        caseData.getAdoptionUploadDocument().setDocumentSubmitter(caseData.getDocumentSubmitter().getValue().getLabel());
         caseData.getAdoptionUploadDocument().setName(caseData.getName());
         caseData.getAdoptionUploadDocument().setRole(caseData.getRole());
 
@@ -127,6 +128,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
 
         caseData.setRole(null);
         caseData.setName(null);
+        caseData.setDocumentSubmitter(null);
         log.info("Set Role and Name as null");
         log.info("-----------CaseData {}",caseData);
 

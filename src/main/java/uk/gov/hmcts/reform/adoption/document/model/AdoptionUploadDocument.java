@@ -58,6 +58,12 @@ public class AdoptionUploadDocument {
     private DocumentCategory documentCategory;
 
     @CCD(
+        label = "Who submitted the document"
+
+    )
+    private String documentSubmitter;
+
+    @CCD(
         label = "Role",
         hint = "Add a role. For example, \"Child social worker\" or \"First applicant\""
     )
@@ -84,7 +90,8 @@ public class AdoptionUploadDocument {
                                   @JsonProperty("documentCategory") DocumentCategory documentCategory,
                                   @JsonProperty("role") String role,
                                   @JsonProperty("name") String name,
-                                  @JsonProperty("uploadedBy") String uploadedBy) {
+                                  @JsonProperty("uploadedBy") String uploadedBy,
+                                  @JsonProperty("documentSubmitter") String documentSubmitter) {
         this.documentLink = documentLink;
         this.documentDateAdded = documentDateAdded;
         this.documentComment = documentComment;
@@ -93,5 +100,7 @@ public class AdoptionUploadDocument {
         this.role = role;
         this.name = name;
         this.uploadedBy = uploadedBy;
+        this.documentSubmitter = documentSubmitter;
+
     }
 }
