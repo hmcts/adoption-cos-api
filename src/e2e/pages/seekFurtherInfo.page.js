@@ -30,14 +30,14 @@ module.exports = {
 
       //Screen 3 When is the information needed by?
       labelMessageWhenIsTheInformationNeededBy: '//span[contains(text(),"When is the information needed by?")]',
-      whenIsTheInformationNeededByDateErrorMessage: '#date .error-message',
+      whenIsTheInformationNeededByDateErrorMessage: '#seekInformationNeededDate .error-message',
       whenIsTheInformationNeededByDateText: {
-        day: '#date-day',
-        month: '#date-month',
-        year: '#date-year',
-        hour: '#date-hour',
-        minute: '#date-minute',
-        second: '#date-second',
+        day: '#seekInformationNeededDate-day',
+        month: '#seekInformationNeededDate-month',
+        year: '#seekInformationNeededDate-year',
+        hour: '#seekInformationNeededDate-hour',
+        minute: '#seekInformationNeededDate-minute',
+        second: '#seekInformationNeededDate-second',
       },
 
       //Screen 4 CYA
@@ -107,9 +107,12 @@ module.exports = {
   },
 
   async fulfillWhoDoYouNeedToContact(){
+
     await I.wait(3);
-    // await I.retry(3).click(this.fields.continueButton);
-    // await I.retry(3).see('Field is required', this.fields.whoDoYouNeedToContactErrorMessage);
+    await I.retry(3).waitForText('Who do you need to contact', 30);
+     await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+     await I.retry(3).see('Field is required', this.fields.whoDoYouNeedToContactErrorMessage);
     await I.retry(3).click(this.fields.whoDoYouNeedToContactList);//[(Math.random() * this.fields.whoDoYouNeedToContactList.length) | 0]
     await I.retry(3).click(this.fields.continueButton);
   },
@@ -132,7 +135,9 @@ module.exports = {
 
   async fulfillWhenIsTheInformationNeededBy(){
     await I.wait(3);
+    await I.retry(3).waitForText('When is the information needed by?', 30);
     await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
     await I.retry(3).see('When is the information needed by? is required', this.fields.whenIsTheInformationNeededByDateErrorMessage);
     await I.retry(3).fillField(this.fields.whenIsTheInformationNeededByDateText.day, seekFurtherInfoDetails.seekFurtherInfoErrorDate.day);
     await I.retry(3).fillField(this.fields.whenIsTheInformationNeededByDateText.month, seekFurtherInfoDetails.seekFurtherInfoErrorDate.month);
@@ -161,10 +166,8 @@ module.exports = {
   },
   async verifyCheckYourAnswersSeekFurtherInfo(){
   await I.wait(3);
-  await I.see("Child's social worker : social worker");
-  await I.see("Ask a question");
-  await I.see("Ask for additional documents");
-  await I.see("");
+  await I.see('Ask for additional documents');
+  await I.see('Ask a question');
   await I.see(seekFurtherInfoDetails.askForAdditionalDocumentText);
   await I.see(seekFurtherInfoDetails.askAQuestionText);
   await I.see("1 Jan 2050, 3:15:00 PM");

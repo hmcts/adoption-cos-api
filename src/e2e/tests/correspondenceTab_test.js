@@ -18,10 +18,11 @@ Scenario('Correspondence Tab verify details test', async ({I, caseViewPage, seek
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
   await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
-  // await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
-  // await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
-  // await seekFurtherInfoPage.verifyCheckYourAnswersSeekFurtherInfo();
-  // await seekFurtherInfoPage.verifySuccessfulAlertMessage();
-  // await caseViewPage.navigateToTab('Correspondence');
-  // await correspondenceTabPage.verifyCorrespondenceTabOptions();
+  await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
+  await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
+  await seekFurtherInfoPage.verifyPreviewAndCheckTheLetter();
+  await seekFurtherInfoPage.verifyCheckYourAnswersSeekFurtherInfo();
+  await seekFurtherInfoPage.verifySuccessfulAlertMessage();
+  await caseViewPage.navigateToTab('Correspondence');
+  await correspondenceTabPage.verifyCorrespondenceTabOptions();
   });
