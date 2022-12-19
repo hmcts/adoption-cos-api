@@ -589,7 +589,7 @@ public class CaseData {
     @CCD(
         typeOverride = DynamicRadioList,
         label = "Who do you need to contact\n",
-        typeParameterOverride = "DocumentSubmitter"
+        typeParameterOverride = "SeekFurtherInformationList"
     )
     private DynamicList seekFurtherInformationList;
 
@@ -613,7 +613,7 @@ public class CaseData {
         access = {SystemUpdateAccess.class,
             DefaultAccess.class}
     )
-    private LocalDateTime date;
+    private LocalDateTime seekInformationNeededDate;
 
     @CCD(
         label = "Who submitted the document",
@@ -621,6 +621,9 @@ public class CaseData {
         typeParameterOverride = "DocumentSubmitter"
     )
     private DynamicList documentSubmitter;
+
+    @CCD
+    private Document seekFurtherInformationDocument;
 
     @CCD(
         label = "Enter hearing details",
@@ -796,6 +799,10 @@ public class CaseData {
     )
     private Document hearingA90Document;
 
+    private String seekFurtherInformationDocumentSubmitterName;
+
+    private YesOrNo seekFurtherInformationAdopOrLaSelected;
+
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
@@ -953,11 +960,11 @@ public class CaseData {
                 data.setAdoptionOrderRecipients(getManageOrdersData().getRecipientsList());
                 break;
             case GENERAL_DIRECTIONS_ORDER:
-                this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
+                getDirectionsOrderData().setSubmittedDateDirectionsOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-                this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
-                this.setDirectionsOrderList(archiveManageOrdersHelper(
-                    this.getDirectionsOrderList(), this.getDirectionsOrderData()));
+                getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
+                setDirectionsOrderList(archiveManageOrdersHelper(
+                    this.getDirectionsOrderList(), getDirectionsOrderData()));
 
                 data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
                 data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
@@ -989,7 +996,7 @@ public class CaseData {
         this.setCommonOrderList(archiveManageOrdersHelper(
             this.getCommonOrderList(), data));
         this.setManageOrdersData(new ManageOrdersData());
-        this.setDirectionsOrderData(new DirectionsOrderData());
+        setDirectionsOrderData(new DirectionsOrderData());
         this.setAdoptionOrderData(new AdoptionOrderData());
     }
 
