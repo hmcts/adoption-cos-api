@@ -46,6 +46,8 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.isValidRecipientForGeneralOrder;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME;
 
 /**
  * Contains method to define Event Configuration for ExUI.
@@ -203,7 +205,8 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             .label("LabelPreview101","Preview and check the order in draft. "
                 + "You can make changes on the next page.", "manageOrderType=\"finalAdoptionOrder\"", true)
             .complex(CaseData::getAdoptionOrderData)
-            .readonly(AdoptionOrderData::getDraftDocument)
+            .readonly(AdoptionOrderData::getDraftDocumentA76)
+            .readonly(AdoptionOrderData::getDraftDocumentA206)
             .done()
             .done();
 
@@ -255,14 +258,28 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            caseData.getAdoptionOrderData().setDraftDocument(
-                caseDataDocumentService.renderDocument(
-                    templateContent,
-                    details.getId(),
-                    FINAL_ADOPTION_ORDER_A76_DRAFT,
-                    LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
+
+            if (isNotEmpty(selectedRecipientsA76)) {
+                caseData.getAdoptionOrderData().setDraftDocumentA76(
+                    caseDataDocumentService.renderDocument(
+                        templateContent,
+                        details.getId(),
+                        FINAL_ADOPTION_ORDER_A76_DRAFT,
+                        LanguagePreference.ENGLISH,
+                        FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME
                     ));
+            }
+
+            if (isNotEmpty(selectedRecipientsA206)) {
+                caseData.getAdoptionOrderData().setDraftDocumentA206(
+                    caseDataDocumentService.renderDocument(
+                        templateContent,
+                        details.getId(),
+                        FINAL_ADOPTION_ORDER_A206_DRAFT,
+                        LanguagePreference.ENGLISH,
+                        FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME
+                    ));
+            }
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
