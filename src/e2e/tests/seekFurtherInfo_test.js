@@ -111,6 +111,7 @@ Scenario('Verify seek further Info Check your Answers of seek Further Info', asy
   await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
   await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
   await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
+  await seekFurtherInfoPage.verifyPreviewAndCheckTheLetter();
   await seekFurtherInfoPage.verifyCheckYourAnswersSeekFurtherInfo();
   await seekFurtherInfoPage.verifySuccessfulAlertMessage();
   });
