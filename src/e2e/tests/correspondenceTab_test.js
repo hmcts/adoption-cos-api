@@ -20,6 +20,7 @@ Scenario('Correspondence Tab verify details test', async ({I, caseViewPage, seek
   await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
   await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
   await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
+  await seekFurtherInfoPage.verifyPreviewAndCheckTheLetter();
   await seekFurtherInfoPage.verifyCheckYourAnswersSeekFurtherInfo();
   await seekFurtherInfoPage.verifySuccessfulAlertMessage();
   await caseViewPage.navigateToTab('Correspondence');
