@@ -108,8 +108,8 @@ module.exports = {
 
   async fulfillWhoDoYouNeedToContact(){
     await I.wait(3);
-    await I.retry(3).click(this.fields.continueButton);
-    await I.retry(3).see('Field is required', this.fields.whoDoYouNeedToContactErrorMessage);
+    // await I.retry(3).click(this.fields.continueButton);
+    // await I.retry(3).see('Field is required', this.fields.whoDoYouNeedToContactErrorMessage);
     await I.retry(3).click(this.fields.whoDoYouNeedToContactList);//[(Math.random() * this.fields.whoDoYouNeedToContactList.length) | 0]
     await I.retry(3).click(this.fields.continueButton);
   },
