@@ -84,22 +84,23 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .complex(CaseData::getBirthFather, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
             .readonly(Parent::getDeceased, "recipientsInTheCaseCONTAINS\"NEVER DISPLAY CONDITION\"")
             .done()
-            .label("manageHearing71","### Document to review",null, true)
-            .label("manageHearing72","This document will open in a new page when you select it")
+            .label("manageHearing71","## Preview the hearing notice",null, true)
+            .label("manageHearing72","### Document to review",null, true)
+            .label("manageHearing73","This document will open in a new page when you select it")
             .complex(CaseData::getManageHearingDetails)
-            .label("manageHearing73","### Respondent (birth mother)",
+            .label("manageHearing74","### Respondent (birth mother)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
             .readonly(ManageHearingDetails::getHearingA91DocumentMother,
                       "recipientsInTheCaseCONTAINS\"respondentBirthMother\" AND birthMotherDeceased=\"No\"")
-            .label("manageHearing74","### Respondent (birth father)",
+            .label("manageHearing75","### Respondent (birth father)",
                    "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
             .readonly(ManageHearingDetails::getHearingA91DocumentFather,
                       "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
-            .label("manageHearing75","### Applicants",
+            .label("manageHearing76","### Applicants",
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(ManageHearingDetails::getHearingA90Document,
                       "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
-            .label("manageHearing76","You can make changes to the notice by continuing to the next page")
+            .label("manageHearing77","You can make changes to the notice by continuing to the next page")
             .done()
             .done();
     }
@@ -184,7 +185,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         if (isEmpty(caseData.getManageHearingDetails().getHearingA90Document())) {
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
-                            log.info("templateContentApplicants {}", templateContentApplicants);
 
                             caseData.getManageHearingDetails().setHearingA90Document(
                                 caseDataDocumentService.renderDocument(
@@ -202,7 +202,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             caseData.getManageHearingDetails().setHearingA91DocumentFlagMother(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
-                            log.info("templateContentMother {}", templateContentMother);
 
                             caseData.getManageHearingDetails().setHearingA91DocumentMother(
                                 caseDataDocumentService.renderDocument(
@@ -220,7 +219,6 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                             caseData.getManageHearingDetails().setHearingA91DocumentFlagMother(YesOrNo.NO);
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
-                            log.info("templateContentMother {}", templateContentMother);
 
                             caseData.getManageHearingDetails().setHearingA91DocumentFather(
                                 caseDataDocumentService.renderDocument(
