@@ -75,11 +75,11 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         var pageBuilder = addEventConfig(configBuilder);
         seekFurtherInformation.addTo(pageBuilder);
         pageBuilder.page("pageSeekFurtherInformation3", this::midEventAfterDateSelection)
-            .mandatory(CaseData::getDate)
+            .mandatory(CaseData::getSeekInformationNeededDate)
             .page("pageSeekFurtherInformation4")
             .label("seekFurtherInfo4","Preview and check the letter",null, true)
             .readonly(CaseData::getSeekFurtherInformationDocument)
-            .label("seekFurtherInfo5","If you want to make changes, go back to previous screen.",null, false)
+            .label("seekFurtherInfo5","If you want to make changes, go back to the previous screen.",null, false)
             .done()
             .build();
 
@@ -149,7 +149,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
         DynamicListElement firstApplicant = DynamicListElement.builder()
             .label(joinDynamicListLabel(DocumentSubmitter.FIRST_APPLICANT,
-             String.join(caseData.getApplicant1().getFirstName(), caseData.getApplicant1().getLastName())))
+             caseData.getApplicant1().getFirstName().concat(" ").concat(caseData.getApplicant1().getLastName())))
             .code(UUID.randomUUID())
             .build();
 
@@ -159,7 +159,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             && caseData.getApplicant2().getLastName() != null) {
             DynamicListElement secondApplicant = DynamicListElement.builder()
                 .label(joinDynamicListLabel(DocumentSubmitter.SECOND_APPLICANT,
-                 String.join(caseData.getApplicant2().getFirstName(), caseData.getApplicant2().getLastName())))
+                 caseData.getApplicant2().getFirstName().concat(" ").concat(caseData.getApplicant2().getLastName())))
                 .code(UUID.randomUUID())
                 .build();
 
@@ -192,7 +192,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         caseData.setCorrespondenceDocumentCategory(addSeekInformationData(caseData,
                 caseData.getCorrespondenceDocumentCategory()));
 
-        caseData.setDate(null);
+        caseData.setSeekInformationNeededDate(null);
         caseData.setSeekFurtherInformationList(null);
         caseData.setFurtherInformation(null);
         caseData.setAskAQuestionText(null);

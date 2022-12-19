@@ -613,7 +613,7 @@ public class CaseData {
         access = {SystemUpdateAccess.class,
             DefaultAccess.class}
     )
-    private LocalDateTime date;
+    private LocalDateTime seekInformationNeededDate;
 
     @CCD
     private Document seekFurtherInformationDocument;
