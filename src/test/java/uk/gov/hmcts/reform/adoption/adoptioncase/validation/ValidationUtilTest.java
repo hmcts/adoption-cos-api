@@ -28,6 +28,7 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAI
 
 public class ValidationUtilTest {
 
+
     @Test
     public void shouldValidateBasicCase() {
         CaseData caseData = new CaseData();
@@ -35,6 +36,7 @@ public class ValidationUtilTest {
         List<String> errors = validateBasicCase(caseData);
         assertThat(errors).hasSize(21);
     }
+
 
     @Test
     public void shouldValidateBasicCaseWhenApplyingAlone() {
