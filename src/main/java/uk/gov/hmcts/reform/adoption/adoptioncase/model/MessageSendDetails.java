@@ -8,9 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
+import uk.gov.hmcts.ccd.sdk.api.Label;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.FieldType;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerMessageReasonAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DistrictJudgeAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDateTime;
@@ -44,17 +49,45 @@ public class MessageSendDetails {
 
     @CCD(
         label = "Who do you want to send a message to?",
-        access = { SystemUpdateAccess.class, DefaultAccess.class},
+        access = { DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "MessageReceiverRoles")
     private MessageReceiverRoles messageReceiverRoles;
 
-    @CCD(label = "Select a reason for this message",
+//    @CCD(
+//        inheritAccessFromParent = false,
+//        label = "Select a reason for this message",
+//        typeOverride = FieldType.Label,
+//        access = {CaseworkerMessageReasonAccess.class}
+//    )
+//    private String messageReasonLabel;
+
+    @CCD(
+        label = "Select a reason for this message",
         typeOverride = FixedList,
-        access = {DefaultAccess.class},
-        typeParameterOverride = "MessageReason"
+        typeParameterOverride = "MessageReason",
+        inheritAccessFromParent = false,
+        access = {CaseworkerMessageReasonAccess.class}
     )
     private MessageReason messageReasonList;
+
+//    @CCD(
+//        inheritAccessFromParent = false,
+//        label = "Select a reason for this message",
+//        typeOverride = FieldType.Label,
+//        access = {DistrictJudgeAccess.class}
+//    )
+//    private String messageReasonJudgeLabel;
+
+    @CCD(
+        label = "Select a reason for this message",
+        typeOverride = FixedList,
+        access = {DistrictJudgeAccess.class},
+        inheritAccessFromParent = false,
+        typeParameterOverride = "MessageReasonJudge"
+    )
+    private MessageReasonJudge messageReasonJudge;
+
 
     @CCD(label = "Urgency",
         typeOverride = FixedList,
@@ -115,19 +148,70 @@ public class MessageSendDetails {
     @AllArgsConstructor
     public enum MessageReason implements HasLabel {
 
-        @JsonProperty("listAHearing")
-        LIST_A_HEARING("List a hearing"),
+        @JsonProperty("referForGateKeeping")
+        REFER_FOR_GATEKEEPING("Refer for gatekeeping"),
+
+        @JsonProperty("laApplicationNotReceived")
+        LOCAL_AUTHORITY_APPLICATION("Local authority application response not received"),
+
+        @JsonProperty("annexAReview")
+        ANNEX_A("Annex A for review"),
+
+        @JsonProperty("correspondanceForReview")
+        CORRESPONDANCE_FOR_REVIEW("Correspondence for review"),
+
+        @JsonProperty("reviewDocument")
+        DOCUMENT_FOR_REVIEW("Document for review"),
+
+        @JsonProperty("approvalOrder")
+        ORDER_FOR_APPROVAL("Order for approval"),
+
+        @JsonProperty("approvalOrder")
+        LEAVE_TO_OPPOSE("Leave to oppose received"),
+
+        @JsonProperty("approvalOrder")
+        GENERAL_QUERY("General query"),
+
+        @JsonProperty("approvalOrder")
+        REQUEST_HEARING_DATE("Request hearing date (for CTSC caseworkers to send to LA Admin)");
+
+        private final String label;
+
+
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum MessageReasonJudge implements HasLabel {
+
+        @JsonProperty("listForAHearing")
+        LIST_A_HEARING("List for a hearing"),
 
         @JsonProperty("requestDocument")
         REQUEST_DOCUMENT("Request document"),
 
+        @JsonProperty("requestInfo")
+        REQUEST_IFNORMATION("Request information"),
+
         @JsonProperty("createOrder")
         CREATE_ORDER("Create order"),
 
-        @JsonProperty("returnOrderForAmendments")
-        RETURN_ORDER_FOR_DOCUMENTS("Return order for amendments");
+        @JsonProperty("returnOrder")
+        RETURN_ORDER("Return order for amendments"),
+
+        @JsonProperty("serveDocument")
+        SERVE_DOCUMENT("Serve document"),
+
+        @JsonProperty("sendALetter")
+        SEND_A_LETTER("Send a letter"),
+
+        @JsonProperty("generalQuery")
+        GENERAL_QUERY("General query");
+
 
         private final String label;
+
     }
 
     @Getter
@@ -171,7 +255,6 @@ public class MessageSendDetails {
 
         private final String label;
     }
-
 
 
 }

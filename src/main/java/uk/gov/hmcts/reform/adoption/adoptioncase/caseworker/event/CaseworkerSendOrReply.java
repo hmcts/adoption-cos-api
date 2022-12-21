@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -21,7 +22,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrReply;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -41,6 +44,12 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
 
     public static final String SEND_OR_REPLY_HEADING = "Send or reply to messages";
 
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private IdamService idamService;
+
     private final CcdPageConfiguration sendOrReply = new SendOrReply();
 
 
@@ -51,9 +60,9 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
     }
 
     private PageBuilder addConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-        );
+//        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
+//                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
+//        );
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_SEND_OR_REPLY)
                                    .forAllStates()
@@ -62,6 +71,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                                    .showSummary()
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
+                                   .explicitGrants()
                                    .aboutToStartCallback(this::beforeStartEvent)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
@@ -86,6 +96,13 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
         }
         caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList)
                                             .value(DynamicListElement.EMPTY).build());
+
+
+//        var sendDetail = caseData.getMessageSendDetails();
+//        sendDetail.setReasonList(DynamicList.builder().listItems(prepareMessageReasonList(
+//            idamService.retrieveUser(request.getHeader(AUTHORIZATION))))
+//                                     .value(DynamicListElement.EMPTY).build());
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();

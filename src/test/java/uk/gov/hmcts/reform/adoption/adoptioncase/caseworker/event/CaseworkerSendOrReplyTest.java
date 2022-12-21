@@ -133,7 +133,7 @@ public class CaseworkerSendOrReplyTest {
         selectedMessage.setMessageId(messageSendDetails.getMessageId());
         selectedMessage.setMessageContent(messageSendDetails.getMessageText());
         selectedMessage.setReplyMessage(YesOrNo.YES);
-        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LIST_A_HEARING.toString());
+        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LEAVE_TO_OPPOSE.toString());
         caseDetails.getData().setSelectedMessage(selectedMessage);
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseDetails.getData().getListOfOpenMessages())) {
@@ -172,7 +172,7 @@ public class CaseworkerSendOrReplyTest {
         selectedMessage.setMessageId(messageSendDetails.getMessageId());
         selectedMessage.setMessageContent(messageSendDetails.getMessageText());
         selectedMessage.setReplyMessage(YesOrNo.NO);
-        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LIST_A_HEARING.toString());
+        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LEAVE_TO_OPPOSE.toString());
         caseDetails.getData().setSelectedMessage(selectedMessage);
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseDetails.getData().getListOfOpenMessages())) {
@@ -209,7 +209,7 @@ public class CaseworkerSendOrReplyTest {
         message.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         message.setMessageSendDateNTime(LocalDateTime.now());
         message.setMessageText("message1");
-        message.setMessageReasonList(MessageSendDetails.MessageReason.LIST_A_HEARING);
+        message.setMessageReasonList(MessageSendDetails.MessageReason.LEAVE_TO_OPPOSE);
         return message;
     }
 

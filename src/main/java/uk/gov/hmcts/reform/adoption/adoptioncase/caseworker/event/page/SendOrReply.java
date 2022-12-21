@@ -38,6 +38,7 @@ public class SendOrReply implements CcdPageConfiguration {
             .complex(CaseData::getMessageSendDetails)
             .mandatory(MessageSendDetails::getMessageReceiverRoles)
             .mandatory(MessageSendDetails::getMessageReasonList)
+            .mandatory(MessageSendDetails::getMessageReasonJudge)
             .mandatory(MessageSendDetails::getMessageUrgencyList)
             .done()
             .mandatory(CaseData::getSendMessageAttachDocument)
