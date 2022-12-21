@@ -55,6 +55,10 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         details.getData().setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
         data.setHyphenatedCaseRef(data.formatCaseRef(details.getId()));
 
+        //This is for POC
+        data.setDssQuestion1("What is Child’s FullName");
+        data.setDssAnswer1("Test childName");
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)
             .build();

@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -791,6 +792,14 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private Document hearingA90Document;
+
+    @CCD(label = "What is Child’s FullName", access = {DefaultAccess.class})
+    @JsonProperty("DssQuestion1")
+    private String dssQuestion1;
+
+    @CCD(access = {DefaultAccess.class})
+    @JsonProperty("DssAnswer1")
+    private String dssAnswer1;
 
     private String seekFurtherInformationDocumentSubmitterName;
 
