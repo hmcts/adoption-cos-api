@@ -54,16 +54,14 @@ public class MessageSendDetails {
         typeParameterOverride = "MessageReceiverRoles")
     private MessageReceiverRoles messageReceiverRoles;
 
-//    @CCD(
-//        inheritAccessFromParent = false,
-//        label = "Select a reason for this message",
-//        typeOverride = FieldType.Label,
-//        access = {CaseworkerMessageReasonAccess.class}
-//    )
-//    private String messageReasonLabel;
+    @CCD(
+        inheritAccessFromParent = false,
+        label = "Select a reason for this message",
+        access = {CaseworkerMessageReasonAccess.class}
+    )
+    private String messageReasonLabel;
 
     @CCD(
-        label = "Select a reason for this message",
         typeOverride = FixedList,
         typeParameterOverride = "MessageReason",
         inheritAccessFromParent = false,
@@ -71,16 +69,14 @@ public class MessageSendDetails {
     )
     private MessageReason messageReasonList;
 
-//    @CCD(
-//        inheritAccessFromParent = false,
-//        label = "Select a reason for this message",
-//        typeOverride = FieldType.Label,
-//        access = {DistrictJudgeAccess.class}
-//    )
-//    private String messageReasonJudgeLabel;
+    @CCD(
+        inheritAccessFromParent = false,
+        label = "Select a reason for this message",
+        access = {DistrictJudgeAccess.class}
+    )
+    private String messageReasonJudgeLabel;
 
     @CCD(
-        label = "Select a reason for this message",
         typeOverride = FixedList,
         access = {DistrictJudgeAccess.class},
         inheritAccessFromParent = false,
