@@ -23,12 +23,6 @@ public class SendOrReply implements CcdPageConfiguration {
     @Override
     public void addTo(PageBuilder pageBuilder) {
         CommonPageBuilder.sendOrReplyCommonPage(pageBuilder, "");
-//        pageBuilder
-//            .page("pageSendOrReply1", this::midEvent)
-//            .mandatory(CaseData::getMessageAction)
-//            .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
-//        replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
-//        messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
 
     }
 

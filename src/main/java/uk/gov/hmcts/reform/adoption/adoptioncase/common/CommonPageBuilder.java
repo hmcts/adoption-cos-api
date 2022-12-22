@@ -5,8 +5,10 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
-import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.*;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
 import java.util.ArrayList;
@@ -66,7 +68,8 @@ public class CommonPageBuilder {
         CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
         CaseEventCommonMethods.prepareDocumentList(caseData).forEach(item -> listElements.add(DynamicListElement.builder()
-                                                                                                  .label(item.getDocumentLink().getFilename()).code(UUID.fromString(item.getMessageId())).build()));
+                                                            .label(item.getDocumentLink().getFilename())
+                                                             .code(UUID.fromString(item.getMessageId())).build()));
         caseData.setAttachDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
 
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages()) && caseData.getReplyMsgDynamicList() != null) {

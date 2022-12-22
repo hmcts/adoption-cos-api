@@ -174,7 +174,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     LanguagePreference.ENGLISH,
                     FINAL_ADOPTION_ORDER_A76_FILE_NAME
                 ));
-        } else if(commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.RETURN_FOR_AMENDMENTS)) {
+        } else if (commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.RETURN_FOR_AMENDMENTS)) {
             CaseEventCommonMethods.updateMessageList(caseData);
         }
         caseData.setManageOrdersData(null);
