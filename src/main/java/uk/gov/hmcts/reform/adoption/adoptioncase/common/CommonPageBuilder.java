@@ -21,7 +21,7 @@ public class CommonPageBuilder {
 
     public static void sendOrReplyCommonPage(PageBuilder pageBuilder, String type) {
         pageBuilder
-            .page("pageSendOrReply1", CommonPageBuilder::sendMesgMidEvent)
+            .page("pageSendOrReply1", CommonPageBuilder::sendMessageMidEvent)
             .showCondition(type)
             .mandatory(CaseData::getMessageAction)
             .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
@@ -61,7 +61,7 @@ public class CommonPageBuilder {
 
     }
 
-    private static AboutToStartOrSubmitResponse<CaseData, State> sendMesgMidEvent(CaseDetails<CaseData, State> details,
+    private static AboutToStartOrSubmitResponse<CaseData, State> sendMessageMidEvent(CaseDetails<CaseData, State> details,
                                                                    CaseDetails<CaseData, State> detailsBefore) {
         CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
