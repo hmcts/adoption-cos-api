@@ -11,6 +11,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -173,6 +174,8 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     LanguagePreference.ENGLISH,
                     FINAL_ADOPTION_ORDER_A76_FILE_NAME
                 ));
+        } else if(commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.RETURN_FOR_AMENDMENTS)) {
+            CaseEventCommonMethods.updateMessageList(caseData);
         }
         caseData.setManageOrdersData(null);
         caseData.setDirectionsOrderData(null);

@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
+import uk.gov.hmcts.reform.adoption.adoptioncase.common.CommonPageBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -43,6 +45,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .label("checkAndSendOrdersLabel3","## Review Order")
             .mandatory(CaseData::getOrderCheckAndSend)
             .done();
+        CommonPageBuilder.sendOrReplyCommonPage(pageBuilder, "orderCheckAndSend=\"returnForAmendments\"");
     }
 
     private AboutToStartOrSubmitResponse<CaseData, State> midEventCall(CaseDetails<CaseData, State> caseData,
@@ -63,6 +66,8 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             selectedItem.setOrderStatus(commonOrderItem.get().getValue().getStatus());
             data.setSelectedOrder(selectedItem);
         }
+
+        CaseEventCommonMethods.prepareReplyMessageDynamicList(data);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)
             .build();

@@ -68,24 +68,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
 
     public AboutToStartOrSubmitResponse<CaseData, State> beforeStartEvent(CaseDetails<CaseData, State> details) {
         var caseData = details.getData();
-
-        List<DynamicListElement> replyMessageList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
-            caseData.getListOfOpenMessages().forEach(item -> {
-                if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
-                    DynamicListElement orderInfo = DynamicListElement.builder()
-                        .label(item.getValue().getMessageSendDateNTime().format(
-                                DateTimeFormatter.ofPattern(
-                                    SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
-                                   .concat(item.getValue().getMessageReasonList().getLabel())).code(
-                            UUID.fromString(item.getValue().getMessageId())).build();
-                    replyMessageList.add(orderInfo);
-                }
-            });
-
-        }
-        caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList)
-                                            .value(DynamicListElement.EMPTY).build());
+        CaseEventCommonMethods.prepareReplyMessageDynamicList(caseData);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
@@ -94,61 +77,9 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> details,
                                                                        CaseDetails<CaseData, State> detailsBefore) {
         var caseData = details.getData();
-        if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.SEND_A_MESSAGE)) {
-            MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
-            sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
-            sendMessagesDetails.setMessageHistory(sendMessagesDetails.getMessageText());
-            setMessageInformation(caseData, sendMessagesDetails);
-
-        } else if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE)) {
-            MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
-            String activeMessageID = caseData.getReplyMsgDynamicList().getValueCode().toString();
-            ListValue<MessageSendDetails> messageListValue = getSelectedMessage(caseData, activeMessageID);
-            MessageSendDetails selectedMessage = messageListValue.getValue();
-            caseData.getListOfOpenMessages().remove(messageListValue);
-            if (YesOrNo.NO.equals(caseData.getSelectedMessage().getReplyMessage())) {
-                caseData.setClosedMessages(caseData.archiveManageOrdersHelper(
-                    caseData.getClosedMessages(), selectedMessage));
-
-            } else {
-                sendMessagesDetails.setMessageId(activeMessageID);
-                sendMessagesDetails.setMessageHistory(
-                    StringUtils.appendIfMissing(sendMessagesDetails.getMessageText(),
-                                                "\n",
-                                                selectedMessage.getMessageHistory()));
-                setMessageInformation(caseData, sendMessagesDetails);
-            }
-
-        }
-        caseData.setMessageAction(null);
+        CaseEventCommonMethods.updateMessageList(caseData);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
     }
-
-    private ListValue<MessageSendDetails> getSelectedMessage(CaseData caseData, String activeMessageID) {
-        return caseData.getListOfOpenMessages().stream().filter(item -> item.getValue().getMessageId().equalsIgnoreCase(
-            activeMessageID)).findFirst().get();
-    }
-
-    private void setMessageInformation(CaseData caseData, MessageSendDetails sendMessagesDetails) {
-        if (caseData.getAttachDocumentList() != null
-            && caseData.getAttachDocumentList().getValue() != null) {
-            var doc = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
-                .filter(item -> item.getMessageId().equalsIgnoreCase(caseData.getAttachDocumentList().getValue().getCode().toString()))
-                .findFirst().get().getDocumentLink();
-            sendMessagesDetails.setSelectedDocument(doc);
-            sendMessagesDetails.setDocumentHistory(
-                caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
-        }
-        sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
-        sendMessagesDetails.setMessageSendDateNTime(
-            LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-        caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
-            caseData.getListOfOpenMessages(), sendMessagesDetails));
-        caseData.setMessageSendDetails(null);
-        caseData.setAttachDocumentList(null);
-        caseData.setSelectedMessage(null);
-    }
-
 }
