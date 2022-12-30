@@ -61,7 +61,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
             .retries(120, 120);
     }
 
-    private SubmittedCallbackResponse submitted(CaseDetails<CaseData, State> details, CaseDetails<CaseData, State> beforeDetails) {
+    public SubmittedCallbackResponse submitted(CaseDetails<CaseData, State> details, CaseDetails<CaseData, State> beforeDetails) {
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
 
         Map<String, Map<String, Map<String, Object>>> supplementaryData = new HashMap<>();
