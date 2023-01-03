@@ -207,6 +207,11 @@ public class AdoptionOrderData {
     )
     private LocalDate adoptionRegistrationDate;
 
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo dateOfBirthProved;
+
     public DynamicList getPlacementOfTheChildList(AdoptionAgencyOrLocalAuthority adopAgencyOrLA,
                                                   YesOrNo hasAnotherAdopAgencyOrLAinXui,
                                                   OtherAdoptionAgencyOrLocalAuthority otherAdoptionAgencyOrLA,
