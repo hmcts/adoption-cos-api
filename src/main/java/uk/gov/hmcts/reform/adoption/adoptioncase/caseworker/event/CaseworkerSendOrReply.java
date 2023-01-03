@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -9,6 +10,8 @@ import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -88,37 +91,64 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
             .build();
     }
 
-    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> caseDataStateCaseDetails,
-                                                                       CaseDetails<CaseData, State> caseDataStateCaseDetails1) {
-        var caseData = caseDataStateCaseDetails.getData();
+    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> details,
+                                                                       CaseDetails<CaseData, State> detailsBefore) {
+        var caseData = details.getData();
         if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.SEND_A_MESSAGE)) {
             MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
             sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
-            if (caseData.getAttachDocumentList() != null
-                && caseData.getAttachDocumentList().getValue() != null) {
-                var doc = CaseEventCommonMethods.prepareDocumentList(caseData).stream().filter(item ->
-                                    item.getMessageId()
-                                    .equalsIgnoreCase(caseData.getAttachDocumentList().getValue().getCode().toString()))
-                                    .findFirst().get().getDocumentLink();
+            sendMessagesDetails.setMessageHistory(sendMessagesDetails.getMessageText());
+            setMessageInformation(caseData, sendMessagesDetails);
 
-                sendMessagesDetails.setSelectedDocument(doc);
-                sendMessagesDetails.setDocumentHistory(
-                    caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
+        } else if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE)) {
+            MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
+            String activeMessageID = caseData.getReplyMsgDynamicList().getValueCode().toString();
+            ListValue<MessageSendDetails> messageListValue = getSelectedMessage(caseData, activeMessageID);
+            MessageSendDetails selectedMessage = messageListValue.getValue();
+            caseData.getListOfOpenMessages().remove(messageListValue);
+            if (YesOrNo.NO.equals(caseData.getSelectedMessage().getReplyMessage())) {
+                caseData.setClosedMessages(caseData.archiveManageOrdersHelper(
+                    caseData.getClosedMessages(), selectedMessage));
+
+            } else {
+                sendMessagesDetails.setMessageId(activeMessageID);
+                sendMessagesDetails.setMessageHistory(
+                    StringUtils.appendIfMissing(sendMessagesDetails.getMessageText(),
+                                                "\n",
+                                                selectedMessage.getMessageHistory()));
+                setMessageInformation(caseData, sendMessagesDetails);
             }
-            sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
-            sendMessagesDetails.setMessageSendDateNTime(
-                LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-            sendMessagesDetails.setMessageHistory(sendMessagesDetails.getMessage());
-            caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
-                caseData.getListOfOpenMessages(), sendMessagesDetails));
-            caseData.setMessageSendDetails(null);
-            caseData.setSelectedMessage(null);
+
         }
         caseData.setMessageAction(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseDataStateCaseDetails.getData())
+            .data(caseData)
             .build();
     }
 
+    private ListValue<MessageSendDetails> getSelectedMessage(CaseData caseData, String activeMessageID) {
+        return caseData.getListOfOpenMessages().stream().filter(item -> item.getValue().getMessageId().equalsIgnoreCase(
+            activeMessageID)).findFirst().get();
+    }
+
+    private void setMessageInformation(CaseData caseData, MessageSendDetails sendMessagesDetails) {
+        if (caseData.getAttachDocumentList() != null
+            && caseData.getAttachDocumentList().getValue() != null) {
+            var doc = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
+                .filter(item -> item.getMessageId().equalsIgnoreCase(caseData.getAttachDocumentList().getValue().getCode().toString()))
+                .findFirst().get().getDocumentLink();
+            sendMessagesDetails.setSelectedDocument(doc);
+            sendMessagesDetails.setDocumentHistory(
+                caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
+        }
+        sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
+        sendMessagesDetails.setMessageSendDateNTime(
+            LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+        caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
+            caseData.getListOfOpenMessages(), sendMessagesDetails));
+        caseData.setMessageSendDetails(null);
+        caseData.setAttachDocumentList(null);
+        caseData.setSelectedMessage(null);
+    }
 
 }
