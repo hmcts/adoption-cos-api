@@ -72,23 +72,27 @@ public final class CommonPageBuilder {
         caseData.setAttachDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
 
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages()) && caseData.getReplyMsgDynamicList() != null) {
-            var messageDetails = new SelectedMessage();
-            var selectedObject = caseData.getListOfOpenMessages().stream()
-                .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList()
-                                                                                    .getValueCode().toString())).findFirst();
-            if (selectedObject.isPresent()) {
-                messageDetails.setMessageId(selectedObject.get().getId());
-                messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
-                messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
-                messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-                if (!Objects.isNull(selectedObject.get().getValue().getSelectedDocument())) {
-                    messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocument());
-                }
-                caseData.setSelectedMessage(messageDetails);
-            }
+           setSelectedObject(caseData);
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
+    }
+
+    public static void setSelectedObject(CaseData caseData) {
+        var messageDetails = new SelectedMessage();
+        var selectedObject = caseData.getListOfOpenMessages().stream()
+            .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList()
+                                                                                .getValueCode().toString())).findFirst();
+        if (selectedObject.isPresent()) {
+            messageDetails.setMessageId(selectedObject.get().getId());
+            messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
+            messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
+            messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
+            if (!Objects.isNull(selectedObject.get().getValue().getSelectedDocument())) {
+                messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocument());
+            }
+            caseData.setSelectedMessage(messageDetails);
+        }
     }
 }
