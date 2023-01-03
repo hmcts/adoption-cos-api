@@ -63,7 +63,7 @@ public final class CommonPageBuilder {
 
     }
 
-    private static AboutToStartOrSubmitResponse<CaseData, State> sendMessageMidEvent(CaseDetails<CaseData, State> details,
+    public static AboutToStartOrSubmitResponse<CaseData, State> sendMessageMidEvent(CaseDetails<CaseData, State> details,
                                                                    CaseDetails<CaseData, State> detailsBefore) {
         CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
@@ -77,7 +77,7 @@ public final class CommonPageBuilder {
             var selectedObject = caseData.getListOfOpenMessages().stream()
                 .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList()
                                                                                     .getValueCode().toString())).findFirst();
-            messageDetails.setMessageId(selectedObject.get().getId().toString());
+            messageDetails.setMessageId(selectedObject.get().getId());
             messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
             messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
             messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
