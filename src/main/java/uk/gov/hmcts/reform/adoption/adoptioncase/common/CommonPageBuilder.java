@@ -76,7 +76,7 @@ public final class CommonPageBuilder {
             var selectedObject = caseData.getListOfOpenMessages().stream()
                 .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList()
                                                                                     .getValueCode().toString())).findFirst();
-            if(selectedObject.isPresent()){
+            if (selectedObject.isPresent()) {
                 messageDetails.setMessageId(selectedObject.get().getId());
                 messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
                 messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
