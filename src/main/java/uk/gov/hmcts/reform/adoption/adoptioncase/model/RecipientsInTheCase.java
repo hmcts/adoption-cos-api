@@ -16,13 +16,13 @@ public enum RecipientsInTheCase implements HasLabel {
     APPLICANT2("Second applicant"),
 
     @JsonProperty("respondentBirthMother")
-    RESPONDENT_MOTHER("Respondent (birth mother)"),
+    RESPONDENT_BIRTH_MOTHER("Respondent (birth mother)"),
 
     @JsonProperty("respondentBirthFather")
-    RESPONDENT_FATHER("Respondent (birth father)"),
+    RESPONDENT_BIRTH_FATHER("Respondent (birth father)"),
 
     @JsonProperty("legalGuardian")
-    LEGAL_GUARDIAN("Legal guardian (Cafcass)"),
+    LEGAL_GUARDIAN_CAFCASS("Legal guardian (Cafcass)"),
 
     @JsonProperty("childLocalAuthority")
     CHILDS_LOCAL_AUTHORITY("Child's local authority"),

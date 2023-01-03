@@ -31,7 +31,7 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.LEGAL_GUARDIAN;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.LEGAL_GUARDIAN_CAFCASS;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.CHILDS_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.APPLICANTS_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.ADOPTION_AGENCY;
@@ -238,7 +238,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                     MANAGE_HEARING_NOTICES_A90_FILE_NAME));
                         }
                         break;
-                    case RESPONDENT_MOTHER:
+                    case RESPONDENT_BIRTH_MOTHER:
                         if (isNotEmpty(caseData.getBirthMother().getDeceased())
                             && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
                             manageHearingDetails.setHearingA91DocumentFlagFather(YesOrNo.NO);
@@ -255,7 +255,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                     MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER));
                         }
                         break;
-                    case RESPONDENT_FATHER:
+                    case RESPONDENT_BIRTH_FATHER:
                         if (isNotEmpty(caseData.getBirthFather().getDeceased())
                             && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
                             manageHearingDetails.setHearingA91DocumentFlagFather(YesOrNo.YES);
@@ -303,7 +303,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
     }
 
     private void setDocument(ManageHearingDetails manageHearingDetails, Document document) {
-        if (manageHearingDetails.getRecipientsInTheCase().contains(LEGAL_GUARDIAN)) {
+        if (manageHearingDetails.getRecipientsInTheCase().contains(LEGAL_GUARDIAN_CAFCASS)) {
             manageHearingDetails.setHearingA94DocumentCafcass(document);
         }
 
