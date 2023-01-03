@@ -17,6 +17,7 @@ public class NotesTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void addNotes(final Tab.TabBuilder<CaseData, UserRole> tabBuilder) {
         tabBuilder
+            .displayOrder(7)
             .label("LabelNotes-Heading", null, "### Case Notes")
             .field(CaseData::getCaseNote);
     }

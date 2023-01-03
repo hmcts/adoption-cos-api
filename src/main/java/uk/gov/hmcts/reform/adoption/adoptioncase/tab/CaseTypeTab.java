@@ -29,6 +29,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("serviceRequest", "Payment")
+            .displayOrder(9)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .field("waysToPay");
     }
@@ -91,7 +92,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
         final Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties = configBuilder.tab("otherParties", "Other Parties")
-            .displayOrder(2).forRoles(CASE_WORKER, DISTRICT_JUDGE);
+            .displayOrder(2)
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE);
 
         buildTabWithChildDetails(tabBuilderForOtherParties);
         buildTabWithLocalGuardianAndSolicitorDetails(tabBuilderForOtherParties);
@@ -102,6 +104,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
         configBuilder.tab("hearings","Hearings")
+            .displayOrder(6)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-managehearing", null, "[Manage hearings](/cases/case-details/${[CASE_REFERENCE]}"
                 + "/trigger/caseworker-manage-hearing/caseworker-manage-hearingmanageOrders1)")
@@ -112,6 +115,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("orders","Orders")
+            .displayOrder(5)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-orderview", null, "[Create new order](/cases/case-details/${[CASE_REFERENCE]}"
                 + "/trigger/caseworker-manage-orders/caseworker-manage-ordersmanageOrders1)")
@@ -319,6 +323,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("Confidential", "Confidential Details")
             .forRoles(SYSTEM_UPDATE)
+            .displayOrder(10)
             .field("applicant1PhoneNumber")
             .field("applicant1EmailAddress")
             .field("childrenFirstName")

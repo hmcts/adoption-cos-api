@@ -15,6 +15,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_
 public class CorrespondenceTab implements CCDConfig<CaseData, State, UserRole> {
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         final Tab.TabBuilder<CaseData, UserRole> tabBuilder = configBuilder.tab("applicationCorrespondence", "Correspondence")
+            .displayOrder(4)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE);
         addCorrespondence(tabBuilder);
     }
