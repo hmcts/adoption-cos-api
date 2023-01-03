@@ -52,7 +52,7 @@ public final class CommonPageBuilder {
     public static void replyMessageBuilder(PageBuilder pageBuilder, String condition) {
         pageBuilder.page("pageSendOrReply2")
             .showCondition(condition)
-            .label("labelReplyMes", "## Reply to message")
+            .label("labelReplyMes", "## Reply to a message")
             .complex(CaseData::getSelectedMessage)
             .readonly(SelectedMessage::getReasonForMessage)
             .readonly(SelectedMessage::getUrgency)
