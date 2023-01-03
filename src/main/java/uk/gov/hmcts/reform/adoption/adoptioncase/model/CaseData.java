@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
@@ -597,8 +598,6 @@ public class CaseData {
     )
     private LocalDateTime seekInformationNeededDate;
 
-    @JsonUnwrapped
-    @Builder.Default
     @CCD
     private Document seekFurtherInformationDocument;
 
