@@ -76,14 +76,16 @@ public final class CommonPageBuilder {
             var selectedObject = caseData.getListOfOpenMessages().stream()
                 .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(caseData.getReplyMsgDynamicList()
                                                                                     .getValueCode().toString())).findFirst();
-            messageDetails.setMessageId(selectedObject.get().getId());
-            messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
-            messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
-            messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
-            if (!Objects.isNull(selectedObject.get().getValue().getSelectedDocument())) {
-                messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocument());
+            if(selectedObject.isPresent()){
+                messageDetails.setMessageId(selectedObject.get().getId());
+                messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
+                messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
+                messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
+                if (!Objects.isNull(selectedObject.get().getValue().getSelectedDocument())) {
+                    messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocument());
+                }
+                caseData.setSelectedMessage(messageDetails);
             }
-            caseData.setSelectedMessage(messageDetails);
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
