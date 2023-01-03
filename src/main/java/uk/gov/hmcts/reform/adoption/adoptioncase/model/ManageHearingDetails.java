@@ -152,6 +152,36 @@ public class ManageHearingDetails {
     @CCD(
         access = {DefaultAccess.class}
     )
+    private Document hearingA94DocumentCafcass;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA94DocumentChildsLa;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA94DocumentApplicantsLa;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA94DocumentAdoptionAgency;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA94DocumentOtherAdoptionAgency;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA94DocumentOtherPersonWithParentalResponsibility;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
     private YesOrNo hearingA91DocumentFlagFather;
 
     @CCD(

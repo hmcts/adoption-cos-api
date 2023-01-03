@@ -25,14 +25,18 @@ public final class DocumentConstants {
     public static final String FINAL_ADOPTION_ORDER_A206 = "FINAL_ADOPTION_ORDER_A206";
 
     public static final String FINAL_ADOPTION_ORDER_A206_FILE_NAME = "A206_Final adoption order";
-
     public static final String MANAGE_HEARING_NOTICES_A90 = "MANAGE_HEARING_NOTICES_A90";
     public static final String MANAGE_HEARING_NOTICES_A91 = "MANAGE_HEARING_NOTICES_A91";
-
+    public static final String MANAGE_HEARING_NOTICES_A94 = "MANAGE_HEARING_NOTICES_A94";
+    public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_CAFCASS = "Cafcass_hearing_notice";
+    public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_CHILDS_LA = "Child_local_authority_hearing_notice";
+    public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_APPLICANTS_LA = "Applicant_local_authority_hearing_notice";
+    public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_ADOPTION_AGENCY = "Adoption_agency_hearing_notice";
+    public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_ADOPTION_AGENCY = "Other_adoption_agency_hearing_notice";
+    public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_PERSON = "Birth_mother_hearing_notice";
     public static final String MANAGE_HEARING_NOTICES_A90_FILE_NAME = "Applicants_hearing_notice";
     public static final String MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER = "Birth_mother_hearing_notice";
     public static final String MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER = "Birth_father_hearing_notice";
-
     public static final String SEEK_FURTHER_INFO_LETTER = "SEEK_FURTHER_INFO_LETTER";
     public static final String SEEK_FURTHER_INFO_LETTER_FILE_NAME = "Further_information_letter";
     public static final String ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME = "draft-adoption-application-";

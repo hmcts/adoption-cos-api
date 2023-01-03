@@ -9,6 +9,7 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageHearings;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -18,7 +19,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
-import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
@@ -31,12 +31,26 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.LEGAL_GUARDIAN;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.CHILDS_LOCAL_AUTHORITY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.APPLICANTS_LOCAL_AUTHORITY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.ADOPTION_AGENCY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.OTHER_ADOPTION_AGENCY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.validateRecipients;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A94;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A94_FILE_NAME_CAFCASS;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A94_FILE_NAME_CHILDS_LA;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A94_FILE_NAME_APPLICANTS_LA;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A94_FILE_NAME_ADOPTION_AGENCY;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_ADOPTION_AGENCY;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_PERSON;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF_EXT;
 
 @Component
 @Slf4j
@@ -101,7 +115,31 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                    "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
             .readonly(ManageHearingDetails::getHearingA90Document,
                       "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
-            .label("manageHearing77","You can make changes to the notice by continuing to the next page")
+            .label("manageHearing77","### Legal guardian (Cafcass)",
+                   "recipientsInTheCaseCONTAINS\"legalGuardian\"")
+            .readonly(ManageHearingDetails::getHearingA94DocumentCafcass,
+                      "recipientsInTheCaseCONTAINS\"legalGuardian\"")
+            .label("manageHearing78","### Child's local authority",
+                   "recipientsInTheCaseCONTAINS\"childLocalAuthority\"")
+            .readonly(ManageHearingDetails::getHearingA94DocumentChildsLa,
+                      "recipientsInTheCaseCONTAINS\"childLocalAuthority\"")
+            .label("manageHearing79","### Applicant's local authority",
+                   "recipientsInTheCaseCONTAINS\"applicantLocalAuthority\"")
+            .readonly(ManageHearingDetails::getHearingA94DocumentApplicantsLa,
+                      "recipientsInTheCaseCONTAINS\"applicantLocalAuthority\"")
+            .label("manageHearing80","### Adoption agency",
+                   "recipientsInTheCaseCONTAINS\"adoptionAgency\"")
+            .readonly(ManageHearingDetails::getHearingA94DocumentAdoptionAgency,
+                      "recipientsInTheCaseCONTAINS\"adoptionAgency\"")
+            .label("manageHearing81","### Other adoption agency",
+                   "recipientsInTheCaseCONTAINS\"otherAdoptionAgency\"")
+            .readonly(ManageHearingDetails::getHearingA94DocumentOtherAdoptionAgency,
+                      "recipientsInTheCaseCONTAINS\"otherAdoptionAgency\"")
+            .label("manageHearing82","### Other person with parental responsibility",
+                   "recipientsInTheCaseCONTAINS\"otherPersonWithParentalResponsibility\"")
+            .readonly(ManageHearingDetails::getHearingA94DocumentOtherPersonWithParentalResponsibility,
+                      "recipientsInTheCaseCONTAINS\"otherPersonWithParentalResponsibility\"")
+            .label("manageHearing83","You can make changes to the notice by continuing to the next page")
             .done()
             .done();
     }
@@ -163,35 +201,35 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         CaseDetails<CaseData, State> details,
         CaseDetails<CaseData, State> detailsBefore
     ) {
+
         var caseData = details.getData();
-        List<String> error = new ArrayList<>();
+        caseData.setBirthMother(detailsBefore.getData().getBirthMother());
+        caseData.setBirthFather(detailsBefore.getData().getBirthFather());
+        ManageHearingDetails manageHearingDetails = caseData.getManageHearingDetails();
 
-        RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
-        RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
-
-        if (isEmpty(error)) {
-            caseData.setBirthMother(detailsBefore.getData().getBirthMother());
-            caseData.setBirthFather(detailsBefore.getData().getBirthFather());
-            caseData.getManageHearingDetails().setHearingA90Document(null);
-            caseData.getManageHearingDetails().setHearingA91DocumentMother(null);
-            caseData.getManageHearingDetails().setHearingA91DocumentFather(null);
+        manageHearingDetails.setHearingA90Document(null);
+        manageHearingDetails.setHearingA91DocumentMother(null);
+        manageHearingDetails.setHearingA91DocumentFather(null);
+        manageHearingDetails.setHearingA94DocumentCafcass(null);
+        manageHearingDetails.setHearingA94DocumentChildsLa(null);
+        manageHearingDetails.setHearingA94DocumentApplicantsLa(null);
+        manageHearingDetails.setHearingA94DocumentAdoptionAgency(null);
+        manageHearingDetails.setHearingA94DocumentOtherAdoptionAgency(null);
+        manageHearingDetails.setHearingA94DocumentOtherPersonWithParentalResponsibility(null);
 
         List<String> errors = new ArrayList<>();
         AboutToStartOrSubmitResponse<CaseData, State> aboutToStartOrSubmitResponse =
-            validateRecipients(caseData.getRecipientsInTheCase(), null, caseData, errors);
+            validateRecipients(caseData.getManageHearingDetails().getRecipientsInTheCase(), null, caseData, errors);
         if (isEmpty(aboutToStartOrSubmitResponse.getErrors())) {
-            caseData.getManageHearingDetails().setHearingCreationDate(LocalDate.now(clock));
-            caseData.getManageHearingDetails().getRecipientsInTheCase().forEach(recipientsInTheCase -> {
-                switch (recipientsInTheCase) {
+            manageHearingDetails.setHearingCreationDate(LocalDate.now(clock));
+            manageHearingDetails.getRecipientsInTheCase().forEach(recipientInTheCase -> {
+                switch (recipientInTheCase) {
                     case APPLICANT1: case APPLICANT2:
-                        if (isEmpty(caseData.getManageHearingDetails().getHearingA90Document())) {
+                        if (isEmpty(manageHearingDetails.getHearingA90Document())) {
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentApplicants = objectMapper.convertValue(caseData, Map.class);
 
-                            caseData.getManageHearingDetails().setHearingA90Document(
+                            manageHearingDetails.setHearingA90Document(
                                 caseDataDocumentService.renderDocument(
                                     templateContentApplicants,
                                     details.getId(),
@@ -203,12 +241,12 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                     case RESPONDENT_MOTHER:
                         if (isNotEmpty(caseData.getBirthMother().getDeceased())
                             && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
-                            caseData.getManageHearingDetails().setHearingA91DocumentFlagFather(YesOrNo.NO);
-                            caseData.getManageHearingDetails().setHearingA91DocumentFlagMother(YesOrNo.YES);
+                            manageHearingDetails.setHearingA91DocumentFlagFather(YesOrNo.NO);
+                            manageHearingDetails.setHearingA91DocumentFlagMother(YesOrNo.YES);
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
 
-                            caseData.getManageHearingDetails().setHearingA91DocumentMother(
+                            manageHearingDetails.setHearingA91DocumentMother(
                                 caseDataDocumentService.renderDocument(
                                     templateContentMother,
                                     details.getId(),
@@ -220,12 +258,12 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                     case RESPONDENT_FATHER:
                         if (isNotEmpty(caseData.getBirthFather().getDeceased())
                             && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
-                            caseData.getManageHearingDetails().setHearingA91DocumentFlagFather(YesOrNo.YES);
-                            caseData.getManageHearingDetails().setHearingA91DocumentFlagMother(YesOrNo.NO);
+                            manageHearingDetails.setHearingA91DocumentFlagFather(YesOrNo.YES);
+                            manageHearingDetails.setHearingA91DocumentFlagMother(YesOrNo.NO);
                             @SuppressWarnings("unchecked")
                             Map<String, Object> templateContentMother = objectMapper.convertValue(caseData, Map.class);
 
-                            caseData.getManageHearingDetails().setHearingA91DocumentFather(
+                            manageHearingDetails.setHearingA91DocumentFather(
                                 caseDataDocumentService.renderDocument(
                                     templateContentMother,
                                     details.getId(),
@@ -235,6 +273,24 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         }
                         break;
                     default:
+                        if (isEmpty(manageHearingDetails.getHearingA94DocumentCafcass())
+                            && isEmpty(manageHearingDetails.getHearingA94DocumentChildsLa())
+                            && isEmpty(manageHearingDetails.getHearingA94DocumentApplicantsLa())
+                            && isEmpty(manageHearingDetails.getHearingA94DocumentAdoptionAgency())
+                            && isEmpty(manageHearingDetails.getHearingA94DocumentOtherAdoptionAgency())
+                            && isEmpty(manageHearingDetails.getHearingA94DocumentOtherPersonWithParentalResponsibility())) {
+
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> templateContentOthers = objectMapper.convertValue(caseData, Map.class);
+                            Document document = caseDataDocumentService.renderDocument(
+                                templateContentOthers,
+                                details.getId(),
+                                MANAGE_HEARING_NOTICES_A94,
+                                LanguagePreference.ENGLISH,
+                                MANAGE_HEARING_NOTICES_A94_FILE_NAME_CAFCASS
+                            );
+                            setDocument(manageHearingDetails, document);
+                        }
                         break;
                 }
             });
@@ -242,7 +298,53 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
-            .errors(error)
+            .errors(errors)
             .build();
+    }
+
+    private void setDocument(ManageHearingDetails manageHearingDetails, Document document) {
+        if (manageHearingDetails.getRecipientsInTheCase().contains(LEGAL_GUARDIAN)) {
+            manageHearingDetails.setHearingA94DocumentCafcass(document);
+        }
+
+        if (manageHearingDetails.getRecipientsInTheCase().contains(CHILDS_LOCAL_AUTHORITY)) {
+            manageHearingDetails.setHearingA94DocumentChildsLa(new Document(
+                document.getUrl(),
+                MANAGE_HEARING_NOTICES_A94_FILE_NAME_CHILDS_LA + PDF_EXT,
+                document.getBinaryUrl()
+            ));
+        }
+
+        if (manageHearingDetails.getRecipientsInTheCase().contains(APPLICANTS_LOCAL_AUTHORITY)) {
+            manageHearingDetails.setHearingA94DocumentApplicantsLa(new Document(
+                document.getUrl(),
+                MANAGE_HEARING_NOTICES_A94_FILE_NAME_APPLICANTS_LA + PDF_EXT,
+                document.getBinaryUrl()
+            ));
+        }
+
+        if (manageHearingDetails.getRecipientsInTheCase().contains(ADOPTION_AGENCY)) {
+            manageHearingDetails.setHearingA94DocumentAdoptionAgency(new Document(
+                document.getUrl(),
+                MANAGE_HEARING_NOTICES_A94_FILE_NAME_ADOPTION_AGENCY + PDF_EXT,
+                document.getBinaryUrl()
+            ));
+        }
+
+        if (manageHearingDetails.getRecipientsInTheCase().contains(OTHER_ADOPTION_AGENCY)) {
+            manageHearingDetails.setHearingA94DocumentOtherAdoptionAgency(new Document(
+                document.getUrl(),
+                MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_ADOPTION_AGENCY + PDF_EXT,
+                document.getBinaryUrl()
+            ));
+        }
+
+        if (manageHearingDetails.getRecipientsInTheCase().contains(OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY)) {
+            manageHearingDetails.setHearingA94DocumentOtherPersonWithParentalResponsibility(new Document(
+                document.getUrl(),
+                MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_PERSON + PDF_EXT,
+                document.getBinaryUrl()
+            ));
+        }
     }
 }
