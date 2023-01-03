@@ -571,7 +571,7 @@ public class CaseData {
     @CCD(
         typeOverride = DynamicRadioList,
         label = "Who do you need to contact\n",
-        typeParameterOverride = "DocumentSubmitter"
+        typeParameterOverride = "SeekFurtherInformationList"
     )
     private DynamicList seekFurtherInformationList;
 
@@ -595,7 +595,12 @@ public class CaseData {
         access = {SystemUpdateAccess.class,
             DefaultAccess.class}
     )
-    private LocalDateTime date;
+    private LocalDateTime seekInformationNeededDate;
+
+    @JsonUnwrapped
+    @Builder.Default
+    @CCD
+    private Document seekFurtherInformationDocument;
 
     @JsonUnwrapped
     @Builder.Default
@@ -747,6 +752,10 @@ public class CaseData {
         typeParameterOverride = "OrderCheckAndSend"
     )
     private OrderCheckAndSend orderCheckAndSend;
+
+    private String seekFurtherInformationDocumentSubmitterName;
+
+    private YesOrNo seekFurtherInformationAdopOrLaSelected;
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
@@ -941,7 +950,7 @@ public class CaseData {
         this.setCommonOrderList(archiveManageOrdersHelper(
             this.getCommonOrderList(), data));
         this.setManageOrdersData(new ManageOrdersData());
-        this.setDirectionsOrderData(new DirectionsOrderData());
+        setDirectionsOrderData(new DirectionsOrderData());
         this.setAdoptionOrderData(new AdoptionOrderData());
     }
 
