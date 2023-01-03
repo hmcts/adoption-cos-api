@@ -2,13 +2,15 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.common;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDocumentList;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.idam.client.models.User;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -96,12 +98,17 @@ public final class CaseEventCommonMethods {
                                             .value(DynamicListElement.EMPTY).build());
     }
 
-    public static void updateMessageList(CaseData caseData) {
+    public static void updateMessageList(CaseData caseData, User caseworkerUser) {
         if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.SEND_A_MESSAGE)) {
             MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
             sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
-            sendMessagesDetails.setMessageHistory(sendMessagesDetails.getMessageText());
-            setMessageInformation(caseData, sendMessagesDetails);
+            sendMessagesDetails.setMessageHistory(buildMessageHistory(
+                caseworkerUser,
+                sendMessagesDetails.getMessageText(),
+                sendMessagesDetails.getMessageHistory()
+            ));
+            buildDocumentHistory(caseData, sendMessagesDetails,sendMessagesDetails.getDocumentHistory());
+            setMessageInformation(caseData, sendMessagesDetails,caseworkerUser);
 
         } else if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE)) {
             MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
@@ -110,16 +117,15 @@ public final class CaseEventCommonMethods {
             MessageSendDetails selectedMessage = messageListValue.getValue();
             caseData.getListOfOpenMessages().remove(messageListValue);
             if (YesOrNo.NO.equals(caseData.getSelectedMessage().getReplyMessage())) {
+                selectedMessage.setMessageStatus(MessageSendDetails.MessageStatus.CLOSED);
                 caseData.setClosedMessages(caseData.archiveManageOrdersHelper(
                     caseData.getClosedMessages(), selectedMessage));
-
             } else {
                 sendMessagesDetails.setMessageId(activeMessageID);
                 sendMessagesDetails.setMessageHistory(
-                    StringUtils.appendIfMissing(sendMessagesDetails.getMessageText(),
-                                                "\n",
-                                                selectedMessage.getMessageHistory()));
-                CaseEventCommonMethods.setMessageInformation(caseData, sendMessagesDetails);
+                    buildMessageHistory(caseworkerUser, sendMessagesDetails.getMessageText(), selectedMessage.getMessageHistory()));
+                buildDocumentHistory(caseData, sendMessagesDetails, selectedMessage.getDocumentHistory());
+                setMessageInformation(caseData, sendMessagesDetails,caseworkerUser);
             }
 
         }
@@ -131,7 +137,7 @@ public final class CaseEventCommonMethods {
             activeMessageID)).findFirst().get();
     }
 
-    private static void setMessageInformation(CaseData caseData, MessageSendDetails sendMessagesDetails) {
+    private static void setMessageInformation(CaseData caseData, MessageSendDetails sendMessagesDetails, User caseworkerUser) {
         if (caseData.getAttachDocumentList() != null
             && caseData.getAttachDocumentList().getValue() != null) {
             var doc = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
@@ -141,6 +147,7 @@ public final class CaseEventCommonMethods {
             sendMessagesDetails.setDocumentHistory(
                 caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
         }
+        sendMessagesDetails.setMessageFrom(caseworkerUser.getUserDetails().getEmail());
         sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         sendMessagesDetails.setMessageSendDateNTime(
             LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
@@ -149,5 +156,30 @@ public final class CaseEventCommonMethods {
         caseData.setMessageSendDetails(null);
         caseData.setAttachDocumentList(null);
         caseData.setSelectedMessage(null);
+    }
+
+    public static String buildMessageHistory(User caseworkerUser, String messageText, String messageHistory) {
+        String newMessage = String.format(
+            "%s %s %s",
+            caseworkerUser.getUserDetails().getEmail(),
+            " - ",
+            messageText);
+        if (StringUtils.isEmpty(messageHistory)) {
+            return newMessage;
+        }
+        return String.join("\n \n", newMessage, messageHistory);
+    }
+
+    private static void buildDocumentHistory(CaseData caseData, MessageSendDetails sendMessagesDetails,
+                                      List<ListValue<Document>> documentHistory) {
+        if (caseData.getAttachDocumentList() != null
+            && caseData.getAttachDocumentList().getValue() != null) {
+            var doc = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
+                .filter(item -> item.getMessageId().equalsIgnoreCase(caseData.getAttachDocumentList().getValue().getCode().toString()))
+                .findFirst().get().getDocumentLink();
+            sendMessagesDetails.setSelectedDocument(doc);
+            sendMessagesDetails.setDocumentHistory(
+                caseData.archiveManageOrdersHelper(documentHistory, doc));
+        }
     }
 }

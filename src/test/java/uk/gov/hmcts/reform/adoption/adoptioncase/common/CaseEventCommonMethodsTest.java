@@ -12,6 +12,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
+import uk.gov.hmcts.reform.idam.client.models.User;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,10 +23,10 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.prepareDocumentList;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.prepareReplyMessageDynamicList;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 public class CaseEventCommonMethodsTest {
-
 
 
     @Test
@@ -79,7 +81,7 @@ public class CaseEventCommonMethodsTest {
         messageSendDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.LIST_A_HEARING);
         caseData.setMessageSendDetails(messageSendDetails);
-        CaseEventCommonMethods.updateMessageList(caseData);
+        CaseEventCommonMethods.updateMessageList(caseData, getCaseworkerUser());
         assertThat(caseData.getMessageAction()).isNull();
     }
 
@@ -102,7 +104,7 @@ public class CaseEventCommonMethodsTest {
         caseData.setSelectedMessage(selectedMessage);
         prepareReplyMessageDynamicList(caseData);
         caseData.getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "Test"));
-        CaseEventCommonMethods.updateMessageList(caseData);
+        CaseEventCommonMethods.updateMessageList(caseData, getCaseworkerUser());
         assertThat(caseData.getMessageAction()).isNull();
     }
 
@@ -174,5 +176,15 @@ public class CaseEventCommonMethodsTest {
         details.setData(data);
         details.setId(1L);
         return details;
+    }
+
+    private User getCaseworkerUser() {
+        UserDetails userDetails = UserDetails
+            .builder()
+            .forename("testFname")
+            .surname("testSname")
+            .build();
+
+        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
     }
 }

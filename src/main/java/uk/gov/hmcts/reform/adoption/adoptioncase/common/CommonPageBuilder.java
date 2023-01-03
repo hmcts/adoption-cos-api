@@ -37,8 +37,8 @@ public final class CommonPageBuilder {
             .label("sendMessageLab", "## Send a message","messageAction=\"sendMessage\"")
             .label("replyMessageLab", "## Reply to message","messageAction=\"replyMessage\"")
             .complex(CaseData::getMessageSendDetails)
-            .mandatory(MessageSendDetails::getMessageReceiverRoles)
-            .mandatory(MessageSendDetails::getMessageReasonList)
+            .mandatoryWithLabel(MessageSendDetails::getMessageReceiverRoles,"Who do you want to send a message to?")
+            .mandatoryWithLabel(MessageSendDetails::getMessageReasonList,"Select a reason for this message")
             .mandatory(MessageSendDetails::getMessageUrgencyList)
             .done()
             .mandatory(CaseData::getSendMessageAttachDocument)
@@ -60,7 +60,6 @@ public final class CommonPageBuilder {
             .readonly(SelectedMessage::getDocumentLink)
             .mandatory(SelectedMessage::getReplyMessage)
             .done();
-
     }
 
     public static AboutToStartOrSubmitResponse<CaseData, State> sendMessageMidEvent(CaseDetails<CaseData, State> details,

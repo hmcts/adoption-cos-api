@@ -27,7 +27,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndS
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -37,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
@@ -51,6 +55,12 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
     private CaseDataDocumentService caseDataDocumentService;
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private IdamService idamService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * The constant CASEWORKER_CHECK_AND_SEND_ORDERS.
@@ -124,6 +134,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State>
                                             caseDetails, CaseDetails<CaseData, State> caseDetailsBefore) {
         var caseData = caseDetails.getData();
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
         switch (caseData.getSelectedOrder().getOrderType()) {
             case CASE_MANAGEMENT_ORDER:
                 Optional<ListValue<ManageOrdersData>> gatekeepingOrderItem =  caseData.getManageOrderList().stream()
@@ -175,7 +186,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     FINAL_ADOPTION_ORDER_A76_FILE_NAME
                 ));
         } else if (commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.RETURN_FOR_AMENDMENTS)) {
-            CaseEventCommonMethods.updateMessageList(caseData);
+            CaseEventCommonMethods.updateMessageList(caseData, caseworkerUser);
         }
         caseData.setManageOrdersData(null);
         caseData.setDirectionsOrderData(null);
