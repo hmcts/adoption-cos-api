@@ -72,7 +72,7 @@ public final class CommonPageBuilder {
         caseData.setAttachDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
 
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages()) && caseData.getReplyMsgDynamicList() != null) {
-           setSelectedObject(caseData);
+            setSelectedObject(caseData);
         }
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
