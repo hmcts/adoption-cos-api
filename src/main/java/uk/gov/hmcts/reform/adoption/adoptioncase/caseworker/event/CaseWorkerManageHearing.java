@@ -85,6 +85,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         manageHearings.addTo(pageBuilder);
         pageBuilder.page("manageHearing6",this::midEventAfterRecipientSelection)
             .showCondition("manageHearingOptions=\"addNewHearing\" OR isTheHearingNeedsRelisting=\"Yes\"")
+            .pageLabel("Select recipients of the hearing notice")
             .complex(CaseData::getManageHearingDetails)
             .mandatory(ManageHearingDetails::getRecipientsInTheCase)
             .done()
