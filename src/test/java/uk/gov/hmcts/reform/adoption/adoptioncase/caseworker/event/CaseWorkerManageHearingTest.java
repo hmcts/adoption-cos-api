@@ -85,7 +85,6 @@ class CaseWorkerManageHearingTest {
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings()).isNotNull();
     }
 
@@ -95,7 +94,6 @@ class CaseWorkerManageHearingTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
@@ -104,9 +102,8 @@ class CaseWorkerManageHearingTest {
     void caseworkerManageHearingAboutToSubmitAdjournTest() {
         var caseDetails = getCaseDetailsForHearing();
         CaseData data = caseDetails.getData();
-        data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
+        data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
         assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
     }
@@ -123,10 +120,9 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
         CaseData data = caseDetails.getData();
         data.setManageHearingDetails(manageHearingDetails);
-        data.setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
-        data.setIsTheHearingNeedsRelisting(YesOrNo.YES);
+        data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
+        data.getManageHearingDetails().setIsTheHearingNeedsRelisting(YesOrNo.YES);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
         assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
     }
@@ -143,10 +139,9 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
         CaseData data = caseDetails.getData();
         data.setManageHearingDetails(manageHearingDetails);
-        data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
-        data.setIsTheHearingNeedsRelisting(YesOrNo.YES);
+        data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
+        data.getManageHearingDetails().setIsTheHearingNeedsRelisting(YesOrNo.YES);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageHearingDetails()).isNull();
         assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
         assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
     }
@@ -157,7 +152,7 @@ class CaseWorkerManageHearingTest {
         caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
-        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         when(clock.instant()).thenReturn(instant);
@@ -173,7 +168,7 @@ class CaseWorkerManageHearingTest {
         caseDetails.getData().setApplyingWith(ApplyingWith.WITH_SPOUSE_OR_CIVIL_PARTNER);
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
-        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         when(clock.instant()).thenReturn(instant);
@@ -189,7 +184,7 @@ class CaseWorkerManageHearingTest {
         caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
-        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         when(clock.instant()).thenReturn(instant);
@@ -205,7 +200,7 @@ class CaseWorkerManageHearingTest {
         caseDetails.getData().setIsChildRepresentedByGuardian(YesOrNo.YES);
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
-        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         when(clock.instant()).thenReturn(instant);
@@ -223,7 +218,7 @@ class CaseWorkerManageHearingTest {
         caseDetails.getData().getBirthFather().setToBeServed(YesOrNo.NO);
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT1);
-        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
         Map<String, Object> templateVars = new HashMap<>();
         when(objectMapper.convertValue(caseDetails.getData(), Map.class)).thenReturn(templateVars);
         final var instant = Instant.now();
@@ -241,7 +236,7 @@ class CaseWorkerManageHearingTest {
         caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT2);
-        caseDetails.getData().setRecipientsInTheCase(recipientsInTheCases);
+        caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
         AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
             .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isNotNull();
@@ -257,7 +252,7 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setCourt("test court");
         manageHearingDetails.setJudge("test judge");
         data.setManageHearingDetails(manageHearingDetails);
-        data.setManageHearingOptions(ManageHearingOptions.ADD_NEW_HEARING);
+        data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.ADD_NEW_HEARING);
         details.setData(data);
         details.setId(1L);
         return details;
@@ -273,7 +268,7 @@ class CaseWorkerManageHearingTest {
         manageHearingDetails.setCourt("test court");
         manageHearingDetails.setJudge("test judge");
         manageHearingDetails.setHearingDateAndTime(LocalDateTime.now());
-        data.setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
+        data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
         List<ListValue<ManageHearingDetails>> listValues = new ArrayList<>();
         var listValue = ListValue
             .<ManageHearingDetails>builder()
