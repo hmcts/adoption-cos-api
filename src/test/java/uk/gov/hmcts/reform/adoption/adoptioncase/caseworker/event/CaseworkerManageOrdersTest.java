@@ -363,9 +363,16 @@ class CaseworkerManageOrdersTest {
     public void shouldCreateDynamicList() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
-        AddressUK addressUK = new AddressUK();
+        AdoptionAgencyOrLocalAuthority adoptionAgencyOrLocalAuthority = new AdoptionAgencyOrLocalAuthority();
+        adoptionAgencyOrLocalAuthority.setAdopAgencyOrLaName("TEST_NAME");
+        caseData.setAdopAgencyOrLA(adoptionAgencyOrLocalAuthority);
+        SocialWorker socialWorker = new SocialWorker();
+        socialWorker.setSocialWorkerName("TEST_NAME");
+        caseData.setChildSocialWorker(socialWorker);
+        caseData.setApplicantSocialWorker(socialWorker);
         caseData.setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
         caseData.getOtherAdoptionAgencyOrLA().setAgencyOrLaName("TEST_NAME");
+        AddressUK addressUK = new AddressUK();
         caseData.getOtherAdoptionAgencyOrLA().setAgencyAddress(addressUK);
         caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostTown("TEST_TOWN");
         caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostCode("TEST_POST_CODE");
