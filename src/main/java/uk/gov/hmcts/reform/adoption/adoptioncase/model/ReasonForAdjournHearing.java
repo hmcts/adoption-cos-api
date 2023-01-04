@@ -9,18 +9,39 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum ReasonForAdjournHearing implements HasLabel {
 
-    @JsonProperty("courtOrJudgeUnavailable")
-    COURT_OR_JUDGE_UNAVAILABLE("Court or judge unavailable"),
 
-    @JsonProperty("partiesUnavailable")
-    PARTIES_UNAVAILABLE("Parties unavailable"),
+    @JsonProperty("specialMeasuresRequired")
+    SPECIAL_MEASURES_REQUIRED("Special measures required"),
 
-    @JsonProperty("lateFillingOfDocuments")
-    LATE_FILLING_OF_DOCUMENTS("Late filing of documents"),
+    @JsonProperty("interpreterRequired")
+    COURT_OR_JUDGE_UNAVAILABLE("Interpreter required"),
 
-    @JsonProperty("caseListedOnDatesToAvoid")
-    CASE_LISTED_ON_DATES_TO_AVOID("Date listed on 'Dates to avoid'");
+    @JsonProperty("insufficientTimeToDealWithCases")
+    INSUFFICIENT_TIME_TO_DEALS_WITH_CASES("Insufficient time to deal with cases"),
 
+    @JsonProperty("adminError")
+    ADMIN_ERROR("Admin error"),
+
+    @JsonProperty("notReadyToProceed")
+    NOT_READY_TO_PROCEED("Not ready to proceed"),
+
+    @JsonProperty("cafcass")
+    CAFCASS("Cafcass"),
+
+    @JsonProperty("experts")
+    EXPERTS("Experts"),
+
+    @JsonProperty("health")
+    HEALTH("Health"),
+
+    @JsonProperty("international")
+    INTERNATIONAL("International"),
+
+    @JsonProperty("localAuthority")
+    LOCAL_AUTHORITY("Local authority"),
+
+    @JsonProperty("otherFreeTextBox")
+    OTHER_FREETEXT_BOX("Other - This will be a free text box");
 
     private final String label;
 }
