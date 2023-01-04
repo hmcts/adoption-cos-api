@@ -31,7 +31,6 @@ import java.util.Map;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.validateRecipients;
-import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90_FILE_NAME;
@@ -166,7 +165,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         var caseData = details.getData();
         List<String> errors = new ArrayList<>();
         AboutToStartOrSubmitResponse<CaseData, State> aboutToStartOrSubmitResponse =
-            validateRecipients(caseData.getRecipientsInTheCase(), null, caseData, errors);
+            validateRecipients(caseData.getManageHearingDetails().getRecipientsInTheCase(), null, caseData, errors);
         if (isEmpty(aboutToStartOrSubmitResponse.getErrors())) {
             caseData.setBirthMother(detailsBefore.getData().getBirthMother());
             caseData.setBirthFather(detailsBefore.getData().getBirthFather());
