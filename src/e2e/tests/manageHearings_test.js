@@ -2,7 +2,7 @@ const config = require('../config');
 const laHelper = require('../helpers/la_portal_case');
 let caseId;
 
-Feature('Manage Hearings tests').retry(1);
+Feature('Manage Hearings tests').retry(0);
 
 async function setupScenario(I) {
   if (!caseId) {
