@@ -93,7 +93,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
-        final Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties = configBuilder.tab("otherParties", "Other Parties")
+        final Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties = configBuilder.tab("otherParties", "Other parties")
             .displayOrder(2)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE);
 
