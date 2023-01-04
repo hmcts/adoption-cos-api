@@ -26,7 +26,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildHearingsTab(configBuilder);
         buildConfidentialTab(configBuilder);
         buildNotes(configBuilder);
-        //buildHistoryTab(configBuilder);
         buildServiceRequestTab(configBuilder);
     }
 
@@ -336,13 +335,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applyingWith");
     }
 
-    private void buildHistoryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.omitHistoryForRoles(CASE_WORKER);
-        configBuilder.tab("CaseHistory","History")
-            .displayOrder(11)
-            .label("History-Heading", null, "### History")
-            .field("caseHistory");
-    }
+
 
     private void buildCorrespondence(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationCorrespondence", "Correspondence")
