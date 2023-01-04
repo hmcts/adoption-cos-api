@@ -10,16 +10,16 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 public enum RecipientsInTheCase implements HasLabel {
 
     @JsonProperty("applicant1")
-    APPLICANT1("Applicant 1"),
+    APPLICANT1("First applicant"),
 
     @JsonProperty("applicant2")
-    APPLICANT2("Applicant 2"),
+    APPLICANT2("Second applicant"),
 
     @JsonProperty("respondentBirthMother")
-    RESPONDENT_BIRTH_MOTHER("Respondent(birth mother)"),
+    RESPONDENT_BIRTH_MOTHER("Respondent (birth mother)"),
 
     @JsonProperty("respondentBirthFather")
-    RESPONDENT_BIRTH_FATHER("Respondent(birth father)"),
+    RESPONDENT_BIRTH_FATHER("Respondent (birth father)"),
 
     @JsonProperty("legalGuardian")
     LEGAL_GUARDIAN_CAFCASS("Legal guardian (CAFCASS)"),
