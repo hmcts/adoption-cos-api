@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.SortedSet;
 import java.util.UUID;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -553,32 +552,16 @@ public class CaseData {
     private String name;
 
     @CCD(
-        label = "Hearing notice recipients",
-        hint = "Only select people who are party to this case and who need a copy of this order.",
-        access = {DefaultAccess.class}
-    )
-    private SortedSet<RecipientsInTheCase> recipientsInTheCase;
-
-    @CCD(
         access = {DefaultAccess.class, CaseworkerAccess.class},
         label = "Ways To Pay"
     )
     private WaysToPay waysToPay;
-
-
-    @CCD(
-        access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "ManageHearingOptions"
-    )
-    private ManageHearingOptions manageHearingOptions;
 
     @CCD(
         typeOverride = DynamicRadioList,
         label = "Select a hearing you want to vacate\n"
     )
     private DynamicList hearingListThatCanBeVacated;
-
 
     @CCD(
         typeOverride = DynamicRadioList,
@@ -618,29 +601,13 @@ public class CaseData {
     @CCD
     private Document seekFurtherInformationDocument;
 
+    @JsonUnwrapped
+    @Builder.Default
     @CCD(
         label = "Enter hearing details",
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
+        access = {DefaultAccess.class}
     )
-    private ManageHearingDetails manageHearingDetails;
-
-    @CCD(
-        label = "Reason for vacating a hearing",
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
-    )
-    private ReasonForVacatingHearing reasonForVacatingHearing;
-
-    @CCD(
-        label = "Reason for adjournment",
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
-    )
-    private ReasonForAdjournHearing reasonForAdjournHearing;
-
-    @CCD(
-        label = "Does the hearing need to be relisted?",
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
-    )
-    private YesOrNo isTheHearingNeedsRelisting;
+    private ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
 
     @CCD(
         label = "Vacated hearings",
@@ -658,7 +625,6 @@ public class CaseData {
     )
     private List<ListValue<ManageHearingDetails>> adjournHearings;
 
-
     @CCD(
         label = "New hearing",
         typeOverride = Collection,
@@ -666,7 +632,6 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<ManageHearingDetails>> newHearings;
-
 
     @CCD(
         typeOverride = Collection,
@@ -786,11 +751,6 @@ public class CaseData {
         typeParameterOverride = "OrderCheckAndSend"
     )
     private OrderCheckAndSend orderCheckAndSend;
-
-    @CCD(
-        access = {DefaultAccess.class}
-    )
-    private Document hearingA90Document;
 
     private String seekFurtherInformationDocumentSubmitterName;
 
@@ -953,11 +913,11 @@ public class CaseData {
                 data.setAdoptionOrderRecipients(getManageOrdersData().getRecipientsList());
                 break;
             case GENERAL_DIRECTIONS_ORDER:
-                getDirectionsOrderData().setSubmittedDateDirectionsOrder(
+                this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-                getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
-                setDirectionsOrderList(archiveManageOrdersHelper(
-                    this.getDirectionsOrderList(), getDirectionsOrderData()));
+                this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
+                this.setDirectionsOrderList(archiveManageOrdersHelper(
+                    this.getDirectionsOrderList(), this.getDirectionsOrderData()));
 
                 data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
                 data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
@@ -998,12 +958,9 @@ public class CaseData {
         ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
 
         if (null != manageHearingDetails) {
-            manageHearingDetails.setRecipientsInTheCase(this.getRecipientsInTheCase());
             manageHearingDetails.setHearingId(UUID.randomUUID().toString());
             setNewHearings(archiveManageOrdersHelper(getNewHearings(), manageHearingDetails));
-            this.setManageHearingDetails(null);
-            this.setManageHearingOptions(null);
-            this.setRecipientsInTheCase(null);
+            this.setManageHearingDetails(new ManageHearingDetails());
         }
     }
 
@@ -1016,11 +973,11 @@ public class CaseData {
         )).findFirst();
 
         if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
-            vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(reasonForVacatingHearing);
+            vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(this.manageHearingDetails.getReasonForVacatingHearing());
             setVacatedHearings(archiveManageOrdersHelper(getVacatedHearings(), vacatedHearingDetails.get().getValue()));
             newHearings.remove(vacatedHearingDetails.get());
         }
-        this.setManageHearingOptions(null);
+        this.manageHearingDetails.setManageHearingOptions(null);
     }
 
     public void updateAdjournHearings() {
@@ -1031,11 +988,11 @@ public class CaseData {
         )).findFirst();
 
         if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
-            adjournHearingDetails.get().getValue().setReasonForAdjournHearing(reasonForAdjournHearing);
+            adjournHearingDetails.get().getValue().setReasonForAdjournHearing(this.manageHearingDetails.getReasonForAdjournHearing());
             setAdjournHearings(archiveManageOrdersHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
             newHearings.remove(adjournHearingDetails.get());
         }
-        this.setManageHearingOptions(null);
+        this.manageHearingDetails.setManageHearingOptions(null);
     }
 
 }
