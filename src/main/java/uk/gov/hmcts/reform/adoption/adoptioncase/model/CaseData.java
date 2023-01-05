@@ -724,9 +724,13 @@ public class CaseData {
     private DynamicList replyMsgDynamicList;
 
 
-    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    @CCD(access = {DefaultAccess.class})
     @JsonUnwrapped
     private MessageSendDetails messageSendDetails;
+
+    @CCD(access = {DefaultAccess.class})
+    @Builder.Default
+    private String loggedInUserRole = "caseworker";
 
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
@@ -762,6 +766,7 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<MessageSendDetails>> closedMessages;
+
     // ------------------- Send And Reply Messages Objects End ----------------- //
 
     @CCD(
@@ -795,6 +800,7 @@ public class CaseData {
     private String seekFurtherInformationDocumentSubmitterName;
 
     private YesOrNo seekFurtherInformationAdopOrLaSelected;
+
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {

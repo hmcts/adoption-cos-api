@@ -60,9 +60,6 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
     }
 
     private PageBuilder addConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-//        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-//                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-//        );
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_SEND_OR_REPLY)
                                    .forAllStates()
@@ -71,7 +68,6 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                                    .showSummary()
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
-                                   .explicitGrants()
                                    .aboutToStartCallback(this::beforeStartEvent)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
@@ -97,12 +93,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
         caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList)
                                             .value(DynamicListElement.EMPTY).build());
 
-
-//        var sendDetail = caseData.getMessageSendDetails();
-//        sendDetail.setReasonList(DynamicList.builder().listItems(prepareMessageReasonList(
-//            idamService.retrieveUser(request.getHeader(AUTHORIZATION))))
-//                                     .value(DynamicListElement.EMPTY).build());
-
+        caseData.setLoggedInUserRole("judge");
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();

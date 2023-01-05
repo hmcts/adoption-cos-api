@@ -6,7 +6,10 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.*;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
@@ -23,11 +26,11 @@ public class SendOrReply implements CcdPageConfiguration {
             .mandatory(CaseData::getMessageAction)
             .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
         replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
-        messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
+        messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"", "loggedInUser=\"judge\"");
 
     }
 
-    public void messageBuilder(PageBuilder pageBuilder,String condition) {
+    public void messageBuilder(PageBuilder pageBuilder,String condition, String reasonsCondition) {
         pageBuilder.page("pageSendOrReply3")
             .showCondition(condition)
             .label("sendMessageLab", "## Send a message","messageAction=\"sendMessage\"")
@@ -35,8 +38,8 @@ public class SendOrReply implements CcdPageConfiguration {
             .complex(CaseData::getMessageSendDetails)
             .mandatory(MessageSendDetails::getMessageReceiverRoles)
             .label("messageReasonLabel", "Select a reason for this message")
-            .mandatory(MessageSendDetails::getMessageReasonList)
-            .mandatory(MessageSendDetails::getMessageReasonJudge)
+            .mandatory(MessageSendDetails::getMessageReasonList, "loggedInUserRole=\"caseworker\"")
+            .mandatory(MessageSendDetails::getMessageReasonJudge,"loggedInUserRole=\"judge\"")
             .mandatory(MessageSendDetails::getMessageUrgencyList)
             .done()
             .mandatory(CaseData::getSendMessageAttachDocument)

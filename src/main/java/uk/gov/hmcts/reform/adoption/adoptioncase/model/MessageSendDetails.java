@@ -8,14 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.api.HasLabel;
-import uk.gov.hmcts.ccd.sdk.api.Label;
 import uk.gov.hmcts.ccd.sdk.type.Document;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
-import uk.gov.hmcts.ccd.sdk.type.FieldType;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerMessageReasonAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DistrictJudgeAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDateTime;
@@ -58,14 +53,14 @@ public class MessageSendDetails {
         typeOverride = FixedList,
         typeParameterOverride = "MessageReason",
         inheritAccessFromParent = false,
-        access = {CaseworkerMessageReasonAccess.class}
+        access = {DefaultAccess.class}
     )
     private MessageReason messageReasonList;
 
 
     @CCD(
         typeOverride = FixedList,
-        access = {DistrictJudgeAccess.class},
+        access = {DefaultAccess.class},
         inheritAccessFromParent = false,
         typeParameterOverride = "MessageReasonJudge"
     )
@@ -102,8 +97,6 @@ public class MessageSendDetails {
 
     @CCD(access = {DefaultAccess.class})
     private String messageHistory;
-
-
 
     @Getter
     @AllArgsConstructor
