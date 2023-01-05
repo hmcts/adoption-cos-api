@@ -4,7 +4,7 @@ const manageHearingFormData = require('../fixtures/manageHearings');
 module.exports = {
   fields: {
     allocateJudgeTitle: '//h1[contains(text(),"Manage hearings")]',
-    childNameHeader: '//h3[contains(text(),"Child\'s Name: child child")]',
+    childNameHeader: '//h3[contains(text(),"Child\'s name: child child")]',
     continueButton: 'button[type="submit"]',
     errorMessage: '//span[contains(text(),"Field is required")]',
     alertMessage: '//div[@class="alert-message"]',
