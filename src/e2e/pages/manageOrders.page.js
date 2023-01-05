@@ -80,14 +80,14 @@ module.exports = {
 
     },
     serveParties: {
-      birthMother: '#recipientsList-birthMother',
-      birthFather: '#recipientsList-birthFather',
-      applicants: '#recipientsList-applicants',
+      birthMother: '#recipientsList-respondentBirthMother',
+      birthFather: '#recipientsList-respondentBirthFather',
+      firstApplicant: '#recipientsList-firstApplicant',
       childLocalAuthority: '#recipientsList-childsLocalAuthority',
       applicantLocalAuthority: '#recipientsList-applicantsLocalAuthority',
       otherAdoptionAgency: '#recipientsList-otherAdoptionAgency',
       otherPersonWithParentalResponsibility: '#recipientsList-otherPersonWithParentalResponsibility',
-      cafCass: '#recipientsList-cafcass'
+      cafCass: '#recipientsList-legalGuardianCafcass'
 
     },
     dateOrderMade: {
