@@ -113,13 +113,13 @@ public class AdoptionOrderData {
     public enum RecipientsA206 implements HasLabel {
 
         @JsonProperty("respondentBirthMother")
-        RESPONDENT_BIRTH_MOTHER("Respondent (Birth mother)"),
+        RESPONDENT_BIRTH_MOTHER("Respondent (birth mother)"),
 
         @JsonProperty("respondentBirthFather")
-        RESPONDENT_BIRTH_FATHER("Respondent (Birth father)"),
+        RESPONDENT_BIRTH_FATHER("Respondent (birth father)"),
 
-        @JsonProperty("legalGuardianCAFCASS")
-        LEGAL_GUARDIAN_CAFCASS("Legal guardian (CAFCASS)"),
+        @JsonProperty("legalGuardianCafcass")
+        LEGAL_GUARDIAN_CAFCASS("Legal guardian (Cafcass)"),
 
         @JsonProperty("childsLocalAuthority")
         CHILDS_LOCAL_AUTHORITY("Child's local authority"),
