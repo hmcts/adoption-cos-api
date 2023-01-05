@@ -45,7 +45,7 @@ module.exports = {
     recipientsTitle: '//span[contains(text(),"Recipients")]',
     adjournHearingCourtJudgeUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
     adjournHearingPartiesUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
-    adjournHearingLateFiling: '#reasonForAdjournHearing-lateFillingOfDocuments',
+    specialMeasuresRequired: '#reasonForAdjournHearing-specialMeasuresRequired',
     adjournHearingDateToAvoid: '#reasonForAdjournHearing-caseListedOnDatesToAvoid',
     previewDraftLink:'//ccd-read-document-field/a[contains(text(), \' Birth_mother_hearing_notice.pdf\')]'
   },
@@ -255,13 +255,10 @@ module.exports = {
       await I.retry(3).see('Select a hearing you want to adjourn is required');
       await I.retry(5).click(this.fields.vacateHearingToSelect);
       await I.retry(5).click(this.fields.continueButton);
-      await I.retry(5).seeElement(this.fields.adjournHearingCourtJudgeUnavailable);
-      await I.retry(5).seeElement(this.fields.adjournHearingPartiesUnavailable);
-      await I.retry(5).seeElement(this.fields.adjournHearingLateFiling);
-      await I.retry(5).seeElement(this.fields.adjournHearingDateToAvoid);
+      await I.retry(5).seeElement(this.fields.specialMeasuresRequired);
       await I.retry(5).click(this.fields.continueButton);
       await I.retry(3).see('Reason for adjournment is required');
-      await I.retry(5).click(this.fields.adjournHearingLateFiling);
+      await I.retry(5).click(this.fields.specialMeasuresRequired);
       await I.retry(5).click(this.fields.continueButton);
       await I.retry(5).seeElement(this.fields.reListingYes);
       await I.retry(5).seeElement(this.fields.reListingNo);
@@ -269,6 +266,7 @@ module.exports = {
       await I.retry(3).see('Does the hearing need to be relisted is required');
       await I.retry(5).click(this.fields.reListingNo);
       await I.retry(5).click(this.fields.continueButton);
+      await I.wait(3);
     },
 
     async verifyAdjournHearingNoRelistingCheckYourAnswers(){
