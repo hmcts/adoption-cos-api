@@ -266,7 +266,7 @@ module.exports = {
       await I.retry(5).seeElement(this.fields.reListingYes);
       await I.retry(5).seeElement(this.fields.reListingNo);
       await I.retry(5).click(this.fields.continueButton);
-      await I.retry(3).see('Does the hearing need to be relisted is required');
+      await I.retry(3).see('Does the hearing need to be relisted? is required');
       await I.retry(5).click(this.fields.reListingNo);
       await I.retry(5).click(this.fields.continueButton);
     },
@@ -329,7 +329,7 @@ module.exports = {
         await I.retry(5).seeElement(this.fields.reListingYes);
         await I.retry(5).seeElement(this.fields.reListingNo);
         await I.retry(5).click(this.fields.continueButton);
-        await I.retry(3).see('Does the hearing need to be relisted is required');
+        await I.retry(3).see('Does the hearing need to be relisted? is required');
         await I.retry(5).click(this.fields.reListingYes);
         await I.retry(5).click(this.fields.continueButton);
       },
