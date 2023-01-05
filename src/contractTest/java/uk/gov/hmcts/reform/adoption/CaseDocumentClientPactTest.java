@@ -38,6 +38,7 @@ public class CaseDocumentClientPactTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
     private static final String DOCUMENT_ID = "6c3c3906-2b51-468e-8cbb-a4002eded076";
     private static final String AUTH_TOKEN = "Bearer someAuthToken";
+
     private static final Boolean PERMANENT = false;
 
     @MockBean
