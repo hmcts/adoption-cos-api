@@ -33,7 +33,7 @@ public final class DocumentConstants {
     public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_APPLICANTS_LA = "Applicant_local_authority_hearing_notice";
     public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_ADOPTION_AGENCY = "Adoption_agency_hearing_notice";
     public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_ADOPTION_AGENCY = "Other_adoption_agency_hearing_notice";
-    public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_PERSON = "Birth_mother_hearing_notice";
+    public static final String MANAGE_HEARING_NOTICES_A94_FILE_NAME_OTHER_PERSON = "Other_person_with_parental_responsibilities_hearing_notice";
     public static final String MANAGE_HEARING_NOTICES_A90_FILE_NAME = "Applicants_hearing_notice";
     public static final String MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER = "Birth_mother_hearing_notice";
     public static final String MANAGE_HEARING_NOTICES_A91_FILE_NAME_FATHER = "Birth_father_hearing_notice";
