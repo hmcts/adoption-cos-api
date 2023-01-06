@@ -144,6 +144,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
 
         }
         caseData.setMessageAction(null);
+        caseData.setLoggedInUserRole(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
