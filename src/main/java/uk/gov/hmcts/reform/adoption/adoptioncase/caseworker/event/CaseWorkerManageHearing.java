@@ -117,17 +117,17 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .readonly(ManageHearingDetails::getHearingA90Document,
                       "recipientsInTheCaseCONTAINS\"firstApplicant\" OR recipientsInTheCaseCONTAINS\"secondApplicant\"")
             .label("manageHearing77","### Legal guardian (Cafcass)",
-                   "recipientsInTheCaseCONTAINS\"legalGuardian\"")
+                   "recipientsInTheCaseCONTAINS\"legalGuardianCafcass\"")
             .readonly(ManageHearingDetails::getHearingA94DocumentCafcass,
-                      "recipientsInTheCaseCONTAINS\"legalGuardian\"")
+                      "recipientsInTheCaseCONTAINS\"legalGuardianCafcass\"")
             .label("manageHearing78","### Child's local authority",
-                   "recipientsInTheCaseCONTAINS\"childLocalAuthority\"")
+                   "recipientsInTheCaseCONTAINS\"childsLocalAuthority\"")
             .readonly(ManageHearingDetails::getHearingA94DocumentChildsLa,
-                      "recipientsInTheCaseCONTAINS\"childLocalAuthority\"")
+                      "recipientsInTheCaseCONTAINS\"childsLocalAuthority\"")
             .label("manageHearing79","### Applicant's local authority",
-                   "recipientsInTheCaseCONTAINS\"applicantLocalAuthority\"")
+                   "recipientsInTheCaseCONTAINS\"applicantsLocalAuthority\"")
             .readonly(ManageHearingDetails::getHearingA94DocumentApplicantsLa,
-                      "recipientsInTheCaseCONTAINS\"applicantLocalAuthority\"")
+                      "recipientsInTheCaseCONTAINS\"applicantsLocalAuthority\"")
             .label("manageHearing80","### Adoption agency",
                    "recipientsInTheCaseCONTAINS\"adoptionAgency\"")
             .readonly(ManageHearingDetails::getHearingA94DocumentAdoptionAgency,
