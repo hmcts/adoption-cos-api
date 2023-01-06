@@ -42,10 +42,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_DEFAULT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
 
 @Component
@@ -113,7 +115,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
      */
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToStart(CaseDetails<CaseData, State> details) {
         CaseData caseData = details.getData();
-
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
         List<DynamicListElement> listElements = new ArrayList<>();
         if (caseData.getCommonOrderList() != null) {
             caseData.getCommonOrderList().forEach(order -> {
@@ -129,6 +131,10 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             });
         }
         caseData.setCheckAndSendOrderDropdownList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+
+        caseData.setLoggedInUserRole(caseworkerUser.getUserDetails().getRoles()
+                                         .contains(UserRole.DISTRICT_JUDGE.getRole())
+                                         ? SEND_N_REPLY_USER_JUDGE : SEND_N_REPLY_USER_DEFAULT);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 
@@ -194,6 +200,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         caseData.setDirectionsOrderData(null);
         caseData.setAdoptionOrderData(null);
         caseData.setSelectedOrder(null);
+        caseData.setLoggedInUserRole(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 

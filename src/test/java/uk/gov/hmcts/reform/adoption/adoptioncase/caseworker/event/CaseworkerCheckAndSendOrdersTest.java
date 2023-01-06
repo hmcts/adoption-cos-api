@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
@@ -97,6 +98,9 @@ class CaseworkerCheckAndSendOrdersTest {
         data.archiveManageOrdersHelper(manageOrderList, orderData3);
         data.setCommonOrderList(manageOrderList);
 
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerCheckAndSendOrders.aboutToStart(caseDetails);
         assertThat(result.getData().getCheckAndSendOrderDropdownList().getListItems().size()).isEqualTo(3);
     }
@@ -212,6 +216,7 @@ class CaseworkerCheckAndSendOrdersTest {
         UserDetails userDetails = UserDetails
             .builder()
             .forename("testFname")
+            .roles(Arrays.asList(UserRole.DISTRICT_JUDGE.getRole()))
             .surname("testSname")
             .build();
 

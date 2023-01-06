@@ -10,6 +10,7 @@ import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDocumentList;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.idam.client.models.User;
 
 import java.time.Instant;
@@ -20,8 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_DEFAULT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
 
 public final class CaseEventCommonMethods {
@@ -78,7 +81,7 @@ public final class CaseEventCommonMethods {
     }
 
 
-    public static void prepareReplyMessageDynamicList(CaseData caseData) {
+    public static void prepareReplyMessageDynamicList(CaseData caseData, User caseworkerUser) {
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
             caseData.getListOfOpenMessages().forEach(item -> {
@@ -86,7 +89,7 @@ public final class CaseEventCommonMethods {
                     .label(item.getValue().getMessageSendDateNTime().format(
                             DateTimeFormatter.ofPattern(
                                 SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
-                               .concat(item.getValue().getMessageReasonList().getLabel())).code(
+                               .concat(getMessageReasonLabel(item.getValue()))).code(
                         UUID.fromString(item.getValue().getMessageId())).build();
                 replyMessageList.add(orderInfo);
             });
@@ -94,6 +97,18 @@ public final class CaseEventCommonMethods {
         }
         caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList)
                                             .value(DynamicListElement.EMPTY).build());
+        caseData.setLoggedInUserRole(caseworkerUser.getUserDetails().getRoles()
+                                         .contains(UserRole.DISTRICT_JUDGE.getRole())
+                                         ? SEND_N_REPLY_USER_JUDGE : SEND_N_REPLY_USER_DEFAULT);
+    }
+
+    public static String getMessageReasonLabel(MessageSendDetails item) {
+        if (item.getMessageReasonList() != null && item.getMessageReasonList().getLabel() != null) {
+            return item.getMessageReasonList().getLabel();
+        } else if (item.getMessageReasonJudge() != null && item.getMessageReasonJudge().getLabel() != null) {
+            return item.getMessageReasonJudge().getLabel();
+        }
+        return null;
     }
 
     public static void updateMessageList(CaseData caseData, User caseworkerUser) {
@@ -128,6 +143,7 @@ public final class CaseEventCommonMethods {
 
         }
         caseData.setMessageAction(null);
+        caseData.setLoggedInUserRole(null);
     }
 
     private static ListValue<MessageSendDetails> getSelectedMessage(CaseData caseData, String activeMessageID) {

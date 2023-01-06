@@ -694,8 +694,7 @@ public class CaseData {
     private MessageSendDetails messageSendDetails;
 
     @CCD(access = {DefaultAccess.class})
-    @Builder.Default
-    private String loggedInUserRole = "caseworker";
+    private String loggedInUserRole;
 
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}

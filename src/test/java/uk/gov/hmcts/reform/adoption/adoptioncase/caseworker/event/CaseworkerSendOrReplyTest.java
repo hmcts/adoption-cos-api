@@ -70,13 +70,6 @@ public class CaseworkerSendOrReplyTest {
     @InjectMocks
     private CaseworkerSendOrReply caseworkerSendOrReply;
 
-    @Mock
-    private IdamService idamService;
-
-    @Mock
-    private HttpServletRequest request;
-
-
 
     public static ConfigBuilderImpl<CaseData, State, UserRole> createCaseDataConfigBuilder() {
         return new ConfigBuilderImpl<>(new ResolvedCCDConfig<>(
@@ -122,7 +115,7 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
-        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
@@ -178,7 +171,7 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
-        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
@@ -219,26 +212,13 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
-        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(caseDetails.getData().getListOfOpenMessages()).hasSize(0);
         assertThat(caseDetails.getData().getClosedMessages()).hasSize(1);
 
     }
-
-
-    private User getCaseworkerUser() {
-        UserDetails userDetails = UserDetails
-            .builder()
-            .forename("testFname")
-            .surname("testSname")
-            .build();
-
-        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
-    }
-
-
 
     @NotNull
     private MessageSendDetails getOpenMessageObject() {

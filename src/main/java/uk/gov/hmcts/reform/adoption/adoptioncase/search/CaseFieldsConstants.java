@@ -35,7 +35,7 @@ public final class CaseFieldsConstants {
 
     public static final String SEND_N_REPLY_USER_JUDGE = "judge";
 
-    public static final String SEND_N_REPLY_USER_CASEWORKER = "caseworker";
+    public static final String SEND_N_REPLY_USER_DEFAULT = "default";
 
     public static final String ERROR_CHECK_RECIPIENTS_SELECTION = "Recipients of Final adoption order is required";
     public static final String FIRST_APPLICANT_NOT_APPLICABLE = "First Applicant not applicable for the case";

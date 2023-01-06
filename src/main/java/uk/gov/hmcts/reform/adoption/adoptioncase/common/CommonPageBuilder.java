@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.getMessageReasonLabel;
+
 public final class CommonPageBuilder {
 
     private CommonPageBuilder() {
@@ -27,6 +29,7 @@ public final class CommonPageBuilder {
                 .page("pageSendOrReply1", CommonPageBuilder::sendMessageMidEvent)
                 .showCondition(type)
                 .mandatory(CaseData::getMessageAction)
+                .readonly(CaseData::getLoggedInUserRole,"messageAction=\"judge\"")
                 .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
             replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
             messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
@@ -35,7 +38,8 @@ public final class CommonPageBuilder {
                 .label("sendMessageLab1", "## Send a message")
                 .complex(CaseData::getMessageSendDetails)
                 .mandatory(MessageSendDetails::getMessageReceiverRoles)
-                .mandatory(MessageSendDetails::getMessageReasonList)
+                .mandatory(MessageSendDetails::getMessageReasonList,"loggedInUserRole=\"default\"")
+                .mandatory(MessageSendDetails::getMessageReasonJudge,"loggedInUserRole=\"judge\"")
                 .mandatory(MessageSendDetails::getMessageUrgencyList)
                 .done()
                 .mandatory(CaseData::getSendMessageAttachDocument)
@@ -53,7 +57,8 @@ public final class CommonPageBuilder {
             .label("replyMessageLab", "## Reply to message","messageAction=\"replyMessage\"")
             .complex(CaseData::getMessageSendDetails)
             .mandatoryWithLabel(MessageSendDetails::getMessageReceiverRoles,"Who do you want to send a message to?")
-            .mandatoryWithLabel(MessageSendDetails::getMessageReasonList,"Select a reason for this message")
+            .mandatory(MessageSendDetails::getMessageReasonList,"loggedInUserRole=\"default\"")
+            .mandatory(MessageSendDetails::getMessageReasonJudge,"loggedInUserRole=\"judge\"")
             .mandatory(MessageSendDetails::getMessageUrgencyList)
             .done()
             .mandatory(CaseData::getSendMessageAttachDocument)
@@ -103,7 +108,7 @@ public final class CommonPageBuilder {
             messageDetails.setMessageId(selectedObject.get().getId());
             messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
             messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
-            messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
+            messageDetails.setReasonForMessage(getMessageReasonLabel(selectedObject.get().getValue()));
             if (!Objects.isNull(selectedObject.get().getValue().getSelectedDocument())) {
                 messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocument());
             }

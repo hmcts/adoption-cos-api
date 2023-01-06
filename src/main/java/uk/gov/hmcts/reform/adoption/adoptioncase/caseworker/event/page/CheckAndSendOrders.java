@@ -26,6 +26,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
         pageBuilder.page("checkAndSendOrders1", this::midEventCall)
             .pageLabel("## Orders for review")
             .label("checkAndSendOrdersLabel1","## Orders for review")
+            .readonly(CaseData::getLoggedInUserRole, "checkAndSendOrdersLabel1=\"caseManagementOrder\"")
             .mandatory(CaseData::getCheckAndSendOrderDropdownList)
             .done()
             .build();
