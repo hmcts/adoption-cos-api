@@ -24,11 +24,11 @@ public final class CaseFieldsConstants {
     public static final String ERROR_INVALID_RECIPIENTS_SELECTION = "Recipients for adoption order selection is invalid";
     public static final String FIRST_APPLICANT_NOT_APPLICABLE = "First Applicant not applicable for the case";
     public static final String SECOND_APPLICANT_NOT_APPLICABLE = "Second Applicant not applicable for the case";
-    public static final String BIRTH_MOTHER_NOT_APPLICABLE = "Recipient birth mother not applicable for the case";
-    public static final String BIRTH_FATHER_NOT_APPLICABLE = "Recipient birth father not applicable for the case";
-    public static final String LEGAL_GUARDIAN_NOT_APPLICABLE = "Legal guardian (CAFCASS) not applicable for the case";
-    public static final String CHILDS_LA_NOT_APPLICABLE = "Child local authority not applicable for the case";
-    public static final String APPLICANTS_LA_NOT_APPLICABLE = "Applicants local authority not applicable for the case";
+    public static final String BIRTH_MOTHER_NOT_APPLICABLE = "Respondent (birth mother) not applicable for the case";
+    public static final String BIRTH_FATHER_NOT_APPLICABLE = "Respondent (birth father) not applicable for the case";
+    public static final String LEGAL_GUARDIAN_NOT_APPLICABLE = "Legal guardian (Cafcass) not applicable for the case";
+    public static final String CHILDS_LA_NOT_APPLICABLE = "Child's local authority not applicable for the case";
+    public static final String APPLICANTS_LA_NOT_APPLICABLE = "Applicant's local authority not applicable for the case";
     public static final String OTHER_LA_NOT_APPLICABLE = "Other local authority not applicable for the case";
     public static final String ADOP_AGENCY_NOT_APPLICABLE = "Adoption agency not applicable for the case";
     public static final String OTHER_ADOP_AGENCY_NOT_APPLICABLE = "Other adoption agency not applicable for the case";
