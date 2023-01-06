@@ -43,10 +43,7 @@ module.exports = {
     reListingYes: '#isTheHearingNeedsRelisting_Yes',
     reListingNo: '#isTheHearingNeedsRelisting_No',
     recipientsTitle: '//span[contains(text(),"Recipients")]',
-    adjournHearingCourtJudgeUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
-    adjournHearingPartiesUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
     specialMeasuresRequired: '#reasonForAdjournHearing-specialMeasuresRequired',
-    adjournHearingDateToAvoid: '#reasonForAdjournHearing-caseListedOnDatesToAvoid',
     previewDraftLink:'//ccd-read-document-field/a[contains(text(), \' Birth_mother_hearing_notice.pdf\')]'
   },
 
@@ -316,13 +313,10 @@ module.exports = {
         await I.wait(3);
         await I.retry(5).click(this.fields.vacateHearingToSelect);
         await I.retry(5).click(this.fields.continueButton);
-        await I.retry(5).seeElement(this.fields.adjournHearingCourtJudgeUnavailable);
-        await I.retry(5).seeElement(this.fields.adjournHearingPartiesUnavailable);
-        await I.retry(5).seeElement(this.fields.adjournHearingLateFiling);
-        await I.retry(5).seeElement(this.fields.adjournHearingDateToAvoid);
+        await I.retry(3).waitForText('Reason for adjournment', 30);
         await I.retry(5).click(this.fields.continueButton);
         await I.retry(3).see('Reason for adjournment is required');
-        await I.retry(5).click(this.fields.adjournHearingLateFiling);
+        await I.retry(5).click(this.fields.specialMeasuresRequired);
         await I.retry(5).click(this.fields.continueButton);
         await I.retry(5).seeElement(this.fields.reListingYes);
         await I.retry(5).seeElement(this.fields.reListingNo);

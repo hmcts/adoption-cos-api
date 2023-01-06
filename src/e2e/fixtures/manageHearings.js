@@ -53,6 +53,6 @@ module.exports = {
       recipientApplicantLA: 'Applicant\'s local authority',
       recipientAdopAgency: 'Adoption agency',
       recipientOtherParentalResponsibility: 'Other person with parental responsibility',
-      adjournHearingReason: 'Late filing of documents',
+      adjournHearingReason: 'Special measures required',
     }
 };
