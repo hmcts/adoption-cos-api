@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData.GeneralDirectionRecipients;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 
 import java.time.LocalDate;
@@ -66,7 +67,7 @@ public class OrderData {
 
     @CCD(label = "Recipients",
         access = {DefaultAccess.class})
-    private Set<DirectionsOrderData.GeneralDirectionRecipients> generalDirectionOrderRecipients;
+    private Set<GeneralDirectionRecipients> generalDirectionOrderRecipients;
 
     @CCD(label = "Recipients of Final adoption order (A76)",
         access = {DefaultAccess.class})

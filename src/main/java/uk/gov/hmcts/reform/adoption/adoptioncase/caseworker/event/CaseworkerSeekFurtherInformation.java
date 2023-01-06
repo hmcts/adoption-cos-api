@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
@@ -10,13 +12,16 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SeekFurtherInformation;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import uk.gov.hmcts.reform.adoption.document.DocumentSubmitter;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
@@ -29,12 +34,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.STRING_COLON;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.SEEK_FURTHER_INFO_LETTER;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.SEEK_FURTHER_INFO_LETTER_FILE_NAME;
 
 @Slf4j
 @Component
@@ -55,11 +63,26 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
     @Autowired
     private IdamService idamService;
 
+    @Autowired
+    CaseDataDocumentService caseDataDocumentService;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         log.info("Inside configure method for Event {}", CASEWORKER_SEEK_FURTHER_INFORMATION);
         var pageBuilder = addEventConfig(configBuilder);
         seekFurtherInformation.addTo(pageBuilder);
+        pageBuilder.page("pageSeekFurtherInformation3", this::midEventAfterDateSelection)
+            .mandatory(CaseData::getSeekInformationNeededDate)
+            .page("pageSeekFurtherInformation4")
+            .label("seekFurtherInfo4","Preview and check the letter",null, true)
+            .readonly(CaseData::getSeekFurtherInformationDocument)
+            .label("seekFurtherInfo5","If you want to make changes, go back to the previous screen.",null, false)
+            .done()
+            .build();
+
     }
 
 
@@ -106,7 +129,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
         DynamicListElement adoptionAgencyOrLocalAuthority = DynamicListElement.builder()
             .label(joinDynamicListLabel(DocumentSubmitter.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY,
-             caseData.getLocalAuthority().getLocalAuthorityName()))
+             caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName()))
             .code(UUID.randomUUID())
             .build();
 
@@ -126,7 +149,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
 
         DynamicListElement firstApplicant = DynamicListElement.builder()
             .label(joinDynamicListLabel(DocumentSubmitter.FIRST_APPLICANT,
-             String.join(caseData.getApplicant1().getFirstName(), caseData.getApplicant1().getLastName())))
+             caseData.getApplicant1().getFirstName().concat(" ").concat(caseData.getApplicant1().getLastName())))
             .code(UUID.randomUUID())
             .build();
 
@@ -136,7 +159,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
             && caseData.getApplicant2().getLastName() != null) {
             DynamicListElement secondApplicant = DynamicListElement.builder()
                 .label(joinDynamicListLabel(DocumentSubmitter.SECOND_APPLICANT,
-                 String.join(caseData.getApplicant2().getFirstName(), caseData.getApplicant2().getLastName())))
+                 caseData.getApplicant2().getFirstName().concat(" ").concat(caseData.getApplicant2().getLastName())))
                 .code(UUID.randomUUID())
                 .build();
 
@@ -168,11 +191,13 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         CaseData caseData = caseDataStateCaseDetails.getData();
         caseData.setCorrespondenceDocumentCategory(addSeekInformationData(caseData,
                 caseData.getCorrespondenceDocumentCategory()));
-        caseData.setDate(null);
+
+        caseData.setSeekInformationNeededDate(null);
         caseData.setSeekFurtherInformationList(null);
         caseData.setFurtherInformation(null);
         caseData.setAskAQuestionText(null);
         caseData.setAskForAdditionalDocumentText(null);
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
@@ -184,9 +209,9 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         var adoptionUploadDocument = new AdoptionUploadDocument();
         adoptionUploadDocument.setDocumentComment(SEEK_FURTHER_INFORMATION_HEADING);
         adoptionUploadDocument.setDocumentLink(null);
+        adoptionUploadDocument.setDocumentLink(caseData.getSeekFurtherInformationDocument());
         adoptionUploadDocument.setDocumentDateAdded(LocalDate.now(clock));
         if (!Objects.isNull(caseData.getSeekFurtherInformationList())) {
-            //  adoptionUploadDocument.setUploadedBy(caseData.getSeekFurtherInformationList().getValueLabel());
             adoptionUploadDocument.setUploadedBy(caseworkerUser.getUserDetails().getFullName());
         }
         if (isEmpty(correspondanceTabList)) {
@@ -211,5 +236,37 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
                                                     String.valueOf(listValueIndex.incrementAndGet())));
         }
         return correspondanceTabList;
+    }
+
+    public AboutToStartOrSubmitResponse<CaseData, State> midEventAfterDateSelection(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
+        var caseData = details.getData();
+        caseData.setSeekFurtherInformationDocumentSubmitterName(caseData.getSeekFurtherInformationList()
+                                                                    .getValue().getLabel().split(STRING_COLON)[1]);
+        if (caseData.getSeekFurtherInformationList().getValue().getLabel().contains(DocumentSubmitter
+                                                                                        .ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel())) {
+            caseData.setSeekFurtherInformationAdopOrLaSelected(YesOrNo.YES);
+        } else {
+            caseData.setSeekFurtherInformationAdopOrLaSelected(YesOrNo.NO);
+        }
+        List<String> error = new ArrayList<>();
+
+        if (ObjectUtils.isEmpty(error)) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
+            caseData.setSeekFurtherInformationDocument(caseDataDocumentService.renderDocument(
+                templateContent,
+                details.getId(),
+                SEEK_FURTHER_INFO_LETTER,
+                LanguagePreference.ENGLISH,
+                SEEK_FURTHER_INFO_LETTER_FILE_NAME));
+        }
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(caseData)
+            .errors(error)
+            .build();
     }
 }
