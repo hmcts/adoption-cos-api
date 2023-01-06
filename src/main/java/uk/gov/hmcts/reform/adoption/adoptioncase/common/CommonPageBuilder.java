@@ -22,7 +22,7 @@ public final class CommonPageBuilder {
     }
 
     public static void sendOrReplyCommonPage(PageBuilder pageBuilder, String type) {
-        if (type.equalsIgnoreCase("")) {
+        if ("".equalsIgnoreCase(type)) {
             pageBuilder
                 .page("pageSendOrReply1", CommonPageBuilder::sendMessageMidEvent)
                 .showCondition(type)
