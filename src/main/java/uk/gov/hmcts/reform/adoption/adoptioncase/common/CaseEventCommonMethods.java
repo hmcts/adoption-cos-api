@@ -82,15 +82,13 @@ public final class CaseEventCommonMethods {
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
             caseData.getListOfOpenMessages().forEach(item -> {
-                if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
-                    DynamicListElement orderInfo = DynamicListElement.builder()
-                        .label(item.getValue().getMessageSendDateNTime().format(
-                                DateTimeFormatter.ofPattern(
-                                    SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
-                                   .concat(item.getValue().getMessageReasonList().getLabel())).code(
-                            UUID.fromString(item.getValue().getMessageId())).build();
-                    replyMessageList.add(orderInfo);
-                }
+                DynamicListElement orderInfo = DynamicListElement.builder()
+                    .label(item.getValue().getMessageSendDateNTime().format(
+                            DateTimeFormatter.ofPattern(
+                                SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
+                               .concat(item.getValue().getMessageReasonList().getLabel())).code(
+                        UUID.fromString(item.getValue().getMessageId())).build();
+                replyMessageList.add(orderInfo);
             });
 
         }
