@@ -12,16 +12,17 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndSendOrders;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -175,6 +176,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     FINAL_ADOPTION_ORDER_A76_FILE_NAME
                 ));
         } else if (commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.RETURN_FOR_AMENDMENTS)) {
+            caseData.setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
             CaseEventCommonMethods.updateMessageList(caseData);
         }
         caseData.setManageOrdersData(null);
