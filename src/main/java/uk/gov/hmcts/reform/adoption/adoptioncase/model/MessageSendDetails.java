@@ -51,6 +51,7 @@ public class MessageSendDetails {
 
     @CCD(
         typeOverride = FixedList,
+        label = "Select a reason for this message",
         typeParameterOverride = "MessageReason",
         inheritAccessFromParent = false,
         access = {DefaultAccess.class}
@@ -60,6 +61,7 @@ public class MessageSendDetails {
 
     @CCD(
         typeOverride = FixedList,
+        label = "Select a reason for this message",
         access = {DefaultAccess.class},
         inheritAccessFromParent = false,
         typeParameterOverride = "MessageReasonJudge"

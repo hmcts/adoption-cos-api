@@ -24,20 +24,20 @@ public class SendOrReply implements CcdPageConfiguration {
         pageBuilder
             .page("pageSendOrReply1", this::midEvent)
             .mandatory(CaseData::getMessageAction)
+            .readonly(CaseData::getLoggedInUserRole,"messageAction=\"judge\"")
             .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
         replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
-        messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"", "loggedInUser=\"judge\"");
+        messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
 
     }
 
-    public void messageBuilder(PageBuilder pageBuilder,String condition, String reasonsCondition) {
+    public void messageBuilder(PageBuilder pageBuilder,String condition) {
         pageBuilder.page("pageSendOrReply3")
             .showCondition(condition)
             .label("sendMessageLab", "## Send a message","messageAction=\"sendMessage\"")
             .label("replyMessageLab", "## Reply to message","messageAction=\"replyMessage\"")
             .complex(CaseData::getMessageSendDetails)
             .mandatory(MessageSendDetails::getMessageReceiverRoles)
-            .label("messageReasonLabel", "Select a reason for this message")
             .mandatory(MessageSendDetails::getMessageReasonList, "loggedInUserRole=\"caseworker\"")
             .mandatory(MessageSendDetails::getMessageReasonJudge,"loggedInUserRole=\"judge\"")
             .mandatory(MessageSendDetails::getMessageUrgencyList)
@@ -80,7 +80,7 @@ public class SendOrReply implements CcdPageConfiguration {
             messageDetails.setMessageId(selectedObject.get().getId().toString());
             messageDetails.setUrgency(selectedObject.get().getValue().getMessageUrgencyList().getLabel());
             messageDetails.setMessageContent(selectedObject.get().getValue().getMessageText());
-            messageDetails.setReasonForMessage(selectedObject.get().getValue().getMessageReasonList().getLabel());
+            messageDetails.setReasonForMessage(reasonMessage(selectedObject.get().getValue()));
             if (!Objects.isNull(selectedObject.get().getValue().getSelectedDocument())) {
                 messageDetails.setDocumentLink(selectedObject.get().getValue().getSelectedDocument());
             }
@@ -89,6 +89,15 @@ public class SendOrReply implements CcdPageConfiguration {
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
+    }
+
+    public String reasonMessage(MessageSendDetails item) {
+        if (item.getMessageReasonList() != null && item.getMessageReasonList().getLabel() != null) {
+            return item.getMessageReasonList().getLabel();
+        } else if (item.getMessageReasonJudge() != null && item.getMessageReasonJudge().getLabel() != null) {
+            return item.getMessageReasonJudge().getLabel();
+        }
+        return null;
     }
 
 

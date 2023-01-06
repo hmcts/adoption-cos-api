@@ -24,7 +24,11 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
 import java.time.LocalDate;
@@ -37,16 +41,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.List;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSendOrReply.CASEWORKER_SEND_OR_REPLY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
 public class CaseworkerSendOrReplyTest {
+
+    @Mock
+    private HttpServletRequest httpServletRequest;
+
+    @Mock
+    private IdamService idamService;
 
     @Mock
     private Clock clock;
@@ -112,6 +126,9 @@ public class CaseworkerSendOrReplyTest {
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
         caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage, getOpenMessageObject());
         caseDetails.getData().setListOfOpenMessages(listOfOpenMessage);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.beforeStartEvent(caseDetails);
         assertThat(result.getData().getReplyMsgDynamicList()).isNotNull();
     }
@@ -218,5 +235,16 @@ public class CaseworkerSendOrReplyTest {
             .data(caseData())
             .id(1L)
             .build();
+    }
+
+    private User getCaseworkerUser() {
+        UserDetails userDetails = UserDetails
+            .builder()
+            .forename("testFname")
+            .roles(Arrays.asList(UserRole.DISTRICT_JUDGE.getRole()))
+            .surname("testSname")
+            .build();
+
+        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
     }
 }

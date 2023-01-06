@@ -23,6 +23,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.SendOrRep
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
@@ -33,8 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_CASEWORKER;
 
 @Slf4j
 @Component
@@ -74,7 +78,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
 
     public AboutToStartOrSubmitResponse<CaseData, State> beforeStartEvent(CaseDetails<CaseData, State> details) {
         var caseData = details.getData();
-
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
             caseData.getListOfOpenMessages().forEach(item -> {
@@ -83,7 +87,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                         .label(item.getValue().getMessageSendDateNTime().format(
                                 DateTimeFormatter.ofPattern(
                                     SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
-                                   .concat(item.getValue().getMessageReasonList().getLabel())).code(
+                                   .concat(getMessageReasonLabel(item.getValue()))).code(
                             UUID.fromString(item.getValue().getMessageId())).build();
                     replyMessageList.add(orderInfo);
                 }
@@ -93,10 +97,21 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
         caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList)
                                             .value(DynamicListElement.EMPTY).build());
 
-        caseData.setLoggedInUserRole("judge");
+        caseData.setLoggedInUserRole(caseworkerUser.getUserDetails().getRoles()
+                                         .contains(UserRole.DISTRICT_JUDGE.getRole())
+                                         ? SEND_N_REPLY_USER_JUDGE : SEND_N_REPLY_USER_CASEWORKER);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();
+    }
+
+    private String getMessageReasonLabel(MessageSendDetails item) {
+        if (item.getMessageReasonList() != null && item.getMessageReasonList().getLabel() != null) {
+            return item.getMessageReasonList().getLabel();
+        } else if (item.getMessageReasonJudge() != null && item.getMessageReasonJudge().getLabel() != null) {
+            return item.getMessageReasonJudge().getLabel();
+        }
+        return null;
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> details,
