@@ -22,13 +22,28 @@ public final class CommonPageBuilder {
     }
 
     public static void sendOrReplyCommonPage(PageBuilder pageBuilder, String type) {
-        pageBuilder
-            .page("pageSendOrReply1", CommonPageBuilder::sendMessageMidEvent)
-            .showCondition(type)
-            .mandatory(CaseData::getMessageAction)
-            .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
-        replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
-        messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
+        if ("".equalsIgnoreCase(type)) {
+            pageBuilder
+                .page("pageSendOrReply1", CommonPageBuilder::sendMessageMidEvent)
+                .showCondition(type)
+                .mandatory(CaseData::getMessageAction)
+                .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
+            replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
+            messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
+        } else {
+            pageBuilder.page("pageSendOrReply33")
+                .label("sendMessageLab1", "## Send a message")
+                .complex(CaseData::getMessageSendDetails)
+                .mandatory(MessageSendDetails::getMessageReceiverRoles)
+                .mandatory(MessageSendDetails::getMessageReasonList)
+                .mandatory(MessageSendDetails::getMessageUrgencyList)
+                .done()
+                .mandatory(CaseData::getSendMessageAttachDocument)
+                .mandatory(CaseData::getAttachDocumentList, "sendMessageAttachDocument=\"Yes\"")
+                .complex(CaseData::getMessageSendDetails)
+                .mandatory(MessageSendDetails::getMessageText)
+                .done();
+        }
     }
 
     public static void messageBuilder(PageBuilder pageBuilder,String condition) {
