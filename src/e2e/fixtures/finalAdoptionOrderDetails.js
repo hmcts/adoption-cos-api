@@ -16,7 +16,7 @@ module.exports = {
     registrationCounty: 'Registration county',
     finalAdoptionOrderRecipients: 'Final adoption order recipients',
     selectWhoToServeOrderTo: 'Select who to serve the order to',
-    finalOrderRecipientsError: 'Recipients of Final adoption order is required',
+    finalOrderRecipientsError: 'Recipients for adoption order is required',
     finalOrderError: 'Legal guardian (CAFCASS) not applicable for the case',
     timeOfBirth: '12:12:20',
     locationOfBirth: 'France',

@@ -455,13 +455,13 @@ public class ManageOrdersData {
         @JsonProperty("secondApplicant")
         APPLICANT2("Second applicant"),
 
-        @JsonProperty("birthMother")
+        @JsonProperty("respondentBirthMother")
         RESPONDENT_BIRTH_MOTHER("Respondent (birth mother)"),
 
-        @JsonProperty("birthFather")
+        @JsonProperty("respondentBirthFather")
         RESPONDENT_BIRTH_FATHER("Respondent (birth father)"),
 
-        @JsonProperty("cafcass")
+        @JsonProperty("legalGuardianCafcass")
         LEGAL_GUARDIAN_CAFCASS("Legal guardian (Cafcass)"),
 
         @JsonProperty("childsLocalAuthority")

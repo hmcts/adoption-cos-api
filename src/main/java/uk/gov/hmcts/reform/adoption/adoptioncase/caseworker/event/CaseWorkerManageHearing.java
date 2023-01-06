@@ -113,9 +113,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .readonly(ManageHearingDetails::getHearingA91DocumentFather,
                       "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
             .label("manageHearing76","### Applicants",
-                   "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+                   "recipientsInTheCaseCONTAINS\"firstApplicant\" OR recipientsInTheCaseCONTAINS\"secondApplicant\"")
             .readonly(ManageHearingDetails::getHearingA90Document,
-                      "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+                      "recipientsInTheCaseCONTAINS\"firstApplicant\" OR recipientsInTheCaseCONTAINS\"secondApplicant\"")
             .label("manageHearing77","### Legal guardian (Cafcass)",
                    "recipientsInTheCaseCONTAINS\"legalGuardian\"")
             .readonly(ManageHearingDetails::getHearingA94DocumentCafcass,
