@@ -10,8 +10,7 @@ Feature('Manage order tests').retry(1);
 async function setupScenario(I) {
   caseId = await laHelper.createCompleteCase();
   console.log('CCD Case number - '+ caseId);
-  //await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
-  await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, '1673093364652858');
+  await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 Scenario('Verify send message for check and send gate keeping orders', async ({I, caseViewPage, manageOrdersPage, checkAndSendOrdersPage, sendOrReplyToMessagesPage }) => {
 
