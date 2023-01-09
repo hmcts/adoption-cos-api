@@ -105,7 +105,7 @@ public class ManageDocuments implements CcdPageConfiguration {
             listElements.add(birthFather);
         }
 
-        if(caseData.getIsChildRepresentedByGuardian()!=null && YesOrNo.YES.equals(caseData.getIsChildRepresentedByGuardian())){
+        if (caseData.getIsChildRepresentedByGuardian() != null && YesOrNo.YES.equals(caseData.getIsChildRepresentedByGuardian())) {
             DynamicListElement legalGuardian = DynamicListElement.builder()
                 .label(String.join(BLANK_SPACE, DocumentSubmitter.LEGAL_GUARDIAN.getLabel(),
                                    STRING_COLON,
