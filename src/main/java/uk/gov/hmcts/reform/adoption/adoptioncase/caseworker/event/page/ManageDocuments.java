@@ -4,6 +4,7 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -35,7 +36,7 @@ public class ManageDocuments implements CcdPageConfiguration {
 
         pageBuilder.page("uploadDocumentPage2")
             .pageLabel("Who submitted the document?")
-            .label("uploadDocumentPage2Label","Who submitted the document?")
+            .label("uploadDocumentPage2Label","## Who submitted the document?")
             .mandatory(CaseData::getDocumentSubmitter)
             .mandatory(CaseData::getName, "documentSubmitter=\"00001111-2222-3333-4444-000000005555\"")
             .mandatory(CaseData::getRole, "documentSubmitter=\"00001111-2222-3333-4444-000000005555\"")
@@ -53,35 +54,6 @@ public class ManageDocuments implements CcdPageConfiguration {
 
         CaseData caseData = details.getData();
         List<DynamicListElement> listElements = new ArrayList<>();
-
-        DynamicListElement childSocialWorker = DynamicListElement.builder()
-            .label(String.join(BLANK_SPACE, DocumentSubmitter.CHILD_SOCIAL_WORKER.getLabel(),
-                               STRING_COLON,
-                               caseData.getChildSocialWorker().getSocialWorkerName()))
-            .code(UUID.randomUUID())
-            .build();
-
-        listElements.add(childSocialWorker);
-
-        DynamicListElement adoptionAgencyOrLocalAuthority = DynamicListElement.builder()
-            .label(String.join(BLANK_SPACE,DocumentSubmitter.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel(),
-                               STRING_COLON,
-                               caseData.getLocalAuthority().getLocalAuthorityName()))
-            .code(UUID.randomUUID())
-            .build();
-
-        listElements.add(adoptionAgencyOrLocalAuthority);
-
-        if (caseData.getOtherAdoptionAgencyOrLA() != null && caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName() != null) {
-            DynamicListElement otherAdoptionAgencyOrLocalAuthority = DynamicListElement.builder()
-                .label(String.join(BLANK_SPACE,DocumentSubmitter.OTHER_ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel(),
-                                   STRING_COLON,
-                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName()))
-                .code(UUID.randomUUID())
-                .build();
-
-            listElements.add(otherAdoptionAgencyOrLocalAuthority);
-        }
 
         DynamicListElement firstApplicant = DynamicListElement.builder()
             .label(String.join(BLANK_SPACE,DocumentSubmitter.FIRST_APPLICANT.getLabel(),
@@ -131,6 +103,55 @@ public class ManageDocuments implements CcdPageConfiguration {
                 .build();
 
             listElements.add(birthFather);
+        }
+
+        if(caseData.getIsChildRepresentedByGuardian()!=null && YesOrNo.YES.equals(caseData.getIsChildRepresentedByGuardian())){
+            DynamicListElement legalGuardian = DynamicListElement.builder()
+                .label(String.join(BLANK_SPACE, DocumentSubmitter.LEGAL_GUARDIAN.getLabel(),
+                                   STRING_COLON,
+                                   caseData.getLocalGuardian().getName()))
+                .code(UUID.randomUUID())
+                .build();
+
+            listElements.add(legalGuardian);
+        }
+
+        DynamicListElement childSocialWorker = DynamicListElement.builder()
+            .label(String.join(BLANK_SPACE, DocumentSubmitter.CHILD_SOCIAL_WORKER.getLabel(),
+                               STRING_COLON,
+                               caseData.getChildSocialWorker().getSocialWorkerName()))
+            .code(UUID.randomUUID())
+            .build();
+
+        listElements.add(childSocialWorker);
+
+        DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
+            .label(String.join(BLANK_SPACE, DocumentSubmitter.APPLICANT_LOCAL_AUTHORITY.getLabel(),
+                               STRING_COLON,
+                               caseData.getApplicantSocialWorker().getSocialWorkerName()))
+            .code(UUID.randomUUID())
+            .build();
+
+        listElements.add(applicantLocalAuthority);
+
+        DynamicListElement adoptionAgencyOrLocalAuthority = DynamicListElement.builder()
+            .label(String.join(BLANK_SPACE,DocumentSubmitter.ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel(),
+                               STRING_COLON,
+                               caseData.getAdopAgencyOrLA().getAdopAgencyOrLaName()))
+            .code(UUID.randomUUID())
+            .build();
+
+        listElements.add(adoptionAgencyOrLocalAuthority);
+
+        if (caseData.getOtherAdoptionAgencyOrLA() != null && caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName() != null) {
+            DynamicListElement otherAdoptionAgencyOrLocalAuthority = DynamicListElement.builder()
+                .label(String.join(BLANK_SPACE,DocumentSubmitter.OTHER_ADOPTION_AGENCY_OR_LOCAL_AUTHORITY.getLabel(),
+                                   STRING_COLON,
+                                   caseData.getOtherAdoptionAgencyOrLA().getAgencyOrLaName()))
+                .code(UUID.randomUUID())
+                .build();
+
+            listElements.add(otherAdoptionAgencyOrLocalAuthority);
         }
 
         if (caseData.getOtherParent() != null && caseData.getOtherParent().getFirstName() != null
