@@ -32,6 +32,7 @@ public final class CommonPageBuilder {
             messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
         } else {
             pageBuilder.page("pageSendOrReply33")
+                .showCondition(type)
                 .label("sendMessageLab1", "## Send a message")
                 .complex(CaseData::getMessageSendDetails)
                 .mandatory(MessageSendDetails::getMessageReceiverRoles)
