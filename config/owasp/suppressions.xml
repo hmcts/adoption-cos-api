@@ -74,4 +74,16 @@
       datatable-3.3.1.jar ]]></notes>
     <cve>CVE-2021-4277</cve>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[spring-security-rsa-1.0.10.RELEASE.jar (pkg:maven/org.springframework.security/spring-security-rsa@1.0.10.RELEASE, cpe:2.3:a:vmware:spring_security:1.0.10:release:*:*:*:*:*:*)]]></notes>
+    <cve>CVE-2022-22978</cve>
+    <cve>CVE-2022-22976</cve>
+    <cve>CVE-2022-31692</cve>
+    <cve>CVE-2022-31690</cve>
+    <cve>CVE-2021-37533</cve>
+    <cve>CVE-2021-4277</cve>
+    <cve>CVE-2022-3064</cve>
+    <cve>CVE-2021-4235</cve>
+  </suppress>
 </suppressions>
