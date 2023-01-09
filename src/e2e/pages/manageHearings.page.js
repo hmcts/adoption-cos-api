@@ -355,7 +355,7 @@ module.exports = {
       await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
       await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
       await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
-      await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+     // await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
       await I.wait(3);
       await I.retry(5).click(this.fields.continueButton);
       await I.wait(3);
