@@ -109,6 +109,7 @@ module.exports = {
      await I.see("Legal guardian (Cafcass) not applicable for the case");
      await I.see("Other adoption agency not applicable for the case");
      await I.wait(3);
+    await I.retry(5).click(this.fields.otherParentWithParentalResponsibility);
      await I.retry(5).click(this.fields.legalGuardian);
      await I.retry(5).click(this.fields.otherAdoptionAgency);
      await I.wait(3);
@@ -136,7 +137,7 @@ module.exports = {
     await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
-    await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+   // await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
     await I.see(manageHearingFormData.checkYourAnswers.addNewHearingOption);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
@@ -200,7 +201,7 @@ module.exports = {
     await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
-    await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+    //await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
     await I.retry(3).seeElement(this.fields.previewDraftLink);
     await I.wait(3);
     await I.retry(5).click(this.fields.continueButton);
