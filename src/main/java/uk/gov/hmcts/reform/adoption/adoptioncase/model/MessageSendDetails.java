@@ -46,7 +46,7 @@ public class MessageSendDetails {
     private MessageStatus messageStatus;
 
     @CCD(
-        label = "Who do you want to send a message to ?",
+        label = "Who do you want to send a message to?",
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
         typeParameterOverride = "MessageReceiverRoles")
