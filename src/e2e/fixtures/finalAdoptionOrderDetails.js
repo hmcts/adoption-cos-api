@@ -42,8 +42,8 @@ module.exports = {
     firstApplicant: 'First applicant',
     secondApplicant: 'Second applicant',
     adoptionAgency: 'Adoption agency',
-    birthFather: 'Respondent (Birth father)',
-    birthMother: 'Respondent (Birth mother)',
+    birthFather: 'Respondent (birth mother)',
+    birthMother: 'Respondent (birth father)',
     childLocalAuthority: 'Child\'s local authority',
     applicantLocalAuthority: 'Applicant\'s local authority',
     checkYAnswers: 'Check your answers'
