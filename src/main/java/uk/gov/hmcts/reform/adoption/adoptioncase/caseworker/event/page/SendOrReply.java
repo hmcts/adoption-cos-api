@@ -58,6 +58,7 @@ public class SendOrReply implements CcdPageConfiguration {
             .readonly(SelectedMessage::getMessageContent)
             .readonly(SelectedMessage::getDocumentLink)
             .mandatory(SelectedMessage::getReplyMessage)
+            .label("replyMessageNoConfirmation", "**No** <br> This message will now be marked as closed", "replyMessage=\"No\"")
             .done();
 
     }
