@@ -959,6 +959,7 @@ public class CaseData {
 
         if (null != manageHearingDetails) {
             manageHearingDetails.setHearingId(UUID.randomUUID().toString());
+            this.manageHearingDetails.setManageHearingOptions(null);
             setNewHearings(archiveManageOrdersHelper(getNewHearings(), manageHearingDetails));
             this.setManageHearingDetails(new ManageHearingDetails());
         }
@@ -989,10 +990,13 @@ public class CaseData {
 
         if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
             adjournHearingDetails.get().getValue().setReasonForAdjournHearing(this.manageHearingDetails.getReasonForAdjournHearing());
+            adjournHearingDetails.get().getValue().setOtherReasonForAdjournHearing(
+                this.manageHearingDetails.getOtherReasonForAdjournHearing());
             setAdjournHearings(archiveManageOrdersHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
             newHearings.remove(adjournHearingDetails.get());
         }
         this.manageHearingDetails.setManageHearingOptions(null);
+        this.manageHearingDetails.setOtherReasonForAdjournHearing(null);
     }
 
 }
