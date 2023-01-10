@@ -56,7 +56,7 @@ module.exports = {
   },
 
   async verifyFAOrderStatus() {
-    await I.retry(3).see("Final Adoption Order");
+    await I.retry(3).see("Final adoption order");
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.orderPDF)
     await I.retry(3).see(manageOrderDetails.orderTab.checkAndSend);
   },
