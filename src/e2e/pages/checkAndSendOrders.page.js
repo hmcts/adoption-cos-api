@@ -2,12 +2,12 @@ const { I } = inject();
 const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 const checkAndSendOrderDetails = require('../fixtures/checkAndSendOrderDetails.js');
 const finalAdoptionOrderDetails = require("../fixtures/finalAdoptionOrderDetails.js");
-
+let orderType;
 module.exports = {
 
   fields: {
     pageTitle: '//h1[text()="Check and send orders"]',
-    childName: '//h3[text()="Child\'s Name: child child"]',
+    childName: '//h3[text()="Child\'s name: child child"]',
     ordersToReviewTitle: '//h2[text()="Orders for review"]',
     ordersToReviewSubTitle: '//span[text()="Select the order you want to review"]',
     continueButton: '//button[@type="submit"]',
@@ -32,7 +32,7 @@ module.exports = {
     await I.retry(3).seeElement(this.fields.errorMessage);
 
     let delivery = locate('//select[@id="checkAndSendOrderDropdownList"]/option').at(2);
-    orderType = await I.grabTextFrom(delivery);
+     orderType = await I.grabTextFrom(delivery);
     await I.wait(3);
     await I.retry(3).selectOption(this.fields.ordersDropDown, orderType);
     await I.click(this.fields.continueButton);
@@ -41,7 +41,7 @@ module.exports = {
 
   async verifyOrderForReview() {
     await I.wait(3);
-    await I.retry(3).see('Review Order');
+    await I.retry(3).see('Review order');
     await I.retry(3).see(checkAndSendOrderDetails.documentsToReview);
   },
 

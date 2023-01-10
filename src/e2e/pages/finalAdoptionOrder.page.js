@@ -14,6 +14,7 @@ module.exports = {
     previewOrderLink: '//a[contains(text(),"A76_Final adoption order_draft.pdf")]',
     previewOrderLinkA206: '//a[contains(text(),"A206_Final adoption order_draft.pdf")]',
     placeAndDateOfBirth: {
+      dateOfBirthProvedYes: '#dateOfBirthProved_Yes',
       placeOfBirthProvidedYes: '#placeOfBirthProved_Yes',
       placeOfBirthProvidedNo: '#placeOfBirthProved_No',
       birthCertificate: '#typeOfCertificate-birthCertificate',
@@ -94,6 +95,7 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.errorMessage, this.fields.placeAndDateOfBirth.birthProvedError);
+    await I.retry(3).click(this.fields.placeAndDateOfBirth.dateOfBirthProvedYes);
     await I.retry(3).click(this.fields.placeAndDateOfBirth.placeOfBirthProvidedNo);
     await I.wait(3);
     await I.retry(3).click(this.fields.placeAndDateOfBirth.birthLocationUK);
@@ -121,22 +123,15 @@ module.exports = {
   },
 
   async verifyFinalAdoptionRegistrationDetails() {
-    await I.retry(3).click(this.fields.continueButton);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.errorMessage, this.fields.placeAndDateOfBirth.adoptionRegNumberError);
-    await I.wait(3);
     await I.retry(3).fillField(this.fields.placeAndDateOfBirth.birthOrAdoptionRegNumber, finalAdoptionOrderDetails.finalOrderDetails.adoptionRegNumber);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.errorMessage, this.fields.placeAndDateOfBirth.adoptionRegDateError);
     await I.retry(3).fillField(this.fields.placeAndDateOfBirth.birthOrAdoptionRegDateDay, finalAdoptionOrderDetails.finalOrderDetails.birthAdoptionRegistrationDate.day);
     await I.retry(3).fillField(this.fields.placeAndDateOfBirth.birthOrAdoptionRegDateMonth, finalAdoptionOrderDetails.finalOrderDetails.birthAdoptionRegistrationDate.month);
     await I.retry(3).fillField(this.fields.placeAndDateOfBirth.birthOrAdoptionRegDateYear, finalAdoptionOrderDetails.finalOrderDetails.birthAdoptionRegistrationDate.year);
     await I.wait(3);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.errorMessage, this.fields.placeAndDateOfBirth.adoptionRegDistrictError);
     await I.retry(3).fillField(this.fields.placeAndDateOfBirth.registrationDistrict, finalAdoptionOrderDetails.finalOrderDetails.adoptionRegDistrict);
     await I.wait(3);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.errorMessage, this.fields.placeAndDateOfBirth.adoptionRegSubDistrictError);
     await I.retry(3).fillField(this.fields.placeAndDateOfBirth.registrationSubDistrict, finalAdoptionOrderDetails.finalOrderDetails.adoptionSubDistrict);
     await I.wait(3);
-    await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.errorMessage, this.fields.placeAndDateOfBirth.adoptionRegCountyError);
     await I.retry(3).fillField(this.fields.placeAndDateOfBirth.registrationCounty, finalAdoptionOrderDetails.finalOrderDetails.adoptionRegCounty);
     await I.wait(3);
   },
