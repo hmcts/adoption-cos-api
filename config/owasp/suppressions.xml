@@ -75,4 +75,9 @@
       tomcat-embed-websocket-9.0.63.jar ]]></notes>
     <cve>CVE-2022-42252</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: datatable-3.3.1.jar ]]></notes>
+    <cve>CVE-2021-4277</cve>
+  </suppress>
 </suppressions>
