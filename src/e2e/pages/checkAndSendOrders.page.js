@@ -8,7 +8,7 @@ module.exports = {
 
   fields: {
     pageTitle: '//h1[text()="Check and send orders"]',
-    childName: '//h3[text()="Child\'s Name: child child"]',
+    childName: '//h3[text()="Child\'s name: child child"]',
     ordersToReviewTitle: '//h2[text()="Orders for review"]',
     ordersToReviewSubTitle: '//span[text()="Select the order you want to review"]',
     continueButton: '//button[@type="submit"]',

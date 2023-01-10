@@ -3,7 +3,7 @@ const { I } = inject();
 module.exports = {
   fields: {
     allocateJudgeTitle: '//h1[contains(text(),"Allocate judge")]',
-    childNameHeader: '//h3[contains(text(),"Child\'s Name: child child")]',
+    childNameHeader: '//h3[contains(text(),"Child\'s name: child child")]',
     chooseAJudgeHeader: '//h2[contains(text(),"Choose a judge for this case")]',
     chooseJudgeHintText: '//p[contains(text(),"Choose whether the placement judge is presiding or a new judge is being allocated.")]',
     textBoxTitle: '//span[contains(text(),"Name of the judge")]',
