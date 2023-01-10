@@ -63,7 +63,7 @@ module.exports = {
     dateServed: 'Date served',
     recipients: 'Recipients',
     checkAndSend: 'Pending Check & send',
-    gateKeepingOrder: 'Case Management Order (gatekeeping order)',
+    gateKeepingOrder: 'Case management (gatekeeping) order',
     statusServed: 'Served',
   },
 };

@@ -55,6 +55,14 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
+     file name: snakeyaml-1.32.jar
+     ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+    <cve>CVE-2022-3064</cve>
+    <cve>CVE-2021-4235</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
       spring-security-crypto-5.7.1.jar ]]></notes>
     <cve>CVE-2022-31692</cve>
     <cve>CVE-2022-31690</cve>
@@ -71,7 +79,8 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
-      datatable-3.3.1.jar ]]></notes>
-    <cve>CVE-2021-4277</cve>
+     file name: tomcat-embed-*-*.*.jar
+     ]]></notes>
+    <cve>CVE-2022-45143</cve>
   </suppress>
 </suppressions>
