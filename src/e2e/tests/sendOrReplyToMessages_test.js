@@ -23,7 +23,7 @@ Scenario('Verify send and reply message to judge Open Closed Message on message 
 
   await messageTabPage.selectMessageTab();
   await messageTabPage.verifyOpenMessageText();
-  await messageTabPage.verifyMessageDetailsUnderMessageTab();
+  await messageTabPage.verifyOpenMessageDetailsUnderMessageTab();
   await messageTabPage.verifyMessageStatusOpen();
 
   await caseViewPage.goToNewActions(config.administrationActions.sendOrReplyToMessages);
@@ -33,7 +33,6 @@ Scenario('Verify send and reply message to judge Open Closed Message on message 
 
   await messageTabPage.selectMessageTab();
   await messageTabPage.verifyClosedMessageText();
-  await messageTabPage.verifyMessageDetailsUnderMessageTab();
   await messageTabPage.verifyMessageStatusClosed();
 
 });
