@@ -66,4 +66,13 @@ module.exports = {
     gateKeepingOrder: 'Case Management Order (gatekeeping order)',
     statusServed: 'Served',
   },
+  messagesTab:{
+    sentTo: 'Sent to',
+    dateSent: 'Date sent',
+    urgency: 'Urgency',
+    reasonForMessage: 'Reason for message',
+    message: 'Message',
+    status: 'Status',
+    messageStatus: 'Open'
+  },
 };

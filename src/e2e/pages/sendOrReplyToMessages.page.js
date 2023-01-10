@@ -1,5 +1,6 @@
 const sendOrReplyToMessagesData = require('../fixtures/sendOrReplyToMessagesDetails');
 const { I } = inject();
+let reasonType;
 module.exports = {
   fields: {
     messageActionError: '#messageAction .error-message',
@@ -36,7 +37,7 @@ module.exports = {
     await I.retry(3).selectOption(this.fields.replyMsgDynamicListDropDown, urgencyType);
     await I.retry(3).click('Continue');
     await I.wait(3);
-    await I.retry(3).waitForText('Reply to message',30);
+    await I.retry(3).waitForText('Reply to a message',30);
     await I.retry(3).click(this.fields.replyMessageYes);
     await I.retry(3).click('Continue');
     await I.wait(3);
@@ -48,7 +49,7 @@ module.exports = {
     await I.retry(3).waitForText('Who do you want to send a message to?',30);
     await I.retry(3).click(this.fields.messageSendDetailsMessageReceiverRolesJudge);
     let reason = locate('//select[@id="messageReasonList"]/option').at(2);
-    let reasonType = await I.grabTextFrom(reason);
+    reasonType = await I.grabTextFrom(reason);
     await I.wait(3);
     await I.retry(3).selectOption(this.fields.messageReasonListDropDown, reasonType);
     await I.wait(3);
@@ -67,7 +68,7 @@ module.exports = {
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Send a message');
     await I.retry(3).see('Judge');
-    await I.retry(3).see('List a hearing');
+    await I.retry(3).see(reasonType);
     await I.retry(3).see('High');
     await I.retry(3).see(sendOrReplyToMessagesData.message);
     await I.click('Save and continue');
@@ -77,7 +78,7 @@ module.exports = {
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Reply to a message');
     await I.retry(3).see('Judge');
-    await I.retry(3).see('List a hearing');
+    await I.retry(3).see(reasonType);
     await I.retry(3).see('High');
     await I.retry(3).see(sendOrReplyToMessagesData.message);
     await I.click('Save and continue');

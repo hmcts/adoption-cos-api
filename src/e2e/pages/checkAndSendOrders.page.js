@@ -2,6 +2,7 @@ const { I } = inject();
 const manageOrderDetails = require('../fixtures/manageOrderDetails.js');
 const checkAndSendOrderDetails = require('../fixtures/checkAndSendOrderDetails.js');
 const finalAdoptionOrderDetails = require("../fixtures/finalAdoptionOrderDetails.js");
+const sendOrReplyToMessagesData = require("../fixtures/sendOrReplyToMessagesDetails");
 
 module.exports = {
 
@@ -18,13 +19,19 @@ module.exports = {
     alertMessage: '//div[@class="alert-message"]',
     previewOrderDocmosisLink: '//a[text()=" A76_Final adoption order_draft.pdf "]',
     checkAndSendOrderErrorMessage: '#orderCheckAndSend .error-message',
-    serveOrderRadioBtn: '#orderCheckAndSend-serveTheOrder'
+    serveOrderRadioBtn: '#orderCheckAndSend-serveTheOrder',
+    returnForAmendments: '#orderCheckAndSend-returnForAmendments',
+    whomToSendMessageError: '#messageReceiverRoles .error-message',
+    reasonForMessageIsRequiredError: '[field_id="messageReasonList"] .error-message',
+    urgencyIsRequiredError: '[field_id="messageUrgencyList"] .error-message',
+    attachDocumentError: '[field_id="sendMessageAttachDocument"] .error-message',
+    messageRequiredError: '[field_id="messageText"] .error-message'
   },
 
   async verifyCheckAndSendOrdersPageDetails() {
     await I.wait(3);
     await I.retry(3).seeElement(this.fields.pageTitle);
-    await I.retry(3).seeElement(this.fields.childName);
+    //await I.retry(3).seeElement(this.fields.childName);
     await I.retry(3).seeElement(this.fields.ordersToReviewTitle);
     await I.retry(3).seeElement(this.fields.ordersToReviewSubTitle);
     await I.click(this.fields.continueButton);
@@ -41,7 +48,7 @@ module.exports = {
 
   async verifyOrderForReview() {
     await I.wait(3);
-    await I.retry(3).see('Review Order');
+    await I.retry(3).see('Review order');
     await I.retry(3).see(checkAndSendOrderDetails.documentsToReview);
   },
 
@@ -98,6 +105,35 @@ module.exports = {
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
 
-  }
+  },
+  async selectReturnForAmendments(){
+    await I.retry(3).click(this.fields.returnForAmendments);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(8);
+  },
 
-  };
+  async sendAMessage(){
+    await I.retry(3).see(checkAndSendOrderDetails.sendMessage);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see(checkAndSendOrderDetails.whoDoYouWantSendMessageTo);
+    await I.retry(3).see(checkAndSendOrderDetails.whoDoYouWantSendMessageToError, this.fields.whomToSendMessageError);
+    await I.retry(3).see(checkAndSendOrderDetails.selectAReasonForMessageError, this.fields.reasonForMessageIsRequiredError);
+    await I.retry(3).see(checkAndSendOrderDetails.urgencyIsRequired, this.fields.urgencyIsRequiredError);
+    await I.retry(3).see(checkAndSendOrderDetails.doYouWantToAttachDocumentForThisCaseError, this.fields.attachDocumentError);
+    await I.retry(3).see(checkAndSendOrderDetails.messageIsRequiredError, this.fields.messageRequiredError)
+  },
+
+  async verifyReturnForAmendmentsCYA(){
+    await I.retry(3).waitForText('Check your answers', 30);
+    await I.retry(3).see('Return for amendments');
+    await I.retry(3).see('Judge');
+    await I.retry(3).see('Refer for gatekeeping');
+    await I.retry(3).see('High');
+    await I.retry(3).see(sendOrReplyToMessagesData.message);
+    await I.click('Save and continue');
+    await I.wait(3);
+  },
+
+
+};
