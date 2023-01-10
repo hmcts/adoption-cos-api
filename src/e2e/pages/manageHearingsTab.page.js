@@ -13,8 +13,8 @@ module.exports = {
       I.seeTextInTab(['New hearing 1', 'Judge'], manageHearingFormData.newHearing.judgeOfHearing);
       I.seeTextInTab(['New hearing 1', 'Length of hearing'], manageHearingFormData.newHearing.lengthOfHearing);
       I.seeTextInTab(['New hearing 1', 'Method of hearing'], 'Remote (via video hearing)');
-      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Respondent(birth mother)');
-      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Respondent(birth father)');
+      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Respondent (birth mother)');
+      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Respondent (birth father)');
       I.seeTextInTab(['New hearing 1', 'Type of hearing'], manageHearingFormData.newHearing.typeOfHearing);
       I.see("New hearing");
     },
@@ -31,8 +31,8 @@ module.exports = {
       I.seeTextInTab(['New hearing 1', 'Accessibility requirements'], manageHearingFormData.vacateHearing.accessibilityRequired);
       I.seeTextInTab(['New hearing 1', 'Hearing directions'], 'Hearing delay warning');
       I.seeTextInTab(['New hearing 1', 'Hearing directions'], 'Backup notice');
-      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Respondent(birth mother)');
-      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Respondent(birth father)');
+      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Respondent (birth mother)');
+      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Respondent (birth father)');
       I.seeTextInTab(['New hearing 1', 'Recipients'], 'Applicant 1');
       I.seeTextInTab(['New hearing 1', 'Recipients'], 'Applicant 2');
       I.seeTextInTab(['New hearing 1', 'Recipients'], 'Child\'s local authority');
@@ -52,8 +52,8 @@ module.exports = {
       I.seeTextInTab(['Vacated hearings 1', 'Accessibility requirements'], manageHearingFormData.newHearing.accessibilityRequired);
       I.seeTextInTab(['Vacated hearings 1', 'Hearing directions'], 'Hearing delay warning');
       I.seeTextInTab(['Vacated hearings 1', 'Hearing directions'], 'Backup notice');
-      I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Respondent(birth mother)');
-      I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Respondent(birth father)');
+      I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Respondent (birth mother)');
+      I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Respondent (birth father)');
       I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Applicant 1');
       I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Applicant 2');
       I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Child\'s local authority');
@@ -75,8 +75,8 @@ module.exports = {
           I.seeTextInTab(['Adjourned hearing 1', 'Accessibility requirements'], manageHearingFormData.newHearing.accessibilityRequired);
           I.seeTextInTab(['Adjourned hearing 1', 'Hearing directions'], 'Hearing delay warning');
           I.seeTextInTab(['Adjourned hearing 1', 'Hearing directions'], 'Backup notice');
-          I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Respondent(birth mother)');
-          I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Respondent(birth father)');
+          I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Respondent (birth mother)');
+          I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Respondent (birth father)');
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Applicant 1');
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Applicant 2');
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Child\'s local authority');
