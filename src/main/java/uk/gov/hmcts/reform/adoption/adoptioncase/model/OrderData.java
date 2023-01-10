@@ -28,7 +28,7 @@ public class OrderData {
     private String orderId;
 
     @CCD(
-        label = "Date of the order",
+        label = "Date order made",
         access = {DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")

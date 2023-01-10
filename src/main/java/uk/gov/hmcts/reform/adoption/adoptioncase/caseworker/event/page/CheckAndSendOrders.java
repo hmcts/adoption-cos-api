@@ -31,7 +31,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .build();
 
         pageBuilder.page("checkAndSendOrder2")
-            .label("checkAndSendOrdersLabel2","## Review Order")
+            .label("checkAndSendOrdersLabel2","## Review order")
             .complex(CaseData::getSelectedOrder)
             .readonlyNoSummary(SelectedOrder::getReviewDocumentLink)
             .label("checkAndSendOrdersLabel5","### These recipients have been selected to receive this order",
@@ -48,7 +48,7 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .done();
 
         pageBuilder.page("checkAndSendOrder3")
-            .label("checkAndSendOrdersLabel3","## Review Order")
+            .label("checkAndSendOrdersLabel3","## Review order")
             .mandatory(CaseData::getOrderCheckAndSend)
             .done();
         CommonPageBuilder.sendOrReplyCommonPage(pageBuilder, "orderCheckAndSend=\"returnForAmendments\"");
