@@ -33,7 +33,7 @@ public final class RecipientValidationUtil {
     }
 
     public static void checkForInvalidCheckboxSelection(CaseData caseData, List<String> error, RecipientsInTheCase recipientsInTheCase) {
-        Optional<RecipientsInTheCase> optionalRecipient = caseData.getRecipientsInTheCase().stream()
+        Optional<RecipientsInTheCase> optionalRecipient = caseData.getManageHearingDetails().getRecipientsInTheCase().stream()
             .filter(e -> e.equals(recipientsInTheCase))
             .findAny();
         if (optionalRecipient.isPresent()) {

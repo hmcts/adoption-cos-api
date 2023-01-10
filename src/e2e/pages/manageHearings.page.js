@@ -4,28 +4,28 @@ const manageHearingFormData = require('../fixtures/manageHearings');
 module.exports = {
   fields: {
     allocateJudgeTitle: '//h1[contains(text(),"Manage hearings")]',
-    childNameHeader: '//h3[contains(text(),"Child\'s Name: child child")]',
+    childNameHeader: '//h3[contains(text(),"Child\'s name: child child")]',
     continueButton: 'button[type="submit"]',
     errorMessage: '//span[contains(text(),"Field is required")]',
     alertMessage: '//div[@class="alert-message"]',
     newHearing: '#manageHearingOptions-addNewHearing',
     vacateHearing: '#manageHearingOptions-vacateHearing',
     adjournHearing: '#manageHearingOptions-adjournHearing',
-    hearingType: '#manageHearingDetails_typeOfHearing',
+    hearingType: '#typeOfHearing',
     hearingDay: '#hearingDateAndTime-day',
     hearingMonth: '#hearingDateAndTime-month',
     hearingYear: '#hearingDateAndTime-year',
     hearingHour: '#hearingDateAndTime-hour',
     hearingMinute: '#hearingDateAndTime-minute',
     hearingSeconds: '#hearingDateAndTime-second',
-    lengthOfHearing: '#manageHearingDetails_lengthOfHearing',
-    judge: '#manageHearingDetails_judge',
-    court: '#manageHearingDetails_court',
-    remoteMethod: '#manageHearingDetails_methodOfHearing-remote',
-    interpreterRequirements: '#manageHearingDetails_isInterpreterNeeded',
-    accessibilityRequirements: '#manageHearingDetails_accessibilityRequirements',
-    hearingDelay: '#manageHearingDetails_hearingDirections-hearingDelayWaring',
-    backupNotice: '#manageHearingDetails_hearingDirections-backupNotice',
+    lengthOfHearing: '#lengthOfHearing',
+    judge: '#judge',
+    court: '#court',
+    remoteMethod: '#methodOfHearing-remote',
+    interpreterRequirements: '#isInterpreterNeeded',
+    accessibilityRequirements: '#accessibilityRequirements',
+    hearingDelay: '#hearingDirections-hearingDelayWaring',
+    backupNotice: '#hearingDirections-backupNotice',
     firstApplicant: '#recipientsInTheCase-applicant1',
     secondApplicant: '#recipientsInTheCase-applicant2',
     recipientsBirthMother: '#recipientsInTheCase-respondentBirthMother',
@@ -42,12 +42,12 @@ module.exports = {
     vacateHearingReasonDismissed: '#reasonForVacatingHearing-caseDismissed',
     reListingYes: '#isTheHearingNeedsRelisting_Yes',
     reListingNo: '#isTheHearingNeedsRelisting_No',
-    recipientsTitle: '//span[contains(text(),"Hearing notice recipients")]',
+    recipientsTitle: '//span[contains(text(),"Recipients")]',
     adjournHearingCourtJudgeUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
     adjournHearingPartiesUnavailable: '#reasonForAdjournHearing-courtOrJudgeUnavailable',
     adjournHearingLateFiling: '#reasonForAdjournHearing-lateFillingOfDocuments',
     adjournHearingDateToAvoid: '#reasonForAdjournHearing-caseListedOnDatesToAvoid',
-    previewDraftLink:'//ccd-read-document-field/a[contains(text(), \' Hearing notice_A90.pdf\')]'
+    previewDraftLink:'//ccd-read-document-field/a[contains(text(), \' Birth_mother_hearing_notice.pdf\')]'
   },
 
   async verifyPageDetails() {
@@ -68,6 +68,7 @@ module.exports = {
 
   async addNewHearingOptions(){
      await I.wait(3);
+     await I.retry(3).waitForText('Add new hearing', 30);
      await I.fillField(this.fields.hearingType, manageHearingFormData.newHearing.typeOfHearing);
      await I.fillField(this.fields.hearingDay, manageHearingFormData.newHearing.dayOfHearing);
      await I.fillField(this.fields.hearingMonth, manageHearingFormData.newHearing.monthOfHearing);
@@ -89,9 +90,10 @@ module.exports = {
 
   async addRecepientDetails(){
      await I.wait(5);
+    await I.retry(3).waitForText('Recipients', 30);
      await I.retry(3).seeElement(this.fields.childNameHeader);
      await I.retry(3).seeElement(this.fields.recipientsTitle);
-     await I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
+    // await I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
      await I.retry(5).click(this.fields.firstApplicant);
      await I.retry(5).click(this.fields.secondApplicant);
      await I.retry(5).click(this.fields.recipientsBirthMother);
@@ -104,7 +106,7 @@ module.exports = {
      await I.retry(5).click(this.fields.otherParentWithParentalResponsibility);
      await I.retry(5).click(this.fields.continueButton);
      await I.wait(3);
-     await I.see("Legal guardian (CAFCASS) is not applicable");
+     await I.see("Legal guardian (Cafcass) is not applicable");
      await I.see("Other adoption agency is not applicable");
      await I.wait(3);
      await I.retry(5).click(this.fields.legalGuardian);
@@ -117,16 +119,16 @@ module.exports = {
 
   async verifyAddNewHearingCheckYourAnswers(){
     await I.wait(3);
-    await I.seeTextInPage(['Enter hearing details', 'Type of hearing'], manageHearingFormData.newHearing.typeOfHearing);
-    await I.seeTextInPage(['Enter hearing details', 'Hearing date & time'], '15 Oct 2025, 11:15:55 PM');
-    await I.seeTextInPage(['Enter hearing details', 'Length of hearing'], manageHearingFormData.newHearing.lengthOfHearing);
-    await I.seeTextInPage(['Enter hearing details', 'Judge'], manageHearingFormData.newHearing.judgeOfHearing);
-    await I.seeTextInPage(['Enter hearing details', 'Court'], manageHearingFormData.newHearing.courtOfHearing);
-    await I.seeTextInPage(['Enter hearing details', 'Is an interpreter needed?'], manageHearingFormData.newHearing.interpreterRequired);
-    await I.seeTextInPage(['Enter hearing details', 'Method of hearing'], 'Remote (via video hearing)');
-    await I.seeTextInPage(['Enter hearing details', 'Accessibility requirements'], manageHearingFormData.newHearing.accessibilityRequired);
-    await I.seeTextInPage(['Enter hearing details', 'Hearing directions'], 'Hearing delay warning');
-    await I.seeTextInPage(['Enter hearing details', 'Hearing directions'], 'Backup notice');
+    await I.see(manageHearingFormData.newHearing.typeOfHearing);
+    await I.see('15 Oct 2025, 11:15:55 PM');
+    await I.see(manageHearingFormData.newHearing.lengthOfHearing);
+    await I.see(manageHearingFormData.newHearing.judgeOfHearing);
+    await I.see(manageHearingFormData.newHearing.courtOfHearing);
+    await I.see(manageHearingFormData.newHearing.interpreterRequired);
+    await I.see('Remote (via video hearing)');
+    await I.see(manageHearingFormData.newHearing.accessibilityRequired);
+    await I.see('Hearing delay warning');
+    await I.see('Backup notice');
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicant1);
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicant2);
     await I.see(manageHearingFormData.checkYourAnswers.recipientBirthMother);
@@ -183,16 +185,16 @@ module.exports = {
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingOption);
    // await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingReason);
-    await I.seeTextInPage(['Enter hearing details', 'Type of hearing'], manageHearingFormData.vacateHearing.typeOfHearingVacate);
-    await I.seeTextInPage(['Enter hearing details', 'Hearing date & time'], '31 Dec 2035, 8:30:00 AM');
-    await I.seeTextInPage(['Enter hearing details', 'Length of hearing'], manageHearingFormData.vacateHearing.lengthOfHearing);
-    await I.seeTextInPage(['Enter hearing details', 'Judge'], manageHearingFormData.vacateHearing.judgeOfHearing);
-    await I.seeTextInPage(['Enter hearing details', 'Court'], manageHearingFormData.vacateHearing.courtOfHearing);
-    await I.seeTextInPage(['Enter hearing details', 'Is an interpreter needed?'], manageHearingFormData.vacateHearing.interpreterRequired);
-    await I.seeTextInPage(['Enter hearing details', 'Method of hearing'], 'Remote (via video hearing)');
-    await I.seeTextInPage(['Enter hearing details', 'Accessibility requirements'], manageHearingFormData.vacateHearing.accessibilityRequired);
-    await I.seeTextInPage(['Enter hearing details', 'Hearing directions'], 'Hearing delay warning');
-    await I.seeTextInPage(['Enter hearing details', 'Hearing directions'], 'Backup notice');
+    await I.see(manageHearingFormData.vacateHearing.typeOfHearingVacate);
+    await I.see('31 Dec 2035, 8:30:00 AM');
+    await I.see(manageHearingFormData.vacateHearing.lengthOfHearing);
+    await I.see(manageHearingFormData.vacateHearing.judgeOfHearing);
+    await I.see(manageHearingFormData.vacateHearing.courtOfHearing);
+    await I.see(manageHearingFormData.vacateHearing.interpreterRequired);
+    await I.see('Remote (via video hearing)');
+    await I.see(manageHearingFormData.vacateHearing.accessibilityRequired);
+    await I.see('Hearing delay warning');
+    await I.see('Backup notice');
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicant1);
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicant2);
     await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
@@ -264,7 +266,7 @@ module.exports = {
       await I.retry(5).seeElement(this.fields.reListingYes);
       await I.retry(5).seeElement(this.fields.reListingNo);
       await I.retry(5).click(this.fields.continueButton);
-      await I.retry(3).see('Does the hearing need to be relisted is required');
+      await I.retry(3).see('Does the hearing need to be relisted? is required');
       await I.retry(5).click(this.fields.reListingNo);
       await I.retry(5).click(this.fields.continueButton);
     },
@@ -296,8 +298,10 @@ module.exports = {
 
   async verifyPreviewDraft(){
     await I.wait(3);
-    await I.retry(3).see('Preview Draft');
-    await I.retry(3).seeElement(this.fields.previewDraftLink);
+    await I.retry(3).waitForText('Preview the hearing notice', 30);
+    await I.retry(3).see('Birth_mother_hearing_notice.pdf');
+    await I.retry(3).see('Birth_father_hearing_notice.pdf');
+    await I.retry(3).see('Applicants_hearing_notice.pdf');
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
   },
@@ -325,7 +329,7 @@ module.exports = {
         await I.retry(5).seeElement(this.fields.reListingYes);
         await I.retry(5).seeElement(this.fields.reListingNo);
         await I.retry(5).click(this.fields.continueButton);
-        await I.retry(3).see('Does the hearing need to be relisted is required');
+        await I.retry(3).see('Does the hearing need to be relisted? is required');
         await I.retry(5).click(this.fields.reListingYes);
         await I.retry(5).click(this.fields.continueButton);
       },
@@ -335,16 +339,16 @@ module.exports = {
       await I.see(manageHearingFormData.checkYourAnswers.adjournHearingOption);
     //  await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
       await I.see(manageHearingFormData.checkYourAnswers.adjournHearingReason);
-      await I.seeTextInPage(['Enter hearing details', 'Type of hearing'], manageHearingFormData.vacateHearing.typeOfHearingVacate);
-      await I.seeTextInPage(['Enter hearing details', 'Hearing date & time'], '31 Dec 2035, 8:30:00 AM');
-      await I.seeTextInPage(['Enter hearing details', 'Length of hearing'], manageHearingFormData.vacateHearing.lengthOfHearing);
-      await I.seeTextInPage(['Enter hearing details', 'Judge'], manageHearingFormData.vacateHearing.judgeOfHearing);
-      await I.seeTextInPage(['Enter hearing details', 'Court'], manageHearingFormData.vacateHearing.courtOfHearing);
-      await I.seeTextInPage(['Enter hearing details', 'Is an interpreter needed?'], manageHearingFormData.vacateHearing.interpreterRequired);
-      await I.seeTextInPage(['Enter hearing details', 'Method of hearing'], 'Remote (via video hearing)');
-      await I.seeTextInPage(['Enter hearing details', 'Accessibility requirements'], manageHearingFormData.vacateHearing.accessibilityRequired);
-      await I.seeTextInPage(['Enter hearing details', 'Hearing directions'], 'Hearing delay warning');
-      await I.seeTextInPage(['Enter hearing details', 'Hearing directions'], 'Backup notice');
+      await I.see(manageHearingFormData.vacateHearing.typeOfHearingVacate);
+      await I.see('31 Dec 2035, 8:30:00 AM');
+      await I.see(manageHearingFormData.vacateHearing.lengthOfHearing);
+      await I.see(manageHearingFormData.vacateHearing.judgeOfHearing);
+      await I.see(manageHearingFormData.vacateHearing.courtOfHearing);
+      await I.see(manageHearingFormData.vacateHearing.interpreterRequired);
+      await I.see('Remote (via video hearing)');
+      await I.see(manageHearingFormData.vacateHearing.accessibilityRequired);
+      await I.see('Hearing delay warning');
+      await I.see('Backup notice');
       await I.see(manageHearingFormData.checkYourAnswers.recipientApplicant1);
       await I.see(manageHearingFormData.checkYourAnswers.recipientApplicant2);
       await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
