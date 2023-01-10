@@ -41,7 +41,7 @@ public enum ReasonForAdjournHearing implements HasLabel {
     LOCAL_AUTHORITY("Local authority"),
 
     @JsonProperty("otherFreeTextBox")
-    OTHER_FREETEXT_BOX("Other - This will be a free text box");
+    OTHER_FREETEXT_BOX("Other");
 
     private final String label;
 }

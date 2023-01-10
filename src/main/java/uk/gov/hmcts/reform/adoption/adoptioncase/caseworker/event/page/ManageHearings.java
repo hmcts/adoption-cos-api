@@ -44,6 +44,8 @@ public class ManageHearings implements CcdPageConfiguration {
             .showCondition("manageHearingOptions=\"adjournHearing\"")
             .complex(CaseData::getManageHearingDetails)
             .mandatory(ManageHearingDetails::getReasonForAdjournHearing)
+            .mandatory(ManageHearingDetails::getOtherReasonForAdjournHearing,
+                       "reasonForAdjournHearing = \"Other\"")
             .done()
             .done();
 
