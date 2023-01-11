@@ -100,10 +100,10 @@ public class AdoptionOrderData {
     public enum RecipientsA76 implements HasLabel {
 
         @JsonProperty("firstApplicant")
-        FIRST_APPLICANT("First applicant"),
+        APPLICANT1("First applicant"),
 
         @JsonProperty("secondApplicant")
-        SECOND_APPLICANT("Second applicant");
+        APPLICANT2("Second applicant");
 
         private final String label;
     }
@@ -113,13 +113,13 @@ public class AdoptionOrderData {
     public enum RecipientsA206 implements HasLabel {
 
         @JsonProperty("respondentBirthMother")
-        RESPONDENT_BIRTH_MOTHER("Respondent (Birth mother)"),
+        RESPONDENT_BIRTH_MOTHER("Respondent (birth mother)"),
 
         @JsonProperty("respondentBirthFather")
-        RESPONDENT_BIRTH_FATHER("Respondent (Birth father)"),
+        RESPONDENT_BIRTH_FATHER("Respondent (birth father)"),
 
-        @JsonProperty("legalGuardianCAFCASS")
-        LEGAL_GUARDIAN_CAFCASS("Legal guardian (CAFCASS)"),
+        @JsonProperty("legalGuardianCafcass")
+        LEGAL_GUARDIAN_CAFCASS("Legal guardian (Cafcass)"),
 
         @JsonProperty("childsLocalAuthority")
         CHILDS_LOCAL_AUTHORITY("Child's local authority"),
@@ -134,7 +134,7 @@ public class AdoptionOrderData {
         OTHER_ADOPTION_AGENCY("Other adoption agency"),
 
         @JsonProperty("otherPersonWithParentalResponsibility")
-        OTHER_PARENT_WITH_PARENT_RESPONSIBILITY("Other person with parental responsibility");
+        OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility");
 
         private final String label;
     }
@@ -206,6 +206,11 @@ public class AdoptionOrderData {
         access = {DefaultAccess.class}
     )
     private LocalDate adoptionRegistrationDate;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo dateOfBirthProved;
 
     public DynamicList getPlacementOfTheChildList(AdoptionAgencyOrLocalAuthority adopAgencyOrLA,
                                                   YesOrNo hasAnotherAdopAgencyOrLAinXui,

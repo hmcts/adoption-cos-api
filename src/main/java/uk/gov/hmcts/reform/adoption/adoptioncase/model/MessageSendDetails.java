@@ -49,6 +49,7 @@ public class MessageSendDetails {
         label = "Who do you want to send a message to?",
         access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
+        displayOrder = 2,
         typeParameterOverride = "MessageReceiverRoles")
     private MessageReceiverRoles messageReceiverRoles;
 
@@ -60,6 +61,12 @@ public class MessageSendDetails {
         access = {DefaultAccess.class}
     )
     private MessageReason messageReasonList;
+
+    @CCD(
+        access = {DefaultAccess.class},
+        label = "Date sent",
+        displayOrder = 3)
+    private LocalDateTime messageSendDateNTime;
 
 
     @CCD(
@@ -78,6 +85,14 @@ public class MessageSendDetails {
         typeParameterOverride = "MessageUrgency"
     )
     private MessageUrgency messageUrgencyList;
+
+    @CCD(label = "Reason for message",
+        typeOverride = FixedList,
+        displayOrder = 5,
+        access = {DefaultAccess.class},
+        typeParameterOverride = "MessageReason"
+    )
+    private MessageReason messageReasonList;
 
     @CCD(label = "Message",
         hint = "Enter your message",
@@ -106,13 +121,6 @@ public class MessageSendDetails {
         label = "Document history"
     )
     private List<ListValue<Document>> documentHistory;
-
-    @CCD(
-        access = {DefaultAccess.class},
-        label = "Date sent",
-        displayOrder = 3)
-    private LocalDateTime messageSendDateNTime;
-
 
     @Getter
     @AllArgsConstructor

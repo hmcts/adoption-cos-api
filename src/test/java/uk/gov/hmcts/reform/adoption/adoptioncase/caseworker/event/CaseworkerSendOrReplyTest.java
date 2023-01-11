@@ -67,6 +67,7 @@ public class CaseworkerSendOrReplyTest {
 
     @InjectMocks
     private SendOrReply sendOrReply;
+  
     @InjectMocks
     private CaseworkerSendOrReply caseworkerSendOrReply;
 
@@ -220,6 +221,17 @@ public class CaseworkerSendOrReplyTest {
 
     }
 
+    private User getCaseworkerUser() {
+        UserDetails userDetails = UserDetails
+            .builder()
+            .forename("testFname")
+            .surname("testSname")
+            .roles(Arrays.asList(UserRole.DISTRICT_JUDGE.getRole()))
+            .build();
+
+        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
+    }
+
     @NotNull
     private MessageSendDetails getOpenMessageObject() {
         MessageSendDetails message = new MessageSendDetails();
@@ -236,16 +248,5 @@ public class CaseworkerSendOrReplyTest {
             .data(caseData())
             .id(1L)
             .build();
-    }
-
-    private User getCaseworkerUser() {
-        UserDetails userDetails = UserDetails
-            .builder()
-            .forename("testFname")
-            .roles(Arrays.asList(UserRole.DISTRICT_JUDGE.getRole()))
-            .surname("testSname")
-            .build();
-
-        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
     }
 }

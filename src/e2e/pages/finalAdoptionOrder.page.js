@@ -14,6 +14,7 @@ module.exports = {
     previewOrderLink: '//a[contains(text(),"A76_Final adoption order_draft.pdf")]',
     previewOrderLinkA206: '//a[contains(text(),"A206_Final adoption order_draft.pdf")]',
     placeAndDateOfBirth: {
+      dateOfBirthProvedYes: '#dateOfBirthProved_Yes',
       placeOfBirthProvidedYes: '#placeOfBirthProved_Yes',
       placeOfBirthProvidedNo: '#placeOfBirthProved_No',
       birthCertificate: '#typeOfCertificate-birthCertificate',
@@ -94,6 +95,7 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).click(this.fields.continueButton);
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.errorMessage, this.fields.placeAndDateOfBirth.birthProvedError);
+    await I.retry(3).click(this.fields.placeAndDateOfBirth.dateOfBirthProvedYes);
     await I.retry(3).click(this.fields.placeAndDateOfBirth.placeOfBirthProvidedNo);
     await I.wait(3);
     await I.retry(3).click(this.fields.placeAndDateOfBirth.birthLocationUK);

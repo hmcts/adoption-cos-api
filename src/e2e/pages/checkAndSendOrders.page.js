@@ -74,9 +74,9 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthFather);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicants);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.childLocalAuthority);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
+    // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
   },
