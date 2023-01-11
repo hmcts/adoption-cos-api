@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.List;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
@@ -56,19 +57,19 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 public class CaseworkerSendOrReplyTest {
 
     @Mock
-    private Clock clock;
-
-    @InjectMocks
-    private SendOrReply sendOrReply;
-    @InjectMocks
-    private CaseworkerSendOrReply caseworkerSendOrReply;
+    private HttpServletRequest httpServletRequest;
 
     @Mock
     private IdamService idamService;
 
     @Mock
-    private HttpServletRequest request;
+    private Clock clock;
 
+    @InjectMocks
+    private SendOrReply sendOrReply;
+  
+    @InjectMocks
+    private CaseworkerSendOrReply caseworkerSendOrReply;
 
 
     public static ConfigBuilderImpl<CaseData, State, UserRole> createCaseDataConfigBuilder() {
@@ -115,7 +116,7 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
-        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
@@ -127,6 +128,9 @@ public class CaseworkerSendOrReplyTest {
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
         caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage, getOpenMessageObject());
         caseDetails.getData().setListOfOpenMessages(listOfOpenMessage);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.beforeStartEvent(caseDetails);
         assertThat(result.getData().getReplyMsgDynamicList()).isNotNull();
     }
@@ -148,7 +152,7 @@ public class CaseworkerSendOrReplyTest {
         selectedMessage.setMessageId(messageSendDetails.getMessageId());
         selectedMessage.setMessageContent(messageSendDetails.getMessageText());
         selectedMessage.setReplyMessage(YesOrNo.YES);
-        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LIST_A_HEARING.toString());
+        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LEAVE_TO_OPPOSE.toString());
         caseDetails.getData().setSelectedMessage(selectedMessage);
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseDetails.getData().getListOfOpenMessages())) {
@@ -168,7 +172,7 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
-        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
@@ -189,7 +193,7 @@ public class CaseworkerSendOrReplyTest {
         selectedMessage.setMessageId(messageSendDetails.getMessageId());
         selectedMessage.setMessageContent(messageSendDetails.getMessageText());
         selectedMessage.setReplyMessage(YesOrNo.NO);
-        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LIST_A_HEARING.toString());
+        selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LEAVE_TO_OPPOSE.toString());
         caseDetails.getData().setSelectedMessage(selectedMessage);
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseDetails.getData().getListOfOpenMessages())) {
@@ -209,7 +213,7 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
-        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(caseDetails.getData().getListOfOpenMessages()).hasSize(0);
@@ -217,18 +221,16 @@ public class CaseworkerSendOrReplyTest {
 
     }
 
-
     private User getCaseworkerUser() {
         UserDetails userDetails = UserDetails
             .builder()
             .forename("testFname")
             .surname("testSname")
+            .roles(Arrays.asList(UserRole.DISTRICT_JUDGE.getRole()))
             .build();
 
         return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
     }
-
-
 
     @NotNull
     private MessageSendDetails getOpenMessageObject() {
@@ -237,7 +239,7 @@ public class CaseworkerSendOrReplyTest {
         message.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         message.setMessageSendDateNTime(LocalDateTime.now());
         message.setMessageText("message1");
-        message.setMessageReasonList(MessageSendDetails.MessageReason.LIST_A_HEARING);
+        message.setMessageReasonList(MessageSendDetails.MessageReason.LEAVE_TO_OPPOSE);
         return message;
     }
 
