@@ -88,7 +88,8 @@ exports.config = {
     correspondenceTabPage: './src/e2e/pages/correspondenceTab.page.js',
     generalDirectionOrderPage: './src/e2e/pages/generalDirectionOrder.page.js',
     manageOrderTabPage: './src/e2e/pages/manageOrderTab.page.js',
-    sendOrReplyToMessagesPage: './src/e2e/pages/sendOrReplyToMessages.page.js'
+    sendOrReplyToMessagesPage: './src/e2e/pages/sendOrReplyToMessages.page.js',
+    messageTabPage: './src/e2e/pages/messagesTab.page.js'
 
   },
   plugins: {
