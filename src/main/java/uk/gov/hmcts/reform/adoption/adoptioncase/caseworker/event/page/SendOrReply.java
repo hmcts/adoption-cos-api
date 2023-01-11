@@ -36,8 +36,8 @@ public class SendOrReply implements CcdPageConfiguration {
             .label("sendMessageLab", "## Send a message","messageAction=\"sendMessage\"")
             .label("replyMessageLab", "## Reply to message","messageAction=\"replyMessage\"")
             .complex(CaseData::getMessageSendDetails)
-            .mandatory(MessageSendDetails::getMessageReceiverRoles)
-            .mandatory(MessageSendDetails::getMessageReasonList)
+            .mandatoryWithLabel(MessageSendDetails::getMessageReceiverRoles,"Who do you want to send a message to?")
+            .mandatoryWithLabel(MessageSendDetails::getMessageReasonList,"Select a reason for this message")
             .mandatory(MessageSendDetails::getMessageUrgencyList)
             .done()
             .mandatory(CaseData::getSendMessageAttachDocument)
@@ -58,6 +58,7 @@ public class SendOrReply implements CcdPageConfiguration {
             .readonly(SelectedMessage::getMessageContent)
             .readonly(SelectedMessage::getDocumentLink)
             .mandatory(SelectedMessage::getReplyMessage)
+            .label("replyMessageNoConfirmation", "**No** <br> This message will now be marked as closed", "replyMessage=\"No\"")
             .done();
 
     }

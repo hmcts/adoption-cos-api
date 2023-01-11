@@ -24,9 +24,19 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildCorrespondence(configBuilder);
         buildOrdersViewTab(configBuilder);
         buildHearingsTab(configBuilder);
+        buildMessagesTab(configBuilder);
         buildConfidentialTab(configBuilder);
         buildNotes(configBuilder);
         buildServiceRequestTab(configBuilder);
+       
+    }
+
+    private void buildMessagesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+
+        configBuilder.tab("Messages","Messages")
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .field("listOfOpenMessages")
+            .field("closedMessages");
     }
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
