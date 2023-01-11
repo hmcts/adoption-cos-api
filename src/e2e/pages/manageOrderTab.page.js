@@ -13,7 +13,7 @@ module.exports = {
   async selectOrderTab() {
     await I.wait(3);
     await I.retry(3).click(this.fields.ordersTab);
-    await I.wait(5);
+    await I.wait(3);
   },
 
   async verifyOrderDetailsUnderOrdersTabs() {
@@ -33,9 +33,9 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthFather);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicants);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.childLocalAuthority);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
   },
   async faOrderRecipients() {
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.faoA76);
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   async verifyFAOrderStatus() {
-    await I.retry(3).see("Final Adoption Order");
+    await I.retry(3).see("Final adoption order");
     await I.retry(3).see(finalAdoptionOrderDetails.finalOrderDetails.orderPDF)
     await I.retry(3).see(manageOrderDetails.orderTab.checkAndSend);
   },

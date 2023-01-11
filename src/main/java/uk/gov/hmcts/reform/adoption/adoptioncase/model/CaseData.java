@@ -689,9 +689,12 @@ public class CaseData {
     private DynamicList replyMsgDynamicList;
 
 
-    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    @CCD(access = {DefaultAccess.class})
     @JsonUnwrapped
     private MessageSendDetails messageSendDetails;
+
+    @CCD(access = {DefaultAccess.class})
+    private String loggedInUserRole;
 
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
@@ -713,7 +716,7 @@ public class CaseData {
 
 
     @CCD(
-        label = "Send Messages",
+        label = "Open messages",
         typeOverride = Collection,
         typeParameterOverride = "MessageSendDetails",
         access = {DefaultAccess.class}
@@ -727,6 +730,7 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<MessageSendDetails>> closedMessages;
+
     // ------------------- Send And Reply Messages Objects End ----------------- //
 
     @CCD(
@@ -755,6 +759,7 @@ public class CaseData {
     private String seekFurtherInformationDocumentSubmitterName;
 
     private YesOrNo seekFurtherInformationAdopOrLaSelected;
+
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
@@ -806,12 +811,21 @@ public class CaseData {
     }
 
     public DynamicList getPlacementOfTheChildList() {
-        return this.getAdoptionOrderData().getPlacementOfTheChildList(
-            this.getAdopAgencyOrLA(),
-            this.getHasAnotherAdopAgencyOrLAinXui(),
-            this.getOtherAdoptionAgencyOrLA(),
-            this.getChildSocialWorker(),
-            this.getApplicantSocialWorker());
+        if (adopAgencyOrLA.getAdopAgencyOrLaName() != null
+            && childSocialWorker.getSocialWorkerName() != null
+            && applicantSocialWorker.getSocialWorkerName() != null
+            && this.getAdoptionOrderData().getPlacementOfTheChildList() == null
+            || this.getAdoptionOrderData().getPlacementOfTheChildList().getValue() == null) {
+            return this.getAdoptionOrderData().getPlacementOfTheChildList(
+                        this.getAdopAgencyOrLA(),
+                        this.getHasAnotherAdopAgencyOrLAinXui(),
+                        this.getOtherAdoptionAgencyOrLA(),
+                        this.getChildSocialWorker(),
+                        this.getApplicantSocialWorker());
+
+        }
+
+        return this.getAdoptionOrderData().getPlacementOfTheChildList();
     }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {

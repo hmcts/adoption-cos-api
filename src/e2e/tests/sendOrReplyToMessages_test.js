@@ -10,7 +10,7 @@ async function setupScenario(I) {
   }
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
-Scenario('Verify send and reply message to judge', async ({I, caseViewPage,sendOrReplyToMessagesPage }) => {
+Scenario('Verify send and reply message to judge Open Closed Message on message tab', async ({I, caseViewPage,sendOrReplyToMessagesPage, messageTabPage }) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.sendOrReplyToMessages);
   await sendOrReplyToMessagesPage.sendMessageToJudge();
@@ -20,5 +20,19 @@ Scenario('Verify send and reply message to judge', async ({I, caseViewPage,sendO
   await sendOrReplyToMessagesPage.verifyReplayMessageToJudge();
   await sendOrReplyToMessagesPage.verifyReplyMessageToJudgeCYA();
   await I.seeEventSubmissionConfirmation(caseId,config.administrationActions.sendOrReplyToMessages);
+
+  await messageTabPage.selectMessageTab();
+  await messageTabPage.verifyOpenMessageText();
+  await messageTabPage.verifyOpenMessageDetailsUnderMessageTab();
+  await messageTabPage.verifyMessageStatusOpen();
+
+  await caseViewPage.goToNewActions(config.administrationActions.sendOrReplyToMessages);
+  await sendOrReplyToMessagesPage.replyToMessageNo();
+  await sendOrReplyToMessagesPage.verifyMessageStatusNoCYA();
+  await sendOrReplyToMessagesPage.verifyReplyMessageToJudgeCYA();
+
+  await messageTabPage.selectMessageTab();
+  await messageTabPage.verifyClosedMessageText();
+  await messageTabPage.verifyMessageStatusClosed();
 
 });

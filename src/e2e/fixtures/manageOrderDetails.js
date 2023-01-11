@@ -56,14 +56,23 @@ module.exports = {
     cafcassCaseNumber:'123456789',
   },
   orderTab: {
-    dateOfTheOrder: 'Date of the order',
+    dateOfTheOrder: 'Date order made',
     orderByJudgeName: 'Ordered by',
     orderType: 'Ordered type',
     status: 'Status',
     dateServed: 'Date served',
     recipients: 'Recipients',
     checkAndSend: 'Pending Check & send',
-    gateKeepingOrder: 'Case Management Order (gatekeeping order)',
+    gateKeepingOrder: 'Case management (gatekeeping) order',
     statusServed: 'Served',
+  },
+  messagesTab:{
+    sentTo: 'Sent to',
+    dateSent: 'Date sent',
+    urgency: 'Urgency',
+    reasonForMessage: 'Reason for message',
+    message: 'Message',
+    status: 'Status',
+    messageStatus: 'Open'
   },
 };
