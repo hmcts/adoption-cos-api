@@ -27,65 +27,84 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 public class MessageSendDetails {
 
     @CCD(
+        label = "From",
+        displayOrder = 1
     )
     private String messageFrom;
 
 
     @CCD(
-        displayOrder = 1
+        displayOrder = 1,
+        showCondition = "messageStatus=\"NEVER_SHOW\""
     )
     private String messageId;
 
     @CCD(
-        label = "Status",
-        displayOrder = 2
+        label = "Status"
+
     )
     private MessageStatus messageStatus;
 
     @CCD(
-        label = "Who do you want to send a message to?",
+        label = "Sent to",
         access = { SystemUpdateAccess.class, DefaultAccess.class},
         typeOverride = FixedRadioList,
+        displayOrder = 2,
         typeParameterOverride = "MessageReceiverRoles")
     private MessageReceiverRoles messageReceiverRoles;
 
-    @CCD(label = "Select a reason for this message",
+    @CCD(
+        access = {DefaultAccess.class},
+        label = "Date sent",
+        displayOrder = 3)
+    private LocalDateTime messageSendDateNTime;
+
+    @CCD(label = "Urgency",
         typeOverride = FixedList,
+        access = {DefaultAccess.class},
+        displayOrder = 4,
+        typeParameterOverride = "MessageUrgency"
+    )
+    private MessageUrgency messageUrgencyList;
+
+    @CCD(label = "Reason for message",
+        typeOverride = FixedList,
+        displayOrder = 5,
         access = {DefaultAccess.class},
         typeParameterOverride = "MessageReason"
     )
     private MessageReason messageReasonList;
 
-    @CCD(label = "Urgency",
-        typeOverride = FixedList,
-        access = {DefaultAccess.class},
-        typeParameterOverride = "MessageUrgency"
-    )
-    private MessageUrgency messageUrgencyList;
-
     @CCD(label = "Message",
         hint = "Enter your message",
         typeOverride = TextArea,
+        displayOrder = 6,
         access = {DefaultAccess.class,SystemUpdateAccess.class}
     )
     private String messageText;
 
     @CCD(
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
+        access = { SystemUpdateAccess.class,DefaultAccess.class},
+        displayOrder = 7,
+        label = "Attached documents from the case"
     )
     private Document selectedDocument;
 
+    @CCD(access = {DefaultAccess.class},
+        label = "Message history",
+        displayOrder = 8,
+        typeOverride = TextArea)
+    private String messageHistory;
+
     @CCD(
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
+        access = { SystemUpdateAccess.class,DefaultAccess.class},
+        displayOrder = 9,
+        label = "Document history"
     )
     private List<ListValue<Document>> documentHistory;
 
-    @CCD(
-        access = {DefaultAccess.class})
-    private LocalDateTime messageSendDateNTime;
 
-    @CCD(access = {DefaultAccess.class})
-    private String messageHistory;
+
 
 
 
