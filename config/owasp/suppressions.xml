@@ -71,6 +71,7 @@
     <notes><![CDATA[
       tomcat-embed-websocket-9.0.63.jar ]]></notes>
     <cve>CVE-2022-42252</cve>
+    <cve>CVE-2022-45143</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
