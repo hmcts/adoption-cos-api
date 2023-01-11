@@ -220,13 +220,13 @@ public class ManageOrdersData {
     @AllArgsConstructor
     public enum ManageOrderType implements HasLabel {
         @JsonProperty("caseManagementOrder")
-        CASE_MANAGEMENT_ORDER("Case Management Order (gatekeeping order)"),
+        CASE_MANAGEMENT_ORDER("Case management (gatekeeping) order"),
 
         @JsonProperty("generalDirectionsOrder")
-        GENERAL_DIRECTIONS_ORDER("General Directions Order"),
+        GENERAL_DIRECTIONS_ORDER("General directions order"),
 
         @JsonProperty("finalAdoptionOrder")
-        FINAL_ADOPTION_ORDER("Final Adoption Order");
+        FINAL_ADOPTION_ORDER("Final adoption order");
 
         private final String label;
     }
@@ -449,14 +449,20 @@ public class ManageOrdersData {
     @AllArgsConstructor
     public enum Recipients implements HasLabel {
 
-        @JsonProperty("birthMother")
-        BIRTH_MOTHER("Birth mother"),
+        @JsonProperty("firstApplicant")
+        APPLICANT1("First applicant"),
 
-        @JsonProperty("birthFather")
-        BIRTH_FATHER("Birth father"),
+        @JsonProperty("secondApplicant")
+        APPLICANT2("Second applicant"),
 
-        @JsonProperty("applicants")
-        APPLICANTS("Applicants"),
+        @JsonProperty("respondentBirthMother")
+        RESPONDENT_BIRTH_MOTHER("Respondent (birth mother)"),
+
+        @JsonProperty("respondentBirthFather")
+        RESPONDENT_BIRTH_FATHER("Respondent (birth father)"),
+
+        @JsonProperty("legalGuardianCafcass")
+        LEGAL_GUARDIAN_CAFCASS("Legal guardian (Cafcass)"),
 
         @JsonProperty("childsLocalAuthority")
         CHILDS_LOCAL_AUTHORITY("Child's local authority"),
@@ -464,14 +470,17 @@ public class ManageOrdersData {
         @JsonProperty("applicantsLocalAuthority")
         APPLICANTS_LOCAL_AUTHORITY("Applicant's local authority"),
 
+        @JsonProperty("otherLocalAuthority")
+        OTHER_LOCAL_AUTHORITY("Other local authority"),
+
+        @JsonProperty("adoptionAgency")
+        ADOPTION_AGENCY("Adoption agency"),
+
         @JsonProperty("otherAdoptionAgency")
         OTHER_ADOPTION_AGENCY("Other adoption agency"),
 
         @JsonProperty("otherPersonWithParentalResponsibility")
-        OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility"),
-
-        @JsonProperty("cafcass")
-        CAFCASS("Cafcass");
+        OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility");
 
         private final String label;
     }

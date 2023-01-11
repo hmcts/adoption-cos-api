@@ -24,7 +24,11 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
 import java.time.LocalDate;
@@ -40,9 +44,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSendOrReply.CASEWORKER_SEND_OR_REPLY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,6 +62,12 @@ public class CaseworkerSendOrReplyTest {
     private SendOrReply sendOrReply;
     @InjectMocks
     private CaseworkerSendOrReply caseworkerSendOrReply;
+
+    @Mock
+    private IdamService idamService;
+
+    @Mock
+    private HttpServletRequest request;
 
 
 
@@ -102,6 +115,8 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
     }
@@ -153,6 +168,8 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
         assertThat(result.getData().getListOfOpenMessages().get(0).getValue().getMessageId().equals(selectedMessage.getMessageId()));
@@ -192,6 +209,8 @@ public class CaseworkerSendOrReplyTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(caseDetails.getData().getListOfOpenMessages()).hasSize(0);
         assertThat(caseDetails.getData().getClosedMessages()).hasSize(1);
@@ -199,6 +218,15 @@ public class CaseworkerSendOrReplyTest {
     }
 
 
+    private User getCaseworkerUser() {
+        UserDetails userDetails = UserDetails
+            .builder()
+            .forename("testFname")
+            .surname("testSname")
+            .build();
+
+        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
+    }
 
 
 

@@ -237,6 +237,10 @@ class CaseWorkerManageHearingTest {
         SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
         recipientsInTheCases.add(RecipientsInTheCase.APPLICANT2);
         caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
         AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
             .midEventAfterRecipientSelection(caseDetails, caseDetails);
         assertThat(response.getErrors()).isNotNull();

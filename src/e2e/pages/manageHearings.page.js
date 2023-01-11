@@ -4,7 +4,7 @@ const manageHearingFormData = require('../fixtures/manageHearings');
 module.exports = {
   fields: {
     allocateJudgeTitle: '//h1[contains(text(),"Manage hearings")]',
-    childNameHeader: '//h3[contains(text(),"Child\'s Name: child child")]',
+    childNameHeader: '//h3[contains(text(),"Child\'s name: child child")]',
     continueButton: 'button[type="submit"]',
     errorMessage: '//span[contains(text(),"Field is required")]',
     alertMessage: '//div[@class="alert-message"]',
@@ -26,13 +26,13 @@ module.exports = {
     accessibilityRequirements: '#accessibilityRequirements',
     hearingDelay: '#hearingDirections-hearingDelayWaring',
     backupNotice: '#hearingDirections-backupNotice',
-    firstApplicant: '#recipientsInTheCase-applicant1',
-    secondApplicant: '#recipientsInTheCase-applicant2',
+    firstApplicant: '#recipientsInTheCase-firstApplicant',
+    secondApplicant: '#recipientsInTheCase-secondApplicant',
     recipientsBirthMother: '#recipientsInTheCase-respondentBirthMother',
     recipientsBirthFather: '#recipientsInTheCase-respondentBirthFather',
-    legalGuardian: '#recipientsInTheCase-legalGuardian',
-    childsLocalAuthority: '#recipientsInTheCase-childLocalAuthority',
-    applicantsLocalAuthority: '#recipientsInTheCase-applicantLocalAuthority',
+    legalGuardian: '#recipientsInTheCase-legalGuardianCafcass',
+    childsLocalAuthority: '#recipientsInTheCase-childsLocalAuthority',
+    applicantsLocalAuthority: '#recipientsInTheCase-applicantsLocalAuthority',
     adoptionAgency: '#recipientsInTheCase-adoptionAgency',
     otherAdoptionAgency: '#recipientsInTheCase-otherAdoptionAgency',
     otherParentWithParentalResponsibility: '#recipientsInTheCase-otherPersonWithParentalResponsibility',
@@ -106,9 +106,10 @@ module.exports = {
      await I.retry(5).click(this.fields.otherParentWithParentalResponsibility);
      await I.retry(5).click(this.fields.continueButton);
      await I.wait(3);
-     await I.see("Legal guardian (Cafcass) is not applicable");
-     await I.see("Other adoption agency is not applicable");
+     await I.see("Legal guardian (Cafcass) not applicable for the case");
+     await I.see("Other adoption agency not applicable for the case");
      await I.wait(3);
+    await I.retry(5).click(this.fields.otherParentWithParentalResponsibility);
      await I.retry(5).click(this.fields.legalGuardian);
      await I.retry(5).click(this.fields.otherAdoptionAgency);
      await I.wait(3);
@@ -136,7 +137,7 @@ module.exports = {
     await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
-    await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+   // await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
     await I.see(manageHearingFormData.checkYourAnswers.addNewHearingOption);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
@@ -200,7 +201,7 @@ module.exports = {
     await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
-    await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+    //await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
     await I.retry(3).seeElement(this.fields.previewDraftLink);
     await I.wait(3);
     await I.retry(5).click(this.fields.continueButton);
@@ -266,7 +267,7 @@ module.exports = {
       await I.retry(5).seeElement(this.fields.reListingYes);
       await I.retry(5).seeElement(this.fields.reListingNo);
       await I.retry(5).click(this.fields.continueButton);
-      await I.retry(3).see('Does the hearing need to be relisted is required');
+      await I.retry(3).see('Does the hearing need to be relisted? is required');
       await I.retry(5).click(this.fields.reListingNo);
       await I.retry(5).click(this.fields.continueButton);
     },
@@ -329,7 +330,7 @@ module.exports = {
         await I.retry(5).seeElement(this.fields.reListingYes);
         await I.retry(5).seeElement(this.fields.reListingNo);
         await I.retry(5).click(this.fields.continueButton);
-        await I.retry(3).see('Does the hearing need to be relisted is required');
+        await I.retry(3).see('Does the hearing need to be relisted? is required');
         await I.retry(5).click(this.fields.reListingYes);
         await I.retry(5).click(this.fields.continueButton);
       },
@@ -354,7 +355,7 @@ module.exports = {
       await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
       await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
       await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
-      await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
+     // await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
       await I.wait(3);
       await I.retry(5).click(this.fields.continueButton);
       await I.wait(3);

@@ -713,7 +713,7 @@ public class CaseData {
 
 
     @CCD(
-        label = "Send Messages",
+        label = "Open messages",
         typeOverride = Collection,
         typeParameterOverride = "MessageSendDetails",
         access = {DefaultAccess.class}

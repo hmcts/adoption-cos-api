@@ -44,7 +44,6 @@ public class ManageOrders implements CcdPageConfiguration {
         getGatekeepingOrderPage(pageBuilder);
         getFirstDirectionsPage(pageBuilder);
         getSecondDirectionsPage(pageBuilder);
-        getServePartiesPage(pageBuilder);
     }
 
     /**
@@ -375,24 +374,6 @@ public class ManageOrders implements CcdPageConfiguration {
             .done()
             .done();
     }
-
-    /**
-     * Helper method to support page design and flow to Display Fields for serve parties screen.
-     * Recipients
-     *
-     * @param pageBuilder - Application PageBuilder for the event pages
-     */
-    private void getServePartiesPage(PageBuilder pageBuilder) {
-        pageBuilder.page("manageOrders6")
-            .showCondition("manageOrderType=\"caseManagementOrder\"")
-            .pageLabel("Case management order recipients")
-            .complex(CaseData::getManageOrdersData)
-            .label("LabelRecipients661", "#### Select who to serve the order to", null, true)
-            .mandatory(ManageOrdersData::getRecipientsList)
-            .done()
-            .done();
-    }
-
 
     /**
      * Event method to validate the right selection options done by the User as per the Requirements for Hearing Notices.
