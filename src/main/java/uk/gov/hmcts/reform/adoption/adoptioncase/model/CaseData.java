@@ -806,12 +806,21 @@ public class CaseData {
     }
 
     public DynamicList getPlacementOfTheChildList() {
-        return this.getAdoptionOrderData().getPlacementOfTheChildList(
-            this.getAdopAgencyOrLA(),
-            this.getHasAnotherAdopAgencyOrLAinXui(),
-            this.getOtherAdoptionAgencyOrLA(),
-            this.getChildSocialWorker(),
-            this.getApplicantSocialWorker());
+        if (adopAgencyOrLA.getAdopAgencyOrLaName() != null
+            && childSocialWorker.getSocialWorkerName() != null
+            && applicantSocialWorker.getSocialWorkerName() != null
+            && this.getAdoptionOrderData().getPlacementOfTheChildList() == null
+            || this.getAdoptionOrderData().getPlacementOfTheChildList().getValue() == null) {
+            return this.getAdoptionOrderData().getPlacementOfTheChildList(
+                        this.getAdopAgencyOrLA(),
+                        this.getHasAnotherAdopAgencyOrLAinXui(),
+                        this.getOtherAdoptionAgencyOrLA(),
+                        this.getChildSocialWorker(),
+                        this.getApplicantSocialWorker());
+
+        }
+
+        return this.getAdoptionOrderData().getPlacementOfTheChildList();
     }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
