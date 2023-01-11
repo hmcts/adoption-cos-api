@@ -13,6 +13,9 @@ module.exports = {
     messageActionReplyMessage: '#messageAction-replyMessage',
     replyMsgDynamicListDropDown: '#replyMsgDynamicList',
     replyMessageYes: '#replyMessage_Yes',
+    replyMessageNo: '#replyMessage_No',
+    replyMsgDropDown: '#replyMsgDynamicList',
+    reasonToReply: '//select[@id=\'replyMsgDynamicList\']/option'
 
 
   },
@@ -84,4 +87,27 @@ module.exports = {
     await I.click('Save and continue');
     await I.wait(3);
   },
+
+  async replyToMessageNo() {
+    await I.retry(3).waitForText('Do you want to send or reply to a message?', 30);
+    await I.retry(3).click(this.fields.messageActionReplyMessage);
+    await I.wait(3);
+    let reason = locate('//select[@id="replyMsgDynamicList"]/option').at(2);
+    reasonType = await I.grabTextFrom(reason);
+    await I.retry(3).selectOption(this.fields.replyMsgDropDown, reasonType);
+    await I.retry(3).click('Continue');
+    await I.wait(3);
+    await I.retry(3).click(this.fields.replyMessageNo)
+    await I.wait(3);
+   // await I.retry(3).see('This message will now be marked as closed');
+    await I.retry(3).click('Continue');
+    await I.wait(3);
+
+  },
+  async verifyMessageStatusNoCYA() {
+    await I.retry(3).see('No');
+  },
+
+
+
 };

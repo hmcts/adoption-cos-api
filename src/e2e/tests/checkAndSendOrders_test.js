@@ -35,7 +35,7 @@ Scenario('Verify send message for check and send gate keeping orders message Tab
   await sendOrReplyToMessagesPage.whoDoYouSendMessage();
   await checkAndSendOrdersPage.verifyReturnForAmendmentsCYA();
   await messageTabPage.selectMessageTab();
-  await messageTabPage.verifyMessageDetailsUnderMessageTab();
+  await messageTabPage.verifyOpenMessageDetailsUnderMessageTab();
   await messageTabPage.verifyMessageStatusOpen();
 
 
@@ -67,7 +67,7 @@ Scenario('Verify final adoption order return for amendments  Check and Send Orde
   await sendOrReplyToMessagesPage.whoDoYouSendMessage();
   await checkAndSendOrdersPage.verifyReturnForAmendmentsCYA();
   await messageTabPage.selectMessageTab();
-  await messageTabPage.verifyMessageDetailsUnderMessageTab();
+  await messageTabPage.verifyOpenMessageDetailsUnderMessageTab();
   await messageTabPage.verifyMessageStatusOpen();
 
 
