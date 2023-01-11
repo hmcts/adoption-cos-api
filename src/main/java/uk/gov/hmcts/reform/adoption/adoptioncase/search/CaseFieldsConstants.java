@@ -20,6 +20,9 @@ public final class CaseFieldsConstants {
     public static final String OTHER_ADOPTION_AGENCY_STR = "OTHER_ADOPTION_AGENCY";
     public static final String CHILD_SOCIAL_WORKER_STR = "CHILD_SOCIAL_WORKER";
     public static final String APPLICANT_SOCIAL_WORKER_STR = "APPLICANT_SOCIAL_WORKER";
+
+    public static final String SEND_N_REPLY_USER_JUDGE = "judge";
+    public static final String SEND_N_REPLY_USER_DEFAULT = "default";
     public static final String ERROR_CHECK_RECIPIENTS_SELECTION = "Recipients for adoption order is required";
     public static final String ERROR_INVALID_RECIPIENTS_SELECTION = "Recipients for adoption order selection is invalid";
     public static final String FIRST_APPLICANT_NOT_APPLICABLE = "First Applicant not applicable for the case";

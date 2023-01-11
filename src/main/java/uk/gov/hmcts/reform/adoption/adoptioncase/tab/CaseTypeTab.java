@@ -28,7 +28,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildConfidentialTab(configBuilder);
         buildNotes(configBuilder);
         buildServiceRequestTab(configBuilder);
-       
     }
 
     private void buildMessagesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
