@@ -54,15 +54,6 @@ public class MessageSendDetails {
     private MessageReceiverRoles messageReceiverRoles;
 
     @CCD(
-        typeOverride = FixedList,
-        label = "Select a reason for this message",
-        typeParameterOverride = "MessageReason",
-        inheritAccessFromParent = false,
-        access = {DefaultAccess.class}
-    )
-    private MessageReason messageReasonList;
-
-    @CCD(
         access = {DefaultAccess.class},
         label = "Date sent",
         displayOrder = 3)
@@ -86,11 +77,12 @@ public class MessageSendDetails {
     )
     private MessageUrgency messageUrgencyList;
 
-    @CCD(label = "Reason for message",
+    @CCD(label = "Select a reason for this message",
         typeOverride = FixedList,
         displayOrder = 5,
-        access = {DefaultAccess.class},
-        typeParameterOverride = "MessageReason"
+        typeParameterOverride = "MessageReason",
+        inheritAccessFromParent = false,
+        access = {DefaultAccess.class}
     )
     private MessageReason messageReasonList;
 

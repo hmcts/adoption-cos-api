@@ -70,7 +70,7 @@ public final class CommonPageBuilder {
             .done();
     }
 
-    public void replyMessageBuilder(PageBuilder pageBuilder, String condition) {
+    public static void replyMessageBuilder(PageBuilder pageBuilder, String condition) {
         pageBuilder.page("pageSendOrReply2")
             .showCondition(condition)
             .label("labelReplyMes", "## Reply to message")
