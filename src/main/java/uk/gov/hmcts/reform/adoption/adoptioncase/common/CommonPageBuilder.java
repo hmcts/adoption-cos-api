@@ -70,16 +70,17 @@ public final class CommonPageBuilder {
             .done();
     }
 
-    public static void replyMessageBuilder(PageBuilder pageBuilder, String condition) {
+    public void replyMessageBuilder(PageBuilder pageBuilder, String condition) {
         pageBuilder.page("pageSendOrReply2")
             .showCondition(condition)
-            .label("labelReplyMes", "## Reply to a message")
+            .label("labelReplyMes", "## Reply to message")
             .complex(CaseData::getSelectedMessage)
             .readonly(SelectedMessage::getReasonForMessage)
             .readonly(SelectedMessage::getUrgency)
             .readonly(SelectedMessage::getMessageContent)
             .readonly(SelectedMessage::getDocumentLink)
             .mandatory(SelectedMessage::getReplyMessage)
+            .label("replyMessageNoConfirmation", "**No** <br> This message will now be marked as closed", "replyMessage=\"No\"")
             .done();
     }
 
