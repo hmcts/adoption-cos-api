@@ -26,18 +26,13 @@ module.exports = {
     accessibilityRequirements: '#accessibilityRequirements',
     hearingDelay: '#hearingDirections-hearingDelayWaring',
     backupNotice: '#hearingDirections-backupNotice',
-    //firstApplicant: '#recipientsInTheCase-applicant1',
-    firstApplicant: '#recipientsInTheCase-firstApplicant',
-    //secondApplicant: '#recipientsInTheCase-applicant2',
-    secondApplicant: '#recipientsInTheCase-secondApplicant',
+    firstApplicant: '#recipientsInTheCase-applicant1',
+    secondApplicant: '#recipientsInTheCase-applicant2',
     recipientsBirthMother: '#recipientsInTheCase-respondentBirthMother',
     recipientsBirthFather: '#recipientsInTheCase-respondentBirthFather',
-    //legalGuardian: '#recipientsInTheCase-legalGuardian',
-    legalGuardian: '#recipientsInTheCase-legalGuardianCafcass',
-    //childsLocalAuthority: '#recipientsInTheCase-childLocalAuthority',
-    childsLocalAuthority: '#recipientsInTheCase-childsLocalAuthority',
-    //applicantsLocalAuthority: '#recipientsInTheCase-applicantLocalAuthority',
-    applicantsLocalAuthority: '#recipientsInTheCase-applicantsLocalAuthority',
+    legalGuardian: '#recipientsInTheCase-legalGuardian',
+    childsLocalAuthority: '#recipientsInTheCase-childLocalAuthority',
+    applicantsLocalAuthority: '#recipientsInTheCase-applicantLocalAuthority',
     adoptionAgency: '#recipientsInTheCase-adoptionAgency',
     otherAdoptionAgency: '#recipientsInTheCase-otherAdoptionAgency',
     otherParentWithParentalResponsibility: '#recipientsInTheCase-otherPersonWithParentalResponsibility',
@@ -95,9 +90,8 @@ module.exports = {
   },
 
   async addRecepientDetails() {
-    await I.wait(5);
     await I.retry(3).waitForText('Recipients', 30);
-    //await I.retry(3).seeElement(this.fields.childNameHeader);
+    await I.retry(3).seeElement(this.fields.childNameHeader);
     await I.retry(3).seeElement(this.fields.recipientsTitle);
     // await I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
     await I.retry(5).click(this.fields.firstApplicant);
@@ -109,13 +103,11 @@ module.exports = {
     await I.retry(5).click(this.fields.applicantsLocalAuthority);
     await I.retry(5).click(this.fields.adoptionAgency);
     await I.retry(5).click(this.fields.otherAdoptionAgency);
-    //await I.retry(5).click(this.fields.otherParentWithParentalResponsibility);
+    await I.retry(5).click(this.fields.otherParentWithParentalResponsibility);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
-    //await I.see("Legal guardian (Cafcass) is not applicable");
-    await I.see("Legal guardian (CAFCASS) not applicable for the case");
-    //await I.see("Other adoption agency is not applicable for the case");
-    await I.see("Other adoption agency not applicable for the case");
+    await I.see("Legal guardian (Cafcass) is not applicable");
+    await I.see("Other adoption agency is not applicable");
     await I.wait(3);
     await I.retry(5).click(this.fields.legalGuardian);
     await I.retry(5).click(this.fields.otherAdoptionAgency);
@@ -144,11 +136,7 @@ module.exports = {
     await I.see(manageHearingFormData.checkYourAnswers.recipientChildLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientApplicantLA);
     await I.see(manageHearingFormData.checkYourAnswers.recipientAdopAgency);
-    //await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
-    await I.see(manageHearingFormData.checkYourAnswers.applicantsHearingNotice);
-    await I.see(manageHearingFormData.checkYourAnswers.childLocalAuthorityHearingNotice);
-    await I.see(manageHearingFormData.checkYourAnswers.applicantLocalAuthorityHearingNotice);
-    await I.see(manageHearingFormData.checkYourAnswers.adoptionAgencyHearingNotice);
+    await I.see(manageHearingFormData.checkYourAnswers.recipientOtherParentalResponsibility);
     await I.see(manageHearingFormData.checkYourAnswers.addNewHearingOption);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
@@ -311,12 +299,9 @@ module.exports = {
   async verifyPreviewDraft() {
     await I.wait(3);
     await I.retry(3).waitForText('Preview the hearing notice', 30);
-    // await I.retry(3).see('Birth_mother_hearing_notice.pdf');
-    // await I.retry(3).see('Birth_father_hearing_notice.pdf');
+    await I.retry(3).see('Birth_mother_hearing_notice.pdf');
+    await I.retry(3).see('Birth_father_hearing_notice.pdf');
     await I.retry(3).see('Applicants_hearing_notice.pdf');
-    await I.retry(3).see('Child_local_authority_hearing_notice.pdf');
-    await I.retry(3).see('Applicant_local_authority_hearing_notice.pdf');
-    await I.retry(3).see('Adoption_agency_hearing_notice.pdf');
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
   },
