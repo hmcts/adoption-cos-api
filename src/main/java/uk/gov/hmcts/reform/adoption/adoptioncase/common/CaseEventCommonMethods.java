@@ -152,15 +152,6 @@ public final class CaseEventCommonMethods {
     }
 
     private static void setMessageInformation(CaseData caseData, MessageSendDetails sendMessagesDetails, User caseworkerUser) {
-        if (caseData.getAttachDocumentList() != null
-            && caseData.getAttachDocumentList().getValue() != null) {
-            var doc = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
-                .filter(item -> item.getMessageId().equalsIgnoreCase(caseData.getAttachDocumentList().getValue().getCode().toString()))
-                .findFirst().get().getDocumentLink();
-            sendMessagesDetails.setSelectedDocument(doc);
-            sendMessagesDetails.setDocumentHistory(
-                caseData.archiveManageOrdersHelper(sendMessagesDetails.getDocumentHistory(), doc));
-        }
         sendMessagesDetails.setMessageFrom(caseworkerUser.getUserDetails().getEmail());
         sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         sendMessagesDetails.setMessageSendDateNTime(

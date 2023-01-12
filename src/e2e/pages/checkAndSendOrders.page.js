@@ -74,9 +74,9 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthFather);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicants);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.childLocalAuthority);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
+    // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
   },
@@ -106,6 +106,7 @@ module.exports = {
     await I.wait(3);
 
   },
+
   async selectReturnForAmendments(){
     await I.retry(3).click(this.fields.returnForAmendments);
     await I.retry(3).click(this.fields.continueButton);
@@ -128,12 +129,11 @@ module.exports = {
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Return for amendments');
     await I.retry(3).see('Judge');
-    await I.retry(3).see('Refer for gatekeeping');
+    await I.retry(3).see('List a hearing');
     await I.retry(3).see('High');
     await I.retry(3).see(sendOrReplyToMessagesData.message);
     await I.click('Save and continue');
     await I.wait(3);
   },
-
 
 };

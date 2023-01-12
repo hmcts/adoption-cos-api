@@ -18,6 +18,7 @@ module.exports = {
   urgencyIsRequired: 'Urgency is required',
   doYouWantToAttachDocumentForThisCase: 'Do you want to attach documents from this case?',
   doYouWantToAttachDocumentForThisCaseError: 'Do you want to attach documents from this case? is required',
-  messageIsRequiredError: 'Message is required',
+  messageIsRequiredError: 'Message is required'
+
 
 }

@@ -12,7 +12,7 @@ async function setupScenario(I) {
   console.log('CCD Case number - '+ caseId);
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
-Scenario('Verify send message for check and send gate keeping orders message Tab', async ({I, caseViewPage, manageOrdersPage, checkAndSendOrdersPage, sendOrReplyToMessagesPage, messageTabPage }) => {
+Scenario('Verify send message for check and send gate keeping orders', async ({I, caseViewPage, manageOrdersPage, checkAndSendOrdersPage, sendOrReplyToMessagesPage }) => {
 
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
@@ -41,7 +41,7 @@ Scenario('Verify send message for check and send gate keeping orders message Tab
 
 });
 
-Scenario('Verify final adoption order return for amendments  Check and Send Orders message Tab', async ({I, caseViewPage, manageOrdersPage, finalOrderPage, checkAndSendOrdersPage, sendOrReplyToMessagesPage, messageTabPage}) => {
+Scenario('Verify final adoption order return for amendments  Check and Send Orders', async ({I, caseViewPage, manageOrdersPage, finalOrderPage, checkAndSendOrdersPage,sendOrReplyToMessagesPage}) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.verifyCaseDetails();
@@ -72,3 +72,4 @@ Scenario('Verify final adoption order return for amendments  Check and Send Orde
 
 
 });
+

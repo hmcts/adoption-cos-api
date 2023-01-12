@@ -69,7 +69,6 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> details,
                                                                        CaseDetails<CaseData, State> detailsBefore) {
-
         final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
         var caseData = details.getData();
         CaseEventCommonMethods.updateMessageList(caseData,caseworkerUser);
