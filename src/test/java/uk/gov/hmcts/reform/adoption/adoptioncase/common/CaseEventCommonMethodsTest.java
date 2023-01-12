@@ -2,10 +2,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.common;
 
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
-import uk.gov.hmcts.ccd.sdk.type.Document;
-import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.*;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDocumentList;
@@ -126,6 +123,52 @@ public class CaseEventCommonMethodsTest {
         assertThat(list).hasSize(0);
         assertThat(list).isEmpty();
     }
+
+    @Test
+    public void verifyDocumentHistory_Test() {
+        var caseData = getCaseDetails().getData();
+        var messageSendDetails = new MessageSendDetails();
+        var uploadDocument = getApplicationDocumentCategory();
+        var uuid = UUID.nameUUIDFromBytes(uploadDocument.getName().getBytes());
+        var dynamicList = new DynamicList();
+        dynamicList.setValue(new DynamicListElement(uuid, "test"));
+        caseData.setAttachDocumentList(dynamicList);
+        List<ListValue<AdoptionUploadDocument>> applicationDocumentCategory = new ArrayList<>();
+        caseData.setApplicationDocumentsCategory(caseData.archiveManageOrdersHelper(applicationDocumentCategory,
+                                                                                    uploadDocument));
+        prepareDocumentList(caseData);
+
+        caseData.setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
+        messageSendDetails.setMessageId("123e4567-e89b-12d3-a456-426614174000");
+        messageSendDetails.setMessageSendDateNTime(LocalDateTime.now());
+        messageSendDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
+        messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.ANNEX_A);
+        caseData.setMessageSendDetails(messageSendDetails);
+        CaseEventCommonMethods.updateMessageList(caseData, getCaseworkerUser());
+
+        assertThat(messageSendDetails.getDocumentHistory()).isNotNull();
+        assertThat(messageSendDetails.getSelectedDocument()).isNotNull();
+    }
+
+    @Test
+    public void verifyMessageReasonLabel_Test_ReasonList() {
+        var messageSendDetails = new MessageSendDetails();
+        var caseData = getCaseDetails().getData();
+        messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.ANNEX_A);
+        caseData.setMessageSendDetails(messageSendDetails);
+        assertThat(CaseEventCommonMethods.getMessageReasonLabel(messageSendDetails)).isEqualTo("Annex A for review");
+
+    }
+
+    @Test
+    public void verifyMessageReasonLabel_Test_ReasonJudge() {
+        var messageSendDetails = new MessageSendDetails();
+        var caseData = getCaseDetails().getData();
+        messageSendDetails.setMessageReasonJudge(MessageSendDetails.MessageReasonJudge.LIST_A_HEARING);
+        caseData.setMessageSendDetails(messageSendDetails);
+        assertThat(CaseEventCommonMethods.getMessageReasonLabel(messageSendDetails)).isEqualTo("List for a hearing");
+    }
+
 
     private AdoptionUploadDocument getApplicationDocumentCategory() {
         var uploadDocument = new AdoptionUploadDocument();
