@@ -23,11 +23,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_DEFAULT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
-
 
 public final class CaseEventCommonMethods {
     private CaseEventCommonMethods() {
@@ -82,7 +82,6 @@ public final class CaseEventCommonMethods {
         return messageDocumentLists;
     }
 
-
     public static void prepareReplyMessageDynamicList(CaseData caseData, User caseworkerUser) {
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
@@ -134,7 +133,7 @@ public final class CaseEventCommonMethods {
                 caseData.getListOfOpenMessages().remove(messageListValue);
                 if (YesOrNo.NO.equals(caseData.getSelectedMessage().getReplyMessage())) {
                     selectedMessage.setMessageStatus(MessageSendDetails.MessageStatus.CLOSED);
-                    caseData.setClosedMessages(caseData.archiveManageOrdersHelper(
+                    caseData.setClosedMessages(archiveListHelper(
                         caseData.getClosedMessages(), selectedMessage));
                 } else {
                     sendMessagesDetails.setMessageId(activeMessageID);
@@ -164,7 +163,7 @@ public final class CaseEventCommonMethods {
         sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         sendMessagesDetails.setMessageSendDateNTime(
             LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-        caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
+        caseData.setListOfOpenMessages(archiveListHelper(
             caseData.getListOfOpenMessages(), sendMessagesDetails));
         caseData.setMessageSendDetails(null);
         caseData.setAttachDocumentList(null);
@@ -195,10 +194,8 @@ public final class CaseEventCommonMethods {
                 var doc = selectedDocument.get().getDocumentLink();
                 sendMessagesDetails.setSelectedDocument(doc);
                 sendMessagesDetails.setDocumentHistory(
-                    caseData.archiveManageOrdersHelper(documentHistory, doc));
+                    archiveListHelper(documentHistory, doc));
             }
-
         }
-
     }
 }

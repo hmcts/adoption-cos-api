@@ -46,7 +46,6 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
@@ -934,7 +933,7 @@ public class CaseData {
             manageHearingDetails.setRecipientsInTheCase(this.manageHearingDetails.getRecipientsInTheCase());
             manageHearingDetails.setHearingId(UUID.randomUUID().toString());
             setNewHearings(archiveListHelper(getNewHearings(), manageHearingDetails));
-            this.setManageHearingDetails(new ManageHearingDetails());
+            this.manageHearingDetails = new ManageHearingDetails();
             this.manageHearingDetails.setManageHearingOptions(null);
             this.manageHearingDetails.setRecipientsInTheCase(null);
         }
@@ -964,7 +963,7 @@ public class CaseData {
         )).findFirst();
 
         if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
-            adjournHearingDetails.get().getValue().setReasonForAdjournHearing(reasonForAdjournHearing);
+            adjournHearingDetails.get().getValue().setReasonForAdjournHearing(this.manageHearingDetails.getReasonForAdjournHearing());
             adjournHearingDetails.get().getValue().setOtherReasonForAdjournHearing(
                 this.manageHearingDetails.getOtherReasonForAdjournHearing());
             setAdjournHearings(archiveListHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
