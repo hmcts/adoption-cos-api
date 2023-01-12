@@ -11,22 +11,27 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndSendOrders;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -36,10 +41,13 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_DEFAULT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
 
 @Component
@@ -50,6 +58,12 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
     private CaseDataDocumentService caseDataDocumentService;
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private IdamService idamService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * The constant CASEWORKER_CHECK_AND_SEND_ORDERS.
@@ -101,7 +115,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
      */
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToStart(CaseDetails<CaseData, State> details) {
         CaseData caseData = details.getData();
-
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
         List<DynamicListElement> listElements = new ArrayList<>();
         if (caseData.getCommonOrderList() != null) {
             caseData.getCommonOrderList().forEach(order -> {
@@ -117,12 +131,17 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             });
         }
         caseData.setCheckAndSendOrderDropdownList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
+
+        caseData.setLoggedInUserRole(caseworkerUser.getUserDetails().getRoles()
+                                         .contains(UserRole.DISTRICT_JUDGE.getRole())
+                                         ? SEND_N_REPLY_USER_JUDGE : SEND_N_REPLY_USER_DEFAULT);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State>
                                             caseDetails, CaseDetails<CaseData, State> caseDetailsBefore) {
         var caseData = caseDetails.getData();
+        final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
         switch (caseData.getSelectedOrder().getOrderType()) {
             case CASE_MANAGEMENT_ORDER:
                 Optional<ListValue<ManageOrdersData>> gatekeepingOrderItem =  caseData.getManageOrderList().stream()
@@ -173,11 +192,15 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     LanguagePreference.ENGLISH,
                     FINAL_ADOPTION_ORDER_A76_FILE_NAME
                 ));
+        } else if (commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.RETURN_FOR_AMENDMENTS)) {
+            caseData.setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
+            CaseEventCommonMethods.updateMessageList(caseData, caseworkerUser);
         }
         caseData.setManageOrdersData(null);
         caseData.setDirectionsOrderData(null);
         caseData.setAdoptionOrderData(null);
         caseData.setSelectedOrder(null);
+        caseData.setLoggedInUserRole(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
 

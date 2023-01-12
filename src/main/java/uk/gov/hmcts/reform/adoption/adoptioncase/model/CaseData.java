@@ -689,9 +689,12 @@ public class CaseData {
     private DynamicList replyMsgDynamicList;
 
 
-    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    @CCD(access = {DefaultAccess.class})
     @JsonUnwrapped
     private MessageSendDetails messageSendDetails;
+
+    @CCD(access = {DefaultAccess.class})
+    private String loggedInUserRole;
 
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
@@ -727,6 +730,7 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<MessageSendDetails>> closedMessages;
+
     // ------------------- Send And Reply Messages Objects End ----------------- //
 
     @CCD(
@@ -755,6 +759,7 @@ public class CaseData {
     private String seekFurtherInformationDocumentSubmitterName;
 
     private YesOrNo seekFurtherInformationAdopOrLaSelected;
+
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
@@ -968,6 +973,7 @@ public class CaseData {
 
         if (null != manageHearingDetails) {
             manageHearingDetails.setHearingId(UUID.randomUUID().toString());
+            this.manageHearingDetails.setManageHearingOptions(null);
             setNewHearings(archiveManageOrdersHelper(getNewHearings(), manageHearingDetails));
             this.setManageHearingDetails(new ManageHearingDetails());
         }
@@ -998,10 +1004,13 @@ public class CaseData {
 
         if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
             adjournHearingDetails.get().getValue().setReasonForAdjournHearing(this.manageHearingDetails.getReasonForAdjournHearing());
+            adjournHearingDetails.get().getValue().setOtherReasonForAdjournHearing(
+                this.manageHearingDetails.getOtherReasonForAdjournHearing());
             setAdjournHearings(archiveManageOrdersHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
             newHearings.remove(adjournHearingDetails.get());
         }
         this.manageHearingDetails.setManageHearingOptions(null);
+        this.manageHearingDetails.setOtherReasonForAdjournHearing(null);
     }
 
 }

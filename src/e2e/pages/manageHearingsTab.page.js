@@ -82,7 +82,7 @@ module.exports = {
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Child\'s local authority');
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Applicant\'s local authority');
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Adoption agency');
-         // I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Other person with parental responsibility');
+          //I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Other person with parental responsibility');
           I.seeTextInTab(['Adjourned hearing 1', 'Reason for adjournment'], 'Late filing of documents');
         },
 };

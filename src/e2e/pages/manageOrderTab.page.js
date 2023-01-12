@@ -13,7 +13,7 @@ module.exports = {
   async selectOrderTab() {
     await I.wait(3);
     await I.retry(3).click(this.fields.ordersTab);
-    await I.wait(5);
+    await I.wait(3);
   },
 
   async verifyOrderDetailsUnderOrdersTabs() {
