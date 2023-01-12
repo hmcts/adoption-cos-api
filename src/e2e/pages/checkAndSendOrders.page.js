@@ -129,7 +129,7 @@ module.exports = {
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Return for amendments');
     await I.retry(3).see('Judge');
-    await I.retry(3).see('List a hearing');
+    await I.retry(3).see('Refer for gatekeeping');
     await I.retry(3).see('High');
     await I.retry(3).see(sendOrReplyToMessagesData.message);
     await I.click('Save and continue');
