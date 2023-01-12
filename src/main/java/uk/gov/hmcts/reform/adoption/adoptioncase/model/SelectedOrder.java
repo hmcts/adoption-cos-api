@@ -22,12 +22,19 @@ public class SelectedOrder {
         hint = "This document will open in a new page when you select it.",
         access = { SystemUpdateAccess.class, DefaultAccess.class}
     )
-    private Document reviewDocumentLink;
+    private Document reviewDocumentLink1;
+
+    @CCD
+    private Document reviewDocumentLink2;
 
     @CCD(
         access = { SystemUpdateAccess.class, DefaultAccess.class}
     )
     private Set<ManageOrdersData.Recipients> adoptionOrderRecipients;
+
+    @CCD(
+        access = { SystemUpdateAccess.class, DefaultAccess.class})
+    private Set<DirectionsOrderData.GeneralDirectionRecipients> generalDirectionOrderRecipients;
 
 
     private ManageOrdersData.ManageOrderType orderType;

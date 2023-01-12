@@ -7,6 +7,7 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
 import uk.gov.hmcts.reform.adoption.adoptioncase.common.CommonPageBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
@@ -34,7 +35,8 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
         pageBuilder.page("checkAndSendOrder2")
             .label("checkAndSendOrdersLabel2","## Review order")
             .complex(CaseData::getSelectedOrder)
-            .readonlyNoSummary(SelectedOrder::getReviewDocumentLink)
+            .readonlyNoSummary(SelectedOrder::getReviewDocumentLink1)
+            .readonlyNoSummary(SelectedOrder::getReviewDocumentLink2)
             .label("checkAndSendOrdersLabel5","### These recipients have been selected to receive this order",
                    null, false)
             .readonlyNoSummary(
@@ -42,6 +44,8 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
                 "checkAndSendOrderDropdownListCONTAINS\" " + caseManageOrder + " \"")
             .readonlyNoSummary(SelectedOrder::getAdoptionOrderRecipients,
                                "orderType=\"caseManagementOrder\"")
+            .readonlyNoSummary(SelectedOrder::getGeneralDirectionOrderRecipients,
+                               "orderType=\"generalDirectionsOrder\"")
             .readonlyNoSummary(SelectedOrder::getFinalOrderRecipientsA76,
                                "orderType=\"finalAdoptionOrder\"")
             .readonlyNoSummary(SelectedOrder::getFinalOrderRecipientsA206,
@@ -65,12 +69,15 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
                                                              .getValueCode().toString())).findFirst();
         if (commonOrderItem.isPresent()) {
             var selectedItem = new SelectedOrder();
-            selectedItem.setFinalOrderRecipientsA76(commonOrderItem.get().getValue().getFinalOrderRecipientsA76());
-            selectedItem.setFinalOrderRecipientsA206(commonOrderItem.get().getValue().getFinalOrderRecipientsA206());
-            selectedItem.setOrderType(commonOrderItem.get().getValue().getManageOrderType());
-            selectedItem.setAdoptionOrderRecipients(commonOrderItem.get().getValue().getAdoptionOrderRecipients());
-            selectedItem.setReviewDocumentLink(commonOrderItem.get().getValue().getDocumentReview());
-            selectedItem.setOrderStatus(commonOrderItem.get().getValue().getStatus());
+            OrderData orderData = commonOrderItem.get().getValue();
+            selectedItem.setFinalOrderRecipientsA76(orderData.getFinalOrderRecipientsA76());
+            selectedItem.setFinalOrderRecipientsA206(orderData.getFinalOrderRecipientsA206());
+            selectedItem.setOrderType(orderData.getManageOrderType());
+            selectedItem.setAdoptionOrderRecipients(orderData.getAdoptionOrderRecipients());
+            selectedItem.setReviewDocumentLink1(orderData.getDocumentReview1());
+            selectedItem.setReviewDocumentLink2(orderData.getDocumentReview2());
+            selectedItem.setGeneralDirectionOrderRecipients(orderData.getGeneralDirectionOrderRecipients());
+            selectedItem.setOrderStatus(orderData.getStatus());
             data.setSelectedOrder(selectedItem);
         }
         List<DynamicListElement> listElements = new ArrayList<>();

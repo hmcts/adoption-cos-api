@@ -48,6 +48,7 @@ import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSendOrReply.CASEWORKER_SEND_OR_REPLY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
@@ -67,7 +68,7 @@ public class CaseworkerSendOrReplyTest {
 
     @InjectMocks
     private SendOrReply sendOrReply;
-  
+
     @InjectMocks
     private CaseworkerSendOrReply caseworkerSendOrReply;
 
@@ -126,7 +127,7 @@ public class CaseworkerSendOrReplyTest {
     void caseworkerSendOrReplyAboutToStartEventTest_Ok() {
         var caseDetails = getCaseDetails();
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
-        caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage, getOpenMessageObject());
+        archiveListHelper(listOfOpenMessage, getOpenMessageObject());
         caseDetails.getData().setListOfOpenMessages(listOfOpenMessage);
         when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
 
@@ -140,8 +141,7 @@ public class CaseworkerSendOrReplyTest {
     void caseworkerSendOrReplyAboutToSubmitEventTest_ReplyMessage() {
         var caseDetails = getCaseDetails();
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
-        caseDetails.getData().setListOfOpenMessages(caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage,
-                                                                                                    getOpenMessageObject()
+        caseDetails.getData().setListOfOpenMessages(archiveListHelper(listOfOpenMessage, getOpenMessageObject()
         ));
         caseDetails.getData().setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
         MessageSendDetails latestMessage = getOpenMessageObject();
@@ -185,8 +185,7 @@ public class CaseworkerSendOrReplyTest {
         var caseDetails = getCaseDetails();
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
         MessageSendDetails messageSendDetails = getOpenMessageObject();
-        caseDetails.getData().setListOfOpenMessages(caseDetails.getData().archiveManageOrdersHelper(listOfOpenMessage,
-                                                                                                    getOpenMessageObject()
+        caseDetails.getData().setListOfOpenMessages(archiveListHelper(listOfOpenMessage,getOpenMessageObject()
         ));
         caseDetails.getData().setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
         SelectedMessage selectedMessage = new SelectedMessage();
