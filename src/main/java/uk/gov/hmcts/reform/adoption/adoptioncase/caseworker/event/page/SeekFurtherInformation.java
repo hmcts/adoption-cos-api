@@ -1,12 +1,15 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
 @Slf4j
+@Component
 public class SeekFurtherInformation implements CcdPageConfiguration {
+
 
     @Override
     public void addTo(PageBuilder pageBuilder) {
@@ -26,8 +29,9 @@ public class SeekFurtherInformation implements CcdPageConfiguration {
             null)
             .done();
 
-        pageBuilder.page("pageSeekFurtherInformation3")
-            .mandatory(CaseData::getDate)
-            .done();
     }
+
+
+
+
 }

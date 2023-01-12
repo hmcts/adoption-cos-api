@@ -1,5 +1,6 @@
 const sendOrReplyToMessagesData = require('../fixtures/sendOrReplyToMessagesDetails');
-const { I } = inject();
+const {I} = inject();
+let reasonType;
 module.exports = {
   fields: {
     messageActionError: '#messageAction .error-message',
@@ -12,23 +13,25 @@ module.exports = {
     messageActionReplyMessage: '#messageAction-replyMessage',
     replyMsgDynamicListDropDown: '#replyMsgDynamicList',
     replyMessageYes: '#replyMessage_Yes',
-
+    replyMessageNo: '#replyMessage_No',
+    replyMsgDropDown: '#replyMsgDynamicList',
+    reasonToReply: '//select[@id=\'replyMsgDynamicList\']/option'
 
   },
 
   async sendMessageToJudge() {
-    await I.retry(3).waitForText('Do you want to send or reply to a message?',30);
+    await I.retry(3).waitForText('Do you want to send or reply to a message?', 30);
     await I.retry(3).click('Continue');
-    await I.retry(3).waitForText('Do you want to send or reply to a message? is required',30);
-    await I.retry(3).see('Do you want to send or reply to a message? is required',this.fields.messageActionError);
+    await I.retry(3).waitForText('Do you want to send or reply to a message? is required', 30);
+    await I.retry(3).see('Do you want to send or reply to a message? is required', this.fields.messageActionError);
     await I.retry(3).click(this.fields.messageActionSendMessage);
     await I.retry(3).click('Continue');
     await this.whoDoYouSendMessage();
 
   },
 
-  async verifyReplayMessageToJudge(){
-    await I.retry(3).waitForText('Do you want to send or reply to a message?',30);
+  async verifyReplayMessageToJudge() {
+    await I.retry(3).waitForText('Do you want to send or reply to a message?', 30);
     await I.retry(3).click(this.fields.messageActionReplyMessage);
     let urgency = locate('//select[@id="replyMsgDynamicList"]/option').at(2);
     let urgencyType = await I.grabTextFrom(urgency);
@@ -44,11 +47,11 @@ module.exports = {
 
   },
 
-  async whoDoYouSendMessage(){
-    await I.retry(3).waitForText('Who do you want to send a message to?',30);
+  async whoDoYouSendMessage() {
+    await I.retry(3).waitForText('Who do you want to send a message to?', 30);
     await I.retry(3).click(this.fields.messageSendDetailsMessageReceiverRolesJudge);
     let reason = locate('//select[@id="messageReasonList"]/option').at(2);
-    let reasonType = await I.grabTextFrom(reason);
+    reasonType = await I.grabTextFrom(reason);
     await I.wait(3);
     await I.retry(3).selectOption(this.fields.messageReasonListDropDown, reasonType);
     await I.wait(3);
@@ -57,30 +60,51 @@ module.exports = {
     await I.wait(3);
     await I.retry(3).selectOption(this.fields.messageUrgencyListDropDown, urgencyType);
     await I.wait(3);
-    await I.retry(3).fillField(this.fields.messageTextBox,sendOrReplyToMessagesData.message);
+    await I.retry(3).fillField(this.fields.messageTextBox, sendOrReplyToMessagesData.message);
     await I.retry(3).click(this.fields.sendMessageAttachDocumentNo);
     await I.retry(3).click('Continue');
     await I.wait(3);
   },
 
-  async verifySendMessageToJudgeCYA(){
+  async verifySendMessageToJudgeCYA() {
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Send a message');
     await I.retry(3).see('Judge');
-    await I.retry(3).see('List a hearing');
+    await I.retry(3).see(reasonType);
     await I.retry(3).see('High');
     await I.retry(3).see(sendOrReplyToMessagesData.message);
     await I.click('Save and continue');
     await I.wait(3);
   },
-  async verifyReplyMessageToJudgeCYA(){
+  async verifyReplyMessageToJudgeCYA() {
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Reply to a message');
     await I.retry(3).see('Judge');
-    await I.retry(3).see('List a hearing');
+    await I.retry(3).see(reasonType);
     await I.retry(3).see('High');
     await I.retry(3).see(sendOrReplyToMessagesData.message);
     await I.click('Save and continue');
     await I.wait(3);
   },
+
+  async replyToMessageNo() {
+    await I.retry(3).waitForText('Do you want to send or reply to a message?', 30);
+    await I.retry(3).click(this.fields.messageActionReplyMessage);
+    await I.wait(3);
+    let reason = locate('//select[@id="replyMsgDynamicList"]/option').at(2);
+    reasonType = await I.grabTextFrom(reason);
+    await I.retry(3).selectOption(this.fields.replyMsgDropDown, reasonType);
+    await I.retry(3).click('Continue');
+    await I.wait(3);
+    await I.retry(3).click(this.fields.replyMessageNo)
+    await I.wait(3);
+   // await I.retry(3).see('This message will now be marked as closed');
+    await I.retry(3).click('Continue');
+    await I.wait(3);
+
+  },
+  async verifyMessageStatusNoCYA() {
+    await I.retry(3).see('No');
+  },
+
 };

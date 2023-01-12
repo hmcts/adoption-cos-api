@@ -1,6 +1,7 @@
 module.exports = {
     askForAdditionalDocumentText: 'Test askForAdditionalDocumentText details',
     askAQuestionText: 'Test askAQuestionText details',
+    previewDraftLink: 'Further_information_letter.pdf',
     seekFurtherInfoDate: {
       second: '00',
       minute: '15',

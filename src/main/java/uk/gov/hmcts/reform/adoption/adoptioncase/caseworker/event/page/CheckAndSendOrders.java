@@ -2,12 +2,20 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
+import uk.gov.hmcts.reform.adoption.adoptioncase.common.CommonPageBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class CheckAndSendOrders implements CcdPageConfiguration {
 
@@ -19,12 +27,13 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
         pageBuilder.page("checkAndSendOrders1", this::midEventCall)
             .pageLabel("## Orders for review")
             .label("checkAndSendOrdersLabel1","## Orders for review")
+            .readonly(CaseData::getLoggedInUserRole, "checkAndSendOrdersLabel1=\"caseManagementOrder\"")
             .mandatory(CaseData::getCheckAndSendOrderDropdownList)
             .done()
             .build();
 
         pageBuilder.page("checkAndSendOrder2")
-            .label("checkAndSendOrdersLabel2","## Review Order")
+            .label("checkAndSendOrdersLabel2","## Review order")
             .complex(CaseData::getSelectedOrder)
             .readonlyNoSummary(SelectedOrder::getReviewDocumentLink1)
             .readonlyNoSummary(SelectedOrder::getReviewDocumentLink2)
@@ -44,9 +53,10 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             .done();
 
         pageBuilder.page("checkAndSendOrder3")
-            .label("checkAndSendOrdersLabel3","## Review Order")
+            .label("checkAndSendOrdersLabel3","## Review order")
             .mandatory(CaseData::getOrderCheckAndSend)
             .done();
+        CommonPageBuilder.sendOrReplyCommonPage(pageBuilder, "orderCheckAndSend=\"returnForAmendments\"");
     }
 
     private AboutToStartOrSubmitResponse<CaseData, State> midEventCall(CaseDetails<CaseData, State> caseData,
@@ -70,6 +80,11 @@ public class CheckAndSendOrders implements CcdPageConfiguration {
             selectedItem.setOrderStatus(orderData.getStatus());
             data.setSelectedOrder(selectedItem);
         }
+        List<DynamicListElement> listElements = new ArrayList<>();
+        CaseEventCommonMethods.prepareDocumentList(data).forEach(item -> listElements.add(DynamicListElement.builder()
+                                                                         .label(item.getDocumentLink().getFilename())
+                                                                         .code(UUID.fromString(item.getMessageId())).build()));
+        data.setAttachDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)
             .build();

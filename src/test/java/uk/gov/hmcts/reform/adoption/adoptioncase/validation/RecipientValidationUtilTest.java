@@ -20,7 +20,7 @@ class RecipientValidationUtilTest {
         final CaseData caseData = caseDetails.getData();
 
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.APPLICANT1,
+            DirectionsOrderData.GeneralDirectionRecipients.APPLICANT1.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.FIRST_APPLICANT_NOT_APPLICABLE);
     }
@@ -31,7 +31,7 @@ class RecipientValidationUtilTest {
         final CaseData caseData = caseDetails.getData();
 
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.APPLICANT1,
+            DirectionsOrderData.GeneralDirectionRecipients.APPLICANT1.name(),
             caseData
         )).isNull();
     }
@@ -41,7 +41,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.APPLICANT2,
+            DirectionsOrderData.GeneralDirectionRecipients.APPLICANT2.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.SECOND_APPLICANT_NOT_APPLICABLE);
     }
@@ -51,7 +51,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetailsWithParties();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.APPLICANT2,
+            DirectionsOrderData.GeneralDirectionRecipients.APPLICANT2.name(),
             caseData
         )).isNull();
     }
@@ -61,7 +61,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.RESPONDENT_BIRTH_MOTHER,
+            DirectionsOrderData.GeneralDirectionRecipients.RESPONDENT_BIRTH_MOTHER.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.BIRTH_MOTHER_NOT_APPLICABLE);
     }
@@ -71,7 +71,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.RESPONDENT_BIRTH_FATHER,
+            DirectionsOrderData.GeneralDirectionRecipients.RESPONDENT_BIRTH_FATHER.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.BIRTH_FATHER_NOT_APPLICABLE);
     }
@@ -81,7 +81,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.LEGAL_GUARDIAN_CAFCASS,
+            DirectionsOrderData.GeneralDirectionRecipients.LEGAL_GUARDIAN_CAFCASS.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.LEGAL_GUARDIAN_NOT_APPLICABLE);
     }
@@ -91,7 +91,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.CHILDS_LOCAL_AUTHORITY,
+            DirectionsOrderData.GeneralDirectionRecipients.CHILDS_LOCAL_AUTHORITY.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.CHILDS_LA_NOT_APPLICABLE);
     }
@@ -101,7 +101,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.APPLICANTS_LOCAL_AUTHORITY,
+            DirectionsOrderData.GeneralDirectionRecipients.APPLICANTS_LOCAL_AUTHORITY.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.APPLICANTS_LA_NOT_APPLICABLE);
     }
@@ -111,7 +111,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.ADOPTION_AGENCY,
+            DirectionsOrderData.GeneralDirectionRecipients.ADOPTION_AGENCY.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.ADOP_AGENCY_NOT_APPLICABLE);
     }
@@ -122,7 +122,7 @@ class RecipientValidationUtilTest {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.OTHER_ADOPTION_AGENCY,
+            DirectionsOrderData.GeneralDirectionRecipients.OTHER_ADOPTION_AGENCY.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.OTHER_ADOP_AGENCY_NOT_APPLICABLE);
     }
@@ -134,7 +134,7 @@ class RecipientValidationUtilTest {
         caseData.setHasAnotherAdopAgencyOrLA(YesOrNo.YES);
         caseData.setHasAnotherAdopAgencyOrLAinXui(YesOrNo.YES);
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.OTHER_ADOPTION_AGENCY,
+            DirectionsOrderData.GeneralDirectionRecipients.OTHER_ADOPTION_AGENCY.name(),
             caseData
         )).isNull();
     }
@@ -145,7 +145,7 @@ class RecipientValidationUtilTest {
         final CaseData caseData = caseDetails.getData();
         caseData.setIsThereAnyOtherPersonWithParentalResponsibility(YesOrNo.NO);
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY,
+            DirectionsOrderData.GeneralDirectionRecipients.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.OTHER_PARENT_AGENCY_NOT_APPLICABLE);
     }
@@ -157,7 +157,7 @@ class RecipientValidationUtilTest {
         caseData.setIsThereAnyOtherPersonWithParentalResponsibility(YesOrNo.YES);
         caseData.setIsChildRepresentedByGuardian(YesOrNo.YES);
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
-            DirectionsOrderData.GeneralDirectionRecipients.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY,
+            DirectionsOrderData.GeneralDirectionRecipients.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY.name(),
             caseData
         )).isNull();
     }

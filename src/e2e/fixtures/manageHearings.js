@@ -45,14 +45,19 @@ module.exports = {
       vacateHearingReason: 'Agreement or consent order made',
       relistingNo: 'No',
       relistingYes: 'Yes',
-      recipientApplicant1: 'Applicant 1',
-      recipientApplicant2: 'Applicant 2',
-      recipientBirthMother: 'Respondent(birth mother)',
-      recipientBirthFather: 'Respondent(birth father)',
+      recipientApplicant1: 'First applicant',
+      recipientApplicant2: 'Second applicant',
+      recipientBirthMother: 'Respondent (birth mother)',
+      recipientBirthFather: 'Respondent (birth father)',
       recipientChildLA: 'Child\'s local authority',
       recipientApplicantLA: 'Applicant\'s local authority',
       recipientAdopAgency: 'Adoption agency',
       recipientOtherParentalResponsibility: 'Other person with parental responsibility',
       adjournHearingReason: 'Late filing of documents',
+      applicantsHearingNotice: 'Applicants_hearing_notice.pdf',
+      childLocalAuthorityHearingNotice: 'Child_local_authority_hearing_notice.pdf',
+      applicantLocalAuthorityHearingNotice: 'Applicant_local_authority_hearing_notice.pdf',
+      adoptionAgencyHearingNotice: 'Adoption_agency_hearing_notice.pdf',
+
     }
 };

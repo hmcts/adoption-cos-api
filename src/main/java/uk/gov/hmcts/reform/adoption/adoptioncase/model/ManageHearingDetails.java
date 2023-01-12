@@ -6,8 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
@@ -24,6 +25,19 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 public class ManageHearingDetails {
 
     @CCD(
+        access = {DefaultAccess.class},
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "ManageHearingOptions"
+    )
+    private ManageHearingOptions manageHearingOptions;
+
+    @CCD(
+        label = "Does the hearing need to be relisted?",
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
+    private YesOrNo isTheHearingNeedsRelisting;
+
+    @CCD(
         showCondition = "methodOfHearing=\"never\"",
         displayOrder = 1
     )
@@ -33,7 +47,6 @@ public class ManageHearingDetails {
         label = "Type of hearing",
         hint = "For example, a first hearing",
         displayOrder = 2
-
     )
     private String typeOfHearing;
 
@@ -53,7 +66,6 @@ public class ManageHearingDetails {
         label = "Judge",
         hint = "This should be the allocated judge, if possible.",
         displayOrder = 5
-
     )
     private String judge;
 
@@ -63,7 +75,6 @@ public class ManageHearingDetails {
         displayOrder = 6
     )
     private String court;
-
 
     @CCD(
         label = "Is an interpreter needed?",
@@ -79,7 +90,6 @@ public class ManageHearingDetails {
         displayOrder = 8
     )
     private MethodOfHearing methodOfHearing;
-
 
     @CCD(
         label = "Accessibility requirements",
@@ -97,7 +107,6 @@ public class ManageHearingDetails {
         displayOrder = 10
     )
     private SortedSet<HearingDirections> hearingDirections;
-
 
     @CCD(
         label = "Recipients",
@@ -120,11 +129,37 @@ public class ManageHearingDetails {
     )
     private ReasonForAdjournHearing reasonForAdjournHearing;
 
-    @CCD
+    @CCD(access = { SystemUpdateAccess.class,DefaultAccess.class},
+        displayOrder = 14)
+    private String otherReasonForAdjournHearing;
+
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class}
+    )
     private LocalDate hearingCreationDate;
 
     @CCD(
         access = {DefaultAccess.class}
     )
     private Document hearingA90Document;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA91DocumentMother;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private Document hearingA91DocumentFather;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo hearingA91DocumentFlagFather;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private YesOrNo hearingA91DocumentFlagMother;
 }
