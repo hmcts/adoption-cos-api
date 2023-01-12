@@ -17,7 +17,7 @@ module.exports = {
     ordersDropDown: '#checkAndSendOrderDropdownList',
     orderToSelect: '//option[starts-with(@value, "1")]',
     alertMessage: '//div[@class="alert-message"]',
-    previewOrderDocmosisLink: '//a[text()=" A76_Final adoption order_draft.pdf "]',
+    previewOrderDocmosisLink: '[field_id="reviewDocumentLink"] a',
     checkAndSendOrderErrorMessage: '#orderCheckAndSend .error-message',
     serveOrderRadioBtn: '#orderCheckAndSend-serveTheOrder',
     returnForAmendments: '#orderCheckAndSend-returnForAmendments',
