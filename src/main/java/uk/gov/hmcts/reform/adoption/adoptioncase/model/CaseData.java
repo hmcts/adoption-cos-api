@@ -31,7 +31,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.List;
@@ -46,6 +45,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
@@ -730,7 +730,6 @@ public class CaseData {
         access = {DefaultAccess.class}
     )
     private List<ListValue<MessageSendDetails>> closedMessages;
-
     // ------------------- Send And Reply Messages Objects End ----------------- //
 
     @CCD(
@@ -759,7 +758,6 @@ public class CaseData {
     private String seekFurtherInformationDocumentSubmitterName;
 
     private YesOrNo seekFurtherInformationAdopOrLaSelected;
-
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
@@ -836,18 +834,6 @@ public class CaseData {
     }
 
     @JsonIgnore
-    public String formatCaseRef(long caseId) {
-        String temp = String.format("%016d", caseId);
-        return String.format(
-            "%4s-%4s-%4s-%4s",
-            temp.substring(0, 4),
-            temp.substring(4, 8),
-            temp.substring(8, 12),
-            temp.substring(12, 16)
-        );
-    }
-
-    @JsonIgnore
     public void addToCombinedDocumentsGenerated() {
         setCombinedDocumentsGenerated(
             this.getDocumentsGenerated()
@@ -877,36 +863,6 @@ public class CaseData {
         addToCombinedDocumentsGenerated();
     }
 
-
-    @JsonIgnore
-    public <T> List<ListValue<T>> archiveManageOrdersHelper(List<ListValue<T>> list, T object) {
-        if (isEmpty(list)) {
-            List<ListValue<T>> listValues = new ArrayList<>();
-            var listValue = ListValue
-                .<T>builder()
-                .id("1")
-                .value(object)
-                .build();
-
-            listValues.add(listValue);
-            return listValues;
-        } else {
-            AtomicInteger listValueIndex = new AtomicInteger(0);
-            var listValue = ListValue
-                .<T>builder()
-                .value(object)
-                .build();
-            // always add new Adoption Document as first element so that it is displayed on top
-            list.add(
-                0,
-                listValue
-            );
-            list.forEach(listValueObj -> listValueObj
-                .setId(String.valueOf(listValueIndex.incrementAndGet())));
-        }
-        return list;
-    }
-
     @JsonIgnore
     public void archiveManageOrders() {
         OrderData data = new OrderData();
@@ -915,7 +871,7 @@ public class CaseData {
                 this.getManageOrdersData().setSubmittedDateManageOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
                 this.getManageOrdersData().setOrderId(UUID.randomUUID().toString());
-                this.setManageOrderList(archiveManageOrdersHelper(
+                this.setManageOrderList(archiveListHelper(
                     this.getManageOrderList(), this.getManageOrdersData()));
 
                 data.setOrderId(getManageOrdersData().getOrderId());
@@ -930,7 +886,7 @@ public class CaseData {
                 this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
                 this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
-                this.setDirectionsOrderList(archiveManageOrdersHelper(
+                this.setDirectionsOrderList(archiveListHelper(
                     this.getDirectionsOrderList(), this.getDirectionsOrderData()));
 
                 data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
@@ -944,7 +900,7 @@ public class CaseData {
                 this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
                     LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
                 this.getAdoptionOrderData().setOrderId(UUID.randomUUID().toString());
-                this.setAdoptionOrderList(archiveManageOrdersHelper(
+                this.setAdoptionOrderList(archiveListHelper(
                     this.getAdoptionOrderList(), this.getAdoptionOrderData()));
 
                 data.setOrderId(getAdoptionOrderData().getOrderId());
@@ -955,15 +911,16 @@ public class CaseData {
                 data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
                 data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
                 data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
-                data.setDocumentReview(getAdoptionOrderData().getDraftDocumentA76());
+                data.setDocumentReview1(getAdoptionOrderData().getDraftDocumentA76());
+                data.setDocumentReview2(getAdoptionOrderData().getDraftDocumentA206());
                 break;
             default:
                 break;
         }
-        this.setCommonOrderList(archiveManageOrdersHelper(
+        this.setCommonOrderList(archiveListHelper(
             this.getCommonOrderList(), data));
         this.setManageOrdersData(new ManageOrdersData());
-        setDirectionsOrderData(new DirectionsOrderData());
+        this.setDirectionsOrderData(new DirectionsOrderData());
         this.setAdoptionOrderData(new AdoptionOrderData());
     }
 
@@ -972,10 +929,12 @@ public class CaseData {
         ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
 
         if (null != manageHearingDetails) {
+            manageHearingDetails.setRecipientsInTheCase(this.manageHearingDetails.getRecipientsInTheCase());
             manageHearingDetails.setHearingId(UUID.randomUUID().toString());
+            setNewHearings(archiveListHelper(getNewHearings(), manageHearingDetails));
+            this.manageHearingDetails = new ManageHearingDetails();
             this.manageHearingDetails.setManageHearingOptions(null);
-            setNewHearings(archiveManageOrdersHelper(getNewHearings(), manageHearingDetails));
-            this.setManageHearingDetails(new ManageHearingDetails());
+            this.manageHearingDetails.setRecipientsInTheCase(null);
         }
     }
 
@@ -989,7 +948,7 @@ public class CaseData {
 
         if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
             vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(this.manageHearingDetails.getReasonForVacatingHearing());
-            setVacatedHearings(archiveManageOrdersHelper(getVacatedHearings(), vacatedHearingDetails.get().getValue()));
+            setVacatedHearings(archiveListHelper(getVacatedHearings(), vacatedHearingDetails.get().getValue()));
             newHearings.remove(vacatedHearingDetails.get());
         }
         this.manageHearingDetails.setManageHearingOptions(null);
@@ -1006,7 +965,7 @@ public class CaseData {
             adjournHearingDetails.get().getValue().setReasonForAdjournHearing(this.manageHearingDetails.getReasonForAdjournHearing());
             adjournHearingDetails.get().getValue().setOtherReasonForAdjournHearing(
                 this.manageHearingDetails.getOtherReasonForAdjournHearing());
-            setAdjournHearings(archiveManageOrdersHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
+            setAdjournHearings(archiveListHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
             newHearings.remove(adjournHearingDetails.get());
         }
         this.manageHearingDetails.setManageHearingOptions(null);
