@@ -759,7 +759,6 @@ public class CaseData {
 
     private YesOrNo seekFurtherInformationAdopOrLaSelected;
 
-
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
             return familyCourtName;
