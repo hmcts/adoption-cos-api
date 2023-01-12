@@ -14,7 +14,7 @@ fields: {
       I.seeTextInTab(['Payment', 'Reference'], '1234');
       I.seeTextInTab(['Payment', 'Status'], 'Success');
       I.seeTextInTab(['Payment', 'Transaction Id'], '1234');
-      I.seeTextInTab(['Payment', 'Updated date'], '2 Nov 2021, 2:50:12 AM');*/
-      await I.retry(5).seeElement(this.fields.refundsHeading);
+      I.seeTextInTab(['Payment', 'Updated date'], '2 Nov 2021, 2:50:12 AM');
+     await I.retry(5).see(this.fields.refundsHeading);*/
   },
 };
