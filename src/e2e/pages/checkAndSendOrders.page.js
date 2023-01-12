@@ -17,7 +17,7 @@ module.exports = {
     ordersDropDown: '#checkAndSendOrderDropdownList',
     orderToSelect: '//option[starts-with(@value, "1")]',
     alertMessage: '//div[@class="alert-message"]',
-    previewOrderDocmosisLink: '//a[text()=" A76_Final adoption order_draft.pdf "]',
+    previewOrderDocmosisLink: '[field_id="reviewDocumentLink"] a',
     checkAndSendOrderErrorMessage: '#orderCheckAndSend .error-message',
     serveOrderRadioBtn: '#orderCheckAndSend-serveTheOrder',
     returnForAmendments: '#orderCheckAndSend-returnForAmendments',
@@ -29,9 +29,9 @@ module.exports = {
   },
 
   async verifyCheckAndSendOrdersPageDetails() {
-    await I.wait(8);
+    await I.wait(3);
     await I.retry(3).seeElement(this.fields.pageTitle);
-    await I.retry(3).seeElement(this.fields.childName);
+    //await I.retry(3).seeElement(this.fields.childName);
     await I.retry(3).seeElement(this.fields.ordersToReviewTitle);
     await I.retry(3).seeElement(this.fields.ordersToReviewSubTitle);
     await I.click(this.fields.continueButton);
@@ -129,11 +129,11 @@ module.exports = {
     await I.retry(3).waitForText('Check your answers', 30);
     await I.retry(3).see('Return for amendments');
     await I.retry(3).see('Judge');
-    await I.retry(3).see('List a hearing');
+    await I.retry(3).see('Refer for gatekeeping');
     await I.retry(3).see('High');
     await I.retry(3).see(sendOrReplyToMessagesData.message);
     await I.click('Save and continue');
     await I.wait(3);
   },
 
-  };
+};

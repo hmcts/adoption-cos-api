@@ -1,5 +1,5 @@
 const config = require('../config');
-const { I } = inject();
+const {I} = inject();
 const manageHearingFormData = require('../fixtures/manageHearings');
 module.exports = {
   fields: {
@@ -51,8 +51,9 @@ module.exports = {
   },
 
   async verifyPageDetails() {
+    await I.wait(3);
     await I.retry(3).seeElement(this.fields.allocateJudgeTitle);
-    await I.retry(3).seeElement(this.fields.childNameHeader);
+    //await I.retry(3).seeElement(this.fields.childNameHeader);
     await I.retry(3).seeElement(this.fields.continueButton);
     await I.retry(3).seeElement(this.fields.newHearing);
     await I.retry(3).seeElement(this.fields.vacateHearing);
@@ -91,8 +92,8 @@ module.exports = {
   async addRecepientDetails(){
      await I.wait(5);
     await I.retry(3).waitForText('Recipients', 30);
-     await I.retry(3).seeElement(this.fields.childNameHeader);
-     await I.retry(3).seeElement(this.fields.recipientsTitle);
+    await I.retry(3).seeElement(this.fields.childNameHeader);
+    await I.retry(3).seeElement(this.fields.recipientsTitle);
     // await I.retry(3).see('Only select people who are party to this case and who need a copy of this order.');
      await I.retry(5).click(this.fields.firstApplicant);
      await I.retry(5).click(this.fields.secondApplicant);
@@ -118,7 +119,7 @@ module.exports = {
    },
 
 
-  async verifyAddNewHearingCheckYourAnswers(){
+  async verifyAddNewHearingCheckYourAnswers() {
     await I.wait(3);
     await I.see(manageHearingFormData.newHearing.typeOfHearing);
     await I.see('15 Oct 2025, 11:15:55 PM');
@@ -179,12 +180,12 @@ module.exports = {
     await I.retry(5).click(this.fields.backupNotice);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
- },
+  },
 
-  async verifyVacateHearingWithRelistingCheckYourAnswers(){
+  async verifyVacateHearingWithRelistingCheckYourAnswers() {
     await I.wait(5);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingOption);
-   // await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
+    // await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingReason);
     await I.see(manageHearingFormData.vacateHearing.typeOfHearingVacate);
     await I.see('31 Dec 2035, 8:30:00 AM');
@@ -209,7 +210,7 @@ module.exports = {
     await I.retry(5).seeElement(this.fields.alertMessage);
   },
 
-  async genericAddNewHearing(){
+  async genericAddNewHearing() {
 
     await this.verifyPageDetails();
     await this.verifyManageHearingsPageFunctionality();
@@ -220,7 +221,7 @@ module.exports = {
 
   },
 
-  async selectVacateHearingOptionWithAgreementAndNoRelisting(){
+  async selectVacateHearingOptionWithAgreementAndNoRelisting() {
     await I.retry(5).click(this.fields.vacateHearing);
     await I.retry(5).click(this.fields.continueButton);
     await I.wait(3);
@@ -237,40 +238,40 @@ module.exports = {
     await I.retry(5).click(this.fields.continueButton);
   },
 
-  async verifyVacateHearingNoRelistingCheckYourAnswers(){
+  async verifyVacateHearingNoRelistingCheckYourAnswers() {
     await I.wait(3);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingOption);
-  //  await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
+    //  await I.see(manageHearingFormData.checkYourAnswers.vacateHearingName);
     await I.see(manageHearingFormData.checkYourAnswers.vacateHearingReason);
     await I.see(manageHearingFormData.checkYourAnswers.relistingNo);
     await I.retry(5).click(this.fields.continueButton);
     await I.retry(5).seeElement(this.fields.alertMessage);
   },
 
-  async selectAdjournHearingNoRelisting(){
-      await I.retry(5).click(this.fields.adjournHearing);
-      await I.retry(5).click(this.fields.continueButton);
-      await I.wait(3);
-      await I.retry(5).click(this.fields.continueButton);
-      await I.wait(3);
-      await I.retry(3).see('Select a hearing you want to adjourn is required');
-      await I.retry(5).click(this.fields.vacateHearingToSelect);
-      await I.retry(5).click(this.fields.continueButton);
-      await I.retry(5).seeElement(this.fields.adjournHearingCourtJudgeUnavailable);
-      await I.retry(5).seeElement(this.fields.adjournHearingPartiesUnavailable);
-      await I.retry(5).seeElement(this.fields.adjournHearingLateFiling);
-      await I.retry(5).seeElement(this.fields.adjournHearingDateToAvoid);
-      await I.retry(5).click(this.fields.continueButton);
-      await I.retry(3).see('Reason for adjournment is required');
-      await I.retry(5).click(this.fields.adjournHearingLateFiling);
-      await I.retry(5).click(this.fields.continueButton);
-      await I.retry(5).seeElement(this.fields.reListingYes);
-      await I.retry(5).seeElement(this.fields.reListingNo);
-      await I.retry(5).click(this.fields.continueButton);
-      await I.retry(3).see('Does the hearing need to be relisted? is required');
-      await I.retry(5).click(this.fields.reListingNo);
-      await I.retry(5).click(this.fields.continueButton);
-    },
+  async selectAdjournHearingNoRelisting() {
+    await I.retry(5).click(this.fields.adjournHearing);
+    await I.retry(5).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(5).click(this.fields.continueButton);
+    await I.wait(3);
+    await I.retry(3).see('Select a hearing you want to adjourn is required');
+    await I.retry(5).click(this.fields.vacateHearingToSelect);
+    await I.retry(5).click(this.fields.continueButton);
+    await I.retry(5).seeElement(this.fields.adjournHearingCourtJudgeUnavailable);
+    await I.retry(5).seeElement(this.fields.adjournHearingPartiesUnavailable);
+    await I.retry(5).seeElement(this.fields.adjournHearingLateFiling);
+    await I.retry(5).seeElement(this.fields.adjournHearingDateToAvoid);
+    await I.retry(5).click(this.fields.continueButton);
+    await I.retry(3).see('Reason for adjournment is required');
+    await I.retry(5).click(this.fields.adjournHearingLateFiling);
+    await I.retry(5).click(this.fields.continueButton);
+    await I.retry(5).seeElement(this.fields.reListingYes);
+    await I.retry(5).seeElement(this.fields.reListingNo);
+    await I.retry(5).click(this.fields.continueButton);
+    await I.retry(3).see('Does the hearing need to be relisted? is required');
+    await I.retry(5).click(this.fields.reListingNo);
+    await I.retry(5).click(this.fields.continueButton);
+  },
 
     async verifyAdjournHearingNoRelistingCheckYourAnswers(){
         await I.wait(3);

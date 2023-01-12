@@ -160,7 +160,6 @@ public final class CaseEventCommonMethods {
     }
 
     private static void setMessageInformation(CaseData caseData, MessageSendDetails sendMessagesDetails, User caseworkerUser) {
-        buildDocumentHistory(caseData, sendMessagesDetails, sendMessagesDetails.getDocumentHistory());
         sendMessagesDetails.setMessageFrom(caseworkerUser.getUserDetails().getEmail());
         sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         sendMessagesDetails.setMessageSendDateNTime(

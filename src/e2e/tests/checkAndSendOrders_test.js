@@ -12,7 +12,7 @@ async function setupScenario(I) {
   console.log('CCD Case number - '+ caseId);
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
-Scenario('Verify send message for check and send gate keeping orders', async ({I, caseViewPage, manageOrdersPage, checkAndSendOrdersPage, sendOrReplyToMessagesPage }) => {
+Scenario('Verify send message for check and send gate keeping orders', async ({I, caseViewPage, manageOrdersPage, checkAndSendOrdersPage, sendOrReplyToMessagesPage,messageTabPage }) => {
 
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
@@ -34,12 +34,14 @@ Scenario('Verify send message for check and send gate keeping orders', async ({I
   await checkAndSendOrdersPage.sendAMessage();
   await sendOrReplyToMessagesPage.whoDoYouSendMessage();
   await checkAndSendOrdersPage.verifyReturnForAmendmentsCYA();
-
+  await messageTabPage.selectMessageTab();
+  await messageTabPage.verifyOpenMessageDetailsUnderMessageTab();
+  await messageTabPage.verifyMessageStatusOpen();
 
 
 });
 
-Scenario('Verify final adoption order return for amendments  Check and Send Orders', async ({I, caseViewPage, manageOrdersPage, finalOrderPage, checkAndSendOrdersPage,sendOrReplyToMessagesPage}) => {
+Scenario('Verify final adoption order return for amendments  Check and Send Orders', async ({I, caseViewPage, manageOrdersPage, finalOrderPage, checkAndSendOrdersPage,sendOrReplyToMessagesPage,messageTabPage}) => {
   await setupScenario(I);
   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
   await manageOrdersPage.verifyCaseDetails();
@@ -64,6 +66,10 @@ Scenario('Verify final adoption order return for amendments  Check and Send Orde
   await checkAndSendOrdersPage.sendAMessage();
   await sendOrReplyToMessagesPage.whoDoYouSendMessage();
   await checkAndSendOrdersPage.verifyReturnForAmendmentsCYA();
+  await messageTabPage.selectMessageTab();
+  await messageTabPage.verifyOpenMessageDetailsUnderMessageTab();
+  await messageTabPage.verifyMessageStatusOpen();
+
 
 });
 
