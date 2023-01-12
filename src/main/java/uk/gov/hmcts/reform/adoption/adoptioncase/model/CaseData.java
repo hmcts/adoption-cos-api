@@ -599,7 +599,6 @@ public class CaseData {
     private LocalDateTime seekInformationNeededDate;
 
     @CCD(
-        label = "Who submitted the document",
         typeOverride = DynamicRadioList,
         typeParameterOverride = "DocumentSubmitter"
     )
