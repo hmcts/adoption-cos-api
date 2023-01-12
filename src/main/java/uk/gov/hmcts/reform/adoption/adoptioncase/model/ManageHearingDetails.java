@@ -129,6 +129,10 @@ public class ManageHearingDetails {
     )
     private ReasonForAdjournHearing reasonForAdjournHearing;
 
+    @CCD(access = { SystemUpdateAccess.class,DefaultAccess.class},
+        displayOrder = 14)
+    private String otherReasonForAdjournHearing;
+
     @CCD(
         access = { SystemUpdateAccess.class,DefaultAccess.class}
     )
