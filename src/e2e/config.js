@@ -26,6 +26,7 @@ module.exports = {
     transferCourt: 'Transfer Court',
     manageHearings: 'Manage hearings',
     seekFurtherInfo: 'Seek further information',
+    manageDocuments: 'Manage documents',
     amendOtherPartiesDetails: 'Amend other parties details',
     checkAndSendOrders: 'Check and send orders',
     generalDirectionOrders: 'General directions order',
