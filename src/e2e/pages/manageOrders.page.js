@@ -80,14 +80,14 @@ module.exports = {
 
     },
     serveParties: {
-      birthMother: '#recipientsList-birthMother',
-      birthFather: '#recipientsList-birthFather',
-      applicants: '#recipientsList-applicants',
+      birthMother: '#recipientsList-respondentBirthMother',
+      birthFather: '#recipientsList-respondentBirthFather',
+      firstApplicant: '#recipientsList-firstApplicant',
       childLocalAuthority: '#recipientsList-childsLocalAuthority',
       applicantLocalAuthority: '#recipientsList-applicantsLocalAuthority',
       otherAdoptionAgency: '#recipientsList-otherAdoptionAgency',
       otherPersonWithParentalResponsibility: '#recipientsList-otherPersonWithParentalResponsibility',
-      cafCass: '#recipientsList-cafcass'
+      cafCass: '#recipientsList-legalGuardianCafcass'
 
     },
     dateOrderMade: {
@@ -331,9 +331,17 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.errorMessage);
     await I.retry(3).click(this.fields.serveParties.birthMother);
     await I.retry(3).click(this.fields.serveParties.birthFather);
-    await I.retry(3).click(this.fields.serveParties.applicants);
+    await I.retry(3).click(this.fields.serveParties.firstApplicant);
     await I.retry(3).click(this.fields.serveParties.childLocalAuthority);
     await I.retry(3).click(this.fields.serveParties.applicantLocalAuthority);
+    await I.retry(3).click(this.fields.serveParties.otherAdoptionAgency);
+    await I.retry(3).click(this.fields.serveParties.otherPersonWithParentalResponsibility);
+    await I.retry(3).click(this.fields.serveParties.cafCass);
+    await I.retry(3).click(this.fields.continueButton);
+    await I.retry(3).waitForText('Other adoption agency not applicable for the case', 30);
+    await I.retry(3).see('Other adoption agency not applicable for the case');
+    await I.retry(3).see('Other person with parental responsibility not applicable for the case');
+    await I.retry(3).see('Legal guardian (Cafcass) not applicable for the case');
     await I.retry(3).click(this.fields.serveParties.otherAdoptionAgency);
     await I.retry(3).click(this.fields.serveParties.otherPersonWithParentalResponsibility);
     await I.retry(3).click(this.fields.serveParties.cafCass);
@@ -347,9 +355,9 @@ module.exports = {
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.birthFather);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.applicants);
     await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.childLocalAuthority);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
-    await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherAdoptionAgency);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.otherPersonWithParentalResponsibility);
+   // await I.retry(3).see(manageOrderDetails.caseManagementOrderDetails.cafCass);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
   },

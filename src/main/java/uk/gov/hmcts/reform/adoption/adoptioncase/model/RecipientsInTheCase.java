@@ -9,26 +9,26 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum RecipientsInTheCase implements HasLabel {
 
-    @JsonProperty("applicant1")
-    APPLICANT1("Applicant 1"),
+    @JsonProperty("firstApplicant")
+    APPLICANT1("First applicant"),
 
-    @JsonProperty("applicant2")
-    APPLICANT2("Applicant 2"),
+    @JsonProperty("secondApplicant")
+    APPLICANT2("Second applicant"),
 
     @JsonProperty("respondentBirthMother")
-    RESPONDENT_MOTHER("Respondent(birth mother)"),
+    RESPONDENT_BIRTH_MOTHER("Respondent (birth mother)"),
 
     @JsonProperty("respondentBirthFather")
-    RESPONDENT_FATHER("Respondent(birth father)"),
+    RESPONDENT_BIRTH_FATHER("Respondent (birth father)"),
 
-    @JsonProperty("legalGuardian")
-    LEGAL_GUARDIAN("Legal guardian (CAFCASS)"),
+    @JsonProperty("legalGuardianCafcass")
+    LEGAL_GUARDIAN_CAFCASS("Legal guardian (Cafcass)"),
 
-    @JsonProperty("childLocalAuthority")
-    CHILD_LOCAL_AUTHORITY("Child's local authority"),
+    @JsonProperty("childsLocalAuthority")
+    CHILDS_LOCAL_AUTHORITY("Child's local authority"),
 
-    @JsonProperty("applicantLocalAuthority")
-    APPLICANT_LOCAL_AUTHORITY("Applicant's local authority"),
+    @JsonProperty("applicantsLocalAuthority")
+    APPLICANTS_LOCAL_AUTHORITY("Applicant's local authority"),
 
     @JsonProperty("adoptionAgency")
     ADOPTION_AGENCY("Adoption agency"),
@@ -37,7 +37,7 @@ public enum RecipientsInTheCase implements HasLabel {
     OTHER_ADOPTION_AGENCY("Other adoption agency"),
 
     @JsonProperty("otherPersonWithParentalResponsibility")
-    OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITIES("Other person with parental responsibility");
+    OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY("Other person with parental responsibility");
 
-    private String label;
+    private final String label;
 }

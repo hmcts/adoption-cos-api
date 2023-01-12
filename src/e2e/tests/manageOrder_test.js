@@ -112,7 +112,6 @@ Scenario('Verify Case management order Check and Send Orders and Manage Orders T
   await manageOrdersPage.caseManagementOrderDateOrderMadeCYAPage();
   await manageOrdersPage.caseManagementOrderServePartiesCYAPage();
   await I.retry(3).seeEventSubmissionConfirmation(caseId,config.administrationActions.manageOrders);
-
   await manageOrderTabPage.selectOrderTab();
   await manageOrderTabPage.verifyOrderDetailsUnderOrdersTabs();
   await manageOrderTabPage.gateKeepingOrdersRecipients();
