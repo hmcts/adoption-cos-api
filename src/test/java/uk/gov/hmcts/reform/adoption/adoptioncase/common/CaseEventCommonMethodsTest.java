@@ -2,7 +2,11 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.common;
 
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
-import uk.gov.hmcts.ccd.sdk.type.*;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDocumentList;
@@ -127,7 +131,6 @@ public class CaseEventCommonMethodsTest {
     @Test
     public void verifyDocumentHistory_Test() {
         var caseData = getCaseDetails().getData();
-        var messageSendDetails = new MessageSendDetails();
         var uploadDocument = getApplicationDocumentCategory();
         var uuid = UUID.nameUUIDFromBytes(uploadDocument.getName().getBytes());
         var dynamicList = new DynamicList();
@@ -138,6 +141,7 @@ public class CaseEventCommonMethodsTest {
                                                                                     uploadDocument));
         prepareDocumentList(caseData);
 
+        var messageSendDetails = new MessageSendDetails();
         caseData.setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
         messageSendDetails.setMessageId("123e4567-e89b-12d3-a456-426614174000");
         messageSendDetails.setMessageSendDateNTime(LocalDateTime.now());
