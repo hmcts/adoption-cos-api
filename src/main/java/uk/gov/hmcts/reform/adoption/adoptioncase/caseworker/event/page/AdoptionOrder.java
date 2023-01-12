@@ -12,19 +12,6 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
  */
 public class AdoptionOrder implements CcdPageConfiguration {
 
-
-    public static final String ERROR_CHECK_RECIPIENTS_SELECTION = "Recipients of Final adoption order is required";
-    public static final String FIRST_APPLICANT_NOT_APPLICABLE = "First Applicant not applicable for the case";
-    public static final String SECOND_APPLICANT_NOT_APPLICABLE = "Second Applicant not applicable for the case";
-    public static final String BIRTH_MOTHER_NOT_APPLICABLE = "Recipient birth mother not applicable for the case";
-    public static final String BIRTH_FATHER_NOT_APPLICABLE = "Recipient birth father not applicable for the case";
-    public static final String LEGAL_GUARDIAN_NOT_APPLICABLE = "Legal guardian (CAFCASS) not applicable for the case";
-    public static final String CHILDS_LA_NOT_APPLICABLE = "Child local authority not applicable for the case";
-    public static final String APPLICANTS_LA_NOT_APPLICABLE = "Applicants local authority not applicable for the case";
-    public static final String ADOP_AGENCY_NOT_APPLICABLE = "Adoption agency not applicable for the case";
-    public static final String OTHER_ADOP_AGENCY_NOT_APPLICABLE = "Other adoption agency not applicable for the case";
-    public static final String OTHER_PARENT_AGENCY_NOT_APPLICABLE = "Other person with parental responsibility not applicable for the case";
-
     /**
      * Overridden method to define page design and flow for entire event / Journey.
      *

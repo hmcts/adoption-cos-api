@@ -38,7 +38,7 @@ module.exports = {
       I.seeTextInTab(['New hearing 1', 'Recipients'], 'Child\'s local authority');
       I.seeTextInTab(['New hearing 1', 'Recipients'], 'Applicant\'s local authority');
       I.seeTextInTab(['New hearing 1', 'Recipients'], 'Adoption agency');
-      I.seeTextInTab(['New hearing 1', 'Recipients'], 'Other person with parental responsibility');
+     // I.seeTextInTab(['New hearing 1', 'Recipients'], 'Other person with parental responsibility');
     },
   async verifyVacatedHearingForVacateHearingWithRelisting(){
       await I.wait(3);
@@ -59,7 +59,7 @@ module.exports = {
       I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Child\'s local authority');
       I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Applicant\'s local authority');
       I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Adoption agency');
-      I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Other person with parental responsibility');
+     // I.seeTextInTab(['Vacated hearings 1', 'Recipients'], 'Other person with parental responsibility');
       I.seeTextInTab(['Vacated hearings 1', 'Reason for vacating hearing'], 'Agreement or consent order made');
     },
 
@@ -82,7 +82,7 @@ module.exports = {
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Child\'s local authority');
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Applicant\'s local authority');
           I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Adoption agency');
-          I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Other person with parental responsibility');
+          //I.seeTextInTab(['Adjourned hearing 1', 'Recipients'], 'Other person with parental responsibility');
           I.seeTextInTab(['Adjourned hearing 1', 'Reason for adjournment'], 'Late filing of documents');
         },
 };

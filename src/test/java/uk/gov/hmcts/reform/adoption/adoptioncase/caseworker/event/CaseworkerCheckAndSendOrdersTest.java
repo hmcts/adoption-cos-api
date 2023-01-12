@@ -26,7 +26,11 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.idam.client.models.User;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -38,19 +42,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerCheckAndSendOrders.CASEWORKER_CHECK_AND_SEND_ORDERS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
 class CaseworkerCheckAndSendOrdersTest {
 
     @Mock
+    private HttpServletRequest httpServletRequest;
+
+    @Mock
     private Clock clock;
+
+    @Mock
+    private IdamService idamService;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -78,13 +92,16 @@ class CaseworkerCheckAndSendOrdersTest {
         OrderData orderData2 = getCommonOrderData();
         OrderData orderData3 = getCommonOrderData();
         List<ListValue<OrderData>> manageOrderList = new ArrayList<>();
+        manageOrderList = archiveListHelper(manageOrderList, orderData1);
+        archiveListHelper(manageOrderList, orderData2);
+        archiveListHelper(manageOrderList, orderData3);
         var caseDetails = getCaseDetails();
         CaseData data = caseDetails.getData();
-        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, orderData1);
-        data.archiveManageOrdersHelper(manageOrderList, orderData2);
-        data.archiveManageOrdersHelper(manageOrderList, orderData3);
         data.setCommonOrderList(manageOrderList);
 
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerCheckAndSendOrders.aboutToStart(caseDetails);
         assertThat(result.getData().getCheckAndSendOrderDropdownList().getListItems().size()).isEqualTo(3);
     }
@@ -103,8 +120,8 @@ class CaseworkerCheckAndSendOrdersTest {
         var caseDetails = getCaseDetails();
         CaseData data = caseDetails.getData();
         data.setOrderCheckAndSend(OrderCheckAndSend.SERVE_THE_ORDER);
-        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, manageOrderData1);
-        commonOrderList = data.archiveManageOrdersHelper(commonOrderList, orderData1);
+        manageOrderList = archiveListHelper(manageOrderList, manageOrderData1);
+        commonOrderList = archiveListHelper(commonOrderList, orderData1);
         data.setCommonOrderList(commonOrderList);
         data.setManageOrderList(manageOrderList);
         var item = new SelectedOrder();
@@ -116,6 +133,10 @@ class CaseworkerCheckAndSendOrdersTest {
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
         when(clock.instant()).thenReturn(instant);
         when(clock.getZone()).thenReturn(zoneId);
+        when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
+
+        when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
+
         var result = caseworkerCheckAndSendOrders.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getManageOrderList().get(0).getValue().getOrderStatus()).isEqualTo(OrderStatus.SERVED);
         assertThat(result.getData().getSelectedOrder()).isNull();
@@ -177,7 +198,6 @@ class CaseworkerCheckAndSendOrdersTest {
             .build();
     }
 
-    @NotNull
     private void prepareCheckAndSendDropdownList(List<ListValue<OrderData>>
                                                      commonOrderList, String orderId, CaseData data) {
         List<DynamicListElement> listElements = new ArrayList<>();
@@ -190,6 +210,17 @@ class CaseworkerCheckAndSendOrdersTest {
         var element = DynamicListElement.builder().code(UUID.fromString(orderId)).build();
         data.setCheckAndSendOrderDropdownList(DynamicList.builder().listItems(listElements)
                                                   .value(element).build());
+    }
+
+    private User getCaseworkerUser() {
+        UserDetails userDetails = UserDetails
+            .builder()
+            .forename("testFname")
+            .roles(Arrays.asList(UserRole.DISTRICT_JUDGE.getRole()))
+            .surname("testSname")
+            .build();
+
+        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
     }
 
 }

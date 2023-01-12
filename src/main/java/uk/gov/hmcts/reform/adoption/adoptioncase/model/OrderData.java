@@ -44,7 +44,10 @@ public class OrderData {
     @CCD(
         label = "Order"
     )
-    private Document documentReview;
+    private Document documentReview1;
+
+    @CCD
+    private Document documentReview2;
 
     @CCD(label = "Ordered by",
         access = {DefaultAccess.class})

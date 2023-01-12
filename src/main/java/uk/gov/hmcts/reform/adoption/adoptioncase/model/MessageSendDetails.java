@@ -27,67 +27,92 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 public class MessageSendDetails {
 
     @CCD(
+        label = "From",
+        displayOrder = 1
     )
     private String messageFrom;
 
 
     @CCD(
-        displayOrder = 1
+        displayOrder = 1,
+        showCondition = "messageStatus=\"NEVER_SHOW\""
     )
     private String messageId;
 
     @CCD(
-        label = "Status",
-        displayOrder = 2
+        label = "Status"
+
     )
     private MessageStatus messageStatus;
 
     @CCD(
         label = "Who do you want to send a message to?",
-        access = { SystemUpdateAccess.class, DefaultAccess.class},
+        access = {DefaultAccess.class},
         typeOverride = FixedRadioList,
+        displayOrder = 2,
         typeParameterOverride = "MessageReceiverRoles")
     private MessageReceiverRoles messageReceiverRoles;
 
-    @CCD(label = "Select a reason for this message",
-        typeOverride = FixedList,
+    @CCD(
         access = {DefaultAccess.class},
-        typeParameterOverride = "MessageReason"
+        label = "Date sent",
+        displayOrder = 3)
+    private LocalDateTime messageSendDateNTime;
+
+
+    @CCD(
+        typeOverride = FixedList,
+        label = "Select a reason for this message",
+        access = {DefaultAccess.class},
+        inheritAccessFromParent = false,
+        typeParameterOverride = "MessageReasonJudge"
     )
-    private MessageReason messageReasonList;
+    private MessageReasonJudge messageReasonJudge;
 
     @CCD(label = "Urgency",
         typeOverride = FixedList,
         access = {DefaultAccess.class},
+        displayOrder = 4,
         typeParameterOverride = "MessageUrgency"
     )
     private MessageUrgency messageUrgencyList;
 
+    @CCD(label = "Select a reason for this message",
+        typeOverride = FixedList,
+        displayOrder = 5,
+        typeParameterOverride = "MessageReason",
+        inheritAccessFromParent = false,
+        access = {DefaultAccess.class}
+    )
+    private MessageReason messageReasonList;
+
     @CCD(label = "Message",
         hint = "Enter your message",
         typeOverride = TextArea,
+        displayOrder = 6,
         access = {DefaultAccess.class,SystemUpdateAccess.class}
     )
     private String messageText;
 
     @CCD(
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
+        access = { SystemUpdateAccess.class,DefaultAccess.class},
+        displayOrder = 7,
+        label = "Attached documents from the case"
     )
     private Document selectedDocument;
 
-    @CCD(
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
-    )
-    private List<ListValue<Document>> documentHistory;
-
-    @CCD(
-        access = {DefaultAccess.class})
-    private LocalDateTime messageSendDateNTime;
-
-    @CCD(access = {DefaultAccess.class})
+    @CCD(access = {DefaultAccess.class},
+        label = "Message history",
+        displayOrder = 8,
+        typeOverride = TextArea)
     private String messageHistory;
 
-
+    @CCD(
+        access = { SystemUpdateAccess.class,DefaultAccess.class},
+        displayOrder = 9,
+        label = "Document history"
+    )
+    private List<ListValue<Document>> documentHistory;
 
     @Getter
     @AllArgsConstructor
@@ -115,19 +140,70 @@ public class MessageSendDetails {
     @AllArgsConstructor
     public enum MessageReason implements HasLabel {
 
-        @JsonProperty("listAHearing")
-        LIST_A_HEARING("List a hearing"),
+        @JsonProperty("referForGateKeeping")
+        REFER_FOR_GATEKEEPING("Refer for gatekeeping"),
+
+        @JsonProperty("laApplicationNotReceived")
+        LOCAL_AUTHORITY_APPLICATION("Local authority application response not received"),
+
+        @JsonProperty("annexAReview")
+        ANNEX_A("Annex A for review"),
+
+        @JsonProperty("correspondanceForReview")
+        CORRESPONDANCE_FOR_REVIEW("Correspondence for review"),
+
+        @JsonProperty("reviewDocument")
+        DOCUMENT_FOR_REVIEW("Document for review"),
+
+        @JsonProperty("approvalOrder")
+        ORDER_FOR_APPROVAL("Order for approval"),
+
+        @JsonProperty("approvalOrder")
+        LEAVE_TO_OPPOSE("Leave to oppose received"),
+
+        @JsonProperty("approvalOrder")
+        GENERAL_QUERY("General query"),
+
+        @JsonProperty("approvalOrder")
+        REQUEST_HEARING_DATE("Request hearing date (for CTSC caseworkers to send to LA Admin)");
+
+        private final String label;
+
+
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum MessageReasonJudge implements HasLabel {
+
+        @JsonProperty("listForAHearing")
+        LIST_A_HEARING("List for a hearing"),
 
         @JsonProperty("requestDocument")
         REQUEST_DOCUMENT("Request document"),
 
+        @JsonProperty("requestInfo")
+        REQUEST_IFNORMATION("Request information"),
+
         @JsonProperty("createOrder")
         CREATE_ORDER("Create order"),
 
-        @JsonProperty("returnOrderForAmendments")
-        RETURN_ORDER_FOR_DOCUMENTS("Return order for amendments");
+        @JsonProperty("returnOrder")
+        RETURN_ORDER("Return order for amendments"),
+
+        @JsonProperty("serveDocument")
+        SERVE_DOCUMENT("Serve document"),
+
+        @JsonProperty("sendALetter")
+        SEND_A_LETTER("Send a letter"),
+
+        @JsonProperty("generalQuery")
+        GENERAL_QUERY("General query");
+
 
         private final String label;
+
     }
 
     @Getter
@@ -171,7 +247,6 @@ public class MessageSendDetails {
 
         private final String label;
     }
-
 
 
 }

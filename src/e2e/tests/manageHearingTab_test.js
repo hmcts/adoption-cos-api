@@ -93,8 +93,6 @@ Scenario('Hearings Tab - Adjourn Hearing with Relisting', async ({
 
 Scenario('Hearings Tab - Adjourn Hearing with NO Relisting', async ({
                                                                       I,
-                                                                      loginPage,
-                                                                      caseListPage,
                                                                       caseViewPage,
                                                                       manageHearingsPage,
                                                                       manageHearingsTabPage

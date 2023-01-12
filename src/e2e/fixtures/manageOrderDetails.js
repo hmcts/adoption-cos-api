@@ -30,9 +30,9 @@ module.exports = {
     birthParentAttendanceCourtOption: '3. the court shall arrange personal service of notice of the hearing/this order on the respondent parents',
     partiesToServerOrder: 'Select who to serve the order to',
     applicantLocalAuthority: 'Applicant\'s local authority',
-    birthMother: 'Birth mother',
-    birthFather: 'Birth father',
-    applicants: 'Applicants',
+    birthMother: 'Respondent (birth mother)',
+    birthFather: 'Respondent (birth father)',
+    applicants: 'First applicant',
     childLocalAuthority: 'Child\'s local authority',
     otherAdoptionAgency: 'Other adoption agency',
     otherPersonWithParentalResponsibility: 'Other person with parental responsibility',
@@ -65,5 +65,14 @@ module.exports = {
     checkAndSend: 'Pending Check & send',
     gateKeepingOrder: 'Case management (gatekeeping) order',
     statusServed: 'Served',
+  },
+  messagesTab:{
+    sentTo: 'Sent to',
+    dateSent: 'Date sent',
+    urgency: 'Urgency',
+    reasonForMessage: 'Reason for message',
+    message: 'Message',
+    status: 'Status',
+    messageStatus: 'Open'
   },
 };

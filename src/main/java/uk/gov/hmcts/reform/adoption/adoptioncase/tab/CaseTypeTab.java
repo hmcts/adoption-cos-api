@@ -21,14 +21,26 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildApplicantsTab(configBuilder);
         buildOtherPartiesTab(configBuilder);
         buildDocumentsTab(configBuilder);
-        buildConfidentialTab(configBuilder);
-        buildServiceRequestTab(configBuilder);
-        buildHearingsTab(configBuilder);
+        buildCorrespondence(configBuilder);
         buildOrdersViewTab(configBuilder);
+        buildHearingsTab(configBuilder);
+        buildMessagesTab(configBuilder);
+        buildConfidentialTab(configBuilder);
+        buildNotes(configBuilder);
+        buildServiceRequestTab(configBuilder);
+    }
+
+    private void buildMessagesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+
+        configBuilder.tab("Messages","Messages")
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .field("listOfOpenMessages")
+            .field("closedMessages");
     }
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("serviceRequest", "Payment")
+            .displayOrder(9)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .field("waysToPay");
     }
@@ -90,8 +102,9 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
-        final Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties = configBuilder.tab("otherParties", "Other Parties")
-            .displayOrder(2).forRoles(CASE_WORKER, DISTRICT_JUDGE);
+        final Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties = configBuilder.tab("otherParties", "Other parties")
+            .displayOrder(2)
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE);
 
         buildTabWithChildDetails(tabBuilderForOtherParties);
         buildTabWithLocalGuardianAndSolicitorDetails(tabBuilderForOtherParties);
@@ -102,6 +115,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
         configBuilder.tab("hearings","Hearings")
+            .displayOrder(6)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-managehearing", null, "[Manage hearings](/cases/case-details/${[CASE_REFERENCE]}"
                 + "/trigger/caseworker-manage-hearing/caseworker-manage-hearingmanageOrders1)")
@@ -112,6 +126,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("orders","Orders")
+            .displayOrder(5)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-orderview", null, "[Create new order](/cases/case-details/${[CASE_REFERENCE]}"
                 + "/trigger/caseworker-manage-orders/caseworker-manage-ordersmanageOrders1)")
@@ -319,6 +334,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("Confidential", "Confidential Details")
             .forRoles(SYSTEM_UPDATE)
+            .displayOrder(10)
             .field("applicant1PhoneNumber")
             .field("applicant1EmailAddress")
             .field("childrenFirstName")
@@ -326,5 +342,27 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthFatherNameOnCertificate")
             .field("hasAnotherAdopAgencyOrLA")
             .field("applyingWith");
+    }
+
+
+
+    private void buildCorrespondence(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("applicationCorrespondence", "Correspondence")
+            .displayOrder(4)
+            .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+            .label("LabelNotes-Correspondence", null, "### Correspondence")
+            .label("Upload correspondence",
+                   null,
+                   "[Upload correspondence](/cases/case-details/${[CASE_REFERENCE]}"
+                       + "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)"
+            )
+            .field(CaseData::getCorrespondenceDocumentCategory);
+    }
+
+    private void buildNotes(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("applicationNotes", "Notes")
+            .displayOrder(7)
+            .label("LabelNotes-Heading", null, "### Case Notes")
+            .field(CaseData::getCaseNote);
     }
 }

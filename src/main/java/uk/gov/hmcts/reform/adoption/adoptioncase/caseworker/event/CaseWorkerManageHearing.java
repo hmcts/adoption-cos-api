@@ -18,7 +18,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
-import uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
@@ -31,6 +30,7 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.RecipientValidationUtil.validateRecipients;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A91;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.MANAGE_HEARING_NOTICES_A90_FILE_NAME;
@@ -97,9 +97,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
             .readonly(ManageHearingDetails::getHearingA91DocumentFather,
                       "recipientsInTheCaseCONTAINS\"respondentBirthFather\" AND birthFatherDeceased=\"No\"")
             .label("manageHearing76","### Applicants",
-                   "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+                   "recipientsInTheCaseCONTAINS\"firstApplicant\" OR recipientsInTheCaseCONTAINS\"secondApplicant\"")
             .readonly(ManageHearingDetails::getHearingA90Document,
-                      "recipientsInTheCaseCONTAINS\"applicant1\" OR recipientsInTheCaseCONTAINS\"applicant2\"")
+                      "recipientsInTheCaseCONTAINS\"firstApplicant\" OR recipientsInTheCaseCONTAINS\"secondApplicant\"")
             .label("manageHearing77","You can make changes to the notice by continuing to the next page")
             .done()
             .done();
@@ -163,15 +163,10 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         CaseDetails<CaseData, State> detailsBefore
     ) {
         var caseData = details.getData();
-        List<String> error = new ArrayList<>();
-
-        RecipientValidationUtil.checkingApplicantRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingChildRelatedSelectedRecipient(caseData, error);
-        RecipientValidationUtil.checkingParentRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingOtherPersonRelatedSelectedRecipients(caseData, error);
-        RecipientValidationUtil.checkingAdoptionAgencyRelatedSelectedRecipients(caseData, error);
-
-        if (isEmpty(error)) {
+        List<String> errors = new ArrayList<>();
+        AboutToStartOrSubmitResponse<CaseData, State> aboutToStartOrSubmitResponse =
+            validateRecipients(caseData.getManageHearingDetails().getRecipientsInTheCase(), null, caseData, errors);
+        if (isEmpty(aboutToStartOrSubmitResponse.getErrors())) {
             caseData.setBirthMother(detailsBefore.getData().getBirthMother());
             caseData.setBirthFather(detailsBefore.getData().getBirthFather());
             caseData.getManageHearingDetails().setHearingA90Document(null);
@@ -195,7 +190,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                     MANAGE_HEARING_NOTICES_A90_FILE_NAME));
                         }
                         break;
-                    case RESPONDENT_MOTHER:
+                    case RESPONDENT_BIRTH_MOTHER:
                         if (isNotEmpty(caseData.getBirthMother().getDeceased())
                             && caseData.getBirthMother().getDeceased().equals(YesOrNo.NO)) {
                             caseData.getManageHearingDetails().setHearingA91DocumentFlagFather(YesOrNo.NO);
@@ -212,7 +207,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                     MANAGE_HEARING_NOTICES_A91_FILE_NAME_MOTHER));
                         }
                         break;
-                    case RESPONDENT_FATHER:
+                    case RESPONDENT_BIRTH_FATHER:
                         if (isNotEmpty(caseData.getBirthFather().getDeceased())
                             && caseData.getBirthFather().getDeceased().equals(YesOrNo.NO)) {
                             caseData.getManageHearingDetails().setHearingA91DocumentFlagFather(YesOrNo.YES);
@@ -233,11 +228,11 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                         break;
                 }
             });
+            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+                .data(caseData)
+                .errors(errors)
+                .build();
         }
-
-        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(caseData)
-            .errors(error)
-            .build();
+        return aboutToStartOrSubmitResponse;
     }
 }

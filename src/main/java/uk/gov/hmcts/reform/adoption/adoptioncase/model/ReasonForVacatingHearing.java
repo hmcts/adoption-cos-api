@@ -16,8 +16,10 @@ public enum ReasonForVacatingHearing implements HasLabel {
     CASE_WITHDRAWN("Case withdrawn"),
 
     @JsonProperty("caseDismissed")
-    CASE_DISMISSED("Case dismissed");
+    CASE_DISMISSED("Case dismissed"),
 
+    @JsonProperty("judgeOrCourtUnavailable")
+    JUDGE_OR_COURT_UNAVAILABLE("Judge or court unavailable");
 
     private final String label;
 }
