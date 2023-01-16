@@ -101,8 +101,8 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
     private void setDssMetaData(CaseData data) {
 
         data.setDssQuestion1("Full Name");
-        data.setDssQuestion2("DssQuestion2");
-        data.setDssQuestion3("DssQuestion3");
+        data.setDssQuestion2("Date of Birth");
+        data.setDssQuestion3("Test");
         data.setDssAnswer1("case_data.childrenFirstName, case_data.childrenLastName");
         data.setDssAnswer2("case_data.childrenDateOfBirth");
         data.setDssAnswer3("case_data.otherAdoptionAgencyAddress.Country");
