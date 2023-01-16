@@ -91,9 +91,20 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
             temp.substring(8, 12),
             temp.substring(12, 16)
         ));
+        setDssMetaData(data);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)
             .build();
+    }
+
+    private void setDssMetaData(CaseData data) {
+
+        data.setDssQuestion1("Full Name");
+        data.setDssQuestion2("DssQuestion2");
+        data.setDssQuestion3("DssQuestion3");
+        data.setDssAnswer1("case_data.childrenFirstName, case_data.childrenLastName");
+        data.setDssAnswer2("case_data.childrenDateOfBirth");
+        data.setDssAnswer3("case_data.otherAdoptionAgencyAddress.Country");
     }
 }

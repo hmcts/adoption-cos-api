@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollec
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
+import uk.gov.hmcts.reform.adoption.document.model.DssDocumentInfo;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -754,6 +755,45 @@ public class CaseData {
         typeParameterOverride = "OrderCheckAndSend"
     )
     private OrderCheckAndSend orderCheckAndSend;
+
+
+    @CCD(
+        access = { DefaultAccess.class}
+    )
+    private String dssQuestion1;
+
+    @CCD(
+        access = { DefaultAccess.class}
+    )
+    private String dssAnswer1;
+
+    @CCD(
+        access = { DefaultAccess.class}
+    )
+    private String dssQuestion2;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private String dssAnswer2;
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private String dssQuestion3;
+
+    @CCD(
+        access = { DefaultAccess.class}
+    )
+    private String dssAnswer3;
+
+    @CCD(
+        label = "Documents generated",
+        typeOverride = Collection,
+        typeParameterOverride = "DssDocument",
+        access = {CollectionAccess.class}
+    )
+    private List<ListValue<DssDocumentInfo>> dssDocuments;
 
     private String seekFurtherInformationDocumentSubmitterName;
 
