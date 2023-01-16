@@ -37,6 +37,10 @@ module.exports = {
     otherAdoptionAgency: '#recipientsInTheCase-otherAdoptionAgency',
     otherParentWithParentalResponsibility: '#recipientsInTheCase-otherPersonWithParentalResponsibility',
     vacateHearingToSelect: '//input[@type="radio"]',
+    adjournHearingSpecialMeasures: '#reasonForAdjournHearing-specialMeasuresRequired',
+    adjournHearingInterpreter: '#reasonForAdjournHearing-interpreterRequired',
+    reasonForAdjournAdminError: '#reasonForAdjournHearing-adminError',
+    reasonForAdjournInternational: '#reasonForAdjournHearing-international',
     vacateHearingReasonAgreement: '#reasonForVacatingHearing-agreementConsentOrderMade',
     vacateHearingReasonWithDrawn: '#reasonForVacatingHearing-caseWithdrawn',
     vacateHearingReasonDismissed: '#reasonForVacatingHearing-caseDismissed',
@@ -254,13 +258,13 @@ module.exports = {
     await I.retry(3).see('Select a hearing you want to adjourn is required');
     await I.retry(5).click(this.fields.vacateHearingToSelect);
     await I.retry(5).click(this.fields.continueButton);
-    await I.retry(5).seeElement(this.fields.adjournHearingCourtJudgeUnavailable);
-    await I.retry(5).seeElement(this.fields.adjournHearingPartiesUnavailable);
-    await I.retry(5).seeElement(this.fields.adjournHearingLateFiling);
-    await I.retry(5).seeElement(this.fields.adjournHearingDateToAvoid);
+    await I.retry(5).seeElement(this.fields.adjournHearingSpecialMeasures);
+    await I.retry(5).seeElement(this.fields.adjournHearingInterpreter);
+    await I.retry(5).seeElement(this.fields.reasonForAdjournAdminError);
+    await I.retry(5).seeElement(this.fields.reasonForAdjournInternational);
     await I.retry(5).click(this.fields.continueButton);
     await I.retry(3).see('Reason for adjournment is required');
-    await I.retry(5).click(this.fields.adjournHearingLateFiling);
+    await I.retry(5).click(this.fields.adjournHearingSpecialMeasures);
     await I.retry(5).click(this.fields.continueButton);
     await I.retry(5).seeElement(this.fields.reListingYes);
     await I.retry(5).seeElement(this.fields.reListingNo);
