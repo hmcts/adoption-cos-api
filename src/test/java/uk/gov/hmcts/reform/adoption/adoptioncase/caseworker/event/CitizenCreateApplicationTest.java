@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,6 +52,15 @@ class CitizenCreateApplicationTest {
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
         citizenCreateApplication.submitted(caseDetails,caseDetails);
         verify(coreCaseDataApi, times(1)).submitSupplementaryData(any(), any(),any(),any());
+    }
+
+    @Test
+    @DisplayName("Testing submitted event for citizen case creation with dss meta data")
+    void testing_citizen_submission_with_dssData_aboutToSubmit() {
+        var caseDetails = getCaseDetails();
+        citizenCreateApplication.aboutToSubmit(caseDetails,caseDetails);
+        assertThat(caseDetails.getData().getDssQuestion1()).isEqualTo("Full Name");
+        assertThat(caseDetails.getData().getDssAnswer2()).isEqualTo("case_data.childrenDateOfBirth");
     }
 
     private CaseDetails<CaseData, State> getCaseDetails() {

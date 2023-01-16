@@ -790,7 +790,7 @@ public class CaseData {
     @CCD(
         label = "Documents generated",
         typeOverride = Collection,
-        typeParameterOverride = "DssDocument",
+        typeParameterOverride = "DssDocumentInfo",
         access = {CollectionAccess.class}
     )
     private List<ListValue<DssDocumentInfo>> dssDocuments;
