@@ -59,8 +59,8 @@ class CitizenCreateApplicationTest {
     void testing_citizen_submission_with_dssData_aboutToSubmit() {
         var caseDetails = getCaseDetails();
         citizenCreateApplication.aboutToSubmit(caseDetails,caseDetails);
-        assertThat(caseDetails.getData().getDssQuestion1()).isEqualTo("Full Name");
-        assertThat(caseDetails.getData().getDssAnswer2()).isEqualTo("case_data.childrenDateOfBirth");
+        assertThat(caseDetails.getData().getDssQuestion1()).isEqualTo("First Name");
+        assertThat(caseDetails.getData().getDssAnswer3()).isEqualTo("case_data.childrenDateOfBirth");
     }
 
     private CaseDetails<CaseData, State> getCaseDetails() {

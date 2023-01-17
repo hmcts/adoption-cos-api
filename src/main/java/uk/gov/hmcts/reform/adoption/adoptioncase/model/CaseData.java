@@ -787,6 +787,17 @@ public class CaseData {
     )
     private String dssAnswer3;
 
+
+    @CCD(
+        access = {DefaultAccess.class}
+    )
+    private String dssQuestion4;
+
+    @CCD(
+        access = { DefaultAccess.class}
+    )
+    private String dssAnswer4;
+
     @CCD(
         label = "Documents generated",
         typeOverride = Collection,
