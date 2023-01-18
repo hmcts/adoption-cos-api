@@ -862,16 +862,13 @@ public class CaseData {
     public DynamicList getPlacementOfTheChildList() {
         if (adopAgencyOrLA.getAdopAgencyOrLaName() != null
             && childSocialWorker.getSocialWorkerName() != null
-            && applicantSocialWorker.getSocialWorkerName() != null
-            && this.getAdoptionOrderData().getPlacementOfTheChildList() == null
-            || this.getAdoptionOrderData().getPlacementOfTheChildList().getValue() == null) {
+            && applicantSocialWorker.getSocialWorkerName() != null) {
             return this.getAdoptionOrderData().getPlacementOfTheChildList(
                         this.getAdopAgencyOrLA(),
                         this.getHasAnotherAdopAgencyOrLAinXui(),
                         this.getOtherAdoptionAgencyOrLA(),
                         this.getChildSocialWorker(),
                         this.getApplicantSocialWorker());
-
         }
 
         return this.getAdoptionOrderData().getPlacementOfTheChildList();
