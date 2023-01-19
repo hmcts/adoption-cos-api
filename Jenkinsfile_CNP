@@ -72,7 +72,7 @@ withPipeline(type, product, component) {
   enableSlackNotifications('#adoption-tech')
   enableHighLevelDataSetup()
 
-  after('test') {
+  afterAlways('test') {
     builder.gradle('integration')
     builder.gradle('jacocoTestReport')
 
@@ -122,7 +122,7 @@ withPipeline(type, product, component) {
     ]
   }
 
-  after('functionalTest:preview') {
+  afterAlways('functionalTest:preview') {
     publishHTML target: [
       allowMissing         : true,
       alwaysLinkToLastBuild: true,
@@ -137,7 +137,7 @@ withPipeline(type, product, component) {
     }
   }
 
-  after('functionalTest:aat') {
+  afterAlways('functionalTest:aat') {
     publishHTML target: [
       allowMissing         : true,
       alwaysLinkToLastBuild: true,
@@ -166,7 +166,7 @@ withPipeline(type, product, component) {
     generateDefinitions()
   }
 
-  after('smokeTest:preview') {
+  afterAlways('smokeTest:preview') {
     publishHTML target: [
       allowMissing         : true,
       alwaysLinkToLastBuild: true,
@@ -177,7 +177,7 @@ withPipeline(type, product, component) {
     ]
   }
 
-  after('smokeTest:aat') {
+  afterAlways('smokeTest:aat') {
     publishHTML target: [
       allowMissing         : true,
       alwaysLinkToLastBuild: true,
@@ -188,7 +188,7 @@ withPipeline(type, product, component) {
     ]
   }
 
-  after('checkout') {
+  afterAlways('checkout') {
     builder.gradle('generateCCDConfig')
     generateDefinitions()
   }
@@ -249,13 +249,13 @@ withPipeline(type, product, component) {
     env.FEE_API_URL = "http://fees-register-api-ithc.service.core-compute-ithc.internal"
   }
 
-  after('contractTest:preview') {
+  afterAlways('contractTest:preview') {
     dir("${WORKSPACE}") {
       steps.archiveArtifacts artifacts: "pacts/*.json"
     }
   }
 
-  after('contractTest:aat') {
+  afterAlways('contractTest:aat') {
     dir("${WORKSPACE}") {
       steps.archiveArtifacts artifacts: "pacts/*.json"
     }
