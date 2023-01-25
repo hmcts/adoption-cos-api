@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.prepareReplyMessageDynamicList;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CommonPageBuilder.sendMessageMidEvent;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
@@ -32,32 +33,32 @@ public class CommonPageBuilderTest {
     public void sendMessageMidEvent_OK() {
         var caseData = getCaseDetails();
         List<ListValue<AdoptionUploadDocument>> applicationDocumentCategory = new ArrayList<>();
-        caseData.getData().setApplicationDocumentsCategory(caseData.getData().archiveManageOrdersHelper(applicationDocumentCategory,
+        caseData.getData().setApplicationDocumentsCategory(archiveListHelper(applicationDocumentCategory,
                                                                                     getApplicationDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> correspondenceDocCategory = new ArrayList<>();
-        caseData.getData().setCorrespondenceDocumentCategory(caseData.getData().archiveManageOrdersHelper(correspondenceDocCategory,
+        caseData.getData().setCorrespondenceDocumentCategory(archiveListHelper(correspondenceDocCategory,
                                                                                       getCorrespondanceDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> reportsDocumentCategory = new ArrayList<>();
-        caseData.getData().setReportsDocumentCategory(caseData.getData().archiveManageOrdersHelper(reportsDocumentCategory,
+        caseData.getData().setReportsDocumentCategory(archiveListHelper(reportsDocumentCategory,
                                                                                getReportsDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> statementDocumentCategory = new ArrayList<>();
-        caseData.getData().setStatementsDocumentCategory(caseData.getData().archiveManageOrdersHelper(statementDocumentCategory,
+        caseData.getData().setStatementsDocumentCategory(archiveListHelper(statementDocumentCategory,
                                                                                   getStatementsDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> courtOrderCategory = new ArrayList<>();
-        caseData.getData().setCourtOrdersDocumentCategory(caseData.getData().archiveManageOrdersHelper(courtOrderCategory,
+        caseData.getData().setCourtOrdersDocumentCategory(archiveListHelper(courtOrderCategory,
                                                                                    getCourtOrdersDocumentCategory()));
 
         List<ListValue<AdoptionUploadDocument>> additionalDocumentCategory = new ArrayList<>();
-        caseData.getData().setAdditionalDocumentsCategory(caseData.getData().archiveManageOrdersHelper(additionalDocumentCategory,
+        caseData.getData().setAdditionalDocumentsCategory(archiveListHelper(additionalDocumentCategory,
                                                                                    getAdditionalDocumentsCategory()));
 
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
         var uuid = UUID.randomUUID();
-        caseData.getData().setListOfOpenMessages(caseData.getData().archiveManageOrdersHelper(listOfOpenMessage,
+        caseData.getData().setListOfOpenMessages(archiveListHelper(listOfOpenMessage,
                                                                           getListOfOpenMessages(uuid)));
         prepareReplyMessageDynamicList(caseData.getData(), getCaseworkerUser());
         caseData.getData().getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "test"));

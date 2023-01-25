@@ -19,13 +19,15 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_DEFAULT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
-
 
 public final class CaseEventCommonMethods {
     private CaseEventCommonMethods() {
@@ -80,7 +82,6 @@ public final class CaseEventCommonMethods {
         return messageDocumentLists;
     }
 
-
     public static void prepareReplyMessageDynamicList(CaseData caseData, User caseworkerUser) {
         List<DynamicListElement> replyMessageList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
@@ -127,37 +128,42 @@ public final class CaseEventCommonMethods {
             MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
             String activeMessageID = caseData.getReplyMsgDynamicList().getValueCode().toString();
             ListValue<MessageSendDetails> messageListValue = getSelectedMessage(caseData, activeMessageID);
-            MessageSendDetails selectedMessage = messageListValue.getValue();
-            caseData.getListOfOpenMessages().remove(messageListValue);
-            if (YesOrNo.NO.equals(caseData.getSelectedMessage().getReplyMessage())) {
-                selectedMessage.setMessageStatus(MessageSendDetails.MessageStatus.CLOSED);
-                caseData.setClosedMessages(caseData.archiveManageOrdersHelper(
-                    caseData.getClosedMessages(), selectedMessage));
-            } else {
-                sendMessagesDetails.setMessageId(activeMessageID);
-                sendMessagesDetails.setMessageHistory(
-                    buildMessageHistory(caseworkerUser, sendMessagesDetails.getMessageText(), selectedMessage.getMessageHistory()));
-                buildDocumentHistory(caseData, sendMessagesDetails, selectedMessage.getDocumentHistory());
-                setMessageInformation(caseData, sendMessagesDetails,caseworkerUser);
+            if (Objects.nonNull(messageListValue)) {
+                MessageSendDetails selectedMessage = messageListValue.getValue();
+                caseData.getListOfOpenMessages().remove(messageListValue);
+                if (YesOrNo.NO.equals(caseData.getSelectedMessage().getReplyMessage())) {
+                    selectedMessage.setMessageStatus(MessageSendDetails.MessageStatus.CLOSED);
+                    caseData.setClosedMessages(archiveListHelper(
+                        caseData.getClosedMessages(), selectedMessage));
+                } else {
+                    sendMessagesDetails.setMessageId(activeMessageID);
+                    sendMessagesDetails.setMessageHistory(
+                        buildMessageHistory(caseworkerUser, sendMessagesDetails.getMessageText(), selectedMessage.getMessageHistory()));
+                    buildDocumentHistory(caseData, sendMessagesDetails, selectedMessage.getDocumentHistory());
+                    setMessageInformation(caseData, sendMessagesDetails,caseworkerUser);
+                }
             }
-
         }
         caseData.setMessageAction(null);
         caseData.setLoggedInUserRole(null);
     }
 
     private static ListValue<MessageSendDetails> getSelectedMessage(CaseData caseData, String activeMessageID) {
-        return caseData.getListOfOpenMessages().stream().filter(item -> item.getValue().getMessageId().equalsIgnoreCase(
-            activeMessageID)).findFirst().get();
+        Optional<ListValue<MessageSendDetails>> selectedMessage = caseData.getListOfOpenMessages().stream()
+            .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(
+            activeMessageID)).findFirst();
+        if (selectedMessage.isPresent()) {
+            return selectedMessage.get();
+        }
+        return null;
     }
 
     private static void setMessageInformation(CaseData caseData, MessageSendDetails sendMessagesDetails, User caseworkerUser) {
-        buildDocumentHistory(caseData, sendMessagesDetails, sendMessagesDetails.getDocumentHistory());
         sendMessagesDetails.setMessageFrom(caseworkerUser.getUserDetails().getEmail());
         sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         sendMessagesDetails.setMessageSendDateNTime(
             LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-        caseData.setListOfOpenMessages(caseData.archiveManageOrdersHelper(
+        caseData.setListOfOpenMessages(archiveListHelper(
             caseData.getListOfOpenMessages(), sendMessagesDetails));
         caseData.setMessageSendDetails(null);
         caseData.setAttachDocumentList(null);
@@ -180,12 +186,16 @@ public final class CaseEventCommonMethods {
                                       List<ListValue<Document>> documentHistory) {
         if (caseData.getAttachDocumentList() != null
             && caseData.getAttachDocumentList().getValue() != null) {
-            var doc = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
+
+            Optional<MessageDocumentList> selectedDocument = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
                 .filter(item -> item.getMessageId().equalsIgnoreCase(caseData.getAttachDocumentList().getValue().getCode().toString()))
-                .findFirst().get().getDocumentLink();
-            sendMessagesDetails.setSelectedDocument(doc);
-            sendMessagesDetails.setDocumentHistory(
-                caseData.archiveManageOrdersHelper(documentHistory, doc));
+                .findFirst();
+            if (selectedDocument.isPresent()) {
+                var doc = selectedDocument.get().getDocumentLink();
+                sendMessagesDetails.setSelectedDocument(doc);
+                sendMessagesDetails.setDocumentHistory(
+                    archiveListHelper(documentHistory, doc));
+            }
         }
     }
 }

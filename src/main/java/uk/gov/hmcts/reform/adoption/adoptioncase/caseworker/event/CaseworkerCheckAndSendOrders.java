@@ -12,18 +12,18 @@ import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderCheckAndSend;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.OrderStatus;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.CheckAndSendOrders;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
@@ -48,6 +49,11 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHECK_N_SEND_ORDER_DATE_FORMAT;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF_EXT;
 
 
 @Component
@@ -82,8 +88,6 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         log.info("Inside configure method for Event {}", CASEWORKER_CHECK_AND_SEND_ORDERS);
         var pageBuilder = addEventConfig(configBuilder);
         checkAndSendOrders.addTo(pageBuilder);
-
-
     }
 
     /**
@@ -105,7 +109,6 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                                    .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
-
 
     /**
      * Method to fetch Check and send order list.
@@ -165,10 +168,12 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
                     .filter(item -> item.getValue().getOrderId()
                         .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
                     .findFirst();
-                caseData.setAdoptionOrderData(finalAdoptionItem.get().getValue());
-                finalAdoptionItem.get().getValue().setOrderStatus(caseData.getOrderCheckAndSend().equals(
+                AdoptionOrderData orderListItem = finalAdoptionItem.get().getValue();
+                caseData.setAdoptionOrderData(orderListItem);
+                orderListItem.setOrderStatus(caseData.getOrderCheckAndSend().equals(
                     OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
-                finalAdoptionItem.get().getValue().setDraftDocumentA76(null);
+                orderListItem.setDraftDocumentA76(null);
+                orderListItem.setDraftDocumentA206(null);
                 break;
             default:
                 break;
@@ -177,21 +182,34 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
             .filter(item -> item.getValue().getOrderId()
                 .equalsIgnoreCase(caseData.getCheckAndSendOrderDropdownList().getValueCode().toString()))
             .findFirst();
-        commonOrderListItem.get().getValue().setStatus(caseData.getOrderCheckAndSend().equals(
+        OrderData orderListItem = commonOrderListItem.get().getValue();
+        orderListItem.setStatus(caseData.getOrderCheckAndSend().equals(
             OrderCheckAndSend.SERVE_THE_ORDER) ? OrderStatus.SERVED : OrderStatus.RETURN_FOR_AMENDMENTS);
-        commonOrderListItem.get().getValue().setDateServed(LocalDate.now(clock));
-        if (commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.SERVED)) {
+        orderListItem.setDateServed(LocalDate.now(clock));
+        if (orderListItem.getStatus().equals(OrderStatus.SERVED)) {
             @SuppressWarnings("unchecked")
             Map<String, Object> templateContent =
                 objectMapper.convertValue(caseData, Map.class);
-            commonOrderListItem.get().getValue().setDocumentReview(
-                caseDataDocumentService.renderDocument(
-                    templateContent,
-                    caseDetails.getId(),
-                    FINAL_ADOPTION_ORDER_A76,
-                    LanguagePreference.ENGLISH,
-                    FINAL_ADOPTION_ORDER_A76_FILE_NAME
-                ));
+            if (isNotEmpty(orderListItem.getDocumentReview1()) && orderListItem.getDocumentReview1().getFilename()
+                .equals(FINAL_ADOPTION_ORDER_A76_DRAFT_FILE_NAME + PDF_EXT)) {
+                orderListItem.setDocumentReview1(
+                        caseDataDocumentService.renderDocument(
+                            templateContent,
+                            caseDetails.getId(),
+                            FINAL_ADOPTION_ORDER_A76,
+                            LanguagePreference.ENGLISH,
+                            FINAL_ADOPTION_ORDER_A76_FILE_NAME));
+            }
+            if (isNotEmpty(orderListItem.getDocumentReview2()) && orderListItem.getDocumentReview2().getFilename()
+                .equals(FINAL_ADOPTION_ORDER_A206_DRAFT_FILE_NAME + PDF_EXT)) {
+                orderListItem.setDocumentReview2(
+                        caseDataDocumentService.renderDocument(
+                            templateContent,
+                            caseDetails.getId(),
+                            FINAL_ADOPTION_ORDER_A206,
+                            LanguagePreference.ENGLISH,
+                            FINAL_ADOPTION_ORDER_A206_FILE_NAME));
+            }
         } else if (commonOrderListItem.get().getValue().getStatus().equals(OrderStatus.RETURN_FOR_AMENDMENTS)) {
             caseData.setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
             CaseEventCommonMethods.updateMessageList(caseData, caseworkerUser);
@@ -203,5 +221,4 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         caseData.setLoggedInUserRole(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder().data(caseData).build();
     }
-
 }

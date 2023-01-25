@@ -217,49 +217,54 @@ public class AdoptionOrderData {
                                                   OtherAdoptionAgencyOrLocalAuthority otherAdoptionAgencyOrLA,
                                                   SocialWorker childSocialWorker,
                                                   SocialWorker applicantSocialWorker) {
-        List<DynamicListElement> listElements = new ArrayList<>();
+        if (this.getPlacementOfTheChildList() == null
+            || this.getPlacementOfTheChildList().getValue() == null) {
+            List<DynamicListElement> listElements = new ArrayList<>();
 
-        if (adopAgencyOrLA != null) {
-            DynamicListElement adoptionAgency = DynamicListElement.builder()
-                .label(String.join(COMMA, adopAgencyOrLA.getAdopAgencyOrLaName(),
-                                   adopAgencyOrLA.getAdopAgencyTown(),
-                                   adopAgencyOrLA.getAdopAgencyPostcode()))
-                .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
-                .build();
-            listElements.add(adoptionAgency);
+            if (adopAgencyOrLA != null) {
+                DynamicListElement adoptionAgency = DynamicListElement.builder()
+                    .label(String.join(COMMA, adopAgencyOrLA.getAdopAgencyOrLaName(),
+                                       adopAgencyOrLA.getAdopAgencyTown(),
+                                       adopAgencyOrLA.getAdopAgencyPostcode()))
+                    .code(UUID.nameUUIDFromBytes(ADOPTION_AGENCY_STR.getBytes()))
+                    .build();
+                listElements.add(adoptionAgency);
+            }
+
+            if (YesOrNo.YES.equals(hasAnotherAdopAgencyOrLAinXui)) {
+                DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
+                    .label(String.join(COMMA, otherAdoptionAgencyOrLA.getAgencyOrLaName(),
+                                       otherAdoptionAgencyOrLA.getAgencyAddress().getPostTown(),
+                                       otherAdoptionAgencyOrLA.getAgencyAddress().getPostCode()))
+                    .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
+                    .build();
+                listElements.add(otherAdoptionAgency);
+            }
+
+            if (childSocialWorker != null) {
+                DynamicListElement childLocalAuthority = DynamicListElement.builder()
+                    .label(String.join(COMMA, childSocialWorker.getSocialWorkerName(),
+                                       childSocialWorker.getSocialWorkerTown(),
+                                       childSocialWorker.getSocialWorkerPostcode()))
+                    .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
+                    .build();
+                listElements.add(childLocalAuthority);
+            }
+
+            if (applicantSocialWorker != null) {
+                DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
+                    .label(String.join(COMMA, applicantSocialWorker.getSocialWorkerName(),
+                                       applicantSocialWorker.getSocialWorkerTown(),
+                                       applicantSocialWorker.getSocialWorkerPostcode()))
+                    .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
+                    .build();
+                listElements.add(applicantLocalAuthority);
+            }
+            setPlacementOfTheChildList(DynamicList.builder()
+                                           .listItems(listElements).value(DynamicListElement.EMPTY).build());
         }
 
-        if (YesOrNo.YES.equals(hasAnotherAdopAgencyOrLAinXui)) {
-            DynamicListElement otherAdoptionAgency = DynamicListElement.builder()
-                .label(String.join(COMMA, otherAdoptionAgencyOrLA.getAgencyOrLaName(),
-                                   otherAdoptionAgencyOrLA.getAgencyAddress().getPostTown(),
-                                   otherAdoptionAgencyOrLA.getAgencyAddress().getPostCode()))
-                .code(UUID.nameUUIDFromBytes(OTHER_ADOPTION_AGENCY_STR.getBytes()))
-                .build();
-            listElements.add(otherAdoptionAgency);
-        }
 
-        if (childSocialWorker != null) {
-            DynamicListElement childLocalAuthority = DynamicListElement.builder()
-                .label(String.join(COMMA, childSocialWorker.getSocialWorkerName(),
-                                   childSocialWorker.getSocialWorkerTown(),
-                                   childSocialWorker.getSocialWorkerPostcode()))
-                .code(UUID.nameUUIDFromBytes(CHILD_SOCIAL_WORKER_STR.getBytes()))
-                .build();
-            listElements.add(childLocalAuthority);
-        }
-
-        if (applicantSocialWorker != null) {
-            DynamicListElement applicantLocalAuthority = DynamicListElement.builder()
-                .label(String.join(COMMA, applicantSocialWorker.getSocialWorkerName(),
-                                   applicantSocialWorker.getSocialWorkerTown(),
-                                   applicantSocialWorker.getSocialWorkerPostcode()))
-                .code(UUID.nameUUIDFromBytes(APPLICANT_SOCIAL_WORKER_STR.getBytes()))
-                .build();
-            listElements.add(applicantLocalAuthority);
-        }
-        setPlacementOfTheChildList(DynamicList.builder()
-                                                         .listItems(listElements).value(DynamicListElement.EMPTY).build());
         return getPlacementOfTheChildList();
     }
 }

@@ -49,6 +49,7 @@ import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerCheckAndSendOrders.CASEWORKER_CHECK_AND_SEND_ORDERS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
@@ -91,11 +92,11 @@ class CaseworkerCheckAndSendOrdersTest {
         OrderData orderData2 = getCommonOrderData();
         OrderData orderData3 = getCommonOrderData();
         List<ListValue<OrderData>> manageOrderList = new ArrayList<>();
+        manageOrderList = archiveListHelper(manageOrderList, orderData1);
+        archiveListHelper(manageOrderList, orderData2);
+        archiveListHelper(manageOrderList, orderData3);
         var caseDetails = getCaseDetails();
         CaseData data = caseDetails.getData();
-        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, orderData1);
-        data.archiveManageOrdersHelper(manageOrderList, orderData2);
-        data.archiveManageOrdersHelper(manageOrderList, orderData3);
         data.setCommonOrderList(manageOrderList);
 
         when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
@@ -119,8 +120,8 @@ class CaseworkerCheckAndSendOrdersTest {
         var caseDetails = getCaseDetails();
         CaseData data = caseDetails.getData();
         data.setOrderCheckAndSend(OrderCheckAndSend.SERVE_THE_ORDER);
-        manageOrderList = data.archiveManageOrdersHelper(manageOrderList, manageOrderData1);
-        commonOrderList = data.archiveManageOrdersHelper(commonOrderList, orderData1);
+        manageOrderList = archiveListHelper(manageOrderList, manageOrderData1);
+        commonOrderList = archiveListHelper(commonOrderList, orderData1);
         data.setCommonOrderList(commonOrderList);
         data.setManageOrderList(manageOrderList);
         var item = new SelectedOrder();
@@ -197,7 +198,6 @@ class CaseworkerCheckAndSendOrdersTest {
             .build();
     }
 
-    @NotNull
     private void prepareCheckAndSendDropdownList(List<ListValue<OrderData>>
                                                      commonOrderList, String orderId, CaseData data) {
         List<DynamicListElement> listElements = new ArrayList<>();
