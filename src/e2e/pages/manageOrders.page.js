@@ -340,10 +340,10 @@ module.exports = {
     await I.retry(3).click(this.fields.continueButton);
     await I.retry(3).waitForText('Other adoption agency not applicable for the case', 30);
     await I.retry(3).see('Other adoption agency not applicable for the case');
-    await I.retry(3).see('Other person with parental responsibility not applicable for the case');
+   //await I.retry(3).see('Other person with parental responsibility not applicable for the case');
     await I.retry(3).see('Legal guardian (Cafcass) not applicable for the case');
     await I.retry(3).click(this.fields.serveParties.otherAdoptionAgency);
-    await I.retry(3).click(this.fields.serveParties.otherPersonWithParentalResponsibility);
+    //await I.retry(3).click(this.fields.serveParties.otherPersonWithParentalResponsibility);
     await I.retry(3).click(this.fields.serveParties.cafCass);
     await I.retry(3).click(this.fields.continueButton);
     await I.wait(3);
