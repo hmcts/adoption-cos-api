@@ -20,10 +20,10 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMe
 
 public final class CommonPageBuilder {
 
+    private static final String REPLY_MESSAGE = "messageAction=\"replyMessage\"";
+
     private CommonPageBuilder() {
     }
-
-    private static final String REPLY_MESSAGE = "messageAction=\"replyMessage\"";
 
     public static void sendOrReplyCommonPage(PageBuilder pageBuilder, String type) {
         if ("".equalsIgnoreCase(type)) {
