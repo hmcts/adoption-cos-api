@@ -25,11 +25,6 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
-      spring-security-crypto-5.7.1.jar ]]></notes>
-      <cve>CVE-2022-31692</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
       tomcat-embed-websocket-9.0.63.jar ]]></notes>
     <cve>CVE-2022-42252</cve>
   </suppress>
