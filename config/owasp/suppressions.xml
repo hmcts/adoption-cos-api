@@ -74,6 +74,7 @@
   <suppress>
     <notes><![CDATA[
     file name: datatable-3.3.1.jar ]]></notes>
+    <cve>CVE-2021-4277</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -84,9 +85,11 @@
   <suppress>
     <notes><![CDATA[
       LatencyUtils-2.0.3.jar ]]></notes>
+    <cve>CVE-2021-4277</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
       datatable-3.3.1.jar ]]></notes>
+    <cve>CVE-2021-4277</cve>
   </suppress>
 </suppressions>
