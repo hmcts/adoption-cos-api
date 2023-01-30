@@ -176,7 +176,7 @@ public class CaseworkerSendOrReplyTest {
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getListOfOpenMessages()).hasSize(1);
-        assertThat(result.getData().getListOfOpenMessages().get(0).getValue().getMessageId().equals(selectedMessage.getMessageId()));
+        assertThat(result.getData().getListOfOpenMessages().get(0).getValue().getMessageId()).isEqualTo(latestMessage.getMessageId());
     }
 
     @Test
