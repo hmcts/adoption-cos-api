@@ -186,7 +186,24 @@ module.exports = {
                                 "uploadedBy": null
                             }
                         }
-                    ]
+                    ],
+        "hasAnotherAdopAgencyOrLAinXui": "No",
+        "birthMotherFirstName": "Birth Mother First Name",
+        "birthMotherLastName": "Birth Mother Last Name",
+        "birthMotherDeceased": "Yes",
+        "birthMotherAddress1": "Birth Mother Address 1",
+        "birthMotherAddressTown": "Birth Mother Town",
+        "birthMotherAddressPostCode": "Birth Mother PostCode",
+        "birthMotherAddressCountry": "Birth Mother Country",
+        "birthMotherLastAddressDate": "2023-01-24",
+        "birthFatherFirstName": "Birth Father First Name",
+        "birthFatherLastName": "Birth Father Last Name",
+        "birthFatherDeceased": "Yes",
+        "birthFatherAddress1": "Birth Father Address 1",
+        "birthFatherAddressTown": "Birth Father Town",
+        "birthFatherAddressPostCode": "Birth Father PostCode",
+        "birthFatherAddressCountry": "Birth Father Country",
+        "birthFatherLastAddressDate": "2023-01-24"
 
     },
   caseDataLa: {
