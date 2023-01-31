@@ -194,7 +194,7 @@ module.exports = {
         "birthMotherAddress1": "Birth Mother Address 1",
         "birthMotherAddressTown": "Birth Mother Town",
         "birthMotherAddressPostCode": "Birth Mother PostCode",
-        "birthMotherAddressCountry": "Birth Mother Country",
+        "birthMotherAddressCountry": "UK",
         "birthMotherLastAddressDate": "2023-01-24",
         "birthFatherFirstName": "Birth Father First Name",
         "birthFatherLastName": "Birth Father Last Name",
@@ -202,7 +202,7 @@ module.exports = {
         "birthFatherAddress1": "Birth Father Address 1",
         "birthFatherAddressTown": "Birth Father Town",
         "birthFatherAddressPostCode": "Birth Father PostCode",
-        "birthFatherAddressCountry": "Birth Father Country",
+        "birthFatherAddressCountry": "UK",
         "birthFatherLastAddressDate": "2023-01-24"
 
     },
