@@ -274,7 +274,7 @@ withPipeline(type, product, component) {
     env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal/"
   }
 
-  after('functionalTest:preview') {
+  afterAlways('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
   }
 
@@ -283,7 +283,7 @@ withPipeline(type, product, component) {
     env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.service.core-compute-preview.internal/"
   }
 
-  after('smoketest:preview') {
+  afterAlways('smoketest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
   }
 
@@ -291,7 +291,7 @@ withPipeline(type, product, component) {
     env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
   }
 
-  after('smoketest:aat') {
+  afterAlways('smoketest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
   }
 
@@ -300,7 +300,7 @@ withPipeline(type, product, component) {
     env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
   }
 
-  after('functionalTest:aat') {
+  afterAlways('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
   }
 }
