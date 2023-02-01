@@ -111,6 +111,99 @@ public class CaseEventCommonMethodsTest {
         assertThat(caseData.getMessageAction()).isNull();
     }
 
+    @Test
+    public void updateMessageList_ReplyMessage_3_Test_OK() {
+        var caseData = getCaseDetails().getData();
+        caseData.setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
+        var messageSendDetails = new MessageSendDetails();
+        var uuid = UUID.randomUUID();
+        messageSendDetails.setMessageId(uuid.toString());
+        messageSendDetails.setMessageSendDateNTime(LocalDateTime.now());
+        messageSendDetails.setMessageStatus(MessageSendDetails.MessageStatus.CLOSED);
+        messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.ANNEX_A);
+        caseData.setMessageSendDetails(messageSendDetails);
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        MessageSendDetails messageSendDetails1 =  getListOfOpenMessages(uuid);
+        messageSendDetails1.setMessageHistory("Test Message");
+        caseData.setListOfOpenMessages(archiveListHelper(listOfOpenMessage,
+                                                         messageSendDetails1));
+        var selectedMessage = new SelectedMessage();
+        selectedMessage.setReplyMessage(YesOrNo.YES);
+        caseData.setSelectedMessage(selectedMessage);
+        prepareReplyMessageDynamicList(caseData, getCaseworkerUser());
+        caseData.getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "Test"));
+        CaseEventCommonMethods.updateMessageList(caseData, getCaseworkerUser());
+        assertThat(caseData.getMessageAction()).isNull();
+    }
+
+    @Test
+    public void updateMessageList_ReplyMessage_Test_Message_History_OK() {
+        var caseData = getCaseDetails().getData();
+        caseData.setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
+        var messageSendDetails = new MessageSendDetails();
+        var uuid = UUID.randomUUID();
+        messageSendDetails.setMessageHistory("Test message");
+        messageSendDetails.setMessageText("Text message 2");
+        messageSendDetails.setMessageId(uuid.toString());
+        messageSendDetails.setMessageSendDateNTime(LocalDateTime.now());
+        messageSendDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
+        messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.ANNEX_A);
+
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        caseData.setListOfOpenMessages(archiveListHelper(listOfOpenMessage,
+                                                         messageSendDetails));
+
+        var uuid1 = UUID.randomUUID();
+        messageSendDetails.setMessageHistory("Test message");
+        messageSendDetails.setMessageText("Text message 2");
+        messageSendDetails.setMessageId(uuid1.toString());
+        messageSendDetails.setMessageSendDateNTime(LocalDateTime.now());
+        messageSendDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
+        messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.ANNEX_A);
+        caseData.setMessageSendDetails(messageSendDetails);
+
+        var selectedMessage = new SelectedMessage();
+        selectedMessage.setReplyMessage(YesOrNo.YES);
+        selectedMessage.setMessageId(uuid.toString());
+        selectedMessage.setMessageContent("Test message");
+
+        caseData.setSelectedMessage(selectedMessage);
+        prepareReplyMessageDynamicList(caseData, getCaseworkerUser());
+        caseData.getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "Test"));
+        CaseEventCommonMethods.updateMessageList(caseData, getCaseworkerUser());
+        assertThat(caseData.getMessageAction()).isNull();
+    }
+
+
+
+    @Test
+    public void updateMessageList_ReplyMessage_MessageHistory_Test_OK() {
+        var caseData = getCaseDetails().getData();
+        caseData.setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
+        var messageSendDetails = new MessageSendDetails();
+        var uuid = UUID.randomUUID();
+        messageSendDetails.setMessageId(uuid.toString());
+        messageSendDetails.setMessageText("Test message 2");
+        messageSendDetails.setMessageHistory("Test message");
+        messageSendDetails.setMessageSendDateNTime(LocalDateTime.now());
+        messageSendDetails.setMessageStatus(MessageSendDetails.MessageStatus.CLOSED);
+        messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.ANNEX_A);
+        caseData.setMessageSendDetails(messageSendDetails);
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        caseData.setListOfOpenMessages(archiveListHelper(listOfOpenMessage,
+                                                         getListOfOpenMessages(uuid)));
+        var selectedMessage = new SelectedMessage();
+        selectedMessage.setReplyMessage(YesOrNo.NO);
+        selectedMessage.setMessageContent("Test Message");
+        selectedMessage.setMessageContent("Test Message 3");
+        caseData.setSelectedMessage(selectedMessage);
+        prepareReplyMessageDynamicList(caseData, getCaseworkerUser());
+        caseData.getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "Test"));
+        CaseEventCommonMethods.updateMessageList(caseData, getCaseworkerUser());
+        assertThat(caseData.getListOfOpenMessages().size()).isEqualTo(0);
+    }
+
+
     private MessageSendDetails getListOfOpenMessages(UUID uuid) {
         var messageSendDetails = new MessageSendDetails();
         messageSendDetails.setMessageId(uuid.toString());
