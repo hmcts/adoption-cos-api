@@ -25,6 +25,18 @@ class RecipientValidationUtilTest {
         )).isEqualTo(CaseFieldsConstants.FIRST_APPLICANT_NOT_APPLICABLE);
     }
 
+
+    @Test
+    void isInvalidRecipientForGeneralOrderTest() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+
+        assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrderOthers(
+           "ABCDEF",
+            caseData
+        )).isEqualTo(CaseFieldsConstants.ERROR_INVALID_RECIPIENTS_SELECTION);
+    }
+
     @Test
     void isApplicantValidRecipientForGeneralOrderTest_2() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetailsWithParties();
