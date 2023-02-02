@@ -287,6 +287,7 @@ dependencyManagement {
     dependencySet(group: 'com.google.guava', version: '31.1-jre') {
       entry 'guava'
     }
+    dependency group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.5'
   }
 }
 
