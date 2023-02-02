@@ -3,7 +3,6 @@
     <suppress>
         <notes>
             <![CDATA[spring-security-rsa-1.0.10.RELEASE.jar (pkg:maven/org.springframework.security/spring-security-rsa@1.0.10.RELEASE, cpe:2.3:a:vmware:spring_security:1.0.10:release:*:*:*:*:*:*)]]></notes>
-        <cve>CVE-2022-22976</cve>
         <cve>CVE-2022-31692</cve>
         <cve>CVE-2022-31690</cve>
     </suppress>
