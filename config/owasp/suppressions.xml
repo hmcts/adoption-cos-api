@@ -6,6 +6,7 @@
         <cve>CVE-2022-22978</cve>
         <cve>CVE-2022-22976</cve>
         <cve>CVE-2022-31692</cve>
+        <cve>CVE-2022-31690</cve>
         <cve>CVE-2021-4277</cve>
     </suppress>
     <suppress>
@@ -13,14 +14,6 @@
       spring-core-5.3.20.jar ]]></notes>
         <cve>CVE-2016-1000027</cve>
     </suppress>
-  <suppress>
-    <notes><![CDATA[
-     file name: snakeyaml-1.32.jar
-     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-    <cve>CVE-2022-3064</cve>
-    <cve>CVE-2021-4235</cve>
-  </suppress>
   <suppress>
     <notes><![CDATA[
     file name: datatable-3.3.1.jar ]]></notes>
