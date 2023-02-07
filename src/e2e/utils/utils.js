@@ -186,21 +186,30 @@ module.exports = {
                                 "uploadedBy": null
                             }
                         }
-                    ]
-
+                    ],
+        "hasAnotherAdopAgencyOrLAinXui": "No",
+        "birthMotherFirstName": "Birth Mother First Name",
+        "birthMotherLastName": "Birth Mother Last Name",
+        "birthMotherDeceased": "Yes",
+        "birthMotherAddress1": "Birth Mother Address 1",
+        "birthMotherAddressTown": "NOTTINGHAM",
+        "birthMotherAddressPostCode": "NG1 1JB",
+        "birthMotherAddressCountry": "UK",
+        "birthMotherLastAddressDate": "2023-01-24",
+        "birthFatherFirstName": "Birth Father First Name",
+        "birthFatherLastName": "Birth Father Last Name",
+        "birthFatherDeceased": "Yes",
+        "birthFatherAddress1": "Birth Father Address 1",
+        "birthFatherAddressTown": "LONDON",
+        "birthFatherAddressPostCode": "SW1A 1AA",
+        "birthFatherAddressCountry": "UK",
+        "birthFatherLastAddressDate": "2023-01-24"
     },
   caseDataLa: {
-        "birthFatherAddress1": "BUCKINGHAM PALACE",
-        "birthFatherAddress2": "",
-        "birthFatherAddress3": null,
-        "birthFatherAddressCountry": null,
+
         "birthFatherAddressCounty": "CITY OF WESTMINSTER",
         "birthFatherAddressKnown": "Yes",
         "birthFatherAddressNotKnownReason": "",
-        "birthFatherAddressPostCode": "SW1A 1AA",
-        "birthFatherAddressTown": "LONDON",
-        "birthFatherFirstName": "Father",
-        "birthFatherLastName": "Father",
         "birthFatherNameOnCertificate": "Yes",
         "hasSiblings": "Yes",
         "birthFatherNationality": [
@@ -210,17 +219,9 @@ module.exports = {
         "birthFatherOccupation": "unknown",
         "birthFatherOtherNationalities": [],
         "birthFatherStillAlive": "Yes",
-        "birthMotherAddress1": "2 TRIVETT SQUARE",
-        "birthMotherAddress2": "",
-        "birthMotherAddress3": null,
-        "birthMotherAddressCountry": null,
         "birthMotherAddressCounty": "NOTTINGHAM CITY",
         "birthMotherAddressKnown": "Yes",
         "birthMotherAddressNotKnownReason": "Some reason",
-        "birthMotherAddressPostCode": "NG1 1JB",
-        "birthMotherAddressTown": "NOTTINGHAM",
-        "birthMotherFirstName": "Mother",
-        "birthMotherLastName": "Mother",
         "birthMotherNameOnCertificate": null,
         "birthMotherNationality": [
             "British",
