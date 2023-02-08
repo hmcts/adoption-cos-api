@@ -40,7 +40,6 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 @EnableRetry
 @SuppressWarnings("HideUtilityClassConstructor")
 @Slf4j
-@EnableScheduling
 public class Application implements CommandLineRunner {
 
     @Autowired
