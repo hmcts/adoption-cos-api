@@ -19,8 +19,6 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.AD
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
-
 
 @Component
 @Slf4j
