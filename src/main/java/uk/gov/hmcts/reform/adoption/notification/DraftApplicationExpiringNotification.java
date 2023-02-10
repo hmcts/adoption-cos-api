@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
@@ -73,7 +74,7 @@ public class DraftApplicationExpiringNotification implements ApplicantNotificati
     private Map<String, Object> templateVars(CaseData caseData, Long id, Applicant applicant1, Applicant applicant2) {
         Map<String, Object> templateVars = commonContent.mainTemplateVars(caseData, id, applicant1, applicant2);
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " " + caseData.getApplicant1().getLastName());
-        if (caseData.getApplicant2() != null && StringUtils.isNotBlank(caseData.getApplicant2().getEmailAddress())) {
+        if (Objects.nonNull(caseData.getApplicant2()) && StringUtils.isNotBlank(caseData.getApplicant2().getEmailAddress())) {
             templateVars.put(
                 APPLICANT_2_FULL_NAME,
                 caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()

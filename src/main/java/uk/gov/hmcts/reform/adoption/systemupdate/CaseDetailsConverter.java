@@ -14,10 +14,6 @@ public class CaseDetailsConverter {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public CaseDetails convertToReformModelFromCaseDetails(final uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseDetails) {
-        return objectMapper.convertValue(caseDetails, CaseDetails.class);
-    }
-
     public uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> convertToCaseDetailsFromReformModel(final CaseDetails caseDetails) {
         return objectMapper.convertValue(caseDetails, new TypeReference<>() {
         });

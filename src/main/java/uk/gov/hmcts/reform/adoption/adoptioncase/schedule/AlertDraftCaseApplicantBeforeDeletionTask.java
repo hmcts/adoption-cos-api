@@ -21,7 +21,6 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -35,7 +34,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class AlertDraftCaseApplicantBeforeDeletionTask {
+public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
 
 
     @Autowired
@@ -57,6 +56,8 @@ public class AlertDraftCaseApplicantBeforeDeletionTask {
     @Autowired
     private CaseDetailsConverter caseDetailsConverter;
 
+    public static final int EMAIL_ALERT_DRAFT_NUMBER_OF_DAYS = 83;
+
 
     /**
      * When an objectclear implementing interface <code>Runnable</code> is used
@@ -69,19 +70,19 @@ public class AlertDraftCaseApplicantBeforeDeletionTask {
      *
      * @see Thread#run()
      */
+    @Override
     @Scheduled(cron = "0 0/5 * 1/1 * ?")
     public void run() {
 
         final User user = idamService.retrieveSystemUpdateUserDetails();
         final String serviceAuthorization = authTokenGenerator.generate();
 
-        log.info("Modified datee time : " + LocalDateTime.now().minusDays(83));
         final BoolQueryBuilder query = boolQuery()
             .must(matchQuery(STATE, Draft))
             .must(existsQuery(CREATED_DATE))
             .filter(rangeQuery(CREATED_DATE)
-                        .gte(LocalDate.now().minusDays(83))
-                        .lte(LocalDate.now().minusDays(83)));
+                        .gte(LocalDate.now().minusDays(EMAIL_ALERT_DRAFT_NUMBER_OF_DAYS))
+                        .lte(LocalDate.now().minusDays(EMAIL_ALERT_DRAFT_NUMBER_OF_DAYS)));
         log.info("Scheduled task is executed");
 
         final List<CaseDetails> casesInDraftNeedingReminder =
