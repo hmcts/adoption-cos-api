@@ -62,7 +62,6 @@ public class GenerateApplicationSummaryDocument  implements CaseTask {
 
         if (EnumSet.of(Submitted).contains(state)) {
             log.info("Generating summary document for caseId: {}", caseId);
-            log.info("templateContent: {}", templateContent);
 
             final CompletableFuture<Void> appSummaryEn = CompletableFuture
                 .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(caseData,
