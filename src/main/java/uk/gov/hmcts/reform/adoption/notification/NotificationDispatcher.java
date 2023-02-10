@@ -36,7 +36,8 @@ public class NotificationDispatcher {
         }
     }
 
-    public void sendToApplicantsPostLocalAuthorityApplicationSubmit(ApplicationSubmittedNotification applicantNotification, CaseData caseData, Long caseId) {
+    public void sendToApplicantsPostLocalAuthorityApplicationSubmit(
+        ApplicationSubmittedNotification applicantNotification, CaseData caseData, Long caseId) {
         if (!caseData.getApplicant1().getEmailAddress().isEmpty()) {
             try {
                 applicantNotification.sendToApplicantsPostLocalAuthoritySubmission(caseData, caseId);

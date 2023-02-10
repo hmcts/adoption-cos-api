@@ -171,7 +171,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         return templateVars;
     }
 
-    public void sendToApplicantsPostLocalAuthoritySubmission(CaseData caseData, Long caseId){
+    public void sendToApplicantsPostLocalAuthoritySubmission(CaseData caseData, Long caseId) {
         log.info("Sending Local Authority application submitted notification to applicants for case : {}", caseId);
 
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
