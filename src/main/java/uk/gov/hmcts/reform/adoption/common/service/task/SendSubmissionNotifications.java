@@ -50,6 +50,7 @@ public class SendSubmissionNotifications implements CaseTask {
             log.info("Sending Local Authority application submitted notifications for case : {}", caseId);
             try {
                 notificationDispatcher.sendToLocalAuthority(applicationSubmittedNotification, caseData, caseId);
+                notificationDispatcher.sendToApplicantsPostLocalAuthorityApplicationSubmit(applicationSubmittedNotification, caseData, caseId);
             } catch (NotificationClientException | IOException e) {
                 log.error("Couldn't send notifications");
             }

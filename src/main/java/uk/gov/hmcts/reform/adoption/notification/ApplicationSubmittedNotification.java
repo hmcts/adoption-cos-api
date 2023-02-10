@@ -21,6 +21,7 @@ import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
+import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
@@ -168,6 +169,33 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         templateVars.put(CHILD_FULL_NAME, caseData.getChildren().getFirstName() + " " + caseData.getChildren().getLastName());
         templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
         return templateVars;
+    }
+
+    public void sendToApplicantsPostLocalAuthoritySubmission(CaseData caseData, Long caseId){
+        log.info("Sending Local Authority application submitted notification to applicants for case : {}", caseId);
+
+        final String applicant1Email = caseData.getApplicant1().getEmailAddress();
+        final String applicant2Email = caseData.getApplicant2().getEmailAddress();
+        final LanguagePreference applicant1LanguagePreference = caseData.getApplicant1().getLanguagePreference();
+
+        Map<String, Object> templateVars = templateVars(caseData, caseId, caseData.getApplicant1(), caseData.getApplicant2());
+        notificationService.sendEmail(
+            applicant1Email,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN,
+            templateVars,
+            LanguagePreference.ENGLISH
+        );
+
+        if (StringUtils.isNotBlank(applicant2Email)) {
+            final LanguagePreference applicant2LanguagePreference = caseData.getApplicant2().getLanguagePreference();
+
+            notificationService.sendEmail(
+                applicant2Email,
+                LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN,
+                templateVars,
+                LanguagePreference.ENGLISH
+            );
+        }
     }
 
 }
