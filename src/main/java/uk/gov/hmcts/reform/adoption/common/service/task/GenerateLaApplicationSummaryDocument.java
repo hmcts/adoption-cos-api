@@ -52,7 +52,7 @@ public class GenerateLaApplicationSummaryDocument implements CaseTask {
 
         if (EnumSet.of(LaSubmitted).contains(state)) {
             log.info("Generating summary document for caseId: {}", caseId);
-            log.info("caseData: {}", caseData);
+            log.info("templateContent: {}", templateContent);
 
             final CompletableFuture<Void> appSummaryEn = CompletableFuture
                 .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(
