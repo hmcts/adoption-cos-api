@@ -25,4 +25,8 @@ public interface ApplicantNotification {
     default void sendToLocalAuthorityPostLocalAuthoritySubmission(final CaseData caseData, final Long caseId) {
         //No operation
     }
+
+    default void sendToApplicantsPostLocalAuthoritySubmission(CaseData caseData, Long caseId){
+
+    }
 }
