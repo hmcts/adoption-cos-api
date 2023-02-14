@@ -11,6 +11,8 @@ public final class NotificationConstants {
 
     public static final String LA_PORTAL_URL = "laPortalURL";
 
+    public static final String ADOPTION_CUI_URL = "signInAdoptionUrl";
+
     private NotificationConstants() {
     }
 }
