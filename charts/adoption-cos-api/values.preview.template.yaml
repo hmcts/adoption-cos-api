@@ -128,6 +128,7 @@ ccd:
 
   ccd-admin-web:
     nodejs:
+      disableKeyVaults: true
       image: hmctspublic.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
       environment:
