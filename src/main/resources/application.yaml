@@ -22,6 +22,10 @@ azure:
   application-insights:
     instrumentation-key: ${APP_INSIGHTS_KEY:00000000-0000-0000-0000-000000000000}
 
+cron:
+  alertDraftApplicant:
+    offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:83}
+
 uk:
   gov:
     notify:

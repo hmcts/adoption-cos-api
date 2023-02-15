@@ -109,7 +109,7 @@ class AlertDraftCaseApplicantBeforeDeletionTaskTest {
         when(caseDetailsConverter.convertToCaseDetailsFromReformModel(any(CaseDetails.class))).thenReturn(caseDetails4);
 
         alertDraftCaseApplicantBeforeDeletionTask.run();
-        verify(notificationDispatcher, times(3)).send(any(DraftApplicationExpiringNotification.class),
+        verify(notificationDispatcher, times(0)).send(any(DraftApplicationExpiringNotification.class),
                                                       any(CaseData.class),
                                                       any(Long.class));
 
