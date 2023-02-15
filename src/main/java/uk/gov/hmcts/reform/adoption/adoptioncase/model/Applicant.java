@@ -64,6 +64,12 @@ public class Applicant {
     @CCD(label = "Occupation")
     private String occupation;
 
+    @CCD
+    private YesOrNo hasReasonableAdjustment;
+
+    @CCD
+    private String reasonableAdjustmentDetails;
+
     @CCD(
         label = "Email address",
         typeOverride = Email
