@@ -35,6 +35,7 @@ import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED;
+import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
@@ -182,6 +183,42 @@ class ApplicationSubmittedNotificationTest {
             eq(templateVars),
             eq(ENGLISH)
         );
+    }
+
+    @Test
+    void shouldSendEmailToApplicantsPostLocalAuthoritySubmissionWithSubmissionResponseDate() {
+        CaseData caseData = caseData();
+        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
+            .thenReturn(getMainTemplateVars());
+        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        Map<String, Object> templateVars = new HashMap<>();
+        templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
+        templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
+        templateVars.put(APPLICATION_REFERENCE, "1234-5678-9012-3456");
+        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
+            + caseData.getApplicant1().getLastName());
+        templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
+        if (caseData.getApplicant2() != null) {
+            templateVars.put(
+                APPLICANT_2_FULL_NAME,
+                caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
+            );
+            templateVars.put(HAS_SECOND_APPLICANT, YES);
+        } else {
+            templateVars.put(HAS_SECOND_APPLICANT, NO);
+            templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        }
+
+        notification.sendToApplicantsPostLocalAuthoritySubmission(caseData, 1234567890123456L);
+
+        verify(notificationService, times(2)).sendEmail(
+            eq(TEST_USER_EMAIL),
+            eq(LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN),
+            eq(templateVars),
+            eq(ENGLISH)
+        );
+        verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
     }
 
     /*@Test
