@@ -3,8 +3,11 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -55,7 +58,8 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
     @Autowired
     private CaseDetailsConverter caseDetailsConverter;
 
-    public static final int EMAIL_ALERT_DRAFT_NUMBER_OF_DAYS = 83;
+    @Value("${cron.alertDraftApplicant.offsetDays:83}")
+    public  int emailAlertOffsetDays;
 
 
     /**
@@ -70,6 +74,7 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
      * @see Thread#run()
      */
     @Override
+    @Scheduled(cron = "0 0/5 * 1/1 * ?")
     public void run() {
 
         final User user = idamService.retrieveSystemUpdateUserDetails();
@@ -79,8 +84,8 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
             .must(matchQuery(STATE, Draft))
             .must(existsQuery(CREATED_DATE))
             .filter(rangeQuery(CREATED_DATE)
-                        .gte(LocalDate.now().minusDays(EMAIL_ALERT_DRAFT_NUMBER_OF_DAYS))
-                        .lte(LocalDate.now().minusDays(EMAIL_ALERT_DRAFT_NUMBER_OF_DAYS)));
+                        .gte(LocalDate.now().minusDays(emailAlertOffsetDays))
+                        .lte(LocalDate.now().minusDays(emailAlertOffsetDays)));
         log.info("Scheduled task is executed");
 
         final List<CaseDetails> casesInDraftNeedingReminder =
@@ -98,7 +103,16 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
         uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData = caseDetailsConverter.convertToCaseDetailsFromReformModel(
             caseDetails);
         try {
-            notificationDispatcher.send(draftApplicationExpiringNotification, caseData.getData(), caseDetails.getId());
+
+            if (StringUtils.isNotEmpty(caseData.getData().getApplicant1().getEmailAddress())) {
+                notificationDispatcher.send(
+                    draftApplicationExpiringNotification,
+                    caseData.getData(),
+                    caseDetails.getId()
+                );
+            } else {
+                log.info("Email Not triggered for the case {} due to missing email address",caseDetails.getId());
+            }
         } catch (NotificationClientException | IOException e) {
             log.error("Couldn't send notifications");
         }
