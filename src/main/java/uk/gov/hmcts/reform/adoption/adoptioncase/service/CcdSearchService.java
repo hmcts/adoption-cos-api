@@ -34,6 +34,7 @@ public class CcdSearchService {
     public static final String ISSUE_DATE = "data.issueDate";
     public static final String DATA = "data.%s";
     public static final String STATE = "state";
+    public static final String CREATED_DATE = "created_date";
     public static final String AOS_RESPONSE = "data.howToRespondApplication";
     public static final String FINAL_ORDER_ELIGIBLE_FROM_DATE = "data.dateFinalOrderEligibleFrom";
     public static final String FINAL_ORDER_ELIGIBLE_TO_RESPONDENT_DATE = "data.dateFinalOrderEligibleToRespondent";
@@ -52,6 +53,7 @@ public class CcdSearchService {
 
         try {
             while (totalResults == pageSize) {
+                log.info("Query for sending Emails : " + query.toString());
                 final SearchResult searchResult =
                     searchForCasesWithQuery(from, pageSize, query, user, serviceAuth);
 
@@ -59,6 +61,7 @@ public class CcdSearchService {
 
                 from += pageSize;
                 totalResults = searchResult.getTotal();
+                log.info("Total Results: " + totalResults);
             }
         } catch (final FeignException e) {
             final String message = String.format("Failed to complete search for Cases with state of %s", state);

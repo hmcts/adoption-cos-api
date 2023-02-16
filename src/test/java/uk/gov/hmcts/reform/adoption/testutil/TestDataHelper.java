@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,8 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAI
 
 public class TestDataHelper {
 
+
+    public static final LocalDate LOCAL_DATE = LocalDate.of(2021, 4, 28);
     public static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.of(2021, 4, 28, 1, 0);
     private static final TestDataHelper.MapTypeReference MAP_TYPE = new TestDataHelper.MapTypeReference();
 

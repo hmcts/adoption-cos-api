@@ -9,6 +9,10 @@ azure:
   application-insights:
     instrumentation-key: ${APP_INSIGHTS_KEY:00000000-0000-0000-0000-000000000000}
 
+cron:
+  alertDraftApplicant:
+    offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:83}
+
 test-url: ${TEST_URL:http://localhost:4550}
 
 uk:
@@ -28,12 +32,15 @@ uk:
             APPLICATION_SUBMITTED: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
             APPLICANT_APPLICATION_SUBMITTED: 'a0aa356f-8c6f-437c-b1b9-3c321048001d'
             LOCAL_COURT_APPLICATION_SUBMITTED: '381cfc64-5016-4fe7-bd88-3ceeb163ce69'
+            CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT: 'ec0102a6-6fad-4cd0-b4a7-9c2b7f59c6b6'
           welsh:
             TEST_EMAIL: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
             SAVE_SIGN_OUT: ''
             APPLICATION_SUBMITTED: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
             APPLICANT_APPLICATION_SUBMITTED: 'dd251faa-0c40-4540-80b4-a7edb83a43f0'
             LOCAL_COURT_APPLICATION_SUBMITTED: '2960d8dd-ab3e-4265-a71d-2d81d0fd84c8'
+            CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT: ''
+
 
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
