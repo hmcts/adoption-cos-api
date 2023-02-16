@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -128,6 +129,6 @@ public final class ValidationUtil {
 
     @SafeVarargs
     public static <E> List<E> flattenLists(List<E>... lists) {
-        return Stream.of(lists).flatMap(Collection::stream).collect(Collectors.toList());
+        return Stream.of(lists).flatMap(Collection::stream).collect(Collectors.toCollection(ArrayList::new));
     }
 }

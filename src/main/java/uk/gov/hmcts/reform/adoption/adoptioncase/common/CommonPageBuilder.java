@@ -20,6 +20,8 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMe
 
 public final class CommonPageBuilder {
 
+    private static final String REPLY_MESSAGE = "messageAction=\"replyMessage\"";
+
     private CommonPageBuilder() {
     }
 
@@ -30,8 +32,8 @@ public final class CommonPageBuilder {
                 .showCondition(type)
                 .mandatory(CaseData::getMessageAction)
                 .readonly(CaseData::getLoggedInUserRole,"messageAction=\"judge\"")
-                .mandatory(CaseData::getReplyMsgDynamicList, "messageAction=\"replyMessage\"");
-            replyMessageBuilder(pageBuilder, "messageAction=\"replyMessage\"");
+                .mandatory(CaseData::getReplyMsgDynamicList, REPLY_MESSAGE);
+            replyMessageBuilder(pageBuilder, REPLY_MESSAGE);
             messageBuilder(pageBuilder, "messageAction=\"sendMessage\" OR replyMessage=\"Yes\"");
         } else {
             pageBuilder.page("pageSendOrReply33")
@@ -55,7 +57,7 @@ public final class CommonPageBuilder {
         pageBuilder.page("pageSendOrReply3")
             .showCondition(condition)
             .label("sendMessageLab", "## Send a message","messageAction=\"sendMessage\"")
-            .label("replyMessageLab", "## Reply to message","messageAction=\"replyMessage\"")
+            .label("replyMessageLab", "## Reply to message",REPLY_MESSAGE)
             .complex(CaseData::getMessageSendDetails)
             .mandatoryWithLabel(MessageSendDetails::getMessageReceiverRoles,"Who do you want to send a message to?")
             .mandatory(MessageSendDetails::getMessageReasonList,"loggedInUserRole=\"default\"")
