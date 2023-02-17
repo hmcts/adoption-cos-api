@@ -48,6 +48,7 @@ uk:
             LOCAL_COURT_APPLICATION_SUBMITTED: '381cfc64-5016-4fe7-bd88-3ceeb163ce69'
             LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN: '87ac8db9-c622-4208-92ba-45a2da23da24'
             CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT: 'ec0102a6-6fad-4cd0-b4a7-9c2b7f59c6b6'
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT: 'f5f003d6-c9d6-405d-8f9b-e5274ada4241'
           welsh:
             TEST_EMAIL: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
             SAVE_SIGN_OUT: ''
@@ -58,6 +59,7 @@ uk:
             LOCAL_COURT_APPLICATION_SUBMITTED: '2960d8dd-ab3e-4265-a71d-2d81d0fd84c8'
             LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN: ''
             CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT: ''
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT: ''
 
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
@@ -86,7 +88,7 @@ s2s:
 
 core_case_data:
   api:
-    url: ${CASE_DATA_STORE_BASEURL:http://ccd-data-store-api-aat.service.core-compute-aat.internal}
+    url: ${CASE_DATA_STORE_BASEURL:localhost:4452}
   search:
     page_size: ${CCD_SEARCH_PAGE_SIZE:100}
 
