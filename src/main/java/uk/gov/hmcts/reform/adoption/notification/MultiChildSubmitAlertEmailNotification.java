@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
 import java.util.Map;
@@ -15,9 +14,7 @@ import java.util.Objects;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
-import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.ADOPTION_CUI_URL;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
@@ -35,8 +32,6 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
     @Autowired
     private CommonContent commonContent;
 
-    @Autowired
-    private EmailTemplatesConfig emailTemplatesConfig;
 
 
 

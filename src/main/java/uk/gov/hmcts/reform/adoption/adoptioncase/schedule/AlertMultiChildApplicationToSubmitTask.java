@@ -5,15 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
-import uk.gov.hmcts.reform.adoption.notification.DraftApplicationExpiringNotification;
 import uk.gov.hmcts.reform.adoption.notification.MultiChildSubmitAlertEmailNotification;
 import uk.gov.hmcts.reform.adoption.notification.NotificationDispatcher;
 import uk.gov.hmcts.reform.adoption.systemupdate.CaseDetailsConverter;
@@ -34,7 +33,6 @@ import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.STATE;
 
 @Component
 @Slf4j
@@ -105,7 +103,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
             } else {
                 log.info("No case added to the map till now for the user {}", applicantEmail);
                 log.info("adding case to the map {}", caseDetails.getId());
-                List<CaseDetails> caseListForUser = new ArrayList<>();
+                List<CaseDetails> caseListForUser = getNewCaseList();
                 caseListForUser.add(caseDetails);
                 log.info("count of the case list {}", caseListForUser.size());
                 emailCounts.put(applicantEmail, caseListForUser);
@@ -116,7 +114,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
         log.info("case list size {}",emailCounts.size());
         emailCounts.forEach((id, caseLists) -> {
             log.info("case list for user {} count {}",id,caseLists.size());
-            if (caseLists.size() > 1) {
+            if (caseLists.size() > NumberUtils.INTEGER_ONE) {
                 caseLists.forEach(caseDe -> {
                     log.info("state of the case {} for case id {}",caseDe.getId(),caseDe.getState());
                     if (State.Draft.toString().equals(caseDe.getState())) {
@@ -128,6 +126,10 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
         });
 
 
+    }
+
+    private List<CaseDetails> getNewCaseList() {
+        return new ArrayList<>();
     }
 
     private void sendReminderToApplicantsIfEligible(CaseDetails caseDetails, User user, String serviceAuthorization) {
