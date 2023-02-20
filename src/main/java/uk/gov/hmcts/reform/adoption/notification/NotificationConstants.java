@@ -13,6 +13,8 @@ public final class NotificationConstants {
 
     public static final String ADOPTION_CUI_URL = "signInAdoptionUrl";
 
+    public static final String ADOPTION_CUI_MULTI_CHILDREN_URL = "signInAdoptionUrlForMultipleChildren";
+
     private NotificationConstants() {
     }
 }
