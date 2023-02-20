@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -72,6 +73,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
      * @see Thread#run()
      */
     @Override
+    @Scheduled(cron = "0 0/5 * 1/1 * ?")
     public void run() {
 
         final User user = idamService.retrieveSystemUpdateUserDetails();
