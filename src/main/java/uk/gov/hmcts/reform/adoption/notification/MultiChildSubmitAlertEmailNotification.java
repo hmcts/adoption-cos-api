@@ -17,6 +17,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_MULTIPLE_APPLICANT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
 
 @Component
@@ -70,7 +71,7 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
     private Map<String, Object> templateVars(CaseData caseData, Long id, Applicant applicant1, Applicant applicant2) {
         Map<String, Object> templateVars = commonContent.mainTemplateVars(caseData, id, applicant1, applicant2);
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " " + caseData.getApplicant1().getLastName());
-        if (Objects.nonNull(caseData.getApplicant2()) && StringUtils.isNotBlank(caseData.getApplicant2().getFirstName())) {
+        if (isApplicantInfoExists(caseData.getApplicant2())) {
             templateVars.put(
                 APPLICANT_2_FULL_NAME,
                 caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
@@ -80,6 +81,17 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
             templateVars.put(HAS_SECOND_APPLICANT, NO);
             templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
         }
+        if (isApplicantInfoExists(caseData.getApplicant1()) && isApplicantInfoExists(caseData.getApplicant2())) {
+            templateVars.put(HAS_MULTIPLE_APPLICANT, YES);
+        } else {
+            templateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+        }
+
         return templateVars;
+    }
+
+    private boolean isApplicantInfoExists(Applicant applicant) {
+        return Objects.nonNull(applicant) && StringUtils.isNotBlank(applicant.getFirstName())
+            || StringUtils.isNotBlank(applicant.getLastName());
     }
 }
