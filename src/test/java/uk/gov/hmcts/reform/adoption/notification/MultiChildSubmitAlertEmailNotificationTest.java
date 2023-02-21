@@ -24,6 +24,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_MULTIPLE_APPLICANT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
@@ -67,6 +68,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
             templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
         }
+        templateVars.put(HAS_MULTIPLE_APPLICANT, YES);
 
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
@@ -90,6 +92,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
             + caseData.getApplicant1().getLastName());
 
         templateVars.put(HAS_SECOND_APPLICANT, NO);
+        templateVars.put(HAS_MULTIPLE_APPLICANT, NO);
         templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
