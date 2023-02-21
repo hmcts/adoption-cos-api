@@ -70,7 +70,7 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
     private Map<String, Object> templateVars(CaseData caseData, Long id, Applicant applicant1, Applicant applicant2) {
         Map<String, Object> templateVars = commonContent.mainTemplateVars(caseData, id, applicant1, applicant2);
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " " + caseData.getApplicant1().getLastName());
-        if (Objects.nonNull(caseData.getApplicant2()) && StringUtils.isNotBlank(caseData.getApplicant2().getEmailAddress())) {
+        if (Objects.nonNull(caseData.getApplicant2()) && StringUtils.isNotBlank(caseData.getApplicant2().getFirstName())) {
             templateVars.put(
                 APPLICANT_2_FULL_NAME,
                 caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
