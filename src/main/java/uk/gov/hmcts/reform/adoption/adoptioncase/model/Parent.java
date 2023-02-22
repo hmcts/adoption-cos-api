@@ -116,7 +116,19 @@ public class Parent {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastAddressDate;
 
+    @CCD(label = "Birth Father Responsibility",
+        access = {DefaultAccess.class})
+    private YesOrNo responsibility;
 
+    @CCD(
+        label = "Responsibility Reasons",
+        access = {SystemUpdateCollectionAccess.class}
+    )
+    private List<String> responsibilityReasons;
+
+    @CCD(label = "Other Responsiblity Reason",
+        access = {DefaultAccess.class})
+    private String otherResponsibilityReason;
 
     @CCD(label = "Identity known",
         access = {DefaultAccess.class})
