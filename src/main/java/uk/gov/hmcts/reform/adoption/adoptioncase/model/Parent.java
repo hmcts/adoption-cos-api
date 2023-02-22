@@ -124,7 +124,7 @@ public class Parent {
         label = "Responsibility Reasons",
         access = {SystemUpdateCollectionAccess.class}
     )
-    private List<String> responsibilityReasons;
+    private SortedSet<String> responsibilityReasons;
 
     @CCD(label = "Other Responsiblity Reason",
         access = {DefaultAccess.class})
