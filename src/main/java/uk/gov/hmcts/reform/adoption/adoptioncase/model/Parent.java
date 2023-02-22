@@ -121,10 +121,10 @@ public class Parent {
     private YesOrNo responsibility;
 
     @CCD(
-        label = "Responsibility Reasons",
+        label = "Responsibility Reason",
         access = {DefaultAccess.class}
     )
-    private SortedSet<ResponsibilityReasons> responsibilityReasons;
+    private SortedSet<ResponsibilityReasons> responsibilityReason;
 
     @CCD(label = "Other Responsibility Reason",
         access = {DefaultAccess.class})
