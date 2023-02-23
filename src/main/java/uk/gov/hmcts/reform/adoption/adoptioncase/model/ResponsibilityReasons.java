@@ -9,25 +9,25 @@ import uk.gov.hmcts.ccd.sdk.api.HasLabel;
 @AllArgsConstructor
 public enum ResponsibilityReasons implements HasLabel {
 
-    @JsonProperty("birthCertificate")
+    @JsonProperty("Birth certificate")
     BIRTH_CERTIFICATE("Birth certificate"),
 
-    @JsonProperty("courtOrder")
+    @JsonProperty("Court order")
     COURT_ORDER("Court order"),
 
-    @JsonProperty("parentalResponsibilityOrder")
+    @JsonProperty("Parental responsibility order")
     PARENTAL_RESPONSIBILITY_ORDER("Parental responsibility order"),
 
-    @JsonProperty("parentalResponsibilityAgreement")
+    @JsonProperty("Parental responsibility agreement")
     PARENTAL_RESPONSIBILITY_AGREEMENT("Parental responsibility agreement"),
 
-    @JsonProperty("parentalResponsibilityRemovedByCourt")
+    @JsonProperty("Parental responsibility removed by court")
     PARENTAL_RESPONSIBILITY_REMOVED_BY_COURT("Parental responsibility removed by court"),
 
-    @JsonProperty("parentalResponsibilityNeverObtained")
+    @JsonProperty("Parental responsibility never obtained")
     PARENTAL_RESPONSIBILITY_NEVER_OBTAINED("Parental responsibility never obtained"),
 
-    @JsonProperty("other")
+    @JsonProperty("Other")
     OTHER("Other");
 
     private final String label;
