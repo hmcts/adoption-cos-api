@@ -91,6 +91,6 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
 
     private boolean isApplicantInfoExists(Applicant applicant) {
         return applicant != null && (StringUtils.isNotBlank(applicant.getFirstName())
-            || StringUtils.isNotBlank(applicant.getFirstName()));
+            || StringUtils.isNotBlank(applicant.getLastName()));
     }
 }
