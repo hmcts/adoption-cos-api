@@ -250,7 +250,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
         String serviceAuthorization = authTokenGenerator.generate();
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
-            .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY_EN))
+            .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_LA_SUMMARY_EN))
             .findFirst().orElse(null);
         if (adoptionDocument != null) {
             log.info("Adoption document with file name : {} and fileID : {}",
