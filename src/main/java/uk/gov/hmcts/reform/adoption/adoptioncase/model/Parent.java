@@ -130,6 +130,14 @@ public class Parent {
         access = {SystemUpdateAccess.class})
     private YesOrNo toBeServed;
 
+    @CCD(label = "Served With",
+        access = {DefaultAccess.class})
+    private YesOrNo servedWith;
+
+    @CCD(label = "Not served with reason",
+        access = {SystemUpdateAccess.class})
+    private String notServedWithReason;
+
     public YesOrNo getToBeServed() {
         if (Objects.isNull(toBeServed)) {
             return YesOrNo.YES;
