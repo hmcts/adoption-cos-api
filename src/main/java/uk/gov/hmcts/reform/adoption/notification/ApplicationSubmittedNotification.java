@@ -278,6 +278,12 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             List<String> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
                 .map(item -> StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/"))
                 .collect(Collectors.toList());
+
+            caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
+                .map(item -> item.getDocumentFileName())
+                .forEach(item -> log.info("Uploaded File Name: : {}", item));
+
+
             count = 1;
             for (String item : uploadedDocumentsUrls) {
                 Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
