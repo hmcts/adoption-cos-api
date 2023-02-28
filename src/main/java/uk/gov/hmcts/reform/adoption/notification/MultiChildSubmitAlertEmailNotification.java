@@ -10,7 +10,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
 import java.util.Map;
-import java.util.Objects;
 
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
@@ -91,7 +90,7 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
     }
 
     private boolean isApplicantInfoExists(Applicant applicant) {
-        return Objects.nonNull(applicant) && StringUtils.isNotBlank(applicant.getFirstName())
-            || StringUtils.isNotBlank(applicant.getLastName());
+        return applicant != null && (StringUtils.isNotBlank(applicant.getFirstName())
+            || StringUtils.isNotBlank(applicant.getLastName()));
     }
 }
