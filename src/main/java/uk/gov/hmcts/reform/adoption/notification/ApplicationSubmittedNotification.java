@@ -274,7 +274,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 log.info("Document not found with fileID : {}", adoptionDocument.getDocumentFileId());
             }
         }
-        if (caseData.getApplicant1DocumentsUploaded() != null) {
+        if (caseData.getLaDocumentsUploaded() != null) {
             List<String> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
                 .map(item -> StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/"))
                 .collect(Collectors.toList());
