@@ -283,7 +283,6 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 .map(item -> item.getDocumentFileName())
                 .forEach(item -> log.info("Uploaded File Name: : {}", item));
 
-
             count = 1;
             for (String item : uploadedDocumentsUrls) {
                 Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
