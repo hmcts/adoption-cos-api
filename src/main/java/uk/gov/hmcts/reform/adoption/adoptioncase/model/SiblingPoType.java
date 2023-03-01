@@ -15,12 +15,8 @@ public enum SiblingPoType implements HasLabel {
     @JsonProperty("Care order")
     CARE_ORDER("Care order"),
 
-    @JsonProperty("Contact order")
-    CONTACT_ORDER("Contact order"),
-
-    @JsonProperty("Freeing order")
-    FREEING_ORDER("Freeing order"),
-
+    @JsonProperty("Child arrangements order")
+    CHILD_ARRANGEMENT_ORDER("Child arrangements order"),
     @JsonProperty("Placement order")
     PLACEMENT_ORDER("Placement order"),
 
