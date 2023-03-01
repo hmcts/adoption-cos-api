@@ -291,6 +291,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 if (uploadedDocument != null) {
                     log.info("Document found with uuid : {}", UUID.fromString(item));
                     byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
+                    templateVars.put(DOCUMENT_EXISTS_CHECK, YES);
                     templateVars.put(DOCUMENT_EXISTS + count, YES);
                     templateVars.put(DOCUMENT + count++, prepareUpload(uploadedDocumentContents));
                 } else {
