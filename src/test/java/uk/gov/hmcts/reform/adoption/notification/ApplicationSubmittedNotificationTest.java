@@ -51,6 +51,7 @@ import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLIC
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.ADOPTION_CUI_MULTI_CHILDREN_URL;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
@@ -111,6 +112,7 @@ class ApplicationSubmittedNotificationTest {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
             templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
         }
+        templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
 
         notification.sendToApplicants(caseData, 1234567890123456L);
 
@@ -225,6 +227,7 @@ class ApplicationSubmittedNotificationTest {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
             templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
         }
+        templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
 
         notification.sendToApplicantsPostLocalAuthoritySubmission(caseData, 1234567890123456L);
 
