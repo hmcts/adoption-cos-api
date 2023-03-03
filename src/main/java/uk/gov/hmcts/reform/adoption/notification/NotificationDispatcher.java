@@ -30,6 +30,7 @@ public class NotificationDispatcher {
             && caseData.getApplicantSocialWorker().getLocalAuthorityEmail().isEmpty())) {
             try {
                 applicationNotification.sendToLocalAuthorityPostLocalAuthoritySubmission(caseData, caseId);
+                applicationNotification.sendToLocalCourtPostLocalAuthoritySubmission(caseData, caseId);
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
