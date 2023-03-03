@@ -201,24 +201,26 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
         final String applicant2Email = caseData.getApplicant2().getEmailAddress();
-        //final LanguagePreference applicant1LanguagePreference = caseData.getApplicant1().getLanguagePreference();
+        final LanguagePreference applicant1LanguagePreference = caseData.getApplicant1().getLanguagePreference();
 
         Map<String, Object> templateVars = templateVars(caseData, caseId, caseData.getApplicant1(), caseData.getApplicant2());
         notificationService.sendEmail(
             applicant1Email,
             LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN,
             templateVars,
-            LanguagePreference.ENGLISH
+            applicant1LanguagePreference != null
+                ? applicant1LanguagePreference : LanguagePreference.ENGLISH
         );
 
         if (StringUtils.isNotBlank(applicant2Email)) {
-            //final LanguagePreference applicant2LanguagePreference = caseData.getApplicant2().getLanguagePreference();
+            final LanguagePreference applicant2LanguagePreference = caseData.getApplicant2().getLanguagePreference();
 
             notificationService.sendEmail(
                 applicant2Email,
                 LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN,
                 templateVars,
-                LanguagePreference.ENGLISH
+                applicant2LanguagePreference != null
+                    ? applicant2LanguagePreference : LanguagePreference.ENGLISH
             );
         }
     }
