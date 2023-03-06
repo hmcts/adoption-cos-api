@@ -80,6 +80,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
                 .state(Draft)
                 .build();
         }
+        log.info("Validating case caseData CaseID: {}", caseData);
 
         log.info("Validating case caseData CaseID: {}", caseId);
         log.info("Validating case caseData CaseID: {}", caseData.getApplication());
