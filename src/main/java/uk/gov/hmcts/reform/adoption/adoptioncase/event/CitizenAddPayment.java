@@ -82,6 +82,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
         }
 
         log.info("Validating case caseData CaseID: {}", caseId);
+        log.info("Validating case caseData CaseID: {}", caseData.getApplication());
         final List<String> submittedErrors = validateSubmission(caseData.getApplication());
 
         if (!submittedErrors.isEmpty()) {
