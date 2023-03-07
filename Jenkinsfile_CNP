@@ -51,7 +51,8 @@ def secrets = [
     secret("caseworker-username", "CASEWORKER_USERNAME"),
     secret("caseworker-password", "CASEWORKER_PASSWORD"),
     secret("s2s-secret", "S2S_SECRET_WEB"),
-    secret("app-insight-connection-key", "APP_INSIGHTS_CONNECTION_KEY")
+    secret("app-insight-connection-key", "APP_INSIGHTS_CONNECTION_KEY"),
+    secret("send-grid-api-key", "SEND_GRID_API_KEY"),
 
   ]
 ]

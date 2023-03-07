@@ -153,3 +153,6 @@ docmosis:
 
 launchdarkly:
   sdk-key: ${LAUNCH_DARKLY_SDK_KEY:}
+
+send-grid:
+  api-key: ${SEND_GRID_API_KEY:xxxxxxxx}

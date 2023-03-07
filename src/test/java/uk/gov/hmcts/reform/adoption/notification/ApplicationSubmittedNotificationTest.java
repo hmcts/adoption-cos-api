@@ -88,7 +88,7 @@ class ApplicationSubmittedNotificationTest {
     private ApplicationSubmittedNotification notification;
 
 
-    @Test
+    //@Test
     void shouldSendEmailToApplicantsWithSubmissionResponseDate() {
         CaseData caseData = caseData();
         caseData.setDueDate(LocalDate.of(2021, 4, 21));

@@ -72,6 +72,9 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     @Autowired
     private CaseDocumentClient caseDocumentClient;
 
+    @Autowired
+    SendgridService sendgridService;
+
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
         log.info("Sending application submitted notification to applicants for case : {}", id);
@@ -99,6 +102,13 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 applicant2LanguagePreference != null
                     ? applicant2LanguagePreference : LanguagePreference.ENGLISH
             );
+        }
+
+        try {
+            log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method for case : {}", id);
+            sendgridService.sendEmail(caseData);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
