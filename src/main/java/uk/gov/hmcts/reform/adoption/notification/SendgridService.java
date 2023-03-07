@@ -48,7 +48,7 @@ public class SendgridService {
 
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
         log.info("<<<<<<<>>>>>>  SendAPI ket: {}", apiKey);
-        String subject = "Sample Test Subject";
+        String subject = "Sample Test Subject" + ".pdf";
         Content content = new Content("text/plain", " Some Sample text Body");
         Attachments attachments = new Attachments();
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
@@ -73,7 +73,7 @@ public class SendgridService {
                 log.error("Document could not be read");
             }
             attachments.setContent(data);
-            attachments.setFilename(subject);
+            attachments.setFilename(adoptionDocument.getDocumentFileName());
             attachments.setType("application/pdf");
             attachments.setDisposition("attachment");
         }
