@@ -35,7 +35,7 @@ java:
         - name: AppInsightsInstrumentationKey
           alias: APP_INSIGHTS_KEY
         - name: send-grid-api-key
-            alias: SEND_GRID_API_KEY
+          alias: SEND_GRID_API_KEY
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
