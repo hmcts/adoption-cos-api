@@ -49,7 +49,7 @@ public class SendgridService {
             attachments.setDisposition("attachment");
         }
 
-        Mail mail = new Mail(new Email("test@gmail.com"), subject, new Email("mohit.vijay@hmcts.net"), content);
+        Mail mail = new Mail(new Email("mohit.vijay@hmcts.net"), subject, new Email("mohit.vijay@hmcts.net"), content);
         mail.addAttachments(attachments);
         log.info("<<<<<<<<<<<>>>>>>>>>>   before sending email for case : {}", caseData.getHyphenatedCaseRef());
         SendGrid sg = new SendGrid(apiKey);
