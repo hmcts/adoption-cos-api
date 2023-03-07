@@ -318,6 +318,21 @@ public class CaseData {
     )
     private List<ListValue<DssDocumentInfo>> dssDocuments;
 
+    @CCD(
+            access = { DefaultAccess.class}
+    )
+    private String dssAdditionalCaseInformation;
+
+    @CCD(
+            access = { DefaultAccess.class}
+    )
+    private String dssHeaderDetails;
+
+    @CCD(
+            access = { DefaultAccess.class}
+    )
+    private String dssCaseUpdatedBy;
+
     @JsonIgnore
     public String formatCaseRef(long caseId) {
         String temp = String.format("%016d", caseId);
