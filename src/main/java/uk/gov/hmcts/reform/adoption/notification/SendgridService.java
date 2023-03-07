@@ -12,13 +12,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
+import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Base64;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -29,20 +35,43 @@ public class SendgridService {
     @Value("${send-grid.api-key}")
     private String apiKey;
 
+    @Autowired
+    private CaseDocumentClient caseDocumentClient;
+
+    @Autowired
+    IdamService idamService;
+
+    @Autowired
+    private AuthTokenGenerator authTokenGenerator;
+
     public void sendEmail(CaseData caseData) throws IOException {
 
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
         log.info("<<<<<<<>>>>>>  SendAPI ket: {}", apiKey);
         String subject = "Sample Test Subject";
-        Content content = new Content("text/plain", " SOme Sample text Body");
+        Content content = new Content("text/plain", " Some Sample text Body");
         Attachments attachments = new Attachments();
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
             .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY_EN))
             .findFirst().orElse(null);
         if (adoptionDocument != null) {
             log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument is not null for case : {}", caseData.getHyphenatedCaseRef());
-            String data = Base64.getEncoder().encodeToString(adoptionDocument.toString().getBytes());
-            log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument byte : {}", data);
+            //String data = Base64.getEncoder().encodeToString(adoptionDocument.toString().getBytes());
+            //log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument byte : {}", data);
+            final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
+            String serviceAuthorization = authTokenGenerator.generate();
+            Resource document = caseDocumentClient.getDocumentBinary(authorisation,
+                                                                     serviceAuthorization,
+                                                                     UUID.fromString(adoptionDocument.getDocumentFileId())).getBody();
+            String data = null;
+            try (InputStream inputStream = document.getInputStream()) {
+                if (inputStream != null) {
+                    byte[] documentContents = inputStream.readAllBytes();
+                    data = Base64.getEncoder().encodeToString(documentContents);
+                }
+            } catch (Exception e) {
+                log.error("Document could not be read");
+            }
             attachments.setContent(data);
             attachments.setFilename(subject);
             attachments.setType("application/pdf");
