@@ -59,6 +59,7 @@ public class SendgridService {
             .findFirst().orElse(null);
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
         String serviceAuthorization = authTokenGenerator.generate();
+        log.info("<<<<<<<<<<<>>>>>>>>>>   serviceAuthorization : {}", serviceAuthorization);
         if (adoptionDocument != null) {
             log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument is not null for case : {}", caseData.getHyphenatedCaseRef());
             //String data = Base64.getEncoder().encodeToString(adoptionDocument.toString().getBytes());
