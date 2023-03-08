@@ -86,29 +86,30 @@ public class SendgridService {
         }
 
         if (caseData.getLaDocumentsUploaded() != null) {
-            List<String> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
-                .map(item -> StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/"))
+            List<AdoptionDocument> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
+                //.map(item -> StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/"))
                 .collect(Collectors.toList());
 
             log.info("<<<<<<<>>>>>>  Uploaded Documents size:  {}", uploadedDocumentsUrls.size());
-            for (String item : uploadedDocumentsUrls) {
+            for (AdoptionDocument item : uploadedDocumentsUrls) {
+                String url = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
                 /*log.info("Document found with file name : {}", item.getDocumentFileName());
                 if (item.getDocumentFileName() == null) {
                     item.setDocumentFileName("SampleFile.pdf");
                 }*/
-
+                log.info("<<<<<<<>>>>>>  New URL:  {}", url);
                 Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
                                                                                  serviceAuthorization,
-                                                                                 UUID.fromString(item)).getBody();
-                log.info("<<<<<<<>>>>>>  uploadedDocument filename:  {}", uploadedDocument.getFilename());
+                                                                                 UUID.fromString(url)).getBody();
+                //log.info("<<<<<<<>>>>>>  uploadedDocument filename:  {}", uploadedDocument.getFilename());
                 String data = null;
                 if (uploadedDocument != null) {
                     //log.info("Document found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
-                    //log.info("Document found with file name : {}", item.getDocumentFileName());
+                    log.info("Document found with file name : {}", item.getDocumentFileName());
                     byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
                     data = Base64.getEncoder().encodeToString(uploadedDocumentContents);
                     attachments.setContent(data);
-                    attachments.setFilename("Test Doc");
+                    attachments.setFilename(item.getDocumentFileName());
                     /*String documentType = item.getDocumentFileName().split(".")[1];
                     log.info("Document type : {}", documentType);
                     switch (documentType) {
@@ -143,7 +144,7 @@ public class SendgridService {
                     attachments.setDisposition("attachment");
                     mail.addAttachments(attachments);
                 } else {
-                    log.info("Document not found with uuid : {}", UUID.fromString(item));
+                    log.info("Document not found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
                 }
             }
         }
