@@ -234,6 +234,16 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     public void sendToLocalCourtPostLocalAuthoritySubmission(final CaseData caseData, final Long id)
         throws NotificationClientException, IOException {
         log.info("Sending notification to Local Courts after application submitted by Local Authority for case : {}", id);
+
+        try {
+            log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method inside "
+                         + "sendToLocalCourtPostLocalAuthoritySubmission for case : {}", id);
+            sendgridService.sendEmail(caseData);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         notificationService.sendEmail(
             caseData.getFamilyCourtEmailId(),
             LOCAL_COURT_APPLICATION_SUBMITTED_BY_LOCAL_AUTHORITY,
@@ -241,13 +251,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             LanguagePreference.ENGLISH
         );
 
-        try {
-            log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method inside "
-                          + "sendToLocalCourtPostLocalAuthoritySubmission for case : {}", id);
-            sendgridService.sendEmail(caseData);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     private Map<String, Object> templateVarsLocalCourt(CaseData caseData, Long id)

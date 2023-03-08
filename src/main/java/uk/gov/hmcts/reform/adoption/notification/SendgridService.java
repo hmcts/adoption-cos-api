@@ -49,7 +49,7 @@ public class SendgridService {
     public void sendEmail(CaseData caseData) throws IOException {
 
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
-        log.info("<<<<<<<>>>>>>  SendAPI ket: {}", apiKey);
+        //log.info("<<<<<<<>>>>>>  SendAPI ket: {}", apiKey);
         String subject = "Sample Test Subject" + ".pdf";
         Content content = new Content("text/plain", " Some Sample text Body");
         Attachments attachments = new Attachments();
@@ -87,6 +87,8 @@ public class SendgridService {
             List<AdoptionDocument> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
                 //.map(item -> item.)
                 .collect(Collectors.toList());
+
+            log.info("<<<<<<<>>>>>>  Uploaded Documents size:  {}", uploadedDocumentsUrls.size());
             for (AdoptionDocument item : uploadedDocumentsUrls) {
                 Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
                                                                                  serviceAuthorization,
@@ -94,11 +96,13 @@ public class SendgridService {
                 String data = null;
                 if (uploadedDocument != null) {
                     log.info("Document found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
+                    log.info("Document found with file name : {}", item.getDocumentFileName());
                     byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
                     data = Base64.getEncoder().encodeToString(uploadedDocumentContents);
                     attachments.setContent(data);
                     attachments.setFilename(item.getDocumentFileName());
                     String documentType = item.getDocumentFileName().split(".")[1];
+                    log.info("Document type : {}", documentType);
                     switch (documentType) {
                         case "pdf":
                             attachments.setType("application/pdf");
