@@ -80,6 +80,8 @@ public class SendgridService {
 
         Mail mail = new Mail(new Email("ca@mail-prl-nonprod.aat.platform.hmcts.net"), subject, new Email("mohit.vijay@hmcts.net"), content);
         mail.addAttachments(attachments);
+        mail.addAttachments(attachments);
+        mail.addAttachments(attachments);
         log.info("<<<<<<<<<<<>>>>>>>>>>   before sending email for case : {}", caseData.getHyphenatedCaseRef());
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
