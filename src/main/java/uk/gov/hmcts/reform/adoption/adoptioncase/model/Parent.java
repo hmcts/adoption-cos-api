@@ -116,7 +116,19 @@ public class Parent {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastAddressDate;
 
+    @CCD(label = "Birth Father Responsibility",
+        access = {DefaultAccess.class})
+    private YesOrNo responsibility;
 
+    @CCD(
+        label = "Responsibility Reason",
+        access = {DefaultAccess.class}
+    )
+    private SortedSet<ResponsibilityReasons> responsibilityReason;
+
+    @CCD(label = "Other Responsibility Reason",
+        access = {DefaultAccess.class})
+    private String otherResponsibilityReason;
 
     @CCD(label = "Identity known",
         access = {DefaultAccess.class})
@@ -129,6 +141,14 @@ public class Parent {
     @CCD(label = "To be served",
         access = {SystemUpdateAccess.class})
     private YesOrNo toBeServed;
+
+    @CCD(label = "Served With",
+        access = {DefaultAccess.class})
+    private YesOrNo servedWith;
+
+    @CCD(label = "Not served with reason",
+        access = {SystemUpdateAccess.class})
+    private String notServedWithReason;
 
     public YesOrNo getToBeServed() {
         if (Objects.isNull(toBeServed)) {

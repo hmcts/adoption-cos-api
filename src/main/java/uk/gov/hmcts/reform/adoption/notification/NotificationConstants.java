@@ -4,12 +4,17 @@ public final class NotificationConstants {
 
     public static final String APPLICANT_1_FULL_NAME = "applicant1FullName";
     public static final String HAS_SECOND_APPLICANT = "hasSecondApplicant";
+    public static final String HAS_MULTIPLE_APPLICANT = "hasMultipleApplicants";
     public static final String APPLICANT_2_FULL_NAME = "applicant2FullName";
     public static final String LOCAL_COURT_NAME = "localCourtName";
 
     public static final String CHILD_FULL_NAME = "childFullName";
 
     public static final String LA_PORTAL_URL = "laPortalURL";
+
+    public static final String ADOPTION_CUI_URL = "signInAdoptionUrl";
+
+    public static final String ADOPTION_CUI_MULTI_CHILDREN_URL = "signInAdoptionUrlForMultipleChildren";
 
     private NotificationConstants() {
     }

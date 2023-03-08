@@ -888,12 +888,12 @@ public class CaseData {
                 .stream()
                 .filter(listValue -> listValue.getValue().getDocumentType()
                     .equals(APPLICATION_LA_SUMMARY_EN)).collect(Collectors.toList()));
-        this.getCombinedDocumentsGenerated().stream()
+        /*this.getCombinedDocumentsGenerated().stream()
             .forEach(listValue -> {
                 listValue.getValue().getDocumentType()
                     .equals(APPLICATION_LA_SUMMARY_EN);
                 this.getLaDocumentsUploaded().add(listValue);
-            });
+            });*/
     }
 
     @JsonIgnore

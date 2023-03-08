@@ -30,9 +30,22 @@ public class NotificationDispatcher {
             && caseData.getApplicantSocialWorker().getLocalAuthorityEmail().isEmpty())) {
             try {
                 applicationNotification.sendToLocalAuthorityPostLocalAuthoritySubmission(caseData, caseId);
+                applicationNotification.sendToLocalCourtPostLocalAuthoritySubmission(caseData, caseId);
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
         }
+    }
+
+    public void sendToApplicantsPostLocalAuthorityApplicationSubmit(
+        ApplicationSubmittedNotification applicantNotification, CaseData caseData, Long caseId) {
+        if (!caseData.getApplicant1().getEmailAddress().isEmpty()) {
+            try {
+                applicantNotification.sendToApplicantsPostLocalAuthoritySubmission(caseData, caseId);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        }
+
     }
 }
