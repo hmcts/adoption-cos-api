@@ -104,12 +104,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             );
         }
 
-        try {
-            log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method for case : {}", id);
-            sendgridService.sendEmail(caseData);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     @Override
@@ -245,6 +240,14 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             templateVarsLocalCourt(caseData, id),
             LanguagePreference.ENGLISH
         );
+
+        try {
+            log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method inside "
+                          + "sendToLocalCourtPostLocalAuthoritySubmission for case : {}", id);
+            sendgridService.sendEmail(caseData);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Map<String, Object> templateVarsLocalCourt(CaseData caseData, Long id)

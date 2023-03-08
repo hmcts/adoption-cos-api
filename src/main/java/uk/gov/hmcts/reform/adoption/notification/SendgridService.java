@@ -24,7 +24,9 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -51,15 +53,17 @@ public class SendgridService {
         String subject = "Sample Test Subject" + ".pdf";
         Content content = new Content("text/plain", " Some Sample text Body");
         Attachments attachments = new Attachments();
+        Mail mail = new Mail(new Email("ca@mail-prl-nonprod.aat.platform.hmcts.net"), subject, new Email("mohit.vijay@hmcts.net"), content);
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
             .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY_EN))
             .findFirst().orElse(null);
+        final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
+        String serviceAuthorization = authTokenGenerator.generate();
         if (adoptionDocument != null) {
             log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument is not null for case : {}", caseData.getHyphenatedCaseRef());
             //String data = Base64.getEncoder().encodeToString(adoptionDocument.toString().getBytes());
             //log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument byte : {}", data);
-            final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
-            String serviceAuthorization = authTokenGenerator.generate();
+
             Resource document = caseDocumentClient.getDocumentBinary(authorisation,
                                                                      serviceAuthorization,
                                                                      UUID.fromString(adoptionDocument.getDocumentFileId())).getBody();
@@ -76,12 +80,66 @@ public class SendgridService {
             attachments.setFilename(adoptionDocument.getDocumentFileName());
             attachments.setType("application/pdf");
             attachments.setDisposition("attachment");
+            mail.addAttachments(attachments);
         }
 
-        Mail mail = new Mail(new Email("ca@mail-prl-nonprod.aat.platform.hmcts.net"), subject, new Email("mohit.vijay@hmcts.net"), content);
-        mail.addAttachments(attachments);
-        mail.addAttachments(attachments);
-        mail.addAttachments(attachments);
+        if (caseData.getLaDocumentsUploaded() != null) {
+            List<AdoptionDocument> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
+                //.map(item -> item.)
+                .collect(Collectors.toList());
+            for (AdoptionDocument item : uploadedDocumentsUrls) {
+                Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
+                                                                                 serviceAuthorization,
+                                                                                 UUID.fromString(item.getDocumentFileId())).getBody();
+                String data = null;
+                if (uploadedDocument != null) {
+                    log.info("Document found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
+                    byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
+                    data = Base64.getEncoder().encodeToString(uploadedDocumentContents);
+                    attachments.setContent(data);
+                    attachments.setFilename(item.getDocumentFileName());
+                    String documentType = item.getDocumentFileName().split(".")[1];
+                    switch (documentType) {
+                        case "pdf":
+                            attachments.setType("application/pdf");
+                            break;
+
+                        case "jpg", "jpeg":
+                            attachments.setType("image/jpeg");
+                            break;
+
+                        case "png":
+                            attachments.setType("image/png");
+                            break;
+
+                        case "doc":
+                            attachments.setType("application/msword");
+                            break;
+
+                        case "docx":
+                            attachments.setType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                            break;
+
+                        case "tif", "tiff":
+                            attachments.setType("image/tiff");
+                            break;
+
+                        default:
+                            log.info("default called for switch with file type as: " + documentType);
+                    }
+                    //attachments.setType("application/pdf");
+                    attachments.setDisposition("attachment");
+                    mail.addAttachments(attachments);
+                } else {
+                    log.info("Document not found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
+                }
+            }
+        }
+
+
+
+        //mail.addAttachments(attachments);
+        //mail.addAttachments(attachments);
         log.info("<<<<<<<<<<<>>>>>>>>>>   before sending email for case : {}", caseData.getHyphenatedCaseRef());
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
