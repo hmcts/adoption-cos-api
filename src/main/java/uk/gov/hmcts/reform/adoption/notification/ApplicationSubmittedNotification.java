@@ -235,13 +235,13 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         throws NotificationClientException, IOException {
         log.info("Sending notification to Local Courts after application submitted by Local Authority for case : {}", id);
 
-        /*try {
+        try {
             log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method inside "
                          + "sendToLocalCourtPostLocalAuthoritySubmission for case : {}", id);
             sendgridService.sendEmail(caseData);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }*/
+        }
 
 
         notificationService.sendEmail(
