@@ -168,7 +168,7 @@ ccd:
     replicas: 1
     minimumMasterNodes: 1
     antiAffinity: "soft"
-    esJavaOpts: "-Xmx2048m -Xms2048m"
+    esJavaOpts: "-Xmx1024m -Xms1024m"
     extraEnvs:
       - name: discovery.type
         value: single-node
