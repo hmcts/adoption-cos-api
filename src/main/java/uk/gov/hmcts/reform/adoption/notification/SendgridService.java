@@ -107,7 +107,7 @@ public class SendgridService {
                 Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
                                                                                  serviceAuthorization,
                                                                                  UUID.fromString(url)).getBody();
-                //log.info("<<<<<<<>>>>>>  uploadedDocument filename:  {}", uploadedDocument.getFilename());
+                log.info("<<<<<<<>>>>>>  uploadedDocument filename:  {}", uploadedDocument.getFilename());
                 String data = null;
                 if (uploadedDocument != null) {
                     //log.info("Document found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
