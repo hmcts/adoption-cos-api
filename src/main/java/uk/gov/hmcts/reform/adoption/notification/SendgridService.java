@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
@@ -104,9 +105,15 @@ public class SendgridService {
                     item.setDocumentFileName("SampleFile.pdf");
                 }*/
                 log.info("<<<<<<<>>>>>>  New URL:  {}", url);
-                Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
-                                                                                 serviceAuthorization,
-                                                                                 UUID.fromString(url)).getBody();
+                Resource uploadedDocument = null;
+
+                log.info("<<<<<<<---------->>>>>>  Before calling caseDocumentClient service:");
+                ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary
+                    (authorisation, serviceAuthorization, UUID.fromString(url));
+                log.info("<<<<<<<---------->>>>>>  After calling caseDocumentClient "
+                             + "service with status code {}:", resource.getStatusCode());
+                uploadedDocument = resource.getBody();
+
                 log.info("<<<<<<<>>>>>>  uploadedDocument filename:  {}", uploadedDocument.getFilename());
                 String data = null;
                 if (uploadedDocument != null) {
