@@ -161,7 +161,7 @@ public class SendgridService {
                     } catch (Exception e) {
                         log.info("Error while reading InputStream");
                     } finally {
-                        stream.close();
+                        //stream.close();
                     }
 
                     if (uploadedDocumentContents != null) {
