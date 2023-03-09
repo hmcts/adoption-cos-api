@@ -22,6 +22,7 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
@@ -47,6 +48,9 @@ public class SendgridService {
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
+    /*@Autowired
+    private HttpServletRequest request;*/
+
     public void sendEmail(CaseData caseData) throws IOException {
 
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
@@ -59,8 +63,10 @@ public class SendgridService {
             .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY_EN))
             .findFirst().orElse(null);
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
+        //final String authorisation = idamService.retrieveUser(request.getHeader(AUTHORIZATION)).getAuthToken();
         String serviceAuthorization = authTokenGenerator.generate();
-        log.info("<<<<<<<<<<<>>>>>>>>>>   serviceAuthorization : {}", serviceAuthorization);
+        //String serviceAuthorization = "authTokenGenerator.generate()";
+        //log.info("<<<<<<<<<<<>>>>>>>>>>   serviceAuthorization : {}", serviceAuthorization);
         if (adoptionDocument != null) {
             log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument is not null for case : {}", caseData.getHyphenatedCaseRef());
             //String data = Base64.getEncoder().encodeToString(adoptionDocument.toString().getBytes());
@@ -106,43 +112,90 @@ public class SendgridService {
                 if (uploadedDocument != null) {
                     //log.info("Document found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
                     log.info("Document found with file name : {}", item.getDocumentFileName());
-                    byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
-                    data = Base64.getEncoder().encodeToString(uploadedDocumentContents);
-                    attachments.setContent(data);
-                    attachments.setFilename(item.getDocumentFileName());
-                    /*String documentType = item.getDocumentFileName().split(".")[1];
-                    log.info("Document type : {}", documentType);
-                    switch (documentType) {
-                        case "pdf":
-                            attachments.setType("application/pdf");
-                            break;
+                    byte[] uploadedDocumentContents = null;
+                    InputStream stream = null;
 
-                        case "jpg", "jpeg":
-                            attachments.setType("image/jpeg");
-                            break;
+                    try {
+                        //stream = uploadedDocument.getInputStream();
+                        log.info("stream generated : Start of new logic");
+                        //uploadedDocumentContents = stream.readAllBytes();
 
-                        case "png":
-                            attachments.setType("image/png");
-                            break;
 
-                        case "doc":
-                            attachments.setType("application/msword");
-                            break;
+                        InputStream is = uploadedDocument.getInputStream();
+                        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                        int i;
+                        byte[] byteArrayData = new byte[1024];
 
-                        case "docx":
-                            attachments.setType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-                            break;
+                        while ((i = is.readNBytes(byteArrayData, 0, byteArrayData.length)) != 0) {
 
-                        case "tif", "tiff":
-                            attachments.setType("image/tiff");
-                            break;
+                            log.info("here: {}", i);
+                            buffer.write(byteArrayData, 0, i);
+                            log.info("after write operation");
+                        }
 
-                        default:
-                            log.info("default called for switch with file type as: " + documentType);
-                    }*/
-                    //attachments.setType("application/pdf");
-                    attachments.setDisposition("attachment");
-                    mail.addAttachments(attachments);
+                        buffer.flush();
+                        uploadedDocumentContents = buffer.toByteArray();
+                        log.info("After reading all bytes from stream : ");
+
+
+                        /*byte[] myBuffer = new byte[512];
+                        int bytesRead = 0;
+                        ByteArrayOutputStream bufferedOutputStream = new ByteArrayOutputStream();
+                        BufferedInputStream in = new BufferedInputStream(uploadedDocument.getInputStream());
+                        while((bytesRead = in.read(myBuffer,0,512)) != -1){
+                            bytesRead = in.read(myBuffer,0,512);
+                            bufferedOutputStream.writeBytes(in.readNBytes(bytesRead));
+
+                        }*/
+
+
+
+
+                    } catch (Exception e) {
+                        log.info("Error while reading InputStream");
+                    } finally {
+                        stream.close();
+                    }
+
+                    if (uploadedDocumentContents != null) {
+                        data = Base64.getEncoder().encodeToString(uploadedDocumentContents);
+                        attachments.setContent(data);
+                        attachments.setFilename(item.getDocumentFileName());
+                        /*String documentType = item.getDocumentFileName().split(".")[1];
+                        log.info("Document type : {}", documentType);
+                        switch (documentType) {
+                            case "pdf":
+                                attachments.setType("application/pdf");
+                                break;
+
+                            case "jpg", "jpeg":
+                                attachments.setType("image/jpeg");
+                                break;
+
+                            case "png":
+                                attachments.setType("image/png");
+                                break;
+
+                            case "doc":
+                                attachments.setType("application/msword");
+                                break;
+
+                            case "docx":
+                                attachments.setType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                                break;
+
+                            case "tif", "tiff":
+                                attachments.setType("image/tiff");
+                                break;
+
+                            default:
+                                log.info("default called for switch with file type as: " + documentType);
+                        }*/
+                        //attachments.setType("application/pdf");
+                        attachments.setDisposition("attachment");
+                        mail.addAttachments(attachments);
+                    }
+
                 } else {
                     log.info("Document not found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
                 }
