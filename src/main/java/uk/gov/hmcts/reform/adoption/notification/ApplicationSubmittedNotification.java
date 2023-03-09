@@ -76,6 +76,18 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     SendgridService sendgridService;
 
     @Override
+    public void sendToCaseWorker(final CaseData caseData, final Long id) {
+        log.info("Sending application submitted notification to case worker for case : {}", id);
+
+        notificationService.sendEmail(
+            caseData.getApplicant1().getEmail(),
+            APPLICANT_APPLICATION_SUBMITTED,
+            templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2()),
+            caseData.getApplicant1().getLanguagePreference()
+        );
+    }
+
+    @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
         log.info("Sending application submitted notification to applicants for case : {}", id);
 
@@ -105,18 +117,6 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         }
 
 
-    }
-
-    @Override
-    public void sendToCaseWorker(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to case worker for case : {}", id);
-
-        notificationService.sendEmail(
-            caseData.getApplicant1().getEmail(),
-            APPLICANT_APPLICATION_SUBMITTED,
-            templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2()),
-            caseData.getApplicant1().getLanguagePreference()
-        );
     }
 
 
@@ -235,13 +235,13 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         throws NotificationClientException, IOException {
         log.info("Sending notification to Local Courts after application submitted by Local Authority for case : {}", id);
 
-        try {
+        /*try {
             log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method inside "
                          + "sendToLocalCourtPostLocalAuthoritySubmission for case : {}", id);
             sendgridService.sendEmail(caseData);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
 
         notificationService.sendEmail(
@@ -306,9 +306,12 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
             count = 1;
             for (String item : uploadedDocumentsUrls) {
+                log.info("<<<<<<<---------->>>>>>  Before calling caseDocumentClient service in templateVarsLocalCourt:");
                 Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
                                                                           serviceAuthorization,
                                                                           UUID.fromString(item)).getBody();
+                log.info("<<<<<<<---------->>>>>>  After calling caseDocumentClient "
+                             + "service in templateVarsLocalCourt");
                 if (uploadedDocument != null) {
                     log.info("Document found with uuid : {}", UUID.fromString(item));
                     byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
