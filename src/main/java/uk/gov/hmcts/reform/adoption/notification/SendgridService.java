@@ -108,8 +108,8 @@ public class SendgridService {
                 Resource uploadedDocument = null;
 
                 log.info("<<<<<<<---------->>>>>>  Before calling caseDocumentClient service:");
-                ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary
-                    (authorisation, serviceAuthorization, UUID.fromString(url));
+                ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary(
+                    authorisation, serviceAuthorization, UUID.fromString(url));
                 log.info("<<<<<<<---------->>>>>>  After calling caseDocumentClient "
                              + "service with status code {}:", resource.getStatusCode());
                 uploadedDocument = resource.getBody();
