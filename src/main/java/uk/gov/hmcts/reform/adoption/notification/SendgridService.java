@@ -26,6 +26,8 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +53,13 @@ public class SendgridService {
 
     public void sendEmail(CaseData caseData) throws IOException {
 
+        log.info("Heap Size Below-----------------");
+        int mb = 1024 * 1024;
+        MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+        long xmx = memoryBean.getHeapMemoryUsage().getMax() / mb;
+        long xms = memoryBean.getHeapMemoryUsage().getInit() / mb;
+        log.info("Initial Memory (xms) : {}mb", xms);
+        log.info("Max Memory (xmx) : {}mb", xmx);
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
         String subject = "Sample Test Subject" + ".pdf";
         Content content = new Content("text/plain", " Some Sample text Body");
