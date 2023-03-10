@@ -49,13 +49,9 @@ public class SendgridService {
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
-    /*@Autowired
-    private HttpServletRequest request;*/
-
     public void sendEmail(CaseData caseData) throws IOException {
 
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
-        //log.info("<<<<<<<>>>>>>  SendAPI ket: {}", apiKey);
         String subject = "Sample Test Subject" + ".pdf";
         Content content = new Content("text/plain", " Some Sample text Body");
         Attachments attachments = new Attachments();
@@ -66,13 +62,8 @@ public class SendgridService {
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
         //final String authorisation = idamService.retrieveUser(request.getHeader(AUTHORIZATION)).getAuthToken();
         String serviceAuthorization = authTokenGenerator.generate();
-        //String serviceAuthorization = "authTokenGenerator.generate()";
-        //log.info("<<<<<<<<<<<>>>>>>>>>>   serviceAuthorization : {}", serviceAuthorization);
         if (adoptionDocument != null) {
             log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument is not null for case : {}", caseData.getHyphenatedCaseRef());
-            //String data = Base64.getEncoder().encodeToString(adoptionDocument.toString().getBytes());
-            //log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument byte : {}", data);
-
             Resource document = caseDocumentClient.getDocumentBinary(authorisation,
                                                                      serviceAuthorization,
                                                                      UUID.fromString(adoptionDocument.getDocumentFileId())).getBody();
@@ -94,16 +85,11 @@ public class SendgridService {
 
         if (caseData.getLaDocumentsUploaded() != null) {
             List<AdoptionDocument> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
-                //.map(item -> StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/"))
                 .collect(Collectors.toList());
 
             log.info("<<<<<<<>>>>>>  Uploaded Documents size:  {}", uploadedDocumentsUrls.size());
             for (AdoptionDocument item : uploadedDocumentsUrls) {
                 String url = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
-                /*log.info("Document found with file name : {}", item.getDocumentFileName());
-                if (item.getDocumentFileName() == null) {
-                    item.setDocumentFileName("SampleFile.pdf");
-                }*/
                 log.info("<<<<<<<>>>>>>  New URL:  {}", url);
                 Resource uploadedDocument = null;
 
@@ -117,24 +103,15 @@ public class SendgridService {
                 log.info("<<<<<<<>>>>>>  uploadedDocument filename:  {}", uploadedDocument.getFilename());
                 String data = null;
                 if (uploadedDocument != null) {
-                    //log.info("Document found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
                     log.info("Document found with file name : {}", item.getDocumentFileName());
                     byte[] uploadedDocumentContents = null;
-                    InputStream stream = null;
-
                     try {
-                        //stream = uploadedDocument.getInputStream();
-                        log.info("stream generated : Start of new logic");
-                        //uploadedDocumentContents = stream.readAllBytes();
-
-
                         InputStream is = uploadedDocument.getInputStream();
                         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                         int i;
                         byte[] byteArrayData = new byte[1024];
 
                         while ((i = is.readNBytes(byteArrayData, 0, byteArrayData.length)) != 0) {
-
                             log.info("here: {}", i);
                             buffer.write(byteArrayData, 0, i);
                             log.info("after write operation");
@@ -143,62 +120,14 @@ public class SendgridService {
                         buffer.flush();
                         uploadedDocumentContents = buffer.toByteArray();
                         log.info("After reading all bytes from stream : ");
-
-
-                        /*byte[] myBuffer = new byte[512];
-                        int bytesRead = 0;
-                        ByteArrayOutputStream bufferedOutputStream = new ByteArrayOutputStream();
-                        BufferedInputStream in = new BufferedInputStream(uploadedDocument.getInputStream());
-                        while((bytesRead = in.read(myBuffer,0,512)) != -1){
-                            bytesRead = in.read(myBuffer,0,512);
-                            bufferedOutputStream.writeBytes(in.readNBytes(bytesRead));
-
-                        }*/
-
-
-
-
                     } catch (Exception e) {
                         log.info("Error while reading InputStream");
-                    } finally {
-                        //stream.close();
                     }
 
                     if (uploadedDocumentContents != null) {
                         data = Base64.getEncoder().encodeToString(uploadedDocumentContents);
                         attachments.setContent(data);
                         attachments.setFilename(item.getDocumentFileName());
-                        /*String documentType = item.getDocumentFileName().split(".")[1];
-                        log.info("Document type : {}", documentType);
-                        switch (documentType) {
-                            case "pdf":
-                                attachments.setType("application/pdf");
-                                break;
-
-                            case "jpg", "jpeg":
-                                attachments.setType("image/jpeg");
-                                break;
-
-                            case "png":
-                                attachments.setType("image/png");
-                                break;
-
-                            case "doc":
-                                attachments.setType("application/msword");
-                                break;
-
-                            case "docx":
-                                attachments.setType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-                                break;
-
-                            case "tif", "tiff":
-                                attachments.setType("image/tiff");
-                                break;
-
-                            default:
-                                log.info("default called for switch with file type as: " + documentType);
-                        }*/
-                        //attachments.setType("application/pdf");
                         attachments.setDisposition("attachment");
                         mail.addAttachments(attachments);
                     }
