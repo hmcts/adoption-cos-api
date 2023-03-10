@@ -20,6 +20,8 @@ import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.idam.client.models.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -78,6 +80,15 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
         final CaseDetails<CaseData, State> details,
         final CaseDetails<CaseData, State> beforeDetails
     ) {
+
+        log.info("Heap Size Below-----------------");
+        int mb = 1024 * 1024;
+        MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+        long xmx = memoryBean.getHeapMemoryUsage().getMax() / mb;
+        long xms = memoryBean.getHeapMemoryUsage().getInit() / mb;
+        log.info("Initial Memory (xms) : {}mb", xms);
+        log.info("Max Memory (xmx) : {}mb", xmx);
+
         log.info("Caseworker add notes callback invoked for Case Id: {}", details.getId());
 
         final User caseworkerUser = idamService.retrieveUser(request.getHeader(AUTHORIZATION));
