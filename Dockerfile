@@ -9,4 +9,6 @@ COPY lib/AI-Agent.xml /opt/app/
 COPY build/libs/adoption-cos-api.jar /opt/app/
 
 EXPOSE 4550
-CMD [ "adoption-cos-api.jar" ]
+#CMD [ "adoption-cos-api.jar" ]
+
+CMD ["java", "-Xms256m", "-Xmx512m" "-jar", "adoption-cos-api.jar"]
