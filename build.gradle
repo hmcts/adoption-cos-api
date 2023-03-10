@@ -288,6 +288,7 @@ dependencyManagement {
       entry 'guava'
     }
     dependency group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.5'
+    dependency group: 'org.json', name: 'json', version: '20230227'
   }
 }
 
