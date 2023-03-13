@@ -62,7 +62,8 @@ public class SendgridService {
         log.info("Max Memory (xmx) : {}mb", xmx);
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
         String subject = "Sample Test Subject" + ".pdf";
-        Content content = new Content("text/plain", " Some Sample text Body");
+        Content content = new Content("text/html", " Some Sample text <b>Body<b>"
+            + "childFirstName " + caseData.getChildren().getFirstName() + " child second name: " + caseData.getChildren().getLastName());
         Attachments attachments = new Attachments();
         Mail mail = new Mail(new Email("ca@mail-prl-nonprod.aat.platform.hmcts.net"), subject, new Email("mohit.vijay@hmcts.net"), content);
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
