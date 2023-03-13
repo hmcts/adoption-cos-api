@@ -441,7 +441,6 @@ bootRun {
 }
 
 bootJar {
-  jvmArgs = ['-Xmx512m']
   getArchiveFileName().set(provider {
     'adoption-cos-api.jar'
   })
