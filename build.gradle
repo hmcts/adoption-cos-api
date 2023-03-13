@@ -415,6 +415,7 @@ ext.getVaultSecret = { String secretName ->
 }
 
 bootRun {
+  jvmArgs = ['-Xmx512m']
   doFirst() {
     if (System.getenv("IDAM_API_BASEURL") == null) {
       println("Loading secrets from vault")
