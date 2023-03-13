@@ -74,7 +74,6 @@ sourceSets {
 }
 
 java {
-  jvmArgs = ['-Xmx512m']
   toolchain {
     languageVersion = JavaLanguageVersion.of(17)
   }
