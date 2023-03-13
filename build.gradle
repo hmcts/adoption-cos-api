@@ -588,6 +588,7 @@ task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
 }
 
 bootWithCCD {
+  jvmArgs = ['-Xmx512m']
   dependsOn(buildCCDXlsx, loadEnvSecrets)
   doFirst() {
     project.file('./.aat-env').readLines().each() {
