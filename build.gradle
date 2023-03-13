@@ -441,6 +441,7 @@ bootRun {
 }
 
 bootJar {
+  jvmArgs = ['-Xmx512m']
   getArchiveFileName().set(provider {
     'adoption-cos-api.jar'
   })
@@ -581,7 +582,6 @@ task loadEnvSecrets() {
 }
 
 task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
-  jvmArgs = ['-Xmx512m']
   group 'ccd tasks'
   commandLine './bin/ccd-build-definition.sh'
   inputs.dir layout.buildDirectory.dir('definitions')
