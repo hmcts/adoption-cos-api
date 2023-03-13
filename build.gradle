@@ -74,6 +74,7 @@ sourceSets {
 }
 
 java {
+  jvmArgs = ['-Xmx512m']
   toolchain {
     languageVersion = JavaLanguageVersion.of(17)
   }
@@ -567,6 +568,7 @@ static def getCheckedOutGitCommitHash() {
 
 
 task loadEnvSecrets() {
+  jvmArgs = ['-Xmx512m']
   doLast {
     if (!project.file('./.aat-env').exists()) {
       new ByteArrayOutputStream().withStream { os ->
@@ -581,6 +583,7 @@ task loadEnvSecrets() {
 }
 
 task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
+  jvmArgs = ['-Xmx512m']
   group 'ccd tasks'
   commandLine './bin/ccd-build-definition.sh'
   inputs.dir layout.buildDirectory.dir('definitions')
