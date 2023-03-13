@@ -12,7 +12,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
-import uk.gov.hmcts.reform.adoption.notification.DraftApplicationExpiringNotification;
+import uk.gov.hmcts.reform.adoption.notification.MultiChildSubmitAlertEmailNotification;
 import uk.gov.hmcts.reform.adoption.systemupdate.CaseDetailsConverter;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -38,10 +38,10 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(SpringExtension.class)
-class AlertDraftCaseApplicantBeforeDeletionTaskTest {
+class AlertMultiChildApplicationToSubmitTaskTest {
 
     @InjectMocks
-    private AlertDraftCaseApplicantBeforeDeletionTask alertDraftCaseApplicantBeforeDeletionTask;
+    private AlertMultiChildApplicationToSubmitTask alertMultiChildApplicationToSubmitTask;
 
     @Mock
     private CcdSearchService ccdSearchService;
@@ -56,7 +56,7 @@ class AlertDraftCaseApplicantBeforeDeletionTaskTest {
     private ObjectMapper objectMapper;
 
     @Mock
-    private DraftApplicationExpiringNotification draftApplicationExpiringNotification;
+    private MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
 
     @Mock
     private CaseDetailsConverter caseDetailsConverter;
@@ -90,20 +90,21 @@ class AlertDraftCaseApplicantBeforeDeletionTaskTest {
         final CaseDetails caseDetails2 = mock(CaseDetails.class);
         final CaseDetails caseDetails3 = mock(CaseDetails.class);
 
-        when(caseDetails1.getCreatedDate()).thenReturn(LocalDateTime.now().minusDays(83));
-        when(caseDetails2.getCreatedDate()).thenReturn(LocalDateTime.now().minusDays(83));
-        when(caseDetails3.getCreatedDate()).thenReturn(LocalDateTime.now().minusDays(83));
-
+        when(caseDetails1.getCreatedDate()).thenReturn(LocalDateTime.now());
+        when(caseDetails2.getCreatedDate()).thenReturn(LocalDateTime.now());
+        when(caseDetails3.getCreatedDate()).thenReturn(LocalDateTime.now());
+        when(caseDetails1.getState()).thenReturn(String.valueOf(State.Submitted));
+        when(caseDetails2.getState()).thenReturn(String.valueOf(Draft));
+        when(caseDetails3.getState()).thenReturn(String.valueOf(State.Submitted));
         final List<CaseDetails> caseDetailsList = List.of(caseDetails1, caseDetails2, caseDetails3);
-
         when(ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, SERVICE_AUTHORIZATION))
             .thenReturn(caseDetailsList);
         final uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseDetails4 = new uk.gov.hmcts.ccd.sdk.api.CaseDetails<>();
         caseDetails4.setData(caseData());
         when(caseDetailsConverter.convertToCaseDetailsFromReformModel(any(CaseDetails.class))).thenReturn(caseDetails4);
 
-        alertDraftCaseApplicantBeforeDeletionTask.run();
-        verify(draftApplicationExpiringNotification, times(0)).sendToApplicants(
+        alertMultiChildApplicationToSubmitTask.run();
+        verify(multiChildSubmitAlertEmailNotification, times(0)).sendToApplicants(
                                                       any(CaseData.class),
                                                       any(Long.class));
 

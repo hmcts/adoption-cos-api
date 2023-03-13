@@ -3,24 +3,21 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.adoption.notification.DraftApplicationExpiringNotification;
-import uk.gov.hmcts.reform.adoption.notification.NotificationDispatcher;
 import uk.gov.hmcts.reform.adoption.systemupdate.CaseDetailsConverter;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.idam.client.models.User;
-import uk.gov.service.notify.NotificationClientException;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -48,10 +45,6 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
     private AuthTokenGenerator authTokenGenerator;
 
     @Autowired
-    private NotificationDispatcher notificationDispatcher;
-
-
-    @Autowired
     private DraftApplicationExpiringNotification draftApplicationExpiringNotification;
 
     @Autowired
@@ -73,6 +66,7 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
      * @see Thread#run()
      */
     @Override
+    @Scheduled(cron = "0 0/6 * 1/1 * ?")
     public void run() {
 
         final User user = idamService.retrieveSystemUpdateUserDetails();
@@ -100,20 +94,7 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
 
         uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData = caseDetailsConverter.convertToCaseDetailsFromReformModel(
             caseDetails);
-        try {
-
-            if (StringUtils.isNotEmpty(caseData.getData().getApplicant1().getEmailAddress())) {
-                notificationDispatcher.send(
-                    draftApplicationExpiringNotification,
-                    caseData.getData(),
-                    caseDetails.getId()
-                );
-            } else {
-                log.info("Email Not triggered for the case {} due to missing email address",caseDetails.getId());
-            }
-        } catch (NotificationClientException | IOException e) {
-            log.error("Couldn't send notifications");
-        }
+        draftApplicationExpiringNotification.sendToApplicants(caseData.getData(), caseDetails.getId());
 
     }
 }

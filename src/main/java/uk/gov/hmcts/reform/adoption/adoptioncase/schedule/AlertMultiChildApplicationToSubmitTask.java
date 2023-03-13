@@ -4,24 +4,21 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.adoption.notification.MultiChildSubmitAlertEmailNotification;
-import uk.gov.hmcts.reform.adoption.notification.NotificationDispatcher;
 import uk.gov.hmcts.reform.adoption.systemupdate.CaseDetailsConverter;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.idam.client.models.User;
-import uk.gov.service.notify.NotificationClientException;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,10 +47,6 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
     private AuthTokenGenerator authTokenGenerator;
 
     @Autowired
-    private NotificationDispatcher notificationDispatcher;
-
-
-    @Autowired
     private MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
 
     @Autowired
@@ -72,6 +65,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
      * @see Thread#run()
      */
     @Override
+    @Scheduled(cron = "0 0/5 * 1/1 * ?")
     public void run() {
 
         final User user = idamService.retrieveSystemUpdateUserDetails();
@@ -136,20 +130,9 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
 
         uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData = caseDetailsConverter.convertToCaseDetailsFromReformModel(
             caseDetails);
-        try {
 
-            if (StringUtils.isNotEmpty(caseData.getData().getApplicant1().getEmailAddress())) {
-                notificationDispatcher.send(
-                    multiChildSubmitAlertEmailNotification,
-                    caseData.getData(),
-                    caseDetails.getId()
-                );
-            } else {
-                log.info("Email Not triggered for the case {} due to missing email address",caseDetails.getId());
-            }
-        } catch (NotificationClientException | IOException e) {
-            log.error("Couldn't send notifications");
-        }
+        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData.getData(), caseDetails.getId());
     }
+
 
 }
