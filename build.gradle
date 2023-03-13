@@ -567,7 +567,6 @@ static def getCheckedOutGitCommitHash() {
 
 
 task loadEnvSecrets() {
-  jvmArgs = ['-Xmx512m']
   doLast {
     if (!project.file('./.aat-env').exists()) {
       new ByteArrayOutputStream().withStream { os ->
