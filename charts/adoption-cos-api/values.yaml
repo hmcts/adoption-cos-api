@@ -11,6 +11,10 @@ ccd-case-document-am-api:
   enabled: false
 
 java:
+  cpuLimits: "1500m"
+  cpuRequests: "1000m"
+  memoryLimits: "3072Mi"
+  memoryRequests: "2048Mi"
   applicationPort: 4550
   image: hmctspublic.azurecr.io/adoption/cos-api:latest
   ingressHost: adoption-cos-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
