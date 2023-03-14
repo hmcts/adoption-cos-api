@@ -415,7 +415,6 @@ ext.getVaultSecret = { String secretName ->
 }
 
 bootRun {
-  jvmArgs = ['-Xmx512m']
   doFirst() {
     if (System.getenv("IDAM_API_BASEURL") == null) {
       println("Loading secrets from vault")
@@ -588,7 +587,6 @@ task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
 }
 
 bootWithCCD {
-  jvmArgs = ['-Xmx512m']
   dependsOn(buildCCDXlsx, loadEnvSecrets)
   doFirst() {
     project.file('./.aat-env').readLines().each() {

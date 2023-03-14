@@ -12,7 +12,10 @@ java:
     APPLICATIONINSIGHTS_CONNECTION_STRING: ${APP_INSIGHTS_CONNECTION_KEY}
     MULTI_CHILDREN_CUI_URL: https://adoption-web-pr-956.service.core-compute-preview.internal/new-application-redirect
     LA_PORTAL_BASEURL: https://adoption-web-pr-956.service.core-compute-preview.internal/la-portal/kba-case-ref
-    JAVA_OPTS: -Xmx512m
+  cpuLimits: "1500m"
+  cpuRequests: "1000m"
+  memoryLimits: "3072Mi"
+  memoryRequests: "2048Mi"
 
   keyVaults:
     adoption:
@@ -169,7 +172,7 @@ ccd:
     replicas: 1
     minimumMasterNodes: 1
     antiAffinity: "soft"
-    esJavaOpts: "-Xmx1536m -Xms1536m"
+    esJavaOpts: "-Xmx512m -Xms512m"
     extraEnvs:
       - name: discovery.type
         value: single-node
