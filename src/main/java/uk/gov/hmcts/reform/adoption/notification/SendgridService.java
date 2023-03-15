@@ -61,8 +61,8 @@ public class SendgridService {
         log.info("Initial Memory (xms) : {}mb", xms);
         log.info("Max Memory (xmx) : {}mb", xmx);
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
-        String subject = "Sample Test Subject" + ".pdf";
-        Content content = new Content("text/html", " Some Sample text <b>Body<b>"
+        String subject = "Sample Test Subject";
+        Content content = new Content("text/html", " Some Sample text <b>Body</b> "
             + "childFirstName " + caseData.getChildren().getFirstName() + " child second name: " + caseData.getChildren().getLastName());
         Attachments attachments = new Attachments();
         Mail mail = new Mail(new Email("ca@mail-prl-nonprod.aat.platform.hmcts.net"), subject, new Email("mohit.vijay@hmcts.net"), content);
@@ -70,10 +70,8 @@ public class SendgridService {
             .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_SUMMARY_EN))
             .findFirst().orElse(null);
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
-        //final String authorisation = idamService.retrieveUser(request.getHeader(AUTHORIZATION)).getAuthToken();
         String serviceAuthorization = authTokenGenerator.generate();
         if (adoptionDocument != null) {
-            log.info("<<<<<<<<<<<>>>>>>>>>>   adoptionDocument is not null for case : {}", caseData.getHyphenatedCaseRef());
             Resource document = caseDocumentClient.getDocumentBinary(authorisation,
                                                                      serviceAuthorization,
                                                                      UUID.fromString(adoptionDocument.getDocumentFileId())).getBody();
@@ -96,21 +94,16 @@ public class SendgridService {
         if (caseData.getLaDocumentsUploaded() != null) {
             List<AdoptionDocument> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
                 .collect(Collectors.toList());
-
             log.info("<<<<<<<>>>>>>  Uploaded Documents size:  {}", uploadedDocumentsUrls.size());
             for (AdoptionDocument item : uploadedDocumentsUrls) {
                 String url = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
-                log.info("<<<<<<<>>>>>>  New URL:  {}", url);
-                Resource uploadedDocument = null;
-
                 log.info("<<<<<<<---------->>>>>>  Before calling caseDocumentClient service:");
                 ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary(
                     authorisation, serviceAuthorization, UUID.fromString(url));
                 log.info("<<<<<<<---------->>>>>>  After calling caseDocumentClient "
                              + "service with status code {}:", resource.getStatusCode());
-                uploadedDocument = resource.getBody();
+                Resource uploadedDocument = resource.getBody();
 
-                log.info("<<<<<<<>>>>>>  uploadedDocument filename:  {}", uploadedDocument.getFilename());
                 String data = null;
                 if (uploadedDocument != null) {
                     log.info("Document found with file name : {}", item.getDocumentFileName());
@@ -122,11 +115,8 @@ public class SendgridService {
                         byte[] byteArrayData = new byte[1024];
 
                         while ((i = is.readNBytes(byteArrayData, 0, byteArrayData.length)) != 0) {
-                            log.info("here: {}", i);
                             buffer.write(byteArrayData, 0, i);
-                            log.info("after write operation");
                         }
-
                         buffer.flush();
                         uploadedDocumentContents = buffer.toByteArray();
                         log.info("After reading all bytes from stream : ");
@@ -148,10 +138,6 @@ public class SendgridService {
             }
         }
 
-
-
-        //mail.addAttachments(attachments);
-        //mail.addAttachments(attachments);
         log.info("<<<<<<<<<<<>>>>>>>>>>   before sending email for case : {}", caseData.getHyphenatedCaseRef());
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
