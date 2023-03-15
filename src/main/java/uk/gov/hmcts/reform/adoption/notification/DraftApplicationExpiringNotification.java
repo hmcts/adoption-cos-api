@@ -49,13 +49,16 @@ public class DraftApplicationExpiringNotification implements ApplicantNotificati
         final LanguagePreference applicant1LanguagePreference = caseData.getApplicant1().getLanguagePreference();
 
         Map<String, Object> templateVars = templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2());
-        notificationService.sendEmail(
-            applicant1Email,
-            CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT,
-            templateVars,
-            applicant1LanguagePreference != null
-                ? applicant1LanguagePreference : LanguagePreference.ENGLISH
-        );
+        if (StringUtils.isNotBlank(applicant1Email)) {
+            notificationService.sendEmail(
+                applicant1Email,
+                CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT,
+                templateVars,
+                applicant1LanguagePreference != null
+                    ? applicant1LanguagePreference : LanguagePreference.ENGLISH
+            );
+        }
+
         log.info("notification sent to applicant 1 : {}", id);
 
         if (StringUtils.isNotBlank(applicant2Email)) {
@@ -67,6 +70,16 @@ public class DraftApplicationExpiringNotification implements ApplicantNotificati
                 templateVars,
                 applicant2LanguagePreference != null
                     ? applicant2LanguagePreference : LanguagePreference.ENGLISH
+            );
+        }
+        if (StringUtils.isEmpty(applicant1Email) && StringUtils.isEmpty(applicant2Email)) {
+            final String defaultEmailAddress = caseData.getApplicant1().getEmail();
+            notificationService.sendEmail(
+                defaultEmailAddress,
+                CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT,
+                templateVars,
+                applicant1LanguagePreference != null
+                    ? applicant1LanguagePreference : LanguagePreference.ENGLISH
             );
         }
     }
