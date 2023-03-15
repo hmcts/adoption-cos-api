@@ -14,7 +14,7 @@ java:
     LA_PORTAL_BASEURL: https://adoption-web-pr-956.service.core-compute-preview.internal/la-portal/kba-case-ref
   devmemoryRequests: 1024Mi
   devcpuRequests: "500m"
-  devmemoryLimits: 1024Mi
+  devmemoryLimits: 1527Mi
   devcpuLimits: "2500m"
 
   keyVaults:
