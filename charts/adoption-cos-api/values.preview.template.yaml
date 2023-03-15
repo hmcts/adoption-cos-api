@@ -12,7 +12,7 @@ java:
     APPLICATIONINSIGHTS_CONNECTION_STRING: ${APP_INSIGHTS_CONNECTION_KEY}
     MULTI_CHILDREN_CUI_URL: https://adoption-web-pr-956.service.core-compute-preview.internal/new-application-redirect
     LA_PORTAL_BASEURL: https://adoption-web-pr-956.service.core-compute-preview.internal/la-portal/kba-case-ref
-  devmemoryRequests: 1024Mi
+  devmemoryRequests: 1537Mi
   devcpuRequests: "500m"
   devmemoryLimits: 1Gi
   devcpuLimits: "2500m"
