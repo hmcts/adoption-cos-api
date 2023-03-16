@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -65,6 +66,7 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
      * @see Thread#run()
      */
     @Override
+    @Scheduled(cron = "0 0/6 * 1/1 * ?")
     public void run() {
 
         final User user = idamService.retrieveSystemUpdateUserDetails();
