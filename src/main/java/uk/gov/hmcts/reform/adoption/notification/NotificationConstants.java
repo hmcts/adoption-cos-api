@@ -16,6 +16,30 @@ public final class NotificationConstants {
 
     public static final String ADOPTION_CUI_MULTI_CHILDREN_URL = "signInAdoptionUrlForMultipleChildren";
 
+    public static final String DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 = "Draft adoption application Court case ref: ";
+
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 = "Draft adoption application Court case ref: ";
+
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2 = " Child's name: ";
+
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE = "text/html";
+
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY = "From,\n"
+        + "\n"
+        + "The Adoption Service\n"
+        + "HM Courts and Tribunals Service\n"
+        + "Telephone: 01634 887900\n"
+        + "Monday to Friday 9am to 5pm\n"
+        + "Email: <a href = \"mailto: adoptionproject@justice.gov.uk\">adoptionproject@justice.gov.uk</a>  "
+        + "This is an automated message. Please don’t reply to this email.";
+
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_ENDPOINT = "mail/send";
+
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_DISPOSITION_ATTACHMENT = "attachment";
+
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_ATTACHMENT_MIME_TYPE = "application/pdf";
+
+
     private NotificationConstants() {
     }
 }
