@@ -12,7 +12,7 @@ class SwaggerPublisherTest {
 
     @Test
     public void testHealthEndpoint() {
-        String  testUrl = "http://adoption-cos-api-aat.service.core-compute-aat.internal";
+        String  testUrl = "http://adoption-cos-api-aat.aat.platform.hmcts.net";
         Assert.assertTrue(true);
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured

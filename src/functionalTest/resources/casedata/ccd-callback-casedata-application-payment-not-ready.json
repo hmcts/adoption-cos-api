@@ -182,9 +182,9 @@
         "value": {
             "documentEmailContent": null,
             "documentLink": {
-                "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
+                "document_url": "http://dm-store-aat.aat.platform.hmcts.net/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
                 "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-                "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
+                "document_binary_url": "http://dm-store-aat.aat.platform.hmcts.net/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
             },
             "documentDateAdded": null,
             "documentComment": "Uploaded by applicant",
