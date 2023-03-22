@@ -31,7 +31,7 @@ public final class NotificationConstants {
         + "Telephone: 01634 887900<br>"
         + "Monday to Friday 9am to 5pm<br>"
         + "Email: <a href = \"mailto: adoptionproject@justice.gov.uk\">adoptionproject@justice.gov.uk</a>  <br>"
-        + "This is an automated message. Please don’t reply to this email.<br>";
+        + "This is an automated message. Please don’t reply to this email.";
 
     public static final String LOCAL_COURT_EMAIL_SENDGRID_ENDPOINT = "mail/send";
 

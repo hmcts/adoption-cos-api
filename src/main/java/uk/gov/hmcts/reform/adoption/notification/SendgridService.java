@@ -24,8 +24,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryMXBean;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
@@ -58,20 +56,12 @@ public class SendgridService {
     private String sendGridNotifyFromEmail;
 
     public void sendEmail(CaseData caseData, String subject, DocumentType documentType) throws IOException {
-
-        log.info("Heap Size Below-----------------");
-        int mb = 1024 * 1024;
-        MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
-        long xmx = memoryBean.getHeapMemoryUsage().getMax() / mb;
-        long xms = memoryBean.getHeapMemoryUsage().getInit() / mb;
-        log.info("Initial Memory (xms) : {}mb", xms);
-        log.info("Max Memory (xmx) : {}mb", xmx);
         log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
-
-
         Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
         Attachments attachments = new Attachments();
-        Mail mail = new Mail(new Email(sendGridNotifyFromEmail), subject, new Email("mohit.vijay@hmcts.net"), content);
+        log.info("For Testing Purpose, sendgrid email sent to address: {} ", caseData.getApplicant1().getEmailAddress());
+        log.info("For Actual Purpose, sendgrid email sent to address: {} ",caseData.getFamilyCourtEmailId());
+        Mail mail = new Mail(new Email(sendGridNotifyFromEmail), subject, new Email(caseData.getApplicant1().getEmailAddress()), content);
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
             .filter(item -> item.getDocumentType().equals(documentType))
             .findFirst().orElse(null);
