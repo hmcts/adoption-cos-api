@@ -18,20 +18,20 @@ public final class NotificationConstants {
 
     public static final String DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 = "Draft adoption application Court case ref: ";
 
-    public static final String LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 = "Draft adoption application Court case ref: ";
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 = "Adoption application Court case ref: ";
 
     public static final String LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2 = " Child's name: ";
 
     public static final String LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE = "text/html";
 
-    public static final String LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY = "From,\n"
-        + "\n"
-        + "The Adoption Service\n"
-        + "HM Courts and Tribunals Service\n"
-        + "Telephone: 01634 887900\n"
-        + "Monday to Friday 9am to 5pm\n"
-        + "Email: <a href = \"mailto: adoptionproject@justice.gov.uk\">adoptionproject@justice.gov.uk</a>  "
-        + "This is an automated message. Please don’t reply to this email.";
+    public static final String LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY = "From,<br>"
+        + "<br>"
+        + "The Adoption Service<br>"
+        + "HM Courts and Tribunals Service<br>"
+        + "Telephone: 01634 887900<br>"
+        + "Monday to Friday 9am to 5pm<br>"
+        + "Email: <a href = \"mailto: adoptionproject@justice.gov.uk\">adoptionproject@justice.gov.uk</a>  <br>"
+        + "This is an automated message. Please don’t reply to this email.<br>";
 
     public static final String LOCAL_COURT_EMAIL_SENDGRID_ENDPOINT = "mail/send";
 
