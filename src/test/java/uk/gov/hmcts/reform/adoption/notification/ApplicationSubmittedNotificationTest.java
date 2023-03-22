@@ -260,10 +260,6 @@ class ApplicationSubmittedNotificationTest {
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        /*when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
-        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);*/
-
         notification.sendToLocalCourtPostLocalAuthoritySubmission(data, 1234567890123456L);
 
         verify(notificationService).sendEmail(any(), any(), any(), any());

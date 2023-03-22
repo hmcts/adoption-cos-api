@@ -84,7 +84,6 @@ public class SendGridServiceTest {
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
 
-
         Response response = new Response();
         response.setStatusCode(200);
         Request request = new Request();
@@ -93,6 +92,5 @@ public class SendGridServiceTest {
         Assertions.assertThrows(IOException.class, () -> {
             sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
-        //verify(sendGrid,times(1)).api(request);
     }
 }

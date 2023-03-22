@@ -47,7 +47,7 @@ public class SendgridService {
     private CaseDocumentClient caseDocumentClient;
 
     @Autowired
-    IdamService idamService;
+    private IdamService idamService;
 
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
@@ -56,7 +56,7 @@ public class SendgridService {
     private String sendGridNotifyFromEmail;
 
     public void sendEmail(CaseData caseData, String subject, DocumentType documentType) throws IOException {
-        log.info("<<<<<<<<<<<>>>>>>>>>>   Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
+        log.info("Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
         Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
         Attachments attachments = new Attachments();
         log.info("For Testing Purpose, sendgrid email sent to address: {} ", caseData.getApplicant1().getEmailAddress());
@@ -92,12 +92,12 @@ public class SendgridService {
         if (caseData.getLaDocumentsUploaded() != null) {
             List<AdoptionDocument> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
                 .collect(Collectors.toList());
-            log.info("<<<<<<<>>>>>>  Uploaded Documents size:  {}", uploadedDocumentsUrls.size());
+            log.info("Uploaded Documents size:  {}", uploadedDocumentsUrls.size());
             for (AdoptionDocument item : uploadedDocumentsUrls) {
                 String url = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
                 ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary(
                     authorisation, serviceAuthorization, UUID.fromString(url));
-                log.info("<<<<<<<---------->>>>>>  After calling caseDocumentClient "
+                log.info("After calling caseDocumentClient "
                              + "service with status code {}:", resource.getStatusCode());
                 Resource uploadedDocument = resource.getBody();
                 if (uploadedDocument != null) {
@@ -121,7 +121,7 @@ public class SendgridService {
             }
         }
 
-        log.info("<<<<<<<<<<<>>>>>>>>>>   before sending email for case : {}", caseData.getHyphenatedCaseRef());
+        log.info("before sending email for case : {}", caseData.getHyphenatedCaseRef());
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
         try {

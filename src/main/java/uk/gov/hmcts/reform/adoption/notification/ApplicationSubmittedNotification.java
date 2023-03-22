@@ -172,7 +172,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         );
 
         try {
-            log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method inside "
+            log.info("Calling SendGrid method inside "
                          + "sendToLocalCourt for case : {}", id);
             String subject = DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + caseData.getHyphenatedCaseRef()
                 + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
@@ -257,7 +257,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         );
 
         try {
-            log.info("<<<<<<<<<<<>>>>>>>>>>   Calling SendGrid method inside "
+            log.info("Calling SendGrid method inside "
                          + "sendToLocalCourtPostLocalAuthoritySubmission for case : {}", id);
             String subject = LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + caseData.getHyphenatedCaseRef()
                 + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
