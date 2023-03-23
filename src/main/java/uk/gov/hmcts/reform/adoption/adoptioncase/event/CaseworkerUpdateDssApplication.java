@@ -9,7 +9,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
