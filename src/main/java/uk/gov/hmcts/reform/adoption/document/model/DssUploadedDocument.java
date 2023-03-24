@@ -8,8 +8,7 @@ import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 
 import java.util.List;
 
@@ -24,17 +23,17 @@ public class DssUploadedDocument {
         label = "Documents generated",
         typeOverride = FieldType.Collection,
         typeParameterOverride = "DssDocumentInfo",
-        access = {CollectionAccess.class}
+        access = {CaseworkerAccess.class}
     )
     private List<ListValue<DssDocumentInfo>> dssDocuments;
 
     @CCD(
-        access = {DefaultAccess.class}
+        access = {CaseworkerAccess.class}
     )
     private String dssAdditionalCaseInformation;
 
     @CCD(
-        access = {DefaultAccess.class}
+        access = {CaseworkerAccess.class}
     )
     private String dssCaseUpdatedBy;
 

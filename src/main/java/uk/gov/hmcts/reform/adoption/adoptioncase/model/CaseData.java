@@ -314,7 +314,7 @@ public class CaseData {
         label = "Uploaded DSS Documents",
         typeOverride = Collection,
         typeParameterOverride = "DssUploadedDocument",
-        access = {DefaultAccess.class}
+        access = {CaseworkerAccess.class}
     )
     private List<ListValue<DssUploadedDocument>> uploadedDssDocuments;
 
