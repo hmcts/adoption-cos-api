@@ -22,7 +22,7 @@ plugins {
   id 'idea'
   id 'pmd'
   id 'jacoco'
-  id 'org.owasp.dependencycheck' version '7.1.0.1'
+  id 'org.owasp.dependencycheck' version '8.0.2'
   id 'org.sonarqube' version '3.3'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.7.0'
@@ -314,7 +314,7 @@ ext.libraries = [
 dependencies {
 // uncomment for local version
 //implementation group: 'com.github.hmcts', name: 'ccd-config-generator', version: 'DEV-SNAPSHOT'
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.15'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.21'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: versions.springBoot
@@ -341,8 +341,8 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.63'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.63'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.69'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.69'
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
