@@ -288,7 +288,7 @@ def versions = [
   awaitility        : '1.7.0',
   jackson           : '2.14.0-rc1',
   junit             : '5.8.1',
-  junitPlatform     : '1.8.2',
+  junitPlatform     : '1.9.2',
   lombok            : '1.18.20',
   reformsJavaLogging: '5.1.7',
   springBoot        : springBoot.class.package.implementationVersion,
@@ -382,7 +382,7 @@ dependencies {
   contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
 
   contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
-  contractTestRuntime "org.junit.platform:junit-platform-commons:1.8.1"
+  contractTestRuntime "org.junit.platform:junit-platform-commons:1.9.2"
   contractTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '1.32') {
     force = true
   }
