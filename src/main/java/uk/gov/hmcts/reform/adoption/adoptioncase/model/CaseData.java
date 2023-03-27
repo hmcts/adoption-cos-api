@@ -806,6 +806,20 @@ public class CaseData {
     )
     private List<ListValue<DssDocumentInfo>> dssDocuments;
 
+    @CCD(
+            access = { DefaultAccess.class}
+    )
+    private String dssAdditionalCaseInformation;
+
+    @CCD(
+            access = { DefaultAccess.class}
+    )
+    private String dssHeaderDetails;
+
+    @CCD(
+            access = { DefaultAccess.class}
+    )
+    private String dssCaseUpdatedBy;
     private String seekFurtherInformationDocumentSubmitterName;
 
     private YesOrNo seekFurtherInformationAdopOrLaSelected;
