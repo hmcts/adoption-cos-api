@@ -59,9 +59,9 @@ public class SendgridService {
         log.info("Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
         Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
         Attachments attachments = new Attachments();
-        log.info("For Testing Purpose, sendgrid email sent to address: {} ", caseData.getApplicant1().getEmailAddress());
-        log.info("For Actual Purpose, sendgrid email sent to address: {} ",caseData.getFamilyCourtEmailId());
-        Mail mail = new Mail(new Email(sendGridNotifyFromEmail), subject, new Email(caseData.getApplicant1().getEmailAddress()), content);
+        //log.info("For Testing Purpose, sendgrid email sent to address: {} ", caseData.getApplicant1().getEmailAddress());
+        log.info("Sendgrid email sent to court address: {} ",caseData.getFamilyCourtEmailId());
+        Mail mail = new Mail(new Email(sendGridNotifyFromEmail), subject, new Email(caseData.getFamilyCourtEmailId()), content);
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
             .filter(item -> item.getDocumentType().equals(documentType))
             .findFirst().orElse(null);
