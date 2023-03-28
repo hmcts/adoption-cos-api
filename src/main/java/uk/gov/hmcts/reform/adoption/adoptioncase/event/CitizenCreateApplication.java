@@ -103,10 +103,9 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         data.setDssQuestion1("First Name");
         data.setDssQuestion2("Last Name");
         data.setDssQuestion3("Date of Birth");
-        data.setDssQuestion4("Test");
         data.setDssAnswer1("case_data.childrenFirstName");
         data.setDssAnswer2("case_data.childrenLastName");
         data.setDssAnswer3("case_data.childrenDateOfBirth");
-        data.setDssAnswer4("case_data.otherAdoptionAgencyAddress.country");
+        data.setDssHeaderDetails("Child Details");
     }
 }
