@@ -22,8 +22,6 @@ import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.idam.client.models.User;
-import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
@@ -34,7 +32,6 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,7 +43,6 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.APPLICATION_REFERENCE;
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION_RESPONSE_DATE;
-//import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.*;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED;
@@ -86,6 +82,9 @@ class ApplicationSubmittedNotificationTest {
 
     @InjectMocks
     private ApplicationSubmittedNotification notification;
+
+    @Mock
+    SendgridService sendgridService;
 
 
     @Test
@@ -254,12 +253,13 @@ class ApplicationSubmittedNotificationTest {
         data.setDocumentsGenerated(listOfUploadedDocument);
         data.setFamilyCourtEmailId(TEST_USER_EMAIL);
         data.setDueDate(LocalDate.of(2021, 4, 21));
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
-        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
-
         notification.sendToLocalCourtPostLocalAuthoritySubmission(data, 1234567890123456L);
 
         verify(notificationService).sendEmail(any(), any(), any(), any());

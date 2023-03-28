@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.adoption.notification;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -11,24 +10,18 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
 import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
-import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.APPLICATION_DOCUMENT_URL;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DOCUMENT;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DOCUMENT_EXISTS;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DOCUMENT_EXISTS_CHECK;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DATE_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.HYPHENATED_REF;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
@@ -37,16 +30,19 @@ import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN;
+import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_COURT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_COURT_APPLICATION_SUBMITTED_BY_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.ADOPTION_CUI_MULTI_CHILDREN_URL;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.CHILD_FULL_NAME;
-import static uk.gov.service.notify.NotificationClient.prepareUpload;
 
 
 @Component
@@ -71,6 +67,9 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Autowired
     private CaseDocumentClient caseDocumentClient;
+
+    @Autowired
+    SendgridService sendgridService;
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
@@ -164,6 +163,26 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     @Override
     public void sendToLocalCourt(final CaseData caseData, final Long id) {
         log.info("Sending application submitted notification to local authority for case : {}", id);
+
+        notificationService.sendEmail(
+            caseData.getFamilyCourtEmailId(),
+            LOCAL_COURT_APPLICATION_SUBMITTED,
+            templateVarsLocalCourt(caseData, id),
+            LanguagePreference.ENGLISH
+        );
+
+        try {
+            log.info("Calling SendGrid method inside "
+                         + "sendToLocalCourt for case : {}", id);
+            String subject = DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + caseData.getHyphenatedCaseRef()
+                + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
+                + caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName();
+            sendgridService.sendEmail(caseData, subject, caseData.getApplicant1().getLanguagePreference()
+                .equals(LanguagePreference.ENGLISH) ? DocumentType.APPLICATION_SUMMARY_EN : DocumentType.APPLICATION_SUMMARY_CY);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private Map<String, Object> templateVars(CaseData caseData, Long id, Applicant applicant1, Applicant applicant2) {
@@ -229,80 +248,34 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     public void sendToLocalCourtPostLocalAuthoritySubmission(final CaseData caseData, final Long id)
         throws NotificationClientException, IOException {
         log.info("Sending notification to Local Courts after application submitted by Local Authority for case : {}", id);
+
         notificationService.sendEmail(
             caseData.getFamilyCourtEmailId(),
             LOCAL_COURT_APPLICATION_SUBMITTED_BY_LOCAL_AUTHORITY,
             templateVarsLocalCourt(caseData, id),
             LanguagePreference.ENGLISH
         );
+
+        try {
+            log.info("Calling SendGrid method inside "
+                         + "sendToLocalCourtPostLocalAuthoritySubmission for case : {}", id);
+            String subject = LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + caseData.getHyphenatedCaseRef()
+                + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
+                + caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName();
+            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private Map<String, Object> templateVarsLocalCourt(CaseData caseData, Long id)
-        throws IOException, NotificationClientException {
+    private Map<String, Object> templateVarsLocalCourt(CaseData caseData, Long id) {
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
-        templateVars.put(CHILD_FULL_NAME, caseData.getChildren().getFirstName() + " " + caseData.getChildren().getLastName());
-        /*templateVars.put(DATE_SUBMITTED, Optional.ofNullable(caseData.getApplication().getDateSubmitted())
-            .orElse(LocalDateTime.now()).format(DATE_TIME_FORMATTER));*/
-        int count = 0;
-        for (count = 1; count < 11; count++) {
-            templateVars.put(DOCUMENT_EXISTS + count, NO);
-            templateVars.put(DOCUMENT + count, StringUtils.EMPTY);
-        }
-        templateVars.put(DOCUMENT_EXISTS_CHECK, NO);
-        final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
-        String serviceAuthorization = authTokenGenerator.generate();
-        AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
-            .filter(item -> item.getDocumentType().equals(DocumentType.APPLICATION_LA_SUMMARY_EN))
-            .findFirst().orElse(null);
-        if (adoptionDocument != null) {
-            log.info("Adoption document with file name : {} and fileID : {}",
-                    adoptionDocument.getDocumentFileName(),
-                     adoptionDocument.getDocumentFileId());
-            Resource document = caseDocumentClient.getDocumentBinary(authorisation,
-                                                                     serviceAuthorization,
-                                                                     UUID.fromString(adoptionDocument.getDocumentFileId())).getBody();
-            if (document != null) {
-                log.info("Document found with fileID : {}", adoptionDocument.getDocumentFileId());
-                try (InputStream inputStream = document.getInputStream()) {
-                    if (inputStream != null) {
-                        byte[] documentContents = inputStream.readAllBytes();
-                        templateVars.put(APPLICATION_DOCUMENT_URL, prepareUpload(documentContents));
-                        log.info("APPLICATION_DOCUMENT_URL : {}", templateVars.get(APPLICATION_DOCUMENT_URL));
-                    }
-                } catch (Exception e) {
-                    log.error("Document could not be read");
-                }
-            } else {
-                log.info("Document not found with fileID : {}", adoptionDocument.getDocumentFileId());
-            }
-        }
-        if (caseData.getLaDocumentsUploaded() != null) {
-            List<String> uploadedDocumentsUrls = caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
-                .map(item -> StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/"))
-                .collect(Collectors.toList());
-
-            caseData.getLaDocumentsUploaded().stream().map(item -> item.getValue())
-                .map(item -> item.getDocumentFileName())
-                .forEach(item -> log.info("Uploaded File Name: : {}", item));
-
-            count = 1;
-            for (String item : uploadedDocumentsUrls) {
-                Resource uploadedDocument = caseDocumentClient.getDocumentBinary(authorisation,
-                                                                          serviceAuthorization,
-                                                                          UUID.fromString(item)).getBody();
-                if (uploadedDocument != null) {
-                    log.info("Document found with uuid : {}", UUID.fromString(item));
-                    byte[] uploadedDocumentContents = uploadedDocument.getInputStream().readAllBytes();
-                    templateVars.put(DOCUMENT_EXISTS_CHECK, YES);
-                    templateVars.put(DOCUMENT_EXISTS + count, YES);
-                    templateVars.put(DOCUMENT + count++, prepareUpload(uploadedDocumentContents));
-                } else {
-                    log.info("Document not found with uuid : {}", UUID.fromString(item));
-                }
-            }
-        }
+        templateVars.put(CHILD_FULL_NAME, caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName());
+        templateVars.put(DATE_SUBMITTED, Optional.ofNullable(caseData.getApplication().getDateSubmitted())
+            .orElse(LocalDate.now()).format(DATE_TIME_FORMATTER));
+        templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
         return templateVars;
     }
 
