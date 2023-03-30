@@ -162,7 +162,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Override
     public void sendToLocalCourt(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to local authority for case : {}", id);
+        log.info("Sending application submitted notification to local court for case : {}", id);
 
         notificationService.sendEmail(
             caseData.getFamilyCourtEmailId(),
@@ -180,7 +180,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             sendgridService.sendEmail(caseData, subject, caseData.getApplicant1().getLanguagePreference()
                 .equals(LanguagePreference.ENGLISH) ? DocumentType.APPLICATION_SUMMARY_EN : DocumentType.APPLICATION_SUMMARY_CY);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
 
     }
@@ -264,7 +264,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 + caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName();
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
     }
 
