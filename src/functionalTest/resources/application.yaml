@@ -55,18 +55,18 @@ idam:
 
 core_case_data:
   api:
-    url: ${CASE_DATA_STORE_BASEURL:http://ccd-data-store-api-aat.aat.platform.hmcts.net}
+    url: ${CASE_DATA_STORE_BASEURL:http://ccd-data-store-api-aat.service.core-compute-aat.internal}
   search:
     page_size: ${CCD_SEARCH_PAGE_SIZE:100}
 
 doc_assembly:
-  url: ${DOC_ASSEMBLY_URL:http://dg-docassembly-aat.aat.platform.hmcts.net}
+  url: ${DOC_ASSEMBLY_URL:http://dg-docassembly-aat.service.core-compute-aat.internal}
 
 document_management:
-  url: ${DOCUMENT_MANAGEMENT_URL:http://dm-store-aat.aat.platform.hmcts.net}
+  url: ${DOCUMENT_MANAGEMENT_URL:http://dm-store-aat.service.core-compute-aat.internal}
 
 case_document_am:
-  url: ${CASE_DOCUMENT_AM_BASEURL:http://ccd-case-document-am-api-aat.aat.platform.hmcts.net}
+  url: ${CASE_DOCUMENT_AM_BASEURL:http://ccd-case-document-am-api-aat.service.core-compute-aat.internal}
 
 docmosis:
   templates:
@@ -76,7 +76,7 @@ docmosis:
       ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-WEL-00955.docx
 
 send-letter:
-  url: ${SEND_LETTER_SERVICE_BASEURL:http://rpe-send-letter-service-aat.aat.platform.hmcts.net}
+  url: ${SEND_LETTER_SERVICE_BASEURL:http://rpe-send-letter-service-aat.service.core-compute-aat.internal}
 
 bulk-action:
   min-cases: ${BULK_ACTION_BATCH_SIZE_MIN:30}
@@ -84,4 +84,4 @@ bulk-action:
 
 prd:
   api:
-    url: ${PRD_API_BASEURL:http://rd-professional-api-aat.aat.platform.hmcts.net}
+    url: ${PRD_API_BASEURL:http://rd-professional-api-aat.service.core-compute-aat.internal}

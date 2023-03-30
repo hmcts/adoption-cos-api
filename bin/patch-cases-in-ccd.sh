@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 IDAM_API_BASE_URL=https://idam-api.aat.platform.hmcts.net
-SERVICE_AUTH_PROVIDER_API_BASE_URL=http://rpe-service-auth-provider-aat.aat.platform.hmcts.net
-CCD_BASE_URL=http://ccd-data-store-api-aat.aat.platform.hmcts.net
+SERVICE_AUTH_PROVIDER_API_BASE_URL=http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+CCD_BASE_URL=http://ccd-data-store-api-aat.service.core-compute-aat.internal
 OAUTH2_CLIENT_SECRET=$(az keyvault secret show --vault-name adoption-aat -o tsv --query value --name idam-secret)
 REDIRECT_URI=http://localhost:3000/oauth2/callback
 
@@ -50,5 +50,5 @@ for user in $users; do
 
   echo "Patching ccd case $caseId for $userId"
 
-  curl --insecure --fail --show-error --silent -X POST http://ccd-data-store-api-aat.aat.platform.hmcts.net/citizens/$userId/jurisdictions/ADOPTION/case-types/A58/cases/$caseId/events -H "Authorization: Bearer $idamToken" -H "Content-Type: application/json" -H "ServiceAuthorization: Bearer $serviceToken" -d '{"event_token" : "'${eventToken}'","data":{"applicant1FirstName": "'${firstName}'","applicant1LastName":"'${lastName}'","applicant1Email" : "'${email}'"},"event" :{"id" :"patchCase"}}'
+  curl --insecure --fail --show-error --silent -X POST http://ccd-data-store-api-aat.service.core-compute-aat.internal/citizens/$userId/jurisdictions/ADOPTION/case-types/A58/cases/$caseId/events -H "Authorization: Bearer $idamToken" -H "Content-Type: application/json" -H "ServiceAuthorization: Bearer $serviceToken" -d '{"event_token" : "'${eventToken}'","data":{"applicant1FirstName": "'${firstName}'","applicant1LastName":"'${lastName}'","applicant1Email" : "'${email}'"},"event" :{"id" :"patchCase"}}'
 done
