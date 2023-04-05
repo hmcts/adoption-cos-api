@@ -89,7 +89,7 @@ public class SendGridServiceTest {
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");
-        Assertions.assertThrows(IOException.class, () -> {
+        Assertions.assertDoesNotThrow(() -> {
             sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
     }

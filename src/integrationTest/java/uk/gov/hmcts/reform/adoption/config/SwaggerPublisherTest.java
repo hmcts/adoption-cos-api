@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.adoption.config;
 
 import io.restassured.RestAssured;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 
 /**
  * Built-in feature which saves service's swagger specs in temporary directory.

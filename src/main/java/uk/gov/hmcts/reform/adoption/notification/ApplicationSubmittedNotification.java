@@ -8,10 +8,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
-import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
@@ -61,12 +59,6 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Autowired
     private EmailTemplatesConfig emailTemplatesConfig;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
-
-    @Autowired
-    private CaseDocumentClient caseDocumentClient;
 
     @Autowired
     SendgridService sendgridService;
