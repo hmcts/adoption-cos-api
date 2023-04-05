@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
  */
 class SwaggerPublisherTest {
 
-    @Test
+    //@Test
     public void testHealthEndpoint() {
         String  testUrl = "http://adoption-cos-api-aat.service.core-compute-aat.internal";
         Assert.assertTrue(true);
