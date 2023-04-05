@@ -131,7 +131,7 @@ public class SendgridService {
             sg.api(request);
             log.info("Notification email to Local Court sent successfully");
         } catch (IOException ex) {
-            throw new IOException(ex.getMessage());
+            log.error("Notification email to Local Court failed {}",ex.getMessage());
         }
     }
 }

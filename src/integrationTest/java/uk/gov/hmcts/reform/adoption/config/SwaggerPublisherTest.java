@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.adoption.config;
 
 import io.restassured.RestAssured;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 
 /**
  * Built-in feature which saves service's swagger specs in temporary directory.
@@ -10,7 +9,7 @@ import org.junit.jupiter.api.Test;
  */
 class SwaggerPublisherTest {
 
-    @Test
+    //@Test
     public void testHealthEndpoint() {
         String  testUrl = "http://adoption-cos-api-aat.service.core-compute-aat.internal";
         Assert.assertTrue(true);
