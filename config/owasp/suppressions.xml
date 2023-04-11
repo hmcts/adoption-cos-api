@@ -34,4 +34,9 @@
         <cve>CVE-2016-1000027</cve>
         <cve>CVE-2022-45688</cve>
     </suppress>
+  <suppress until="2023-04-18">
+    <notes>
+    </notes>
+    <cve>CVE-2023-20860</cve>
+  </suppress>
 </suppressions>
