@@ -60,7 +60,8 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
         final Long caseId = details.getId();
 
         log.info("Local Authority Submit Application about to submit callback invoked CaseID: {}", caseId);
-
+        log.info("Invoking Notifications for CaseID: {}", details.getId());
+        sendNotificationService.sendNotifications(details);
         final CaseDetails<CaseData, State> updatedCaseDetails = submissionService.laSubmitApplication(details);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(updatedCaseDetails.getData())
