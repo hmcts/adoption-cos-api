@@ -116,6 +116,7 @@ public class SendgridService {
                     }
 
                     attachments.setContent(data);
+                    log.info("Uploaded document file name: {}", item.getDocumentFileName());
                     attachments.setFilename(item.getDocumentFileName());
                     attachments.setDisposition(LOCAL_COURT_EMAIL_SENDGRID_DISPOSITION_ATTACHMENT);
                     mail.addAttachments(attachments);
