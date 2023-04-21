@@ -168,6 +168,7 @@ ccd:
   postgresql:
     persistence:
       enabled: false
+      
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
@@ -182,6 +183,33 @@ ccd:
         value: ""
     persistence:
       enabled: false
+
+  logstash:
+    image: hmctspublic.azurecr.io/ccd/logstash
+    imageTag: "latest"
+    logstashJavaOpts: -Xmx1g -Xms512M
+    extraEnvs:
+    extraEnvs:
+      - name: DATA_STORE_URL
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DATA_STORE_USER
+        value: ${POSTGRES_USER}
+      - name: DATA_STORE_PASS
+        value: ${POSTGRES_PASSWORD}
+      - name: DB_URL
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DB_USER
+        value: ${POSTGRES_USER}
+      - name: DB_PWD
+        value: ${POSTGRES_PASSWORD}
+      - name: ES_HOSTS
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_DATA_NODES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
 
 xui-webapp:
   enabled: true
