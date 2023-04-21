@@ -60,17 +60,20 @@ public class SendgridService {
         Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
         Attachments attachments = new Attachments();
         //log.info("For Testing Purpose, sendgrid email sent to address: {} ", caseData.getApplicant1().getEmailAddress());
-        log.info("Sendgrid email sent to court address: {} ",caseData.getFamilyCourtEmailId());
+        log.info("Sendgrid email to be sent to court address: {} ",caseData.getFamilyCourtEmailId());
         Mail mail = new Mail(new Email(sendGridNotifyFromEmail), subject, new Email(caseData.getFamilyCourtEmailId()), content);
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(item -> item.getValue())
             .filter(item -> item.getDocumentType().equals(documentType))
             .findFirst().orElse(null);
+        log.info("Adoption Document with file ID: {}", adoptionDocument.getDocumentFileId());
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
         String serviceAuthorization = authTokenGenerator.generate();
+        log.info("About to call getDocumentBinary method to fetch document binary");
         if (adoptionDocument != null) {
             Resource document = caseDocumentClient.getDocumentBinary(authorisation,
                                                                      serviceAuthorization,
                                                                      UUID.fromString(adoptionDocument.getDocumentFileId())).getBody();
+            log.info("call to getDocumentBinary method successful");
             String data = null;
             try (InputStream inputStream = document.getInputStream()) {
                 if (inputStream != null) {
@@ -95,6 +98,7 @@ public class SendgridService {
             log.info("Uploaded Documents size:  {}", uploadedDocumentsUrls.size());
             for (AdoptionDocument item : uploadedDocumentsUrls) {
                 String url = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
+                log.info("About to call getDocumentBinary method to fetch uploaded document(s) binary");
                 ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary(
                     authorisation, serviceAuthorization, UUID.fromString(url));
                 log.info("After calling caseDocumentClient "
