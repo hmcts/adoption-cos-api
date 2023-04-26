@@ -199,7 +199,7 @@ class CaseEventCommonMethodsTest {
         prepareReplyMessageDynamicList(caseData, getCaseworkerUser());
         caseData.getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "Test"));
         CaseEventCommonMethods.updateMessageList(caseData, getCaseworkerUser());
-        assertThat(caseData.getListOfOpenMessages().size()).isZero();
+        assertThat(caseData.getListOfOpenMessages()).isEmpty();
     }
 
 
