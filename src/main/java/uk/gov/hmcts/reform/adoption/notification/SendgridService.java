@@ -64,7 +64,6 @@ public class SendgridService {
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(ListValue::getValue)
             .filter(item -> item.getDocumentType().equals(documentType))
             .findFirst().orElse(null);
-        log.info("Adoption Document with file ID: {}", adoptionDocument.getDocumentFileId());
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
         String serviceAuthorization = authTokenGenerator.generate();
         log.info("About to call getDocumentBinary method to fetch document binary");
