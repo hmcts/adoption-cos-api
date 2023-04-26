@@ -27,10 +27,10 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CommonPageBuilder
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
-public class CommonPageBuilderTest {
+class CommonPageBuilderTest {
 
     @Test
-    public void sendMessageMidEvent_OK() {
+    void sendMessageMidEvent_OK() {
         var caseData = getCaseDetails();
         List<ListValue<AdoptionUploadDocument>> applicationDocumentCategory = new ArrayList<>();
         caseData.getData().setApplicationDocumentsCategory(archiveListHelper(applicationDocumentCategory,

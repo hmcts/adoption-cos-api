@@ -94,7 +94,7 @@ class CaseWorkerManageHearingTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getNewHearings().size()).isZero();
+        assertThat(result.getData().getNewHearings()).isEmpty();
         assertThat(result.getData().getVacatedHearings()).hasSize(1);
     }
 
@@ -104,7 +104,7 @@ class CaseWorkerManageHearingTest {
         CaseData data = caseDetails.getData();
         data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getNewHearings().size()).isZero();
+        assertThat(result.getData().getNewHearings()).isEmpty();
         assertThat(result.getData().getAdjournHearings()).hasSize(1);
     }
 

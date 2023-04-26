@@ -68,7 +68,7 @@ class CaseworkerAddNoteTest {
 
 
     @Test
-    public void shouldSuccessfullyAddCaseNoteToCaseDataWhenThereAreNoExistingCaseNotes() {
+    void shouldSuccessfullyAddCaseNoteToCaseDataWhenThereAreNoExistingCaseNotes() {
         var caseDetails = getCaseDetails();
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
@@ -85,7 +85,7 @@ class CaseworkerAddNoteTest {
     }
 
     @Test
-    public void shouldSuccessfullyAddCaseNoteToCaseDataWhenThereAreExistingCaseNotes() {
+    void shouldSuccessfullyAddCaseNoteToCaseDataWhenThereAreExistingCaseNotes() {
         var caseDetails = getCaseDetails();
 
         final var instant = Instant.now();

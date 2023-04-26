@@ -215,7 +215,7 @@ public class CaseworkerSendOrReplyTest {
         when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerSendOrReply.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(caseDetails.getData().getListOfOpenMessages()).hasSize(0);
+        assertThat(caseDetails.getData().getListOfOpenMessages()).isEmpty();
         assertThat(caseDetails.getData().getClosedMessages()).hasSize(1);
 
     }
