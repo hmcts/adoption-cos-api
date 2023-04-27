@@ -159,7 +159,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         notificationService.sendEmail(
             caseData.getFamilyCourtEmailId(),
             LOCAL_COURT_APPLICATION_SUBMITTED,
-            templateVarsLocalCourt(caseData, id),
+            templateVarsLocalCourt(caseData),
             LanguagePreference.ENGLISH
         );
 
@@ -207,6 +207,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         return templateVars;
     }
 
+    @Override
     public void sendToApplicantsPostLocalAuthoritySubmission(CaseData caseData, Long caseId) {
         log.info("Sending Local Authority application submitted notification to applicants for case : {}", caseId);
 
@@ -244,7 +245,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         notificationService.sendEmail(
             caseData.getFamilyCourtEmailId(),
             LOCAL_COURT_APPLICATION_SUBMITTED_BY_LOCAL_AUTHORITY,
-            templateVarsLocalCourt(caseData, id),
+            templateVarsLocalCourt(caseData),
             LanguagePreference.ENGLISH
         );
 
@@ -260,7 +261,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         }
     }
 
-    private Map<String, Object> templateVarsLocalCourt(CaseData caseData, Long id) {
+    private Map<String, Object> templateVarsLocalCourt(CaseData caseData) {
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());

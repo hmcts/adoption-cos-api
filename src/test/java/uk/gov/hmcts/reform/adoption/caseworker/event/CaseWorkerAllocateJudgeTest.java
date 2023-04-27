@@ -80,7 +80,7 @@ public class CaseWorkerAllocateJudgeTest {
     }
 
     @Test
-    public void shouldSuccessfullyAllocateJudgeToCase() {
+    void shouldSuccessfullyAllocateJudgeToCase() {
         var caseDetails = getCaseDetails();
         var result = caseWorkerAllocateJudge.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getAllocatedJudge()).isNotNull();

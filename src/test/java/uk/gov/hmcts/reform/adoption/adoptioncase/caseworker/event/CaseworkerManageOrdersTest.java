@@ -97,10 +97,10 @@ class CaseworkerManageOrdersTest {
         var caseDetails = getCaseDetails();
         caseDetails.getData().getManageOrdersData().setManageOrderType(CASE_MANAGEMENT_ORDER);
         var result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageOrderList().size()).isEqualTo(1);
+        assertThat(result.getData().getManageOrderList()).hasSize(1);
         caseDetails.getData().getManageOrdersData().setManageOrderType(CASE_MANAGEMENT_ORDER);
         result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageOrderList().size()).isEqualTo(2);
+        assertThat(result.getData().getManageOrderList()).hasSize(2);
         assertThat(result.getData().getDirectionsOrderList()).isNull();
         assertThat(result.getData().getAdoptionOrderList()).isNull();
         result.getData().getManageOrderList().forEach(listValueObj -> assertTrue(
@@ -115,7 +115,7 @@ class CaseworkerManageOrdersTest {
         caseDetails.getData().getDirectionsOrderData().setGeneralDirectionRecipientsList(null);
         var response = caseworkerManageOrders
             .midEventGeneralDirectionRecipients(caseDetails, caseDetails);
-        assertThat(response.getErrors().size()).isEqualTo(1);
+        assertThat(response.getErrors()).hasSize(1);
     }
 
     @Test
@@ -123,10 +123,10 @@ class CaseworkerManageOrdersTest {
         var caseDetails = getCaseDetails();
         caseDetails.getData().getManageOrdersData().setManageOrderType(GENERAL_DIRECTIONS_ORDER);
         var result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getDirectionsOrderList().size()).isEqualTo(1);
+        assertThat(result.getData().getDirectionsOrderList()).hasSize(1);
         caseDetails.getData().getManageOrdersData().setManageOrderType(GENERAL_DIRECTIONS_ORDER);
         result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getDirectionsOrderList().size()).isEqualTo(2);
+        assertThat(result.getData().getDirectionsOrderList()).hasSize(2);
         assertThat(result.getData().getManageOrderList()).isNull();
         assertThat(result.getData().getAdoptionOrderList()).isNull();
         result.getData().getDirectionsOrderList().forEach(listValueObj -> assertTrue(
@@ -138,10 +138,10 @@ class CaseworkerManageOrdersTest {
         var caseDetails = getCaseDetails();
         caseDetails.getData().getManageOrdersData().setManageOrderType(FINAL_ADOPTION_ORDER);
         var result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getAdoptionOrderList().size()).isEqualTo(1);
+        assertThat(result.getData().getAdoptionOrderList()).hasSize(1);
         caseDetails.getData().getManageOrdersData().setManageOrderType(FINAL_ADOPTION_ORDER);
         result = caseworkerManageOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getAdoptionOrderList().size()).isEqualTo(2);
+        assertThat(result.getData().getAdoptionOrderList()).hasSize(2);
         assertThat(result.getData().getDirectionsOrderList()).isNull();
         assertThat(result.getData().getManageOrderList()).isNull();
         result.getData().getAdoptionOrderList().forEach(listValueObj -> assertTrue(
@@ -149,7 +149,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsToBeAMandateSelection() {
+    void shouldValidateAdoptionOrderDataRecipientsToBeAMandateSelection() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA76(null);
         caseDetails.getData().getAdoptionOrderData().setRecipientsListA206(null);
@@ -158,7 +158,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableFirstApplicant() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableFirstApplicant() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplicant1(new Applicant());
         Set<AdoptionOrderData.RecipientsA76> recipients = new HashSet<>();
@@ -170,7 +170,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableSecondApplicant() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableSecondApplicant() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplicant2(new Applicant());
         Set<AdoptionOrderData.RecipientsA76> recipients = new HashSet<>();
@@ -182,7 +182,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableRespondentBirthMother() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableRespondentBirthMother() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setBirthMother(new Parent());
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
@@ -194,7 +194,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableRespondentBirthFather() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableRespondentBirthFather() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setBirthFather(new Parent());
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
@@ -206,7 +206,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableLegalGuardian() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableLegalGuardian() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsChildRepresentedByGuardian(YesOrNo.NO);
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
@@ -218,7 +218,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableChildsLA() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableChildsLA() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setChildSocialWorker(new SocialWorker());
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
@@ -230,7 +230,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableApplicantsLA() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableApplicantsLA() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setApplicantSocialWorker(new SocialWorker());
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
@@ -242,7 +242,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableAdopAgency() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableAdopAgency() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setAdopAgencyOrLA(new AdoptionAgencyOrLocalAuthority());
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
@@ -254,7 +254,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableOtherAdopAgency() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableOtherAdopAgency() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setHasAnotherAdopAgencyOrLAinXui(null);
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
@@ -270,7 +270,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateManageOrdersOrderDataRecipientsSelectionToBeAnApplicableOtherLA() {
+    void shouldValidateManageOrdersOrderDataRecipientsSelectionToBeAnApplicableOtherLA() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setLocalAuthority(null);
         Set<ManageOrdersData.Recipients> recipients = new HashSet<>();
@@ -283,7 +283,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableOtherParent() {
+    void shouldValidateAdoptionOrderDataRecipientsSelectionToBeAnApplicableOtherParent() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         caseDetails.getData().setIsThereAnyOtherPersonWithParentalResponsibility(null);
         Set<AdoptionOrderData.RecipientsA206> recipients = new HashSet<>();
@@ -299,7 +299,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateHearingDateToBeSpecifiedInTheFutureSelectedByUser() {
+    void shouldValidateHearingDateToBeSpecifiedInTheFutureSelectedByUser() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE);
@@ -309,7 +309,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldValidateValuesSelectedByUser() {
+    void shouldValidateValuesSelectedByUser() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(LIST_FOR_FIRST_HEARING);
@@ -325,7 +325,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithAll() {
+    void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithAll() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(LIST_FOR_FIRST_HEARING);
@@ -343,7 +343,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithModeOfHearing() {
+    void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithModeOfHearing() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE);
@@ -359,7 +359,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithHearingNoticesOptions() {
+    void shouldReturnErrorsIfHearingDateToBeSpecifiedInTheFutureAccompaniesWithHearingNoticesOptions() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         Set<ManageOrdersData.HearingNotices> hearingNotices = new HashSet<>();
         hearingNotices.add(LIST_FOR_FIRST_HEARING);
@@ -373,7 +373,7 @@ class CaseworkerManageOrdersTest {
     }
 
     @Test
-    public void shouldCreateDynamicList() {
+    void shouldCreateDynamicList() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
         AdoptionAgencyOrLocalAuthority adoptionAgencyOrLocalAuthority = new AdoptionAgencyOrLocalAuthority();
@@ -390,7 +390,7 @@ class CaseworkerManageOrdersTest {
         caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostTown("TEST_TOWN");
         caseData.getOtherAdoptionAgencyOrLA().getAgencyAddress().setPostCode("TEST_POST_CODE");
         caseData.getPlacementOfTheChildList();
-        assertThat(caseData.getPlacementOfTheChildList().getListItems().size()).isEqualTo(4);
+        assertThat(caseData.getPlacementOfTheChildList().getListItems()).hasSize(4);
     }
 
     /**
