@@ -13,11 +13,14 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
+import uk.gov.hmcts.reform.ccd.client.model.SubmittedCallbackResponse;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
@@ -50,8 +53,8 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
             .retries(120, 120)
             .grant(CREATE_READ_UPDATE, CITIZEN)
             .grant(READ, SUPER_USER, CASE_WORKER)
-            .grant(CREATE_READ_UPDATE, DISTRICT_JUDGE)
-            .aboutToSubmitCallback(this::aboutToSubmit);
+            .aboutToSubmitCallback(this::aboutToSubmit)
+            .submittedCallback(this::submitted);
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(final CaseDetails<CaseData, State> details,
@@ -93,12 +96,23 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
         }
 
         final CaseDetails<CaseData, State> updatedCaseDetails = submissionService.submitApplication(details);
-        final CaseDetails<CaseData, State> notificationSentUpdatedDetails = sendNotificationService.sendNotifications(
-            updatedCaseDetails);
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
-            .data(notificationSentUpdatedDetails.getData())
-            .state(notificationSentUpdatedDetails.getState())
+            .data(updatedCaseDetails.getData())
+            .state(updatedCaseDetails.getState())
             .build();
+    }
+
+    private SubmittedCallbackResponse submitted(CaseDetails<CaseData, State> details,
+                                                CaseDetails<CaseData, State> beforeDetails) {
+        if (EnumSet.of(Submitted).contains(details.getState())) {
+            log.info("Citizen submit application submitted callback invoked CaseID: {}", details.getId());
+            log.info("Invoking Notifications after citizen application submission for CaseID: {}", details.getId());
+            sendNotificationService.sendNotifications(
+                details);
+            log.info("Sent Notifications after citizen application submission for CaseID: {}", details.getId());
+        }
+        return SubmittedCallbackResponse.builder().build();
     }
 }
 
