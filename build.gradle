@@ -431,6 +431,8 @@ bootRun {
       systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
       systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
+      systemProperty 'SEND_GRID_API_KEY', getVaultSecret('send-grid-api-key')
+      systemProperty 'SEND_GRID_NOTIFY_FROM_EMAIL', getVaultSecret('sendgrid-notify-from-email')
       if (System.getenv("BOOT_RUN_DOCKER")) {
         systemProperty 'IDAM_API_BASEURL', 'http://localhost:5000'
         systemProperty 'CASE_DATA_STORE_BASEURL', 'http://localhost:4452'
@@ -466,6 +468,8 @@ functional {
       systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
       systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
+      systemProperty 'SEND_GRID_API_KEY', getVaultSecret('send-grid-api-key')
+      systemProperty 'SEND_GRID_NOTIFY_FROM_EMAIL', getVaultSecret('sendgrid-notify-from-email')
       secret("caseworker-username", "CASEWORKER_USERNAME")
       secret("caseworker-password", "CASEWORKER_PASSWORD")
       secret("s2s-secret", "S2S_SECRET_WEB")
