@@ -67,11 +67,10 @@ class CitizenAddPaymentTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
 
     @Test
-    void citizenAddPaymentConfigure() {
+    void citizenAddPaymentCSubmitted() {
         var caseDetails = getCaseDetails();
         caseDetails.setState(Submitted);
         SubmittedCallbackResponse submittedCallbackResponse = citizenAddPayment.submitted(caseDetails, caseDetails);
-        System.out.println(submittedCallbackResponse.toString());
         assertThat(submittedCallbackResponse).isNotNull();
     }
 
