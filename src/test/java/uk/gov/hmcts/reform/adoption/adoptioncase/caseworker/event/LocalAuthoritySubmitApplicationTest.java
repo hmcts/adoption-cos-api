@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.event.LocalAuthoritySubmitApplication.LOCAL_AUTHORITY_SUBMIT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
@@ -63,15 +64,9 @@ public class LocalAuthoritySubmitApplicationTest {
     @Test
     void localAuthoritySubmitApplicationAboutToSubmit() {
         var caseDetails = getCaseDetails();
-        /*List<ListValue<Payment>> payments = new ArrayList<>();
-        Payment payment = new Payment();
-        payment.setStatus(IN_PROGRESS);
-        ListValue<Payment> paymentListValue = ListValue.<Payment>builder().value(payment).build();
-        payments.add(paymentListValue);
-        caseDetails.getData().getApplication().setApplicationPayments(payments);*/
         when(submissionService.laSubmitApplication(caseDetails)).thenReturn(caseDetails);
         var result = localAuthoritySubmitApplication.aboutToSubmit(caseDetails,caseDetails);
-        //assertThat(result.getData().getStatus()).isEqualTo(AwaitingPayment);
+        assertThat(result.getState()).isEqualTo(LaSubmitted);
     }
 
     private CaseDetails<CaseData, State> getCaseDetails() {
