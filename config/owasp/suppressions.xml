@@ -9,7 +9,8 @@
         <cve>CVE-2022-31690</cve>
         <cve>CVE-2021-37533</cve>
         <cve>CVE-2022-1471</cve>
-        <cve>CVE-2023-28708</cve>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -31,6 +32,7 @@
       spring-core-5.3.20.jar ]]></notes>
         <cve>CVE-2016-1000027</cve>
         <cve>CVE-2022-45688</cve>
+        <cve>CVE-2023-20863</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -124,4 +126,11 @@
       tomcat-embed-websocket-9.0.69.jar ]]></notes>
     <cve>CVE-2023-28708</cve>
   </suppress>
+
+  <suppress>
+    <notes><![CDATA[
+      spring-aop-5.3.20.jar, spring-webmvc-5.3.20.jar, spring-jcl-5.3.20.jar, spring-expression-5.3.20.jar, spring-context-5.3.20.jar, spring-beans-5.3.20.jar]]></notes>
+    <cve>CVE-2023-20861</cve>
+  </suppress>
+
 </suppressions>

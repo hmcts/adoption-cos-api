@@ -103,7 +103,7 @@ class CaseworkerCheckAndSendOrdersTest {
 
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getCaseworkerUser());
         var result = caseworkerCheckAndSendOrders.aboutToStart(caseDetails);
-        assertThat(result.getData().getCheckAndSendOrderDropdownList().getListItems().size()).isEqualTo(3);
+        assertThat(result.getData().getCheckAndSendOrderDropdownList().getListItems()).hasSize(3);
     }
 
     @Test

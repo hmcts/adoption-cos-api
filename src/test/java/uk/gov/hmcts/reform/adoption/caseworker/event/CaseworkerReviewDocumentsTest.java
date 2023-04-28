@@ -60,7 +60,7 @@ public class CaseworkerReviewDocumentsTest {
     CaseworkerReviewDocuments caseworkerReviewDocuments;
 
     @Test
-    public void shouldSuccessfullyCategoriseDocumentsForApplicationDocuments() {
+    void shouldSuccessfullyCategoriseDocumentsForApplicationDocuments() {
         var caseDetails = getCaseDetails(DocumentCategory.APPLICATION_DOCUMENTS);
         setTimeAndIdamUser();
         var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
@@ -68,7 +68,7 @@ public class CaseworkerReviewDocumentsTest {
     }
 
     @Test
-    public void shouldSuccessfullyCategoriseDocumentsForApplicationDocumentsExisting() {
+    void shouldSuccessfullyCategoriseDocumentsForApplicationDocumentsExisting() {
         var caseDetails = getCaseDetails(DocumentCategory.APPLICATION_DOCUMENTS);
         createApplicationDocumentsCategoryList(caseDetails);
         setTimeAndIdamUser();
@@ -77,7 +77,7 @@ public class CaseworkerReviewDocumentsTest {
     }
 
     @Test
-    public void shouldSuccessfullyCategoriseDocumentsForCourtOrders() {
+    void shouldSuccessfullyCategoriseDocumentsForCourtOrders() {
         var caseDetails = getCaseDetails(DocumentCategory.COURT_ORDERS);
         setTimeAndIdamUser();
         var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
@@ -85,7 +85,7 @@ public class CaseworkerReviewDocumentsTest {
     }
 
     @Test
-    public void shouldSuccessfullyCategoriseDocumentsForReports() {
+    void shouldSuccessfullyCategoriseDocumentsForReports() {
         var caseDetails = getCaseDetails(DocumentCategory.REPORTS);
         setTimeAndIdamUser();
         var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
@@ -93,7 +93,7 @@ public class CaseworkerReviewDocumentsTest {
     }
 
     @Test
-    public void shouldSuccessfullyCategoriseDocumentsForStatements() {
+    void shouldSuccessfullyCategoriseDocumentsForStatements() {
         var caseDetails = getCaseDetails(DocumentCategory.STATEMENTS);
         setTimeAndIdamUser();
         var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
@@ -101,7 +101,7 @@ public class CaseworkerReviewDocumentsTest {
     }
 
     @Test
-    public void shouldSuccessfullyCategoriseDocumentsForCorrespondence() {
+    void shouldSuccessfullyCategoriseDocumentsForCorrespondence() {
         var caseDetails = getCaseDetails(DocumentCategory.CORRESPONDENCE);
         setTimeAndIdamUser();
         var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);
@@ -109,7 +109,7 @@ public class CaseworkerReviewDocumentsTest {
     }
 
     @Test
-    public void shouldSuccessfullyCategoriseDocumentsForAdditionalDocuments() {
+    void shouldSuccessfullyCategoriseDocumentsForAdditionalDocuments() {
         var caseDetails = getCaseDetails(DocumentCategory.ADDITIONAL_DOCUMENTS);
         setTimeAndIdamUser();
         var result = caseworkerReviewDocuments.aboutToSubmit(caseDetails, caseDetails);

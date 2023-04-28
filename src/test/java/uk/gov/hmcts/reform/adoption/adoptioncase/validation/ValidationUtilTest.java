@@ -57,10 +57,10 @@ public class ValidationUtilTest {
     }
 
     @Test
-    public void shouldValidateOtherParent2() {
+    void shouldValidateOtherParent2() {
         Parent parent = Parent.builder().stillAlive(YesOrNo.NO).build();
         List<String> errors = validateOtherParent(parent);
-        assertThat(errors).hasSize(0);
+        assertThat(errors).isEmpty();
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ValidationUtilTest {
             .localAuthorityContactEmail(TEST_USER_EMAIL).localAuthorityPhoneNumber(TEST_USER_EMAIL).build();
 
         List<String> list = validateLocalAuthorityAndAdoptionAgency(localAuthority, null, YesOrNo.NO);
-        assertThat(list).hasSize(0);
+        assertThat(list).isEmpty();
     }
 
     @Test
@@ -89,6 +89,6 @@ public class ValidationUtilTest {
             .adopAgencyOrLaContactEmail(TEST_USER_EMAIL).adopAgencyOrLaPhoneNumber(TEST_PHONE_NUMBER).build();
 
         List<String> list = validateLocalAuthorityAndAdoptionAgency(localAuthority, adoptionAgencyOrLa, YesOrNo.YES);
-        assertThat(list).hasSize(0);
+        assertThat(list).isEmpty();
     }
 }

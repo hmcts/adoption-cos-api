@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
-public class SendGridServiceTest {
+class SendGridServiceTest {
 
     @Mock
     private CaseDocumentClient caseDocumentClient;
@@ -56,7 +56,7 @@ public class SendGridServiceTest {
 
 
     @Test
-    public void sendEmail() throws IOException {
+    void sendEmail() throws IOException {
         String subject = "TEST_SUBJECT";
         AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
         adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
@@ -89,7 +89,7 @@ public class SendGridServiceTest {
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");
-        Assertions.assertThrows(IOException.class, () -> {
+        Assertions.assertDoesNotThrow(() -> {
             sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
     }

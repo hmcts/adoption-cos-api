@@ -37,6 +37,10 @@ java:
           alias: IDAM_SYSTEM_UPDATE_PASSWORD
         - name: launchDarkly-sdk-key
           alias: LAUNCH_DARKLY_SDK_KEY
+        - name: send-grid-api-key
+          alias: SEND_GRID_API_KEY
+        - name: sendgrid-notify-from-email
+          alias: SEND_GRID_NOTIFY_FROM_EMAIL
   environment:
     ADOPTION_WEB_CLIENT_ID: adoption-web
     ADOPTION_WEB_MICROSERVICE: adoption_web

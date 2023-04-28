@@ -94,8 +94,8 @@ class CaseWorkerManageHearingTest {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
-        assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
+        assertThat(result.getData().getNewHearings()).isEmpty();
+        assertThat(result.getData().getVacatedHearings()).hasSize(1);
     }
 
     @Test
@@ -104,8 +104,8 @@ class CaseWorkerManageHearingTest {
         CaseData data = caseDetails.getData();
         data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getNewHearings().size()).isEqualTo(0);
-        assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
+        assertThat(result.getData().getNewHearings()).isEmpty();
+        assertThat(result.getData().getAdjournHearings()).hasSize(1);
     }
 
     @Test
@@ -123,8 +123,8 @@ class CaseWorkerManageHearingTest {
         data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.ADJOURN_HEARING);
         data.getManageHearingDetails().setIsTheHearingNeedsRelisting(YesOrNo.YES);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
-        assertThat(result.getData().getAdjournHearings().size()).isEqualTo(1);
+        assertThat(result.getData().getNewHearings()).hasSize(1);
+        assertThat(result.getData().getAdjournHearings()).hasSize(1);
     }
 
     @Test
@@ -142,8 +142,8 @@ class CaseWorkerManageHearingTest {
         data.getManageHearingDetails().setManageHearingOptions(ManageHearingOptions.VACATE_HEARING);
         data.getManageHearingDetails().setIsTheHearingNeedsRelisting(YesOrNo.YES);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getNewHearings().size()).isEqualTo(1);
-        assertThat(result.getData().getVacatedHearings().size()).isEqualTo(1);
+        assertThat(result.getData().getNewHearings()).hasSize(1);
+        assertThat(result.getData().getVacatedHearings()).hasSize(1);
     }
 
     @Test

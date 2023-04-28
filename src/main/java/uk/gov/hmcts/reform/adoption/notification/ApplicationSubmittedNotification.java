@@ -8,10 +8,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
-import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
@@ -61,12 +59,6 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Autowired
     private EmailTemplatesConfig emailTemplatesConfig;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
-
-    @Autowired
-    private CaseDocumentClient caseDocumentClient;
 
     @Autowired
     SendgridService sendgridService;
@@ -162,12 +154,12 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Override
     public void sendToLocalCourt(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to local authority for case : {}", id);
+        log.info("Sending application submitted notification to local court for case : {}", id);
 
         notificationService.sendEmail(
             caseData.getFamilyCourtEmailId(),
             LOCAL_COURT_APPLICATION_SUBMITTED,
-            templateVarsLocalCourt(caseData, id),
+            templateVarsLocalCourt(caseData),
             LanguagePreference.ENGLISH
         );
 
@@ -180,7 +172,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             sendgridService.sendEmail(caseData, subject, caseData.getApplicant1().getLanguagePreference()
                 .equals(LanguagePreference.ENGLISH) ? DocumentType.APPLICATION_SUMMARY_EN : DocumentType.APPLICATION_SUMMARY_CY);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
 
     }
@@ -215,6 +207,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         return templateVars;
     }
 
+    @Override
     public void sendToApplicantsPostLocalAuthoritySubmission(CaseData caseData, Long caseId) {
         log.info("Sending Local Authority application submitted notification to applicants for case : {}", caseId);
 
@@ -252,7 +245,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         notificationService.sendEmail(
             caseData.getFamilyCourtEmailId(),
             LOCAL_COURT_APPLICATION_SUBMITTED_BY_LOCAL_AUTHORITY,
-            templateVarsLocalCourt(caseData, id),
+            templateVarsLocalCourt(caseData),
             LanguagePreference.ENGLISH
         );
 
@@ -264,11 +257,11 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 + caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName();
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
     }
 
-    private Map<String, Object> templateVarsLocalCourt(CaseData caseData, Long id) {
+    private Map<String, Object> templateVarsLocalCourt(CaseData caseData) {
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());

@@ -30,10 +30,10 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMe
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
-public class CaseEventCommonMethodsTest {
+class CaseEventCommonMethodsTest {
 
     @Test
-    public void verifyMessageDocumentList_OK() {
+    void verifyMessageDocumentList_OK() {
         var caseData = getCaseDetails().getData();
         List<ListValue<AdoptionUploadDocument>> applicationDocumentCategory = new ArrayList<>();
         caseData.setApplicationDocumentsCategory(archiveListHelper(
@@ -60,12 +60,11 @@ public class CaseEventCommonMethodsTest {
             additionalDocumentCategory, getAdditionalDocumentsCategory()));
 
         List<MessageDocumentList> list = prepareDocumentList(caseData);
-        assertThat(list).hasSize(6);
-        assertThat(list).isNotEmpty();
+        assertThat(list).hasSize(6).isNotEmpty();
     }
 
     @Test
-    public void prepareReplyMessageList_OK() {
+    void prepareReplyMessageList_OK() {
         var caseData = getCaseDetails().getData();
         List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
         caseData.setListOfOpenMessages(archiveListHelper(listOfOpenMessage,
@@ -75,7 +74,7 @@ public class CaseEventCommonMethodsTest {
     }
 
     @Test
-    public void updateMessageList_SendMessage_Test_OK() {
+    void updateMessageList_SendMessage_Test_OK() {
         var caseData = getCaseDetails().getData();
         caseData.setMessageAction(MessageSendDetails.MessagesAction.SEND_A_MESSAGE);
         var messageSendDetails = new MessageSendDetails();
@@ -89,7 +88,7 @@ public class CaseEventCommonMethodsTest {
     }
 
     @Test
-    public void updateMessageList_ReplyMessage_Test_OK() {
+    void updateMessageList_ReplyMessage_Test_OK() {
         var caseData = getCaseDetails().getData();
         caseData.setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
         var messageSendDetails = new MessageSendDetails();
@@ -112,7 +111,7 @@ public class CaseEventCommonMethodsTest {
     }
 
     @Test
-    public void updateMessageList_ReplyMessage_3_Test_OK() {
+    void updateMessageList_ReplyMessage_3_Test_OK() {
         var caseData = getCaseDetails().getData();
         caseData.setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
         var messageSendDetails = new MessageSendDetails();
@@ -137,7 +136,7 @@ public class CaseEventCommonMethodsTest {
     }
 
     @Test
-    public void updateMessageList_ReplyMessage_Test_Message_History_OK() {
+    void updateMessageList_ReplyMessage_Test_Message_History_OK() {
         var caseData = getCaseDetails().getData();
         caseData.setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
         var messageSendDetails = new MessageSendDetails();
@@ -177,7 +176,7 @@ public class CaseEventCommonMethodsTest {
 
 
     @Test
-    public void updateMessageList_ReplyMessage_MessageHistory_Test_OK() {
+    void updateMessageList_ReplyMessage_MessageHistory_Test_OK() {
         var caseData = getCaseDetails().getData();
         caseData.setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
         var messageSendDetails = new MessageSendDetails();
@@ -200,7 +199,7 @@ public class CaseEventCommonMethodsTest {
         prepareReplyMessageDynamicList(caseData, getCaseworkerUser());
         caseData.getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "Test"));
         CaseEventCommonMethods.updateMessageList(caseData, getCaseworkerUser());
-        assertThat(caseData.getListOfOpenMessages().size()).isEqualTo(0);
+        assertThat(caseData.getListOfOpenMessages()).isEmpty();
     }
 
 
@@ -215,14 +214,13 @@ public class CaseEventCommonMethodsTest {
 
 
     @Test
-    public void verifyMessageDocumentList_recordNotFound() {
+    void verifyMessageDocumentList_recordNotFound() {
         List<MessageDocumentList> list = prepareDocumentList(getCaseDetails().getData());
-        assertThat(list).hasSize(0);
         assertThat(list).isEmpty();
     }
 
     @Test
-    public void verifyDocumentHistory_Test() {
+    void verifyDocumentHistory_Test() {
         var caseData = getCaseDetails().getData();
         var uploadDocument = getApplicationDocumentCategory();
         var uuid = UUID.nameUUIDFromBytes(uploadDocument.getName().getBytes());
@@ -248,7 +246,7 @@ public class CaseEventCommonMethodsTest {
     }
 
     @Test
-    public void verifyMessageReasonLabel_Test_ReasonList() {
+    void verifyMessageReasonLabel_Test_ReasonList() {
         var messageSendDetails = new MessageSendDetails();
         var caseData = getCaseDetails().getData();
         messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.ANNEX_A);
@@ -258,7 +256,7 @@ public class CaseEventCommonMethodsTest {
     }
 
     @Test
-    public void verifyMessageReasonLabel_Test_ReasonJudge() {
+    void verifyMessageReasonLabel_Test_ReasonJudge() {
         var messageSendDetails = new MessageSendDetails();
         var caseData = getCaseDetails().getData();
         messageSendDetails.setMessageReasonJudge(MessageSendDetails.MessageReasonJudge.LIST_A_HEARING);

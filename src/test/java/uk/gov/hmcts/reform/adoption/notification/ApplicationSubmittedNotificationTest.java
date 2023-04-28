@@ -168,10 +168,10 @@ class ApplicationSubmittedNotificationTest {
         notification.sendToLocalAuthorityPostApplicantSubmission(data, 1234567890123456L);
 
         verify(notificationService, times(2)).sendEmail(
-            eq(TEST_USER_EMAIL),
-            eq(APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY),
-            eq(templateVars),
-            eq(ENGLISH)
+            TEST_USER_EMAIL,
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
+            templateVars,
+            ENGLISH
         );
     }
 
@@ -195,10 +195,10 @@ class ApplicationSubmittedNotificationTest {
         notification.sendToLocalAuthorityPostLocalAuthoritySubmission(data, 1234567890123456L);
 
         verify(notificationService, times(2)).sendEmail(
-            eq(TEST_USER_EMAIL),
-            eq(LOCAL_AUTHORITY_APPLICATION_SUBMITTED),
-            eq(templateVars),
-            eq(ENGLISH)
+            TEST_USER_EMAIL,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
+            templateVars,
+            ENGLISH
         );
     }
 
@@ -231,10 +231,10 @@ class ApplicationSubmittedNotificationTest {
         notification.sendToApplicantsPostLocalAuthoritySubmission(caseData, 1234567890123456L);
 
         verify(notificationService, times(2)).sendEmail(
-            eq(TEST_USER_EMAIL),
-            eq(LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN),
-            eq(templateVars),
-            eq(ENGLISH)
+            TEST_USER_EMAIL,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN,
+            templateVars,
+            ENGLISH
         );
         verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
     }

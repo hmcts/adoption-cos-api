@@ -110,7 +110,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
                 caseLists.forEach(caseDe -> {
                     log.info("state of the case {} for case id {}",caseDe.getId(),caseDe.getState());
                     if (State.Draft.toString().equals(caseDe.getState())) {
-                        sendReminderToApplicantsIfEligible(caseDe, user, serviceAuthorization);
+                        sendReminderToApplicantsIfEligible(caseDe);
                         log.info("case for the user " + id + " " + caseDe.getId());
                     }
                 });
@@ -124,7 +124,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
         return new ArrayList<>();
     }
 
-    private void sendReminderToApplicantsIfEligible(CaseDetails caseDetails, User user, String serviceAuthorization) {
+    private void sendReminderToApplicantsIfEligible(CaseDetails caseDetails) {
 
         uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData = caseDetailsConverter.convertToCaseDetailsFromReformModel(
             caseDetails);

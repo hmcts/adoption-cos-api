@@ -38,7 +38,7 @@ class SubmissionServiceTest {
 
 
     @Test
-    public void shouldProcessSubmissionCaseTasks() {
+    void shouldProcessSubmissionCaseTasks() {
 
         final CaseDetails<CaseData, State> caseDetails = new CaseDetails<>();
         final CaseDetails<CaseData, State> expectedCaseDetails = new CaseDetails<>();

@@ -15,7 +15,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LaunchDarklyClientTest {
+class LaunchDarklyClientTest {
     private static final String SDK_KEY = "launch darkly sdk key";
     private static final String FAKE_FEATURE = "launch darkly adoption feature";
 
@@ -31,7 +31,7 @@ public class LaunchDarklyClientTest {
     private LaunchDarklyClient launchDarklyClient;
 
     @Test
-    public void testFeatureEnabled() {
+    void testFeatureEnabled() {
         when(ldClientFactory.create(eq(SDK_KEY), anyBoolean())).thenReturn(ldClient);
         launchDarklyClient = new LaunchDarklyClient(ldClientFactory, SDK_KEY, true);
         when(ldClient.boolVariation(eq(FAKE_FEATURE), any(LDUser.class), anyBoolean())).thenReturn(true);
@@ -39,7 +39,7 @@ public class LaunchDarklyClientTest {
     }
 
     @Test
-    public void testFeatureEnabled_2() {
+    void testFeatureEnabled_2() {
         when(ldClientFactory.create(eq(SDK_KEY), anyBoolean())).thenReturn(ldClient);
         launchDarklyClient = new LaunchDarklyClient(ldClientFactory, SDK_KEY, true);
         when(ldClient.boolVariation(eq(FAKE_FEATURE), eq(LaunchDarklyClient.ADOPTION_COS_USER), anyBoolean())).thenReturn(true);
@@ -48,7 +48,7 @@ public class LaunchDarklyClientTest {
 
 
     @Test
-    public void testFeatureDisabled() {
+    void testFeatureDisabled() {
         when(ldClientFactory.create(eq(SDK_KEY), anyBoolean())).thenReturn(ldClient);
         launchDarklyClient = new LaunchDarklyClient(ldClientFactory, SDK_KEY, true);
         when(ldClient.boolVariation(eq(FAKE_FEATURE), any(LDUser.class), anyBoolean())).thenReturn(false);
