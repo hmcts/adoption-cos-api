@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -93,4 +94,49 @@ class SendGridServiceTest {
             sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
     }
+
+
+    @Test
+    void sendEmailIoException() throws IOException {
+        String subject = "TEST_SUBJECT";
+        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
+        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
+        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
+        ListValue<AdoptionDocument> listValue = new ListValue<AdoptionDocument>();
+        listValue.setValue(adoptionDocumentDocmosis);
+        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
+        listAdoptionDocument.add(listValue);
+        CaseData caseData = caseData();
+        caseData.setDocumentsGenerated(listAdoptionDocument);
+        AdoptionDocument laUploadedDocument = new AdoptionDocument();
+        Document document = new Document();
+        document.setFilename("TEST_FILE_NAME");
+        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
+        laUploadedDocument.setDocumentLink(document);
+        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
+        documentListValue.setValue(laUploadedDocument);
+        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
+        laUploadedDocumentList.add(documentListValue);
+        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+
+        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
+
+        Response response = new Response();
+        response.setStatusCode(200);
+        Request request = new Request();
+        request.setMethod(Method.POST);
+        request.setEndpoint("mail/send");
+        //when(sendGrid.api(request)).thenThrow(IOException.class);
+        sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
+        assertThatIOException().describedAs("The provided authorization grant is invalid, expired, or revoked");
+    }
+
+    /*@Test
+    void sendEmailIoException(){
+
+    }*/
 }
