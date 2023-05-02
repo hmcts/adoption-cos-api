@@ -28,6 +28,7 @@ import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -66,6 +67,7 @@ class AlertMultiChildApplicationToSubmitTaskTest {
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
 
+    @Mock
     private User user;
 
     private static final BoolQueryBuilder query = boolQuery()
@@ -97,14 +99,14 @@ class AlertMultiChildApplicationToSubmitTaskTest {
         when(caseDetails2.getState()).thenReturn(String.valueOf(Draft));
         when(caseDetails3.getState()).thenReturn(String.valueOf(State.Submitted));
         final List<CaseDetails> caseDetailsList = List.of(caseDetails1, caseDetails2, caseDetails3);
-        when(ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, SERVICE_AUTHORIZATION))
+        when(ccdSearchService.searchForAllCasesWithQuery(any(), any(), any(), anyString()))
             .thenReturn(caseDetailsList);
         final uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseDetails4 = new uk.gov.hmcts.ccd.sdk.api.CaseDetails<>();
         caseDetails4.setData(caseData());
         when(caseDetailsConverter.convertToCaseDetailsFromReformModel(any(CaseDetails.class))).thenReturn(caseDetails4);
 
         alertMultiChildApplicationToSubmitTask.run();
-        verify(multiChildSubmitAlertEmailNotification, times(0)).sendToApplicants(
+        verify(multiChildSubmitAlertEmailNotification, times(1)).sendToApplicants(
                                                       any(CaseData.class),
                                                       any(Long.class));
 
