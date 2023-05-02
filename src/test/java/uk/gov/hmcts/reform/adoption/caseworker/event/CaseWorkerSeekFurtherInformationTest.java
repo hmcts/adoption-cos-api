@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.caseworker.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,13 +12,17 @@ import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.HasRole;
+import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.AddressUK;
+import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerSeekFurtherInformation;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.OtherAdoptionAgencyOrLocalAuthority;
+import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.idam.client.models.User;
@@ -33,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
@@ -57,6 +63,12 @@ public class CaseWorkerSeekFurtherInformationTest {
 
     @Mock
     private IdamService idamService;
+
+    @Mock
+    ObjectMapper objectMapper;
+
+    @Mock
+    CaseDataDocumentService caseDataDocumentService;
 
 
     @Test
@@ -121,7 +133,17 @@ public class CaseWorkerSeekFurtherInformationTest {
         assertThat(result.getData().getCorrespondenceDocumentCategory()).isNotNull();
     }
 
-
+    @Test
+    void midEventAfterDateSelectionTest() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        DynamicList seekFurtherInformationList = new DynamicList();
+        DynamicListElement seekFurtherInformation = new DynamicListElement(UUID.randomUUID(), "TEST:LABEL");
+        seekFurtherInformationList.setValue(seekFurtherInformation);
+        caseDetails.getData().setSeekFurtherInformationList(seekFurtherInformationList);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseworkerSeekFurtherInformation
+            .midEventAfterDateSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
 
 
     private CaseDetails<CaseData, State> getCaseDetails() {
