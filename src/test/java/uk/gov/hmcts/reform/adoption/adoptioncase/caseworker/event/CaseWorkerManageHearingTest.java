@@ -22,6 +22,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MethodOfHearing;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.RecipientsInTheCase;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -246,6 +247,45 @@ class CaseWorkerManageHearingTest {
         assertThat(response.getErrors()).isNotNull();
     }
 
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthMotherSuccess() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.RESPONDENT_BIRTH_MOTHER);
+        caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
+        Parent birthMother = new Parent();
+        birthMother.setFirstName("TEST_NAME");
+        birthMother.setDeceased(YesOrNo.NO);
+        caseDetails.getData().setBirthMother(birthMother);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
+
+    @Test
+    void checkForInvalidCheckboxSelectionForBirthFatherSuccess() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        caseDetails.getData().setApplyingWith(ApplyingWith.ALONE);
+        SortedSet<RecipientsInTheCase> recipientsInTheCases = new TreeSet<>();
+        recipientsInTheCases.add(RecipientsInTheCase.RESPONDENT_BIRTH_FATHER);
+        caseDetails.getData().getManageHearingDetails().setRecipientsInTheCase(recipientsInTheCases);
+        Parent birthFather = new Parent();
+        birthFather.setFirstName("TEST_NAME");
+        birthFather.setDeceased(YesOrNo.NO);
+        caseDetails.getData().setBirthFather(birthFather);
+        final var instant = Instant.now();
+        final var zoneId = ZoneId.systemDefault();
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(zoneId);
+        AboutToStartOrSubmitResponse<CaseData, State> response = caseWorkerManageHearing
+            .midEventAfterRecipientSelection(caseDetails, caseDetails);
+        assertThat(response.getErrors()).isEmpty();
+    }
 
     private CaseDetails<CaseData, State> getCaseDetails() {
         final var details = new CaseDetails<CaseData, State>();

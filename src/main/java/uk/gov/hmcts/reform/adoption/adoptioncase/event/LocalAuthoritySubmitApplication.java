@@ -48,7 +48,7 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
             .submittedCallback(this::submitted);
     }
 
-    private SubmittedCallbackResponse submitted(CaseDetails<CaseData, State> details, CaseDetails<CaseData, State> beforeDetails) {
+    public SubmittedCallbackResponse submitted(CaseDetails<CaseData, State> details, CaseDetails<CaseData, State> beforeDetails) {
         log.info("Local Authority Submit Application submitted callback invoked CaseID: {}", details.getId());
         log.info("Invoking Notifications for CaseID: {}", details.getId());
         sendNotificationService.sendNotifications(details);

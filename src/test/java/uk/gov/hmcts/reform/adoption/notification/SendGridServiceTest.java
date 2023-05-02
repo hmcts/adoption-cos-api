@@ -53,8 +53,6 @@ class SendGridServiceTest {
     @InjectMocks
     SendgridService sendgridService;
 
-
-
     @Test
     void sendEmail() throws IOException {
         String subject = "TEST_SUBJECT";
