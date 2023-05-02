@@ -83,12 +83,12 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
 
         for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
             log.info("case details are present: " + caseDetails.getId());
-            sendReminderToApplicantsIfEligible(caseDetails, user, serviceAuthorization);
+            sendReminderToApplicantsIfEligible(caseDetails);
         }
 
     }
 
-    private void sendReminderToApplicantsIfEligible(CaseDetails caseDetails, User user, String serviceAuthorization) {
+    private void sendReminderToApplicantsIfEligible(CaseDetails caseDetails) {
 
         uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData = caseDetailsConverter.convertToCaseDetailsFromReformModel(
             caseDetails);

@@ -80,7 +80,7 @@ public class CaseworkerTransferCourtTest {
     }
 
     @Test
-    public void shouldSuccessfullyTransferCourt() {
+    void shouldSuccessfullyTransferCourt() {
         var caseDetails = getCaseDetails();
         var result = caseworkerTransferCourt.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getFamilyCourtName()).isNotNull();

@@ -58,7 +58,7 @@ public class CaseworkerUploadDocumentTest {
 
 
     @Test
-    public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategory() {
+    void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategory() {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
@@ -79,7 +79,7 @@ public class CaseworkerUploadDocumentTest {
     }
 
     @Test
-    public void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategoryWhenThereAreExistingEntries() {
+    void shouldSuccessfullyAddAdoptionDocumentWithApplicationDocumentCategoryWhenThereAreExistingEntries() {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
@@ -108,7 +108,7 @@ public class CaseworkerUploadDocumentTest {
     }
 
     @Test
-    public void shouldSuccessfullyAddAdoptionDocumentWithCourtOrdersDocumentCategory() {
+    void shouldSuccessfullyAddAdoptionDocumentWithCourtOrdersDocumentCategory() {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
@@ -127,7 +127,7 @@ public class CaseworkerUploadDocumentTest {
     }
 
     @Test
-    public void shouldSuccessfullyAddAdoptionDocumentWithReportsDocumentCategory() {
+    void shouldSuccessfullyAddAdoptionDocumentWithReportsDocumentCategory() {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
@@ -146,7 +146,7 @@ public class CaseworkerUploadDocumentTest {
     }
 
     @Test
-    public void shouldSuccessfullyAddAdoptionDocumentWithStatementsDocumentCategory() {
+    void shouldSuccessfullyAddAdoptionDocumentWithStatementsDocumentCategory() {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
@@ -165,7 +165,7 @@ public class CaseworkerUploadDocumentTest {
     }
 
     @Test
-    public void shouldSuccessfullyAddAdoptionDocumentWithCorrespondenceDocumentCategory() {
+    void shouldSuccessfullyAddAdoptionDocumentWithCorrespondenceDocumentCategory() {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);
@@ -184,7 +184,7 @@ public class CaseworkerUploadDocumentTest {
     }
 
     @Test
-    public void shouldSuccessfullyAddAdoptionDocumentWithAdditionalDocumentCategory() {
+    void shouldSuccessfullyAddAdoptionDocumentWithAdditionalDocumentCategory() {
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
         final var expectedDate = LocalDate.ofInstant(instant, zoneId);

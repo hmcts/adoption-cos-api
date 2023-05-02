@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
@@ -73,10 +72,10 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         verify(notificationService, times(2)).sendEmail(
-            eq(TEST_USER_EMAIL),
-            eq(MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT),
-            eq(templateVars),
-            eq(ENGLISH)
+            TEST_USER_EMAIL,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            templateVars,
+            ENGLISH
         );
     }
 
@@ -97,10 +96,10 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         verify(notificationService, times(1)).sendEmail(
-            eq(TEST_USER_EMAIL),
-            eq(MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT),
-            eq(templateVars),
-            eq(ENGLISH)
+            TEST_USER_EMAIL,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            templateVars,
+            ENGLISH
         );
     }
 }
