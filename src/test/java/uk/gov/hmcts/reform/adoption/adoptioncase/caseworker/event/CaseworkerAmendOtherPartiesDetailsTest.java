@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.YesNoNotSure;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
@@ -78,9 +79,9 @@ class CaseworkerAmendOtherPartiesDetailsTest {
         assertThat(result.getData().getChildren()).isNotNull();
         assertThat(result.getData().getChildSocialWorker()).isNotNull();
         assertThat(result.getData().getApplicantSocialWorker()).isNotNull();
-        boolean birthFatherRes = result.getData().getBirthFather().getStillAlive() == YesOrNo.YES;
+        boolean birthFatherRes = result.getData().getBirthFather().getStillAlive() == YesNoNotSure.YES;
         assertThat(birthFatherRes).isTrue();
-        boolean birthMotherRes = result.getData().getBirthMother().getStillAlive() == YesOrNo.YES;
+        boolean birthMotherRes = result.getData().getBirthMother().getStillAlive() == YesNoNotSure.YES;
         assertThat(birthMotherRes).isTrue();
     }
 
