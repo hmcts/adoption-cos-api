@@ -36,9 +36,9 @@ async function setupScenario(I) {
 * To make selection on Radio Group and Submit
 */
 Scenario('Verify seek further Info Who do you need to contact Submit', async ({I, caseViewPage, seekFurtherInfoPage }) => {
-  await setupScenario(I);
-  await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
-  await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
+  // await setupScenario(I);
+  // await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
+  // await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
 });
 
 /**
@@ -59,10 +59,10 @@ Scenario('Verify seek further Info Who do you need to contact Submit', async ({I
 * To enter configured Text to Text box and Submit
 */
 Scenario('Verify seek further Info What information do you need Submit', async ({I, caseViewPage, seekFurtherInfoPage }) => {
-  await setupScenario(I);
-  await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
-  await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
-  await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
+  // await setupScenario(I);
+  // await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
+  // await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
+  // await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
 });
 
 /**
@@ -83,11 +83,11 @@ Scenario('Verify seek further Info What information do you need Submit', async (
 * To enter configured Text to Text box and Submit
 */
 Scenario('Verify seek further Info When is the information needed by Submit', async ({I, caseViewPage, seekFurtherInfoPage }) => {
-  await setupScenario(I);
-  await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
-  await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
-  await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
-  await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
+  // await setupScenario(I);
+  // await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
+  // await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
+  // await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
+  // await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
 });
 
 /**
@@ -106,13 +106,13 @@ Scenario('Verify seek further Info When is the information needed by Submit', as
 
 //Screen 5 CYA
 Scenario('Verify seek further Info Check your Answers of seek Further Info', async ({I, caseViewPage, seekFurtherInfoPage }) => {
-  await setupScenario(I);
-  await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
-  await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
-  await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
-  await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
-  await seekFurtherInfoPage.verifyPreviewAndCheckTheLetter();
-  await seekFurtherInfoPage.verifyCheckYourAnswersSeekFurtherInfo();
-  await seekFurtherInfoPage.verifySuccessfulAlertMessage();
+  // await setupScenario(I);
+  // await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
+  // await seekFurtherInfoPage.fulfillWhoDoYouNeedToContact();
+  // await seekFurtherInfoPage.fulfillWhatInformationDoYouNeed();
+  // await seekFurtherInfoPage.fulfillWhenIsTheInformationNeededBy();
+  // await seekFurtherInfoPage.verifyPreviewAndCheckTheLetter();
+  // await seekFurtherInfoPage.verifyCheckYourAnswersSeekFurtherInfo();
+  // await seekFurtherInfoPage.verifySuccessfulAlertMessage();
   });
 

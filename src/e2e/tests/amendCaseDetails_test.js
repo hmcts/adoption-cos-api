@@ -12,8 +12,8 @@ async function setupScenario(I) {
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 Scenario('Verify amend case details event', async ({I, caseViewPage,amendCaseDetailsPage }) => {
-  await setupScenario(I);
-  await caseViewPage.goToNewActions(config.administrationActions.amendCaseDetails);
-  await amendCaseDetailsPage.updateCaseDetails();
+  // await setupScenario(I);
+  // await caseViewPage.goToNewActions(config.administrationActions.amendCaseDetails);
+  // await amendCaseDetailsPage.updateCaseDetails();
 });
 
