@@ -271,14 +271,14 @@ withPipeline(type, product, component) {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 
-  // before('functionalTest:preview') {
-  //   env.PARALLEL_CHUNKS = 10
-  //   env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.preview.platform.hmcts.net/"
-  // }
+  before('functionalTest:preview') {
+    env.PARALLEL_CHUNKS = 10
+    env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.preview.platform.hmcts.net/"
+  }
 
-  // afterAlways('functionalTest:preview') {
-  //   steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-  // }
+  afterAlways('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
 
   before('smoketest:preview') {
     uploadCoreCaseDataDefinitions()
@@ -297,14 +297,14 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
   }
 
-  // before('functionalTest:aat') {
-  //   env.PARALLEL_CHUNKS = 5
-  //   env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
-  // }
+  before('functionalTest:aat') {
+    env.PARALLEL_CHUNKS = 5
+    env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
+  }
 
-  // afterAlways('functionalTest:aat') {
-  //   steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-  // }
+  afterAlways('functionalTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
 }
 
 def setCommonEnvVariables() {
