@@ -39,7 +39,7 @@ public class Parent {
 
     @CCD(label = "Deceased – Yes/No",
         access = {SystemUpdateAccess.class,DefaultAccess.class})
-    private YesOrNo stillAlive;
+    private YesNoNotSure stillAlive;
 
     @CCD(label = "Deceased",
         access = {DefaultAccess.class})

@@ -6,6 +6,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.LocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.YesNoNotSure;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public final class ValidationUtil {
     }
 
     public static List<String> validateOtherParent(Parent otherParent) {
-        if (YesOrNo.YES.equals(otherParent.getStillAlive())) {
+        if (YesNoNotSure.YES.equals(otherParent.getStillAlive())) {
             return flattenLists(
                 notNull(otherParent.getFirstName(), "BirthFatherFirstName"),
                 notNull(otherParent.getLastName(), "BirthFatherLastName")

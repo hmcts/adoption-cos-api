@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.LocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplyingWith;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.YesNoNotSure;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,14 +52,14 @@ public class ValidationUtilTest {
 
     @Test
     public void shouldValidateOtherParent() {
-        Parent parent = Parent.builder().stillAlive(YesOrNo.YES).build();
+        Parent parent = Parent.builder().stillAlive(YesNoNotSure.YES).build();
         List<String> errors = validateOtherParent(parent);
         assertThat(errors).hasSize(2);
     }
 
     @Test
     void shouldValidateOtherParent2() {
-        Parent parent = Parent.builder().stillAlive(YesOrNo.NO).build();
+        Parent parent = Parent.builder().stillAlive(YesNoNotSure.NO).build();
         List<String> errors = validateOtherParent(parent);
         assertThat(errors).isEmpty();
     }
