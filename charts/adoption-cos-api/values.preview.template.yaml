@@ -42,6 +42,10 @@ java:
           alias: SEND_GRID_API_KEY
         - name: sendgrid-notify-from-email
           alias: SEND_GRID_NOTIFY_FROM_EMAIL
+        - name: send-grid-api-key-test
+          alias: SEND_GRID_API_KEY_TEST
+        - name: sendgrid-notify-from-email-test
+          alias: SEND_GRID_NOTIFY_FROM_EMAIL_TEST
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr

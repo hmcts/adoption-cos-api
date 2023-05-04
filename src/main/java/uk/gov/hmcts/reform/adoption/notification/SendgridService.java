@@ -39,7 +39,7 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LO
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SendgridService {
 
-    @Value("${send-grid.api-key}")
+    @Value("${send-grid.api-key-test}")
     private String apiKey;
 
     @Autowired
@@ -51,7 +51,7 @@ public class SendgridService {
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
-    @Value("${send-grid.notify-from-email}")
+    @Value("${send-grid.notify-from-email-test}")
     private String sendGridNotifyFromEmail;
 
     public void sendEmail(CaseData caseData, String subject, DocumentType documentType) throws IOException {
@@ -59,6 +59,8 @@ public class SendgridService {
         Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
 
         log.info("Sendgrid email to be sent to court address: {} ",caseData.getFamilyCourtEmailId());
+        log.info("Sendgrid from email : {} ",sendGridNotifyFromEmail);
+        log.info("Sendgrid key: {} ",apiKey);
         Mail mail = new Mail(new Email(sendGridNotifyFromEmail), subject, new Email(caseData.getFamilyCourtEmailId()), content);
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(ListValue::getValue)
             .filter(item -> item.getDocumentType().equals(documentType))

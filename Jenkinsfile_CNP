@@ -54,6 +54,8 @@ def secrets = [
     secret("app-insight-connection-key", "APP_INSIGHTS_CONNECTION_KEY"),
     secret("send-grid-api-key", "SEND_GRID_API_KEY"),
     secret("sendgrid-notify-from-email", "SEND_GRID_NOTIFY_FROM_EMAIL"),
+    secret("send-grid-api-key-test", "SEND_GRID_API_KEY_TEST"),
+    secret("sendgrid-notify-from-email-test", "SEND_GRID_NOTIFY_FROM_EMAIL_TEST"),
 
   ]
 ]
