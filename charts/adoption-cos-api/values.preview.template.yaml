@@ -55,6 +55,8 @@ ccd:
   ccd:
     definitionImporter:
       enabled: false
+    managementWeb:
+      enabled: true
     apiGatewayWeb:
       enabled: true
     s2s:
@@ -171,7 +173,15 @@ ccd:
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
+    imageTag: "7.17.1"
     replicas: 1
+    initResources:
+      limits:
+        cpu: "1000m"
+        memory: "1024Mi"
+      requests:
+        cpu: "50m"
+        memory: "1024Mi"
     minimumMasterNodes: 1
     antiAffinity: "soft"
     esJavaOpts: "-Xmx512m -Xms512m"
@@ -180,8 +190,15 @@ ccd:
         value: single-node
       - name: cluster.initial_master_nodes
         value: ""
+      - name: action.auto_create_index
+        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
     persistence:
       enabled: false
+    ingress:
+      enabled: true
+      path: /
+      hosts:
+        - es-${SERVICE_FQDN}
 
 xui-webapp:
   enabled: true
@@ -191,17 +208,18 @@ xui-webapp:
     image: hmctspublic.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
     environment:
-      HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
+      HEALTH_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
-      HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}.preview.platform.hmcts.net/health
-      SERVICES_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}
-      SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      HEALTH_TERMS_AND_CONDITIONS_API: https://xui-terms-and-conditions-${SERVICE_FQDN}
+      SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
+      SERVICES_CCD_DATA_STORE_API: https://${SERVICE_NAME}-ccd-data-store-api
       SERVICES_DOCUMENTS_API_V2: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-case-document-am-api
-      SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
-      SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.preview.platform.hmcts.net
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
+      SERVICES_TERMS_AND_CONDITIONS: https://xui-terms-and-conditions-${SERVICE_FQDN}
       JURISDICTIONS: ADOPTION
       FEATURE_REDIS_ENABLED: false
       NODE_OPTIONS: --max-old-space-size=900
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
 
 ccd-case-document-am-api:
   enabled: true
