@@ -41,6 +41,8 @@ java:
           alias: SEND_GRID_API_KEY
         - name: sendgrid-notify-from-email
           alias: SEND_GRID_NOTIFY_FROM_EMAIL
+        - name: app-insight-connection-key
+          alias: APP_INSIGHTS_CONNECTION_KEY
   environment:
     ADOPTION_WEB_CLIENT_ID: adoption-web
     ADOPTION_WEB_MICROSERVICE: adoption_web
