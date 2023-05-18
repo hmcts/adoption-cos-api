@@ -4,6 +4,7 @@
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GradleBuilder
 import uk.gov.hmcts.contino.AppPipelineConfig
+import uk.gov.hmcts.contino.MetricsPublisher
 
 def type = "java"
 def product = "adoption"
@@ -72,6 +73,10 @@ withPipeline(type, product, component) {
   syncBranchesWithMaster(['ithc', 'perftest'])
   enableSlackNotifications('#adoption-tech')
   enableHighLevelDataSetup()
+  MetricsPublisher metricsPublisher = new MetricsPublisher(this, currentBuild, product, component)
+  approvedEnvironmentRepository(params.environment, metricsPublisher) {
+    enableHighLevelDataSetup()
+  }
 
   afterAlways('test') {
     builder.gradle('integration')
