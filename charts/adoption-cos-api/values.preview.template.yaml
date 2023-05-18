@@ -8,7 +8,14 @@ java:
     CASE_DATA_STORE_BASEURL: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-data-store-api
     CASE_DOCUMENT_AM_BASEURL: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-case-document-am-api
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
-    APP_INSIGHTS_KEY: 273cc8cd-c511-49ae-9988-9debe01d54d5
+    APP_INSIGHTS_KEY: ${APP_INSIGHTS_KEY}
+    APPLICATIONINSIGHTS_CONNECTION_STRING: ${APP_INSIGHTS_CONNECTION_KEY}
+    MULTI_CHILDREN_CUI_URL: https://adoption-web-pr-956.service.core-compute-preview.internal/new-application-redirect
+    LA_PORTAL_BASEURL: https://adoption-web-pr-956.service.core-compute-preview.internal/la-portal/kba-case-ref
+  devmemoryRequests: 1024Mi
+  devcpuRequests: "500m"
+  devmemoryLimits: 1527Mi
+  devcpuLimits: "2500m"
 
   keyVaults:
     adoption:
@@ -23,7 +30,18 @@ java:
           alias: IDAM_SYSTEM_UPDATE_USERNAME
         - name: idam-system-user-password
           alias: IDAM_SYSTEM_UPDATE_PASSWORD
-
+        - name: launchDarkly-sdk-key
+          alias: LAUNCH_DARKLY_SDK_KEY
+        - name: caseworker-username
+          alias: CASEWORKER_USERNAME
+        - name: caseworker-password
+          alias: CASEWORKER_PASSWORD
+        - name: AppInsightsInstrumentationKey
+          alias: APP_INSIGHTS_KEY
+        - name: send-grid-api-key
+          alias: SEND_GRID_API_KEY
+        - name: sendgrid-notify-from-email
+          alias: SEND_GRID_NOTIFY_FROM_EMAIL
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
@@ -32,7 +50,6 @@ idam-pr:
       - https://admin-web-${SERVICE_FQDN}/oauth2redirect
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
-      - http://xui-${SERVICE_FQDN}/oauth2/callback
 
 ccd:
   ccd:
@@ -61,6 +78,7 @@ ccd:
 
   ccd-api-gateway-web:
     nodejs:
+      disableKeyVaults: true
       imagePullPolicy: Always
       environment:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
@@ -69,10 +87,10 @@ ccd:
         PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
-      keyVaults: []
 
   ccd-data-store-api:
     java:
+      disableKeyVaults: true
       imagePullPolicy: Always
       environment:
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
@@ -91,8 +109,8 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS:  http://${SERVICE_NAME}-es-master:9200
-      keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
+
   am-role-assignment-service:
     java:
       keyVaults:
@@ -101,6 +119,7 @@ ccd:
             - role-assignment-service-LD-SDK-KEY
   ccd-definition-store-api:
     java:
+      disableKeyVaults: true
       imagePullPolicy: Always
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
@@ -108,21 +127,20 @@ ccd:
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
-      keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
   ccd-user-profile-api:
     java:
+      disableKeyVaults: true
       imagePullPolicy: Always
       enviroment:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
-      keyVaults: []
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
   ccd-admin-web:
     nodejs:
+      disableKeyVaults: true
       image: hmctspublic.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
-      keyVaults: []
       environment:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
@@ -153,7 +171,6 @@ ccd:
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
-    imageTag: "7.17.0"
     replicas: 1
     minimumMasterNodes: 1
     antiAffinity: "soft"
@@ -165,11 +182,6 @@ ccd:
         value: ""
     persistence:
       enabled: false
-    ingress:
-      enabled: true
-      path: /
-      hosts:
-        - es-${SERVICE_FQDN}
 
 xui-webapp:
   enabled: true
@@ -188,6 +200,8 @@ xui-webapp:
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.preview.platform.hmcts.net
       JURISDICTIONS: ADOPTION
+      FEATURE_REDIS_ENABLED: false
+      NODE_OPTIONS: --max-old-space-size=900
 
 ccd-case-document-am-api:
   enabled: true
@@ -203,3 +217,4 @@ ccd-case-document-am-api:
       IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
       IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
+LA_PORTAL_BASEURL: https://adoption-web-pr-${CHANGE_ID}.service.core-compute-preview.internal/la-portal/kba-case-ref

@@ -8,9 +8,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
 import java.time.LocalDate;
+
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 
 @Data
 @AllArgsConstructor
@@ -18,21 +20,28 @@ import java.time.LocalDate;
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 @Builder
 public class PlacementOrder {
-    @CCD(label = "Placement Order id")
+    @CCD(label = "Order ID", showCondition = "placementOrderNumber=\"\"")
     private String placementOrderId;
 
-    @CCD(label = "Placement Order type")
-    private String placementOrderType;
+    @CCD(label = "Type",
+        access = {SystemUpdateAccess.class},
+        typeOverride = FixedList,
+        typeParameterOverride = "PlacementOrderType")
+    private PlacementOrderType placementOrderType;
 
-    @CCD(label = "Placement Order Number")
+    @CCD(label = "Type (Other)")
+    private String otherPlacementOrderType;
+
+    @CCD(label = "Case or serial number")
     private String placementOrderNumber;
 
-    @CCD(label = "Placement Order Court")
+    @CCD(label = "Court")
     private String placementOrderCourt;
 
     @CCD(
-        label = "Placement Order Date",
-        access = {DefaultAccess.class}
+        label = "Date",
+        showCondition = "placementOrderNumber=\"\"",
+        access = {SystemUpdateAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate placementOrderDate;

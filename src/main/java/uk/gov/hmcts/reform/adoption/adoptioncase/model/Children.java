@@ -9,15 +9,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.SortedSet;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 
 @Data
 @AllArgsConstructor
@@ -26,44 +27,52 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 @Builder
 public class Children {
 
-    @CCD(label = "First name")
+    @CCD(label = "First names",
+        access = {DefaultAccess.class})
     private String firstName;
 
-    @CCD(label = "Last name")
+    @CCD(label = "Last names",
+        access = {DefaultAccess.class})
     private String lastName;
 
     @CCD(
         label = "Date of Birth",
-        access = {DefaultAccess.class}
+        access = {SystemUpdateAccess.class,
+            DefaultAccess.class}
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
-    @CCD(label = "Nationality")
-    private SortedSet<Nationality> nationality;
-
     @CCD(
-        label = "Children Additional Nationalities",
-        typeOverride = Collection,
-        typeParameterOverride = "OtherNationality",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<OtherNationality>> additionalNationalities;
-
-    @CCD(label = "First name after adoption")
-    private String firstNameAfterAdoption;
-
-    @CCD(label = "Last name after adoption")
-    private String lastNameAfterAdoption;
-
-    @CCD(
-        label = "Gender",
+        label = "Sex at birth",
         hint = "Child Gender",
-        typeOverride = FixedList,
-        typeParameterOverride = "Gender"
+        typeOverride = FixedRadioList,
+        typeParameterOverride = "Gender",
+        access = {DefaultAccess.class}
     )
     private Gender sexAtBirth;
 
-    @CCD(label = "Other sex at birth")
+    @CCD(label = "Nationality",
+        access = {DefaultAccess.class})
+    private SortedSet<Nationality> nationality;
+
+    @CCD(
+        label = "Nationality (other)",
+        typeOverride = Collection,
+        typeParameterOverride = "OtherNationality",
+        access = {SystemUpdateCollectionAccess.class}
+    )
+    private List<ListValue<OtherNationality>> additionalNationalities;
+
+    @CCD(label = "First name after adoption",
+        access = {DefaultAccess.class})
+    private String firstNameAfterAdoption;
+
+    @CCD(label = "Last name after adoption",
+        access = {DefaultAccess.class})
+    private String lastNameAfterAdoption;
+
+
+    @CCD(label = "Sex at birth (other)")
     private String otherSexAtBirth;
 }

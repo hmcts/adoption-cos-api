@@ -14,11 +14,12 @@ import uk.gov.service.notify.NotificationClientException;
 import java.io.IOException;
 import java.util.EnumSet;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 
 @Component
 @Slf4j
-public class SendCitizenSubmissionNotifications implements CaseTask {
+public class SendSubmissionNotifications implements CaseTask {
 
     // @Autowired
     // private ApplicationOutstandingActionNotification applicationOutstandingActionNotification;
@@ -40,6 +41,17 @@ public class SendCitizenSubmissionNotifications implements CaseTask {
             log.info("Sending application submitted notifications for case : {}", caseId);
             try {
                 notificationDispatcher.send(applicationSubmittedNotification, caseData, caseId);
+            } catch (NotificationClientException | IOException e) {
+                log.error("Couldn't send notifications");
+            }
+        }
+
+        if (EnumSet.of(LaSubmitted).contains(state)) {
+            log.info("Sending Local Authority application submitted notifications for case : {}", caseId);
+            try {
+                notificationDispatcher.sendToLocalAuthority(applicationSubmittedNotification, caseData, caseId);
+                notificationDispatcher.sendToApplicantsPostLocalAuthorityApplicationSubmit(
+                    applicationSubmittedNotification, caseData, caseId);
             } catch (NotificationClientException | IOException e) {
                 log.error("Couldn't send notifications");
             }

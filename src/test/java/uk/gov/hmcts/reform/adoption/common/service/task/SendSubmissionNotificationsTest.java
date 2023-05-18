@@ -21,7 +21,7 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
-class SendCitizenSubmissionNotificationsTest {
+class SendSubmissionNotificationsTest {
 
     @Mock
     private ApplicationSubmittedNotification applicationSubmittedNotification;
@@ -30,7 +30,7 @@ class SendCitizenSubmissionNotificationsTest {
     private NotificationDispatcher notificationDispatcher;
 
     @InjectMocks
-    private SendCitizenSubmissionNotifications sendCitizenSubmissionNotifications;
+    private SendSubmissionNotifications sendSubmissionNotifications;
 
     @Test
     void shouldDispatchSubmittedNotifications() throws NotificationClientException, IOException {
@@ -41,7 +41,7 @@ class SendCitizenSubmissionNotificationsTest {
         caseDetails.setData(caseData);
         caseDetails.setState(State.Submitted);
         //When
-        sendCitizenSubmissionNotifications.apply(caseDetails);
+        sendSubmissionNotifications.apply(caseDetails);
         //Then
         verify(notificationDispatcher).send(applicationSubmittedNotification, caseData, TEST_CASE_ID);
     }
@@ -55,7 +55,7 @@ class SendCitizenSubmissionNotificationsTest {
         caseDetails.setData(caseData);
         caseDetails.setState(AwaitingPayment);
         //When
-        sendCitizenSubmissionNotifications.apply(caseDetails);
+        sendSubmissionNotifications.apply(caseDetails);
         //Then
         verifyNoMoreInteractions(notificationDispatcher);
     }

@@ -17,12 +17,12 @@ import uk.gov.hmcts.ccd.sdk.type.Document;
 public class DssDocumentInfo {
 
     @CCD(
-            label = "Document"
+        label = "Document"
     )
     private Document document;
 
     @CCD(
-            label = "Comment"
+        label = "Comment"
     )
     private String comment;
 }

@@ -5,32 +5,33 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 
-import java.util.List;
-
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Sibling {
-    @CCD(label = "Sibling Id")
+    @CCD(label = "Sibling Id", showCondition = "siblingPoNumber=\"\"")
     private String siblingId;
 
-    @CCD(label = "Sibling First Name")
-    private String siblingFirstName;
+    @CCD(label = "Relationship",
+        access = {SystemUpdateAccess.class},
+        typeOverride = FixedList,
+        typeParameterOverride = "SiblingRelation")
+    private SiblingRelation siblingRelation;
 
-    @CCD(label = "Sibling Last Name")
-    private String siblingLastNames;
+    @CCD(label = "Type",
+        access = {SystemUpdateAccess.class},
+        typeOverride = FixedList,
+        typeParameterOverride = "SiblingPoType")
+    private SiblingPoType siblingPoType;
 
-    @CCD(
-        label = "Sibling Placement orders",
-        typeOverride = Collection,
-        typeParameterOverride = "PlacementOrder",
-        access = {CollectionAccess.class}
-    )
-    private List<ListValue<PlacementOrder>> siblingPlacementOrders;
+    @CCD(label = "Type (Other)")
+    private String siblingPlacementOtherType;
+
+    @CCD(label = "Case or serial number")
+    private String siblingPoNumber;
 }

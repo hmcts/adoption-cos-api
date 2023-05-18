@@ -12,7 +12,7 @@ buildscript {
   }
   dependencies {
     classpath "net.serenity-bdd:serenity-gradle-plugin:2.4.34"
-    classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '2.35.1025'
+    classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '2.36.1070'
   }
 }
 
@@ -27,8 +27,8 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.7.0'
   id 'com.github.ben-manes.versions' version '0.38.0'
-  id 'com.github.hmcts.rse-cft-lib' version '0.16.140'
-  id 'hmcts.ccd.sdk' version '0.25.16'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.222'
+  id 'hmcts.ccd.sdk' version '5.1.1'
   id 'au.com.dius.pact' version '4.3.8'
 }
 
@@ -43,7 +43,7 @@ ccd {
   configDir = file('ccd-definitions/definitions')
 }
 
-ext['elasticsearch.version'] = '7.17.0'
+ext['elasticsearch.version'] = '7.17.3'
 ext['snakeyaml.version'] = '1.32'
 ext['jackson.version'] = '2.14.0-rc1'
 
@@ -68,11 +68,15 @@ sourceSets {
     java {
       compileClasspath += main.output
       runtimeClasspath += main.output
-      //srcDir file('src/contractTest/java')
     }
-    //resources.srcDir file('src/contractTest/resources')
   }
 
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
 }
 
 idea {
@@ -96,6 +100,10 @@ tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
+}
+
 tasks.withType(Test) {
   useJUnitPlatform()
 
@@ -108,15 +116,6 @@ test {
   failFast = true
   useJUnitPlatform()
 }
-
-task functional(type: Test) {
-  description = "Runs functional tests"
-  group = "Verification"
-  testClassesDirs = sourceSets.functionalTest.output.classesDirs
-  classpath = sourceSets.functionalTest.runtimeClasspath
-  failFast = true
-}
-
 task integration(type: Test) {
   description = "Runs integration tests"
   group = "Verification"
@@ -124,14 +123,27 @@ task integration(type: Test) {
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
 }
-
-task smoke(type: Test) {
+task yarnInstall(type: Exec) {
+  workingDir '.'
+  commandLine 'yarn', 'install'
+}
+task smoke(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs Smoke Tests"
-  setTestClassesDirs(sourceSets.functionalTest.output.classesDirs)
-  setClasspath(sourceSets.functionalTest.runtimeClasspath)
-  include "uk/gov/hmcts/reform/adoption/smoke/**"
+  doLast {
+    exec {
+      commandLine 'yarn', 'test:smoke'
+    }
+  }
 }
 
+task functional(type: Test,dependsOn: ':yarnInstall') {
+  description = "Runs functional tests"
+  doLast {
+    exec {
+      commandLine 'yarn', 'test:functional'
+    }
+  }
+}
 task highLevelDataSetup(type: JavaExec) {
   mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
   classpath += sourceSets.main.runtimeClasspath
@@ -153,7 +165,7 @@ task fortifyScan(type: JavaExec)  {
 
 checkstyle {
   maxWarnings = 0
-  toolVersion = '8.29'
+  toolVersion = '9.2.1'
   getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
@@ -177,7 +189,7 @@ jacocoTestReport {
 }
 
 jacoco {
-  toolVersion = "0.8.5"
+  toolVersion = "0.8.8"
 }
 
 jacocoTestCoverageVerification {
@@ -224,6 +236,8 @@ def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/Adoption.java',
   '**/uk/gov/hmcts/reform/adoption/payment/**',
   '**/uk/gov/hmcts/reform/adoption/controllers/**',
+  '**/uk/gov/hmcts/reform/adoption/config/launchdarkly/LaunchdarklyIntValidationService.java',
+  '**/uk/gov/hmcts/reform/adoption/config/launchdarkly/LaunchDirectlyIntValidationController.java',
   '**/uk/gov/hmcts/reform/adoption/idam/**',
   '**/uk/gov/hmcts/reform/adoption/common/AddSystemUpdateRole.java',
   '**/uk/gov/hmcts/reform/adoption/common/notification/**',
@@ -327,7 +341,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name:'ccd-case-document-am-client', version: versions.ccdCaseDocumentAmClient
   implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
   implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.8.6'
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.0-rc1'
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
@@ -338,11 +352,13 @@ dependencies {
   implementation group: 'org.elasticsearch', name: 'elasticsearch'
   implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.2-Categories'
   implementation group: 'org.springframework.retry', name: 'spring-retry'
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.69'
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.69'
+  implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.0.1'
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
@@ -351,10 +367,6 @@ dependencies {
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    exclude(module: 'commons-logging')
-    exclude(module: 'android-json')
-  }
-  testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
     exclude(module: 'commons-logging')
     exclude(module: 'android-json')
   }
@@ -418,7 +430,9 @@ bootRun {
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
       systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
-
+      systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
+      systemProperty 'SEND_GRID_API_KEY', getVaultSecret('send-grid-api-key')
+      systemProperty 'SEND_GRID_NOTIFY_FROM_EMAIL', getVaultSecret('sendgrid-notify-from-email')
       if (System.getenv("BOOT_RUN_DOCKER")) {
         systemProperty 'IDAM_API_BASEURL', 'http://localhost:5000'
         systemProperty 'CASE_DATA_STORE_BASEURL', 'http://localhost:4452'
@@ -453,6 +467,12 @@ functional {
       systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
       systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
       systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
+      systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
+      systemProperty 'SEND_GRID_API_KEY', getVaultSecret('send-grid-api-key')
+      systemProperty 'SEND_GRID_NOTIFY_FROM_EMAIL', getVaultSecret('sendgrid-notify-from-email')
+      secret("caseworker-username", "CASEWORKER_USERNAME")
+      secret("caseworker-password", "CASEWORKER_PASSWORD")
+      secret("s2s-secret", "S2S_SECRET_WEB")
     }
   }
 }
@@ -580,4 +600,5 @@ bootWithCCD {
       environment key, value
     }
   }
+  authMode = uk.gov.hmcts.rse.AuthMode.AAT
 }

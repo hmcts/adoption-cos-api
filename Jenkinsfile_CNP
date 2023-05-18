@@ -1,11 +1,9 @@
 #!groovy
-
 @Library("Infrastructure")
 
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GradleBuilder
 import uk.gov.hmcts.contino.AppPipelineConfig
-import uk.gov.hmcts.contino.MetricsPublisher
 
 def type = "java"
 def product = "adoption"
@@ -42,12 +40,21 @@ def secrets = [
     secret('definition-importer-username', 'DEFINITION_IMPORTER_USERNAME'),
     secret('definition-importer-password', 'DEFINITION_IMPORTER_PASSWORD'),
     secret('idam-secret', 'OAUTH2_CLIENT_SECRET'),
+    secret('idam-secret', 'IDAM_CLIENT_SECRET'),
     // secret('idam-solicitor-username', 'IDAM_SOLICITOR_USERNAME'),
     // secret('idam-solicitor-password', 'IDAM_SOLICITOR_PASSWORD'),
     secret('idam-system-user-name', 'IDAM_SYSTEM_UPDATE_USERNAME'),
     secret('idam-system-user-password', 'IDAM_SYSTEM_UPDATE_PASSWORD'),
     secret('s2s-secret-cos-api', 'S2S_SECRET'),
-    secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_KEY')
+    secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_KEY'),
+    secret("launchDarkly-sdk-key", "LAUNCH_DARKLY_SDK_KEY"),
+    secret("caseworker-username", "CASEWORKER_USERNAME"),
+    secret("caseworker-password", "CASEWORKER_PASSWORD"),
+    secret("s2s-secret", "S2S_SECRET_WEB"),
+    secret("app-insight-connection-key", "APP_INSIGHTS_CONNECTION_KEY"),
+    secret("send-grid-api-key", "SEND_GRID_API_KEY"),
+    secret("sendgrid-notify-from-email", "SEND_GRID_NOTIFY_FROM_EMAIL"),
+
   ]
 ]
 
@@ -189,6 +196,9 @@ withPipeline(type, product, component) {
   }
 
   onPR {
+
+    //env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
     env.ENVIRONMENT="preview"
     env.CASE_API_URL = "http://adoption-cos-api-pr-${CHANGE_ID}-java"
     env.CCD_DEF_NAME = "preview"
@@ -241,11 +251,6 @@ withPipeline(type, product, component) {
     env.FEE_API_URL = "http://fees-register-api-ithc.service.core-compute-ithc.internal"
   }
 
-  before('functionalTest:preview') {
-    // Only for preview upload the definitions via script as high level data set up relies on an existing environment
-    uploadCoreCaseDataDefinitions()
-  }
-
   afterAlways('contractTest:preview') {
     dir("${WORKSPACE}") {
       steps.archiveArtifacts artifacts: "pacts/*.json"
@@ -265,6 +270,41 @@ withPipeline(type, product, component) {
   onMaster() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
+
+  before('functionalTest:preview') {
+    env.PARALLEL_CHUNKS = 10
+    env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.preview.platform.hmcts.net/"
+  }
+
+  afterAlways('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
+
+  before('smoketest:preview') {
+    uploadCoreCaseDataDefinitions()
+    env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.preview.platform.hmcts.net/"
+  }
+
+  afterAlways('smoketest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
+
+  before('smoketest:aat') {
+    env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
+  }
+
+  afterAlways('smoketest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
+
+  before('functionalTest:aat') {
+    env.PARALLEL_CHUNKS = 5
+    env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
+  }
+
+  afterAlways('functionalTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
 }
 
 def setCommonEnvVariables() {
@@ -274,6 +314,8 @@ def setCommonEnvVariables() {
     env.FEE_API_URL = "http://fees-register-api-aat.service.core-compute-aat.internal"
     env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
     env.BEFTA_S2S_CLIENT_ID = "ccd_data"
+    env.ADOPTION_WEB_CLIENT_ID = "adoption-web"
+    env.ADOPTION_WEB_MICROSERVICE = "adoption_web"
     env.CCD_API_GATEWAY_OAUTH2_REDIRECT_URL = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
     env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 }

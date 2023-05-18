@@ -22,6 +22,10 @@ azure:
   application-insights:
     instrumentation-key: ${APP_INSIGHTS_KEY:00000000-0000-0000-0000-000000000000}
 
+cron:
+  alertDraftApplicant:
+    offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:83}
+
 uk:
   gov:
     notify:
@@ -31,20 +35,34 @@ uk:
       email:
         templateVars:
           signInAdoptionUrl: ${NOTIFY_TEMPLATE_SIGN_IN_ADOPTION_URL:https://adoption-web.aat.platform.hmcts.net/}
-          adoptionCourtEmail: some.email@justice.gov.uk
+          adoptionCourtEmail: some.email@justice.gov.ukf
+          laPortalURL: ${LA_PORTAL_BASEURL:localhost:3001/la-portal/kba-case-ref}
+          signInAdoptionUrlForMultipleChildren: ${MULTI_CHILDREN_CUI_URL:localhost:3001/new-application-redirect}
         templates:
           english:
             TEST_EMAIL: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
             SAVE_SIGN_OUT: ''
             APPLICATION_SUBMITTED: 'b60ab1ad-fe9c-4098-81a5-ad6c976b7de3'
-            APPLICANT_APPLICATION_SUBMITTED: 'a0aa356f-8c6f-437c-b1b9-3c321048001d'
-            LOCAL_COURT_APPLICATION_SUBMITTED: '381cfc64-5016-4fe7-bd88-3ceeb163ce69'
+            APPLICANT_APPLICATION_SUBMITTED: '9e7b3a5d-18da-4fde-b070-527594825294'
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY: '501e9da1-76fb-468a-aa88-1cb8ed4d1d8e'
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED: '66348e36-5b4c-4ebc-a8d6-b09679a3429b'
+            LOCAL_COURT_APPLICATION_SUBMITTED: '1de1196d-4b6f-4b3b-8550-3b5627f55607'
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN: '87ac8db9-c622-4208-92ba-45a2da23da24'
+            CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT: 'ec0102a6-6fad-4cd0-b4a7-9c2b7f59c6b6'
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT: 'f5f003d6-c9d6-405d-8f9b-e5274ada4241'
+            LOCAL_COURT_APPLICATION_SUBMITTED_BY_LOCAL_AUTHORITY: 'e9dea4c4-74f6-4978-889d-364d01f0c5f6'
           welsh:
             TEST_EMAIL: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
             SAVE_SIGN_OUT: ''
             APPLICATION_SUBMITTED: '75f5d6c5-0af6-437c-afe7-623399c11e7b'
-            APPLICANT_APPLICATION_SUBMITTED: 'dd251faa-0c40-4540-80b4-a7edb83a43f0'
+            APPLICANT_APPLICATION_SUBMITTED: 'c94d442b-7629-4bbd-b0c3-2477d5684b43'
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY: ''
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED: ''
             LOCAL_COURT_APPLICATION_SUBMITTED: '2960d8dd-ab3e-4265-a71d-2d81d0fd84c8'
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN: 'd56788bb-6819-44e4-a292-6f70bca2f4ed'
+            CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT: 'ec0102a6-6fad-4cd0-b4a7-9c2b7f59c6b6'
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT: 'f5f003d6-c9d6-405d-8f9b-e5274ada4241'
+            LOCAL_COURT_APPLICATION_SUBMITTED_BY_LOCAL_AUTHORITY: ''
 
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
@@ -121,6 +139,21 @@ bulk-action:
 docmosis:
   templates:
     english:
-      ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-ENG-00953.docx
+      ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-ENG-00953-R2.docx
+      ADOPTION_LA_APPLICATION_SUMMARY: FL-ADO-APP-ENG-00956.docx
+      FINAL_ADOPTION_ORDER_A76_DRAFT: FL-ADO-APP-ENG-00957.docx
+      FINAL_ADOPTION_ORDER_A76: FL-ADO-APP-ENG-00959.docx
+      FINAL_ADOPTION_ORDER_A206_DRAFT: FL-ADO-APP-ENG-00962.docx
+      FINAL_ADOPTION_ORDER_A206: FL-ADO-APP-ENG-00963.docx
+      MANAGE_HEARING_NOTICES_A90: FL-ADO-APP-ENG-00958.docx
+      MANAGE_HEARING_NOTICES_A91: FL-ADO-APP-ENG-00960.docx
+      SEEK_FURTHER_INFO_LETTER: FL-ADO-APP-ENG-00961.docx
     welsh:
       ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-WEL-00955.docx
+
+launchdarkly:
+  sdk-key: ${LAUNCH_DARKLY_SDK_KEY:}
+
+send-grid:
+  api-key: ${SEND_GRID_API_KEY:xxxxxxxx}
+  notify-from-email: ${SEND_GRID_NOTIFY_FROM_EMAIL:sendGridEmailNotification@testadoption.com}

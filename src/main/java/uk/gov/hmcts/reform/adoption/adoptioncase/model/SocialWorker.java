@@ -14,15 +14,15 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Builder
 public class SocialWorker {
 
-    @CCD(label = "Social Worker Name",
+    @CCD(label = "Name ",
         access = {DefaultAccess.class})
     private String socialWorkerName;
 
-    @CCD(label = "Social Worker PhoneNumber",
+    @CCD(label = "Phone number",
         access = {DefaultAccess.class}
     )
     private String socialWorkerPhoneNumber;
@@ -32,9 +32,44 @@ public class SocialWorker {
         access = {DefaultAccess.class})
     private String socialWorkerEmail;
 
-    @CCD(label = "Social Worker Team Email",
+    @CCD(label = "Contact",
+        access = {DefaultAccess.class}
+    )
+    private String localAuthority;
+
+    @CCD(label = "Email",
         typeOverride = Email,
         access = {DefaultAccess.class}
     )
-    private String socialWorkerTeamEmail;
+    private String localAuthorityEmail;
+
+    @CCD(label = "Address line 1",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerAddressLine1;
+
+    @CCD(label = "Address line 2",
+        access = {DefaultAccess.class})
+    private String socialWorkerAddressLine2;
+
+    @CCD(label = "Address line 3",
+        access = {DefaultAccess.class})
+    private String socialWorkerAddressLine3;
+
+    @CCD(label = "Town or city",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerTown;
+
+    @CCD(label = "County, district, state or province")
+    private String socialWorkerAddressCounty;
+
+    @CCD(label = "Post code",
+        access = {DefaultAccess.class}
+    )
+    private String socialWorkerPostcode;
+
+    @CCD(label = "Country",
+        access = {DefaultAccess.class})
+    private String socialWorkerCountry;
 }
