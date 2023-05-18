@@ -1,5 +1,5 @@
 {
-  "connectionString": "${file:/mnt/secrets/adoption-cos-api/app-insight-connection-key}",
+  "connectionString": "${file:/mnt/secrets/adoption/app-insight-connection-key}",
   "role": {
     "name": "HMCTS Adoption"
   }
