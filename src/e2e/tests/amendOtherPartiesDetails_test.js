@@ -13,13 +13,13 @@ async function setupScenario(I) {
 }
 
 Scenario('Verify headings are displayed in Check your answers page of amend other parties details', async ({I, caseViewPage, amendOtherPartiesDetailsPage }) => {
-  // await setupScenario(I);
-  // await caseViewPage.goToNewActions(config.administrationActions.amendOtherPartiesDetails);
-  // await amendOtherPartiesDetailsPage.addChildLegalGuardianDetails();
-  // await amendOtherPartiesDetailsPage.addChildLegalGuardianSolicitorDetails();
-  // await amendOtherPartiesDetailsPage.addAdditionalAdoptionAgencyDetails();
-  // await amendOtherPartiesDetailsPage.addBirthMotherSolicitorDetails();
-  // await amendOtherPartiesDetailsPage.addBirthFatherSolicitorDetails();
-  // await amendOtherPartiesDetailsPage.addOtherParentalRespSolicitorDetails();
-  // await amendOtherPartiesDetailsPage.verifyHeadingsAreDisplayedInCheckYourAnswersPage();
+     await setupScenario(I);
+     await caseViewPage.goToNewActions(config.administrationActions.amendOtherPartiesDetails);
+     await amendOtherPartiesDetailsPage.addChildLegalGuardianDetails();
+     await amendOtherPartiesDetailsPage.addChildLegalGuardianSolicitorDetails();
+     await amendOtherPartiesDetailsPage.addAdditionalAdoptionAgencyDetails();
+     await amendOtherPartiesDetailsPage.addBirthMotherSolicitorDetails();
+     await amendOtherPartiesDetailsPage.addBirthFatherSolicitorDetails();
+     await amendOtherPartiesDetailsPage.addOtherParentalRespSolicitorDetails();
+     await amendOtherPartiesDetailsPage.verifyHeadingsAreDisplayedInCheckYourAnswersPage();
 });
