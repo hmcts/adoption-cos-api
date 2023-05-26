@@ -104,7 +104,7 @@ Scenario('Verify seek further Info CYA Verify', async ({I, caseViewPage, seekFur
   await seekFurtherInfoPage.navigationCheckCYA();
 });
 
-Screen 5 CYA
+//Screen 5 CYA
 Scenario('Verify seek further Info Check your Answers of seek Further Info', async ({I, caseViewPage, seekFurtherInfoPage }) => {
    await setupScenario(I);
    await caseViewPage.goToNewActions(config.administrationActions.seekFurtherInfo);
