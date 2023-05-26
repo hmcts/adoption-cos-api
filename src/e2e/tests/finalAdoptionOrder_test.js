@@ -48,7 +48,7 @@ Scenario('Verify final adoption order details Order Tab Check and Send Orders', 
      await manageOrderTabPage.selectOrderTab();
      await manageOrderTabPage.verifyOrderDetailsUnderOrdersTabs();
      await manageOrderTabPage.verifyOrderServed();
-     await manageOrderTabPage.faOrderRecipients();*/
+     await manageOrderTabPage.faOrderRecipients();
 
 
 });
