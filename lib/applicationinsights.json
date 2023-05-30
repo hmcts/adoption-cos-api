@@ -1,0 +1,6 @@
+{
+  "connectionString": "${file:/mnt/secrets/adoption/app-insight-connection-key}",
+  "role": {
+    "name": "HMCTS Adoption"
+  }
+}
