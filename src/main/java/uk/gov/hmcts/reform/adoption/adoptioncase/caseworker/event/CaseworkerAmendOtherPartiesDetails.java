@@ -6,12 +6,12 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AmendOtherPartiesDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.YesNoNotSure;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
@@ -57,9 +57,9 @@ public class CaseworkerAmendOtherPartiesDetails implements CCDConfig<CaseData, S
 
         var caseData = details.getData();
         Parent birthMother = caseData.getBirthMother();
-        birthMother.setStillAlive(YesOrNo.YES.equals(birthMother.getDeceased().getValue()) ? YesOrNo.NO : YesOrNo.YES);
+        birthMother.setStillAlive(YesNoNotSure.YES.equals(birthMother.getDeceased().getValue()) ? YesNoNotSure.NO : YesNoNotSure.YES);
         Parent birthFather = caseData.getBirthFather();
-        birthFather.setStillAlive(YesOrNo.YES.equals(birthMother.getDeceased().getValue()) ? YesOrNo.NO : YesOrNo.YES);
+        birthFather.setStillAlive(YesNoNotSure.YES.equals(birthMother.getDeceased().getValue()) ? YesNoNotSure.NO : YesNoNotSure.YES);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();

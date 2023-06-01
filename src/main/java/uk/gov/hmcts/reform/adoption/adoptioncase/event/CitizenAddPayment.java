@@ -104,7 +104,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
             .build();
     }
 
-    private SubmittedCallbackResponse submitted(CaseDetails<CaseData, State> details,
+    public SubmittedCallbackResponse submitted(CaseDetails<CaseData, State> details,
                                                 CaseDetails<CaseData, State> beforeDetails) {
         if (EnumSet.of(Submitted).contains(details.getState())) {
             log.info("Citizen submit application submitted callback invoked CaseID: {}", details.getId());
