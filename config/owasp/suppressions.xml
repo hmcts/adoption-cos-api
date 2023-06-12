@@ -136,4 +136,28 @@
     <cve>CVE-2023-20861</cve>
   </suppress>
 
+  <suppress>
+    <notes><![CDATA[
+   file name: got:8.3.2
+   ]]></notes>
+    <packageUrl regex="true">^pkg:npm/got@.*$</packageUrl>
+    <vulnerabilityName>1088948</vulnerabilityName>
+  </suppress>
+
+  <suppress>
+    <notes><![CDATA[
+   file name: http-cache-semantics:3.8.1
+   ]]></notes>
+    <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
+    <vulnerabilityName>1091807</vulnerabilityName>
+  </suppress>
+
+  <suppress>
+    <notes><![CDATA[
+   file name: node-fetch:2.6.5
+   ]]></notes>
+    <packageUrl regex="true">^pkg:npm/node\-fetch@.*$</packageUrl>
+    <vulnerabilityName>1091239</vulnerabilityName>
+  </suppress>
+
 </suppressions>
