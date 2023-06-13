@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.13.1"
   },
   "scripts": {
     "prepublishOnly": "npm run genCaseTypeConsts && npm run genCitizenEventNameConsts && npm run genCommonEventNameConsts && npm run genSystemEventNameConsts",
