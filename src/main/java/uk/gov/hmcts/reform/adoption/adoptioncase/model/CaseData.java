@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
@@ -32,6 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.List;
@@ -57,6 +59,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
+@Slf4j
 public class CaseData {
     @CCD(
         label = "Applying with",
@@ -893,16 +896,17 @@ public class CaseData {
 
     @JsonIgnore
     public void addToDocumentsGenerated(final ListValue<AdoptionDocument> listValue) {
-
-        final List<ListValue<AdoptionDocument>> documents = getDocumentsGenerated();
-
-        if (isEmpty(documents)) {
-            final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
+        log.info("Inside addToDocumentsGenerated for caseId: {}", this.getHyphenatedCaseRef());
+        final CopyOnWriteArrayList<ListValue<AdoptionDocument>> documentList = new CopyOnWriteArrayList<>();
+        if (isEmpty(getDocumentsGenerated())) {
+            log.info("Writing document into blank list");
             documentList.add(listValue);
             setDocumentsGenerated(documentList);
         } else {
-            documents.add(0, listValue); // always add to start top of list
+            log.info("Writing document into existing list");
+            getDocumentsGenerated().add(0, listValue);
         }
+
         addToCombinedDocumentsGenerated();
     }
 
