@@ -294,8 +294,6 @@ withPipeline(type, product, component) {
   }
 
   before('smoketest:aat') {
-    
-
     env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
   }
 
