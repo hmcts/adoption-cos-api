@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
@@ -57,6 +58,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
+@Slf4j
 public class CaseData {
     @CCD(
         label = "Applying with",
@@ -893,14 +895,16 @@ public class CaseData {
 
     @JsonIgnore
     public void addToDocumentsGenerated(final ListValue<AdoptionDocument> listValue) {
-
+        log.info("Inside addToDocumentsGenerated for case id: {}",this.getHyphenatedCaseRef());
         final List<ListValue<AdoptionDocument>> documents = getDocumentsGenerated();
 
         if (isEmpty(documents)) {
+            log.info("Inside if condition- No Documents found in casedata");
             final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
             documentList.add(listValue);
             setDocumentsGenerated(documentList);
         } else {
+            log.info("Inside else condition-- found few existing documents");
             documents.add(0, listValue); // always add to start top of list
         }
         addToCombinedDocumentsGenerated();
