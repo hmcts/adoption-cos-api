@@ -201,8 +201,8 @@ withPipeline(type, product, component) {
     generateDefinitions()
   }
 
-  afterSuccess('build') {
-    yarnBuilder.yarn('setup')
+  afterAlways('build') {
+    yarnBuilder.yarn('check')
   }
 
   onPR {
