@@ -201,6 +201,10 @@ withPipeline(type, product, component) {
     generateDefinitions()
   }
 
+  afterSuccess('build') {
+    yarnBuilder.yarn('setup')
+  }
+
   onPR {
 
     //env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
