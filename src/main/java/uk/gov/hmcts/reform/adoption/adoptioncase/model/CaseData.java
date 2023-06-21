@@ -10,8 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
@@ -60,9 +58,6 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class CaseData {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CaseData.class);
-
     @CCD(
         label = "Applying with",
         access = {DefaultAccess.class},
