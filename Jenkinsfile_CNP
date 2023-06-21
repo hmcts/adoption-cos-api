@@ -294,7 +294,8 @@ withPipeline(type, product, component) {
     println "Inside before smokeTest: preview"
     uploadCoreCaseDataDefinitions()
     env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.preview.platform.hmcts.net/"
-    yarnBuilder.yarn('upgrade')
+    yarnBuilder.yarn('yarn-update')
+    yarnBuilder.yarn('install-dependencies')
 
   }
 
