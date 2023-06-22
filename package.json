@@ -7,7 +7,6 @@
   "repository": "git@github.com:hmcts/adoption-cos-api.git",
   "license": "MIT",
   "private": false,
-  "packageManager": "yarn@3.3.0",
   "engines": {
     "node": ">=16.13.1"
   },
@@ -53,5 +52,6 @@
   },
   "dependencies": {
     "axios": "^0.27.2"
-  }
+  },
+  "packageManager": "yarn@3.3.0"
 }
