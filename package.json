@@ -45,7 +45,10 @@
     "otplib": "^12.0.1",
     "playwright": "^1.22.2",
     "puppeteer": "12.0.1",
-    "webdriverio": "^7.19.7"
+    "webdriverio": "^7.19.7",
+    "@wdio/cli": "^7.0.0",
+    "webpack": "^5.0.0",
+    "mocha": ">=2.2.0 <7 || >=9"
   },
   "resolutions": {
     "minimist": "^1.2.6"
