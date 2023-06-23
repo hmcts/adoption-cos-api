@@ -7,7 +7,7 @@
   "repository": "git@github.com:hmcts/adoption-cos-api.git",
   "license": "MIT",
   "engines": {
-    "node": ">=16.13.1"
+    "node": ">=18.16.1"
   },
   "scripts": {
     "prepublishOnly": "npm run genCaseTypeConsts && npm run genCitizenEventNameConsts && npm run genCommonEventNameConsts && npm run genSystemEventNameConsts",
