@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=16.13.1"
   },
   "scripts": {
     "prepublishOnly": "npm run genCaseTypeConsts && npm run genCitizenEventNameConsts && npm run genCommonEventNameConsts && npm run genSystemEventNameConsts",
@@ -21,7 +21,10 @@
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel --reporter mocha-multi",
     "test:crossbrowser-e2e": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep \"@cross-browser\" ${BROWSER_GROUP:-'--all'} -c saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
-    "test:local": "codeceptjs run-multiple parallel"
+    "test:local": "codeceptjs run-multiple parallel",
+    "yarn-update": "yarn set version 3.x",
+    "install-dependencies": "/usr/bin/yarn install --immutable --silent",
+    "lint-ui-tests": "/usr/bin/yarn lint"
   },
   "devDependencies": {
     "otplib": "^12.0.1",
@@ -41,13 +44,17 @@
     "nodemon": "^2.0.16",
     "npm-run-all": "^4.1.5",
     "playwright": "^1.22.2",
-    "puppeteer": "12.0.1",
-    "webdriverio": "^7.19.7"
+    "puppeteer": "20.7.3",
+    "webdriverio": "^7.19.7",
+    "@wdio/cli": "^7.0.0",
+    "webpack": "^5.0.0",
+    "mocha": ">=2.2.0 <7 || >=9"
   },
   "resolutions": {
     "minimist": "^1.2.6"
   },
   "dependencies": {
     "axios": "^0.27.2"
-  }
+  },
+  "packageManager": "yarn@3.3.0"
 }
