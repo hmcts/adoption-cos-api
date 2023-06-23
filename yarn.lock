@@ -158,7 +158,7 @@ __metadata:
     npm-run-all: ^4.1.5
     otplib: ^12.0.1
     playwright: ^1.22.2
-    puppeteer: 20.7.3
+    puppeteer: ^20.7.3
     webdriverio: ^7.19.7
     webpack: ^5.0.0
   languageName: unknown
@@ -6311,7 +6311,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:20.7.3":
+"puppeteer@npm:^20.7.3":
   version: 20.7.3
   resolution: "puppeteer@npm:20.7.3"
   dependencies:
