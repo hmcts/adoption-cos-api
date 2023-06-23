@@ -20,10 +20,7 @@
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel --reporter mocha-multi",
     "test:crossbrowser-e2e": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep \"@cross-browser\" ${BROWSER_GROUP:-'--all'} -c saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
-    "test:local": "codeceptjs run-multiple parallel",
-    "yarn-update": "yarn set version 3.x",
-    "install-dependencies": "/usr/bin/yarn install --silent",
-    "lint-ui-tests": "/usr/bin/yarn lint"
+    "test:local": "codeceptjs run-multiple parallel"
   },
   "devDependencies": {
     "@wdio/cli": "^7.0.0",
