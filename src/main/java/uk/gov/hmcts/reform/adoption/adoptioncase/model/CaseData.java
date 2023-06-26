@@ -894,20 +894,14 @@ public class CaseData {
     @JsonIgnore
     public void addToDocumentsGenerated(final ListValue<AdoptionDocument> listValue) {
 
-        //log.info("Inside addToDocumentsGenerated for case ID {}", this.getHyphenatedCaseRef());
-
         final List<ListValue<AdoptionDocument>> documents = getDocumentsGenerated();
-
-        //log.info("DocumentsGenerated size: {}", documents.size());
 
         if (isEmpty(documents)) {
             final List<ListValue<AdoptionDocument>> documentList = new ArrayList<>();
             documentList.add(listValue);
             setDocumentsGenerated(documentList);
-            //log.info("inside if: DocumentsGenerated value is: {}", getDocumentsGenerated());
         } else {
             documents.add(0, listValue); // always add to start top of list
-            //log.info("inside else: DocumentsGenerated value is: {}", getDocumentsGenerated());
         }
         addToCombinedDocumentsGenerated();
     }
