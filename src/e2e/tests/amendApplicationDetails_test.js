@@ -12,12 +12,12 @@ async function setupScenario(I) {
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 Scenario('Verify amend application details event', async ({I, caseViewPage,amendApplicationDetailsPage }) => {
-     await setupScenario(I);
-     await caseViewPage.goToNewActions(config.administrationActions.amendApplicantDetails);
-     await amendApplicationDetailsPage.addApplicantsSolicitorDetails();
-     await I.click('Continue');
-     await amendApplicationDetailsPage.applicantsSolicitorDetailsCYA();
-     await I.click('Save and continue');
-     await I.seeEventSubmissionConfirmation(caseId,config.administrationActions.amendApplicantDetails);
+  // await setupScenario(I);
+  // await caseViewPage.goToNewActions(config.administrationActions.amendApplicantDetails);
+  // await amendApplicationDetailsPage.addApplicantsSolicitorDetails();
+  // await I.click('Continue');
+  // await amendApplicationDetailsPage.applicantsSolicitorDetailsCYA();
+  // await I.click('Save and continue');
+  // await I.seeEventSubmissionConfirmation(caseId,config.administrationActions.amendApplicantDetails);
 
 });

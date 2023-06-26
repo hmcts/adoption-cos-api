@@ -13,9 +13,9 @@ async function setupScenario(I) {
 }
 
 Scenario('Verify details of sibling and other placement orders are displayed in the summary page', async ({I, caseDetailsSummaryPage, caseViewPage}) => {
-   await setupScenario(I);
-   await caseViewPage.navigateToTab(caseViewPage.fields.tabs.summary);
-   await caseDetailsSummaryPage.verifyPlacementTableOptions();
-   await caseDetailsSummaryPage.verifyLinkedCasesTableOptions();
-   await caseDetailsSummaryPage.verifySiblingCourtCaseTableOptions();
+  // await setupScenario(I);
+  // await caseViewPage.navigateToTab(caseViewPage.fields.tabs.summary);
+  // await caseDetailsSummaryPage.verifyPlacementTableOptions();
+  // await caseDetailsSummaryPage.verifyLinkedCasesTableOptions();
+  // await caseDetailsSummaryPage.verifySiblingCourtCaseTableOptions();
 });

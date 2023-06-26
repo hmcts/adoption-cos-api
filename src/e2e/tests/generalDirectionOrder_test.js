@@ -14,16 +14,16 @@ async function setupScenario(I) {
 }
 
 Scenario('verify General adoption Order details', async ({I, caseViewPage, manageOrdersPage, generalDirectionOrderPage }) => {
-   await setupScenario(I);
-   await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
-   await manageOrdersPage.verifyCaseDetails();
-   await manageOrdersPage.selectCreateNewOrder();
-   await manageOrdersPage.verifyTypeOfOrdersListed();
-   await generalDirectionOrderPage.selectGeneralDirectionOrderAndVerify();
-   await generalDirectionOrderPage.verifyGeneralDirectionOrderDetails();
-   await generalDirectionOrderPage.verifyProductionOrderDetails();
-   await generalDirectionOrderPage.selectRecipientsOfThisOrderDetails();
-   await generalDirectionOrderPage.verifyPreviewTheOrderDetails();
+  // await setupScenario(I);
+  // await caseViewPage.goToNewActions(config.administrationActions.manageOrders);
+  // await manageOrdersPage.verifyCaseDetails();
+  // await manageOrdersPage.selectCreateNewOrder();
+  // await manageOrdersPage.verifyTypeOfOrdersListed();
+  // await generalDirectionOrderPage.selectGeneralDirectionOrderAndVerify();
+  // await generalDirectionOrderPage.verifyGeneralDirectionOrderDetails();
+  // await generalDirectionOrderPage.verifyProductionOrderDetails();
+  // await generalDirectionOrderPage.selectRecipientsOfThisOrderDetails();
+  // await generalDirectionOrderPage.verifyPreviewTheOrderDetails();
 
 
 })

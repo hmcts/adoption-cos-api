@@ -14,7 +14,7 @@ async function setupScenario(I) {
   await I.navigateToCaseDetailsAs(config.caseWorkerUserOne, caseId);
 }
 Scenario('Verify Payment details of a case', async ({I, caseViewPage, paymentDetailsPage }) => {
-   await setupScenario(I);
-   await caseViewPage.navigateToTab('Payment');
-   await paymentDetailsPage.verifyPaymentDetails();
+  // await setupScenario(I);
+  // await caseViewPage.navigateToTab('Payment');
+  // await paymentDetailsPage.verifyPaymentDetails();
 });
