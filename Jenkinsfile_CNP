@@ -57,7 +57,7 @@ def secrets = [
 
   ]
 ]
-
+def branchesToSync = ['demo', 'ithc', 'perftest']
 def pipelineConf = new AppPipelineConfig()
 pipelineConf.vaultSecrets = secrets
 
@@ -70,7 +70,7 @@ withPipeline(type, product, component) {
   disableLegacyDeployment()
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
-  syncBranchesWithMaster(['ithc', 'perftest'])
+  syncBranchesWithMaster(branchesToSync)
   enableSlackNotifications('#adoption-tech')
   enableHighLevelDataSetup()
   MetricsPublisher metricsPublisher = new MetricsPublisher(this, currentBuild, product, component)
@@ -192,6 +192,21 @@ withPipeline(type, product, component) {
       reportFiles          : "index.html",
       reportName           : "Smoke Test Report"
     ]
+
+    println "Generating CCD Definition after smokeTest:aat"
+    env.ENVIRONMENT="prod"
+    env.CASE_API_URL="http://adoption-cos-api-prod.service.core-compute-prod.internal"
+    env.CCD_DEF_NAME="prod"
+    env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-prod.service.core-compute-prod.internal"
+    env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
+    env.SERVICE_AUTH_MICROSERVICE = "adoption_cos_api"
+    env.SERVICE_AUTH_PROVIDER_URL = "http://rpe-service-auth-provider-prod.service.core-compute-prod.internal"
+    env.IDAM_API_URL_BASE = "https://idam-api.platform.hmcts.net"
+    env.S2S_URL_BASE = "http://rpe-service-auth-provider-prod.service.core-compute-prod.internal"
+    env.BEFTA_S2S_CLIENT_ID = "ccd_data"
+
+    builder.gradle('generateCCDConfig --rerun-tasks')
+    generateDefinitions()
   }
 
   afterAlways('checkout') {
@@ -285,6 +300,7 @@ withPipeline(type, product, component) {
   }
 
   before('smoketest:preview') {
+    println "Inside before smokeTest: preview"
     uploadCoreCaseDataDefinitions()
     env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.preview.platform.hmcts.net/"
   }
@@ -308,6 +324,7 @@ withPipeline(type, product, component) {
 
   afterAlways('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+    println "We can generate CCD Definition after functionalTest:aat"
   }
 }
 

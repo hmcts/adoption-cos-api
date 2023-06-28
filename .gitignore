@@ -27,3 +27,11 @@ bin/main/application.yaml
 /target/
 /pacts/
 /node_modules
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
