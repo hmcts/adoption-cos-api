@@ -216,6 +216,7 @@ dependencyCheck {
     // Disable scanning of .NET related binaries
     assemblyEnabled = false
   }
+  analyzers.nodeAudit.yarnEnabled = false
 }
 
 project.tasks['sonarqube'].dependsOn jacocoTestReport
