@@ -48,6 +48,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
                                                                        final CaseDetails<CaseData, State> beforeDetails) {
         log.info("Citizen create adoption application about to submit callback invoked");
 
+        log.info("bdscsdm");
         CaseData data = details.getData();
         data.setHyphenatedCaseRef(data.formatCaseRef(details.getId()));
 
