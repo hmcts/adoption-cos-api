@@ -9,6 +9,13 @@ java:
     CASE_DOCUMENT_AM_BASEURL: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-case-document-am-api
     CITIZEN_UPDATE_CASE_STATE_ENABLED: true
     APP_INSIGHTS_KEY: 273cc8cd-c511-49ae-9988-9debe01d54d5
+    APPLICATIONINSIGHTS_CONNECTION_STRING: 273cc8cd-c511-49ae-9988-9debe01d54d5
+    MULTI_CHILDREN_CUI_URL: https://adoption-web-pr-956.service.core-compute-preview.internal/new-application-redirect
+    LA_PORTAL_BASEURL: https://adoption-web-pr-956.service.core-compute-preview.internal/la-portal/kba-case-ref
+  devmemoryRequests: 1024Mi
+  devcpuRequests: "500m"
+  devmemoryLimits: 1527Mi
+  devcpuLimits: "2500m"
 
   keyVaults:
     adoption:
@@ -23,7 +30,18 @@ java:
           alias: IDAM_SYSTEM_UPDATE_USERNAME
         - name: idam-system-user-password
           alias: IDAM_SYSTEM_UPDATE_PASSWORD
-
+        - name: launchDarkly-sdk-key
+          alias: LAUNCH_DARKLY_SDK_KEY
+        - name: caseworker-username
+          alias: CASEWORKER_USERNAME
+        - name: caseworker-password
+          alias: CASEWORKER_PASSWORD
+        - name: AppInsightsInstrumentationKey
+          alias: APP_INSIGHTS_KEY
+        - name: send-grid-api-key
+          alias: SEND_GRID_API_KEY
+        - name: sendgrid-notify-from-email
+          alias: SEND_GRID_NOTIFY_FROM_EMAIL
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
@@ -32,12 +50,13 @@ idam-pr:
       - https://admin-web-${SERVICE_FQDN}/oauth2redirect
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
-      - http://xui-${SERVICE_FQDN}/oauth2/callback
 
 ccd:
   ccd:
     definitionImporter:
       enabled: false
+    managementWeb:
+      enabled: true
     apiGatewayWeb:
       enabled: true
     s2s:
@@ -61,6 +80,7 @@ ccd:
 
   ccd-api-gateway-web:
     nodejs:
+      disableKeyVaults: true
       imagePullPolicy: Always
       environment:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
@@ -69,17 +89,17 @@ ccd:
         PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
-      keyVaults: []
 
   ccd-data-store-api:
     java:
+      disableKeyVaults: true
       imagePullPolicy: Always
       environment:
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
         DATA_STORE_DEFAULT_LOG_LEVEL: info
-        DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,ccd_ps,adoption_cos_api,adoption_web,xui_webapp,ccd_case_document_am_api
-        CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: adoption_cos_api
+        DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,ccd_ps,adoption_cos_api,adoption_web,xui_webapp,ccd_case_document_am_api,fis_cos_api
+        CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: adoption_cos_api,fis_cos_api
         CCD_DM_DOMAIN: http://dm-store-aat.service.core-compute-aat.internal
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:api-gateway\.preprod\.dm\.reform\.hmcts\.net|dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?)|(em-hrs-api-aat\.service\.core-compute-aat\.internal(?::\d+)?\/hearing-recordings\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\/segments\/[0-9]))
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
@@ -91,8 +111,8 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS:  http://${SERVICE_NAME}-es-master:9200
-      keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
+
   am-role-assignment-service:
     java:
       keyVaults:
@@ -101,6 +121,7 @@ ccd:
             - role-assignment-service-LD-SDK-KEY
   ccd-definition-store-api:
     java:
+      disableKeyVaults: true
       imagePullPolicy: Always
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
@@ -108,21 +129,20 @@ ccd:
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
-      keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
   ccd-user-profile-api:
     java:
+      disableKeyVaults: true
       imagePullPolicy: Always
       enviroment:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
-      keyVaults: []
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
   ccd-admin-web:
     nodejs:
+      disableKeyVaults: true
       image: hmctspublic.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
-      keyVaults: []
       environment:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
@@ -153,25 +173,186 @@ ccd:
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
-    imageTag: "7.17.0"
     replicas: 1
     minimumMasterNodes: 1
     antiAffinity: "soft"
     esJavaOpts: "-Xmx512m -Xms512m"
+    # Their tests delete the pod after succeeding, we pass --logs to the test command which fail if the pod has already been deleted
+    # The tests do pass, at least as of 2023-01-19
+    tests:
+      enabled: false
     extraEnvs:
       - name: discovery.type
         value: single-node
       - name: cluster.initial_master_nodes
         value: ""
+      - name: action.auto_create_index
+        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
     persistence:
       enabled: false
     ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: traefik
-      path: /
-      hosts:
-        - es-${SERVICE_FQDN}
+      enabled: false
+      className: traefik
+      # hosts:
+      #   - host: es-${SERVICE_FQDN}
+      #     paths:
+      #       - path: /
+
+  logstash:
+    image: "hmctspublic.azurecr.io/imported/logstash/logstash"
+    imageTag: "7.16.1"
+    imagePullPolicy: "IfNotPresent"
+    logstashJavaOpts: "-Xmx1g -Xms512M"
+    extraInitContainers: |
+      - name: download-postgres-jdbc
+        image: hmctspublic.azurecr.io/curl:7.70.0
+        command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.2.18.jar', '-o', '/logstash-lib/postgresql.jar']
+        volumeMounts:
+        - name: logstash-lib
+          mountPath: /logstash-lib
+    extraVolumes: |
+      - name: logstash-lib
+        emptyDir: {}
+    extraVolumeMounts: |
+      - name: logstash-lib
+        mountPath: /usr/share/logstash/ccd
+    logstashConfig:
+      logstash.yml: |
+        http.host: 0.0.0.0
+        xpack.monitoring.enabled: false
+        xpack.monitoring.elasticsearch.hosts: ["http://{{ .Release.Name }}-es-master:9200"]
+        queue.type: persisted
+        dead_letter_queue.enable: true
+      pipelines.yml: |
+        - pipeline.id: main
+          path.config: "/usr/share/logstash/pipeline/{01_input,02_filter,03_output}.conf"
+          queue.type: persisted
+    logstashPipeline:
+      01_input.conf: |
+        input  {
+          jdbc {
+            jdbc_connection_string => "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/data-store?stringtype=unspecified"
+            jdbc_user => "hmcts"
+            jdbc_password => "hmcts"
+            jdbc_validate_connection => true
+            jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
+            jdbc_driver_class => "org.postgresql.Driver"
+            jdbc_default_timezone => "UTC"
+            statement => "UPDATE case_data SET marked_by_logstash = true WHERE marked_by_logstash = false RETURNING id, created_date, last_modified, jurisdiction, case_type_id, state, last_state_modified_date, data::TEXT as json_data, data_classification::TEXT as json_data_classification, reference, security_classification, supplementary_data::TEXT as json_supplementary_data"
+            clean_run => false
+            schedule => "* * * * * *"
+          }
+        }
+      02_filter.conf: |
+        filter{
+          json{
+              source => "json_data"
+              target => "data"
+              remove_field => ["json_data"]
+              }
+              json{
+                  source => "json_supplementary_data"
+                  target => "supplementary_data"
+                  remove_field => ["json_supplementary_data"]
+              }
+              json{
+                  source => "json_data_classification"
+                  target => "data_classification"
+                  remove_field => ["json_data_classification"]
+              }
+              if [data][SearchCriteria] {
+                  clone {
+                      clones => ["SearchCriteria"]
+                  }
+              }
+              if [type] == "SearchCriteria" {
+                  if [data][SearchCriteria] {
+                      mutate {
+                        rename => {"[data][SearchCriteria]" => "[data_new][SearchCriteria]" }
+                      }
+                  }
+                  if [data][caseManagementLocation] {
+                      mutate {
+                        rename => {"[data][caseManagementLocation]" => "[data_new][caseManagementLocation]" }
+                      }
+                  }
+                  if [data][CaseAccessCategory] {
+                    mutate {
+                        rename => {"[data][CaseAccessCategory]" => "[data_new][CaseAccessCategory]" }
+                    }
+                  }
+                  if [data][caseNameHmctsInternal] {
+                      mutate {
+                        rename => {"[data][caseNameHmctsInternal]" => "[data_new][caseNameHmctsInternal]" }
+                      }
+                  }
+                  if [data][caseManagementCategory] {
+                      mutate {
+                        rename => {"[data][caseManagementCategory]" => "[data_new][caseManagementCategory]" }
+                      }
+                  }
+                  if [supplementary_data][HMCTSServiceId] {
+                      mutate {
+                        rename => {"[supplementary_data][HMCTSServiceId]" => "[supplementary_data_new][HMCTSServiceId]" }
+                      }
+                  }
+                  if [data_classification][SearchCriteria] {
+                      mutate {
+                        rename => {"[data_classification][SearchCriteria]" => "[data_classification_new][SearchCriteria]" }
+                      }
+                  }
+                  if [data_classification][CaseAccessCategory] {
+                    mutate {
+                          rename => {"[data_classification][CaseAccessCategory]" => "[data_classification_new][CaseAccessCategory]" }
+                    }
+                  }
+                  if [data_classification][caseManagementLocation] {
+                    mutate {
+                        rename => {"[data_classification][caseManagementLocation]" => "[data_classification_new][caseManagementLocation]" }
+                    }
+                  }
+                  if [data_classification][caseNameHmctsInternal] {
+                      mutate {
+                        rename => {"[data_classification][caseNameHmctsInternal]" => "[data_classification_new][caseNameHmctsInternal]" }
+                      }
+                  }
+                  if [data_classification][caseManagementCategory] {
+                      mutate {
+                        rename => {"[data_classification][caseManagementCategory]" => "[data_classification_new][caseManagementCategory]" }
+                      }
+                  }
+                  mutate { remove_field =>[ "data" ,"supplementary_data", "data_classification", "last_state_modified_date", "type","last_modified", "created_date" ] }
+                  mutate {
+                          rename => { "[data_new]" => "data" }
+                          rename => { "[supplementary_data_new]"  => "supplementary_data" }
+                          rename => { "[data_classification_new]"  => "data_classification" }
+                  }
+                  mutate {
+                    add_field => { "index_id" => "global_search" }
+                  }
+                  mutate {
+                    lowercase => [ "index_id" ]
+                  }
+              } else {
+                  mutate {
+                      add_field => { "index_id" => "%{case_type_id}_cases" }
+                }
+              mutate {
+                lowercase => [ "index_id" ]
+              }
+              }
+        }
+      03_output.conf: |
+        output {
+            elasticsearch {
+                hosts => ["http://{{ .Release.Name }}-es-master:9200"]
+                sniffing => false
+                index => "%{[index_id]}"
+                document_type => "_doc"
+                document_id => "%{id}"
+                timeout => 60
+            }
+        }
 
 xui-webapp:
   enabled: true
@@ -181,15 +362,18 @@ xui-webapp:
     image: hmctspublic.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
     environment:
-      HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
+      HEALTH_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
-      HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal/health
-      SERVICES_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}
-      SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      HEALTH_TERMS_AND_CONDITIONS_API: https://xui-terms-and-conditions-${SERVICE_FQDN}
+      SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
+      SERVICES_CCD_DATA_STORE_API: https://${SERVICE_NAME}-ccd-data-store-api
       SERVICES_DOCUMENTS_API_V2: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-case-document-am-api
-      SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
-      SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
+      SERVICES_TERMS_AND_CONDITIONS: https://xui-terms-and-conditions-${SERVICE_FQDN}
       JURISDICTIONS: ADOPTION
+      FEATURE_REDIS_ENABLED: false
+      NODE_OPTIONS: --max-old-space-size=900
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
 
 ccd-case-document-am-api:
   enabled: true
@@ -205,3 +389,4 @@ ccd-case-document-am-api:
       IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
       IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
+LA_PORTAL_BASEURL: https://adoption-web-pr-${CHANGE_ID}.service.core-compute-preview.internal/la-portal/kba-case-ref
