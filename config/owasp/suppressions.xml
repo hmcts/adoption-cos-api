@@ -70,6 +70,7 @@
     <cve>CVE-2022-38752</cve>
     <cve>CVE-2021-4235</cve>
     <cve>CVE-2022-3064</cve>
+    <cve>CVE-2022-41854</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -169,6 +170,12 @@
       guava-31.1-jre.jar]]>
     </notes>
     <cve>CVE-2023-2976</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      jackson-databind-2.13.3.jar ]]></notes>
+    <cve>CVE-2022-42003</cve>
+    <cve>CVE-2022-42004</cve>
   </suppress>
 
 
