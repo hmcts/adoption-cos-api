@@ -78,7 +78,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(final CaseDetails<CaseData, State> details,
                                                                        final CaseDetails<CaseData, State> beforeDetails) {
         log.info("Citizen create adoption application about to submit callback invoked");
-
+        log.info("TEST LOG");
         CaseData data = details.getData();
         details.getData().setStatus(Draft);
         // Setting the default value so that its value is shown in Summary Tab and Amend Case details screen
