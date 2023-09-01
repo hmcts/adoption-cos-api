@@ -309,7 +309,7 @@ dependencyManagement {
 
     //CVE-2023-34040
     dependency group: 'org.springframework.cloud', name: 'spring-cloud-openfeign-core', version: '3.1.8'
-    dependency group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.8'
+    //dependency group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.8'
 
 
   }
