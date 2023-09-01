@@ -108,6 +108,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
                                                 CaseDetails<CaseData, State> beforeDetails) {
         if (EnumSet.of(Submitted).contains(details.getState())) {
             log.info("Citizen submit application submitted callback invoked CaseID: {}", details.getId());
+            log.info("Citizen submit application submitted callback invoked CaseID1: {}", details.getId());
             log.info("Invoking Notifications after citizen application submission for CaseID: {}", details.getId());
             sendNotificationService.sendNotifications(
                 details);
