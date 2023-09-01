@@ -381,8 +381,8 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.1.13'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.1.13'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.0.0'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.0'
   implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.0.1'
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
