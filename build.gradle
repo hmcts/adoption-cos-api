@@ -306,6 +306,10 @@ dependencyManagement {
 
     //CVE-2023-34034
     dependency group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.10'
+
+    //CVE-2023-34040
+    dependency group: 'org.springframework.cloud', name: 'spring-cloud-openfeign-core', version: '3.1.8'
+    dependency group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.8'
   }
 }
 
@@ -375,8 +379,8 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.78'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.78'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.80'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.80'
   implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.0.1'
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
