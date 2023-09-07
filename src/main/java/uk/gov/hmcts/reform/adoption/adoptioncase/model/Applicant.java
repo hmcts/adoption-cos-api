@@ -79,6 +79,9 @@ public class Applicant {
     @CCD(label = "Phone number")
     private String phoneNumber;
 
+    @CCD(label = "The court may want to use your email to serve you court orders. Are you happy to be served court orders by email?")
+    private YesOrNo contactDetailsConsent;
+
     @CCD(label = "Nationality")
     private SortedSet<Nationality> nationality;
 
