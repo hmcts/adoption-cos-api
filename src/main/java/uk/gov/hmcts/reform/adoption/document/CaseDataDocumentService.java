@@ -60,6 +60,8 @@ public class CaseDataDocumentService {
             .build();
         log.info("AdoptionDocument: {}", adoptionDocument);
 
+        log.info("Calling method for adding documents to casedata for case ref: {}", caseId);
+        log.info("Current size of available documents in casedata is: {}", caseData.getDocumentsGenerated().size());
         caseData.addToDocumentsGenerated(adoptionDocument);
     }
 
