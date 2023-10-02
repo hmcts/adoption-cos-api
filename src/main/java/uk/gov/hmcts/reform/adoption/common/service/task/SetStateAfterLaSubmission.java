@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrderType;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.YesNoNotSure;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 import java.util.List;
@@ -28,18 +29,18 @@ public class SetStateAfterLaSubmission implements CaseTask {
         caseDetails.getData().setStatus(LaSubmitted);
         caseDetails.getData().getBirthMother()
             .setDeceased(caseDetails.getData().getBirthMother().getStillAlive()
-                             .equals(YesOrNo.YES) ? YesOrNo.NO : YesOrNo.YES);
+                             .equals(YesNoNotSure.YES) ? YesOrNo.NO : YesOrNo.YES);
         if (caseDetails.getData().getBirthFather() != null && caseDetails.getData().getBirthFather().getStillAlive() != null) {
             caseDetails.getData().getBirthFather()
                 .setDeceased(caseDetails.getData().getBirthFather().getStillAlive()
-                                 .equals(YesOrNo.YES) ? YesOrNo.NO : YesOrNo.YES);
+                                 .equals(YesNoNotSure.YES) ? YesOrNo.NO : YesOrNo.YES);
         }
 
-        log.info("Birth Mother still alive: {}" + caseDetails.getData().getBirthMother().getStillAlive());
-        log.info("Birth Father still alive: {}" + caseDetails.getData().getBirthFather().getStillAlive());
+        log.info("Birth Mother still alive: {}", caseDetails.getData().getBirthMother().getStillAlive());
+        log.info("Birth Father still alive: {}", caseDetails.getData().getBirthFather().getStillAlive());
 
-        log.info("Birth mother Deceased: {}" + caseDetails.getData().getBirthMother().getDeceased());
-        log.info("Birth father Deceased: {}" + caseDetails.getData().getBirthFather().getDeceased());
+        log.info("Birth mother Deceased: {}", caseDetails.getData().getBirthMother().getDeceased());
+        log.info("Birth father Deceased: {}", caseDetails.getData().getBirthFather().getDeceased());
         List<ListValue<PlacementOrder>> placementList = caseDetails.getData().getPlacementOrders();
         placementList.stream()
             .filter(item -> item.getValue().getPlacementOrderType() == null)
