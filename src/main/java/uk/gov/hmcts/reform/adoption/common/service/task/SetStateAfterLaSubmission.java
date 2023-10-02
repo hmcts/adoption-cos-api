@@ -34,6 +34,12 @@ public class SetStateAfterLaSubmission implements CaseTask {
                 .setDeceased(caseDetails.getData().getBirthFather().getStillAlive()
                                  .equals(YesOrNo.YES) ? YesOrNo.NO : YesOrNo.YES);
         }
+
+        log.info("Birth Mother still alive: {}" + caseDetails.getData().getBirthMother().getStillAlive());
+        log.info("Birth Father still alive: {}" + caseDetails.getData().getBirthFather().getStillAlive());
+
+        log.info("Birth mother Deceased: {}" + caseDetails.getData().getBirthMother().getDeceased());
+        log.info("Birth father Deceased: {}" + caseDetails.getData().getBirthFather().getDeceased());
         List<ListValue<PlacementOrder>> placementList = caseDetails.getData().getPlacementOrders();
         placementList.stream()
             .filter(item -> item.getValue().getPlacementOrderType() == null)
