@@ -70,6 +70,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
 
         log.info("Add payment about to submit callback invoked CaseID: {}", caseId);
         final PaymentStatus lastPaymentStatus = caseData.getApplication().getLastPaymentStatus();
+        log.info("Last Payment status: {}", lastPaymentStatus);
 
         try {
             log.info("Application payments {}", objectMapper.writeValueAsString(caseData.getApplication().getApplicationPayments()));
