@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,6 +64,9 @@ class CitizenAddPaymentTest {
 
     @Mock
     private SubmissionService submissionService;
+
+    @Mock
+    private ObjectMapper objectMapper;
 
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
 

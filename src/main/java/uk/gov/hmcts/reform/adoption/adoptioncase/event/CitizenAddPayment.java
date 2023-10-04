@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,6 +45,9 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
     @Autowired
     private SendNotificationService sendNotificationService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder
@@ -65,6 +70,12 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
 
         log.info("Add payment about to submit callback invoked CaseID: {}", caseId);
         final PaymentStatus lastPaymentStatus = caseData.getApplication().getLastPaymentStatus();
+
+        try {
+            log.info("Application payments {}", objectMapper.writeValueAsString(caseData.getApplication().getApplicationPayments()));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         if (IN_PROGRESS.equals(lastPaymentStatus)) {
             log.info("Case {} payment in progress", caseId);
