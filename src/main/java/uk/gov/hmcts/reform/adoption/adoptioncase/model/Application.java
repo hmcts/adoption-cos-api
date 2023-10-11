@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
 import java.time.LocalDate;
 //import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 
@@ -50,9 +51,24 @@ public class Application {
 
     @JsonIgnore
     public PaymentStatus getLastPaymentStatus() {
-        return applicationPayments == null || applicationPayments.isEmpty()
+
+        if (applicationPayments != null && !applicationPayments.isEmpty()) {
+            Optional<Payment> optionalSuccessPayment = applicationPayments.stream()
+                .map(e -> e.getValue())
+                .filter(e -> e.getStatus().equals(PaymentStatus.SUCCESS))
+                .findFirst();
+            if (optionalSuccessPayment.isPresent()) {
+                return optionalSuccessPayment.get().getStatus();
+            } else {
+                return applicationPayments.get(applicationPayments.size() - 1).getValue().getStatus();
+            }
+        } else {
+            return null;
+        }
+
+        /*return applicationPayments == null || applicationPayments.isEmpty()
                 ? null
-                : applicationPayments.get(applicationPayments.size() - 1).getValue().getStatus();
+                : applicationPayments.get(applicationPayments.size() - 1).getValue().getStatus();*/
     }
 
     @JsonIgnore
