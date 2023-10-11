@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.PlacementOrderType;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.YesNoNotSure;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 
 import java.util.List;
@@ -28,11 +29,16 @@ public class SetStateAfterLaSubmission implements CaseTask {
         caseDetails.getData().setStatus(LaSubmitted);
         caseDetails.getData().getBirthMother()
             .setDeceased(caseDetails.getData().getBirthMother().getStillAlive()
-                             .equals(YesOrNo.YES) ? YesOrNo.NO : YesOrNo.YES);
+                             .equals(YesNoNotSure.YES) ? YesOrNo.NO : YesOrNo.YES);
         if (caseDetails.getData().getBirthFather() != null && caseDetails.getData().getBirthFather().getStillAlive() != null) {
             caseDetails.getData().getBirthFather()
                 .setDeceased(caseDetails.getData().getBirthFather().getStillAlive()
-                                 .equals(YesOrNo.YES) ? YesOrNo.NO : YesOrNo.YES);
+                                 .equals(YesNoNotSure.YES) ? YesOrNo.NO : YesOrNo.YES);
+        }
+        if (caseDetails.getData().getOtherParent().getFirstName() != null && caseDetails.getData().getOtherParent().getLastName() != null
+            && caseDetails.getData().getOtherParent().getStillAlive() != null) {
+            caseDetails.getData().getOtherParent().setDeceased(caseDetails.getData().getOtherParent().getStillAlive()
+                                                                   .equals(YesNoNotSure.YES) ? YesOrNo.NO : YesOrNo.YES);
         }
         List<ListValue<PlacementOrder>> placementList = caseDetails.getData().getPlacementOrders();
         placementList.stream()
