@@ -326,7 +326,7 @@ def versions = [
   jackson           : '2.15.2',
   junit             : '5.8.1',
   junitPlatform     : '1.8.2',
-  lombok            : '1.18.20',
+  lombok            : '1.18.30',
   reformsJavaLogging: '5.1.7',
   springBoot        : springBoot.class.package.implementationVersion,
   springfoxSwagger  : '3.0.0',
