@@ -27,7 +27,7 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.7.12'
   id 'com.github.ben-manes.versions' version '0.38.0'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.222'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.826'
   id 'hmcts.ccd.sdk' version '5.1.1'
   id 'au.com.dius.pact' version '4.3.8'
 }
@@ -189,7 +189,7 @@ jacocoTestReport {
 }
 
 jacoco {
-  toolVersion = "0.8.10"
+  toolVersion = "0.8.11"
 }
 
 jacocoTestCoverageVerification {
