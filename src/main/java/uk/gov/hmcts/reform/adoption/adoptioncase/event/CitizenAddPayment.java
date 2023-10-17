@@ -65,6 +65,7 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
 
         log.info("Add payment about to submit callback invoked CaseID: {}", caseId);
         final PaymentStatus lastPaymentStatus = caseData.getApplication().getLastPaymentStatus();
+        log.info("test logger");
 
         if (IN_PROGRESS.equals(lastPaymentStatus)) {
             log.info("Case {} payment in progress", caseId);
