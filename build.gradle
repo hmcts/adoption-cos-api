@@ -323,7 +323,7 @@ repositories {
 
 def versions = [
   awaitility        : '1.7.0',
-  jackson           : '2.15.2',
+  jackson           : '2.15.3',
   junit             : '5.8.1',
   junitPlatform     : '1.8.2',
   lombok            : '1.18.30',
