@@ -27,7 +27,7 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.7.16'
   id 'com.github.ben-manes.versions' version '0.38.0'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.826'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.222'
   id 'hmcts.ccd.sdk' version '5.1.1'
   id 'au.com.dius.pact' version '4.3.8'
 }
@@ -323,7 +323,7 @@ repositories {
 
 def versions = [
   awaitility        : '1.7.0',
-  jackson           : '2.15.2',
+  jackson           : '2.15.3',
   junit             : '5.8.1',
   junitPlatform     : '1.8.2',
   lombok            : '1.18.30',
