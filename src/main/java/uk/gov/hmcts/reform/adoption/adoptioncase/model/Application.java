@@ -51,8 +51,8 @@ public class Application {
 
     @JsonIgnore
     public PaymentStatus getLastPaymentStatus() {
-        if (applicationPayments != null && !applicationPayments.isEmpty()) {
 
+        if (applicationPayments != null && !applicationPayments.isEmpty()) {
             Optional<Payment> optionalSuccessPayment = applicationPayments.stream()
                 .map(e -> e.getValue())
                 .filter(e -> e.getStatus().equals(PaymentStatus.SUCCESS))
@@ -62,15 +62,13 @@ public class Application {
             } else {
                 return applicationPayments.get(applicationPayments.size() - 1).getValue().getStatus();
             }
-
         } else {
             return null;
         }
 
-
         /*return applicationPayments == null || applicationPayments.isEmpty()
                 ? null
-         //       : applicationPayments.get(applicationPayments.size() - 1).getValue().getStatus();*/
+                : applicationPayments.get(applicationPayments.size() - 1).getValue().getStatus();*/
     }
 
     @JsonIgnore
