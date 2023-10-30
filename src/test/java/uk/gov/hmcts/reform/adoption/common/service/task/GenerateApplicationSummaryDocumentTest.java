@@ -28,7 +28,7 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
-public class GenerateApplicationSummaryDocumentTest {
+class GenerateApplicationSummaryDocumentTest {
 
     @Mock
     private ObjectMapper objectMapper;

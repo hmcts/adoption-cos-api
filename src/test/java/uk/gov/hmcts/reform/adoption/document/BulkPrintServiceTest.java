@@ -1,16 +1,16 @@
 package uk.gov.hmcts.reform.adoption.document;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.adoption.document.model.GeneratedDocumentInfo;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
@@ -23,10 +23,11 @@ import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class BulkPrintServiceTest {
 
     @Mock
@@ -47,7 +48,7 @@ public class BulkPrintServiceTest {
     private String authToken;
     private String s2sToken;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         uuid = randomUUID();
         authToken = "auth-token";
@@ -77,10 +78,9 @@ public class BulkPrintServiceTest {
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void senLetterServiceWithInValidInput() {
-        assertEquals(bulkPrintService.send("123", authToken, "abc", null), uuid);
+        assertThrows(NullPointerException.class, () -> bulkPrintService.send("123", authToken, "abc", null));
 
     }
-
 }

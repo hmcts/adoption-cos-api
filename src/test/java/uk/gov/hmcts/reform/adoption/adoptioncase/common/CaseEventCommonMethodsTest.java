@@ -27,6 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.prepareDocumentList;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.prepareReplyMessageDynamicList;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_DEFAULT;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
@@ -71,6 +73,25 @@ class CaseEventCommonMethodsTest {
                                                                           getListOfOpenMessages(UUID.randomUUID())));
         prepareReplyMessageDynamicList(caseData, getCaseworkerUser());
         assertThat(caseData.getReplyMsgDynamicList()).isNotNull();
+        assertThat(caseData.getLoggedInUserRole()).isEqualTo(SEND_N_REPLY_USER_JUDGE);
+    }
+
+    @Test
+    void prepareReplyMessageList_OK_NonJudgeUser() {
+        var caseData = getCaseDetails().getData();
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        caseData.setListOfOpenMessages(archiveListHelper(listOfOpenMessage,
+                                                         getListOfOpenMessages(UUID.randomUUID())));
+        UserDetails userDetails = UserDetails
+            .builder()
+            .roles(Arrays.asList(UserRole.CASE_WORKER.getRole()))
+            .forename("testFname")
+            .surname("testSname")
+            .build();
+
+        prepareReplyMessageDynamicList(caseData, new User(TEST_AUTHORIZATION_TOKEN, userDetails));
+        assertThat(caseData.getReplyMsgDynamicList()).isNotNull();
+        assertThat(caseData.getLoggedInUserRole()).isEqualTo(SEND_N_REPLY_USER_DEFAULT);
     }
 
     @Test
@@ -264,6 +285,13 @@ class CaseEventCommonMethodsTest {
         assertThat(CaseEventCommonMethods.getMessageReasonLabel(messageSendDetails)).isEqualTo("List for a hearing");
     }
 
+    @Test
+    void verifyMessageReasonLabel_Test_NoReasons() {
+        var messageSendDetails = new MessageSendDetails();
+        var caseData = getCaseDetails().getData();
+        caseData.setMessageSendDetails(messageSendDetails);
+        assertThat(CaseEventCommonMethods.getMessageReasonLabel(messageSendDetails)).isNull();
+    }
 
     private AdoptionUploadDocument getApplicationDocumentCategory() {
         var uploadDocument = new AdoptionUploadDocument();

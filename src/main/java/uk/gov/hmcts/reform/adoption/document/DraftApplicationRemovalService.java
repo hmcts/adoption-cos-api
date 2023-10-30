@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
 
@@ -54,7 +53,7 @@ public class DraftApplicationRemovalService {
                 )
             )
             .filter(document -> !isApplicationDocument(document))
-            .collect(toList());
+            .toList();
 
 
         log.info("Successfully removed application document from case data generated document list for case id {} ", caseId);

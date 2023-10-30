@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageSendDetails;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
@@ -22,8 +23,10 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.getMessageReasonLabel;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods.prepareReplyMessageDynamicList;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CommonPageBuilder.sendMessageMidEvent;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CommonPageBuilder.setSelectedObject;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
@@ -64,6 +67,52 @@ class CommonPageBuilderTest {
         caseData.getData().getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "test"));
         AboutToStartOrSubmitResponse<CaseData, State> response = sendMessageMidEvent(caseData, caseData);
         assertThat(response.getData().getSelectedMessage()).isNotNull();
+    }
+
+    @Test
+    void testSetSelectedObject_whenSelectedDocumentPresent() {
+        Document selectedDocument = new Document();
+        selectedDocument.setUrl("TEST_URL");
+        selectedDocument.setFilename("TEST_FILE_NAME");
+        selectedDocument.setBinaryUrl("TEST_BINARY_URL");
+        CaseData caseData = getCaseDetails().getData();
+        prepareReplyMessageDynamicList(caseData, getCaseworkerUser());
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        var uuid = UUID.randomUUID();
+        MessageSendDetails messageSendDetails = getListOfOpenMessages(uuid);
+        messageSendDetails.setSelectedDocument(selectedDocument);
+        caseData.setListOfOpenMessages(archiveListHelper(listOfOpenMessage,
+                                                         messageSendDetails));
+        caseData.getReplyMsgDynamicList().setValue(new DynamicListElement(uuid, "test"));
+        setSelectedObject(caseData);
+
+        SelectedMessage selectedMessage = new SelectedMessage();
+        selectedMessage.setMessageId("1");
+        selectedMessage.setUrgency(messageSendDetails.getMessageUrgencyList().getLabel());
+        selectedMessage.setMessageContent(messageSendDetails.getMessageText());
+        selectedMessage.setReasonForMessage(getMessageReasonLabel(messageSendDetails));
+        selectedMessage.setDocumentLink(messageSendDetails.getSelectedDocument());
+        assertThat(caseData.getSelectedMessage()).isEqualTo(selectedMessage);
+    }
+
+    @Test
+    void testSetSelectedObject_whenSelectedObjectIsNotPresent() {
+        Document selectedDocument = new Document();
+        selectedDocument.setUrl("TEST_URL");
+        selectedDocument.setFilename("TEST_FILE_NAME");
+        selectedDocument.setBinaryUrl("TEST_BINARY_URL");
+        CaseData caseData = getCaseDetails().getData();
+        prepareReplyMessageDynamicList(caseData, getCaseworkerUser());
+        List<ListValue<MessageSendDetails>> listOfOpenMessage = new ArrayList<>();
+        var uuid = UUID.randomUUID();
+        MessageSendDetails messageSendDetails = getListOfOpenMessages(uuid);
+        messageSendDetails.setSelectedDocument(selectedDocument);
+        caseData.setListOfOpenMessages(archiveListHelper(listOfOpenMessage,
+                                                         messageSendDetails));
+        caseData.getReplyMsgDynamicList().setValue(new DynamicListElement(UUID.randomUUID(), "test"));
+        setSelectedObject(caseData);
+
+        assertThat(caseData.getSelectedMessage()).isNull();
     }
 
     private CaseDetails<CaseData, State> getCaseDetails() {

@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.idam.client.models.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +52,11 @@ class CaseDataDocumentServiceTest {
     @InjectMocks
     private CaseDataDocumentService caseDataDocumentService;
 
-    //@Test
+    @Test
     void shouldAddRenderedDocumentToCaseData() {
 
         final var documentId = "123456";
-        final CaseData caseData = CaseData.builder().build();
+        final CaseData caseData = CaseData.builder().documentsGenerated(new ArrayList<>()).build();
         final Map<String, Object> templateContent = new HashMap<>();
         final User systemUser = mock(User.class);
         final String filename = ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME + TEST_CASE_ID;

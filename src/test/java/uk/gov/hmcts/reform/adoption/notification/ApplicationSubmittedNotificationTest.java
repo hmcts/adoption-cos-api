@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
@@ -31,13 +32,17 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.allOf;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.WELSH;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.HYPHENATED_REF;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
@@ -58,6 +63,9 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.AP
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1;
 
 @ExtendWith(MockitoExtension.class)
 class ApplicationSubmittedNotificationTest {
@@ -116,10 +124,74 @@ class ApplicationSubmittedNotificationTest {
         notification.sendToApplicants(caseData, 1234567890123456L);
 
         verify(notificationService, times(2)).sendEmail(
-            eq(TEST_USER_EMAIL),
-            eq(APPLICANT_APPLICATION_SUBMITTED),
-            eq(templateVars),
-            eq(ENGLISH)
+            TEST_USER_EMAIL,
+            APPLICANT_APPLICATION_SUBMITTED,
+            templateVars,
+            ENGLISH
+        );
+        verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
+    }
+
+    @Test
+    void shouldSendEmailToApplicantsWithSubmissionResponseDate_noLanguagePreference() {
+        CaseData caseData = caseData();
+        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
+            .thenReturn(getMainTemplateVars());
+        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.getApplicant1().setLanguagePreference(null);
+        caseData.getApplicant2().setLanguagePreference(null);
+        Map<String, Object> templateVars = new HashMap<>();
+        templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
+        templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
+        templateVars.put(APPLICATION_REFERENCE, "1234-5678-9012-3456");
+        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
+            + caseData.getApplicant1().getLastName());
+        templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
+        templateVars.put(
+            APPLICANT_2_FULL_NAME,
+            caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
+        );
+        templateVars.put(HAS_SECOND_APPLICANT, YES);
+        templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
+
+        notification.sendToApplicants(caseData, 1234567890123456L);
+
+        verify(notificationService, times(2)).sendEmail(
+            TEST_USER_EMAIL,
+            APPLICANT_APPLICATION_SUBMITTED,
+            templateVars,
+            ENGLISH
+        );
+        verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
+    }
+
+    @Test
+    void shouldSendEmailToApplicantsWithSubmissionResponseDateWhenNoApplicant2() {
+        CaseData caseData = caseData();
+        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setApplicant2(new Applicant());
+        when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
+            .thenReturn(getMainTemplateVars());
+        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        Map<String, Object> templateVars = new HashMap<>();
+        templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
+        templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
+        templateVars.put(APPLICATION_REFERENCE, "1234-5678-9012-3456");
+        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
+            + caseData.getApplicant1().getLastName());
+        templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
+        templateVars.put(HAS_SECOND_APPLICANT, NO);
+        templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
+
+        notification.sendToApplicants(caseData, 1234567890123456L);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            APPLICANT_APPLICATION_SUBMITTED,
+            templateVars,
+            ENGLISH
         );
         verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
     }
@@ -240,6 +312,70 @@ class ApplicationSubmittedNotificationTest {
     }
 
     @Test
+    void shouldSendEmailToApplicantsPostLocalAuthoritySubmissionWithSubmissionResponseDate_whenApplicant2EmailBlank() {
+        CaseData caseData = caseData();
+        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
+            .thenReturn(getMainTemplateVars());
+        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.getApplicant2().setEmailAddress(null);
+        Map<String, Object> templateVars = new HashMap<>();
+        templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
+        templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
+        templateVars.put(APPLICATION_REFERENCE, "1234-5678-9012-3456");
+        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
+            + caseData.getApplicant1().getLastName());
+        templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
+        templateVars.put(HAS_SECOND_APPLICANT, NO);
+        templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
+
+        notification.sendToApplicantsPostLocalAuthoritySubmission(caseData, 1234567890123456L);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN,
+            templateVars,
+            ENGLISH
+        );
+        verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
+    }
+
+    @Test
+    void shouldSendEmailToApplicantsPostLocalAuthoritySubmissionWithSubmissionResponseDate_noLanguagePreference() {
+        CaseData caseData = caseData();
+        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
+            .thenReturn(getMainTemplateVars());
+        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.getApplicant1().setLanguagePreference(null);
+        caseData.getApplicant2().setLanguagePreference(null);
+        Map<String, Object> templateVars = new HashMap<>();
+        templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
+        templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
+        templateVars.put(APPLICATION_REFERENCE, "1234-5678-9012-3456");
+        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
+            + caseData.getApplicant1().getLastName());
+        templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
+        templateVars.put(
+            APPLICANT_2_FULL_NAME,
+            caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
+        );
+        templateVars.put(HAS_SECOND_APPLICANT, YES);
+        templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
+
+        notification.sendToApplicantsPostLocalAuthoritySubmission(caseData, 1234567890123456L);
+
+        verify(notificationService, times(2)).sendEmail(
+            TEST_USER_EMAIL,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN,
+            templateVars,
+            ENGLISH
+        );
+        verify(commonContent).mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2());
+    }
+
+    @Test
     void shouldSendEmailToLocalCourtPostLocalAuthoritySubmission() throws NotificationClientException, IOException {
         CaseData data = caseData();
         data.setHyphenatedCaseRef("1234-1234-1234-1234");
@@ -266,7 +402,37 @@ class ApplicationSubmittedNotificationTest {
     }
 
     @Test
-    void shouldSendEmailToLocalCourt() throws NotificationClientException, IOException {
+    void testSendEmailToLocalCourtPostLocalAuthoritySubmissionCatchesException() throws IOException {
+        CaseData data = caseData();
+        data.setHyphenatedCaseRef("1234-1234-1234-1234");
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
+            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
+                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocument);
+        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
+        data.setLaDocumentsUploaded(listOfUploadedDocument);
+        data.setDocumentsGenerated(listOfUploadedDocument);
+        data.setFamilyCourtEmailId(TEST_USER_EMAIL);
+        data.setDueDate(LocalDate.of(2021, 4, 21));
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+        String subject = LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + data.getHyphenatedCaseRef()
+            + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
+            + data.getChildren().getFirstName() + BLANK_SPACE + data.getChildren().getLastName();
+        doThrow(new IOException()).when(sendgridService).sendEmail(data, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+
+        assertDoesNotThrow(() -> {
+            notification.sendToLocalCourtPostLocalAuthoritySubmission(data, 1234567890123456L);
+        });
+
+        verify(notificationService).sendEmail(any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldSendEmailToLocalCourt() {
         CaseData data = caseData();
         data.setHyphenatedCaseRef("1234-1234-1234-1234");
         AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
@@ -287,6 +453,64 @@ class ApplicationSubmittedNotificationTest {
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
         notification.sendToLocalCourt(data, 1234567890123456L);
+
+        verify(notificationService).sendEmail(any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldSendEmailToLocalCourt_welsh() throws IOException {
+        CaseData data = caseData();
+        data.setHyphenatedCaseRef("1234-1234-1234-1234");
+        data.getApplicant1().setLanguagePreference(WELSH);
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
+            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
+                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocument);
+        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
+        data.setLaDocumentsUploaded(listOfUploadedDocument);
+        data.setDocumentsGenerated(listOfUploadedDocument);
+        data.setFamilyCourtEmailId(TEST_USER_EMAIL);
+        data.setDueDate(LocalDate.of(2021, 4, 21));
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+        String subject = DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + data.getHyphenatedCaseRef()
+            + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
+            + data.getChildren().getFirstName() + BLANK_SPACE + data.getChildren().getLastName();
+        notification.sendToLocalCourt(data, 1234567890123456L);
+
+        verify(notificationService).sendEmail(any(), any(), any(), any());
+        verify(sendgridService).sendEmail(data, subject, DocumentType.APPLICATION_SUMMARY_CY);
+    }
+
+    @Test
+    void testSendEmailToLocalCourtShouldCatchException() throws IOException {
+        CaseData data = caseData();
+        data.setHyphenatedCaseRef("1234-1234-1234-1234");
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
+            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
+                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocument);
+        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
+        data.setLaDocumentsUploaded(listOfUploadedDocument);
+        data.setDocumentsGenerated(listOfUploadedDocument);
+        data.setFamilyCourtEmailId(TEST_USER_EMAIL);
+        data.setDueDate(LocalDate.of(2021, 4, 21));
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+        String subject = DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + data.getHyphenatedCaseRef()
+            + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
+            + data.getChildren().getFirstName() + BLANK_SPACE + data.getChildren().getLastName();
+        doThrow(new IOException()).when(sendgridService).sendEmail(data, subject, DocumentType.APPLICATION_SUMMARY_EN);
+
+        assertDoesNotThrow(() -> {
+            notification.sendToLocalCourt(data, 1234567890123456L);
+        });
 
         verify(notificationService).sendEmail(any(), any(), any(), any());
     }
