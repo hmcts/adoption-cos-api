@@ -67,7 +67,7 @@ public class SendgridService {
         attachGeneratedDocuments(attachments, mail, adoptionDocument, authorisation, serviceAuthorization);
         attachUploadedDocuments(caseData, attachments, mail, authorisation, serviceAuthorization);
 
-        log.info("before sending email for case : {}", caseData.getHyphenatedCaseRef());
+        log.info("before sending email for case :: {}", caseData.getHyphenatedCaseRef());
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
         try {
@@ -76,7 +76,6 @@ public class SendgridService {
             request.setBody(mail.build());
             sg.api(request);
             log.info("Notification email to Local Court sent successfully");
-            log.info(" email to Local Court successfully");
         } catch (IOException ex) {
             log.error("Notification email to Local Court failed {}",ex.getMessage());
         }
