@@ -79,6 +79,7 @@ public class SendgridService {
             request.setBody(mail.build());
             sg.api(request);
             log.info("Notification email to Local Court sent successfully");
+            log.info(" email to Local Court successfully");
         } catch (IOException ex) {
             log.error("Notification email to Local Court failed {}",ex.getMessage());
         }
