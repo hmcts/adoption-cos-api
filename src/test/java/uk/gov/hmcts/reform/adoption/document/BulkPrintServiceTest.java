@@ -49,7 +49,7 @@ public class BulkPrintServiceTest {
     private String s2sToken;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         uuid = randomUUID();
         authToken = "auth-token";
         s2sToken = "s2sToken";
@@ -63,7 +63,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void senLetterServiceWithValidInput() {
+    void senLetterServiceWithValidInput() {
         Resource expectedResource = new ClassPathResource("task-list-markdown.md");
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Resource> expectedResponse = new ResponseEntity<>(expectedResource, headers, HttpStatus.OK);
@@ -79,7 +79,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void senLetterServiceWithInValidInput() {
+    void senLetterServiceWithInValidInput() {
         assertThrows(NullPointerException.class, () -> bulkPrintService.send("123", authToken, "abc", null));
 
     }

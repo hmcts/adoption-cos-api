@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.document;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,14 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
 
 @Service
 @Slf4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DraftApplicationRemovalService {
 
 
-    @Autowired
     private CaseDocumentClient caseDocumentClient;
 
-    @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
-    @Autowired
     private IdamService idamService;
 
     public List<ListValue<AdoptionDocument>> removeDraftApplicationDocument(
