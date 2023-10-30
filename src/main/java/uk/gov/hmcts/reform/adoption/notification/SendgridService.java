@@ -42,13 +42,10 @@ public class SendgridService {
     @Value("${send-grid.api-key}")
     private String apiKey;
 
-    @Autowired
     private CaseDocumentClient caseDocumentClient;
 
-    @Autowired
     private IdamService idamService;
 
-    @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
     @Value("${send-grid.notify-from-email}")
