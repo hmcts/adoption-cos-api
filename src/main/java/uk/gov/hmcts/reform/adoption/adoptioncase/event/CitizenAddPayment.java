@@ -13,6 +13,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
+import uk.gov.hmcts.reform.adoption.service.event.ApplicationSubmitNotificationEvent;
+import uk.gov.hmcts.reform.adoption.service.task.EventService;
 import uk.gov.hmcts.reform.ccd.client.model.SubmittedCallbackResponse;
 
 import java.util.EnumSet;
@@ -42,6 +44,9 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
 
     @Autowired
     private SendNotificationService sendNotificationService;
+
+    @Autowired
+    private EventService eventPublisher;
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -109,9 +114,12 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
         if (EnumSet.of(Submitted).contains(details.getState())) {
             log.info("Citizen submit application submitted callback invoked CaseID: {}", details.getId());
             log.info("Invoking Notifications after citizen application submission for CaseID: {}", details.getId());
-            sendNotificationService.sendNotifications(
-                details);
-            log.info("Sent Notifications after citizen application submission for CaseID: {}", details.getId());
+            eventPublisher.publishEvent(ApplicationSubmitNotificationEvent.builder()
+                                            .caseData(details)
+                                            .build());
+            /*sendNotificationService.sendNotifications(
+                details);*/
+            log.info("ApplicationSubmitNotificationEvent triggered, now submitting the submitted event");
         }
         return SubmittedCallbackResponse.builder().build();
     }

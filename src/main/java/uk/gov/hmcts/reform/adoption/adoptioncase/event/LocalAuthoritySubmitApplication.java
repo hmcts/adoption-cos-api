@@ -12,6 +12,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.common.service.SendNotificationService;
 import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
+import uk.gov.hmcts.reform.adoption.service.event.LocalAuthorityApplicationSubmitNotificationEvent;
+import uk.gov.hmcts.reform.adoption.service.task.EventService;
 import uk.gov.hmcts.reform.ccd.client.model.SubmittedCallbackResponse;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
@@ -34,6 +36,9 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
     @Autowired
     private SendNotificationService sendNotificationService;
 
+    @Autowired
+    private EventService eventPublisher;
+
     @Override
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder
@@ -51,7 +56,11 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
     public SubmittedCallbackResponse submitted(CaseDetails<CaseData, State> details, CaseDetails<CaseData, State> beforeDetails) {
         log.info("Local Authority Submit Application submitted callback invoked CaseID: {}", details.getId());
         log.info("Invoking Notifications for CaseID: {}", details.getId());
-        sendNotificationService.sendNotifications(details);
+        eventPublisher.publishEvent(LocalAuthorityApplicationSubmitNotificationEvent.builder()
+                                        .caseData(details)
+                                        .build());
+        /*sendNotificationService.sendNotifications(details);*/
+        log.info("LocalAuthorityApplicationSubmitNotificationEvent triggered, now submitting the submitted event");
         return SubmittedCallbackResponse.builder().build();
     }
 
