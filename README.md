@@ -1,6 +1,6 @@
 # Adoption Case Orchestration Service API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This API handles callbacks from CCD for the ADOPTION case type.
+This API handles callbacks from CCD for the ADOPTION case type..
 
 ## Overview
 
