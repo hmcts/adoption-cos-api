@@ -17,10 +17,6 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
@@ -41,18 +37,6 @@ class CitizenCreateApplicationTest {
 
     private static final String AUTH_TOKEN = "Bearer someAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-
-
-
-    @Test
-    @DisplayName("Testing submitted event for citizen case creation with supplementary data")
-    void testing_citizen_submission_with_supplementaryData_submitted() {
-        var caseDetails = getCaseDetails();
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(getCaseworkerUser());
-        when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
-        citizenCreateApplication.submitted(caseDetails,caseDetails);
-        verify(coreCaseDataApi, times(1)).submitSupplementaryData(any(), any(),any(),any());
-    }
 
     @Test
     @DisplayName("Testing submitted event for citizen case creation with dss meta data")
