@@ -26,7 +26,7 @@
     "@wdio/cli": "^8.10.5",
     "@wdio/sauce-service": "^7.16.13",
     "allure-commandline": "^2.17.2",
-    "axios-debug-log": "^0.8.4",
+    "axios-debug-log": "^1.6.0",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
     "codeceptjs": "^3.4.1",
@@ -51,7 +51,7 @@
     "minimist": "^1.2.6"
   },
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^1.6.0"
   },
   "packageManager": "yarn@3.6.4"
 }
