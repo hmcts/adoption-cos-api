@@ -59,7 +59,6 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
         eventPublisher.publishEvent(LocalAuthorityApplicationSubmitNotificationEvent.builder()
                                         .caseData(details)
                                         .build());
-        /*sendNotificationService.sendNotifications(details);*/
         log.info("LocalAuthorityApplicationSubmitNotificationEvent triggered, now submitting the submitted event");
         return SubmittedCallbackResponse.builder().build();
     }

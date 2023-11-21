@@ -117,8 +117,6 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
             eventPublisher.publishEvent(ApplicationSubmitNotificationEvent.builder()
                                             .caseData(details)
                                             .build());
-            /*sendNotificationService.sendNotifications(
-                details);*/
             log.info("ApplicationSubmitNotificationEvent triggered, now submitting the submitted event");
         }
         return SubmittedCallbackResponse.builder().build();

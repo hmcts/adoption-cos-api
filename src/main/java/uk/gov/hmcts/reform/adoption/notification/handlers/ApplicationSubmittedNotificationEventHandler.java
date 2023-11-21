@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.adoption.service.event.ApplicationSubmitNotificationE
 
 @Slf4j
 @Component
-//@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ApplicationSubmittedNotificationEventHandler {
 
     private SendNotificationService sendNotificationService;

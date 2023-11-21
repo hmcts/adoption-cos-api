@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.adoption.service.event.LocalAuthorityApplicationSubmi
 
 @Slf4j
 @Component
-//@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LocalAuthorityApplicationSubmittedNotificationEventHandler {
 
 
