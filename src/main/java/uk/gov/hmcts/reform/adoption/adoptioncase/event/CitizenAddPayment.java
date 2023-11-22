@@ -7,7 +7,6 @@ import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
-import uk.gov.hmcts.reform.adoption.common.service.SendNotificationService;
 import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -41,9 +40,6 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
 
     @Autowired
     private SubmissionService submissionService;
-
-    @Autowired
-    private SendNotificationService sendNotificationService;
 
     @Autowired
     private EventService eventPublisher;

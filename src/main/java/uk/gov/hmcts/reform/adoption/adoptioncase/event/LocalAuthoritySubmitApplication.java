@@ -10,7 +10,6 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.common.service.SendNotificationService;
 import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 import uk.gov.hmcts.reform.adoption.service.event.LocalAuthorityApplicationSubmitNotificationEvent;
 import uk.gov.hmcts.reform.adoption.service.task.EventService;
@@ -32,9 +31,6 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
 
     @Autowired
     private SubmissionService submissionService;
-
-    @Autowired
-    private SendNotificationService sendNotificationService;
 
     @Autowired
     private EventService eventPublisher;

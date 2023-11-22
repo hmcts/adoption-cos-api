@@ -11,7 +11,7 @@ import uk.gov.hmcts.reform.adoption.service.event.ApplicationSubmitNotificationE
 @Component
 public class ApplicationSubmittedNotificationEventHandler {
 
-    private SendNotificationService sendNotificationService;
+    private final SendNotificationService sendNotificationService;
 
     @Autowired
     public ApplicationSubmittedNotificationEventHandler(SendNotificationService sendNotificationService) {

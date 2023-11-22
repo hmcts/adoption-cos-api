@@ -12,7 +12,7 @@ import uk.gov.hmcts.reform.adoption.service.event.LocalAuthorityApplicationSubmi
 public class LocalAuthorityApplicationSubmittedNotificationEventHandler {
 
 
-    private SendNotificationService sendNotificationService;
+    private final SendNotificationService sendNotificationService;
 
     @Autowired
     public LocalAuthorityApplicationSubmittedNotificationEventHandler(SendNotificationService sendNotificationService) {
