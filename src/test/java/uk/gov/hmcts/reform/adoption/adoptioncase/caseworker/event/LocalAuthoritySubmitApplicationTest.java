@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.common.service.SendNotificationService;
 import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
+import uk.gov.hmcts.reform.adoption.service.task.EventService;
 import uk.gov.hmcts.reform.ccd.client.model.SubmittedCallbackResponse;
 
 import java.lang.reflect.InvocationTargetException;
@@ -42,6 +43,9 @@ public class LocalAuthoritySubmitApplicationTest {
 
     @Mock
     private SubmissionService submissionService;
+
+    @Mock
+    private EventService eventPublisher;
 
     @Test
     void localAuthoritySubmitApplicationConfigure() {
