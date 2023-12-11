@@ -322,11 +322,6 @@ dependencyManagement {
       entry 'the_bouncy_castle_crypto_package_for_java'
     }
 
-    //CVE-2023-6378
-    dependencySet(group: 'ch.qos.logback', version: '1.4.14') {
-      entry 'logback-classic'
-      entry 'logback-core'
-    }
 
 
   }
@@ -398,8 +393,8 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.4'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.4'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.4'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.82'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.82'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.83'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.83'
   implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.0.1'
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
