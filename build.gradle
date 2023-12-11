@@ -325,24 +325,6 @@ dependencyManagement {
     dependency group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13'
     dependency group: 'ch.qos.logback', name: 'logback-core', version: '1.2.13'
 
-    //CVE-2023-5072
-    dependencySet(
-      group: 'org.json',
-      version: '20231013'
-    ) {
-      entry 'json'
-    }
-
-    //CVE-2023-33202
-    dependencySet(group: 'org.bouncycastle', version: '1.77') {
-      entry 'bcprov-jdk18on'
-      entry 'bouncy-castle-crypto-package'
-      entry 'bouncy_castle_crypto_package'
-      entry 'bouncy_castle_for_java'
-      entry 'legion-of-the-bouncy-castle'
-      entry 'legion-of-the-bouncy-castle-java-crytography-api'
-      entry 'the_bouncy_castle_crypto_package_for_java'
-    }
   }
 }
 
