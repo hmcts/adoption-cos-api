@@ -312,7 +312,21 @@ dependencyManagement {
     dependency group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.8'
 
     //CVE-2023-33202
-    dependency group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.74'
+    dependencySet(group: 'org.bouncycastle', version: '1.77') {
+      entry 'bcprov-jdk15on'
+      entry 'bouncy-castle-crypto-package'
+      entry 'bouncy_castle_crypto_package'
+      entry 'bouncy_castle_for_java'
+      entry 'legion-of-the-bouncy-castle'
+      entry 'legion-of-the-bouncy-castle-java-crytography-api'
+      entry 'the_bouncy_castle_crypto_package_for_java'
+    }
+
+    //CVE-2023-6378
+    dependencySet(group: 'ch.qos.logback', version: '1.4.14') {
+      entry 'logback-classic'
+      entry 'logback-core'
+    }
 
 
   }
