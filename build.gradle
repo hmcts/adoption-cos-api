@@ -323,6 +323,8 @@ dependencyManagement {
     }
 
     dependency group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13'
+    dependency group: 'ch.qos.logback', name: 'logback-core', version: '1.2.13'
+
 
   }
 }
