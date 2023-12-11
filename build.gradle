@@ -322,7 +322,7 @@ dependencyManagement {
       entry 'the_bouncy_castle_crypto_package_for_java'
     }
 
-
+    dependency group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13'
 
   }
 }
