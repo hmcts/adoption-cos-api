@@ -310,6 +310,11 @@ dependencyManagement {
     //CVE-2023-34040
     dependency group: 'org.springframework.cloud', name: 'spring-cloud-openfeign-core', version: '3.1.8'
     dependency group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.8'
+
+    //CVE-2023-33202
+    dependency group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.74'
+
+
   }
 }
 
