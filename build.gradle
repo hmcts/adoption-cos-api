@@ -325,7 +325,13 @@ dependencyManagement {
     dependency group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13'
     dependency group: 'ch.qos.logback', name: 'logback-core', version: '1.2.13'
 
-
+    //CVE-2023-5072
+    dependencySet(
+      group: 'org.json',
+      version: '20231013'
+    ) {
+      entry 'json'
+    }
   }
 }
 
