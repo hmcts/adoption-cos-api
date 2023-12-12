@@ -157,3 +157,11 @@ launchdarkly:
 send-grid:
   api-key: ${SEND_GRID_API_KEY:xxxxxxxx}
   notify-from-email: ${SEND_GRID_NOTIFY_FROM_EMAIL:sendGridEmailNotification@testadoption.com}
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    uk.gov.hmcts.reform.adoption: INFO
+    au.com.dius.pact: INFO
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
