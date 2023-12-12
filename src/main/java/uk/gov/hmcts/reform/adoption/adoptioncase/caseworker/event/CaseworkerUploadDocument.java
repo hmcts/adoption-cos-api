@@ -128,7 +128,6 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         caseData.setRole(null);
         caseData.setName(null);
         log.info("Set Role and Name as null");
-        log.info("-----------CaseData {}",caseData);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
