@@ -58,6 +58,7 @@ public class SendgridService {
         log.info("Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
         Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
 
+        log.info("From email: {}",sendGridNotifyFromEmail);
         log.info("Sendgrid email to be sent to court address: {} ",caseData.getFamilyCourtEmailId());
         Mail mail = new Mail(new Email(sendGridNotifyFromEmail), subject, new Email("mohit.vijay@hmcts.net"), content);
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(ListValue::getValue)
