@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.document;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BulkPrintServiceTest {
+public class BulkPrintServiceTest {
 
     @Mock
     private SendLetterApi sendLetterApi;
@@ -49,7 +50,7 @@ class BulkPrintServiceTest {
     private String s2sToken;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         uuid = randomUUID();
         authToken = "auth-token";
         s2sToken = "s2sToken";
@@ -79,8 +80,9 @@ class BulkPrintServiceTest {
     }
 
     @Test
-    void senLetterServiceWithInValidInput() {
-        assertThrows(NullPointerException.class, () -> bulkPrintService.send("123", authToken, "abc", null));
-
+    public void senLetterServiceWithInValidInput() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            assertEquals(bulkPrintService.send("123", authToken, "abc", null), uuid);
+        });
     }
 }

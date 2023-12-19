@@ -197,7 +197,7 @@ class CaseEventCommonMethodsTest {
 
 
     @Test
-    void updateMessageList_ReplyMessage_MessageHistory_Test_OK() {
+    void updateMessageListPostReplyMessageTest() {
         var caseData = getCaseDetails().getData();
         caseData.setMessageAction(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE);
         var messageSendDetails = new MessageSendDetails();
@@ -267,7 +267,7 @@ class CaseEventCommonMethodsTest {
     }
 
     @Test
-    void verifyMessageReasonLabel_Test_ReasonList() {
+    void verifyMessageReasonLabelForReasonListTest() {
         var messageSendDetails = new MessageSendDetails();
         var caseData = getCaseDetails().getData();
         messageSendDetails.setMessageReasonList(MessageSendDetails.MessageReason.ANNEX_A);
