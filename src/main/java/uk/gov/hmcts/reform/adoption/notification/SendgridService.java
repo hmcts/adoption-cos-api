@@ -120,7 +120,7 @@ public class SendgridService {
     private void fetchAndAttachDoc(AdoptionDocument item, Attachments attachments,
                                    Mail mail, String authorisation, String serviceAuthorization) {
         String documentId = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
-        log.info("");
+        log.info("documentId: {}", documentId);
         log.info("About to call getDocumentBinary method to fetch uploaded document(s) binary");
         ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary(
             authorisation, serviceAuthorization, UUID.fromString(documentId));

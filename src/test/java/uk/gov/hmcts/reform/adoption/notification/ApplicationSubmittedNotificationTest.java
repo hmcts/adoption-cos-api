@@ -32,7 +32,9 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -287,6 +289,65 @@ class ApplicationSubmittedNotificationTest {
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
         notification.sendToLocalCourt(data, 1234567890123456L);
+
+        verify(notificationService).sendEmail(any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldThrowExceptionWhileSendingEmailToLocalCourt() throws NotificationClientException, IOException {
+
+        CaseData data = caseData();
+        data.setHyphenatedCaseRef("1234-1234-1234-1234");
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
+            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
+                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocument);
+        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
+        data.setLaDocumentsUploaded(listOfUploadedDocument);
+        data.setDocumentsGenerated(listOfUploadedDocument);
+        data.setFamilyCourtEmailId(TEST_USER_EMAIL);
+        data.setDueDate(LocalDate.of(2021, 4, 21));
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+
+        doThrow(new IOException("some message"))
+            .when(sendgridService).sendEmail(any(), anyString(), any());
+
+        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
+        notification.sendToLocalCourt(data, 1234567890123456L);
+
+        verify(notificationService).sendEmail(any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldThrowExceptionWhileSendingEmailToLocalCourtPostLocalAuthoritySubmission() throws NotificationClientException, IOException {
+        CaseData data = caseData();
+        data.setHyphenatedCaseRef("1234-1234-1234-1234");
+        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
+            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
+                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocument);
+        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
+        data.setLaDocumentsUploaded(listOfUploadedDocument);
+        data.setDocumentsGenerated(listOfUploadedDocument);
+        data.setFamilyCourtEmailId(TEST_USER_EMAIL);
+        data.setDueDate(LocalDate.of(2021, 4, 21));
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+
+        doThrow(new IOException("some message"))
+            .when(sendgridService).sendEmail(any(), anyString(), any());
+
+        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
+        notification.sendToLocalCourtPostLocalAuthoritySubmission(data, 1234567890123456L);
 
         verify(notificationService).sendEmail(any(), any(), any(), any());
     }
