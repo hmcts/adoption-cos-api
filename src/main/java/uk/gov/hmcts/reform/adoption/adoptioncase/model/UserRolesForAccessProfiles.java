@@ -11,8 +11,8 @@ import uk.gov.hmcts.ccd.sdk.api.HasRole;
 @AllArgsConstructor
 @Getter
 public enum UserRolesForAccessProfiles implements HasRole {
-    ADOPTION_GENERIC("idam:caseworker-adoption", "D"),
-    CASE_WORKER("idam:caseworker-adoption-caseworker", "D"),
+    ADOPTION_GENERIC("idam:caseworker-adoption", "RU"),
+    CASE_WORKER("idam:caseworker-adoption-caseworker", "RU"),
     COURT_ADMIN("idam:caseworker-adoption-courtadmin", "R"),
     LEGAL_ADVISOR("idam:caseworker-adoption-la", "R"),
     DISTRICT_JUDGE("idam:caseworker-adoption-judge", "RU"),
