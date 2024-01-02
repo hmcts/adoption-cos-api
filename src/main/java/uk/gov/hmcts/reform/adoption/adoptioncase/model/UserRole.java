@@ -15,7 +15,7 @@ public enum UserRole implements HasRole {
     DISTRICT_JUDGE("caseworker-adoption-judge", "D"),
     SUPER_USER("caseworker-adoption-superuser", "D"),
     SOLICITOR("caseworker-adoption-solicitor", "D"),
-    CITIZEN("citizen", "CRUD"),
+    CITIZEN("citizen", "D"),
     CREATOR("[CREATOR]", "D"),
     SYSTEM_UPDATE("caseworker-adoption-systemupdate", "D");//TODO REMOVE DELETE ACCESS
 
