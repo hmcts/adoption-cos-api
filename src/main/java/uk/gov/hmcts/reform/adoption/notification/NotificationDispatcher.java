@@ -19,7 +19,7 @@ public class NotificationDispatcher {
                 //TODO: Insert call to sendToLocalAuthority
                 applicantNotification.sendToLocalAuthorityPostApplicantSubmission(caseData, caseId);
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("Exception occurred in send method: {}", e);
             }
         }
     }
@@ -32,7 +32,7 @@ public class NotificationDispatcher {
                 applicationNotification.sendToLocalAuthorityPostLocalAuthoritySubmission(caseData, caseId);
                 applicationNotification.sendToLocalCourtPostLocalAuthoritySubmission(caseData, caseId);
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("Exception occurred in sendToLocalAuthority method: {}", e);
             }
         }
     }
@@ -43,7 +43,7 @@ public class NotificationDispatcher {
             try {
                 applicantNotification.sendToApplicantsPostLocalAuthoritySubmission(caseData, caseId);
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("Exception occurred in sendToApplicantsPostLocalAuthorityApplicationSubmit method: {}", e);
             }
         }
 

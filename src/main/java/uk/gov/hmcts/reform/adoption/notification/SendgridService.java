@@ -80,7 +80,7 @@ public class SendgridService {
             sg.api(request);
             log.info("Notification email to Local Court sent successfully");
         } catch (IOException ex) {
-            log.error("Notification email to Local Court failed {}",ex.getMessage());
+            log.error("Notification email to Local Court failed {}",ex);
         }
     }
 
@@ -97,7 +97,7 @@ public class SendgridService {
                 byte[] documentContents = inputStream.readAllBytes();
                 data = Base64.getEncoder().encodeToString(documentContents);
             } catch (Exception e) {
-                log.error("Document could not be read");
+                log.error("Document could not be read {}", e);
             }
             attachments.setContent(data);
             attachments.setFilename(adoptionDocument.getDocumentFileName());
@@ -119,10 +119,11 @@ public class SendgridService {
 
     private void fetchAndAttachDoc(AdoptionDocument item, Attachments attachments,
                                    Mail mail, String authorisation, String serviceAuthorization) {
-        String url = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
+        String documentId = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
+        log.info("documentId: {}", documentId);
         log.info("About to call getDocumentBinary method to fetch uploaded document(s) binary");
         ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary(
-            authorisation, serviceAuthorization, UUID.fromString(url));
+            authorisation, serviceAuthorization, UUID.fromString(documentId));
         log.info("After calling caseDocumentClient "
                      + "service with status code {}:", resource.getStatusCode());
         Resource uploadedDocument = resource.getBody();
@@ -132,7 +133,7 @@ public class SendgridService {
                 byte[] documentContents = inputStream.readAllBytes();
                 data = Base64.getEncoder().encodeToString(documentContents);
             } catch (Exception e) {
-                log.error("Document could not be read");
+                log.error("Document could not be read {}", e);
             }
 
             attachments.setContent(data);
