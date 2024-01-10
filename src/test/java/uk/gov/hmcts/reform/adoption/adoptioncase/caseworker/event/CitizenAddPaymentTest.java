@@ -22,6 +22,7 @@ import uk.gov.hmcts.reform.adoption.common.service.SendNotificationService;
 import uk.gov.hmcts.reform.adoption.common.service.SubmissionService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
+import uk.gov.hmcts.reform.adoption.service.task.EventService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.SubmittedCallbackResponse;
 import uk.gov.hmcts.reform.idam.client.models.User;
@@ -63,6 +64,9 @@ class CitizenAddPaymentTest {
 
     @Mock
     private SubmissionService submissionService;
+
+    @Mock
+    private EventService eventPublisher;
 
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
 
