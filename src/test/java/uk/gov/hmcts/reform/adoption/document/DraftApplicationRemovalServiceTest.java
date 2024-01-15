@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,8 +26,10 @@ import static feign.Request.HttpMethod.GET;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.emptyList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -34,7 +37,9 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
+import static uk.gov.hmcts.reform.adoption.document.DocumentType.BIRTH_OR_ADOPTION_CERTIFICATE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.SYSTEM_USER_USER_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_SERVICE_AUTH_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
@@ -92,6 +97,45 @@ class DraftApplicationRemovalServiceTest {
         );
 
         verifyNoMoreInteractions(idamService, authTokenGenerator, caseDocumentClient);
+    }
+
+    @Test
+    void shouldRemoveDraftApplicationDocumentFromCaseDataAndNotDeleteNonApplicationDocument() {
+        final List<String> systemRoles = List.of("caseworker-adoption");
+        final String systemRolesCsv = String.join(",", systemRoles);
+        final ListValue<AdoptionDocument> adoptionDocumentListValue = documentWithType(BIRTH_OR_ADOPTION_CERTIFICATE);
+        final String userId = UUID.randomUUID().toString();
+        final User systemUser = systemUser(systemRoles, userId);
+
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(systemUser);
+
+        final String documentUuid = FilenameUtils.getName(adoptionDocumentListValue.getValue().getDocumentLink().getUrl());
+
+        final List<ListValue<AdoptionDocument>> actualDocumentsList = draftApplicationRemovalService.removeDraftApplicationDocument(
+            singletonList(adoptionDocumentListValue),
+            TEST_CASE_ID
+        );
+
+        verify(idamService).retrieveSystemUpdateUserDetails();
+        verify(caseDocumentClient, never()).deleteDocument(
+            SYSTEM_USER_USER_ID,
+            TEST_SERVICE_AUTH_TOKEN,
+            UUID.fromString(documentUuid),
+            true
+        );
+        assertEquals(1, actualDocumentsList.size());
+
+        verifyNoMoreInteractions(idamService, authTokenGenerator, caseDocumentClient);
+    }
+
+    @Test
+    void removeDraftApplicationDocumentShouldReturnEmptyList_whenGeneratedDocumentsIsEmpty() {
+        List<ListValue<AdoptionDocument>> emptyDocumentList = new ArrayList<ListValue<AdoptionDocument>>();
+        final List<ListValue<AdoptionDocument>> actualDocumentsList = draftApplicationRemovalService.removeDraftApplicationDocument(
+            emptyDocumentList,
+            TEST_CASE_ID
+        );
+        assertEquals(emptyList(), actualDocumentsList);
     }
 
     @Test

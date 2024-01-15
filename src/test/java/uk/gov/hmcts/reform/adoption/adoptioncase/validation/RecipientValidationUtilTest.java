@@ -6,6 +6,8 @@ import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -99,6 +101,17 @@ class RecipientValidationUtilTest {
     }
 
     @Test
+    void isLegalGuardianValidRecipientForGeneralOrderTest_2() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+        caseData.setIsChildRepresentedByGuardian(YesOrNo.YES);
+        assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
+            DirectionsOrderData.GeneralDirectionRecipients.LEGAL_GUARDIAN_CAFCASS.name(),
+            caseData
+        )).isNull();
+    }
+
+    @Test
     void isChildLocalAuthorityValidRecipientForGeneralOrderTest() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
@@ -106,6 +119,19 @@ class RecipientValidationUtilTest {
             DirectionsOrderData.GeneralDirectionRecipients.CHILDS_LOCAL_AUTHORITY.name(),
             caseData
         )).isEqualTo(CaseFieldsConstants.CHILDS_LA_NOT_APPLICABLE);
+    }
+
+    @Test
+    void isChildLocalAuthorityValidRecipientForGeneralOrderTest_2() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+        SocialWorker socialWorker = new SocialWorker();
+        socialWorker.setLocalAuthority("Local Authority");
+        caseData.setChildSocialWorker(socialWorker);
+        assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
+            DirectionsOrderData.GeneralDirectionRecipients.CHILDS_LOCAL_AUTHORITY.name(),
+            caseData
+        )).isNull();
     }
 
     @Test
@@ -119,6 +145,19 @@ class RecipientValidationUtilTest {
     }
 
     @Test
+    void isApplicantLocalAuthorityValidRecipientForGeneralOrderTest_2() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+        SocialWorker socialWorker = new SocialWorker();
+        socialWorker.setLocalAuthority("Local Authority");
+        caseData.setApplicantSocialWorker(socialWorker);
+        assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
+            DirectionsOrderData.GeneralDirectionRecipients.APPLICANTS_LOCAL_AUTHORITY.name(),
+            caseData
+        )).isNull();
+    }
+
+    @Test
     void isAdoptionAgencyValidRecipientForGeneralOrderTest() {
         final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
         final CaseData caseData = caseDetails.getData();
@@ -128,6 +167,18 @@ class RecipientValidationUtilTest {
         )).isEqualTo(CaseFieldsConstants.ADOP_AGENCY_NOT_APPLICABLE);
     }
 
+    @Test
+    void isAdoptionAgencyValidRecipientForGeneralOrderTest_2() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+        AdoptionAgencyOrLocalAuthority adoptionAgencyOrLA = new AdoptionAgencyOrLocalAuthority();
+        adoptionAgencyOrLA.setAdopAgencyOrLaName("Local Authority");
+        caseData.setAdopAgencyOrLA(adoptionAgencyOrLA);
+        assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
+            DirectionsOrderData.GeneralDirectionRecipients.ADOPTION_AGENCY.name(),
+            caseData
+        )).isNull();
+    }
 
     @Test
     void isOtherAdoptionAgencyValidRecipientForGeneralOrderTest() {
@@ -170,6 +221,27 @@ class RecipientValidationUtilTest {
         caseData.setIsChildRepresentedByGuardian(YesOrNo.YES);
         assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
             DirectionsOrderData.GeneralDirectionRecipients.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY.name(),
+            caseData
+        )).isNull();
+    }
+
+    @Test
+    void isOtherLocalAuthorityValidRecipientForGeneralOrderTest() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+        caseData.setLocalAuthority(null);
+        assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
+            CaseFieldsConstants.OTHER_LOCAL_AUTHORITY,
+            caseData
+        )).isEqualTo(CaseFieldsConstants.OTHER_LA_NOT_APPLICABLE);
+    }
+
+    @Test
+    void isOtherLocalAuthorityValidRecipientForGeneralOrderTest_2() {
+        final CaseDetails<CaseData, State> caseDetails = getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+        assertThat(RecipientValidationUtil.isValidRecipientForGeneralOrder(
+            CaseFieldsConstants.OTHER_LOCAL_AUTHORITY,
             caseData
         )).isNull();
     }

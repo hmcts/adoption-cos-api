@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.LocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ApplyingWith;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.YesNoNotSure;
 
 import java.time.LocalDate;
@@ -21,13 +22,14 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUti
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateBirthFather;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateDateChildMovedIn;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateOtherParent;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.validation.ValidationUtil.validateSocialWorker;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_PHONE_NUMBER;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
 
-public class ValidationUtilTest {
+class ValidationUtilTest {
 
     @Test
-    public void shouldValidateBasicCase() {
+    void shouldValidateBasicCase() {
         CaseData caseData = new CaseData();
         caseData.setHasAnotherAdopAgencyOrLA(YesOrNo.NO);
         List<String> errors = validateBasicCase(caseData);
@@ -35,7 +37,7 @@ public class ValidationUtilTest {
     }
 
     @Test
-    public void shouldValidateBasicCaseWhenApplyingAlone() {
+    void shouldValidateBasicCaseWhenApplyingAlone() {
         CaseData caseData = new CaseData();
         caseData.setApplyingWith(ApplyingWith.ALONE);
         caseData.setHasAnotherAdopAgencyOrLA(YesOrNo.NO);
@@ -44,14 +46,28 @@ public class ValidationUtilTest {
     }
 
     @Test
-    public void shouldValidateBirthFather() {
+    void shouldValidateSocialWorker() {
+        SocialWorker socialWorker = SocialWorker.builder().build();
+        List<String> errors = validateSocialWorker(socialWorker);
+        assertThat(errors).hasSize(2);
+    }
+
+    @Test
+    void shouldValidateBirthFather() {
         Parent parent = Parent.builder().nameOnCertificate(YES).build();
         List<String> errors = validateBirthFather(parent);
         assertThat(errors).hasSize(2);
     }
 
     @Test
-    public void shouldValidateOtherParent() {
+    void shouldValidateBirthFather_whenNameNotOnBirthCertificate() {
+        Parent parent = Parent.builder().build();
+        List<String> errors = validateBirthFather(parent);
+        assertThat(errors).isEmpty();
+    }
+
+    @Test
+    void shouldValidateOtherParent() {
         Parent parent = Parent.builder().stillAlive(YesNoNotSure.YES).build();
         List<String> errors = validateOtherParent(parent);
         assertThat(errors).hasSize(2);
@@ -65,7 +81,7 @@ public class ValidationUtilTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenDateChileMovedInIsLessThanTenWeeks() {
+    void shouldReturnErrorWhenDateChileMovedInIsLessThanTenWeeks() {
         LocalDate nineWeeksAgo = LocalDate.now().minus(9, WEEKS);
 
         List<String> response = validateDateChildMovedIn(nineWeeksAgo, "field");
@@ -74,7 +90,7 @@ public class ValidationUtilTest {
     }
 
     @Test
-    public void shouldValidateIfFirstLaIsValid() {
+    void shouldValidateIfFirstLaIsValid() {
         LocalAuthority localAuthority = LocalAuthority.builder()
             .localAuthorityContactEmail(TEST_USER_EMAIL).localAuthorityPhoneNumber(TEST_USER_EMAIL).build();
 
@@ -83,7 +99,7 @@ public class ValidationUtilTest {
     }
 
     @Test
-    public void shouldValidateIfBothLasAreValid() {
+    void shouldValidateIfBothLasAreValid() {
         LocalAuthority localAuthority = LocalAuthority.builder()
             .localAuthorityContactEmail(TEST_USER_EMAIL).localAuthorityPhoneNumber(TEST_PHONE_NUMBER).build();
         AdoptionAgencyOrLocalAuthority adoptionAgencyOrLa = AdoptionAgencyOrLocalAuthority.builder()

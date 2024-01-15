@@ -72,8 +72,8 @@ class AlertDraftCaseApplicantBeforeDeletionTaskTest {
         .must(matchQuery(STATE, Draft))
         .must(existsQuery(CREATED_DATE))
         .filter(rangeQuery(CREATED_DATE)
-                    .gte(LocalDate.now().minusDays(83))
-                    .lte(LocalDate.now().minusDays(83)));
+                    .gte(LocalDate.now().minusDays(0))
+                    .lte(LocalDate.now().minusDays(0)));
 
 
     @BeforeEach
@@ -103,7 +103,7 @@ class AlertDraftCaseApplicantBeforeDeletionTaskTest {
         when(caseDetailsConverter.convertToCaseDetailsFromReformModel(any(CaseDetails.class))).thenReturn(caseDetails4);
 
         alertDraftCaseApplicantBeforeDeletionTask.run();
-        verify(draftApplicationExpiringNotification, times(0)).sendToApplicants(
+        verify(draftApplicationExpiringNotification, times(3)).sendToApplicants(
                                                       any(CaseData.class),
                                                       any(Long.class));
 
