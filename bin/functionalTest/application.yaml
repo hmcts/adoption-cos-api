@@ -11,7 +11,7 @@ azure:
 
 cron:
   alertDraftApplicant:
-    offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:83}
+    offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:69}
 
 test-url: ${TEST_URL:http://localhost:4550}
 
