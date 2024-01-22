@@ -63,7 +63,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void senLetterServiceWithValidInput() {
+    void senLetterServiceWithValidInput() {
         Resource expectedResource = new ClassPathResource("task-list-markdown.md");
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Resource> expectedResponse = new ResponseEntity<>(expectedResource, headers, HttpStatus.OK);

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.document;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +15,19 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
 
 @Service
 @Slf4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DraftApplicationRemovalService {
 
 
-    @Autowired
     private CaseDocumentClient caseDocumentClient;
 
-    @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
-    @Autowired
     private IdamService idamService;
 
     public List<ListValue<AdoptionDocument>> removeDraftApplicationDocument(
@@ -54,7 +52,7 @@ public class DraftApplicationRemovalService {
                 )
             )
             .filter(document -> !isApplicationDocument(document))
-            .collect(toList());
+            .toList();
 
 
         log.info("Successfully removed application document from case data generated document list for case id {} ", caseId);

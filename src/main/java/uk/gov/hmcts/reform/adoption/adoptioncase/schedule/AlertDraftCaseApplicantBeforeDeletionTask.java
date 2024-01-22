@@ -49,7 +49,7 @@ public class AlertDraftCaseApplicantBeforeDeletionTask implements Runnable {
     @Autowired
     private CaseDetailsConverter caseDetailsConverter;
 
-    @Value("${cron.alertDraftApplicant.offsetDays:83}")
+    @Value("${cron.alertDraftApplicant.offsetDays:69}")
     public  int emailAlertOffsetDays;
 
 
