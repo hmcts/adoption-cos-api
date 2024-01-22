@@ -83,12 +83,12 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("applicant2PhoneNumber","applyingWith!=\"alone\"")
             .label("LabelSolicitor-Heading", "",
                    "### Solicitor")
-            .field("isApplicantRepresentedBySolicitor")
-            .field("solicitorSolicitorFirm", "isApplicantRepresentedBySolicitor!=\"No\"")
-            .field("solicitorSolicitorRef","isApplicantRepresentedBySolicitor!=\"No\"")
-            .field("solicitorSolicitorAddress","isApplicantRepresentedBySolicitor!=\"No\"")
-            .field("solicitorEmail","isApplicantRepresentedBySolicitor!=\"No\"")
-            .field("solicitorPhoneNumber","isApplicantRepresentedBySolicitor!=\"No\"");
+            .field("isApplicantRepresentedBySolicitor");
+        //.field("solicitorSolicitorFirm", "isApplicantRepresentedBySolicitor!=\"No\"")
+        //.field("solicitorSolicitorRef","isApplicantRepresentedBySolicitor!=\"No\"")
+        //.field("solicitorSolicitorAddress","isApplicantRepresentedBySolicitor!=\"No\"")
+        //.field("solicitorEmail","isApplicantRepresentedBySolicitor!=\"No\"")
+        //.field("solicitorPhoneNumber","isApplicantRepresentedBySolicitor!=\"No\"");
     }
 
     public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -125,11 +125,11 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthMotherToBeServed")
             .label("labelsummary-mother-solicitor",null,"### Solicitor")
             .field("isBirthMotherRepresentedBySolicitor")
-            .field("motherSolicitorSolicitorFirm")
-            .field("motherSolicitorSolicitorRef")
-            .field("motherSolicitorSolicitorAddress")
-            .field("motherSolicitorPhoneNumber")
-            .field("motherSolicitorEmail")
+            //.field("motherSolicitorSolicitorFirm")
+            //.field("motherSolicitorSolicitorRef")
+            //.field("motherSolicitorSolicitorAddress")
+            //.field("motherSolicitorPhoneNumber")
+            //.field("motherSolicitorEmail")
             .label("labelSummary-birthFather",
                    null,
                    "#### Birth Father")
@@ -149,11 +149,11 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("birthFatherToBeServed")
             .label("labelsummary-father-solicitor",null,"### Solicitor")
             .field("isBirthFatherRepresentedBySolicitor")
-            .field("fatherSolicitorSolicitorFirm")
-            .field("fatherSolicitorSolicitorRef")
-            .field("fatherSolicitorSolicitorAddress")
-            .field("fatherSolicitorPhoneNumber")
-            .field("fatherSolicitorEmail")
+            //.field("fatherSolicitorSolicitorFirm")
+            //.field("fatherSolicitorSolicitorRef")
+            //.field("fatherSolicitorSolicitorAddress")
+            //.field("fatherSolicitorPhoneNumber")
+            //.field("fatherSolicitorEmail")
             .label("labelSummary-otherParent", null,
                    "#### Other person with parental responsibility")
             .field("isThereAnyOtherPersonWithParentalResponsibility")
@@ -170,10 +170,10 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("otherParentRelationShipWithChild")
             .field("otherParentToBeServed")
             .label("labelsummary-otherparent-solicitor",null,"### Solicitor")
-            .field("isOtherParentRepresentedBySolicitor")
-            .field("otherParentSolicitorSolicitorFirm")
-            .field("otherParentSolicitorSolicitorRef")
-            .field("otherParentSolicitorSolicitorAddress");
+            .field("isOtherParentRepresentedBySolicitor");
+        //.field("otherParentSolicitorSolicitorFirm")
+        //.field("otherParentSolicitorSolicitorRef")
+        //.field("otherParentSolicitorSolicitorAddress");
     }
 
     private void buildTabWithAgencyAndLocalAuthorityDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
@@ -235,12 +235,12 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("localGuardianPhoneNumber")
             .field("localGuardianEmail")
             .label("labelsummary-child-solicitor",null,"### Solicitor")
-            .field("isChildRepresentedBySolicitor")
-            .field("childSolicitorSolicitorFirm")
-            .field("childSolicitorSolicitorRef")
-            .field("childSolicitorSolicitorAddress")
-            .field("childSolicitorPhoneNumber")
-            .field("childSolicitorEmail");
+            .field("isChildRepresentedBySolicitor");
+        //  .field("childSolicitorSolicitorFirm")
+        //  .field("childSolicitorSolicitorRef")
+        //  .field("childSolicitorSolicitorAddress")
+        //  .field("childSolicitorPhoneNumber");
+        //.field("childSolicitorEmail");
     }
 
     private Tab.TabBuilder<CaseData, UserRole> buildTabWithChildDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
