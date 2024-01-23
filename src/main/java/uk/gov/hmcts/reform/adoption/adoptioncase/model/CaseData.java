@@ -8,14 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
@@ -27,29 +24,19 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 import uk.gov.hmcts.reform.adoption.document.model.DssUploadedDocument;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.MultiSelectList;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -117,11 +104,6 @@ public class CaseData {
     )
     private YesOrNo isChildRepresentedBySolicitor;
 
-    @JsonUnwrapped(prefix = "childSolicitor")
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private Solicitor childSolicitor = new Solicitor();
-
     @CCD(
         label = "Is the birth mother represented by a solicitor?",
         access = {SystemUpdateAccess.class}
@@ -133,11 +115,6 @@ public class CaseData {
     @CCD(access = {SystemUpdateAccess.class})
     private Parent birthMother = new Parent();
 
-    @JsonUnwrapped(prefix = "motherSolicitor")
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private Solicitor birthMotherSolicitor = new Solicitor();
-
     @JsonUnwrapped(prefix = "birthFather")
     @Builder.Default
     @CCD(access = {SystemUpdateAccess.class})
@@ -148,11 +125,6 @@ public class CaseData {
         access = {SystemUpdateAccess.class}
     )
     private YesOrNo isBirthFatherRepresentedBySolicitor;
-
-    @JsonUnwrapped(prefix = "fatherSolicitor")
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private Solicitor birthFatherSolicitor = new Solicitor();
 
     @CCD(
         label = "Is there another person who has parental responsibility for the child?",
@@ -170,11 +142,6 @@ public class CaseData {
         access = {SystemUpdateAccess.class}
     )
     private YesOrNo isOtherParentRepresentedBySolicitor;
-
-    @JsonUnwrapped(prefix = "otherParentSolicitor")
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
-    private Solicitor otherParentSolicitor = new Solicitor();
 
     @CCD(
         label = "Linked cases",
@@ -209,11 +176,6 @@ public class CaseData {
     @Builder.Default
     @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
     private SocialWorker applicantSocialWorker = new SocialWorker();
-
-    @JsonUnwrapped(prefix = "solicitor")
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private Solicitor solicitor = new Solicitor();
 
     @JsonUnwrapped
     @Builder.Default
@@ -520,19 +482,6 @@ public class CaseData {
     )
     private List<ListValue<AdoptionUploadDocument>> additionalDocumentsCategory;
 
-    @CCD(
-        label = "Notes",
-        typeOverride = Collection,
-        typeParameterOverride = "CaseNote",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<CaseNote>> caseNote;
-
-    @CCD(
-        label = "Add a Case Note",
-        access = {DefaultAccess.class}
-    )
-    private CaseNote note;
 
     @CCD(
         access = {DefaultAccess.class}
@@ -578,12 +527,6 @@ public class CaseData {
     private DynamicList seekFurtherInformationList;
 
     @CCD(access = {DefaultAccess.class},
-        label = "What information do you need?\n",
-        typeOverride = MultiSelectList,
-        typeParameterOverride = "FurtherInformation")
-    private Set<FurtherInformation> furtherInformation;
-
-    @CCD(access = {DefaultAccess.class},
         label = "List the documents you need",
         typeOverride = TextArea)
     private String askForAdditionalDocumentText;
@@ -602,87 +545,12 @@ public class CaseData {
     @CCD
     private Document seekFurtherInformationDocument;
 
-    @JsonUnwrapped
-    @Builder.Default
-    @CCD(
-        label = "Enter hearing details",
-        access = {DefaultAccess.class}
-    )
-    private ManageHearingDetails manageHearingDetails = new ManageHearingDetails();
-
-    @CCD(
-        label = "Vacated hearings",
-        typeOverride = Collection,
-        typeParameterOverride = "ManageHearingDetails",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<ManageHearingDetails>> vacatedHearings;
-
-    @CCD(
-        label = "Adjourned hearing",
-        typeOverride = Collection,
-        typeParameterOverride = "ManageHearingDetails",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<ManageHearingDetails>> adjournHearings;
-
-    @CCD(
-        label = "New hearing",
-        typeOverride = Collection,
-        typeParameterOverride = "ManageHearingDetails",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<ManageHearingDetails>> newHearings;
-
-    @CCD(
-        typeOverride = Collection,
-        typeParameterOverride = "ManageOrdersData",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<ManageOrdersData>> manageOrderList;
-
-    @CCD(
-        typeOverride = Collection,
-        typeParameterOverride = "DirectionsOrderData",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<DirectionsOrderData>> directionsOrderList;
-
-    @CCD(
-        typeOverride = Collection,
-        typeParameterOverride = "AdoptionOrderData",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<AdoptionOrderData>> adoptionOrderList;
-
     @CCD(
         access = {DefaultAccess.class},
         label = "Select the order you want to review"
     )
     private DynamicList checkAndSendOrderDropdownList;
 
-    @JsonUnwrapped
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private ManageOrdersData manageOrdersData = new ManageOrdersData();
-
-    @JsonUnwrapped
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private AdoptionOrderData adoptionOrderData = new AdoptionOrderData();
-
-    @JsonUnwrapped
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class})
-    private DirectionsOrderData directionsOrderData = new DirectionsOrderData();
-
-    // ------------------- Send And Reply Messages Objects Start ----------------- //
-    @CCD(
-        label = "Do you want to send or reply to a message?",
-        access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "MessagesAction")
-    private MessageSendDetails.MessagesAction messageAction;
 
     @CCD(
         label = "Reply a message\n"
@@ -691,17 +559,7 @@ public class CaseData {
 
 
     @CCD(access = {DefaultAccess.class})
-    @JsonUnwrapped
-    private MessageSendDetails messageSendDetails;
-
-    @CCD(access = {DefaultAccess.class})
     private String loggedInUserRole;
-
-    @CCD(
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
-    )
-    @JsonUnwrapped
-    private SelectedMessage selectedMessage;
 
     @CCD(
         label = "Do you want to attach documents from this case?",
@@ -714,47 +572,6 @@ public class CaseData {
         label = "Select a document"
     )
     private DynamicList attachDocumentList;
-
-
-    @CCD(
-        label = "Open messages",
-        typeOverride = Collection,
-        typeParameterOverride = "MessageSendDetails",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<MessageSendDetails>> listOfOpenMessages;
-
-    @CCD(
-        label = "Closed Messages",
-        typeOverride = Collection,
-        typeParameterOverride = "MessageSendDetails",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<MessageSendDetails>> closedMessages;
-    // ------------------- Send And Reply Messages Objects End ----------------- //
-
-    @CCD(
-        label = "Orders",
-        typeOverride = Collection,
-        typeParameterOverride = "OrderData",
-        access = {DefaultAccess.class}
-    )
-    private List<ListValue<OrderData>> commonOrderList;
-
-    @CCD(
-        label = "Review Order",
-        access = { SystemUpdateAccess.class,DefaultAccess.class}
-    )
-    @JsonUnwrapped
-    private SelectedOrder selectedOrder;
-
-    @CCD(
-        label = "Do you want to serve the order or return for amendments?",
-        access = {DefaultAccess.class},
-        typeOverride = FixedRadioList,
-        typeParameterOverride = "OrderCheckAndSend"
-    )
-    private OrderCheckAndSend orderCheckAndSend;
 
 
     @CCD(
@@ -805,69 +622,6 @@ public class CaseData {
 
     private YesOrNo seekFurtherInformationAdopOrLaSelected;
 
-    public String getNameOfCourtFirstHearing() {
-        if (Objects.nonNull(familyCourtName)) {
-            return familyCourtName;
-        }
-        return manageOrdersData.getNameOfCourtFirstHearing();
-    }
-
-    public String getNameOfCourtFurtherHearing() {
-        if (Objects.nonNull(familyCourtName)) {
-            return familyCourtName;
-        }
-        return manageOrdersData.getNameOfCourtFurtherHearing();
-    }
-
-    public DynamicList getHearingListThatCanBeVacated() {
-        if (Objects.isNull(this.hearingListThatCanBeVacated)
-            || this.hearingListThatCanBeVacated.getListItems().size() != this.getNewHearings().size()) {
-            this.setHearingListThatCanBeVacated(
-                this.getHearingList(this.getNewHearings()));
-        }
-        return this.hearingListThatCanBeVacated;
-    }
-
-    public DynamicList getHearingListThatCanBeAdjourned() {
-        if (Objects.isNull(this.hearingListThatCanBeAdjourned)
-            || this.hearingListThatCanBeAdjourned.getListItems().size() != this.getNewHearings().size()) {
-            this.setHearingListThatCanBeAdjourned(
-                this.getHearingList(this.getNewHearings()));
-        }
-        return this.hearingListThatCanBeAdjourned;
-    }
-
-    public DynamicList getHearingList(List<ListValue<ManageHearingDetails>> hearings) {
-        List<DynamicListElement> listElements = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(hearings)) {
-            hearings.forEach(hearing -> {
-                DynamicListElement listElement = DynamicListElement.builder()
-                    .label(String.join(BLANK_SPACE, hearing.getValue().getTypeOfHearing(),
-                                       "-",
-                                       hearing.getValue().getHearingDateAndTime().format(DateTimeFormatter.ofPattern(
-                                           "dd MMM yyyy',' hh:mm:ss a")).replace("pm", "PM").replace("am", "PM")
-                    )).code(UUID.fromString(hearing.getValue().getHearingId()))
-                    .build();
-                listElements.add(listElement);
-            });
-        }
-        return DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build();
-    }
-
-    public DynamicList getPlacementOfTheChildList() {
-        if (adopAgencyOrLA.getAdopAgencyOrLaName() != null
-            && childSocialWorker.getSocialWorkerName() != null
-            && applicantSocialWorker.getSocialWorkerName() != null) {
-            return this.getAdoptionOrderData().getPlacementOfTheChildList(
-                        this.getAdopAgencyOrLA(),
-                        this.getHasAnotherAdopAgencyOrLAinXui(),
-                        this.getOtherAdoptionAgencyOrLA(),
-                        this.getChildSocialWorker(),
-                        this.getApplicantSocialWorker());
-        }
-
-        return this.getAdoptionOrderData().getPlacementOfTheChildList();
-    }
 
     public YesOrNo getIsApplicantRepresentedBySolicitor() {
         if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
@@ -906,113 +660,12 @@ public class CaseData {
         addToCombinedDocumentsGenerated();
     }
 
-    @JsonIgnore
-    public void archiveManageOrders() {
-        OrderData data = new OrderData();
-        switch (this.getManageOrdersData().getManageOrderType()) {
-            case CASE_MANAGEMENT_ORDER:
-                this.getManageOrdersData().setSubmittedDateManageOrder(
-                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-                this.getManageOrdersData().setOrderId(UUID.randomUUID().toString());
-                this.setManageOrderList(archiveListHelper(
-                    this.getManageOrderList(), this.getManageOrdersData()));
 
-                data.setOrderId(getManageOrdersData().getOrderId());
-                data.setManageOrderType(getManageOrdersData().getManageOrderType());
-                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
-                data.setSubmittedDateAndTimeOfOrder(getManageOrdersData().getSubmittedDateManageOrder());
-                data.setDateOrderMate(getManageOrdersData().getDateOrderMade());
-                data.setOrderedBy(getManageOrdersData().getOrderedBy());
-                data.setAdoptionOrderRecipients(getManageOrdersData().getRecipientsList());
-                break;
-            case GENERAL_DIRECTIONS_ORDER:
-                this.getDirectionsOrderData().setSubmittedDateDirectionsOrder(
-                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-                this.getDirectionsOrderData().setOrderId(UUID.randomUUID().toString());
-                this.setDirectionsOrderList(archiveListHelper(
-                    this.getDirectionsOrderList(), this.getDirectionsOrderData()));
 
-                data.setManageOrderType(GENERAL_DIRECTIONS_ORDER);
-                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
-                data.setOrderId(getDirectionsOrderData().getOrderId());
-                data.setGeneralDirectionOrderRecipients(getDirectionsOrderData().getGeneralDirectionRecipientsList());
-                data.setSubmittedDateAndTimeOfOrder(getDirectionsOrderData().getSubmittedDateDirectionsOrder());
-                data.setOrderedBy(getDirectionsOrderData().getDirectionOrderBy());
-                break;
-            case FINAL_ADOPTION_ORDER:
-                this.getAdoptionOrderData().setSubmittedDateAdoptionOrder(
-                    LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-                this.getAdoptionOrderData().setOrderId(UUID.randomUUID().toString());
-                this.setAdoptionOrderList(archiveListHelper(
-                    this.getAdoptionOrderList(), this.getAdoptionOrderData()));
 
-                data.setOrderId(getAdoptionOrderData().getOrderId());
-                data.setManageOrderType(FINAL_ADOPTION_ORDER);
-                data.setStatus(OrderStatus.PENDING_CHECK_N_SEND);
-                data.setDateOrderMate(getAdoptionOrderData().getDateOrderMadeFinalAdoptionOrder());
-                data.setOrderedBy(this.getAdoptionOrderData().getOrderedByFinalAdoptionOrder());
-                data.setSubmittedDateAndTimeOfOrder(getAdoptionOrderData().getSubmittedDateAdoptionOrder());
-                data.setFinalOrderRecipientsA206(getAdoptionOrderData().getRecipientsListA206());
-                data.setFinalOrderRecipientsA76(getAdoptionOrderData().getRecipientsListA76());
-                data.setDocumentReview1(getAdoptionOrderData().getDraftDocumentA76());
-                data.setDocumentReview2(getAdoptionOrderData().getDraftDocumentA206());
-                break;
-            default:
-                break;
-        }
-        this.setCommonOrderList(archiveListHelper(
-            this.getCommonOrderList(), data));
-        this.setManageOrdersData(new ManageOrdersData());
-        this.setDirectionsOrderData(new DirectionsOrderData());
-        this.setAdoptionOrderData(new AdoptionOrderData());
-    }
 
-    @JsonIgnore
-    public void archiveHearingInformation() {
-        ManageHearingDetails manageHearingDetails = this.manageHearingDetails;
 
-        if (null != manageHearingDetails) {
-            manageHearingDetails.setRecipientsInTheCase(this.manageHearingDetails.getRecipientsInTheCase());
-            manageHearingDetails.setHearingId(UUID.randomUUID().toString());
-            setNewHearings(archiveListHelper(getNewHearings(), manageHearingDetails));
-            this.manageHearingDetails = new ManageHearingDetails();
-            this.manageHearingDetails.setManageHearingOptions(null);
-            this.manageHearingDetails.setRecipientsInTheCase(null);
-        }
-    }
 
-    @JsonIgnore
-    public void updateVacatedHearings() {
 
-        Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
-            hearing.getValue().getHearingId(),
-            hearingListThatCanBeVacated.getValue().getCode().toString()
-        )).findFirst();
-
-        if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
-            vacatedHearingDetails.get().getValue().setReasonForVacatingHearing(this.manageHearingDetails.getReasonForVacatingHearing());
-            setVacatedHearings(archiveListHelper(getVacatedHearings(), vacatedHearingDetails.get().getValue()));
-            newHearings.remove(vacatedHearingDetails.get());
-        }
-        this.manageHearingDetails.setManageHearingOptions(null);
-    }
-
-    public void updateAdjournHearings() {
-
-        Optional<ListValue<ManageHearingDetails>> adjournHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
-            hearing.getValue().getHearingId(),
-            hearingListThatCanBeAdjourned.getValue().getCode().toString()
-        )).findFirst();
-
-        if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
-            adjournHearingDetails.get().getValue().setReasonForAdjournHearing(this.manageHearingDetails.getReasonForAdjournHearing());
-            adjournHearingDetails.get().getValue().setOtherReasonForAdjournHearing(
-                this.manageHearingDetails.getOtherReasonForAdjournHearing());
-            setAdjournHearings(archiveListHelper(getAdjournHearings(), adjournHearingDetails.get().getValue()));
-            newHearings.remove(adjournHearingDetails.get());
-        }
-        this.manageHearingDetails.setManageHearingOptions(null);
-        this.manageHearingDetails.setOtherReasonForAdjournHearing(null);
-    }
 
 }
