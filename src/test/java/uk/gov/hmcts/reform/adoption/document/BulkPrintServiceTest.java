@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BulkPrintServiceTest {
+class BulkPrintServiceTest {
 
     @Mock
     private SendLetterApi sendLetterApi;
