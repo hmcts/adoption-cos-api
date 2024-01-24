@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
@@ -25,7 +24,6 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 import uk.gov.hmcts.reform.adoption.document.model.DssUploadedDocument;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.List;
@@ -34,7 +32,6 @@ import java.util.Objects;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.DynamicRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
@@ -87,29 +84,6 @@ public class CaseData {
     @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class})
     private Children children = new Children();
 
-    @CCD(
-        label = "is Child Represented By Guardian",
-        access = {SystemUpdateAccess.class}
-    )
-    private YesOrNo isChildRepresentedByGuardian;
-
-    @JsonUnwrapped(prefix = "localGuardian")
-    @Builder.Default
-    @CCD(access = {DefaultAccess.class, SystemUpdateAccess.class})
-    private Guardian localGuardian = new Guardian();
-
-    @CCD(
-        label = "Is the child represented by a solicitor?",
-        access = {SystemUpdateAccess.class}
-    )
-    private YesOrNo isChildRepresentedBySolicitor;
-
-    @CCD(
-        label = "Is the birth mother represented by a solicitor?",
-        access = {SystemUpdateAccess.class}
-    )
-    private YesOrNo isBirthMotherRepresentedBySolicitor;
-
     @JsonUnwrapped(prefix = "birthMother")
     @Builder.Default
     @CCD(access = {SystemUpdateAccess.class})
@@ -119,12 +93,6 @@ public class CaseData {
     @Builder.Default
     @CCD(access = {SystemUpdateAccess.class})
     private Parent birthFather = new Parent();
-
-    @CCD(
-        label = "Is the birth father represented by a solicitor?",
-        access = {SystemUpdateAccess.class}
-    )
-    private YesOrNo isBirthFatherRepresentedBySolicitor;
 
     @CCD(
         label = "Is there another person who has parental responsibility for the child?",
@@ -418,10 +386,6 @@ public class CaseData {
     )
     private YesOrNo findFamilyCourt;
 
-    @CCD(label = "Name of the judge",
-        access = {DefaultAccess.class})
-     private String allocatedJudge;
-
     @CCD(
         label = "Allocated court",
         access = {DefaultAccess.class}
@@ -506,44 +470,6 @@ public class CaseData {
         label = "Ways To Pay"
     )
     private WaysToPay waysToPay;
-
-    @CCD(
-        typeOverride = DynamicRadioList,
-        label = "Select a hearing you want to vacate\n"
-    )
-    private DynamicList hearingListThatCanBeVacated;
-
-    @CCD(
-        typeOverride = DynamicRadioList,
-        label = "Select a hearing you want to adjourn\n"
-    )
-    private DynamicList hearingListThatCanBeAdjourned;
-
-    @CCD(
-        typeOverride = DynamicRadioList,
-        label = "Who do you need to contact\n",
-        typeParameterOverride = "SeekFurtherInformationList"
-    )
-    private DynamicList seekFurtherInformationList;
-
-    @CCD(access = {DefaultAccess.class},
-        label = "List the documents you need",
-        typeOverride = TextArea)
-    private String askForAdditionalDocumentText;
-
-    @CCD(access = {DefaultAccess.class},
-        label = "List the questions you want to ask",
-        typeOverride = TextArea)
-    private String askAQuestionText;
-
-    @CCD(label = "When is the information needed by?",
-        access = {SystemUpdateAccess.class,
-            DefaultAccess.class}
-    )
-    private LocalDateTime seekInformationNeededDate;
-
-    @CCD
-    private Document seekFurtherInformationDocument;
 
     @CCD(
         access = {DefaultAccess.class},
