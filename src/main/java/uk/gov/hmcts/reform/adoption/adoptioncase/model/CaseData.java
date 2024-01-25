@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.Collection;
@@ -471,33 +469,9 @@ public class CaseData {
     )
     private WaysToPay waysToPay;
 
-    @CCD(
-        access = {DefaultAccess.class},
-        label = "Select the order you want to review"
-    )
-    private DynamicList checkAndSendOrderDropdownList;
-
-
-    @CCD(
-        label = "Reply a message\n"
-    )
-    private DynamicList replyMsgDynamicList;
-
 
     @CCD(access = {DefaultAccess.class})
     private String loggedInUserRole;
-
-    @CCD(
-        label = "Do you want to attach documents from this case?",
-        access = {SystemUpdateAccess.class, DefaultAccess.class}
-    )
-    private YesOrNo sendMessageAttachDocument;
-
-    @CCD(
-        access = {DefaultAccess.class},
-        label = "Select a document"
-    )
-    private DynamicList attachDocumentList;
 
 
     @CCD(
@@ -543,18 +517,6 @@ public class CaseData {
             access = { DefaultAccess.class}
     )
     private String dssHeaderDetails;
-
-    private String seekFurtherInformationDocumentSubmitterName;
-
-    private YesOrNo seekFurtherInformationAdopOrLaSelected;
-
-
-    public YesOrNo getIsApplicantRepresentedBySolicitor() {
-        if (Objects.isNull(isApplicantRepresentedBySolicitor)) {
-            return YesOrNo.NO;
-        }
-        return isApplicantRepresentedBySolicitor;
-    }
 
     @JsonIgnore
     public void addToCombinedDocumentsGenerated() {
