@@ -10,6 +10,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 import uk.gov.hmcts.reform.adoption.common.AddSystemUpdateRole;
 
@@ -33,6 +34,16 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+
+        /*
+            Below logic is to provide access to caseworker for all the available states.
+         */
+        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
+        configBuilder.grant(State.AwaitingPayment, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
+        configBuilder.grant(State.Submitted, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
+        configBuilder.grant(State.LaSubmitted, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
+
+
         var defaultRoles = new ArrayList<UserRole>();
         defaultRoles.add(CITIZEN);
 
