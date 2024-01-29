@@ -307,6 +307,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("messages")
             .label("labelSummary-CaseDetails", null, "### Case details")
             .field("typeOfAdoption")
+            .field("typeOfBestFood")
             .field("dateSubmitted")
             .field("timetable20Week")
             .field("dateChildMovedIn")
