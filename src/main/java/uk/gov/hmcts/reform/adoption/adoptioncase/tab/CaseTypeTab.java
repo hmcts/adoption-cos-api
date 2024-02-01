@@ -18,8 +18,8 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         buildSummaryTab(configBuilder);
-        //buildApplicantsTab(configBuilder);
-        //buildOtherPartiesTab(configBuilder);
+        buildApplicantsTab(configBuilder);
+        buildOtherPartiesTab(configBuilder);
         //buildDocumentsTab(configBuilder);
         //buildCorrespondence(configBuilder);
         //buildOrdersViewTab(configBuilder);
@@ -27,7 +27,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         //buildMessagesTab(configBuilder);
         //buildConfidentialTab(configBuilder);
         //buildNotes(configBuilder);
-        //buildServiceRequestTab(configBuilder);
+        buildServiceRequestTab(configBuilder);
     }
 
     private void buildMessagesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
