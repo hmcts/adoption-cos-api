@@ -18,16 +18,16 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         buildSummaryTab(configBuilder);
-        buildApplicantsTab(configBuilder);
-        buildOtherPartiesTab(configBuilder);
-        buildDocumentsTab(configBuilder);
-        buildCorrespondence(configBuilder);
-        buildOrdersViewTab(configBuilder);
-        buildHearingsTab(configBuilder);
-        buildMessagesTab(configBuilder);
-        buildConfidentialTab(configBuilder);
-        buildNotes(configBuilder);
-        buildServiceRequestTab(configBuilder);
+        //buildApplicantsTab(configBuilder);
+        //buildOtherPartiesTab(configBuilder);
+        //buildDocumentsTab(configBuilder);
+        //buildCorrespondence(configBuilder);
+        //buildOrdersViewTab(configBuilder);
+        //buildHearingsTab(configBuilder);
+        //buildMessagesTab(configBuilder);
+        //buildConfidentialTab(configBuilder);
+        //buildNotes(configBuilder);
+        //buildServiceRequestTab(configBuilder);
     }
 
     private void buildMessagesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -112,7 +112,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildTabWithRespondentDetails(tabBuilderForOtherParties);
     }
 
-    private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+    /*private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
         configBuilder.tab("hearings","Hearings")
             .displayOrder(6)
@@ -122,16 +122,16 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field(CaseData::getNewHearings)
             .field(CaseData::getAdjournHearings)
             .field(CaseData::getVacatedHearings);
-    }
+    }*/
 
-    private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+    /*private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("orders","Orders")
             .displayOrder(5)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-orderview", null, "[Create new order](/cases/case-details/${[CASE_REFERENCE]}"
                 + "/trigger/caseworker-manage-orders/caseworker-manage-ordersmanageOrders1)")
             .field(CaseData::getCommonOrderList);
-    }
+    }*/
 
     private void buildTabWithRespondentDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
         tabBuilderForOtherParties
@@ -304,8 +304,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("familyCourtName")
             .field("placementOrder")
             .field("placementOrders")
-            .field("siblings")
-            .field("allocatedJudge");
+            .field("siblings");
     }
 
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -359,10 +358,10 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field(CaseData::getCorrespondenceDocumentCategory);
     }
 
-    private void buildNotes(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+    /*private void buildNotes(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationNotes", "Notes")
             .displayOrder(7)
             .label("LabelNotes-Heading", null, "### Case Notes")
             .field(CaseData::getCaseNote);
-    }
+    }*/
 }

@@ -3,9 +3,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.common;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
-import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
-import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.MessageDocumentList;
@@ -16,18 +14,12 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
-import static uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseDataUtils.archiveListHelper;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_DEFAULT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_USER_JUDGE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SEND_N_REPLY_DATE_FORMAT;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.COMMA;
 
 public final class CaseEventCommonMethods {
     private CaseEventCommonMethods() {
@@ -84,20 +76,8 @@ public final class CaseEventCommonMethods {
 
     public static void prepareReplyMessageDynamicList(CaseData caseData, User caseworkerUser) {
         List<DynamicListElement> replyMessageList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages())) {
-            caseData.getListOfOpenMessages().forEach(item -> {
-                DynamicListElement orderInfo = DynamicListElement.builder()
-                    .label(item.getValue().getMessageSendDateNTime().format(
-                            DateTimeFormatter.ofPattern(
-                                SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
-                               .concat(getMessageReasonLabel(item.getValue()))).code(
-                        UUID.fromString(item.getValue().getMessageId())).build();
-                replyMessageList.add(orderInfo);
-            });
 
-        }
-        caseData.setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList)
-                                            .value(DynamicListElement.EMPTY).build());
+
         caseData.setLoggedInUserRole(caseworkerUser.getUserDetails().getRoles()
                                          .contains(UserRole.DISTRICT_JUDGE.getRole())
                                          ? SEND_N_REPLY_USER_JUDGE : SEND_N_REPLY_USER_DEFAULT);
@@ -113,48 +93,13 @@ public final class CaseEventCommonMethods {
     }
 
     public static void updateMessageList(CaseData caseData, User caseworkerUser) {
-        if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.SEND_A_MESSAGE)) {
-            MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
-            sendMessagesDetails.setMessageId(UUID.randomUUID().toString());
-            sendMessagesDetails.setMessageHistory(buildMessageHistory(
-                caseworkerUser,
-                sendMessagesDetails.getMessageText(),
-                sendMessagesDetails.getMessageHistory()
-            ));
-            buildDocumentHistory(caseData, sendMessagesDetails,sendMessagesDetails.getDocumentHistory());
-            setMessageInformation(caseData, sendMessagesDetails,caseworkerUser);
 
-        } else if (caseData.getMessageAction().equals(MessageSendDetails.MessagesAction.REPLY_A_MESSAGE)) {
-            MessageSendDetails sendMessagesDetails = caseData.getMessageSendDetails();
-            String activeMessageID = caseData.getReplyMsgDynamicList().getValueCode().toString();
-            ListValue<MessageSendDetails> messageListValue = getSelectedMessage(caseData, activeMessageID);
-            if (Objects.nonNull(messageListValue)) {
-                MessageSendDetails selectedMessage = messageListValue.getValue();
-                caseData.getListOfOpenMessages().remove(messageListValue);
-                if (YesOrNo.NO.equals(caseData.getSelectedMessage().getReplyMessage())) {
-                    selectedMessage.setMessageStatus(MessageSendDetails.MessageStatus.CLOSED);
-                    caseData.setClosedMessages(archiveListHelper(
-                        caseData.getClosedMessages(), selectedMessage));
-                } else {
-                    sendMessagesDetails.setMessageId(activeMessageID);
-                    sendMessagesDetails.setMessageHistory(
-                        buildMessageHistory(caseworkerUser, sendMessagesDetails.getMessageText(), selectedMessage.getMessageHistory()));
-                    buildDocumentHistory(caseData, sendMessagesDetails, selectedMessage.getDocumentHistory());
-                    setMessageInformation(caseData, sendMessagesDetails,caseworkerUser);
-                }
-            }
-        }
-        caseData.setMessageAction(null);
+
         caseData.setLoggedInUserRole(null);
     }
 
     private static ListValue<MessageSendDetails> getSelectedMessage(CaseData caseData, String activeMessageID) {
-        Optional<ListValue<MessageSendDetails>> selectedMessage = caseData.getListOfOpenMessages().stream()
-            .filter(item -> item.getValue().getMessageId().equalsIgnoreCase(
-            activeMessageID)).findFirst();
-        if (selectedMessage.isPresent()) {
-            return selectedMessage.get();
-        }
+
         return null;
     }
 
@@ -163,11 +108,6 @@ public final class CaseEventCommonMethods {
         sendMessagesDetails.setMessageStatus(MessageSendDetails.MessageStatus.OPEN);
         sendMessagesDetails.setMessageSendDateNTime(
             LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
-        caseData.setListOfOpenMessages(archiveListHelper(
-            caseData.getListOfOpenMessages(), sendMessagesDetails));
-        caseData.setMessageSendDetails(null);
-        caseData.setAttachDocumentList(null);
-        caseData.setSelectedMessage(null);
     }
 
     public static String buildMessageHistory(User caseworkerUser, String messageText, String messageHistory) {
@@ -184,18 +124,6 @@ public final class CaseEventCommonMethods {
 
     private static void buildDocumentHistory(CaseData caseData, MessageSendDetails sendMessagesDetails,
                                       List<ListValue<Document>> documentHistory) {
-        if (caseData.getAttachDocumentList() != null
-            && caseData.getAttachDocumentList().getValue() != null) {
 
-            Optional<MessageDocumentList> selectedDocument = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
-                .filter(item -> item.getMessageId().equalsIgnoreCase(caseData.getAttachDocumentList().getValue().getCode().toString()))
-                .findFirst();
-            if (selectedDocument.isPresent()) {
-                var doc = selectedDocument.get().getDocumentLink();
-                sendMessagesDetails.setSelectedDocument(doc);
-                sendMessagesDetails.setDocumentHistory(
-                    archiveListHelper(documentHistory, doc));
-            }
-        }
     }
 }

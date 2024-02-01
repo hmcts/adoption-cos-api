@@ -17,7 +17,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANT2;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.RESPONDENT_BIRTH_MOTHER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.RESPONDENT_BIRTH_FATHER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.LEGAL_GUARDIAN_CAFCASS;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILDS_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANTS_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_LOCAL_AUTHORITY;
@@ -30,7 +29,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstan
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BIRTH_MOTHER_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILDS_LA_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.FIRST_APPLICANT_NOT_APPLICABLE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.LEGAL_GUARDIAN_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOP_AGENCY_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_LA_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_PARENT_AGENCY_NOT_APPLICABLE;
@@ -82,9 +80,6 @@ public final class RecipientValidationUtil {
                 return isValidParentForTheCase(caseData.getBirthMother()) ? BIRTH_MOTHER_NOT_APPLICABLE : null;
             case RESPONDENT_BIRTH_FATHER:
                 return isValidParentForTheCase(caseData.getBirthFather()) ? BIRTH_FATHER_NOT_APPLICABLE : null;
-            case LEGAL_GUARDIAN_CAFCASS:
-                return isEmpty(caseData.getIsChildRepresentedByGuardian())
-                    || caseData.getIsChildRepresentedByGuardian().equals(YesOrNo.NO) ? LEGAL_GUARDIAN_NOT_APPLICABLE : null;
             case CHILDS_LOCAL_AUTHORITY:
                 return isEmpty(caseData.getChildSocialWorker().getLocalAuthority()) ? CHILDS_LA_NOT_APPLICABLE : null;
             default:
