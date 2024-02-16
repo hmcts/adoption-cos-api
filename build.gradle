@@ -304,8 +304,8 @@ dependencyManagement {
       entry 'snakeyaml'
     }
 
-    //CVE-2023-34034
-    dependency group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.10'
+    //CVE-2023-34034, CVE-2023-34042
+    dependency group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.11'
 
     //CVE-2023-34040
     dependency group: 'org.springframework.cloud', name: 'spring-cloud-openfeign-core', version: '3.1.8'
