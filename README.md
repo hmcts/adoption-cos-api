@@ -52,8 +52,7 @@ by executing the following command
 This will start the API container exposing the application's port
 (set to `4550` in this template app).
 
-The application exposes health endpoint (http://localhost:4550/health) and metrics endpoint
-(http://localhost:4550/metrics):
+The application exposes health endpoint (http://localhost:4550/health):
 
     curl http://localhost:4550/health
 
