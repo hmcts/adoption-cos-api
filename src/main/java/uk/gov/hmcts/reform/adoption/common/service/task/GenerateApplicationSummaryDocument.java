@@ -84,7 +84,8 @@ public class GenerateApplicationSummaryDocument implements CaseTask {
 
             CompletableFuture.allOf(appSummary).join();
 
-            log.info("Template - ADOPTION_APPLICATION_SUMMARY: {} Preferred Language: {} ", ADOPTION_APPLICATION_SUMMARY, caseData.getApplicant1().getLanguagePreference());
+            log.info("Template - ADOPTION_APPLICATION_SUMMARY: {} Preferred Language: {} ",
+                     ADOPTION_APPLICATION_SUMMARY, caseData.getApplicant1().getLanguagePreference());
 
 
         } else {
@@ -99,7 +100,8 @@ public class GenerateApplicationSummaryDocument implements CaseTask {
                                                              CaseDetails<CaseData, State> caseDetails,
                                                              LanguagePreference languagePreference) {
 
-        log.info("Generating AdoptionDocument - ADOPTION_APPLICATION_SUMMARY: {} Preferred Language: {} ", ADOPTION_APPLICATION_SUMMARY, languagePreference);
+        log.info("Generating AdoptionDocument - ADOPTION_APPLICATION_SUMMARY: {} Preferred Language: {} ",
+                 ADOPTION_APPLICATION_SUMMARY, languagePreference);
 
         return CompletableFuture
             .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(
