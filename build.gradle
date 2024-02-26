@@ -304,7 +304,7 @@ dependencyManagement {
       entry 'snakeyaml'
     }
 
-    //CVE-2023-34034
+    //CVE-2023-34034, CVE-2023-34042
     dependency group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.11'
 
     //CVE-2023-34040
