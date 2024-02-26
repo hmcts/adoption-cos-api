@@ -45,7 +45,6 @@ public class GenerateApplicationSummaryDocument implements CaseTask {
 
         @SuppressWarnings("unchecked")
         Map<String, Object> templateContent = objectMapper.convertValue(caseData, Map.class);
-
         if (caseData.getBirthMother() != null && caseData.getBirthMother().getNationality() != null) {
             templateContent.put("birthMotherNationality", caseData.getBirthMother().getNationality().stream()
                 .filter(item -> item != Nationality.OTHER).collect(
@@ -83,11 +82,6 @@ public class GenerateApplicationSummaryDocument implements CaseTask {
             );
 
             CompletableFuture.allOf(appSummary).join();
-
-            log.info("Template - ADOPTION_APPLICATION_SUMMARY: {} Preferred Language: {} ",
-                     ADOPTION_APPLICATION_SUMMARY, caseData.getApplicant1().getLanguagePreference());
-
-
         } else {
             log.error("Could not generate summary document for caseId: {}", caseId);
         }
@@ -99,10 +93,6 @@ public class GenerateApplicationSummaryDocument implements CaseTask {
                                                              Map<String, Object> templateContent,
                                                              CaseDetails<CaseData, State> caseDetails,
                                                              LanguagePreference languagePreference) {
-
-        log.info("Generating AdoptionDocument - ADOPTION_APPLICATION_SUMMARY: {} Preferred Language: {} ",
-                 ADOPTION_APPLICATION_SUMMARY, languagePreference);
-
         return CompletableFuture
             .runAsync(() -> caseDataDocumentService.renderDocumentAndUpdateCaseData(
                 caseData,
