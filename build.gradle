@@ -304,7 +304,7 @@ dependencyManagement {
       entry 'snakeyaml'
     }
 
-    //CVE-2023-34034, CVE-2023-34042
+    //CVE-2023-34034
     dependency group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.11'
 
     //CVE-2023-34040
@@ -357,7 +357,7 @@ dependencies {
 // uncomment for local version
 //implementation group: 'com.github.hmcts', name: 'ccd-config-generator', version: 'DEV-SNAPSHOT'
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.15'
-  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.21'
+  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.26.0'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.7.18'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: versions.springBoot
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
