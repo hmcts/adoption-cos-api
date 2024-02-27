@@ -376,10 +376,16 @@ public class CaseData {
     )
     private String typeOfAdoption;
 
+    @CCD(label = "Best Food Type",
+            access = {DefaultAccess.class}
+    )
+    private String typeOfBestFood;
+
     @CCD(label = "Status",
         access = {DefaultAccess.class}
     )
     private State status;
+
 
     @CCD(
         label = "Documents generated",
