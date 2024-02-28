@@ -52,8 +52,7 @@ by executing the following command
 This will start the API container exposing the application's port
 (set to `4550` in this template app).
 
-The application exposes health endpoint (http://localhost:4550/health) and metrics endpoint
-(http://localhost:4550/metrics):
+The application exposes health endpoint (http://localhost:4550/health):
 
     curl http://localhost:4550/health
 
@@ -64,11 +63,32 @@ You should get a response similar to this:
 
 ### Running the application locally with CCD and XUI
 
-If you would like to run the full CCD and XUI stack locally you can use:
+Preliminary steps:
+
+* Open file `/bin/generate-ccd-definition.sh` and amend:
+
+    `docker run --pull always --user $UID --rm --name json2xlsx \`
+
+    by removing "--user $UID" to:
+
+    `docker run --pull always --rm --name json2xlsx \`
+
+* Then build:
+
+    `./gradlew build`
+
+* Connect to F5 VPN:<br>
+  Go to the webpage https://portal.platform.hmcts.net/ and follow the instruction to connect to F5 VPN.
+
+* Then login to the subscription (you will need to get the subscription id from another dev):
+
+    `az acr login --name hmctspublic --subscription [SUBSCRIPTION ID]`
+
+You can now run the full CCD and XUI stack locally using:
 
     ./gradlew bootWithCcd
 
-Then you can access XUI on `http://localhost:3000`
+* Then you can access XUI on `http://localhost:3000`
 
 
 ### Generate CCD JSON files
