@@ -14,7 +14,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class AlertLaToSubmitApplicationToCourtTask implements Runnable {
+public class AlertToSubmitApplicationToCourtTask implements Runnable {
 
 
     @Autowired
