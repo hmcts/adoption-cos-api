@@ -1,29 +1,15 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-/* import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;*/
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.adoption.notification.DraftApplicationExpiringNotification;
 import uk.gov.hmcts.reform.adoption.systemupdate.CaseDetailsConverter;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-/* import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.idam.client.models.User;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.STATE;*/
 
 @Component
 @Slf4j
