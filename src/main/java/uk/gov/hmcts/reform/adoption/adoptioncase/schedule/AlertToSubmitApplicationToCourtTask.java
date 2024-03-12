@@ -72,7 +72,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
 
         for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
             log.info("case details are present: " + caseDetails.getId());
-//          sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
+            // sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
         }
 
     }
