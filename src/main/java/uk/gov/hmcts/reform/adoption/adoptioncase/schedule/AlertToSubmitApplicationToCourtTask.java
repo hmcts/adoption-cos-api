@@ -72,16 +72,25 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
 
         for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
             log.info("case details are present: " + caseDetails.getId());
-            // sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
+            sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
         }
 
     }
 
     private void sendLocalAuthorityAlertToSubmitToCourt(CaseDetails caseDetails) {
+        log.info(
+                "sendLocalAuthorityAlertToSubmitToCourt being called for case id: {}",
+                caseDetails.getId()
+        ); //NOSONAR test code to check CRON fires
 
-        uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData = caseDetailsConverter.convertToCaseDetailsFromReformModel(
-                caseDetails);
-        localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(caseData.getData(), caseDetails.getId());
+        // uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
+        //     caseDetailsConverter.convertToCaseDetailsFromReformModel(
+        //                caseDetails
+        //      );
+        // localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(
+        //     caseData.getData(),
+        //     caseDetails.getId()
+        //  );
 
     }
 
