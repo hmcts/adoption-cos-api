@@ -172,7 +172,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             sendgridService.sendEmail(caseData, subject, caseData.getApplicant1().getLanguagePreference()
                 .equals(LanguagePreference.ENGLISH) ? DocumentType.APPLICATION_SUMMARY_EN : DocumentType.APPLICATION_SUMMARY_CY);
         } catch (IOException e) {
-            log.error("Exception occurred in sendToLocalCourt method: {}", e);
+            log.error("Exception occurred in sendToLocalCourt method: {} for case id: {}", e.getMessage(), id);
         }
 
     }
@@ -258,7 +258,11 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
                 + caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName();
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         } catch (IOException e) {
-            log.error("Exception occurred in sendToLocalCourtPostLocalAuthoritySubmission method: {}", e);
+            log.error(
+                    "Exception occurred in sendToLocalCourtPostLocalAuthoritySubmission method: {} for case id: {}",
+                    e.getMessage(),
+                    id
+            );
         }
     }
 

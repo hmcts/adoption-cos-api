@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -19,7 +18,9 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DATE_SUBMI
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.HYPHENATED_REF;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.*;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.CHILD_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
 
 @Component
 @Slf4j
