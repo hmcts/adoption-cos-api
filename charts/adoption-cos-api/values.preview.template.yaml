@@ -75,7 +75,7 @@ ccd:
     ccdAdminWebIngress: admin-web-${SERVICE_FQDN}
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     postgresUsername: hmcts
-    postgresPassword: ''
+    postgresPassword: hmcts
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
   ccd-api-gateway-web:
@@ -164,7 +164,7 @@ ccd:
       userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
       userProfileDatabasePort: 5432
       userProfileDatabaseUser: hmcts
-      userProfileDatabasePassword: ''
+      userProfileDatabasePassword: hmcts
       userProfileDatabaseName: user-profile
 
   postgresql:
