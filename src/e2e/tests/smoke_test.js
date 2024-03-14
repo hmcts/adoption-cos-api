@@ -3,13 +3,12 @@ const config = require('../config');
 const laHelper = require('../helpers/la_portal_case');
 
 
-Feature('Create case @smoke-tests').retry(1);
+Feature('Create case @functional @fullFunctional @smoke-tests').retry(1);
 
-Scenario('Verify case created and able to search in ExUI @wip', async ({I,loginPage, caseListPage }) => {
-  console.log('Smoke test triggered now');
-  const caseID=await laHelper.createCompleteCase();
-  console.log('CCD Case number - '+ caseID);
+Scenario('Verify case created and able to search in ExUI', async ({I, caseListPage}) => {
+  console.log('Search case test triggered now');
   await I.signIn(config.caseWorkerUserOne);
-  await caseListPage.searchForCasesWithHypernisedId(caseID);
-  await caseListPage.seeCaseInSearchResult(caseID);
+  await caseListPage.searchForCasesWithHypernisedId();
+  await caseListPage.seeCaseInSearchResult();
+  await caseListPage.seeExpectedTabsOnTheCase();
 });
