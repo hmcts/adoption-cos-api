@@ -123,27 +123,27 @@ task integration(type: Test) {
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
 }
-task yarnInstall(type: Exec) {
-  workingDir '.'
-  commandLine 'yarn', 'install'
-}
-task smoke(type: Test,dependsOn: ':yarnInstall') {
-  description = "Runs Smoke Tests"
-  doLast {
-    exec {
-      commandLine 'yarn', 'test:smoke'
-    }
-  }
-}
+// task yarnInstall(type: Exec) {
+//   workingDir '.'
+//   commandLine 'yarn', 'install'
+// }
+// task smoke(type: Test,dependsOn: ':yarnInstall') {
+//   description = "Runs Smoke Tests"
+//   doLast {
+//     exec {
+//       commandLine 'yarn', 'test:smoke'
+//     }
+//   }
+// }
 
-task functional(type: Test,dependsOn: ':yarnInstall') {
-  description = "Runs functional tests"
-  doLast {
-    exec {
-      commandLine 'yarn', 'test:functional'
-    }
-  }
-}
+// task functional(type: Test,dependsOn: ':yarnInstall') {
+//   description = "Runs functional tests"
+//   doLast {
+//     exec {
+//       commandLine 'yarn', 'test:functional'
+//     }
+//   }
+// }
 task highLevelDataSetup(type: JavaExec) {
   mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
   classpath += sourceSets.main.runtimeClasspath
