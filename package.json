@@ -15,9 +15,9 @@
     "genCitizenEventNameConsts": "grep -rh \"public static final String\" ./src/main/java/uk/gov/hmcts/reform/adoption/citizen/event | sed \"s/    public static final String/export const/\" >> ./build/ts/index.ts",
     "genCommonEventNameConsts": "grep -rh \"public static final String\" ./src/main/java/uk/gov/hmcts/reform/adoption/common/event | sed \"s/    public static final String/export const/\" >> ./build/ts/index.ts",
     "genSystemEventNameConsts": "grep -rh \"public static final String\" ./src/main/java/uk/gov/hmcts/reform/adoption/systemupdate/event | sed \"s/    public static final String/export const/\" >> ./build/ts/index.ts",
-    "test:smoke": "yarn install && MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel  --grep \"@smoke\" --reporter mocha-multi",
-    "test:functional": "yarn install && MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel  --grep \"@functional\" --reporter mocha-multi",
-    "test:fullfunctional": "yarn install && MOCHAWESOME_REPORTFILENAME=fullFunctional codeceptjs run-multiple parallel  --grep \"@fullFunctional\" --reporter mocha-multi",
+    "test:smoke": "MOCHAWESOME_REPORTFILENAME=smoke codeceptjs run-multiple parallel --grep \"@smoke-tests\" --reporter mocha-multi",
+    "test:functional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel  --grep \"@functional\" --reporter mocha-multi",
+    "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=fullFunctional codeceptjs run-multiple parallel  --grep \"@fullFunctional\" --reporter mocha-multi",
     "test:crossbrowser-e2e": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep \"@cross-browser\" ${BROWSER_GROUP:-'--all'} -c saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
     "test:local": "codeceptjs run-multiple parallel"
