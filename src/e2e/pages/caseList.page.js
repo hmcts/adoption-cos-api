@@ -22,8 +22,7 @@ module.exports = {
     applicantsTab: '//div[contains(text(), "Applicants")]',
     opTab: '//div[contains(text(), "Other parties")]',
     docsTab: '//div[contains(text(), "Documents")]',
-    ordersTab: '//div[contains(text(), "Orders")]',
-    hearingsTab: '//div[contains(text(), "Hearings")]'
+    paymentsTab: '//div[contains(text(), "Payment")]',
   },
 
   navigate() {
@@ -70,7 +69,7 @@ module.exports = {
 
   async seeExpectedTabsOnTheCase() {
     eleVisible = [this.fields.historyTab, this.fields.summaryTab, this.fields.applicantsTab, this.fields.opTab,
-                  this.fields.docsTab, this.fields.ordersTab, this.fields.hearingsTab]
+                  this.fields.docsTab, this.fields.paymentsTab]
     eleVisible.forEach(async function(ele) {
       await I.seeElement(ele);
     });
