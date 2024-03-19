@@ -11,4 +11,5 @@ Scenario('Verify case created and able to search in ExUI', async ({I, caseListPa
   await caseListPage.searchForCasesWithHypernisedId();
   await caseListPage.seeCaseInSearchResult();
   await caseListPage.seeExpectedTabsOnTheCase();
+  
 });

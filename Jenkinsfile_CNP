@@ -269,10 +269,12 @@ withPipeline(type, product, component) {
 
   onPR() {
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+      env.ENVIRONMENT="preview"
     }
 
   onMaster() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+    env.ENVIRONMENT="aat"
   }
 
   before('functionalTest:preview') {
