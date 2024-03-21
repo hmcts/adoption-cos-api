@@ -78,7 +78,7 @@ def setCommonEnvVariables() {
 
 onMaster {
     env.ENVIRONMENT="aat"
-    env.CASE_API_URL="http://adoption-cos-api-aat.service.core-compute-aat.internal"
+    env.CASE_API_URL="https://manage-case.aat.platform.hmcts.net/"
     env.CCD_DEF_NAME="aat"
     env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
     env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
