@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
@@ -13,20 +12,15 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
-import java.time.Clock;
-
 /**
- * This class is used to define the Manage Case Event
- * This will enable the upload document functionality.
- * It will also would allow user to specify the Category of document
+ * This class was used to define the Manage Case Event
+ * It remains because EXUI needs at least one event (with permissions granted) so that FieldTypes of Label are
+ * included on the AuthorisationCaseField tab of the ccd-config Excel file.  EXUI-1308 raised for attention.
  */
 
 @Component
 @Slf4j
 public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, UserRole> {
-
-    @Autowired
-    private Clock clock;
 
     public static final String CASEWORKER_UPLOAD_DOCUMENT = "caseworker-manage-document";
     public static final String MANAGE_DOCUMENT = "Manage documents";
