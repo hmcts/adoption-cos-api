@@ -1,5 +1,6 @@
 const {I} = inject();
 const config = require('../config');
+let hyphanisedCaseId;
 
 module.exports = {
 
@@ -15,6 +16,13 @@ module.exports = {
     search: 'Apply',
     caseList: 'Case list',
     spinner: 'xuilib-loading-spinner',
+    firstCaseInCaseList: 'tr:nth-child(1) > td:nth-child(1) > a > ccd-field-read > div > ccd-field-read-label > div > ccd-read-text-field > span',
+    historyTab: '//div[contains(text(), "History")]',
+    summaryTab: '//div[contains(text(), "Summary")]',
+    applicantsTab: '//div[contains(text(), "Applicants")]',
+    opTab: '//div[contains(text(), "Other parties")]',
+    docsTab: '//div[contains(text(), "Documents")]',
+    paymentsTab: '//div[contains(text(), "Payment")]',
   },
 
   navigate() {
@@ -43,21 +51,30 @@ module.exports = {
     I.wait(5);
   },
 
-  searchForCasesWithHypernisedId(caseId, state = 'Any') {
-    const hyphanisedCaseId = caseId.replace(/(.{4})/g,"$1-").substring(0,19);
-    console.log('hyphanisedCaseId '+ hyphanisedCaseId);
+  async searchForCasesWithHypernisedId(state = 'Any') {
     this.setInitialSearchFields(state);
+    hyphanisedCaseId = await I.grabTextFrom(this.fields.firstCaseInCaseList);
     I.wait(5);
     I.fillField(this.fields.caseNumber, hyphanisedCaseId);
     I.grabCurrentUrl();
     I.click(this.fields.search);
     I.wait(5);
   },
-  seeCaseInSearchResult(caseId) {
-    I.waitForElement(`//a[contains(@href,'/cases/case-details/${caseId}')]`);
-    I.grabCurrentUrl();
-    I.seeElement(this.locateCase(caseId));
+
+  async seeCaseInSearchResult() {
+    await I.waitForElement(`//a[contains(@aria-label,'${hyphanisedCaseId}')]`);
+    await I.click(`//a[contains(@aria-label,'${hyphanisedCaseId}')]`);
+    await I.see(`#${hyphanisedCaseId}`);
   },
+
+  async seeExpectedTabsOnTheCase() {
+    eleVisible = [this.fields.historyTab, this.fields.summaryTab, this.fields.applicantsTab, this.fields.opTab,
+                  this.fields.docsTab, this.fields.paymentsTab]
+    eleVisible.forEach(async function(ele) {
+      await I.seeElement(ele);
+    });
+  },
+  
   searchForCasesWithUnhandledEvidences() {
     I.click(this.fields.evidenceNotHandled);
     I.click(this.fields.search);

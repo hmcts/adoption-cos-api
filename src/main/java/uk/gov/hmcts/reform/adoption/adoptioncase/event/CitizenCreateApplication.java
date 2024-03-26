@@ -33,6 +33,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+
         var defaultRoles = new ArrayList<UserRole>();
         defaultRoles.add(CITIZEN);
 
