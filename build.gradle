@@ -131,7 +131,7 @@ task smoke(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs Smoke Tests"
   doLast {
     exec {
-//      commandLine 'yarn', 'test:smoke'
+      commandLine 'yarn', 'test:smoke'
     }
   }
 }
