@@ -15,6 +15,7 @@ GradleBuilder builder = new GradleBuilder(this, product)
 static Map<String, Object> secret(String secretName, String envVariable) {
   [$class     : 'AzureKeyVaultSecret',
    secretType : 'Secret',
+   secretType : 'Secret',
    name       : secretName,
    envVariable: envVariable
   ]
@@ -286,7 +287,7 @@ withPipeline(type, product, component) {
 
   before('smoketest:preview') {
     println "Inside before smokeTest: preview"
-    uploadCoreCaseDataDefinitions()
+//    uploadCoreCaseDataDefinitions()
     env.CASE_API_URL = "https://xui-adoption-cos-api-pr-${CHANGE_ID}.preview.platform.hmcts.net/"
   }
 
