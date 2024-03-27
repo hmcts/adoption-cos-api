@@ -20,7 +20,7 @@ clientSecret=${OAUTH2_CLIENT_SECRET}
 redirectUri=http://localhost:3000/receiver
 #redirectUri=http://localhost:3000/oauth2/callback
 
-docker pull ghcr.io/jqlang/jq:1.7.1
+docker pull ghcr.io/jqlang/jq:latest
 
 if [ -z "$IDAM_STUB_LOCALHOST" ]; then
   code=$(curl --insecure --fail --show-error --silent -X POST --user "${username}:${password}" "${IDAM_URL}/oauth2/authorize?redirect_uri=${redirectUri}&response_type=code&client_id=${CLIENT_ID}" -d "" | docker run --rm --interactive jqlang/jq -r .code)

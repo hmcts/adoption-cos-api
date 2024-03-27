@@ -5,7 +5,7 @@ CCD_BASE_URL=http://ccd-data-store-api-aat.service.core-compute-aat.internal
 OAUTH2_CLIENT_SECRET=$(az keyvault secret show --vault-name adoption-aat -o tsv --query value --name idam-secret)
 REDIRECT_URI=http://localhost:3000/oauth2/callback
 
-docker pull ghcr.io/jqlang/jq:1.7.1
+docker pull ghcr.io/jqlang/jq:latest
 
 <<USERCONFIG
     Configure users in below format
