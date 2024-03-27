@@ -336,7 +336,7 @@ def versions = [
   springBoot        : springBoot.class.package.implementationVersion,
   springfoxSwagger  : '3.0.0',
   s2sClient         : '4.0.0',
-  pact              : '4.1.7',
+  pact              : '4.6.8',
   serenityCoreVersion: '3.0.2',
   ccdCaseDocumentAmClient      : '1.7.3'
 ]
