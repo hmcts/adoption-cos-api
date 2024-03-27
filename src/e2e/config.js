@@ -8,7 +8,7 @@ module.exports = {
     password: process.env.HMCTS_USER_PASSWORD,
   },
 
-  baseUrl: process.env.CASE_API_URL || 'https://manage-case.aat.platform.hmcts.net/',
+  baseUrl: process.env.CASE_API_URL || 'https://adoption-web-staging.service.core-compute-aat.internal/',
 
   definition: {
     jurisdiction: 'Adoption',

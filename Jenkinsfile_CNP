@@ -227,7 +227,7 @@ withPipeline(type, product, component) {
 
   onDemo {
     env.ENVIRONMENT="demo"
-    env.CASE_API_URL = "https://manage-case.demo.platform.hmcts.net/"
+    env.CASE_API_URL = "http://adoption-cos-api-demo.service.core-compute-demo.internal"
     env.CCD_DEF_NAME = "demo"
     env.IDAM_API_URL_BASE = "https://idam-api.demo.platform.hmcts.net"
     env.S2S_URL_BASE = "http://rpe-service-auth-provider-demo.service.core-compute-demo.internal"
@@ -237,7 +237,7 @@ withPipeline(type, product, component) {
 
   onPerftest {
     env.ENVIRONMENT="perftest"
-    env.CASE_API_URL = "https://manage-case.perftest.platform.hmcts.net/"
+    env.CASE_API_URL = "http://adoption-cos-api-perftest.service.core-compute-perftest.internal"
     env.CCD_DEF_NAME = "perftest"
     env.IDAM_API_URL_BASE = "https://idam-api.perftest.platform.hmcts.net"
     env.S2S_URL_BASE = "http://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal"
@@ -247,7 +247,7 @@ withPipeline(type, product, component) {
 
   onIthc {
     env.ENVIRONMENT="ithc"
-    env.CASE_API_URL = "https://manage-case.ithc.platform.hmcts.net/"
+    env.CASE_API_URL = "http://adoption-cos-api-ithc.service.core-compute-ithc.internal"
     env.CCD_DEF_NAME = "ithc"
     env.IDAM_API_URL_BASE = "https://idam-api.ithc.platform.hmcts.net"
     env.S2S_URL_BASE = "http://rpe-service-auth-provider-ithc.service.core-compute-ithc.internal"
@@ -269,12 +269,10 @@ withPipeline(type, product, component) {
 
   onPR() {
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
-      env.ENVIRONMENT="preview"
     }
 
   onMaster() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
-    env.ENVIRONMENT="aat"
   }
 
   before('functionalTest:preview') {
@@ -297,7 +295,7 @@ withPipeline(type, product, component) {
   }
 
   before('smoketest:aat') {
-    env.CASE_API_URL = "https://manage-case.aat.platform.hmcts.net/"
+    env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
   }
 
   afterAlways('smoketest:aat') {
@@ -306,7 +304,7 @@ withPipeline(type, product, component) {
 
   before('functionalTest:aat') {
     env.PARALLEL_CHUNKS = 5
-    env.CASE_API_URL = "https://manage-case.aat.platform.hmcts.net/"
+    env.CASE_API_URL = "https://xui-adoption-cos-api-staging.service.core-compute-aat.internal/"
   }
 
   afterAlways('functionalTest:aat') {
