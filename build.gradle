@@ -123,12 +123,10 @@ task integration(type: Test) {
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
 }
-
 task yarnInstall(type: Exec) {
   workingDir '.'
   commandLine 'yarn', 'install'
 }
-
 task smoke(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs Smoke Tests"
   doLast {
@@ -146,7 +144,6 @@ task functional(type: Test,dependsOn: ':yarnInstall') {
     }
   }
 }
-
 task highLevelDataSetup(type: JavaExec) {
   mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
   classpath += sourceSets.main.runtimeClasspath
@@ -507,7 +504,6 @@ functional {
     }
   }
 }
-
 
 generateTypeScript {
   jsonLibrary = 'jackson2'
