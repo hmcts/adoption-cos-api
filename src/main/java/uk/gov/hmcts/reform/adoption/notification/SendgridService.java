@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
@@ -110,6 +111,17 @@ public class SendgridService {
         } else {
             log.info("Document not found for CUI Docmosis");
         }
+    }
+
+    @Recover //TODO comment out to investigate unhandled exceptions
+    public void recover(Exception ex, CaseData caseData) {
+        String caseIdForLogging =
+            caseData.getHyphenatedCaseRef() != null ? caseData.getHyphenatedCaseRef().replace("-","") : null;
+        log.error("SendgridService.recover: Notification email to Local Court failed for case : {}",
+                  caseIdForLogging, ex);
+        //TODO: find out what happens with unhandled exceptions
+        //TODO: rethrow ex - if adoption has a way of handling unhandled exceptions and sending to monitoring this would be ideal
+        //throw ex;
     }
 
     private void attachUploadedDocuments(CaseData caseData, Attachments attachments,
