@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
@@ -20,7 +20,6 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -37,7 +36,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.STATE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class AlertDraftCaseApplicantBeforeDeletionTaskTest {
 
     @InjectMocks
@@ -89,11 +88,6 @@ class AlertDraftCaseApplicantBeforeDeletionTaskTest {
         final CaseDetails caseDetails1 = mock(CaseDetails.class);
         final CaseDetails caseDetails2 = mock(CaseDetails.class);
         final CaseDetails caseDetails3 = mock(CaseDetails.class);
-
-        when(caseDetails1.getCreatedDate()).thenReturn(LocalDateTime.now().minusDays(83));
-        when(caseDetails2.getCreatedDate()).thenReturn(LocalDateTime.now().minusDays(83));
-        when(caseDetails3.getCreatedDate()).thenReturn(LocalDateTime.now().minusDays(83));
-
         final List<CaseDetails> caseDetailsList = List.of(caseDetails1, caseDetails2, caseDetails3);
 
         when(ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, SERVICE_AUTHORIZATION))

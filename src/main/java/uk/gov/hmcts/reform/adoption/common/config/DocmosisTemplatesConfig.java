@@ -5,8 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import jakarta.validation.constraints.NotNull;
 
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
