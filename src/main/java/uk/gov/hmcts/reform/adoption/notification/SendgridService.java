@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -54,6 +56,7 @@ public class SendgridService {
     @Value("${send-grid.notify-from-email}")
     private String sendGridNotifyFromEmail;
 
+    @Retryable(backoff = @Backoff(delay = 10, maxDelay = 1000, multiplier = 10))
     public void sendEmail(CaseData caseData, String subject, DocumentType documentType) throws IOException {
         log.info("Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
         Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
