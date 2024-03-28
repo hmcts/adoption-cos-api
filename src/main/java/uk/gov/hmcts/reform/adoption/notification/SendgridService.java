@@ -88,6 +88,17 @@ public class SendgridService {
         }
     }
 
+    @Recover //TODO comment out to investigate unhandled exceptions
+    public void recover(Exception ex, CaseData caseData) {
+        String caseIdForLogging =
+            caseData.getHyphenatedCaseRef() != null ? caseData.getHyphenatedCaseRef().replace("-","") : null;
+        log.error("SendgridService.recover: Notification email to Local Court failed for case : {}",
+                  caseIdForLogging, ex);
+        //TODO: find out what happens with unhandled exceptions
+        //TODO: rethrow ex - if adoption has a way of handling unhandled exceptions and sending to monitoring this would be ideal
+        //throw ex;
+    }
+
     private void attachGeneratedDocuments(Attachments attachments, Mail mail, AdoptionDocument adoptionDocument,
                                           String authorisation, String serviceAuthorization) {
         if (adoptionDocument != null) {
@@ -113,33 +124,23 @@ public class SendgridService {
         }
     }
 
-    @Recover //TODO comment out to investigate unhandled exceptions
-    public void recover(Exception ex, CaseData caseData) {
-        String caseIdForLogging =
-            caseData.getHyphenatedCaseRef() != null ? caseData.getHyphenatedCaseRef().replace("-","") : null;
-        log.error("SendgridService.recover: Notification email to Local Court failed for case : {}",
-                  caseIdForLogging, ex);
-        //TODO: find out what happens with unhandled exceptions
-        //TODO: rethrow ex - if adoption has a way of handling unhandled exceptions and sending to monitoring this would be ideal
-        //throw ex;
-    }
-
     private void attachUploadedDocuments(CaseData caseData, Attachments attachments,
                                          Mail mail, String authorisation, String serviceAuthorization) {
         if (caseData.getLaDocumentsUploaded() != null) {
             caseData.getLaDocumentsUploaded().stream().map(ListValue::getValue)
-                .forEach(item -> fetchAndAttachDoc(item, attachments, mail, authorisation, serviceAuthorization));
+                .forEach(item -> fetchAndAttachDoc(item, attachments, mail, authorisation, serviceAuthorization, "TODO update"));
         }
     }
 
     private void fetchAndAttachDoc(AdoptionDocument item, Attachments attachments,
-                                   Mail mail, String authorisation, String serviceAuthorization) {
+                                   Mail mail, String authorisation, String serviceAuthorization, final String caseIdForLogging) {
         String documentId = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
-        log.info("documentId: {}", documentId);
-        log.info("About to call getDocumentBinary method to fetch uploaded document(s) binary");
+        log.info("SendgridService.fetchAndAttachDoc: documentId: {} starting for case : {}", documentId, caseIdForLogging);
+        log.info("SendgridService.fetchAndAttachDoc: About to call getDocumentBinary method "
+                     + "to fetch uploaded document(s) binary for case : {}", caseIdForLogging);
         ResponseEntity<Resource> resource =  caseDocumentClient.getDocumentBinary(
             authorisation, serviceAuthorization, UUID.fromString(documentId));
-        log.info("After calling caseDocumentClient "
+        log.info("SendgridService.fetchAndAttachDoc: After calling caseDocumentClient "
                      + "service with status code {}:", resource.getStatusCode());
         Resource uploadedDocument = resource.getBody();
         if (uploadedDocument != null) {
@@ -148,15 +149,17 @@ public class SendgridService {
                 byte[] documentContents = inputStream.readAllBytes();
                 data = Base64.getEncoder().encodeToString(documentContents);
             } catch (Exception e) {
-                log.error("Document could not be read {}", e);
+                log.error("SendgridService.fetchAndAttachDoc: Document could not be read for case : {}", caseIdForLogging, e);
             }
 
             attachments.setContent(data);
             attachments.setFilename(item.getDocumentFileName());
             attachments.setDisposition(LOCAL_COURT_EMAIL_SENDGRID_DISPOSITION_ATTACHMENT);
             mail.addAttachments(attachments);
+            log.info("SendgridService.fetchAndAttachDoc:  Document attached successfully for case : {}", caseIdForLogging);
         } else {
-            log.info("Document not found with uuid : {}", UUID.fromString(item.getDocumentFileId()));
+            log.info("SendgridService.fetchAndAttachDoc: Document not found with uuid : {} for case : {}",
+                     UUID.fromString(item.getDocumentFileId()), caseIdForLogging);
         }
     }
 }
