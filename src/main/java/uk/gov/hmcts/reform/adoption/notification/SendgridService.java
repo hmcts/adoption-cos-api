@@ -93,7 +93,9 @@ public class SendgridService {
             sg.api(request);
             log.info("SendgridService.sendEmail: Notification email to Local Court sent successfully for case : {}", caseIdForLogging);
         } catch (IOException ex) {
-            log.error("Notification email to Local Court failed {}",ex);
+            log.error("SendgridService.sendEmail: Notification email request attempt to Local Court failed for case : {}",
+                      caseIdForLogging,ex);
+            throw ex;
         }
     }
 
