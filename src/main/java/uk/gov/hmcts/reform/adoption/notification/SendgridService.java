@@ -94,8 +94,8 @@ public class SendgridService {
             log.info("SendgridService.sendEmail: Notification email to Local Court sent successfully for case : {}", caseIdForLogging);
 
             //TODO for testing @Retryable: REMOVE
-            int i = 0;
-            int notGoingToHappen = 12 / i;
+            int zero = 0;
+            int notGoingToHappen = 12 / zero;
             log.info("This should have thrown an ArithmeticException: " + notGoingToHappen);
         } catch (IOException ex) {
             log.error("SendgridService.sendEmail: Notification email request attempt to Local Court failed for case : {}",
