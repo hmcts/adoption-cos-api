@@ -275,4 +275,11 @@ class SendGridServiceTest {
             sendgridService.recover(new IOException(), caseData);
         });
     }
+
+    @Test
+    void removeThisTest_exceptionCauser() { //TODO remove
+        Assertions.assertThrows(ArithmeticException.class, () -> {
+            sendgridService.exceptionCauser();
+        });
+    }
 }
