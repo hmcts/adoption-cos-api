@@ -99,9 +99,13 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-        Assertions.assertDoesNotThrow(() -> {
+        //        Assertions.assertDoesNotThrow(() -> {
+        //            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //        });
+        Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        });
+        });  //TODO revert following testing in preview
+
         verify(caseDocumentClient, times(2)).getDocumentBinary(anyString(), anyString(),any());
     }
 
@@ -136,9 +140,13 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-        Assertions.assertDoesNotThrow(() -> {
+        //        Assertions.assertDoesNotThrow(() -> {
+        //            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //        });
+        Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        });
+        });  //TODO revert following testing in preview
+
         verify(caseDocumentClient, times(1)).getDocumentBinary(anyString(), anyString(),any());
     }
 
@@ -179,9 +187,12 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-        Assertions.assertDoesNotThrow(() -> {
+        //        Assertions.assertDoesNotThrow(() -> {
+        //            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //        });
+        Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        });
+        });  //TODO revert following testing in preview
     }
 
     @Test
@@ -223,14 +234,17 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-        Assertions.assertDoesNotThrow(() -> {
+        //        Assertions.assertDoesNotThrow(() -> {
+        //            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //        });
+        Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        });
+        });  //TODO revert following testing in preview
     }
 
     @Test
     void recover_doesNotThrow_whenCaseIdNull() {
-        //String caseId = "1234-1234-1234-1234";
+        //String caseId = "1234-1234-1234-1234";  //TODO remove, improve test?
         String caseId = null;
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
