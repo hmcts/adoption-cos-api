@@ -59,22 +59,31 @@ public class SendgridService {
 
     @Retryable(backoff = @Backoff(delay = 10, maxDelay = 1000, multiplier = 10))
     public void sendEmail(CaseData caseData, String subject, DocumentType documentType) throws IOException {
-        log.info("Inside sendEmail method of SendGrid class for case : {}", caseData.getHyphenatedCaseRef());
-        Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
+        String caseIdForLogging =
+            caseData.getHyphenatedCaseRef() != null ? caseData.getHyphenatedCaseRef().replace("-","") : null;
 
-        log.info("Sendgrid email to be sent to court address: {} ",caseData.getFamilyCourtEmailId());
+        log.info("SendgridService.sendEmail: Starting for case : {}", caseIdForLogging);
+
+        Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
+        log.info("SendgridService.sendEmail: Sendgrid email for case : {} to be sent to court address: {} ",
+                 caseIdForLogging, caseData.getFamilyCourtEmailId());
+
         Mail mail = new Mail(new Email(sendGridNotifyFromEmail), subject, new Email(caseData.getFamilyCourtEmailId()), content);
+
         AdoptionDocument adoptionDocument = caseData.getDocumentsGenerated().stream().map(ListValue::getValue)
             .filter(item -> item.getDocumentType().equals(documentType))
             .findFirst().orElse(null);
+
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
         String serviceAuthorization = authTokenGenerator.generate();
-        log.info("About to call getDocumentBinary method to fetch document binary");
+
+        log.info("SendgridService.sendEmail: About to call getDocumentBinary method to fetch document binary for case : {}",
+                 caseIdForLogging);
         Attachments attachments = new Attachments();
         attachGeneratedDocuments(attachments, mail, adoptionDocument, authorisation, serviceAuthorization);
         attachUploadedDocuments(caseData, attachments, mail, authorisation, serviceAuthorization);
 
-        log.info("before sending email for case : {}", caseData.getHyphenatedCaseRef());
+        log.info("SendgridService.sendEmail: About to send email for case : {}", caseIdForLogging);
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
         try {
@@ -82,7 +91,7 @@ public class SendgridService {
             request.setEndpoint(LOCAL_COURT_EMAIL_SENDGRID_ENDPOINT);
             request.setBody(mail.build());
             sg.api(request);
-            log.info("Notification email to Local Court sent successfully");
+            log.info("SendgridService.sendEmail: Notification email to Local Court sent successfully for case : {}", caseIdForLogging);
         } catch (IOException ex) {
             log.error("Notification email to Local Court failed {}",ex);
         }

@@ -207,4 +207,37 @@ class SendGridServiceTest {
             sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
     }
+
+    @Test
+    void recover_doesNotThrow() {
+        String caseId = "1234-1234-1234-1234";
+        CaseData caseData = caseData();
+        caseData.setHyphenatedCaseRef(caseId);
+
+        //extract into method in TestDataHelper? Pass caseData it should be added to?
+        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
+        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
+        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocumentDocmosis);
+        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
+        listAdoptionDocument.add(listValue);
+        caseData.setDocumentsGenerated(listAdoptionDocument);
+
+        //extract into another method in TestDataHelper? Pass caseData it should be added to?
+        Document document = new Document();
+        document.setFilename("TEST_FILE_NAME");
+        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
+        AdoptionDocument laUploadedDocument = new AdoptionDocument();
+        laUploadedDocument.setDocumentLink(document);
+        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
+        documentListValue.setValue(laUploadedDocument);
+        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
+        laUploadedDocumentList.add(documentListValue);
+        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+
+        Assertions.assertDoesNotThrow(() -> {
+            sendgridService.recover(new IOException(), caseData);
+        });
+    }
 }
