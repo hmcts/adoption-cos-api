@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
