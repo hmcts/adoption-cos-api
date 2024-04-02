@@ -84,7 +84,7 @@ public class SendgridService {
         attachUploadedDocuments(caseData, attachments, mail, authorisation, serviceAuthorization, caseIdForLogging);
 
         log.info("SendgridService.sendEmail: About to send email for case : {}", caseIdForLogging);
-        SendGrid sg = new SendGrid(apiKey);
+        SendGrid sg = getSendGrid(caseIdForLogging);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
@@ -176,6 +176,17 @@ public class SendgridService {
             log.info("SendgridService.fetchAndAttachDoc: Document not found with uuid : {} for case : {}",
                      UUID.fromString(item.getDocumentFileId()), caseIdForLogging);
         }
+    }
+
+    SendGrid getSendGrid(final String caseIdForLogging) {
+        SendGrid sendGrid = null;
+        try {
+            sendGrid = new SendGrid(apiKey);
+        } catch (Exception ex) {
+            log.error("ApplicationSubmittedNotification.getSendGrid: SendGrid instantiation failed for case : {} ",
+                      caseIdForLogging, ex);
+        }
+        return sendGrid;
     }
 
 }
