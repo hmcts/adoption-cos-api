@@ -80,8 +80,8 @@ public class SendgridService {
         log.info("SendgridService.sendEmail: About to call getDocumentBinary method to fetch document binary for case : {}",
                  caseIdForLogging);
         Attachments attachments = new Attachments();
-        attachGeneratedDocuments(attachments, mail, adoptionDocument, authorisation, serviceAuthorization);
-        attachUploadedDocuments(caseData, attachments, mail, authorisation, serviceAuthorization);
+        attachGeneratedDocuments(attachments, mail, adoptionDocument, authorisation, serviceAuthorization, caseIdForLogging);
+        attachUploadedDocuments(caseData, attachments, mail, authorisation, serviceAuthorization, caseIdForLogging);
 
         log.info("SendgridService.sendEmail: About to send email for case : {}", caseIdForLogging);
         SendGrid sg = new SendGrid(apiKey);
@@ -109,36 +109,42 @@ public class SendgridService {
     }
 
     private void attachGeneratedDocuments(Attachments attachments, Mail mail, AdoptionDocument adoptionDocument,
-                                          String authorisation, String serviceAuthorization) {
+                                          String authorisation, String serviceAuthorization, final String caseIdForLogging) {
+        log.info("SendgridService.attachGeneratedDocuments: Starting for case : {}", caseIdForLogging);
         if (adoptionDocument != null) {
             Resource document = caseDocumentClient.getDocumentBinary(
                 authorisation,
                 serviceAuthorization,
                 UUID.fromString(adoptionDocument.getDocumentFileId())).getBody();
-            log.info("call to getDocumentBinary method successful");
+            log.info("SendgridService.attachGeneratedDocuments: call to getDocumentBinary method successful for case : {}",
+                     caseIdForLogging);
             String data = null;
             try (InputStream inputStream = document.getInputStream()) {
                 byte[] documentContents = inputStream.readAllBytes();
                 data = Base64.getEncoder().encodeToString(documentContents);
             } catch (Exception e) {
-                log.error("Document could not be read {}", e);
+                log.error("SendgridService.attachGeneratedDocuments: DocumentId {} could not be read for case {}",
+                          adoptionDocument.getDocumentFileId(), caseIdForLogging, e);
             }
             attachments.setContent(data);
             attachments.setFilename(adoptionDocument.getDocumentFileName());
             attachments.setType(LOCAL_COURT_EMAIL_SENDGRID_ATTACHMENT_MIME_TYPE);
             attachments.setDisposition(LOCAL_COURT_EMAIL_SENDGRID_DISPOSITION_ATTACHMENT);
             mail.addAttachments(attachments);
+            log.info("SendgridService.attachGeneratedDocuments: Document attached successfully for case : {}", caseIdForLogging);
         } else {
-            log.info("Document not found for CUI Docmosis");
+            log.info("SendgridService.attachGeneratedDocuments: Document not found for CUI Docmosis for case : {}", caseIdForLogging);
         }
     }
 
-    private void attachUploadedDocuments(CaseData caseData, Attachments attachments,
-                                         Mail mail, String authorisation, String serviceAuthorization) {
+    private void attachUploadedDocuments(CaseData caseData, Attachments attachments, Mail mail,
+                                         String authorisation, String serviceAuthorization, final String caseIdForLogging) {
+        log.info("SendgridService.attachUploadedDocuments: Starting for case : {}", caseIdForLogging);
         if (caseData.getLaDocumentsUploaded() != null) {
             caseData.getLaDocumentsUploaded().stream().map(ListValue::getValue)
-                .forEach(item -> fetchAndAttachDoc(item, attachments, mail, authorisation, serviceAuthorization, "TODO update"));
+                .forEach(item -> fetchAndAttachDoc(item, attachments, mail, authorisation, serviceAuthorization, caseIdForLogging));
         }
+        log.info("SendgridService.attachUploadedDocuments: Finished for case : {}", caseIdForLogging);
     }
 
     private void fetchAndAttachDoc(AdoptionDocument item, Attachments attachments,
@@ -171,4 +177,5 @@ public class SendgridService {
                      UUID.fromString(item.getDocumentFileId()), caseIdForLogging);
         }
     }
+
 }
