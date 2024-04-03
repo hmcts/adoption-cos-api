@@ -57,7 +57,7 @@ public class SendgridService {
     @Value("${send-grid.notify-from-email}")
     private String sendGridNotifyFromEmail;
 
-    @Retryable(backoff = @Backoff(delay = 10, maxDelay = 1200, multiplier = 10))
+    @Retryable(backoff = @Backoff(delay = 300, maxDelay = 900, multiplier = 3))
     public void sendEmail(CaseData caseData, String subject, DocumentType documentType) throws IOException {
         String caseIdForLogging =
             caseData.getHyphenatedCaseRef() != null ? caseData.getHyphenatedCaseRef().replace("-","") : null;
