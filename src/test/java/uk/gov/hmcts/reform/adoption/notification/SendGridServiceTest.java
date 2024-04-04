@@ -4,7 +4,6 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import org.apache.commons.lang.StringUtils;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -70,9 +69,12 @@ class SendGridServiceTest {
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
         String caseIdForLogging = "1234123412341234";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
@@ -81,15 +83,15 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-//                Assertions.assertDoesNotThrow(() -> {
-//                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-//                });
+        //                Assertions.assertDoesNotThrow(() -> {
+        //                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //                });
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
         verify(sendgridService, times(1)).exceptionCauser();
 
-        verify(caseDocumentClient, times(2)).getDocumentBinary(anyString(), anyString(),any());
+        verify(caseDocumentClient, times(2)).getDocumentBinary(anyString(), anyString(), any());
     }
 
     @Test
@@ -103,9 +105,12 @@ class SendGridServiceTest {
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
         when(sendgridService.getSendGrid(anyString())).thenReturn(sendGrid);
         Response response = new Response();
@@ -113,14 +118,14 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-//                Assertions.assertDoesNotThrow(() -> {
-//                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-//                });
+        //                Assertions.assertDoesNotThrow(() -> {
+        //                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //                });
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
 
-        verify(caseDocumentClient, times(1)).getDocumentBinary(anyString(), anyString(),any());
+        verify(caseDocumentClient, times(1)).getDocumentBinary(anyString(), anyString(), any());
     }
 
     @Test
@@ -131,9 +136,16 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
+        when(caseDocumentClient.getDocumentBinary(
+            anyString(),
+            anyString(),
+            any()
+        )).thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
 
         String caseIdForLogging = "1234123412341234";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
@@ -142,9 +154,9 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-//                Assertions.assertDoesNotThrow(() -> {
-//                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-//                });
+        //                Assertions.assertDoesNotThrow(() -> {
+        //                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //                });
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
@@ -160,9 +172,12 @@ class SendGridServiceTest {
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
         ReflectionTestUtils.setField(resource.getBody(), "byteArray", null);
 
         String caseIdForLogging = "1234123412341234";
@@ -172,9 +187,9 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-//                Assertions.assertDoesNotThrow(() -> {
-//                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-//                });
+        //                Assertions.assertDoesNotThrow(() -> {
+        //                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //                });
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
@@ -203,9 +218,12 @@ class SendGridServiceTest {
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
         String caseIdForLogging = "1234123412341234";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
@@ -228,9 +246,12 @@ class SendGridServiceTest {
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
         String caseIdForLogging = "1234123412341234";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
