@@ -4,6 +4,7 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,28 +65,8 @@ class SendGridServiceTest {
         String caseId = "1234-1234-1234-1234";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
-
-        //extract into method in TestDataHelper? Pass caseData it should be added to?
-        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
-        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
-        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocumentDocmosis);
-        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
-        listAdoptionDocument.add(listValue);
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-
-        //extract into another method in TestDataHelper? Pass caseData it should be added to?
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        laUploadedDocument.setDocumentLink(document);
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
@@ -100,9 +81,9 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-        //        Assertions.assertDoesNotThrow(() -> {
-        //            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        //        });
+//                Assertions.assertDoesNotThrow(() -> {
+//                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+//                });
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
@@ -116,19 +97,9 @@ class SendGridServiceTest {
         String caseId = "1234-1234-1234-1234";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
         caseData.setDocumentsGenerated(new ArrayList<>());
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        laUploadedDocument.setDocumentFileId(UUID.randomUUID().toString());
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        laUploadedDocument.setDocumentLink(document);
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
@@ -142,9 +113,9 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-        //        Assertions.assertDoesNotThrow(() -> {
-        //            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        //        });
+//                Assertions.assertDoesNotThrow(() -> {
+//                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+//                });
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
@@ -157,26 +128,8 @@ class SendGridServiceTest {
         String caseId = "1234-1234-1234-1234";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
-
-        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
-        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
-        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<AdoptionDocument>();
-        listValue.setValue(adoptionDocumentDocmosis);
-        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
-        listAdoptionDocument.add(listValue);
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        laUploadedDocument.setDocumentLink(document);
-        laUploadedDocument.setDocumentFileId(UUID.randomUUID().toString());
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
@@ -189,9 +142,9 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-        //        Assertions.assertDoesNotThrow(() -> {
-        //            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        //        });
+//                Assertions.assertDoesNotThrow(() -> {
+//                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+//                });
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
@@ -202,25 +155,8 @@ class SendGridServiceTest {
         String caseId = "1234-1234-1234-1234";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
-
-        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
-        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
-        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<AdoptionDocument>();
-        listValue.setValue(adoptionDocumentDocmosis);
-        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
-        listAdoptionDocument.add(listValue);
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        laUploadedDocument.setDocumentLink(document);
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
@@ -236,9 +172,9 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
-        //        Assertions.assertDoesNotThrow(() -> {
-        //            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        //        });
+//                Assertions.assertDoesNotThrow(() -> {
+//                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+//                });
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
@@ -247,31 +183,10 @@ class SendGridServiceTest {
     @Test
     void recover_doesNotThrow_whenCaseIdNull() {
         //String caseId = "1234-1234-1234-1234";  //TODO remove, improve test?
-        String caseId = null;
         CaseData caseData = caseData();
-        caseData.setHyphenatedCaseRef(caseId);
-
-        //extract into method in TestDataHelper? Pass caseData it should be added to?
-        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
-        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
-        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocumentDocmosis);
-        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
-        listAdoptionDocument.add(listValue);
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-
-        //extract into another method in TestDataHelper? Pass caseData it should be added to?
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        laUploadedDocument.setDocumentLink(document);
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setHyphenatedCaseRef(null);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
         Assertions.assertDoesNotThrow(() -> {
             sendgridService.recover(new IOException(), caseData);
@@ -283,28 +198,8 @@ class SendGridServiceTest {
         String caseId = "1234-1234-1234-1234";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
-
-        //extract into method in TestDataHelper? Pass caseData it should be added to?
-        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
-        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
-        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocumentDocmosis);
-        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
-        listAdoptionDocument.add(listValue);
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-
-        //extract into another method in TestDataHelper? Pass caseData it should be added to?
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        laUploadedDocument.setDocumentLink(document);
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
@@ -328,28 +223,8 @@ class SendGridServiceTest {
         String caseId = "1234-1234-1234-1234";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
-
-        //extract into method in TestDataHelper? Pass caseData it should be added to?
-        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
-        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
-        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocumentDocmosis);
-        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
-        listAdoptionDocument.add(listValue);
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-
-        //extract into another method in TestDataHelper? Pass caseData it should be added to?
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        laUploadedDocument.setDocumentLink(document);
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
         ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
@@ -368,5 +243,33 @@ class SendGridServiceTest {
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
+    }
+
+    private List<ListValue<AdoptionDocument>> getDocumentsGenerated() {
+        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
+        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
+        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocumentDocmosis);
+        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
+        listAdoptionDocument.add(listValue);
+        return listAdoptionDocument;
+    }
+
+    private List<ListValue<AdoptionDocument>> getLaDocumentsUploaded() {
+        Document document = new Document();
+        document.setFilename("TEST_FILE_NAME");
+        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
+
+        AdoptionDocument laUploadedDocument = new AdoptionDocument();
+        laUploadedDocument.setDocumentFileId(UUID.randomUUID().toString());
+        laUploadedDocument.setDocumentLink(document);
+
+        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
+        documentListValue.setValue(laUploadedDocument);
+
+        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
+        laUploadedDocumentList.add(documentListValue);
+        return laUploadedDocumentList;
     }
 }
