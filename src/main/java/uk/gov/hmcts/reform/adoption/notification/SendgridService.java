@@ -59,9 +59,8 @@ public class SendgridService {
 
     @Retryable(backoff = @Backoff(delay = 300, maxDelay = 900, multiplier = 3))
     public void sendEmail(CaseData caseData, String subject, DocumentType documentType) throws IOException {
-        String caseIdForLogging =
-            caseData.getHyphenatedCaseRef() != null ? caseData.getHyphenatedCaseRef().replace("-", "") : null;
 
+        String caseIdForLogging = getCaseIdForLogging(caseData.getHyphenatedCaseRef());
         log.info("SendgridService.sendEmail: Starting for case : {}", caseIdForLogging);
 
         Content content = new Content(LOCAL_COURT_EMAIL_SENDGRID_CONTENT_TYPE, LOCAL_COURT_EMAIL_SENDGRID_CONTENT_BODY);
@@ -123,13 +122,9 @@ public class SendgridService {
 
     @Recover
     public void recover(Exception ex, CaseData caseData) throws Exception {
-        String caseIdForLogging =
-            caseData.getHyphenatedCaseRef() != null ? caseData.getHyphenatedCaseRef().replace("-", "") : null;
-        log.error("SendgridService.recover: Notification email to Local Court failed for case : {}",
+        String caseIdForLogging = getCaseIdForLogging(caseData.getHyphenatedCaseRef());
+        log.error("SendgridService.recover: Notification email to Local Court failed for case : {} with message {}",
                   caseIdForLogging, ex.getMessage());
-        //TODO: find out what happens with unhandled exceptions
-        //TODO: rethrow ex - if adoption has a way of handling unhandled exceptions and sending to monitoring this would be ideal
-        throw ex;
     }
 
     private void attachGeneratedDocuments(Attachments attachments, Mail mail, AdoptionDocument adoptionDocument,
@@ -241,6 +236,10 @@ public class SendgridService {
             );
         }
         return sendGrid;
+    }
+
+    private String getCaseIdForLogging(String hyphenatedCaseRef) {
+        return hyphenatedCaseRef != null ? hyphenatedCaseRef.replace("-", "") : null;
     }
 
 }

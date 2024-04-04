@@ -203,10 +203,7 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        //        Assertions.assertDoesNotThrow(() -> {
-        //            sendgridService.recover(new IOException(), caseData);
-        //        }); //TODO revert when preview testing finished
-        Assertions.assertThrows(IOException.class, () -> {
+        Assertions.assertDoesNotThrow(() -> {
             sendgridService.recover(new IOException(), caseData);
         });
     }
