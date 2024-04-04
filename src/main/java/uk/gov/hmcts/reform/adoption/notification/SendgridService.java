@@ -121,10 +121,10 @@ public class SendgridService {
     }
 
     @Recover
-    public void recover(Exception ex, CaseData caseData) throws Exception {
+    public void recover(Exception ex, CaseData caseData) {
         String caseIdForLogging = getCaseIdForLogging(caseData.getHyphenatedCaseRef());
-        log.error("SendgridService.recover: Notification email to Local Court failed for case : {} with message {}",
-                  caseIdForLogging, ex.getMessage());
+        log.error("SendgridService.recover: Notification email to Local Court failed for case : {}",
+                  caseIdForLogging, ex);
     }
 
     private void attachGeneratedDocuments(Attachments attachments, Mail mail, AdoptionDocument adoptionDocument,
