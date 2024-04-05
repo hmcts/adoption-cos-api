@@ -112,7 +112,7 @@ public class SendgridService {
             );
 
             //TODO for testing @Retryable: REMOVE
-            exceptionCauser();
+            //exceptionCauser();
         } catch (IOException ex) {
             log.info(
                 "SendgridService.sendEmail: {} ({}) when trying to send email for case : {}",
@@ -152,6 +152,7 @@ public class SendgridService {
             try (InputStream inputStream = document.getInputStream()) {
                 byte[] documentContents = inputStream.readAllBytes();
                 data = Base64.getEncoder().encodeToString(documentContents);
+                exceptionCauser(); //TODO remove after preview testing
             } catch (Exception e) {
                 log.error("SendgridService.attachGeneratedDocuments: DocumentId {} could not be read for case {}",
                           adoptionDocument.getDocumentFileId(), caseIdForLogging, e
