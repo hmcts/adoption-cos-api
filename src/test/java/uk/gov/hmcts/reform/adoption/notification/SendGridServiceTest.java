@@ -67,7 +67,7 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+        ResponseEntity<Resource> resource = new ResponseEntity<>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
             StringUtils.EMPTY,
@@ -103,7 +103,7 @@ class SendGridServiceTest {
 
         caseData.setDocumentsGenerated(new ArrayList<>());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+        ResponseEntity<Resource> resource = new ResponseEntity<>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
             StringUtils.EMPTY,
@@ -170,7 +170,7 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+        ResponseEntity<Resource> resource = new ResponseEntity<>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
             StringUtils.EMPTY,
@@ -197,15 +197,12 @@ class SendGridServiceTest {
 
     @Test
     void recover_doesNotThrow_whenCaseIdNull() {
-        //String caseId = "1234-1234-1234-1234";  //TODO remove, improve test?
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(null);
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        Assertions.assertDoesNotThrow(() -> {
-            sendgridService.recover(new IOException(), caseData);
-        });
+        Assertions.assertDoesNotThrow(() -> sendgridService.recover(new IOException(), caseData));
     }
 
     @Test
@@ -216,7 +213,7 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+        ResponseEntity<Resource> resource = new ResponseEntity<>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
             StringUtils.EMPTY,
@@ -244,7 +241,7 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+        ResponseEntity<Resource> resource = new ResponseEntity<>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
             StringUtils.EMPTY,
