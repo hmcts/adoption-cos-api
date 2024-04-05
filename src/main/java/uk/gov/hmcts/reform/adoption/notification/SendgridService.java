@@ -112,7 +112,8 @@ public class SendgridService {
             );
 
             //TODO for testing @Retryable: REMOVE
-            //exceptionCauser();
+            log.info("SendgridService.sendEmail: Calling exceptionCauser()");
+            exceptionCauser();
         } catch (IOException ex) {
             log.info(
                 "SendgridService.sendEmail: {} ({}) when trying to send email for case : {}",

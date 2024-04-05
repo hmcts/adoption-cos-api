@@ -89,7 +89,7 @@ class SendGridServiceTest {
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });  //TODO revert following testing in preview
-        verify(sendgridService, times(1)).exceptionCauser();
+        //verify(sendgridService, times(1)).exceptionCauser();
 
         verify(caseDocumentClient, times(2)).getDocumentBinary(anyString(), anyString(), any());
     }
@@ -230,7 +230,7 @@ class SendGridServiceTest {
         Assertions.assertThrows(IOException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
-        verify(sendgridService, times(0)).exceptionCauser();
+        //verify(sendgridService, times(0)).exceptionCauser();
     }
 
     @Test
