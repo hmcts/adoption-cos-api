@@ -136,8 +136,8 @@ public class SendgridService {
                   caseIdForLogging, ex);
     }
 
-    private void attachGeneratedDocuments(Attachments attachments, Mail mail, AdoptionDocument adoptionDocument,
-                                          String authorisation, String serviceAuthorization, final String caseIdForLogging) {
+    private void attachGeneratedDocuments(Attachments attachments, Mail mail, AdoptionDocument adoptionDocument, String authorisation,
+                                          String serviceAuthorization, final String caseIdForLogging) throws IOException {
         log.info("SendgridService.attachGeneratedDocuments: Starting for case : {}", caseIdForLogging);
         if (adoptionDocument != null) {
             Resource document = caseDocumentClient.getDocumentBinary(
@@ -146,9 +146,10 @@ public class SendgridService {
                 UUID.fromString(adoptionDocument.getDocumentFileId())
             ).getBody();
             log.info(
-                "SendgridService.attachGeneratedDocuments: call to getDocumentBinary method successful for case : {}",
+                //"SendgridService.attachGeneratedDocuments: call to getDocumentBinary method successful for case : {}",
+                "SendgridService.attachGeneratedDocuments: call to getDocumentBinary method finished for case : {}",
                 caseIdForLogging
-            );
+            );//TODO "successful" might not be true - it's finished, but document might == null
             String data = null;
             try (InputStream inputStream = document.getInputStream()) {
                 byte[] documentContents = inputStream.readAllBytes();
@@ -157,8 +158,10 @@ public class SendgridService {
             } catch (Exception e) {
                 log.error("SendgridService.attachGeneratedDocuments: DocumentId {} could not be read for case {}",
                           adoptionDocument.getDocumentFileId(), caseIdForLogging, e
-                );
+                ); //TODO rethink logging
+                throw e; //TODO: I added this to enable retries
             }
+            //TODO Need to consider impact on service if this doesn't happen vs if it happens and setContent(null)
             attachments.setContent(data);
             attachments.setFilename(adoptionDocument.getDocumentFileName());
             attachments.setType(LOCAL_COURT_EMAIL_SENDGRID_ATTACHMENT_MIME_TYPE);
@@ -213,7 +216,7 @@ public class SendgridService {
             try (InputStream inputStream = uploadedDocument.getInputStream()) {
                 byte[] documentContents = inputStream.readAllBytes();
                 data = Base64.getEncoder().encodeToString(documentContents);
-            } catch (Exception e) {
+            } catch (Exception e) { //TODO throw e?
                 log.error(
                     "SendgridService.fetchAndAttachDoc: Document could not be read for case : {}",
                     caseIdForLogging,

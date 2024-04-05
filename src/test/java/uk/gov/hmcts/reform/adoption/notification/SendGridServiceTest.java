@@ -34,7 +34,6 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -76,11 +75,12 @@ class SendGridServiceTest {
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
-        String caseIdForLogging = "1234123412341234";
-        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
-        Response response = new Response();
-        response.setStatusCode(200);
-        when(sendGrid.api(any(Request.class))).thenReturn(response);
+        //TODO uncomment once finished attachGeneratedDocuments throw testing in preview
+        //String caseIdForLogging = "1234123412341234";
+        //when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
+        //Response response = new Response();
+        //response.setStatusCode(200);
+        //when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
         //                Assertions.assertDoesNotThrow(() -> {
@@ -91,7 +91,9 @@ class SendGridServiceTest {
         });  //TODO revert following testing in preview
         //verify(sendgridService, times(1)).exceptionCauser();
 
-        verify(caseDocumentClient, times(2)).getDocumentBinary(anyString(), anyString(), any());
+        //verify(caseDocumentClient, times(2)).getDocumentBinary(anyString(), anyString(), any());
+        //TODO revert once finished attachGeneratedDocuments throw testing in preview
+        verify(caseDocumentClient, times(1)).getDocumentBinary(anyString(), anyString(), any());
     }
 
     @Test
@@ -130,6 +132,7 @@ class SendGridServiceTest {
 
     @Test
     void attachGeneratedDocuments_shouldCatchException() throws IOException {
+        //TODO I'm probably going to have to change this test because I'm handling this at sendEmail level now...
         String caseId = "1234-1234-1234-1234";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
@@ -147,19 +150,20 @@ class SendGridServiceTest {
             any()
         )).thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
 
-        String caseIdForLogging = "1234123412341234";
-        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
-        Response response = new Response();
-        response.setStatusCode(200);
-        when(sendGrid.api(any(Request.class))).thenReturn(response);
+        //TODO remove if changing to catch exceptions in SendEmail as won't get this far
+        //String caseIdForLogging = "1234123412341234";
+        //when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
+        //Response response = new Response();
+        //response.setStatusCode(200);
+        //when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
         //                Assertions.assertDoesNotThrow(() -> {
         //                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         //                });
-        Assertions.assertThrows(ArithmeticException.class, () -> {
+        Assertions.assertThrows(NullPointerException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        });  //TODO revert following testing in preview
+        });  //TODO permanent change if throwing & catching in sendEmail
     }
 
     @Test
@@ -180,19 +184,23 @@ class SendGridServiceTest {
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
         ReflectionTestUtils.setField(resource.getBody(), "byteArray", null);
 
-        String caseIdForLogging = "1234123412341234";
-        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
-        Response response = new Response();
-        response.setStatusCode(200);
-        when(sendGrid.api(any(Request.class))).thenReturn(response);
+        //TODO uncomment following attachedGenDoc throws testing in preview
+        //String caseIdForLogging = "1234123412341234";
+        //when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
+        //Response response = new Response();
+        //response.setStatusCode(200);
+        //when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT";
         //                Assertions.assertDoesNotThrow(() -> {
         //                    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         //                });
-        Assertions.assertThrows(ArithmeticException.class, () -> {
+        //Assertions.assertThrows(ArithmeticException.class, () -> {
+        //    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //});  //TODO revert following testing in preview
+        Assertions.assertThrows(NullPointerException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
-        });  //TODO revert following testing in preview
+        }); //TODO revert following attachedGeneratedDocs throws testing in preview
     }
 
     @Test
@@ -222,19 +230,23 @@ class SendGridServiceTest {
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
-        String caseIdForLogging = "1234123412341234";
-        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
-        when(sendGrid.api(any(Request.class))).thenThrow(IOException.class);
+        //TODO revert when finished attachedGeneratedDoc throws preview testing
+        //String caseIdForLogging = "1234123412341234";
+        //when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
+        //when(sendGrid.api(any(Request.class))).thenThrow(IOException.class);
 
         String subject = "TEST_SUBJECT";
-        Assertions.assertThrows(IOException.class, () -> {
+        //Assertions.assertThrows(IOException.class, () -> {
+        //    sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        //});
+        Assertions.assertThrows(ArithmeticException.class, () -> {  //TODO revert once preview testing finished
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
         //verify(sendgridService, times(0)).exceptionCauser();
     }
 
-    @Test
-    void removeThisTest_exceptionCauser() throws IOException { //TODO remove
+    /* @Test
+    void removeThisTest_exceptionCauser() throws IOException { //TODO remove - doesn't provide code coverage anyway
         String caseId = "1234-1234-1234-1234";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
@@ -261,7 +273,7 @@ class SendGridServiceTest {
         Assertions.assertThrows(ArithmeticException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
-    }
+    } */
 
     private List<ListValue<AdoptionDocument>> getDocumentsGenerated() {
         AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
