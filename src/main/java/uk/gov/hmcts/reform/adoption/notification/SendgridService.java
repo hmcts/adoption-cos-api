@@ -99,19 +99,27 @@ public class SendgridService {
 
         log.info("SendgridService.sendEmail: About to send email for case : {}", caseIdForLogging);
         Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint(LOCAL_COURT_EMAIL_SENDGRID_ENDPOINT);
-        request.setBody(mail.build());
-
         SendGrid sg = getSendGrid(caseIdForLogging);
-        sg.api(request);
-        log.info(
-            "SendgridService.sendEmail: Notification email to Local Court sent successfully for case : {}",
-            caseIdForLogging
-        );
 
-        //TODO for testing @Retryable: REMOVE
-        exceptionCauser();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint(LOCAL_COURT_EMAIL_SENDGRID_ENDPOINT);
+            request.setBody(mail.build());
+            sg.api(request);
+            log.info(
+                "SendgridService.sendEmail: Notification email to Local Court sent successfully for case : {}",
+                caseIdForLogging
+            );
+
+            //TODO for testing @Retryable: REMOVE
+            exceptionCauser();
+        } catch (IOException ex) {
+            log.info(
+                "SendgridService.sendEmail: {} ({}) when trying to send email for case : {}",
+                ex.getClass(), ex.getMessage(), caseIdForLogging
+            );
+            throw ex;
+        }
     }
 
     void exceptionCauser() {  //TODO remove
@@ -234,6 +242,7 @@ public class SendgridService {
             log.error("ApplicationSubmittedNotification.getSendGrid: SendGrid instantiation failed for case : {} ",
                       caseIdForLogging, ex
             );
+            throw ex;
         }
         return sendGrid;
     }
