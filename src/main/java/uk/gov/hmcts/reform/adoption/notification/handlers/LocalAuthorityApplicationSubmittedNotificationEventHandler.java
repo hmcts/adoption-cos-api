@@ -26,7 +26,7 @@ public class LocalAuthorityApplicationSubmittedNotificationEventHandler {
         log.info("LocalAuthorityApplicationSubmittedNotificationEventHandler triggered");
         sendNotificationService.sendNotifications(
                 localAuthorityApplicationSubmitNotificationEvent.caseData());
-        log.info("Sent Notifications after Local Authority application submission for CaseID: {}",
+        log.info("After Local Authority application submission for CaseID: {}",
                 localAuthorityApplicationSubmitNotificationEvent.caseData().getId());
 
     }

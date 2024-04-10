@@ -24,7 +24,7 @@ public class ApplicationSubmittedNotificationEventHandler {
         log.info("ApplicationSubmittedNotificationEventHandler triggered");
         sendNotificationService.sendNotifications(
             applicationSubmitNotificationEvent.caseData());
-        log.info("Sent Notifications after citizen application submission for CaseID: {}",
+        log.info("After citizen application submission for CaseID: {}",
                  applicationSubmitNotificationEvent.caseData().getId());
 
     }
