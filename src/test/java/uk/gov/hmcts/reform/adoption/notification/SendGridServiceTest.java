@@ -60,7 +60,7 @@ class SendGridServiceTest {
 
     @Test
     void sendEmail() throws IOException {
-        String caseId = "1234-1234-1234-1234";
+        String caseId = "1234-0111-0111-0111";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
         caseData.setDocumentsGenerated(getDocumentsGenerated());
@@ -75,13 +75,13 @@ class SendGridServiceTest {
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
-        String caseIdForLogging = "1234123412341234";
+        String caseIdForLogging = "1234011101110111";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
         Response response = new Response();
         response.setStatusCode(200);
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
-        String subject = "TEST_SUBJECT";
+        String subject = "TEST_SUBJECT_1";
         Assertions.assertDoesNotThrow(() -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
@@ -91,7 +91,7 @@ class SendGridServiceTest {
 
     @Test
     void testSendEmail_whenNoDocument() throws IOException {
-        String caseId = "1234-1234-1234-1234";
+        String caseId = "1234-1222-1222-1222";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
@@ -107,12 +107,13 @@ class SendGridServiceTest {
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
-        when(sendgridService.getSendGrid(anyString())).thenReturn(sendGrid);
+        String caseIdForLogging = "1234122212221222";
+        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
         Response response = new Response();
         response.setStatusCode(200);
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
-        String subject = "TEST_SUBJECT";
+        String subject = "TEST_SUBJECT_2";
         Assertions.assertDoesNotThrow(() -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
@@ -122,7 +123,7 @@ class SendGridServiceTest {
 
     @Test
     void attachGeneratedDocuments_shouldCatchException() throws IOException {
-        String caseId = "1234-1234-1234-1234";
+        String caseId = "1234-1333-1333-1333";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
         caseData.setDocumentsGenerated(getDocumentsGenerated());
@@ -139,21 +140,21 @@ class SendGridServiceTest {
             any()
         )).thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
 
-        String caseIdForLogging = "1234123412341234";
+        String caseIdForLogging = "1234133313331333";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
         Response response = new Response();
         response.setStatusCode(200);
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
-        String subject = "TEST_SUBJECT";
+        String subject = "TEST_SUBJECT_3";
         Assertions.assertDoesNotThrow(() -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
     }
 
-    @Test  //TODO check - should throw?
-    void shouldThrowExceptionWhenResourceIsNullTestSendEmail() throws IOException {
-        String caseId = "1234-1234-1234-1234";
+    @Test
+    void shouldHandleExceptionWhenResourceIsNullTestSendEmail() throws IOException {
+        String caseId = "1234-1444-1444-1444";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
         caseData.setDocumentsGenerated(getDocumentsGenerated());
@@ -169,13 +170,13 @@ class SendGridServiceTest {
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
         ReflectionTestUtils.setField(resource.getBody(), "byteArray", null);
 
-        String caseIdForLogging = "1234123412341234";
+        String caseIdForLogging = "1234144414441444";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
         Response response = new Response();
         response.setStatusCode(200);
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
-        String subject = "TEST_SUBJECT";
+        String subject = "TEST_SUBJECT_4";
         Assertions.assertDoesNotThrow(() -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
@@ -183,7 +184,7 @@ class SendGridServiceTest {
 
     @Test
     void sendEmail_throws_whenSendGridApithrows() throws IOException {
-        String caseId = "1234-1234-1234-1234";
+        String caseId = "1234-1555-1555-1555";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
         caseData.setDocumentsGenerated(getDocumentsGenerated());
@@ -198,11 +199,11 @@ class SendGridServiceTest {
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
-        String caseIdForLogging = "1234123412341234";
+        String caseIdForLogging = "1234155515551555";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
         when(sendGrid.api(any(Request.class))).thenThrow(IOException.class);
 
-        String subject = "TEST_SUBJECT";
+        String subject = "TEST_SUBJECT_5";
         Assertions.assertThrows(IOException.class, () -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });

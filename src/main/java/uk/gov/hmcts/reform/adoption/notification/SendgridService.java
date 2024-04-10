@@ -112,7 +112,7 @@ public class SendgridService {
             );
 
         } catch (IOException ex) {
-            log.info(
+            log.error(
                 "SendgridService.sendEmail: {} ({}) when trying to send email for case : {}",
                 ex.getClass(), ex.getMessage(), caseIdForLogging
             );
@@ -240,8 +240,8 @@ public class SendgridService {
         try {
             sendGrid = new SendGrid(apiKey);
         } catch (Exception ex) {
-            log.error("ApplicationSubmittedNotification.getSendGrid: SendGrid instantiation failed for case : {} ",
-                      caseIdForLogging, ex
+            log.error("SendgridService.getSendGrid: SendGrid instantiation failed with {} ({}) for case : {} ",
+                      ex.getClass(), ex.getMessage(), caseIdForLogging
             );
             throw ex;
         }
