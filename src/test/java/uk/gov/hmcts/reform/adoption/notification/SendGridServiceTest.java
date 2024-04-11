@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import com.sendgrid.Request;
-import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
+import com.sendgrid.Response;
+import com.sendgrid.Request;
+import com.sendgrid.Attachments;
+import com.sendgrid.Mail;
 import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -94,9 +97,10 @@ class SendGridServiceTest {
         String caseId = "1234-1222-1222-1222";
         CaseData caseData = caseData();
         caseData.setHyphenatedCaseRef(caseId);
-        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
+        caseData.setLaDocumentsUploaded(new ArrayList<>());
         caseData.setDocumentsGenerated(new ArrayList<>());
+        caseData.setNewHearings(new ArrayList<>());
 
         ResponseEntity<Resource> resource = new ResponseEntity<>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
@@ -105,7 +109,6 @@ class SendGridServiceTest {
             UserDetails.builder().build()
         ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
         String caseIdForLogging = "1234122212221222";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
@@ -118,7 +121,10 @@ class SendGridServiceTest {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
 
-        verify(caseDocumentClient, times(1)).getDocumentBinary(anyString(), anyString(), any());
+        verify(sendgridService, times(1)).attachGeneratedDocuments(
+            any(Attachments.class), any(Mail.class), isNull(), anyString(), anyString(), anyString());
+        verify(sendgridService, times(1)).attachUploadedDocuments(
+            any(CaseData.class), any(Attachments.class), any(Mail.class), anyString(), anyString(), anyString());
     }
 
     @Test

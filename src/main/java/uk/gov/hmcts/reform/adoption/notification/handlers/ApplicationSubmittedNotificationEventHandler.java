@@ -20,12 +20,14 @@ public class ApplicationSubmittedNotificationEventHandler {
 
     @EventListener
     public void sendNotificationPostApplicationSubmission(ApplicationSubmitNotificationEvent applicationSubmitNotificationEvent) {
+        Long caseId = applicationSubmitNotificationEvent.caseData().getId();
 
-        log.info("ApplicationSubmittedNotificationEventHandler triggered");
+        log.info("ApplicationSubmittedNotificationEventHandler.sendNotificationPostApplicationSubmission triggered"
+                     + " on citizen application submission for CaseID: {}", caseId);
         sendNotificationService.sendNotifications(
             applicationSubmitNotificationEvent.caseData());
-        log.info("After citizen application submission for CaseID: {}",
-                 applicationSubmitNotificationEvent.caseData().getId());
+        log.info("ApplicationSubmittedNotificationEventHandler.sendNotificationPostApplicationSubmission finished"
+                     + " attempt at notifications for citizen application submission for CaseID: {}", caseId);
 
     }
 

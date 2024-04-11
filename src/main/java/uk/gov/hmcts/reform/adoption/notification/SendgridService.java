@@ -127,8 +127,8 @@ public class SendgridService {
                   caseIdForLogging, ex);
     }
 
-    private void attachGeneratedDocuments(Attachments attachments, Mail mail, AdoptionDocument adoptionDocument,
-                                          String authorisation, String serviceAuthorization, final String caseIdForLogging) {
+    void attachGeneratedDocuments(Attachments attachments, Mail mail, AdoptionDocument adoptionDocument,
+                                  String authorisation, String serviceAuthorization, final String caseIdForLogging) {
         log.info("SendgridService.attachGeneratedDocuments: Starting for case : {}", caseIdForLogging);
         if (adoptionDocument != null) {
             Resource document = caseDocumentClient.getDocumentBinary(
@@ -171,8 +171,8 @@ public class SendgridService {
         }
     }
 
-    private void attachUploadedDocuments(CaseData caseData, Attachments attachments, Mail mail,
-                                         String authorisation, String serviceAuthorization, final String caseIdForLogging) {
+    void attachUploadedDocuments(CaseData caseData, Attachments attachments, Mail mail,
+                                 String authorisation, String serviceAuthorization, final String caseIdForLogging) {
         log.info("SendgridService.attachUploadedDocuments: Starting for case : {}", caseIdForLogging);
         if (caseData.getLaDocumentsUploaded() != null) {
             caseData.getLaDocumentsUploaded().stream().map(ListValue::getValue)
@@ -189,7 +189,7 @@ public class SendgridService {
     }
 
     private void fetchAndAttachDoc(AdoptionDocument item, Attachments attachments,
-                                   Mail mail, String authorisation, String serviceAuthorization, final String caseIdForLogging) {
+                           Mail mail, String authorisation, String serviceAuthorization, final String caseIdForLogging) {
         String documentId = StringUtils.substringAfterLast(item.getDocumentLink().getUrl(), "/");
         log.info(
             "SendgridService.fetchAndAttachDoc: documentId: {} starting for case : {}",
@@ -201,7 +201,7 @@ public class SendgridService {
         ResponseEntity<Resource> resource = caseDocumentClient.getDocumentBinary(
             authorisation, serviceAuthorization, UUID.fromString(documentId));
         log.info("SendgridService.fetchAndAttachDoc: After calling caseDocumentClient "
-                     + "service with status code {}:", resource.getStatusCode());
+                     + "service with status code {} for case : {}", resource.getStatusCode(), caseIdForLogging);
         Resource uploadedDocument = resource.getBody();
         if (uploadedDocument != null) {
             String data = null;
