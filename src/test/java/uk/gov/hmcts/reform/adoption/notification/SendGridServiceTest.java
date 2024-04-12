@@ -17,7 +17,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -153,6 +152,7 @@ class SendGridServiceTest {
         when(sendGrid.api(any(Request.class))).thenReturn(response);
 
         String subject = "TEST_SUBJECT_3";
+        // Exception not mocked, but will be thrown because document is null.
         Assertions.assertDoesNotThrow(() -> {
             sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
@@ -166,15 +166,13 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<>(
-            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
+        ResponseEntity<Resource> resource = new ResponseEntity<>(null, HttpStatus.OK);
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
             StringUtils.EMPTY,
             UserDetails.builder().build()
         ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
-        ReflectionTestUtils.setField(resource.getBody(), "byteArray", null);
 
         String caseIdForLogging = "1234144414441444";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
