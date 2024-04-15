@@ -22,12 +22,14 @@ public class LocalAuthorityApplicationSubmittedNotificationEventHandler {
     @EventListener
     public void sendNotificationPostLocalAuthoritySubmission(LocalAuthorityApplicationSubmitNotificationEvent
                                                                   localAuthorityApplicationSubmitNotificationEvent) {
+        Long caseId = localAuthorityApplicationSubmitNotificationEvent.caseData().getId();
 
-        log.info("LocalAuthorityApplicationSubmittedNotificationEventHandler triggered");
+        log.info("LocalAuthorityApplicationSubmittedNotificationEventHandler.sendNotificationPostLocalAuthoritySubmission"
+                     + " triggered on Local Authority submission for CaseID: {}", caseId);
         sendNotificationService.sendNotifications(
                 localAuthorityApplicationSubmitNotificationEvent.caseData());
-        log.info("Sent Notifications after Local Authority application submission for CaseID: {}",
-                localAuthorityApplicationSubmitNotificationEvent.caseData().getId());
+        log.info("LocalAuthorityApplicationSubmittedNotificationEventHandler.sendNotificationPostLocalAuthoritySubmission"
+                     + " finished attempt at notifications for Local Authority submission for CaseID: {}", caseId);
 
     }
 

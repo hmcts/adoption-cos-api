@@ -1,21 +1,22 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import com.sendgrid.Method;
-import com.sendgrid.Request;
-import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
+import com.sendgrid.Response;
+import com.sendgrid.Request;
+import com.sendgrid.Attachments;
+import com.sendgrid.Mail;
 import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
@@ -34,9 +35,10 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,156 +57,197 @@ class SendGridServiceTest {
     private SendGrid sendGrid;
 
     @InjectMocks
+    @Spy  //ADOP-2324: Added to enable mocking of SendGrid
     SendgridService sendgridService;
 
     @Test
     void sendEmail() throws IOException {
-        String subject = "TEST_SUBJECT";
-        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
-        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
-        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<AdoptionDocument>();
-        listValue.setValue(adoptionDocumentDocmosis);
-        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
-        listAdoptionDocument.add(listValue);
+        String caseId = "1234-0111-0111-0111";
         CaseData caseData = caseData();
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        laUploadedDocument.setDocumentLink(document);
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setHyphenatedCaseRef(caseId);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+        ResponseEntity<Resource> resource = new ResponseEntity<>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
+        String caseIdForLogging = "1234011101110111";
+        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
         Response response = new Response();
         response.setStatusCode(200);
-        Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint("mail/send");
+        when(sendGrid.api(any(Request.class))).thenReturn(response);
+
+        String subject = "TEST_SUBJECT_1";
         Assertions.assertDoesNotThrow(() -> {
-            sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
+            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
-        verify(caseDocumentClient, times(2)).getDocumentBinary(anyString(), anyString(),any());
+
+        verify(caseDocumentClient, times(2)).getDocumentBinary(anyString(), anyString(), any());
     }
 
     @Test
-    void testSendEmail_whenNoDocument() {
+    void testSendEmail_whenNoDocument() throws IOException {
+        String caseId = "1234-1222-1222-1222";
         CaseData caseData = caseData();
+        caseData.setHyphenatedCaseRef(caseId);
+
+        caseData.setLaDocumentsUploaded(new ArrayList<>());
         caseData.setDocumentsGenerated(new ArrayList<>());
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        laUploadedDocument.setDocumentFileId(UUID.randomUUID().toString());
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        laUploadedDocument.setDocumentLink(document);
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setNewHearings(new ArrayList<>());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
+        ResponseEntity<Resource> resource = new ResponseEntity<>(
             new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
 
+        String caseIdForLogging = "1234122212221222";
+        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
         Response response = new Response();
         response.setStatusCode(200);
-        Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint("mail/send");
+        when(sendGrid.api(any(Request.class))).thenReturn(response);
+
+        String subject = "TEST_SUBJECT_2";
         Assertions.assertDoesNotThrow(() -> {
-            sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
+            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
-        verify(caseDocumentClient, times(1)).getDocumentBinary(anyString(), anyString(),any());
+
+        verify(sendgridService, times(1)).attachGeneratedDocuments(
+            any(Attachments.class), any(Mail.class), isNull(), anyString(), anyString(), anyString());
+        verify(sendgridService, times(1)).attachUploadedDocuments(
+            any(CaseData.class), any(Attachments.class), any(Mail.class), anyString(), anyString(), anyString());
     }
 
     @Test
     void attachGeneratedDocuments_shouldCatchException() throws IOException {
-        String subject = "TEST_SUBJECT";
-        AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
-        adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
-        adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<AdoptionDocument>();
-        listValue.setValue(adoptionDocumentDocmosis);
-        List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
-        listAdoptionDocument.add(listValue);
+        String caseId = "1234-1333-1333-1333";
         CaseData caseData = caseData();
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
-        Document document = new Document();
-        document.setFilename("TEST_FILE_NAME");
-        document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        laUploadedDocument.setDocumentLink(document);
-        laUploadedDocument.setDocumentFileId(UUID.randomUUID().toString());
-        ListValue<AdoptionDocument> documentListValue = new ListValue<>();
-        documentListValue.setValue(laUploadedDocument);
-        List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
-        laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
+        caseData.setHyphenatedCaseRef(caseId);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
         when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
+        when(caseDocumentClient.getDocumentBinary(
+            anyString(),
+            anyString(),
+            any()
+        )).thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
 
+        String caseIdForLogging = "1234133313331333";
+        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
         Response response = new Response();
         response.setStatusCode(200);
-        Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint("mail/send");
+        when(sendGrid.api(any(Request.class))).thenReturn(response);
+
+        String subject = "TEST_SUBJECT_3";
+        // Exception not mocked, but will be thrown because document is null.
         Assertions.assertDoesNotThrow(() -> {
-            sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
+            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
         });
     }
 
     @Test
-    void shouldThrowExceptionWhenResourceIsNullTestSendEmail() throws IOException {
-        String subject = "TEST_SUBJECT";
+    void shouldHandleExceptionWhenResourceIsNullTestSendEmail() throws IOException {
+        String caseId = "1234-1444-1444-1444";
+        CaseData caseData = caseData();
+        caseData.setHyphenatedCaseRef(caseId);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
+
+        ResponseEntity<Resource> resource = new ResponseEntity<>(null, HttpStatus.OK);
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
+        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
+
+        String caseIdForLogging = "1234144414441444";
+        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
+        Response response = new Response();
+        response.setStatusCode(200);
+        when(sendGrid.api(any(Request.class))).thenReturn(response);
+
+        String subject = "TEST_SUBJECT_4";
+        Assertions.assertDoesNotThrow(() -> {
+            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        });
+    }
+
+    @Test
+    void sendEmail_throws_whenSendGridApithrows() throws IOException {
+        String caseId = "1234-1555-1555-1555";
+        CaseData caseData = caseData();
+        caseData.setHyphenatedCaseRef(caseId);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
+
+        ResponseEntity<Resource> resource = new ResponseEntity<>(
+            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
+        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
+            StringUtils.EMPTY,
+            UserDetails.builder().build()
+        ));
+        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
+
+        String caseIdForLogging = "1234155515551555";
+        when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
+        when(sendGrid.api(any(Request.class))).thenThrow(IOException.class);
+
+        String subject = "TEST_SUBJECT_5";
+        Assertions.assertThrows(IOException.class, () -> {
+            sendgridService.sendEmail(caseData, subject, DocumentType.APPLICATION_LA_SUMMARY_EN);
+        });
+    }
+
+    @Test
+    void recover_doesNotThrow_whenCaseIdNull() {
+        CaseData caseData = caseData();
+        caseData.setHyphenatedCaseRef(null);
+        caseData.setDocumentsGenerated(getDocumentsGenerated());
+        caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
+
+        Assertions.assertDoesNotThrow(() -> sendgridService.recover(new IOException(), caseData));
+    }
+
+    private List<ListValue<AdoptionDocument>> getDocumentsGenerated() {
         AdoptionDocument adoptionDocumentDocmosis = new AdoptionDocument();
         adoptionDocumentDocmosis.setDocumentType(DocumentType.APPLICATION_LA_SUMMARY_EN);
         adoptionDocumentDocmosis.setDocumentFileId("5fc03087-d265-11e7-b8c6-83e29cd24f4c");
-        ListValue<AdoptionDocument> listValue = new ListValue<AdoptionDocument>();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
         listValue.setValue(adoptionDocumentDocmosis);
         List<ListValue<AdoptionDocument>> listAdoptionDocument = new ArrayList<>();
         listAdoptionDocument.add(listValue);
-        CaseData caseData = caseData();
-        caseData.setDocumentsGenerated(listAdoptionDocument);
-        AdoptionDocument laUploadedDocument = new AdoptionDocument();
+        return listAdoptionDocument;
+    }
+
+    private List<ListValue<AdoptionDocument>> getLaDocumentsUploaded() {
         Document document = new Document();
         document.setFilename("TEST_FILE_NAME");
         document.setUrl("TEST_URL/5fc03087-d265-11e7-b8c6-83e29cd24f4c");
+
+        AdoptionDocument laUploadedDocument = new AdoptionDocument();
+        laUploadedDocument.setDocumentFileId(UUID.randomUUID().toString());
         laUploadedDocument.setDocumentLink(document);
+
         ListValue<AdoptionDocument> documentListValue = new ListValue<>();
         documentListValue.setValue(laUploadedDocument);
+
         List<ListValue<AdoptionDocument>> laUploadedDocumentList = new ArrayList<>();
         laUploadedDocumentList.add(documentListValue);
-        caseData.setLaDocumentsUploaded(laUploadedDocumentList);
-
-        ResponseEntity<Resource> resource = new ResponseEntity<Resource>(
-            new ByteArrayResource(new byte[]{}), HttpStatus.OK);
-        when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(StringUtils.EMPTY, UserDetails.builder().build()));
-        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(),any())).thenReturn(resource);
-        ReflectionTestUtils.setField(resource.getBody(), "byteArray", null);
-
-        Response response = new Response();
-        response.setStatusCode(200);
-        Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint("mail/send");
-        Assertions.assertDoesNotThrow(() -> {
-            sendgridService.sendEmail(caseData, "TEST_SUBJECT", DocumentType.APPLICATION_LA_SUMMARY_EN);
-        });
+        return laUploadedDocumentList;
     }
 }
