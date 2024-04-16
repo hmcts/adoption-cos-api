@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
 import org.apache.commons.lang.StringUtils;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,15 +31,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.allOf;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.WELSH;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
@@ -386,9 +382,8 @@ class ApplicationSubmittedNotificationTest {
         );
         templateVars.put(HAS_SECOND_APPLICANT, YES);
         templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
-        setPaymentAmount(caseData);
-        templateVars.put(PAYMENT_TOTAL, caseData.getApplication().getApplicationFeeOrderSummary().getPaymentTotal());
-
+        // email template doesn't use payment amount, so set to default 'not found' value.
+        templateVars.put(PAYMENT_TOTAL, "value could not be retrieved");
 
         notification.sendToApplicantsPostLocalAuthoritySubmission(caseData, 1234567890123456L);
 

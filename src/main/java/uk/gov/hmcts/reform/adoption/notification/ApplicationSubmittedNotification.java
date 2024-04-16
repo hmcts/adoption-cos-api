@@ -68,7 +68,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to applicants for case : {}", id);
+        log.info("Sending APPLICANT_APPLICATION_SUBMITTED notification to applicants for case : {}", id);
 
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
         final String applicant2Email = caseData.getApplicant2().getEmailAddress();
@@ -207,7 +207,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Override
     public void sendToApplicantsPostLocalAuthoritySubmission(CaseData caseData, Long caseId) {
-        log.info("Sending Local Authority application submitted notification to applicants for case : {}", caseId);
+        log.info("Sending LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN notification to applicants for case : {}", caseId);
 
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
         final String applicant2Email = caseData.getApplicant2().getEmailAddress();
