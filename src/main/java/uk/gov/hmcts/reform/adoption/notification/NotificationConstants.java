@@ -39,6 +39,8 @@ public final class NotificationConstants {
 
     public static final String LOCAL_COURT_EMAIL_SENDGRID_ATTACHMENT_MIME_TYPE = "application/pdf";
 
+    public static final String PAYMENT_TOTAL = "paymentTotal";
+
 
     private NotificationConstants() {
     }
