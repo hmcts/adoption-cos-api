@@ -159,9 +159,6 @@ ccd:
         - TEST_SOLICITOR@mailinator.com|ADOPTION|A58|Draft
         - adoption_as_caseworker_admin@mailinator.com|ADOPTION|A58|Draft
         - civil_unspecified@mailinator.com|ADOPTION|A58|Draft
-      userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
-      userProfileDatabasePort: 5432
-      userProfileDatabaseName: user-profile
 
   postgresql:
     persistence:
