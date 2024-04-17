@@ -11,7 +11,6 @@ buildscript {
 
   }
   dependencies {
-    classpath "net.serenity-bdd:serenity-gradle-plugin:2.4.34"
     classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '3.2.1263'
   }
 }
@@ -28,12 +27,11 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.51.0'
   id 'hmcts.ccd.sdk' version '5.5.0'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1151'
-  id 'au.com.dius.pact' version '4.3.8'
+  id 'au.com.dius.pact' version '4.6.8'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
 apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'uk.gov.hmcts'
@@ -286,12 +284,11 @@ dependencyManagement {
     //CVE-2023-2976
     dependency group: 'com.google.guava', name: 'guava', version: '32.0.0-jre'
     //CVE-2023-24998
-//    dependencySet(group: 'commons-fileupload', version: '1.5') {
-//      entry 'commons-fileupload'
-//    }
+    dependencySet(group: 'commons-fileupload', version: '1.5') {
+      entry 'commons-fileupload'
+    }
     //CVE-2023-5072
     dependency group: 'org.json', name: 'json', version: '20240303'
-
     //CVE-2022-1471
     dependencySet(group: 'org.yaml', version: '2.0') {
       entry 'snakeyaml'
@@ -316,11 +313,10 @@ def versions = [
   springBoot        : springBoot.class.package.implementationVersion,
   s2sClient         : '4.0.0',
   pact              : '4.1.7',
-  serenity          : '3.0.2',
+  serenity          : '4.1.6',
   ccdCaseDocumentAmClient      : '1.7.3'
 ]
 
-ext["rest-assured.version"] = '4.5.1'
 
 ext.libraries = [
   junit5: [
@@ -335,7 +331,6 @@ ext.libraries = [
 dependencies {
 // uncomment for local version
 // implementation group: 'com.github.hmcts', name: 'ccd-config-generator', version: 'DEV-SNAPSHOT'
-//  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.23.1'
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.23.1'
   implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
@@ -407,18 +402,10 @@ dependencies {
   testImplementation group: 'com.jayway.awaitility', name: 'awaitility', version: '1.7.0'
   testImplementation group: 'com.github.stefanbirkner', name: 'system-lambda', version: '1.2.1'
   testImplementation group: 'io.github.openfeign', name: 'feign-jackson', version: '11.7'
-  testImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-contract-stub-runner', version: '3.1.8'
   testImplementation (group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity)
   testImplementation (group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity)
   testImplementation (group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity)
   testImplementation (group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity)
-//  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.25.3'
-//  testImplementation group: 'org.assertj', name: 'assertj-guava', version: '3.25.3'
-//  testImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.1.1'
-//  testImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-contract-stub-runner', version: '3.1.8'
-//  testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '3.0.2'
-//  testImplementation group: 'org.simplify4u', name: 'slf4j2-mock', version: '2.3.0'
-
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
@@ -427,9 +414,10 @@ dependencies {
   functionalTestImplementation sourceSets.test.runtimeClasspath
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '7.0.0'
   functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
+  functionalTestImplementation group: 'io.rest-assured', name: 'rest-assured'
+  functionalTestImplementation group: 'net.javacrumbs.json-unit', name: 'json-unit-assertj', version: '3.2.7'
 
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
-  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact
   contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
 
   contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
