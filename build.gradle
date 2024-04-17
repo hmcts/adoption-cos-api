@@ -416,12 +416,7 @@ dependencies {
   functionalTestImplementation group: 'io.rest-assured', name: 'rest-assured'
   functionalTestImplementation group: 'net.javacrumbs.json-unit', name: 'json-unit-assertj', version: '3.2.7'
 
-  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact, {
-    exclude group: 'junit', module: 'junit'
-    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    exclude(module: 'commons-logging')
-    exclude(module: 'android-json')
-  }
+  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
 
   contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
@@ -630,4 +625,12 @@ bootWithCCD {
     }
   }
   authMode = uk.gov.hmcts.rse.AuthMode.AAT
+}
+
+configurations {
+  all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    exclude group: 'ch.qos.logback', module: 'logback-classic'
+    exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+  }
 }
