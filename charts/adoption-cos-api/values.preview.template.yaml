@@ -74,8 +74,6 @@ ccd:
     dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
     ccdAdminWebIngress: admin-web-${SERVICE_FQDN}
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
-    postgresUsername: hmcts
-    postgresPassword: hmcts
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
   ccd-api-gateway-web:
@@ -161,11 +159,6 @@ ccd:
         - TEST_SOLICITOR@mailinator.com|ADOPTION|A58|Draft
         - adoption_as_caseworker_admin@mailinator.com|ADOPTION|A58|Draft
         - civil_unspecified@mailinator.com|ADOPTION|A58|Draft
-      userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
-      userProfileDatabasePort: 5432
-      userProfileDatabaseUser: hmcts
-      userProfileDatabasePassword: hmcts
-      userProfileDatabaseName: user-profile
 
   postgresql:
     persistence:
