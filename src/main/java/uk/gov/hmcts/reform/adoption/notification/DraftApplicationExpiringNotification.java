@@ -42,7 +42,7 @@ public class DraftApplicationExpiringNotification implements ApplicantNotificati
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to applicants for case : {}", id);
+        log.info("Sending CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT notification to applicants for case : {}", id);
 
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
         final String applicant2Email = caseData.getApplicant2().getEmailAddress();
