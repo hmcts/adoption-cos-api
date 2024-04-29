@@ -10,10 +10,6 @@ public interface ApplicantNotification {
         //No operation
     }
 
-    default void sendToCaseWorker(final CaseData caseData, final Long caseId) {
-        //No operation
-    }
-
     default void sendToLocalAuthorityPostApplicantSubmission(final CaseData caseData, final Long caseId) {
         //No operation
     }
