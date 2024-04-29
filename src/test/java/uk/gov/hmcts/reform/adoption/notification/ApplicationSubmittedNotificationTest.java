@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -212,8 +212,8 @@ class ApplicationSubmittedNotificationTest {
             eq(TEST_USER_EMAIL),
             eq(APPLICANT_APPLICATION_SUBMITTED),
             argThat(allOf(
-                Matchers.hasEntry(SUBMISSION_RESPONSE_DATE, submissionResponseDate),
-                Matchers.hasEntry(APPLICATION_REFERENCE, applicationReference)
+                hasEntry(SUBMISSION_RESPONSE_DATE, submissionResponseDate),
+                hasEntry(APPLICATION_REFERENCE, applicationReference)
             )),
             eq(ENGLISH)
         );
