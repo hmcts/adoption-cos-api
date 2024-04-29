@@ -18,11 +18,15 @@
     "test:smoke": "yarn npm audit --recursive --environment production && MOCHAWESOME_REPORTFILENAME=smoke codeceptjs run --grep '${SMOKE_TESTS_SELECTOR:=@smoke-tests}' --reporter mocha-multi",
     "test:functional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel --reporter mocha-multi",
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel --reporter mocha-multi",
+    "test:functional-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
+    "test:accessibility-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --grep @accessibility",
     "test:crossbrowser-e2e": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep \"@cross-browser\" ${BROWSER_GROUP:-'--all'} -c saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
     "test:local": "codeceptjs run-multiple parallel"
   },
   "devDependencies": {
+    "@playwright/test": "^1.43.1",
+    "@types/node": "^20.12.7",
     "@wdio/cli": "^8.10.5",
     "@wdio/sauce-service": "^8.22.1",
     "allure-commandline": "^2.17.2",
