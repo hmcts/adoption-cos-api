@@ -116,7 +116,8 @@ ccd:
       keyVaults:
         am:
           secrets:
-            - role-assignment-service-LD-SDK-KEY
+            - name: role-assignment-service-LD-SDK-KEY
+              alias: LD_SDK_KEY
   ccd-definition-store-api:
     java:
       disableKeyVaults: true
@@ -371,6 +372,7 @@ xui-webapp:
 ccd-case-document-am-api:
   enabled: true
   java:
+    disableKeyVaults: true
     releaseNameOverride: ${SERVICE_NAME}-ccd-case-document-am-api
     imagePullPolicy: Always
     image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
