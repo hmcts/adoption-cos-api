@@ -4,9 +4,6 @@ interface UrlConfig {
   [key: string]: string;
 }
 
-test.describe('Smoke', ( => {
-  let 
-}))
 
 export const urlConfig: UrlConfig = {
   idamUrl: process.env.AAT_IDAM_URL || `https://idam-api.${env}.platform.hmcts.net`,
