@@ -42,6 +42,7 @@ java:
           alias: SEND_GRID_API_KEY
         - name: sendgrid-notify-from-email
           alias: SEND_GRID_NOTIFY_FROM_EMAIL
+
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
@@ -113,16 +114,18 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS:  http://${SERVICE_NAME}-es-master:9200
-      secrets:
-        DATA_STORE_DB_PASSWORD:
-          secretRef: postgres
-          key: PASSWORD
-          disabled:
-            false
+      #secrets:
+        #DATA_STORE_DB_PASSWORD:
+          #secretRef: postgres
+          #key: PASSWORD
+          #disabled:
+            #false
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
 
   am-role-assignment-service:
     java:
+      #TODO: might need to add this:
+      #disableKeyVaults: true
       keyVaults:
         am:
           secrets:
@@ -139,13 +142,14 @@ ccd:
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
-      secrets:
-        DEFINITION_STORE_DB_PASSWORD:
-          secretRef: postgres
-          key: PASSWORD
-          disabled:
-            false
+      #secrets:
+        #DEFINITION_STORE_DB_PASSWORD:
+          #secretRef: postgres
+          #key: PASSWORD
+          #disabled:
+            #false
         ingressHost: ccd-definition-store-${SERVICE_FQDN}
+
   ccd-user-profile-api:
     java:
       disableKeyVaults: true
@@ -153,11 +157,11 @@ ccd:
       enviroment:
         USER_PROFILE_DB_USERNAME: hmcts
         USER_PROFILE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
-      secrets:
-        USER_PROFILE_DB_PASSWORD:
-          secretRef: postgres
-          key: PASSWORD
-          disabled: false
+      #secrets: #not required in finrem-ccd-definitions
+        #USER_PROFILE_DB_PASSWORD:
+          #secretRef: postgres
+          #key: PASSWORD
+          #disabled: false
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
   ccd-admin-web:
@@ -170,11 +174,11 @@ ccd:
         USER_PROFILE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
-      secrets:
-        USER_PROFILE_DB_PASSWORD:
-          secretRef: postgres
-          key: PASSWORD
-          disabled: false
+      #secrets: #finrem-ccd-definitions didn't require this but
+        #USER_PROFILE_DB_PASSWORD:
+          #secretRef: postgres
+          #key: PASSWORD
+          #disabled: false
 
   importer:
     userprofile:
@@ -412,14 +416,14 @@ LA_PORTAL_BASEURL: https://adoption-web-pr-${CHANGE_ID}.service.core-compute-pre
 
 postgresql:
   enabled: true
-  flexibleserver: family-public-law-preview
+  flexibleserver: adoption-preview
   setup:
     databases:
       - name: "pr-${CHANGE_ID}-data-store"
       - name: "pr-${CHANGE_ID}-definition-store"
       - name: "pr-${CHANGE_ID}-user-profile"
-      - name: "pr-${CHANGE_ID}-draftstore"
-      - name: "pr-${CHANGE_ID}-payment"
-      - name: "pr-${CHANGE_ID}-evidence"
-      - name: "pr-${CHANGE_ID}-annotation"
+      #- name: "pr-${CHANGE_ID}-draftstore" #uncomment?
+      #- name: "pr-${CHANGE_ID}-payment" #uncomment?
+      #- name: "pr-${CHANGE_ID}-evidence"
+      #- name: "pr-${CHANGE_ID}-annotation"
       - name: "pr-${CHANGE_ID}-role-assignment"
