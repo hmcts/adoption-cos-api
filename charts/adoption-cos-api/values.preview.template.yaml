@@ -398,7 +398,7 @@ xui-webapp:
       NODE_OPTIONS: --max-old-space-size=900
       NODE_TLS_REJECT_UNAUTHORIZED: 0
 
-ccd-case-document-am-api:
+ccd-case-document-am-api: #TODO: failed to mount secrets
   enabled: true
   java:
     releaseNameOverride: ${SERVICE_NAME}-ccd-case-document-am-api
@@ -422,8 +422,8 @@ postgresql:
       - name: "pr-${CHANGE_ID}-data-store"
       - name: "pr-${CHANGE_ID}-definition-store"
       - name: "pr-${CHANGE_ID}-user-profile"
-      #- name: "pr-${CHANGE_ID}-draftstore" #uncomment?
-      #- name: "pr-${CHANGE_ID}-payment" #uncomment?
-      #- name: "pr-${CHANGE_ID}-evidence"
-      #- name: "pr-${CHANGE_ID}-annotation"
-      - name: "pr-${CHANGE_ID}-role-assignment"
+      - name: "pr-${CHANGE_ID}-draftstore"
+      - name: "pr-${CHANGE_ID}-payment"
+      - name: "pr-${CHANGE_ID}-evidence"
+      - name: "pr-${CHANGE_ID}-annotation"
+      - name: "pr-${CHANGE_ID}-role_assignment"
