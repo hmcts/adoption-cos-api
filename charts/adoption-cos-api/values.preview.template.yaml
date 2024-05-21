@@ -398,9 +398,10 @@ xui-webapp:
       NODE_OPTIONS: --max-old-space-size=900
       NODE_TLS_REJECT_UNAUTHORIZED: 0
 
-ccd-case-document-am-api: #TODO: failed to mount secrets
+ccd-case-document-am-api:
   enabled: true
   java:
+    disableKeyVaults: true
     releaseNameOverride: ${SERVICE_NAME}-ccd-case-document-am-api
     imagePullPolicy: Always
     image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
