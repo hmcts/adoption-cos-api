@@ -125,7 +125,7 @@ ccd:
   am-role-assignment-service:
     java:
       #TODO: might need to add this:
-      #disableKeyVaults: true
+      disableKeyVaults: true
       keyVaults:
         am:
           secrets:
