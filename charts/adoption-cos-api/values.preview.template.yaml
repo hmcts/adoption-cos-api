@@ -210,12 +210,27 @@ ccd:
         volumeMounts:
         - name: logstash-lib
           mountPath: /logstash-lib
+    extraEnvs:
+      - name: DATA_STORE_PASS
+        value: hmcts
+      - name: DATA_STORE_URL
+        value: "jdbc:postgresql://adoption-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?sslmode=require&stringtype=unspecified"
+      - name: DATA_STORE_USER
+        value: hmcts
+      - name: ES_HOSTS
+        value: "${SERVICE_NAME}-es-master"
     extraVolumes: |
       - name: logstash-lib
         emptyDir: {}
+      - name: database-secret-volume
+        secret:
+          secretName: postgres
     extraVolumeMounts: |
       - name: logstash-lib
         mountPath: /usr/share/logstash/ccd
+      - name: database-secret-volume
+        mountPath: /etc/logstash/secrets
+        readOnly: true
     logstashConfig:
       logstash.yml: |
         http.host: 0.0.0.0
@@ -231,10 +246,11 @@ ccd:
       01_input.conf: |
         input  {
           jdbc {
-            jdbc_connection_string => "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/data-store?stringtype=unspecified"
+            jdbc_connection_string => "jdbc:postgresql://adoption-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
             jdbc_user => "hmcts"
-            jdbc_password => "hmcts"
+            jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
             jdbc_validate_connection => true
+            jdbc_validation_timeout => "1"
             jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
             jdbc_driver_class => "org.postgresql.Driver"
             jdbc_default_timezone => "UTC"
