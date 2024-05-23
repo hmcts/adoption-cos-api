@@ -6,12 +6,8 @@ selected_service=${@}
 
 echo "params: ${selected_service}"
 echo "CASE_API_URL: ${CASE_API_URL}"
-echo "URL: ${URL}"
 
 service_base_urls=${CASE_API_URL}
-if [[ "${selected_service}" == 'manage-case' ]]; then
-  service_base_urls=${URL}
-fi
 if [[ "${selected_service}" == 'definition-store' ]]; then
   service_base_urls=${DEFINITION_STORE_URL_BASE}
 fi
