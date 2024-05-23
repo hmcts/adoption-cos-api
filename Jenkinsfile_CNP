@@ -342,6 +342,7 @@ def setCommonEnvVariables() {
 
 def uploadCoreCaseDataDefinitions() {
     dir("${WORKSPACE}/bin"){
+        sh "./wait-for.sh definition-store"
         sh "./add-roles.sh"
         sh "./process-and-import-ccd-definition.sh"
     }
