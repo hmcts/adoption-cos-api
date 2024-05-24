@@ -617,8 +617,7 @@ task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
 }
 
 bootWithCCD {
-//  dependsOn(buildCCDXlsx, loadEnvSecrets)
-  dependsOn(loadEnvSecrets)
+  dependsOn(buildCCDXlsx, loadEnvSecrets)
   doFirst() {
     project.file('./.aat-env').readLines().each() {
       def index = it.indexOf("=")
@@ -628,6 +627,5 @@ bootWithCCD {
     }
   }
   authMode = uk.gov.hmcts.rse.AuthMode.AAT
-  buildCCDXlsx
 }
 
