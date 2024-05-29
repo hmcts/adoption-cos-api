@@ -390,7 +390,7 @@ xui-webapp:
 ccd-case-document-am-api:
   enabled: true
   java:
-    disableKeyVaults: true
+    # disableKeyVaults: true
     releaseNameOverride: ${SERVICE_NAME}-ccd-case-document-am-api
     imagePullPolicy: Always
     image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
