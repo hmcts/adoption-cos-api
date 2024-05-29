@@ -25,7 +25,7 @@
     "test:local": "codeceptjs run-multiple parallel"
   },
   "devDependencies": {
-    "@playwright/test": "^1.43.1",
+    "@playwright/test": "^1.44.0",
     "@types/node": "^20.12.7",
     "@wdio/cli": "^8.10.5",
     "@wdio/sauce-service": "^8.22.1",
@@ -45,7 +45,7 @@
     "nodemon": "^2.0.21",
     "npm-run-all": "^4.1.2",
     "otplib": "^12.0.1",
-    "playwright": "^1.22.2",
+    "playwright": "^1.44.0",
     "puppeteer": "20.3.0",
     "puppeteer-core": "20.3.0",
     "webdriverio": "^7.19.7",

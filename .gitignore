@@ -43,3 +43,4 @@ bin/main/application.yaml
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+.env
