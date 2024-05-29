@@ -38,7 +38,7 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to applicants for case : {}", id);
+        log.info("Sending MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT notification to applicants for case : {}", id);
 
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
         final String applicant2Email = caseData.getApplicant2().getEmailAddress();

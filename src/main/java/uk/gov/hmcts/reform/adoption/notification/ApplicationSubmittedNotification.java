@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Application;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
@@ -41,6 +43,7 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LO
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.CHILD_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.PAYMENT_TOTAL;
 
 
 @Component
@@ -65,7 +68,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to applicants for case : {}", id);
+        log.info("Sending APPLICANT_APPLICATION_SUBMITTED notification to applicants for case : {}", id);
 
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
         final String applicant2Email = caseData.getApplicant2().getEmailAddress();
@@ -92,19 +95,6 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             );
         }
     }
-
-    @Override
-    public void sendToCaseWorker(final CaseData caseData, final Long id) {
-        log.info("Sending application submitted notification to case worker for case : {}", id);
-
-        notificationService.sendEmail(
-            caseData.getApplicant1().getEmail(),
-            APPLICANT_APPLICATION_SUBMITTED,
-            templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2()),
-            caseData.getApplicant1().getLanguagePreference()
-        );
-    }
-
 
     @Override
     public void sendToLocalAuthorityPostApplicantSubmission(final CaseData caseData, final Long id) {
@@ -195,6 +185,13 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
             templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
         }
         templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
+
+        Optional<String> paymentTotal = Optional.of(caseData)
+                .map(CaseData::getApplication)
+                .map(Application::getApplicationFeeOrderSummary)
+                .map(OrderSummary::getPaymentTotal);
+        templateVars.put(PAYMENT_TOTAL, paymentTotal.orElse("value could not be retrieved"));
+
         return templateVars;
     }
 
@@ -210,7 +207,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Override
     public void sendToApplicantsPostLocalAuthoritySubmission(CaseData caseData, Long caseId) {
-        log.info("Sending Local Authority application submitted notification to applicants for case : {}", caseId);
+        log.info("Sending LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN notification to applicants for case : {}", caseId);
 
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
         final String applicant2Email = caseData.getApplicant2().getEmailAddress();
