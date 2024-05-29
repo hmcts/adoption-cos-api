@@ -39,6 +39,7 @@ def secrets = [
     secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD'),
   ],
   'adoption-${env}'    :[
+    secret('case-document-am-api-s2s-secret', 'CASE_DOCUMENT_AM_API_S2S_SECRET'),
     secret('definition-importer-username', 'DEFINITION_IMPORTER_USERNAME'),
     secret('definition-importer-password', 'DEFINITION_IMPORTER_PASSWORD'),
     secret('idam-secret', 'OAUTH2_CLIENT_SECRET'),
