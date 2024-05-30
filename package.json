@@ -25,7 +25,7 @@
     "test:local": "codeceptjs run-multiple parallel"
   },
   "devDependencies": {
-    "@playwright/test": "^1.44.0",
+    "@playwright/test": "^1.44.1",
     "@types/node": "^20.12.7",
     "@wdio/cli": "^8.10.5",
     "@wdio/sauce-service": "^8.22.1",
