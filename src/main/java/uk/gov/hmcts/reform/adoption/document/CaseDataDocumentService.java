@@ -41,12 +41,12 @@ public class CaseDataDocumentService {
         final String authorisation = idamService.retrieveSystemUpdateUserDetails().getAuthToken();
 
         //TODO remove
-        if (caseData.getApplicant1().getFirstName() != null
-            && caseData.getApplicant1().getFirstName().equalsIgnoreCase("FAIL")) {
-            int zero = 0;
-            int notGoingToHappen = 12 / zero;
-            log.info("This should have thrown an ArithmeticException: " + notGoingToHappen);
-        }
+        //if (caseData.getApplicant1().getFirstName() != null
+        //&& caseData.getApplicant1().getFirstName().equalsIgnoreCase("FAIL")) {
+        //int zero = 0;
+        //int notGoingToHappen = 12 / zero;
+        //log.info("This should have thrown an ArithmeticException: " + notGoingToHappen);
+        //}
 
         final var documentInfo = docAssemblyService.renderDocument(
             templateContent,
