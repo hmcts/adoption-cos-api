@@ -250,6 +250,17 @@ ccd:
             jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
             jdbc_driver_class => "org.postgresql.Driver"
             jdbc_default_timezone => "UTC"
+            statement => "UPDATE case_data SET marked_by_logstash = false WHERE marked_by_logstash = true"
+          }
+          jdbc {
+            jdbc_connection_string => "jdbc:postgresql://adoption-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
+            jdbc_user => "hmcts"
+            jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
+            jdbc_validate_connection => true
+            jdbc_validation_timeout => "1"
+            jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
+            jdbc_driver_class => "org.postgresql.Driver"
+            jdbc_default_timezone => "UTC"
             statement => "UPDATE case_data SET marked_by_logstash = true WHERE marked_by_logstash = false RETURNING id, created_date, last_modified, jurisdiction, case_type_id, state, last_state_modified_date, data::TEXT as json_data, data_classification::TEXT as json_data_classification, reference, security_classification, supplementary_data::TEXT as json_supplementary_data"
             clean_run => false
             schedule => "* * * * * *"
