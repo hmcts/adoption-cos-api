@@ -177,6 +177,9 @@ Password can be found in Kubernetes Services -> preview environment -> workloads
 -> select pod -> select container (overview) -> environment variables tab
 -> click postgres link for DATA_STORE_DB_PASSWORD -> click eye to decrypt
 
+To view the databases:
+`kubectl get flexibleserversdatabases -n adoption`
+
 ## License
 
 
