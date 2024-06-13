@@ -250,7 +250,7 @@ ccd:
             jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
             jdbc_driver_class => "org.postgresql.Driver"
             jdbc_default_timezone => "UTC"
-            statement => "UPDATE case_data SET marked_by_logstash = false WHERE marked_by_logstash = true"
+            statement => "UPDATE case_data SET marked_by_logstash = false WHERE marked_by_logstash = true RETURNING id, created_date, last_modified, jurisdiction, case_type_id, state, last_state_modified_date, data::TEXT as json_data, data_classification::TEXT as json_data_classification, reference, security_classification, supplementary_data::TEXT as json_supplementary_data"
           }
           jdbc {
             jdbc_connection_string => "jdbc:postgresql://adoption-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
