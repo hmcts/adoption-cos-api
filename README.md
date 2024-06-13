@@ -165,6 +165,17 @@ The project contains the following plugins:
     ./gradlew dependencyUpdates -Drevision=release
   ```
 
+## Connect to Preview Database
+Hostname = adoption-preview.postgres.database.azure.com
+Port = 5432
+Database Name = pr-<number>-data-store
+Username = hmcts
+SSL (Parameters) =  require
+
+Password can be found in Kubernetes Services -> preview environment -> workloads
+-> select deployment name adoption-cos-api-pr-<number>-ccd-data-store-api
+-> select pod -> select container (overview) -> environment variables tab
+-> click postgres link for DATA_STORE_DB_PASSWORD -> click eye to decrypt
 
 ## License
 
