@@ -5,7 +5,7 @@ import com.sendgrid.Response;
 import com.sendgrid.Request;
 import com.sendgrid.Attachments;
 import com.sendgrid.Mail;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
