@@ -17,8 +17,46 @@ def component = "spring-boot-template"
 withNightlyPipeline(type, product, component) {
   env.TEST_URL = "http://adoption-cos-api-aat.service.core-compute-aat.internal"
   enableSlackNotifications('#adoption-tech')
+  enableFullFunctionalTest(90)
   enableFortifyScan()
   afterAlways('fortify-scan') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+  }
+
+  afterAlways('fullFunctionalTest') {
+    stage('Playwright Tests Nightly') {
+      try {
+        yarnBuilder.yarn('test:functional-nightly')
+      } catch (Error) {
+        unstable(message: "${STAGE_NAME} is unstable: " + Error.toString())
+      } finally {
+        publishHTML([
+          allowMissing: true,
+          alwaysLinkToLastBuild: true,
+          keepAll: true,
+          reportDir: 'playwright-report',
+          reportFiles: 'index.html',
+          reportName: 'Playwright UI Functional Test Report'
+        ])
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functionalTest/**/*'
+      }
+    }
+    stage('Playwright Accessibility Tests Nightly') {
+      try {
+        yarnBuilder.yarn('test:accessibility-nightly')
+      } catch (Error) {
+        unstable(message: "${STAGE_NAME} is unstable: " + Error.toString())
+      } finally {
+        publishHTML([
+          allowMissing: true,
+          alwaysLinkToLastBuild: true,
+          keepAll: true,
+          reportDir: "playwright-report",
+          reportFiles: 'index.html',
+          reportName: 'Playwright Accessibility Functional Test Report'
+        ])
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functionalTest/**/*'
+      }
+    }
   }
 }

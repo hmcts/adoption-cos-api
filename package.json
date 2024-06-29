@@ -18,11 +18,15 @@
     "test:smoke": "yarn npm audit --recursive --environment production && MOCHAWESOME_REPORTFILENAME=smoke codeceptjs run --grep '${SMOKE_TESTS_SELECTOR:=@smoke-tests}' --reporter mocha-multi",
     "test:functional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel --reporter mocha-multi",
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functional codeceptjs run-multiple parallel --reporter mocha-multi",
+    "test:functional-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
+    "test:accessibility-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --grep @accessibility",
     "test:crossbrowser-e2e": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep \"@cross-browser\" ${BROWSER_GROUP:-'--all'} -c saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
     "test:local": "codeceptjs run-multiple parallel"
   },
   "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^20.12.7",
     "@wdio/cli": "^8.10.5",
     "@wdio/sauce-service": "^8.22.1",
     "allure-commandline": "^2.17.2",
@@ -41,7 +45,7 @@
     "nodemon": "^2.0.21",
     "npm-run-all": "^4.1.2",
     "otplib": "^12.0.1",
-    "playwright": "^1.22.2",
+    "playwright": "^1.44.0",
     "puppeteer": "20.3.0",
     "puppeteer-core": "20.3.0",
     "webdriverio": "^7.19.7",
@@ -52,7 +56,9 @@
     "axios": "^1.6.8"
   },
   "dependencies": {
-    "axios": "^1.6.8"
+    "@axe-core/playwright": "^4.9.0",
+    "axios": "^1.6.8",
+    "qs": "^6.12.1"
   },
   "packageManager": "yarn@3.6.4"
 }
