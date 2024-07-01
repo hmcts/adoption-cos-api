@@ -312,7 +312,7 @@ def versions = [
   reformsJavaLogging: '5.1.7',
   springBoot        : springBoot.class.package.implementationVersion,
   s2sClient         : '4.0.0',
-  pact              : '4.1.7',
+  pact              : '4.6.10',
   serenity          : '4.1.6',
   ccdCaseDocumentAmClient      : '1.7.3'
 ]
