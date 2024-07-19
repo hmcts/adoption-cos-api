@@ -28,6 +28,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildConfidentialTab(configBuilder);
         buildNotes(configBuilder);
         buildServiceRequestTab(configBuilder);
+        buildTestsTab(configBuilder);
     }
 
     private void buildMessagesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -36,6 +37,14 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .field("listOfOpenMessages")
             .field("closedMessages");
+    }
+
+    private void buildTestsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+
+        configBuilder.tab("Test Messages","Test Messages")
+                .forRoles(CASE_WORKER, DISTRICT_JUDGE)
+                .field("listOfOpenMessages")
+                .field("closedMessages");
     }
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -298,6 +307,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .field("messages")
             .label("labelSummary-CaseDetails", null, "### Case details")
             .field("typeOfAdoption")
+            .field("typeOfBestFood")
             .field("dateSubmitted")
             .field("timetable20Week")
             .field("dateChildMovedIn")
