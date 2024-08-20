@@ -47,7 +47,6 @@ export const createCase = async (): Promise<string | undefined> => {
       { code: "caseworker" },
       { code: "caseworker-adoption-caseworker" },
       { code: "caseworker-adoption" },
-      { code: "citizen" }
     ]
   };
 
