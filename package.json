@@ -23,6 +23,8 @@
     "test:local": "codeceptjs run-multiple parallel"
   },
   "devDependencies": {
+    "@playwright/test": "^1.46.0",
+    "@types/node": "^22.3.0",
     "@wdio/cli": "^8.10.5",
     "@wdio/sauce-service": "^8.22.1",
     "allure-commandline": "^2.17.2",
@@ -41,7 +43,6 @@
     "nodemon": "^2.0.21",
     "npm-run-all": "^4.1.2",
     "otplib": "^12.0.1",
-    "playwright": "^1.22.2",
     "puppeteer": "20.3.0",
     "puppeteer-core": "20.3.0",
     "webdriverio": "^7.19.7",
@@ -52,7 +53,10 @@
     "axios": "^1.6.8"
   },
   "dependencies": {
-    "axios": "^1.6.8"
+    "@axe-core/playwright": "^4.9.1",
+    "@faker-js/faker": "^8.4.1",
+    "axios": "^1.6.8",
+    "qs": "^6.13.0"
   },
   "packageManager": "yarn@3.6.4"
 }

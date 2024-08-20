@@ -13,7 +13,7 @@ async function setupScenario(I) {
 }
 
 Scenario('Allocate Judge to a case', async ({I,loginPage, caseListPage, caseViewPage, allocateJudgePage }) => {
-  // await setupScenario(I);
+  await setupScenario(I);
   // await caseViewPage.goToNewActions(config.administrationActions.allocateJudge);
   // await allocateJudgePage.verifyPageDetails();
   // await allocateJudgePage.verifyAllocateJudgePageFunctionality();

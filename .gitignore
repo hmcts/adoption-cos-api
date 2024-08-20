@@ -3,7 +3,7 @@
 !gradle/wrapper/gradle-wrapper.jar
 *.class
 bin/main/application.yaml
-
+.env
 ### STS ###
 .apt_generated
 .classpath
@@ -35,3 +35,15 @@ bin/main/application.yaml
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
