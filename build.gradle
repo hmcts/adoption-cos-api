@@ -311,7 +311,7 @@ def versions = [
   lombok            : '1.18.32',
   reformsJavaLogging: '5.1.7',
   springBoot        : springBoot.class.package.implementationVersion,
-  s2sClient         : '4.0.0',
+  s2sClient         : '4.0.2',
   pact              : '4.1.7',
   serenity          : '4.1.6',
   ccdCaseDocumentAmClient      : '1.7.3'
@@ -340,7 +340,7 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.2'
-  implementation(group: 'com.github.hmcts', name: 'befta-fw', version: '8.10.1') {
+  implementation(group: 'com.github.hmcts', name: 'befta-fw', version: '9.1.0') {
     exclude group: 'org.apache.commons', module: 'commons-compress'
     exclude group: 'com.google.guava', module: 'guava'
     exclude group: 'org.apache.poi', module: 'poi-ooxml'
@@ -375,12 +375,11 @@ dependencies {
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.15'
   implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.0.1'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.26.0'
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
-  implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
-  implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.2-Categories'
+  implementation group: 'com.github.hmcts', name: 'java-logging', version: versions.reformsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.reformsJavaLogging
+  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '2.0.1'
+  implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.s2sClient
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.2'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.5'
