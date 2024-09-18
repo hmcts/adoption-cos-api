@@ -5,8 +5,9 @@
       "value": {
         "siblingId": "1646222663145",
         "siblingRelation": "Brother",
-        "siblingPoType": "some order",
-        "siblingPoNumber": "1001"
+        "siblingPoType": "Adoption order",
+        "siblingPoNumber": "1001",
+        "siblingPlacementOtherType": ""
       }
     },
     {
@@ -14,8 +15,9 @@
       "value": {
         "siblingId": "1646222699254",
         "siblingRelation": "Sister",
-        "siblingPoType": "some other order",
-        "siblingPoNumber": "23456"
+        "siblingPoType": "Other",
+        "siblingPoNumber": "23456",
+        "siblingPlacementOtherType": "other type"
       }
     }
   ],
@@ -134,7 +136,7 @@
       "value": {
         "placementOrderId": "1646222494045",
         "placementOrderDate": "2021-12-12",
-        "placementOrderType": "some order2",
+        "placementOrderType": "Adoption order",
         "placementOrderCourt": "london court",
         "placementOrderNumber": "12345"
       }
@@ -212,6 +214,8 @@
   ],
   "solicitorName": null,
   "selectedSiblingId": "1646222699254",
+  "selectedSiblingRelation": "Sister",
+  "selectedSiblingPoType": "Adoption order",
   "solicitorPhoneNumber": null,
   "birthFatherAddressCountry": null,
   "applicant2AddressTown": "NOTTINGHAM",
@@ -247,4 +251,5 @@
   "applicant2LanguagePreference": null,
   "birthMotherOccupation": "Teacher",
   "applicant1AddressSameAsApplicant1": null
+
 }
