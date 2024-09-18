@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -27,7 +27,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(PactConsumerTestExt.class)
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "case-document-am-api", port = "4452")
 @PactFolder("pacts")

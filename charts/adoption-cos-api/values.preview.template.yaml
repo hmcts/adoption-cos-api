@@ -42,6 +42,7 @@ java:
           alias: SEND_GRID_API_KEY
         - name: sendgrid-notify-from-email
           alias: SEND_GRID_NOTIFY_FROM_EMAIL
+
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
@@ -75,6 +76,9 @@ ccd:
     ccdAdminWebIngress: admin-web-${SERVICE_FQDN}
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    postgresHostname: "adoption-preview.postgres.database.azure.com"
+    postgresSecret: postgres
+    databaseNamePrefix: "pr-${CHANGE_ID}-"
 
   ccd-api-gateway-web:
     nodejs:
@@ -93,7 +97,7 @@ ccd:
       disableKeyVaults: true
       imagePullPolicy: Always
       environment:
-        DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DATA_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
         DATA_STORE_DEFAULT_LOG_LEVEL: info
         DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,ccd_ps,adoption_cos_api,adoption_web,xui_webapp,ccd_case_document_am_api,fis_cos_api
@@ -113,27 +117,30 @@ ccd:
 
   am-role-assignment-service:
     java:
+      disableKeyVaults: true
       keyVaults:
         am:
           secrets:
             - role-assignment-service-LD-SDK-KEY
+
   ccd-definition-store-api:
     java:
       disableKeyVaults: true
       imagePullPolicy: Always
       environment:
-        DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DEFINITION_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
+
   ccd-user-profile-api:
     java:
       disableKeyVaults: true
       imagePullPolicy: Always
       enviroment:
-        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
+        USER_PROFILE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
   ccd-admin-web:
@@ -142,10 +149,9 @@ ccd:
       image: hmctspublic.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
       environment:
-        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
+        USER_PROFILE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
-
 
   importer:
     userprofile:
@@ -160,36 +166,10 @@ ccd:
         - adoption_as_caseworker_admin@mailinator.com|ADOPTION|A58|Draft
         - civil_unspecified@mailinator.com|ADOPTION|A58|Draft
 
-  postgresql:
-    persistence:
-      enabled: false
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
     replicas: 1
-    minimumMasterNodes: 1
-    antiAffinity: "soft"
-    esJavaOpts: "-Xmx512m -Xms512m"
-    # Their tests delete the pod after succeeding, we pass --logs to the test command which fail if the pod has already been deleted
-    # The tests do pass, at least as of 2023-01-19
-    tests:
-      enabled: false
-    extraEnvs:
-      - name: discovery.type
-        value: single-node
-      - name: cluster.initial_master_nodes
-        value: ""
-      - name: action.auto_create_index
-        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
-    persistence:
-      enabled: false
-    ingress:
-      enabled: false
-      className: traefik
-      # hosts:
-      #   - host: es-${SERVICE_FQDN}
-      #     paths:
-      #       - path: /
 
   logstash:
     image: "hmctspublic.azurecr.io/imported/logstash/logstash"
@@ -203,12 +183,27 @@ ccd:
         volumeMounts:
         - name: logstash-lib
           mountPath: /logstash-lib
+    extraEnvs:
+      - name: DATA_STORE_USER
+        value: hmcts
+      - name: DATA_STORE_PASS
+        value: hmcts
+      - name: DATA_STORE_URL
+        value: "jdbc:postgresql://adoption-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?sslmode=require&stringtype=unspecified"
+      - name: ES_HOSTS
+        value: "${SERVICE_NAME}-es-master"
     extraVolumes: |
       - name: logstash-lib
         emptyDir: {}
+      - name: database-secret-volume
+        secret:
+          secretName: postgres
     extraVolumeMounts: |
       - name: logstash-lib
         mountPath: /usr/share/logstash/ccd
+      - name: database-secret-volume
+        mountPath: /etc/logstash/secrets
+        readOnly: true
     logstashConfig:
       logstash.yml: |
         http.host: 0.0.0.0
@@ -224,10 +219,11 @@ ccd:
       01_input.conf: |
         input  {
           jdbc {
-            jdbc_connection_string => "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/data-store?stringtype=unspecified"
+            jdbc_connection_string => "jdbc:postgresql://adoption-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
             jdbc_user => "hmcts"
-            jdbc_password => "hmcts"
+            jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
             jdbc_validate_connection => true
+            jdbc_validation_timeout => "1"
             jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
             jdbc_driver_class => "org.postgresql.Driver"
             jdbc_default_timezone => "UTC"
@@ -371,6 +367,7 @@ xui-webapp:
 ccd-case-document-am-api:
   enabled: true
   java:
+    disableKeyVaults: true
     releaseNameOverride: ${SERVICE_NAME}-ccd-case-document-am-api
     imagePullPolicy: Always
     image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
@@ -379,7 +376,24 @@ ccd-case-document-am-api:
       CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,dg_docassembly_api,bulk_scan_orchestrator,adoption_cos_api,adoption_web
       DM_STORE_BASE_URL: http://dm-store-aat.service.core-compute-aat.internal
       CCD_DATA_STORE_API_BASE_URL: http://adoption-cos-api-pr-${CHANGE_ID}-ccd-data-store-api
-      IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
+      OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
+      S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      CASE_DOCUMENT_AM_API_S2S_SECRET: ${CCD_CASE_DOCUMENT_AM_API_SECRET}
 
 LA_PORTAL_BASEURL: https://adoption-web-pr-${CHANGE_ID}.service.core-compute-preview.internal/la-portal/kba-case-ref
+
+postgresql:
+  enabled: true
+  flexibleserver: adoption-preview
+  setup:
+    databases:
+      - name: "pr-${CHANGE_ID}-data-store"
+      - name: "pr-${CHANGE_ID}-definition-store"
+      - name: "pr-${CHANGE_ID}-user-profile"
+      - name: "pr-${CHANGE_ID}-draftstore"
+      - name: "pr-${CHANGE_ID}-payment"
+      - name: "pr-${CHANGE_ID}-evidence"
+      - name: "pr-${CHANGE_ID}-annotation"
+      - name: "pr-${CHANGE_ID}-role-assignment"
