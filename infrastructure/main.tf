@@ -7,7 +7,7 @@ locals {
 }
 
 data "azurerm_key_vault" "adoption_key_vault" {
-  name = local.vaultName
+  name                = local.vaultName
   resource_group_name = "${var.raw_product}-${var.env}"
 }
 
