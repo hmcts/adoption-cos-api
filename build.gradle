@@ -381,7 +381,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.s2sClient
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.5'
-  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.4'
+  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.3.0'
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.83'
   implementation group: 'com.github.hmcts', name:'ccd-case-document-am-client', version: versions.ccdCaseDocumentAmClient
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
