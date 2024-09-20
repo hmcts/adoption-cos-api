@@ -14,7 +14,8 @@ import static uk.gov.hmcts.reform.adoption.common.config.ControllerConstants.SER
 @FeignClient(name = "doc-assembly-api", primary = false, url = "${doc_assembly.url}")
 public interface DocAssemblyClient {
     @PostMapping(
-        value = "/api/template-renditions",
+        //value = "/api/template-renditions",
+        value = "/api/render",
         produces = APPLICATION_JSON_VALUE,
         consumes = APPLICATION_JSON_VALUE
     )
