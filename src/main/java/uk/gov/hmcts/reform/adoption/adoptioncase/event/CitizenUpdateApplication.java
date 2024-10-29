@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
@@ -25,7 +26,7 @@ public class CitizenUpdateApplication implements CCDConfig<CaseData, State, User
 
         configBuilder
             .event(CITIZEN_UPDATE)
-            .forStates(Draft, Submitted)
+            .forStates(Draft, AwaitingPayment, Submitted)
             .name("Adoption case")
             .description("Adoption application update")
             .retries(120, 120)
