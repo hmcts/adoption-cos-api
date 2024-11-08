@@ -30,13 +30,6 @@ public enum State {
         hint = "### #${[CASE_REFERENCE]}\n ### Child's name: ${childrenFirstName} ${childrenLastName}\n"
     )
     LaSubmitted("LaSubmitted"),
-
-    //TODO remove?
-    //@CCD(
-    //    label = "Hearing",
-    //    hint = "### #${[CASE_REFERENCE]}\n ### Child's name: ${childrenFirstName} ${childrenLastName}\n"
-    //)
-    //PREPARE_FOR_HEARING_CONDUCT_HEARING("Hearing"),
     ;
 
     private final String name;
