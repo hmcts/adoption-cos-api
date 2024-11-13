@@ -13,8 +13,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 import uk.gov.hmcts.reform.adoption.common.AddSystemUpdateRole;
 
-import java.util.ArrayList;
-
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
@@ -28,16 +26,8 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
     @Autowired
     private AddSystemUpdateRole addSystemUpdateRole;
 
-
-
-
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        var defaultRoles = new ArrayList<UserRole>();
-        defaultRoles.add(CITIZEN);
-
-        //var updatedRoles = addSystemUpdateRole.addIfConfiguredForEnvironment(defaultRoles);
-
         configBuilder
             .event(CITIZEN_CREATE)
             .initialState(Draft)

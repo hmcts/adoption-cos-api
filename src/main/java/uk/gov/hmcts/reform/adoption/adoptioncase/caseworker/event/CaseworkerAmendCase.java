@@ -42,8 +42,6 @@ public class CaseworkerAmendCase implements CCDConfig<CaseData, State, UserRole>
                                    .name(AMEND_CASE_DETAILS)
                                    .description(AMEND_CASE_DETAILS)
                                    .showSummary()
-        //.grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-        //.grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
         );
     }
 }

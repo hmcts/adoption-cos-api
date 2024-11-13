@@ -26,17 +26,8 @@ public class CitizenSubmitApplication implements CCDConfig<CaseData, State, User
 
     public static final String CITIZEN_SUBMIT = "citizen-submit-application";
 
-    // @Autowired
-    // private PaymentService paymentService;
-
-    /*
-     * @Autowired
-     * private SubmissionService submissionService;
-     */
-
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-
         configBuilder
                 .event(CITIZEN_SUBMIT)
                 .forStates(Draft, AwaitingPayment)

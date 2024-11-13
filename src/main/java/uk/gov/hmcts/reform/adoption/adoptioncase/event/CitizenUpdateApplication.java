@@ -29,6 +29,5 @@ public class CitizenUpdateApplication implements CCDConfig<CaseData, State, User
             .retries(120, 120)
             .grant(CREATE_READ_UPDATE, CITIZEN)
             .grant(CREATE_READ_UPDATE, CREATOR);
-        //.grant(READ, SUPER_USER); //TODO check this
     }
 }

@@ -59,17 +59,12 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
     }
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        //configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-        //                    UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-        //);
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_ADD_CASE_NOTE)
                                    .forAllStates()
                                    .name(ADD_CASE_NOTE)
                                    .description(ADD_CASE_NOTE)
                                    .showSummary()
-                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 

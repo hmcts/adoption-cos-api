@@ -53,7 +53,6 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
             .retries(120, 120)
             .grant(CREATE_READ_UPDATE, CITIZEN)
             .grant(READ, SUPER_USER, CASE_WORKER)
-            //.grant(CREATE_READ_UPDATE, DISTRICT_JUDGE)
             .aboutToSubmitCallback(this::aboutToSubmit)
             .submittedCallback(this::submitted);
     }
