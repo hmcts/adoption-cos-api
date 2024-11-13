@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.state.AwaitingPaymentAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.state.DraftAccess;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.state.LASubmittedAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.state.LocalAuthoritySubmittedAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.state.SubmittedAccess;
 
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public enum State {
     @CCD(
         label = "LA Submitted",
         hint = "### #${[CASE_REFERENCE]}\n ### Child's name: ${childrenFirstName} ${childrenLastName}\n",
-        access = {LASubmittedAccess.class}
+        access = {LocalAuthoritySubmittedAccess.class}
     )
     LaSubmitted("LaSubmitted");
 
