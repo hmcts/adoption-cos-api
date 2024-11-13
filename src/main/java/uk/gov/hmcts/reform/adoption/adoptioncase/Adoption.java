@@ -42,16 +42,33 @@ public class Adoption implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.jurisdiction(JURISDICTION, "Adoption", "Child adoption");
 
         configBuilder.grant(Draft, CREATE_READ_UPDATE, CITIZEN);
-        configBuilder.grant(Draft, READ, SOLICITOR);
+        /* configBuilder.grant(Draft, READ, SOLICITOR);
         configBuilder.grant(Draft, READ, SUPER_USER);
         configBuilder.grant(Draft, READ, CASE_WORKER);
-        configBuilder.grant(Draft, READ, COURT_ADMIN);
-        configBuilder.grant(Draft, READ, SUPER_USER);
+        configBuilder.grant(Draft, READ, COURT_ADMIN); */
+        //configBuilder.grant(Draft, READ, SUPER_USER);
         configBuilder.grant(AwaitingPayment, READ, SYSTEM_UPDATE);
-        configBuilder.grant(Draft, READ, LEGAL_ADVISOR);
-        configBuilder.grant(Draft, READ, DISTRICT_JUDGE);
+        /* configBuilder.grant(Draft, READ, LEGAL_ADVISOR);
+        configBuilder.grant(Draft, READ, DISTRICT_JUDGE); */
         configBuilder.grant(Draft, CREATE_READ_UPDATE, SYSTEM_UPDATE);
         configBuilder.grant(Submitted, CREATE_READ_UPDATE, SYSTEM_UPDATE);
         configBuilder.grant(LaSubmitted, CREATE_READ_UPDATE, SYSTEM_UPDATE);
+
+        /* TODO
+        Spreadsheet AuthorisationCaseState still has:
+        [CREATOR] (CRU) - ok
+        caseworker-adoption-caseworker = CASE_WORKER (CRU)
+        caseworker-adoption-courtadmin = COURT_ADMIN (RU)
+        caseworker-adoption-judge = DISTRICT_JUDGE (CRU)
+        caseworker-adoption-la = LEGAL_ADVISOR (RU)
+        caseworker-adoption-systemupdate (CRU) - ok?
+        citizen (CRU) - ok
+
+        This change successfully removed:
+        caseworker-adoption-solicitor = SOLICITOR
+        caseworker-adoption-superuser = SUPER_USER
+
+        Might need to add SUPER_USER back for AwaitingPayment
+         */
     }
 }

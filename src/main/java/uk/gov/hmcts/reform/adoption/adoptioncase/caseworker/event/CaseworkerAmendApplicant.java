@@ -42,7 +42,8 @@ public class CaseworkerAmendApplicant implements CCDConfig<CaseData, State, User
                                    .name(AMEND_APPLICANT_DETAILS)
                                    .description(AMEND_APPLICANT_DETAILS)
                                    .showSummary()
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
+        );
     }
 }

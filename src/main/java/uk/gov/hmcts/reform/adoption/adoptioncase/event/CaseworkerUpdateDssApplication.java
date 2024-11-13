@@ -28,7 +28,8 @@ public class CaseworkerUpdateDssApplication implements CCDConfig<CaseData, State
             .name("Adoption case")
             .description("Adoption application update")
             .retries(120, 120)
-            .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
-            .grant(READ, SUPER_USER);
+            //.grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
+            //.grant(READ, SUPER_USER)
+        ;
     }
 }

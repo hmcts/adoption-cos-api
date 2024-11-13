@@ -55,7 +55,7 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
     }
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
+        //configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_REVIEW_DOCUMENT)
                                    .forAllStates()
@@ -63,7 +63,8 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
                                    .description(SCANNED_DOCUMENT)
                                    .showSummary()
                                    .aboutToSubmitCallback(this::aboutToSubmit)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+        );
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(

@@ -35,17 +35,17 @@ public class CaseWorkerAllocateJudge implements CCDConfig<CaseData, State, UserR
 
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-        );
+        //configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
+        //                    UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
+        //);
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_ALLOCATE_JUDGE)
                                    .forAllStates()
                                    .name(ALLOCATE_JUDGE)
                                    .description(ALLOCATE_JUDGE)
                                    .showSummary()
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 

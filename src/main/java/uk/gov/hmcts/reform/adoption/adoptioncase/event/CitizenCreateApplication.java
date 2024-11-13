@@ -36,7 +36,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         var defaultRoles = new ArrayList<UserRole>();
         defaultRoles.add(CITIZEN);
 
-        var updatedRoles = addSystemUpdateRole.addIfConfiguredForEnvironment(defaultRoles);
+        //var updatedRoles = addSystemUpdateRole.addIfConfiguredForEnvironment(defaultRoles);
 
         configBuilder
             .event(CITIZEN_CREATE)
@@ -44,7 +44,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
             .name("Create adoption draft case")
             .description("Apply for adoption")
             .aboutToSubmitCallback(this::aboutToSubmit)
-            .grant(CREATE_READ_UPDATE, updatedRoles.toArray(UserRole[]::new))
+            .grant(CREATE_READ_UPDATE, CITIZEN)
             .retries(120, 120);
     }
 

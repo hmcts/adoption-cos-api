@@ -50,7 +50,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
     }
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
+        //configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_UPLOAD_DOCUMENT)
                                    .forAllStates()
@@ -58,8 +58,9 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
                                    .description(MANAGE_DOCUMENT)
                                    .showSummary()
                                    .aboutToSubmitCallback(this::aboutToSubmit)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
+        );
     }
 
     /**

@@ -26,12 +26,12 @@ public class CitizenUpdateApplication implements CCDConfig<CaseData, State, User
 
         configBuilder
             .event(CITIZEN_UPDATE)
-            .forStates(Draft, AwaitingPayment, Submitted)
+            .forStates(Draft, AwaitingPayment)
             .name("Adoption case")
             .description("Adoption application update")
             .retries(120, 120)
             .grant(CREATE_READ_UPDATE, CITIZEN)
-            .grant(CREATE_READ_UPDATE, CREATOR)
-            .grant(READ, SUPER_USER);
+            .grant(CREATE_READ_UPDATE, CREATOR);
+            //.grant(READ, SUPER_USER); //TODO check this
     }
 }

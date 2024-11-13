@@ -51,8 +51,8 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
                                    .name(SEND_OR_REPLY_HEADING)
                                    .description(SEND_OR_REPLY_HEADING)
                                    .showSummary()
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToStartCallback(this::beforeStartEvent)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }

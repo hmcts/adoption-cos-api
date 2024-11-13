@@ -112,9 +112,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
      * @return - PageBuilder updated to use on overridden method.
      */
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-        );
+        //configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
+        //                    UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
+        //);
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_MANAGE_HEARING)
                                    .forAllStates()
@@ -122,8 +122,9 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
                                    .description(MANAGE_HEARINGS)
                                    .showSummary()
                                    .aboutToSubmitCallback(this::aboutToSubmit)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   //.grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
+        );
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
