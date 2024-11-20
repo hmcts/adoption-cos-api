@@ -8,7 +8,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AmendAppl
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
 /**
@@ -42,7 +41,6 @@ public class CaseworkerAmendApplicant implements CCDConfig<CaseData, State, User
                                    .name(AMEND_APPLICANT_DETAILS)
                                    .description(AMEND_APPLICANT_DETAILS)
                                    .showSummary()
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
+        );
     }
 }
