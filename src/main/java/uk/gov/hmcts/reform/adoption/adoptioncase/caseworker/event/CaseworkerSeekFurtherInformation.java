@@ -18,7 +18,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
@@ -93,17 +92,12 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
      * @return - PageBuilder updated to use on overridden method.
      */
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-        );
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_SEEK_FURTHER_INFORMATION)
                                    .forAllStates()
                                    .name(SEEK_FURTHER_INFORMATION_HEADING)
                                    .description(SEEK_FURTHER_INFORMATION_HEADING)
                                    .showSummary()
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToStartCallback(this::seekFurtherInformationData)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }

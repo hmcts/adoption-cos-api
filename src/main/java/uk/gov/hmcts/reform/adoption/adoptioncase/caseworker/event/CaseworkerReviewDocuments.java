@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ReviewDoc
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
@@ -55,7 +54,6 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
     }
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_REVIEW_DOCUMENT)
                                    .forAllStates()
@@ -63,7 +61,7 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
                                    .description(SCANNED_DOCUMENT)
                                    .showSummary()
                                    .aboutToSubmitCallback(this::aboutToSubmit)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER));
+        );
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
