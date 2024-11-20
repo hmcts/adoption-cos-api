@@ -60,7 +60,6 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class CaseData {
-    public Object remove;
     @CCD(
         label = "Applying with",
         access = {DefaultAccess.class},
