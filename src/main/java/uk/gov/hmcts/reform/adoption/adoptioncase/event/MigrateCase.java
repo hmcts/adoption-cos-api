@@ -46,7 +46,6 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(CaseDetails<CaseData, State> details,
             CaseDetails<CaseData, State> beforeDetails) {
         CaseData data = details.getData();
-        State state = details.getState();
         String migrationId = data.getMigrationId();
         Long id = details.getId();
 
@@ -59,6 +58,8 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
         migrations.get(migrationId).accept(details);
 
         log.info("Migration {id = {}, case reference = {}} finished", migrationId, id);
+
+        State state = details.getState();
 
         data.setMigrationId(null);
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
