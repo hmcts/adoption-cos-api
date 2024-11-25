@@ -28,6 +28,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildConfidentialTab(configBuilder);
         buildNotes(configBuilder);
         buildServiceRequestTab(configBuilder);
+        buildHistory(configBuilder);
     }
 
     private void buildMessagesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -364,5 +365,12 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .displayOrder(7)
             .label("LabelNotes-Heading", null, "### Case Notes")
             .field(CaseData::getCaseNote);
+    }
+
+    private void buildHistory(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.tab("CaseHistory", "History")
+            .displayOrder(100)
+            .forRoles(CASE_WORKER)
+            .field("caseHistory");
     }
 }
