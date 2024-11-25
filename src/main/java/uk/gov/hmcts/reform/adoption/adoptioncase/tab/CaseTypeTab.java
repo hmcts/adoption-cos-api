@@ -365,5 +365,4 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .label("LabelNotes-Heading", null, "### Case Notes")
             .field(CaseData::getCaseNote);
     }
-
 }
