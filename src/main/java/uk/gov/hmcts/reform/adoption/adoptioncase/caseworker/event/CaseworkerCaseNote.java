@@ -27,6 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
 /**
  * Adds a Case Note Event in ExUI for all States.
@@ -65,6 +67,7 @@ public class CaseworkerCaseNote implements CCDConfig<CaseData, State, UserRole> 
                                    .name(ADD_CASE_NOTE)
                                    .description(ADD_CASE_NOTE)
                                    .showSummary()
+                                   .grant(CREATE_READ_UPDATE, CASE_WORKER)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
 
