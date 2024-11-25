@@ -50,10 +50,9 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
     }
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_UPLOAD_DOCUMENT)
-                                   .forAllStates()
+                                   .forStates(State.LaSubmitted)
                                    .name(MANAGE_DOCUMENT)
                                    .description(MANAGE_DOCUMENT)
                                    .showSummary()

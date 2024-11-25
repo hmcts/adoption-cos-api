@@ -27,7 +27,7 @@ public class CaseworkerRequestAnnexA implements CCDConfig<CaseData, State, UserR
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_AMEND_CASE)
-                                   .forStates(State.Draft)
+                                   .forStates(State.LaSubmitted)
                                    .name("Request Annex-A")
                                    .description("Request Annex-A")
                                    .showSummary()

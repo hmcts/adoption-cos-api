@@ -24,7 +24,7 @@ public class CaseworkerUpdateDssApplication implements CCDConfig<CaseData, State
 
         configBuilder
             .event(CASEWORKER_UPDATE)
-            .forStates(Draft, Submitted)
+            .forStates(Submitted)
             .name("Adoption case")
             .description("Adoption application update")
             .retries(120, 120)

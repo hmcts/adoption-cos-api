@@ -82,12 +82,9 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
      * @return - PageBuilder updated to use on overridden method.
      */
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-        );
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_MANAGE_ORDERS)
-                                   .forAllStates()
+                                   .forStates(State.LaSubmitted)
                                    .name(MANAGE_ORDERS)
                                    .description(MANAGE_ORDERS)
                                    .showSummary()
