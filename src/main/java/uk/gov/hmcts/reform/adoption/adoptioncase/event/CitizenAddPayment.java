@@ -24,7 +24,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.DISTRICT_JUDGE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
@@ -54,7 +53,6 @@ public class CitizenAddPayment implements CCDConfig<CaseData, State, UserRole> {
             .retries(120, 120)
             .grant(CREATE_READ_UPDATE, CITIZEN)
             .grant(READ, SUPER_USER, CASE_WORKER)
-            .grant(CREATE_READ_UPDATE, DISTRICT_JUDGE)
             .aboutToSubmitCallback(this::aboutToSubmit)
             .submittedCallback(this::submitted);
     }
