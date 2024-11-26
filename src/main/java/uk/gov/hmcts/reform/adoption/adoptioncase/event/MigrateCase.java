@@ -15,8 +15,8 @@ import java.util.function.Consumer;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE_DELETE;
 
@@ -73,7 +73,9 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
         log.info("Logging migration on case {}", caseDetails.getId());
     }
 
-    private void runNameMigration(CaseDetails caseDetails) {
-        caseDetails.getData().put("applicant1FirstName", "migratedName");
+    private void runNameMigration(CaseDetails<CaseData, State> caseDetails) {
+        caseDetails.getData().setApplicant1(caseDetails.getData().getApplicant1().toBuilder()
+                                                .firstName("migratedName")
+                                                .build());
     }
 }
