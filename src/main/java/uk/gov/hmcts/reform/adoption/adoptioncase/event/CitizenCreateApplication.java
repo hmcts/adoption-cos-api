@@ -33,6 +33,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
             .initialState(Draft)
             .name("Create adoption draft case")
             .description("Apply for adoption")
+            .ttlIncrement(90)
             .aboutToSubmitCallback(this::aboutToSubmit)
             .grant(CREATE_READ_UPDATE, CITIZEN)
             .retries(120, 120);
