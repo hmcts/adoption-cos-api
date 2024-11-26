@@ -40,5 +40,7 @@ public class RoleToAccessProfiles implements CCDConfig<CaseData, State, UserRole
             .accessProfiles("[CREATOR]").build();
         configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.SYSTEM_UPDATE)
             .accessProfiles("caseworker-adoption-systemupdate").build();
+        configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.TTL_PROFILE)
+            .accessProfiles("TTL_profile").build();
     }
 }
