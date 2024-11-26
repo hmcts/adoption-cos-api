@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.TtlAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
@@ -811,7 +812,8 @@ public class CaseData {
     @JsonProperty("TTL")
     @CCD(
         typeOverride = FieldType.TTL,
-        label = "Set up TTL"
+        label = "Set up TTL",
+        access = {TtlAccess.class}
     )
     private TTL retainAndDisposeTimeToLive;
 
