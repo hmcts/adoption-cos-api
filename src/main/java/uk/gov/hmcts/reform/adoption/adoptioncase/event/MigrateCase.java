@@ -26,7 +26,7 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String MIGRATE_CASE = "migrate-case";
 
-    private final Map<String, Consumer<CaseDetails>> migrations = Map.of(
+    private final Map<String, Consumer<CaseDetails<CaseData, State>>> migrations = Map.of(
         "ADOP-log", this::runLog,
         "ADOP-test", this::runNameMigration
     );
@@ -69,7 +69,7 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
                 .build();
     }
 
-    private void runLog(CaseDetails caseDetails) {
+    private void runLog(CaseDetails<CaseData, State> caseDetails) {
         log.info("Logging migration on case {}", caseDetails.getId());
     }
 
