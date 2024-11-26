@@ -21,7 +21,7 @@ public enum UserRolesForAccessProfiles implements HasRole {
     CITIZEN("idam:citizen", "CRUD"),
     CREATOR("[CREATOR]", "CRU"),
     SYSTEM_UPDATE("idam:caseworker-adoption-systemupdate", "CRUD"),
-    TTL_PROFILE("idam:cft-ttl-manager","RU");
+    TTL_PROFILE("idam:cft-ttl-manager","R");
 
     @JsonValue
     private final String role;
