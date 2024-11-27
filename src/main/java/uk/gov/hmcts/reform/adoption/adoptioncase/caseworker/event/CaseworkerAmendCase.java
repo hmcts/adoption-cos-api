@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.AmendCase
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
 /**
@@ -38,10 +39,11 @@ public class CaseworkerAmendCase implements CCDConfig<CaseData, State, UserRole>
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_AMEND_CASE)
-                                   .forAllStates()
+                                   .forStates(State.LaSubmitted)
                                    .name(AMEND_CASE_DETAILS)
                                    .description(AMEND_CASE_DETAILS)
                                    .showSummary()
-        );
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
     }
 }

@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageDoc
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
@@ -51,12 +52,13 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_UPLOAD_DOCUMENT)
-                                   .forAllStates()
+                                   .forStates(State.LaSubmitted)
                                    .name(MANAGE_DOCUMENT)
                                    .description(MANAGE_DOCUMENT)
                                    .showSummary()
                                    .aboutToSubmitCallback(this::aboutToSubmit)
-        );
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
     }
 
     /**

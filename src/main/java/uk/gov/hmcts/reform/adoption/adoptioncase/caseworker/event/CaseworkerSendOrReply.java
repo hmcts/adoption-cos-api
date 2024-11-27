@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.common.CaseEventCommonMethods;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
@@ -46,10 +47,12 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
     private PageBuilder addConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_SEND_OR_REPLY)
-                                   .forAllStates()
+                                   .forStates(State.LaSubmitted)
                                    .name(SEND_OR_REPLY_HEADING)
                                    .description(SEND_OR_REPLY_HEADING)
                                    .showSummary()
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE)
                                    .aboutToStartCallback(this::beforeStartEvent)
                                    .aboutToSubmitCallback(this::aboutToSubmit));
     }
