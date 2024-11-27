@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingOptions;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageHearingDetails;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
@@ -113,12 +114,13 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_MANAGE_HEARING)
-                                   .forAllStates()
+                                   .forStates(State.LaSubmitted)
                                    .name(MANAGE_HEARINGS)
                                    .description(MANAGE_HEARINGS)
                                    .showSummary()
                                    .aboutToSubmitCallback(this::aboutToSubmit)
-        );
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
+                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
     }
 
     public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
