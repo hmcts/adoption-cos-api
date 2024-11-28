@@ -31,9 +31,6 @@ class CitizenCreateApplicationTest extends EventTest {
     @Mock
     private AuthTokenGenerator authTokenGenerator;
 
-    private static final String AUTH_TOKEN = "Bearer someAuthToken";
-    public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-
     @Test
     @DisplayName("Testing submitted event for citizen case creation with dss meta data")
     void testing_citizen_submission_with_dssData_aboutToSubmit() {

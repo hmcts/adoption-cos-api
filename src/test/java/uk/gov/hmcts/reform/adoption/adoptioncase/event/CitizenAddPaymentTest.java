@@ -56,8 +56,6 @@ class CitizenAddPaymentTest extends EventTest {
     @Mock
     private EventService eventPublisher;
 
-    public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-
     @Test
     void citizenAddPaymentCSubmitted() {
         var caseDetails = getCaseDetails();
