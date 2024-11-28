@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CASE_WORKER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.TTL_PROFILE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
 @Slf4j
@@ -31,9 +32,8 @@ public class ManageCaseTtl implements CCDConfig<CaseData, State, UserRole> {
                                                       .name("Manage Case TTL")
                                                       .description("Adoption application update Retain & Dispose Time To Live")
                                                       .retries(120, 120)
-                                                      .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
-                                                      .grant(CREATE_READ_UPDATE, CASE_WORKER) //TODO ???
-                                                      .showSummary() //TODO ???
+                                                      .grant(CREATE_READ_UPDATE, TTL_PROFILE)
+                                                      .showSummary()
 
         );
         configureTtl.addTo(pageBuilder);
