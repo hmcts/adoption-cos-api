@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
+package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,21 +7,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
-import uk.gov.hmcts.reform.adoption.adoptioncase.event.CitizenCreateApplication;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.idam.client.models.User;
-import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
-class CitizenCreateApplicationTest {
+class CitizenCreateApplicationTest extends EventTest {
 
     @InjectMocks
     private CitizenCreateApplication citizenCreateApplication;
@@ -52,15 +48,5 @@ class CitizenCreateApplicationTest {
             .data(caseData())
             .id(1L)
             .build();
-    }
-
-    private User getCaseworkerUser() {
-        UserDetails userDetails = UserDetails
-            .builder()
-            .forename("testFname")
-            .surname("testSname")
-            .build();
-
-        return new User(TEST_AUTHORIZATION_TOKEN, userDetails);
     }
 }
