@@ -34,7 +34,7 @@ public class MigrateCaseTest extends EventTest {
 
     @Test
     void shouldPerformMigrationWithGivenIdAndNullifyMigrationId() {
-        CaseDetails<CaseData, State> caseDetails = getCaseDetails("ADOP-log");
+        CaseDetails<CaseData, State> caseDetails = setupCaseWithMigrationId("ADOP-log");
 
         AboutToStartOrSubmitResponse<CaseData, State> resp = migrateCase.aboutToSubmit(caseDetails, null);
 
@@ -43,13 +43,13 @@ public class MigrateCaseTest extends EventTest {
 
     @Test
     void shouldThrowExceptionWhenMigrationRunWithInvalidId() {
-        CaseDetails<CaseData, State> caseDetails = getCaseDetails("THIS-MIGRATION-ID-IS-NOT-VALID");
+        CaseDetails<CaseData, State> caseDetails = setupCaseWithMigrationId("THIS-MIGRATION-ID-IS-NOT-VALID");
         assertThrows("No migration mapped to THIS-MIGRATION-ID-IS-NOT-VALID", RuntimeException.class,
                      () -> migrateCase.aboutToSubmit(caseDetails, null)
         );
     }
 
-    private CaseDetails<CaseData, State> getCaseDetails(String migrationId) {
+    private CaseDetails<CaseData, State> setupCaseWithMigrationId(String migrationId) {
         return CaseDetails.<CaseData, State>builder()
             .data(CaseData.builder()
                       .migrationId(migrationId)
