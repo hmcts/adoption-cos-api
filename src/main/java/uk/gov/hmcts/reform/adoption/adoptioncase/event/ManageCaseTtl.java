@@ -12,6 +12,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
+import java.awt.*;
+
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.TTL_PROFILE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
@@ -26,7 +28,8 @@ public class ManageCaseTtl implements CCDConfig<CaseData, State, UserRole> {
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         PageBuilder pageBuilder = new PageBuilder(configBuilder
                                                       .event(MANAGE_CASE_TTL)
-                                                      .forAllStates()
+                                                      //.forAllStates()
+                                                      .forStates(State.AwaitingPayment, State.Submitted, State.LaSubmitted)
                                                       .name("Manage Case TTL")
                                                       .description("Adoption application update Retain & Dispose Time To Live")
                                                       .retries(120, 120)
