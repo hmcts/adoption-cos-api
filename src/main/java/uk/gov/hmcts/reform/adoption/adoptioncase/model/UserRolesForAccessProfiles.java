@@ -12,7 +12,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasRole;
 @Getter
 public enum UserRolesForAccessProfiles implements HasRole {
     ADOPTION_GENERIC("idam:caseworker-adoption", "RU"),
-    CASE_WORKER("idam:caseworker-adoption-caseworker", "RU"),
+    CASE_WORKER("idam:caseworker-adoption-caseworker", "CRU"),
     COURT_ADMIN("idam:caseworker-adoption-courtadmin", "R"),
     LEGAL_ADVISOR("idam:caseworker-adoption-la", "R"),
     DISTRICT_JUDGE("idam:caseworker-adoption-judge", "RU"),
@@ -21,7 +21,7 @@ public enum UserRolesForAccessProfiles implements HasRole {
     CITIZEN("idam:citizen", "CRUD"),
     CREATOR("[CREATOR]", "CRU"),
     SYSTEM_UPDATE("idam:caseworker-adoption-systemupdate", "CRUD"),
-    TTL_MANAGER("idam:cft-ttl-manager", "R");
+    TTL_MANAGER("idam:cft-ttl-manager", "CRU");
 
     @JsonValue
     private final String role;
