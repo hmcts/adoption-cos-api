@@ -26,7 +26,6 @@ public class ManageCaseTtl implements CCDConfig<CaseData, State, UserRole> {
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         PageBuilder pageBuilder = new PageBuilder(configBuilder
                                                       .event(MANAGE_CASE_TTL)
-                                                      //.forAllStates()
                                                       .forStates(State.AwaitingPayment, State.Submitted, State.LaSubmitted)
                                                       .name("Manage Case TTL")
                                                       .description("Adoption application update Retain & Dispose Time To Live")
