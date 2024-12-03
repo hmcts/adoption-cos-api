@@ -20,7 +20,7 @@ public class SubmittedAccess implements HasAccessControl {
         SetMultimap<HasRole, Permission> grants = HashMultimap.create();
         grants.putAll(CREATOR, Permissions.READ);
         grants.putAll(CITIZEN, Permissions.READ);
-        grants.putAll(CASE_WORKER, Permissions.READ);
+        grants.putAll(CASE_WORKER, Permissions.CREATE_READ_UPDATE);
         grants.putAll(SYSTEM_UPDATE, Permissions.CREATE_READ_UPDATE);
         grants.putAll(TTL_PROFILE, Permissions.CREATE_READ_UPDATE);
 

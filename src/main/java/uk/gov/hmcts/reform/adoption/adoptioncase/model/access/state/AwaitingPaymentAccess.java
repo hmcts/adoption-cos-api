@@ -20,7 +20,7 @@ public class AwaitingPaymentAccess implements HasAccessControl {
         SetMultimap<HasRole, Permission> grants = HashMultimap.create();
         grants.putAll(CREATOR, Permissions.CREATE_READ_UPDATE);
         grants.putAll(CITIZEN, Permissions.CREATE_READ_UPDATE);
-        grants.putAll(CASE_WORKER, Permissions.READ);
+        grants.putAll(CASE_WORKER, Permissions.CREATE_READ_UPDATE);
         grants.putAll(SYSTEM_UPDATE, Permissions.CREATE_READ_UPDATE);
         grants.putAll(TTL_PROFILE, Permissions.CREATE_READ_UPDATE);
 
