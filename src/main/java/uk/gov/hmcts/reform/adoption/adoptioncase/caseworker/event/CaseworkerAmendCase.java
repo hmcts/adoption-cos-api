@@ -40,6 +40,7 @@ public class CaseworkerAmendCase implements CCDConfig<CaseData, State, UserRole>
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_AMEND_CASE)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(AMEND_CASE_DETAILS)
                                    .description(AMEND_CASE_DETAILS)
                                    .showSummary()
