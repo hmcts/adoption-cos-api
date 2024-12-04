@@ -43,6 +43,7 @@ public class LocalAuthoritySubmitApplication implements CCDConfig<CaseData, Stat
             .name("Local Authority Submit")
             .description("Local Authority Application Submit- Awaiting Admin Checks")
             .retries(120, 120)
+            .ttlIncrement(36524)
             .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
             .grant(READ, SUPER_USER, CASE_WORKER)
             .aboutToSubmitCallback(this::aboutToSubmit)

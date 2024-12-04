@@ -100,6 +100,7 @@ public class CaseworkerCheckAndSendOrders implements CCDConfig<CaseData, State, 
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_CHECK_AND_SEND_ORDERS)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(check_and_send_orders)
                                    .showSummary()
                                    .aboutToStartCallback(this::aboutToStart)

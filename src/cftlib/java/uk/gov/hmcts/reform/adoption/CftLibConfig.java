@@ -20,7 +20,8 @@ public class CftLibConfig implements CFTLibConfigurer {
             "caseworker-adoption-superuser",
             "caseworker-adoption-solicitor",
             "caseworker-adoption-systemupdate",
-            "citizen"
+            "citizen",
+            "TTL_profile"
         );
 
         var def = Files.readAllBytes(Path.of("build/ccd-config/ccd-A58-dev.xlsx"));
