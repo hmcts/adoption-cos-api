@@ -65,7 +65,15 @@ You should get a response similar to this:
 
 Preliminary steps:
 
-* To build:
+* Open file `/bin/generate-ccd-definition.sh` and amend:
+
+    `docker run --pull always --user $UID --rm --name json2xlsx \`
+
+    by removing "--user $UID" to:
+
+    `docker run --pull always --rm --name json2xlsx \`
+
+* Then build:
 
     `./gradlew build`
 
@@ -83,17 +91,11 @@ You can now run the full CCD and XUI stack locally using:
 * Then you can access XUI on `http://localhost:3000`
 
 
-### Generate CCD Excel Spreadsheet
-
-To generate the CCD Excel files run the following from the root of the project:
-
-    ./gradlew buildCCDXlsx
-
 ### Generate CCD JSON files
 
 To generate the CCD JSON files from the Java Model run the following from the root of the project:
 
-    ./gradlew generateCCDConfig
+    ./gradlew ccd-definitions:generateCCDConfig
 
 ### Generate TypeScript definitions for CCD definition
 

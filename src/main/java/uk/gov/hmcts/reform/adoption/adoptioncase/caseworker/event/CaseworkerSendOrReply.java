@@ -47,7 +47,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
     private PageBuilder addConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_SEND_OR_REPLY)
-                                   .forStates(State.LaSubmitted)
+                                   .forAllStates()
                                    .name(SEND_OR_REPLY_HEADING)
                                    .description(SEND_OR_REPLY_HEADING)
                                    .showSummary()

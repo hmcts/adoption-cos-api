@@ -55,9 +55,10 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
     }
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER);
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_REVIEW_DOCUMENT)
-                                   .forStates(State.LaSubmitted)
+                                   .forAllStates()
                                    .name(SCANNED_DOCUMENT)
                                    .description(SCANNED_DOCUMENT)
                                    .showSummary()

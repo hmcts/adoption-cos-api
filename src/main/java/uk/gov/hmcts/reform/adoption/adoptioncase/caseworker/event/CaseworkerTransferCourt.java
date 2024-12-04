@@ -32,9 +32,12 @@ public class CaseworkerTransferCourt implements CCDConfig<CaseData, State, UserR
     }
 
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
+                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
+        );
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_TRANSFER_COURT)
-                                   .forStates(State.LaSubmitted)
+                                   .forAllStates()
                                    .name(TRANSFER_COURT_HEADING)
                                    .description(TRANSFER_COURT_HEADING)
                                    .showSummary()

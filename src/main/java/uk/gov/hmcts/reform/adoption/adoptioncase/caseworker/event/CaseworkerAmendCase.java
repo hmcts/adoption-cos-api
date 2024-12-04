@@ -39,7 +39,7 @@ public class CaseworkerAmendCase implements CCDConfig<CaseData, State, UserRole>
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_AMEND_CASE)
-                                   .forStates(State.LaSubmitted)
+                                   .forAllStates()
                                    .name(AMEND_CASE_DETAILS)
                                    .description(AMEND_CASE_DETAILS)
                                    .showSummary()
