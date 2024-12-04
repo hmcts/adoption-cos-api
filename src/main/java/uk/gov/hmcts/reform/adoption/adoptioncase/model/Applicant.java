@@ -25,7 +25,7 @@ import static uk.gov.hmcts.ccd.sdk.type.FieldType.Email;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
-@Builder(toBuilder = true)
+@Builder
 public class Applicant {
 
     @CCD(label = "First names")
