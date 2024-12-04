@@ -7,11 +7,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SUPER_USER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.SYSTEM_UPDATE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.READ;
 
 @Component
 public class CaseworkerUpdateDssApplication implements CCDConfig<CaseData, State, UserRole> {
@@ -23,11 +20,10 @@ public class CaseworkerUpdateDssApplication implements CCDConfig<CaseData, State
 
         configBuilder
             .event(CASEWORKER_UPDATE)
-            .forStates(Submitted)
+            .forStates(Draft, Submitted)
             .name("Adoption case")
             .description("Adoption application update")
             .retries(120, 120)
-            .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
-            .grant(READ, SUPER_USER);
+        ;
     }
 }

@@ -18,7 +18,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.DirectionsOrderData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
@@ -84,13 +83,12 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_MANAGE_ORDERS)
-                                   .forStates(State.LaSubmitted)
+                                   .forAllStates()
                                    .name(MANAGE_ORDERS)
                                    .description(MANAGE_ORDERS)
                                    .showSummary()
                                    .aboutToSubmitCallback(this::aboutToSubmit)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.CASE_WORKER)
-                                   .grant(Permissions.CREATE_READ_UPDATE, UserRole.DISTRICT_JUDGE));
+        );
     }
 
     /**
