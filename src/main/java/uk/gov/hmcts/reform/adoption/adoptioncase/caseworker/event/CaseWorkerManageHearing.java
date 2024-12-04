@@ -115,6 +115,7 @@ public class CaseWorkerManageHearing implements CCDConfig<CaseData, State, UserR
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_MANAGE_HEARING)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(MANAGE_HEARINGS)
                                    .description(MANAGE_HEARINGS)
                                    .showSummary()

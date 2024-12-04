@@ -37,6 +37,7 @@ public class CaseworkerAmendOtherPartiesDetails implements CCDConfig<CaseData, S
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_AMEND_OTHER_PARTIES_DETAILS)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(AMEND_OTHER_PARTIES_DETAILS)
                                    .description(AMEND_OTHER_PARTIES_DETAILS)
                                    .showSummary()

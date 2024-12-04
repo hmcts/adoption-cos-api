@@ -28,6 +28,7 @@ public class CaseworkerRequestAnnexA implements CCDConfig<CaseData, State, UserR
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_AMEND_CASE)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name("Request Annex-A")
                                    .description("Request Annex-A")
                                    .showSummary()
