@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateOnlyAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.TtlAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
@@ -816,6 +818,13 @@ public class CaseData {
         access = {TtlAccess.class}
     )
     private TTL retainAndDisposeTimeToLive;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @CCD(
+        label = "Migration ID",
+        access = {SystemUpdateOnlyAccess.class }
+    )
+    private String migrationId;
 
     public String getNameOfCourtFirstHearing() {
         if (Objects.nonNull(familyCourtName)) {
