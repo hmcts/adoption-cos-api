@@ -38,7 +38,7 @@ public class CaseWorkerAllocateJudge implements CCDConfig<CaseData, State, UserR
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_ALLOCATE_JUDGE)
                                    .forStates(State.LaSubmitted)
-                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
+                                   //.showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(ALLOCATE_JUDGE)
                                    .description(ALLOCATE_JUDGE)
                                    .showSummary()
