@@ -9,7 +9,7 @@ import uk.gov.hmcts.ccd.sdk.api.HasRole;
 @Getter
 public enum UserRole implements HasRole {
     ADOPTION_GENERIC("caseworker-adoption", "RU"),
-    CASE_WORKER("caseworker-adoption-caseworker", "CRU"), //TODO changed from RU
+    CASE_WORKER("caseworker-adoption-caseworker", "CRU"),
     COURT_ADMIN("caseworker-adoption-courtadmin", "R"),
     LEGAL_ADVISOR("caseworker-adoption-la", "R"),
     DISTRICT_JUDGE("caseworker-adoption-judge", "RU"),

@@ -14,8 +14,6 @@ public class TtlAccess implements HasAccessControl {
     @Override
     public SetMultimap<HasRole, Permission> getGrants() {
         SetMultimap<HasRole, Permission> grants = HashMultimap.create();
-        grants.putAll(CASE_WORKER, Permissions.CREATE_READ_UPDATE); //TODO ?
-        grants.putAll(SYSTEM_UPDATE, Permissions.CREATE_READ_UPDATE); //TODO ?
         grants.putAll(TTL_PROFILE, Permissions.CREATE_READ_UPDATE);
 
         return grants;
