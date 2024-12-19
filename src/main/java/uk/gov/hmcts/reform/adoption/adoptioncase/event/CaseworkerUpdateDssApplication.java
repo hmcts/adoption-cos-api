@@ -24,6 +24,7 @@ public class CaseworkerUpdateDssApplication implements CCDConfig<CaseData, State
         configBuilder
             .event(CASEWORKER_UPDATE)
             .forStates(Submitted)
+            .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
             .name("Adoption case")
             .description("Adoption application update")
             .retries(120, 120)

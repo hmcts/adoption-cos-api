@@ -96,6 +96,7 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_SEEK_FURTHER_INFORMATION)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(SEEK_FURTHER_INFORMATION_HEADING)
                                    .description(SEEK_FURTHER_INFORMATION_HEADING)
                                    .showSummary()
