@@ -815,7 +815,7 @@ public class CaseData {
     @CCD(
         typeOverride = FieldType.TTL,
         label = "Set up TTL",
-        access = {TtlAccess.class}
+        access = {TtlAccess.class, SystemUpdateOnlyAccess.class}
     )
     private TTL retainAndDisposeTimeToLive;
 
