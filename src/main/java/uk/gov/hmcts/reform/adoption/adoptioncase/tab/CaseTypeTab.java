@@ -117,8 +117,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("hearings","Hearings")
             .displayOrder(6)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
-            .label("labelSummary-managehearing", null, "[Manage hearings](/cases/case-details/${[CASE_REFERENCE]}"
-                + "/trigger/caseworker-manage-hearing/caseworker-manage-hearingmanageOrders1)")
             .field(CaseData::getNewHearings)
             .field(CaseData::getAdjournHearings)
             .field(CaseData::getVacatedHearings);
@@ -128,8 +126,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         configBuilder.tab("orders","Orders")
             .displayOrder(5)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
-            .label("labelSummary-orderview", null, "[Create new order](/cases/case-details/${[CASE_REFERENCE]}"
-                + "/trigger/caseworker-manage-orders/caseworker-manage-ordersmanageOrders1)")
             .field(CaseData::getCommonOrderList);
     }
 
@@ -275,8 +271,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private Tab.TabBuilder<CaseData, UserRole> buildTabWithChildDetails(Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties) {
         return tabBuilderForOtherParties
-            .label("labelSummary-otherParties", null, "[Amend other parties details](/cases/case-details/${[CASE_REFERENCE]}"
-                + "/trigger/caseworker-amend-other-parties-details/caseworker-amend-other-parties-detailsamendOtherParties)")
             .label("labelSummary-childDetails", null, "#### Child details")
             .field("childrenFirstName")
             .field("childrenLastName")
@@ -313,17 +307,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .displayOrder(3)
             .label("Documents-Heading", null, "# Documents")
-            .label("Upload documents",
-                   null,
-                   "[Upload documents](/cases/case-details/${[CASE_REFERENCE]}"
-                       + "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)"
-            )
             .field(CaseData::getLaDocumentsUploaded)
-            .label("Review all documents",
-                   null,
-                   "[Review all documents](/cases/case-details/${[CASE_REFERENCE]}"
-                       + "/trigger/caseworker-review-document/caseworker-review-documentuploadDocument)"
-            )
             .field(CaseData::getApplicationDocumentsCategory)
             .field(CaseData::getReportsDocumentCategory)
             .field(CaseData::getStatementsDocumentCategory)
@@ -351,11 +335,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
             .displayOrder(4)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("LabelNotes-Correspondence", null, "### Correspondence")
-            .label("Upload correspondence",
-                   null,
-                   "[Upload correspondence](/cases/case-details/${[CASE_REFERENCE]}"
-                       + "/trigger/caseworker-manage-document/caseworker-manage-documentuploadDocument)"
-            )
             .field(CaseData::getCorrespondenceDocumentCategory);
     }
 

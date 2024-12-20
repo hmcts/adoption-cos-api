@@ -48,6 +48,7 @@ public class CaseworkerSendOrReply implements CCDConfig<CaseData, State, UserRol
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_SEND_OR_REPLY)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(SEND_OR_REPLY_HEADING)
                                    .description(SEND_OR_REPLY_HEADING)
                                    .showSummary()
