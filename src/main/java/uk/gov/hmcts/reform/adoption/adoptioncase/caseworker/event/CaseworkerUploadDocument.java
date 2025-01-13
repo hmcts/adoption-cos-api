@@ -53,6 +53,7 @@ public class CaseworkerUploadDocument implements CCDConfig<CaseData, State, User
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_UPLOAD_DOCUMENT)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(MANAGE_DOCUMENT)
                                    .description(MANAGE_DOCUMENT)
                                    .showSummary()

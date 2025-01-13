@@ -1,0 +1,26 @@
+[
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "A58",
+    "CaseFieldID": "TTL",
+    "ListElementCode": "SystemTTL",
+    "UserRole": "TTL_profile",
+    "CRUD": "R"
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "A58",
+    "CaseFieldID": "TTL",
+    "ListElementCode": "OverrideTTL",
+    "UserRole": "TTL_profile",
+    "CRUD": "CRU"
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "A58",
+    "CaseFieldID": "TTL",
+    "ListElementCode": "Suspended",
+    "UserRole": "TTL_profile",
+    "CRUD": "CRU"
+  }
+]

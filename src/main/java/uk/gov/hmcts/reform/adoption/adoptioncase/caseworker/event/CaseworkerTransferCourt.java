@@ -35,6 +35,7 @@ public class CaseworkerTransferCourt implements CCDConfig<CaseData, State, UserR
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_TRANSFER_COURT)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(TRANSFER_COURT_HEADING)
                                    .description(TRANSFER_COURT_HEADING)
                                    .showSummary()

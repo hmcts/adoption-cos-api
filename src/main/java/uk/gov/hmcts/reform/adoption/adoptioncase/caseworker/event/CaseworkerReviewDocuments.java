@@ -58,6 +58,7 @@ public class CaseworkerReviewDocuments implements CCDConfig<CaseData, State, Use
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_REVIEW_DOCUMENT)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(SCANNED_DOCUMENT)
                                    .description(SCANNED_DOCUMENT)
                                    .showSummary()

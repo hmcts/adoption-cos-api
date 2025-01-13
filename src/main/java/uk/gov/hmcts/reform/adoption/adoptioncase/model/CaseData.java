@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
+import uk.gov.hmcts.ccd.sdk.type.FieldType;
+import uk.gov.hmcts.ccd.sdk.type.TTL;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
@@ -24,6 +27,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateCollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateOnlyAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.TtlAccess;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
@@ -806,6 +810,14 @@ public class CaseData {
     private String seekFurtherInformationDocumentSubmitterName;
 
     private YesOrNo seekFurtherInformationAdopOrLaSelected;
+
+    @JsonProperty("TTL")
+    @CCD(
+        typeOverride = FieldType.TTL,
+        label = "Set up TTL",
+        access = {TtlAccess.class, SystemUpdateOnlyAccess.class}
+    )
+    private TTL retainAndDisposeTimeToLive;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @CCD(
