@@ -59,7 +59,7 @@ def secrets = [
 
   ]
 ]
-def branchesToSync = ['demo', 'ithc', 'perftest']
+def branchesToSync = ['ithc', 'perftest']
 def pipelineConf = new AppPipelineConfig()
 pipelineConf.vaultSecrets = secrets
 
