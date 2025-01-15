@@ -35,3 +35,6 @@ bin/main/application.yaml
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+### Generated CCD Json Definition ###
+ccd-definitions/definitions/development

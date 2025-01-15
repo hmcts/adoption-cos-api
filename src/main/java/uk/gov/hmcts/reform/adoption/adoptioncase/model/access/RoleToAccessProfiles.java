@@ -23,7 +23,7 @@ public class RoleToAccessProfiles implements CCDConfig<CaseData, State, UserRole
         configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.ADOPTION_GENERIC)
             .accessProfiles("caseworker-adoption").build();
         configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.CASE_WORKER)
-            .accessProfiles("caseworker-adoption-caseworker").readonly().build();
+            .accessProfiles("caseworker-adoption-caseworker").build();
         configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.COURT_ADMIN)
             .accessProfiles("caseworker-adoption-courtadmin").build();
         configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.LEGAL_ADVISOR)
@@ -39,6 +39,8 @@ public class RoleToAccessProfiles implements CCDConfig<CaseData, State, UserRole
         configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.CREATOR)
             .accessProfiles("[CREATOR]").build();
         configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.SYSTEM_UPDATE)
-            .accessProfiles("caseworker-adoption-systemupdate").build();
+            .accessProfiles("caseworker-adoption-systemupdate", "TTL_profile").build();
+        configBuilder.caseRoleToAccessProfile(UserRolesForAccessProfiles.TTL_MANAGER)
+            .accessProfiles("TTL_profile").build();
     }
 }

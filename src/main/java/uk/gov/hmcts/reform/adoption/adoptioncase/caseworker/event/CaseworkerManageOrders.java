@@ -85,6 +85,7 @@ public class CaseworkerManageOrders implements CCDConfig<CaseData, State, UserRo
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_MANAGE_ORDERS)
                                    .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(MANAGE_ORDERS)
                                    .description(MANAGE_ORDERS)
                                    .showSummary()
