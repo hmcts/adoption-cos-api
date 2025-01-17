@@ -602,13 +602,13 @@ static def getCheckedOutGitCommitHash() {
 
 task loadEnvSecrets() {
   doLast {
-    if (!project.file('./.aat-env').exists()) {
+    if (!project.file('build/cftlib/.aat-env').exists()) {
       new ByteArrayOutputStream().withStream { os ->
         exec {
-          commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'nfdiv-aat', '-o', 'tsv', '--query', 'value', '--name', 'nfdiv-case-api-dot-env'
+          commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'adoption-aat', '-o', 'tsv', '--query', 'value', '--name', 'adoption-cos-api-dot-env'
           standardOutput = os
         }
-        project.file('./.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), java.nio.charset.StandardCharsets.UTF_8))
+        project.file('build/cftlib/.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), java.nio.charset.StandardCharsets.UTF_8))
       }
     }
   }
@@ -622,13 +622,15 @@ task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
 }
 
 bootWithCCD {
-  dependsOn(buildCCDXlsx, loadEnvSecrets)
+  dependsOn(loadEnvSecrets, buildCCDXlsx)
   doFirst() {
-    project.file('./.aat-env').readLines().each() {
-      def index = it.indexOf("=")
-      def key = it.substring(0, index)
-      def value = it.substring(index + 1)
-      environment key, value
+    project.file('build/cftlib/.aat-env').readLines().each() {
+      if (it.contains("=")) {
+        def index = it.indexOf("=")
+        def key = it.substring(0, index)
+        def value = it.substring(index + 1)
+        environment key, value
+      }
     }
   }
   authMode = uk.gov.hmcts.rse.AuthMode.AAT
