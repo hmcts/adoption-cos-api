@@ -25,7 +25,7 @@ plugins {
   id 'org.sonarqube' version '5.0.0.4638'
   id 'org.springframework.boot' version '3.2.4'
   id 'com.github.ben-manes.versions' version '0.51.0'
-  id 'hmcts.ccd.sdk' version '5.5.2'
+  id 'hmcts.ccd.sdk' version '5.5.15'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1218'
   id 'au.com.dius.pact' version '4.3.8'
 }
@@ -311,7 +311,7 @@ def versions = [
   lombok            : '1.18.32',
   reformsJavaLogging: '5.1.7',
   springBoot        : springBoot.class.package.implementationVersion,
-  s2sClient         : '4.0.0',
+  s2sClient         : '4.0.2',
   pact              : '4.1.7',
   serenity          : '4.1.6',
   ccdCaseDocumentAmClient      : '1.7.3'
@@ -339,8 +339,8 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.2'
-  implementation(group: 'com.github.hmcts', name: 'befta-fw', version: '8.10.1') {
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.10.9'
+  implementation(group: 'com.github.hmcts', name: 'befta-fw', version: '9.1.0') {
     exclude group: 'org.apache.commons', module: 'commons-compress'
     exclude group: 'com.google.guava', module: 'guava'
     exclude group: 'org.apache.poi', module: 'poi-ooxml'
@@ -349,7 +349,9 @@ dependencies {
   }
   implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.9.2'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.3'
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.1.4'
+  implementation group: 'com.github.hmcts', name: 'java-logging', version: '6.1.4'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.reformsJavaLogging
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.1.2'
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '1.7.3'
@@ -375,13 +377,8 @@ dependencies {
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.15'
   implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.0.1'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.26.0'
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
-  implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
-  implementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.2-Categories'
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.2'
+  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '2.0.1'
+  implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.s2sClient
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.5'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.4'
@@ -413,8 +410,9 @@ dependencies {
 
   functionalTestImplementation sourceSets.main.runtimeClasspath
   functionalTestImplementation sourceSets.test.runtimeClasspath
-  functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '7.0.0'
-  functionalTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.s2sClient
+  functionalTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.1.1'
+  functionalTestImplementation group: 'com.github.hmcts', name: 'document-management-client', version: '7.0.0'
+  functionalTestImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.s2sClient
   functionalTestImplementation group: 'io.rest-assured', name: 'rest-assured'
   functionalTestImplementation group: 'net.javacrumbs.json-unit', name: 'json-unit-assertj', version: '3.2.7'
 
@@ -564,6 +562,13 @@ reloadCcd.configure {
 
 generateCCDConfig.dependsOn stopCosApiContainer
 
+generateCCDConfig.doLast {
+  copy {
+    from file('ccd-definitions')
+    into layout.buildDirectory.dir('definitions/A58')
+  }
+}
+
 project.ext {
   pacticipant = 'sscs_tribunalsCaseApi'
   pacticipantVersion = getCheckedOutGitCommitHash()
@@ -597,13 +602,13 @@ static def getCheckedOutGitCommitHash() {
 
 task loadEnvSecrets() {
   doLast {
-    if (!project.file('./.aat-env').exists()) {
+    if (!project.file('build/cftlib/.aat-env').exists()) {
       new ByteArrayOutputStream().withStream { os ->
         exec {
-          commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'nfdiv-aat', '-o', 'tsv', '--query', 'value', '--name', 'nfdiv-case-api-dot-env'
+          commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'adoption-aat', '-o', 'tsv', '--query', 'value', '--name', 'adoption-cos-api-dot-env'
           standardOutput = os
         }
-        project.file('./.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), java.nio.charset.StandardCharsets.UTF_8))
+        project.file('build/cftlib/.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), java.nio.charset.StandardCharsets.UTF_8))
       }
     }
   }
@@ -617,13 +622,15 @@ task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
 }
 
 bootWithCCD {
-  dependsOn(buildCCDXlsx, loadEnvSecrets)
+  dependsOn(loadEnvSecrets, buildCCDXlsx)
   doFirst() {
-    project.file('./.aat-env').readLines().each() {
-      def index = it.indexOf("=")
-      def key = it.substring(0, index)
-      def value = it.substring(index + 1)
-      environment key, value
+    project.file('build/cftlib/.aat-env').readLines().each() {
+      if (it.contains("=")) {
+        def index = it.indexOf("=")
+        def key = it.substring(0, index)
+        def value = it.substring(index + 1)
+        environment key, value
+      }
     }
   }
   authMode = uk.gov.hmcts.rse.AuthMode.AAT

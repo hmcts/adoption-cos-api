@@ -1,78 +1,72 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
-import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.ccd.sdk.ConfigBuilderImpl;
-import uk.gov.hmcts.ccd.sdk.ResolvedCCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.Event;
-import uk.gov.hmcts.ccd.sdk.api.HasRole;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.AddressUK;
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders;
+import uk.gov.hmcts.reform.adoption.adoptioncase.event.EventTest;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.GeneralDirectionOrderTypes;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.platform.commons.util.ReflectionUtils.findMethod;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.CaseworkerManageOrders.CASEWORKER_MANAGE_ORDERS;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageOrders.ERROR_CHECK_HEARINGS_SELECTION;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.RESPONDENT_BIRTH_MOTHER;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.RESPONDENT_BIRTH_FATHER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.ADOPTION_AGENCY;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.LEGAL_GUARDIAN_CAFCASS;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.CHILDS_LOCAL_AUTHORITY;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.OTHER_ADOPTION_AGENCY;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.APPLICANTS_LOCAL_AUTHORITY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.CHILDS_LOCAL_AUTHORITY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.LEGAL_GUARDIAN_CAFCASS;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.OTHER_ADOPTION_AGENCY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.OTHER_PERSON_WITH_PARENTAL_RESPONSIBILITY;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.RESPONDENT_BIRTH_FATHER;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA206.RESPONDENT_BIRTH_MOTHER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA76.APPLICANT1;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData.RecipientsA76.APPLICANT2;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.LIST_FOR_FIRST_HEARING;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.LIST_FOR_FURTHER_HEARINGS;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.CASE_MANAGEMENT_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.FINAL_ADOPTION_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ManageOrderType.GENERAL_DIRECTIONS_ORDER;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.ModeOfHearing.SET_MODE_OF_HEARING;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.LIST_FOR_FIRST_HEARING;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.LIST_FOR_FURTHER_HEARINGS;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ManageOrdersData.HearingNotices.HEARING_DATE_TO_BE_SPECIFIED_IN_THE_FUTURE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ADOP_AGENCY_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.APPLICANTS_LA_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BIRTH_FATHER_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BIRTH_MOTHER_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILDS_LA_NOT_APPLICABLE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ERROR_CHECK_RECIPIENTS_SELECTION;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.FIRST_APPLICANT_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.LEGAL_GUARDIAN_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_ADOP_AGENCY_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_LA_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.OTHER_PARENT_AGENCY_NOT_APPLICABLE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.SECOND_APPLICANT_NOT_APPLICABLE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.ERROR_CHECK_RECIPIENTS_SELECTION;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 /**
  * The type Caseworker manage orders test.
  */
 @ExtendWith(MockitoExtension.class)
-class CaseworkerManageOrdersTest {
+class CaseworkerManageOrdersTest extends EventTest {
 
     @InjectMocks
     private ManageOrders manageOrdersPage;
@@ -403,45 +397,5 @@ class CaseworkerManageOrdersTest {
             .data(caseData())
             .id(1L)
             .build();
-    }
-
-    /**
-     * Gets events from.
-     *
-     * @param <T>           the type parameter
-     * @param <S>           the type parameter
-     * @param <R>           the type parameter
-     * @param configBuilder the config builder
-     * @return the events from
-     */
-    @SuppressWarnings({"unchecked"})
-    public static <T, S, R extends HasRole> Map<String, Event<T, R, S>> getEventsFrom(
-        final ConfigBuilderImpl<T, S, R> configBuilder) {
-
-        return (Map<String, Event<T, R, S>>) findMethod(ConfigBuilderImpl.class, "getEvents")
-            .map(method -> {
-                try {
-                    method.setAccessible(true);
-                    return method.invoke(configBuilder);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    throw new AssertionError("Unable to invoke ConfigBuilderImpl.class method getEvents", e);
-                }
-            })
-            .orElseThrow(() -> new AssertionError("Unable to find ConfigBuilderImpl.class method getEvents"));
-    }
-
-
-    /**
-     * Create case data config builder config builder.
-     *
-     * @return the config builder
-     */
-    public static ConfigBuilderImpl<CaseData, State, UserRole> createCaseDataConfigBuilder() {
-        return new ConfigBuilderImpl<>(new ResolvedCCDConfig<>(
-            CaseData.class,
-            State.class,
-            UserRole.class,
-            new HashMap<>(),
-            ImmutableSet.copyOf(State.class.getEnumConstants())));
     }
 }

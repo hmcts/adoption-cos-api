@@ -93,12 +93,10 @@ public class CaseworkerSeekFurtherInformation implements CCDConfig<CaseData, Sta
      * @return - PageBuilder updated to use on overridden method.
      */
     private PageBuilder addEventConfig(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        configBuilder.grant(State.Draft, Permissions.READ_UPDATE, UserRole.CASE_WORKER, UserRole.COURT_ADMIN,
-                            UserRole.LEGAL_ADVISOR, UserRole.DISTRICT_JUDGE
-        );
         return new PageBuilder(configBuilder
                                    .event(CASEWORKER_SEEK_FURTHER_INFORMATION)
-                                   .forAllStates()
+                                   .forStates(State.LaSubmitted)
+                                   .showCondition("applicant1Email=\"DO_NOT_SHOW\"")
                                    .name(SEEK_FURTHER_INFORMATION_HEADING)
                                    .description(SEEK_FURTHER_INFORMATION_HEADING)
                                    .showSummary()
