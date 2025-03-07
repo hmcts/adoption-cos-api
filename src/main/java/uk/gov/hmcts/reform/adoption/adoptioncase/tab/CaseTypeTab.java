@@ -17,7 +17,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
-        buildCFVTab(configBuilder);
+        buildCfvTab(configBuilder);
         buildSummaryTab(configBuilder);
         buildApplicantsTab(configBuilder);
         buildOtherPartiesTab(configBuilder);
@@ -31,7 +31,7 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
         buildServiceRequestTab(configBuilder);
     }
 
-    private void buildCFVTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
+    private void buildCfvTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("cfv", "Case File View")
             .forRoles(CASE_WORKER)
             .field(CaseData::getCaseFileView, null, "#ARGUMENT(CaseFileView)");
