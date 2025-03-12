@@ -23,7 +23,16 @@ This API handles callbacks from CCD for the ADOPTION case type.
           │                 │        │                 │
           └─────────────────┘        └─────────────────┘
 
-## Building and deploying the application
+
+## Prerequisites
+
+Running the application requires the following tools to be installed in your environment:
+
+- [JDK](https://openjdk.org/projects/jdk/17/) v17 *specifically*
+- [Docker](https://www.docker.com)
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
+
+## Building and running the application
 
 ### Building the application
 
@@ -34,7 +43,44 @@ To build the project execute the following command:
 
     ./gradlew build
 
-### Running the application
+### Running the application locally with CCD and XUI
+
+Preliminary steps:
+
+* Connect to F5 VPN:<br>
+  Go to the webpage https://portal.platform.hmcts.net/ and follow the instructions to connect to F5 VPN.  Once the F5 scan has taken place and you are taken to the F5 landing page, **make sure you click the VPN button** to actually start the VPN.<br>
+  (This is needed because we connect to APIs deployed in the AAT environment while running the application locally.)
+
+* Then log in to the subscription (you will need to get the subscription ID from another dev):
+
+    `az acr login --name hmctspublic --subscription [SUBSCRIPTION ID]`
+
+You can now run the full CCD and XUI stack locally using:
+
+    ./gradlew bootWithCcd
+
+* Then you can access XUI on `http://localhost:3000`. This will redirect to the IDAM log-in page in AAT.  Use the test account with e-mail address `test-case-worker-dc6@mailinator.com` and password `Password23` to log in as a case-worker.<br>
+If you see any errors then you need to recreate the test account using `curl` as follows:
+
+```bash
+   curl --location 'https://idam-api.aat.platform.hmcts.net/testing-support/accounts' \
+   --header 'Content-Type: application/json' \
+   --data-raw '{
+     "email": "test-case-worker-dc6@mailinator.com",
+     "forename": "Test",
+     "surname": "Case-worker",
+     "password": "Password23",
+     "roles":
+      [
+        { "code": "idam-mfa-disabled" },
+        { "code": "caseworker" },
+        { "code": "caseworker-adoption" },
+        { "code": "caseworker-adoption-caseworker" }
+      ]
+     }'
+```
+
+### Running the application elsewhere
 
 Create the image of the application by executing the following command:
 
@@ -49,8 +95,7 @@ by executing the following command
 
     docker-compose up
 
-This will start the API container exposing the application's port
-(set to `4550` in this template app).
+This will start the API container exposing the application's port (set to `4550` in this template app).
 
 The application exposes health endpoint (http://localhost:4550/health):
 
@@ -59,29 +104,6 @@ The application exposes health endpoint (http://localhost:4550/health):
 You should get a response similar to this:
 
     {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
-
-
-### Running the application locally with CCD and XUI
-
-Preliminary steps:
-
-* To build:
-
-    `./gradlew build`
-
-* Connect to F5 VPN:<br>
-  Go to the webpage https://portal.platform.hmcts.net/ and follow the instruction to connect to F5 VPN.
-
-* Then login to the subscription (you will need to get the subscription id from another dev):
-
-    `az acr login --name hmctspublic --subscription [SUBSCRIPTION ID]`
-
-You can now run the full CCD and XUI stack locally using:
-
-    ./gradlew bootWithCcd
-
-* Then you can access XUI on `http://localhost:3000`
-
 
 ### Generate CCD Excel Spreadsheet
 
@@ -180,7 +202,4 @@ To view the databases:
 
 ## License
 
-
-
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
