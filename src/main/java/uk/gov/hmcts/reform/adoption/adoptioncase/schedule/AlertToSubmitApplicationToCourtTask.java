@@ -21,9 +21,7 @@ import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.STATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.SUBMITTED_DATE;
 
@@ -66,6 +64,8 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
                         .gte(LocalDate.now().minusDays(emailAlertOffsetDays))
                         .lte(LocalDate.now().minusDays(emailAlertOffsetDays)));
         log.info("AlertLAToSubmitApplicationToCourtTask Scheduled task is executed");
+        log.info("Searching between " + LocalDate.now().minusDays(emailAlertOffsetDays)
+                     + " and " + LocalDate.now().minusDays(emailAlertOffsetDays)); //TODO remove
 
         final List<CaseDetails> casesInDraftNeedingReminder =
                 ccdSearchService.searchForAllCasesWithQuery(Submitted, query, user, serviceAuthorization);
