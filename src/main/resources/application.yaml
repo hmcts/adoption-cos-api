@@ -26,7 +26,7 @@ cron:
   alertDraftApplicant:
     offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:69}
   alertSubmitToCourt:
-    offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:15}
+    offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:0}
 
 uk:
   gov:
