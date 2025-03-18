@@ -58,18 +58,18 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
         final String serviceAuthorization = authTokenGenerator.generate();
 
         final BoolQueryBuilder query = boolQuery()
-                .must(matchQuery(STATE, Draft))
+                .must(matchQuery(STATE, Draft))  //TODO Draft -> Submitted
                 .must(existsQuery(CREATED_DATE))
                 .filter(rangeQuery(CREATED_DATE)
                         .gte(LocalDate.now().minusDays(emailAlertOffsetDays))
                         .lte(LocalDate.now().minusDays(emailAlertOffsetDays)));
-        log.info("Scheduled task is executed");
+        log.info("AlertLAToSubmitApplicationToCourtTask Scheduled task is executed");
 
-        final List<CaseDetails> casesInDraftNeedingReminder =
+        final List<CaseDetails> casesInDraftNeedingReminder = //TODO Draft -> Submitted
                 ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, serviceAuthorization);
 
         for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
-            log.info("case details are present: " + caseDetails.getId());
+            log.info("AlertLAToSubmitApplicationToCourtTask case details are present: " + caseDetails.getId());
             sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
         }
 
