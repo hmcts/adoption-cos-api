@@ -75,16 +75,15 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
             .filter(rangeQuery(CREATED_DATE)
                         .gte(LocalDate.now())
                         .lte(LocalDate.now()));
-        log.info("Scheduled task is executed");
+        log.info("AlertMultiChildApplicationToSubmitTask Scheduled task is executed");
 
         final List<CaseDetails> casesInDraftNeedingReminder =
             ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, serviceAuthorization);
         Map<String, List<CaseDetails>> emailCounts = new HashMap<>();
 
         for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
-            log.info("case details are present: " + caseDetails.getId());
+            log.info("AlertMultiChildApplicationToSubmitTask case details are present: " + caseDetails.getId());
             String applicantEmail = (String) caseDetails.getData().get("applicant1Email");
-            log.info("User email: {}", applicantEmail);
             List<CaseDetails> caseList = emailCounts.get(applicantEmail);
             if (!CollectionUtils.sizeIsEmpty(caseList)) {
                 log.info("adding case to the map {}", caseDetails.getId());
