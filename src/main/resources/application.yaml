@@ -25,6 +25,8 @@ azure:
 cron:
   alertDraftApplicant:
     offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:69}
+  alertSubmitToCourt:
+    offsetDays: ${DRAFT_APPLICANT_EMAIL_ALERT_OFFSET_DAYS:15}
 
 uk:
   gov:
