@@ -46,7 +46,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
     @Autowired
     private CaseDetailsConverter caseDetailsConverter;
 
-    @Value("${cron.alertSubmitToCourt.offsetDays:15}")
+    @Value("${cron.alertSubmitToCourt.offsetDays:15}") //TODO change application.yaml back to 15
     public  int emailAlertOffsetDays;
 
     @Override
@@ -64,8 +64,8 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
                         .gte(LocalDate.now().minusDays(emailAlertOffsetDays))
                         .lte(LocalDate.now().minusDays(emailAlertOffsetDays)));
         log.info("AlertLAToSubmitApplicationToCourtTask Scheduled task is executed");
-        log.info("Searching between " + LocalDate.now().minusDays(emailAlertOffsetDays)
-                     + " and " + LocalDate.now().minusDays(emailAlertOffsetDays)); //TODO remove
+        log.info("AlertLAToSubmitApplicationToCourtTask Searching for cases submitted on "
+                     + LocalDate.now().minusDays(emailAlertOffsetDays)); //TODO remove
 
         final List<CaseDetails> casesInDraftNeedingReminder =
                 ccdSearchService.searchForAllCasesWithQuery(Submitted, query, user, serviceAuthorization);
@@ -79,7 +79,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
 
     private void sendLocalAuthorityAlertToSubmitToCourt(CaseDetails caseDetails) {
         log.info(
-                "sendLocalAuthorityAlertToSubmitToCourt being called for case id: {}",
+                "AlertLAToSubmitApplicationToCourtTask send being called for case id: {}",
                 caseDetails.getId()
         ); //NOSONAR test code to check CRON fires
 
