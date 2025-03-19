@@ -52,7 +52,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
     public  int emailAlertOffsetDays;
 
     @Override
-    public void run() { //NOSONAR test code to check CRON fires
+    public void run() {
 
         final User user = idamService.retrieveSystemUpdateUserDetails();
         final String serviceAuthorization = authTokenGenerator.generate();
