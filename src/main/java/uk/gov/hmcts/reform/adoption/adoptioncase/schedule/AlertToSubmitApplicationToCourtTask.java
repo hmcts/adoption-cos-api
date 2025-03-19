@@ -54,8 +54,6 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
     @Override
     public void run() { //NOSONAR test code to check CRON fires
 
-        log.info("AlertLAToSubmitApplicationToCourtTask is firing"); //NOSONAR test code to check CRON fires
-
         final User user = idamService.retrieveSystemUpdateUserDetails();
         final String serviceAuthorization = authTokenGenerator.generate();
 
@@ -66,25 +64,20 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
                         .gte(LocalDate.now().minusDays(emailAlertOffsetDays))
                         .lte(LocalDate.now().minusDays(emailAlertOffsetDays)));
         log.info("AlertLAToSubmitApplicationToCourtTask Scheduled task is executed");
-        log.info("AlertLAToSubmitApplicationToCourtTask Searching for cases submitted on "
-                     + LocalDate.now().minusDays(emailAlertOffsetDays)); //TODO remove
+        log.info("AlertLAToSubmitApplicationToCourtTask Searching for cases submitted on {}",
+                     LocalDate.now().minusDays(emailAlertOffsetDays)); //TODO remove
 
         final List<CaseDetails> casesInDraftNeedingReminder =
                 ccdSearchService.searchForAllCasesWithQuery(Submitted, query, user, serviceAuthorization);
 
         for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
-            log.info("AlertLAToSubmitApplicationToCourtTask case details are present: " + caseDetails.getId());
+            log.info("AlertLAToSubmitApplicationToCourtTask case details are present: {}", caseDetails.getId());
             sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
         }
 
     }
 
     private void sendLocalAuthorityAlertToSubmitToCourt(CaseDetails caseDetails) {
-        log.info(
-                "AlertLAToSubmitApplicationToCourtTask send being called for case id: {}",
-                caseDetails.getId()
-        ); //NOSONAR test code to check CRON fires
-
         uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
              caseDetailsConverter.convertToCaseDetailsFromReformModel(
                  caseDetails
