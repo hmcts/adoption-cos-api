@@ -29,7 +29,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService
 
 
 @Component
-@Slf4j  //NOSONAR test code to check CRON fires
+@Slf4j
 @RequiredArgsConstructor
 public class AlertToSubmitApplicationToCourtTask implements Runnable {
 
