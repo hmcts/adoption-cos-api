@@ -61,10 +61,10 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
         log.info("AlertLAToSubmitApplicationToCourtTask Searching for cases submitted on {}",
                      LocalDate.now().minusDays(emailAlertOffsetDays)); //TODO remove
 
-        final List<CaseDetails> casesInDraftNeedingReminder =
+        final List<CaseDetails> casesNeedingReminder =
                 ccdSearchService.searchForAllCasesWithQuery(Submitted, query, user, serviceAuthorization);
 
-        for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
+        for (final CaseDetails caseDetails : casesNeedingReminder) {
             log.info("AlertLAToSubmitApplicationToCourtTask case details are present: {}", caseDetails.getId());
             sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
         }
