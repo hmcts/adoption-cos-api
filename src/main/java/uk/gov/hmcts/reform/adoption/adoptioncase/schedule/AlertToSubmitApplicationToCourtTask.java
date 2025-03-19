@@ -33,20 +33,15 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService
 @RequiredArgsConstructor
 public class AlertToSubmitApplicationToCourtTask implements Runnable {
 
-    @Autowired
-    private CcdSearchService ccdSearchService;
+    private final CcdSearchService ccdSearchService;
 
-    @Autowired
-    private IdamService idamService;
+    private final IdamService idamService;
 
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
+    private final AuthTokenGenerator authTokenGenerator;
 
-    @Autowired
-    private LocalAuthorityAlertToSubmitToCourt localAuthorityAlertToSubmitToCourt;
+    private final LocalAuthorityAlertToSubmitToCourt localAuthorityAlertToSubmitToCourt;
 
-    @Autowired
-    private CaseDetailsConverter caseDetailsConverter;
+    private final CaseDetailsConverter caseDetailsConverter;
 
     @Value("${cron.alertSubmitToCourt.offsetDays:15}") //TODO change application.yaml back to 15
     public  int emailAlertOffsetDays;
