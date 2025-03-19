@@ -6,6 +6,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.adoption.notification.LocalAuthorityAlertToSubmitToCourt;
@@ -83,14 +85,14 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
                 caseDetails.getId()
         ); //NOSONAR test code to check CRON fires
 
-        // uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
-        //     caseDetailsConverter.convertToCaseDetailsFromReformModel(
-        //                caseDetails
-        //      );
-        // localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(
-        //     caseData.getData(),
-        //     caseDetails.getId()
-        //  );
+        uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
+             caseDetailsConverter.convertToCaseDetailsFromReformModel(
+                 caseDetails
+             );
+        localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(
+            caseData.getData(),
+            caseDetails.getId()
+        );
 
     }
 
