@@ -29,8 +29,4 @@ public interface ApplicantNotification {
     default void sendToLocalCourtPostLocalAuthoritySubmission(CaseData caseData, Long id) throws NotificationClientException, IOException {
         //No operation
     }
-
-    default void sendLocalAuthorityAlertToSubmitToCourt(CaseData caseData, Long id) throws NotificationClientException, IOException {
-        //No operation
-    }
 }

@@ -25,16 +25,12 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LO
 @Component
 @Slf4j
 @RequiredArgsConstructor
-// todo - still OK to implement this interface - does everything?
-public class LocalAuthorityAlertToSubmitToCourt implements ApplicantNotification {
-
-    private final IdamService idamService;
+public class LocalAuthorityAlertToSubmitToCourt {
 
     private final NotificationService notificationService;
 
     private final EmailTemplatesConfig emailTemplatesConfig;
 
-    @Override
     public void sendLocalAuthorityAlertToSubmitToCourt(final CaseData caseData, final Long id) {
         log.info("Alerting Local Authority to submit case : {} to court.", id);
 
@@ -56,8 +52,6 @@ public class LocalAuthorityAlertToSubmitToCourt implements ApplicantNotification
         );
     }
 
-    // This has been copied from ApplicationSubmittedNotification.  Should be a util?
-    // The original function has linting issues that this version addresses.
     private Map<String, Object> getTemplateVarsForLocalAuthority(CaseData caseData) {
         Map<String, Object> templateVars = new HashMap<>();
 
