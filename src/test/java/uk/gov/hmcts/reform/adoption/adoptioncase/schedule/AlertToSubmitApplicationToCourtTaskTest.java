@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 
-import net.sf.cglib.core.Local;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
