@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
-import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
 import java.time.LocalDate;
 import java.util.HashMap;
