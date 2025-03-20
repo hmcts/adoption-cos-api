@@ -16,6 +16,8 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.idam.client.models.User;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -43,7 +45,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
     private final CaseDetailsConverter caseDetailsConverter;
 
     @Value("${cron.alertSubmitToCourt.offsetDays:15}") //TODO change application.yaml back to 15
-    public  int emailAlertOffsetDays;
+    public int emailAlertOffsetDays;
 
     @Override
     public void run() {
@@ -51,15 +53,15 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
         final User user = idamService.retrieveSystemUpdateUserDetails();
         final String serviceAuthorization = authTokenGenerator.generate();
 
+        final LocalDate offsetDate = ZonedDateTime.now().toLocalDate().minusDays(emailAlertOffsetDays);
+
         final BoolQueryBuilder query = boolQuery()
                 .must(matchQuery(STATE, Submitted))
                 .must(existsQuery(SUBMITTED_DATE))
                 .filter(rangeQuery(SUBMITTED_DATE)
-                        .gte(LocalDate.now().minusDays(emailAlertOffsetDays))
-                        .lte(LocalDate.now().minusDays(emailAlertOffsetDays)));
-        log.info("AlertLAToSubmitApplicationToCourtTask Scheduled task is executed");
-        log.info("AlertLAToSubmitApplicationToCourtTask Searching for cases submitted on {}",
-                     LocalDate.now().minusDays(emailAlertOffsetDays)); //TODO remove
+                        .gte(offsetDate)
+                        .lte(offsetDate));
+        log.info("AlertLAToSubmitApplicationToCourtTask Scheduled task is executed for cases submitted on {}", offsetDate);
 
         final List<CaseDetails> casesNeedingReminder =
                 ccdSearchService.searchForAllCasesWithQuery(Submitted, query, user, serviceAuthorization);
