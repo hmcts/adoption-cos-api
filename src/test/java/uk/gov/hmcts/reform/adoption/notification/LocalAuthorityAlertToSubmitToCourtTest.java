@@ -17,6 +17,9 @@ import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -73,7 +76,7 @@ class LocalAuthorityAlertToSubmitToCourtTest {
     }
 
     @Test
-    void localAuthorityAlertToSubmitToCourtTest_sendLocalAuthorityAlertToSubmitToCourt() {
+    void sendExpectedEmailsToChildAndApplicantSocialWorkers() {
         // Stub LA Portal URL
         when(emailTemplatesConfig.getTemplateVars()).thenReturn(templateVarsValues);
 
@@ -98,6 +101,18 @@ class LocalAuthorityAlertToSubmitToCourtTest {
             LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
             expectedTemplateVars,
             ENGLISH
+        );
+    }
+
+    @Test
+    void sendTwoEmailsOnly() {
+        localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(caseData, 1234223432344234L);
+
+        verify(notificationService, times(2)).sendEmail(
+            anyString(),
+            any(),
+            anyMap(),
+            any()
         );
     }
 }
