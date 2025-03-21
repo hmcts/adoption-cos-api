@@ -69,7 +69,6 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
             log.info("AlertLAToSubmitApplicationToCourtTask case details are present: {}", caseDetails.getId());
             sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
         }
-
     }
 
     private void sendLocalAuthorityAlertToSubmitToCourt(CaseDetails caseDetails) {
@@ -81,7 +80,5 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
             caseData.getData(),
             caseDetails.getId()
         );
-
     }
-
 }
