@@ -43,7 +43,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
 
     private final CaseDetailsConverter caseDetailsConverter;
 
-    @Value("${cron.alertSubmitToCourt.offsetDays:15}") //TODO change application.yaml back to 15
+    @Value("${cron.alertSubmitToCourt.offsetDays:15}")
     public int emailAlertOffsetDays;
 
     @Override
