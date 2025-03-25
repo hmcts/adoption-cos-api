@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.adoption.notification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
@@ -36,18 +38,35 @@ public class LocalAuthorityAlertToSubmitToCourt {
         final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
         final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
 
-        notificationService.sendEmail(
+        EmailValidator validator = EmailValidator.getInstance();
+
+        if (StringUtils.isBlank(childLocalAuthorityEmailAddress) || !validator.isValid(childLocalAuthorityEmailAddress)) {
+            log.error(
+                "Child local authority could not be alerted to submit case {} because the email address ({}) was invalid",
+                id,
+                childLocalAuthorityEmailAddress
+            );
+        } else {
+            notificationService.sendEmail(
                 childLocalAuthorityEmailAddress,
                 LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
                 getTemplateVarsForLocalAuthority(caseData),
                 LanguagePreference.ENGLISH
-        );
+            );
+        }
 
+        if (StringUtils.isBlank(applicantLocalAuthorityEmailAddress) || !validator.isValid(applicantLocalAuthorityEmailAddress)) {
+            log.error("Applicant local authority could not be alerted to submit case {} because the email address ({}) was invalid",
+                      id,
+                      applicantLocalAuthorityEmailAddress
+            );
+            return;
+        }
         notificationService.sendEmail(
-                applicantLocalAuthorityEmailAddress,
-                LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
-                getTemplateVarsForLocalAuthority(caseData),
-                LanguagePreference.ENGLISH
+            applicantLocalAuthorityEmailAddress,
+            LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
+            getTemplateVarsForLocalAuthority(caseData),
+            LanguagePreference.ENGLISH
         );
     }
 
