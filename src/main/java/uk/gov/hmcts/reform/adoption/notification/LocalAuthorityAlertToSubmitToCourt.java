@@ -58,8 +58,8 @@ public class LocalAuthorityAlertToSubmitToCourt {
         }
 
         if (
-            StringUtils.isBlank(applicantLocalAuthorityEmailAddress) ||
-            !validator.isValid(applicantLocalAuthorityEmailAddress)
+            StringUtils.isBlank(applicantLocalAuthorityEmailAddress)
+                || !validator.isValid(applicantLocalAuthorityEmailAddress)
         ) {
             log.error("Applicant local authority could not be alerted to submit case {}: Invalid email address '{}'",
                       id,
