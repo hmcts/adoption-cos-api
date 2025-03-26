@@ -40,9 +40,11 @@ public class LocalAuthorityAlertToSubmitToCourt {
 
         EmailValidator validator = EmailValidator.getInstance();
 
-        if (StringUtils.isBlank(childLocalAuthorityEmailAddress) || !validator.isValid(childLocalAuthorityEmailAddress)) {
+        if (
+            StringUtils.isBlank(childLocalAuthorityEmailAddress) || !validator.isValid(childLocalAuthorityEmailAddress)
+        ) {
             log.error(
-                "Child local authority could not be alerted to submit case {} because the email address ({}) was invalid",
+                "Child local authority could not be alerted to submit case {}: Invalid email address '{}'",
                 id,
                 childLocalAuthorityEmailAddress
             );
@@ -55,8 +57,11 @@ public class LocalAuthorityAlertToSubmitToCourt {
             );
         }
 
-        if (StringUtils.isBlank(applicantLocalAuthorityEmailAddress) || !validator.isValid(applicantLocalAuthorityEmailAddress)) {
-            log.error("Applicant local authority could not be alerted to submit case {} because the email address ({}) was invalid",
+        if (
+            StringUtils.isBlank(applicantLocalAuthorityEmailAddress) ||
+            !validator.isValid(applicantLocalAuthorityEmailAddress)
+        ) {
+            log.error("Applicant local authority could not be alerted to submit case {}: Invalid email address '{}'",
                       id,
                       applicantLocalAuthorityEmailAddress
             );
@@ -78,7 +83,8 @@ public class LocalAuthorityAlertToSubmitToCourt {
 
         templateVars.put(HYPHENATED_REF, hyphenatedCaseRef);
         templateVars.put(LOCAL_COURT_NAME, familyCourtName);
-        templateVars.put(CHILD_FULL_NAME, caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName());
+        templateVars.put(CHILD_FULL_NAME,
+                         caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName());
         templateVars.put(DATE_SUBMITTED, Optional.ofNullable(caseData.getApplication().getDateSubmitted())
                 .orElse(LocalDate.now()).format(DATE_TIME_FORMATTER));
         templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
