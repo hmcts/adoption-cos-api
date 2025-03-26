@@ -148,7 +148,7 @@ class LocalAuthorityAlertToSubmitToCourtTest {
     }
 
     @Test
-    void whenChildSWEmailInvalid_thenDoNotSendEmail() {
+    void whenChildSocialWorkerEmailInvalid_thenDoNotSendEmail() {
         caseData.getChildSocialWorker().setLocalAuthorityEmail("invalid");
 
         // Stub LA Portal URL
@@ -179,7 +179,7 @@ class LocalAuthorityAlertToSubmitToCourtTest {
     }
 
     @Test
-    void whenApplicantSWEmailInvalid_thenDoNotSendEmail() {
+    void whenApplicantSocialWorkerEmailInvalid_thenDoNotSendEmail() {
         caseData.getApplicantSocialWorker().setLocalAuthorityEmail(null);
 
         // Stub LA Portal URL
