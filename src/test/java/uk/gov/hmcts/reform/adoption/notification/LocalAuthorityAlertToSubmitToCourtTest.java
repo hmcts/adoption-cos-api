@@ -146,4 +146,66 @@ class LocalAuthorityAlertToSubmitToCourtTest {
             ENGLISH
         );
     }
+
+    @Test
+    void whenChildSWEmailInvalid_thenDoNotSendEmail() {
+        caseData.getChildSocialWorker().setLocalAuthorityEmail("invalid");
+
+        // Stub LA Portal URL
+        when(emailTemplatesConfig.getTemplateVars()).thenReturn(templateVarsValues);
+
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
+        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
+        expectedTemplateVars.put(DATE_SUBMITTED, "1 March 2025");
+        expectedTemplateVars.put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
+
+        localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(caseData, 1234223432344234L);
+
+        verify(notificationService, times(1)).sendEmail(
+            "applicant-sw@local-authority.gov.uk",
+            LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
+            expectedTemplateVars,
+            ENGLISH
+        );
+
+        verify(notificationService, times(1)).sendEmail(
+            anyString(),
+            any(),
+            anyMap(),
+            any()
+        );
+    }
+
+    @Test
+    void whenApplicantSWEmailInvalid_thenDoNotSendEmail() {
+        caseData.getApplicantSocialWorker().setLocalAuthorityEmail(null);
+
+        // Stub LA Portal URL
+        when(emailTemplatesConfig.getTemplateVars()).thenReturn(templateVarsValues);
+
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
+        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
+        expectedTemplateVars.put(DATE_SUBMITTED, "1 March 2025");
+        expectedTemplateVars.put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
+
+        localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(caseData, 1234223432344234L);
+
+        verify(notificationService, times(1)).sendEmail(
+            "child-sw@local-authority.gov.uk",
+            LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
+            expectedTemplateVars,
+            ENGLISH
+        );
+
+        verify(notificationService, times(1)).sendEmail(
+            anyString(),
+            any(),
+            anyMap(),
+            any()
+        );
+    }
 }
