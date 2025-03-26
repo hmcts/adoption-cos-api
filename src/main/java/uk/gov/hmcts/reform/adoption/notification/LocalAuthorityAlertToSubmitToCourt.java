@@ -60,14 +60,14 @@ public class LocalAuthorityAlertToSubmitToCourt {
                       id,
                       applicantLocalAuthorityEmailAddress
             );
-            return;
+        } else {
+            notificationService.sendEmail(
+                applicantLocalAuthorityEmailAddress,
+                LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
+                getTemplateVarsForLocalAuthority(caseData),
+                LanguagePreference.ENGLISH
+            );
         }
-        notificationService.sendEmail(
-            applicantLocalAuthorityEmailAddress,
-            LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
-            getTemplateVarsForLocalAuthority(caseData),
-            LanguagePreference.ENGLISH
-        );
     }
 
     private Map<String, Object> getTemplateVarsForLocalAuthority(CaseData caseData) {
