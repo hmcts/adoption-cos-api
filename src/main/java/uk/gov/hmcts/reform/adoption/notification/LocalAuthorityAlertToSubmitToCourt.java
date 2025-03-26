@@ -32,47 +32,21 @@ public class LocalAuthorityAlertToSubmitToCourt {
 
     private final EmailTemplatesConfig emailTemplatesConfig;
 
-    public void sendLocalAuthorityAlertToSubmitToCourt(final CaseData caseData, final Long id) {
-        log.info("Alerting Local Authority to submit case : {} to court.", id);
+    private static final String CHILD_LA_ERROR =
+        "Child local authority could not be alerted to submit case {}: Invalid email address '{}'";
 
+    private static final String APPLICANT_LA_ERROR =
+        "Applicant local authority could not be alerted to submit case {}: Invalid email address '{}'";
+
+    public void sendLocalAuthorityAlertToSubmitToCourt(final CaseData caseData, final Long id) {
         final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
         final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
+        final Map<String, Object> templateVars = getTemplateVarsForLocalAuthority(caseData);
 
-        EmailValidator validator = EmailValidator.getInstance();
+        log.info("Alerting Local Authority to submit case : {} to court.", id);
 
-        if (
-            StringUtils.isBlank(childLocalAuthorityEmailAddress) || !validator.isValid(childLocalAuthorityEmailAddress)
-        ) {
-            log.error(
-                "Child local authority could not be alerted to submit case {}: Invalid email address '{}'",
-                id,
-                childLocalAuthorityEmailAddress
-            );
-        } else {
-            notificationService.sendEmail(
-                childLocalAuthorityEmailAddress,
-                LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
-                getTemplateVarsForLocalAuthority(caseData),
-                LanguagePreference.ENGLISH
-            );
-        }
-
-        if (
-            StringUtils.isBlank(applicantLocalAuthorityEmailAddress)
-                || !validator.isValid(applicantLocalAuthorityEmailAddress)
-        ) {
-            log.error("Applicant local authority could not be alerted to submit case {}: Invalid email address '{}'",
-                      id,
-                      applicantLocalAuthorityEmailAddress
-            );
-        } else {
-            notificationService.sendEmail(
-                applicantLocalAuthorityEmailAddress,
-                LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
-                getTemplateVarsForLocalAuthority(caseData),
-                LanguagePreference.ENGLISH
-            );
-        }
+        validateAndSendEmailAlert(childLocalAuthorityEmailAddress, id, templateVars, CHILD_LA_ERROR);
+        validateAndSendEmailAlert(applicantLocalAuthorityEmailAddress, id, templateVars, APPLICANT_LA_ERROR);
     }
 
     private Map<String, Object> getTemplateVarsForLocalAuthority(CaseData caseData) {
@@ -89,5 +63,21 @@ public class LocalAuthorityAlertToSubmitToCourt {
                 .orElse(LocalDate.now()).format(DATE_TIME_FORMATTER));
         templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
         return templateVars;
+    }
+
+    private void validateAndSendEmailAlert(String emailAddress, Long id, Map<String, Object> templateVar,
+                                           String errorMsg) {
+        EmailValidator validator = EmailValidator.getInstance();
+
+        if (StringUtils.isBlank(emailAddress) || !validator.isValid(emailAddress)) {
+            log.error(errorMsg, id, emailAddress);
+        } else {
+            notificationService.sendEmail(
+                emailAddress,
+                LOCAL_AUTHORITY_SUBMIT_TO_COURT_ALERT,
+                templateVar,
+                LanguagePreference.ENGLISH
+            );
+        }
     }
 }
