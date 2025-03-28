@@ -3,7 +3,7 @@ appVersion: "1.0"
 description: A Helm chart for adoption-cos-api App
 name: adoption-cos-api
 home: https://github.com/hmcts/adoption-cos-api
-version: 0.0.55
+version: 0.0.56
 maintainers:
   - name: HMCTS Adoption team
 dependencies:
@@ -13,6 +13,8 @@ dependencies:
   - name: ccd
     version: 9.2.2
     repository: 'oci://hmctspublic.azurecr.io/helm'
+    tags:
+      - ccd-idam-pr
   - name: xui-webapp
     version: ~1.0.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
