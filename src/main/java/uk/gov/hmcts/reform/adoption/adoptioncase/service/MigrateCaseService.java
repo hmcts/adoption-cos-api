@@ -24,7 +24,7 @@ public class MigrateCaseService {
         }
     }
 
-    public List<ListValue<AdoptionDocument>> removeLADocumentsUploadedBundleByID(CaseData caseData,
+    public List<ListValue<AdoptionDocument>> removeLaDocumentsUploadedBundleByID(CaseData caseData,
                                                                 String migrationId,
                                                                 String expectedLaDocumentsUploadedBundleId) {
         String caseId = caseData.getHyphenatedCaseRef();

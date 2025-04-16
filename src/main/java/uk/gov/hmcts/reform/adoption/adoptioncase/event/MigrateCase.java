@@ -91,7 +91,7 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
         final String expectedLaDocumentUploadedId = "946856b2-4099-42bf-96ef-f298892f6ccc";
         migrateCaseService.doCaseIdCheck(caseDetails.getId(), expectedCaseId, migrationId);
 
-        caseDetails.getData().setLaDocumentsUploaded(migrateCaseService.removeLADocumentsUploadedBundleByID(
+        caseDetails.getData().setLaDocumentsUploaded(migrateCaseService.removeLaDocumentsUploadedBundleByID(
             caseDetails.getData(), migrationId, expectedLaDocumentUploadedId));
     }
 }
