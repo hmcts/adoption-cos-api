@@ -34,6 +34,8 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
     // Note - keep "ADOP-log", it is useful for triggering an "event" without updating data
     private final Map<String, Consumer<CaseDetails<CaseData, State>>> migrations = Map.of(
         "ADOP-log", this::runLog,
+        "ADOP-2555", this::run2555,
+        "ADOP-2555-suspend", this::run2555,
         "ADOP-2620", this::run2620
     );
 
@@ -77,6 +79,10 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
 
     private void runLog(CaseDetails<CaseData, State> caseDetails) {
         log.info("Logging migration on case {}", caseDetails.getId());
+    }
+
+    private void run2555(CaseDetails<CaseData, State> caseDetails) {
+        //Empty function due to all migration logic being in the migration tool
     }
 
     private void run2620(CaseDetails<CaseData, State> caseDetails) {
