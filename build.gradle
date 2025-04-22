@@ -293,7 +293,7 @@ dependencyManagement {
     dependencySet(group: 'org.yaml', version: '2.0') {
       entry 'snakeyaml'
     }
-    dependency group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.1.35'
+    dependency group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.104'
   }
 }
 
