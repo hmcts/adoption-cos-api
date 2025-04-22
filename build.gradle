@@ -349,7 +349,7 @@ dependencies {
   }
   implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.9.2'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.3'
-  implementation group: 'com.github.hmcts', name: 'java-logging', version: '6.1.4'
+  implementation group: 'com.github.hmcts', name: 'java-logging', version: '6.1.7'
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.reformsJavaLogging
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
