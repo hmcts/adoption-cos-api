@@ -25,8 +25,8 @@ plugins {
   id 'org.sonarqube' version '5.0.0.4638'
   id 'org.springframework.boot' version '3.3.10'
   id 'com.github.ben-manes.versions' version '0.51.0'
-  id 'hmcts.ccd.sdk' version '5.5.15'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1218'
+  id 'hmcts.ccd.sdk' version '5.5.19'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.1666'
   id 'au.com.dius.pact' version '4.3.8'
 }
 
@@ -73,7 +73,7 @@ sourceSets {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
@@ -330,10 +330,10 @@ ext.libraries = [
 dependencies {
 // uncomment for local version
 // implementation group: 'com.github.hmcts', name: 'ccd-config-generator', version: 'DEV-SNAPSHOT'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.23.1'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.23.1'
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.4'
-  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.5.4'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.24.3'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.24.3'
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.18'
+  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.5.18'
   implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
 
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
@@ -350,8 +350,11 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.9.2'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.3'
   implementation group: 'com.github.hmcts', name: 'java-logging', version: '6.1.7'
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformsJavaLogging
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.reformsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.1.7'
+  // required by logging-appinsights
+  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
+
+
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.1.2'
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '1.7.3'
@@ -418,12 +421,12 @@ dependencies {
 
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
   contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
+  contractTestImplementation sourceSets.main.runtimeClasspath
+  contractTestImplementation sourceSets.test.runtimeClasspath
 
   contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
   contractTestRuntime "org.junit.platform:junit-platform-commons:1.8.1"
   contractTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '2.0')
-  contractTestCompile sourceSets.main.runtimeClasspath
-  contractTestCompile sourceSets.test.runtimeClasspath
 }
 
 mainClassName = 'uk.gov.hmcts.reform.adoption.Application'
