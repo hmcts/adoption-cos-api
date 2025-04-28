@@ -37,7 +37,7 @@ public class MigrateCaseServiceTest {
         ListValue<AdoptionDocument> bundleToKeep = new ListValue<>();
 
         @Test
-        void shouldClearLaDocumentsUploadedBundlesWithNoOrderPostMigration() {
+        void shouldClearLaDocumentsUploadedBundlesWithNoBundlePostMigration() {
             bundleToRemove.setId(bundleIdToRemove);
             bundleToRemove.setValue(AdoptionDocument.builder().build());
 
