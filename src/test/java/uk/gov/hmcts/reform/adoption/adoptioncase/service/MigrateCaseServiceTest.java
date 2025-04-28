@@ -44,7 +44,8 @@ public class MigrateCaseServiceTest {
                 .laDocumentsUploaded(List.of(bundleToRemove))
                 .build();
 
-            List<ListValue<AdoptionDocument>> laDocList = underTest.removeLaDocumentsUploadedBundleByID(caseData, MIGRATION_ID, bundleIdToRemove);
+            List<ListValue<AdoptionDocument>> laDocList = underTest.removeLaDocumentsUploadedBundleByID(caseData, 
+                MIGRATION_ID, bundleIdToRemove);
 
             assertThat(laDocList).isEqualTo(List.of());
         }
@@ -60,7 +61,8 @@ public class MigrateCaseServiceTest {
                 .laDocumentsUploaded(List.of(bundleToRemove, bundleToKeep))
                 .build();
 
-            List<ListValue<AdoptionDocument>> laDocList = underTest.removeLaDocumentsUploadedBundleByID(caseData, MIGRATION_ID, bundleIdToRemove);
+            List<ListValue<AdoptionDocument>> laDocList = underTest.removeLaDocumentsUploadedBundleByID(caseData, 
+                MIGRATION_ID, bundleIdToRemove);
 
             assertThat(laDocList).isEqualTo(List.of(bundleToKeep));
         }
