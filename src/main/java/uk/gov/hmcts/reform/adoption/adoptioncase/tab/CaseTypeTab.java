@@ -40,7 +40,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildServiceRequestTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("serviceRequest", "Payment")
-            .displayOrder(9)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .field("waysToPay");
     }
@@ -48,7 +47,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     public void buildApplicantsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationDetails", "Applicants")
-            .displayOrder(1)
             .showCondition(TabShowCondition.showForState(State.Submitted, State.LaSubmitted))
             .label("LabelApplicant-Heading",
                    "applyingWith=\"alone\"",
@@ -103,7 +101,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     public void buildOtherPartiesTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
         final Tab.TabBuilder<CaseData, UserRole> tabBuilderForOtherParties = configBuilder.tab("otherParties", "Other parties")
-            .displayOrder(2)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE);
 
         buildTabWithChildDetails(tabBuilderForOtherParties);
@@ -115,7 +112,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildHearingsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
 
         configBuilder.tab("hearings","Hearings")
-            .displayOrder(6)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .field(CaseData::getNewHearings)
             .field(CaseData::getAdjournHearings)
@@ -124,7 +120,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildOrdersViewTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("orders","Orders")
-            .displayOrder(5)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .field(CaseData::getCommonOrderList);
     }
@@ -285,7 +280,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     public void buildSummaryTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("summary", "Summary")
-            .displayOrder(0)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("labelSummary-CaseStatus", null, "### Case status")
             .field("status")
@@ -305,7 +299,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildDocumentsTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("documents", "Documents")
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
-            .displayOrder(3)
             .label("Documents-Heading", null, "# Documents")
             .field(CaseData::getLaDocumentsUploaded)
             .field(CaseData::getApplicationDocumentsCategory)
@@ -318,7 +311,6 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
     private void buildConfidentialTab(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("Confidential", "Confidential Details")
             .forRoles(SYSTEM_UPDATE)
-            .displayOrder(10)
             .field("applicant1PhoneNumber")
             .field("applicant1EmailAddress")
             .field("childrenFirstName")
@@ -332,15 +324,14 @@ public class CaseTypeTab implements CCDConfig<CaseData, State, UserRole> {
 
     private void buildCorrespondence(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationCorrespondence", "Correspondence")
-            .displayOrder(4)
             .forRoles(CASE_WORKER, DISTRICT_JUDGE)
             .label("LabelNotes-Correspondence", null, "### Correspondence")
             .field(CaseData::getCorrespondenceDocumentCategory);
     }
 
+
     private void buildNotes(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         configBuilder.tab("applicationNotes", "Notes")
-            .displayOrder(7)
             .label("LabelNotes-Heading", null, "### Case Notes")
             .field(CaseData::getCaseNote);
     }
