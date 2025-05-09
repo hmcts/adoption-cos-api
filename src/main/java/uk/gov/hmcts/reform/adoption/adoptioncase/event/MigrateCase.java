@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -9,6 +11,7 @@ import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
+import uk.gov.hmcts.reform.adoption.adoptioncase.service.MigrateCaseService;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -22,15 +25,18 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions
 
 @Slf4j
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String MIGRATE_CASE = "migrate-case";
+    private final MigrateCaseService migrateCaseService;
 
     // Note - keep "ADOP-log", it is useful for triggering an "event" without updating data
     private final Map<String, Consumer<CaseDetails<CaseData, State>>> migrations = Map.of(
         "ADOP-log", this::runLog,
         "ADOP-2555", this::run2555,
-        "ADOP-2555-suspend", this::run2555
+        "ADOP-2555-suspend", this::run2555,
+        "ADOP-2620", this::run2620
     );
 
     @Override
@@ -77,5 +83,15 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
 
     private void run2555(CaseDetails<CaseData, State> caseDetails) {
         //Empty function due to all migration logic being in the migration tool
+    }
+
+    private void run2620(CaseDetails<CaseData, State> caseDetails) {
+        final String migrationId = "ADOP-2620";
+        final long expectedCaseId = 17278055679568105L;
+        final String expectedLaDocumentUploadedId = "946856b2-4099-42bf-96ef-f298892f6ccc";
+        migrateCaseService.doCaseIdCheck(caseDetails.getId(), expectedCaseId, migrationId);
+
+        caseDetails.getData().setLaDocumentsUploaded(migrateCaseService.removeLaDocumentsUploadedBundleByID(
+            caseDetails.getData(), migrationId, expectedLaDocumentUploadedId));
     }
 }
