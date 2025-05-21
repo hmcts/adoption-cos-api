@@ -75,16 +75,15 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
             .filter(rangeQuery(CREATED_DATE)
                         .gte(LocalDate.now())
                         .lte(LocalDate.now()));
-        log.info("Scheduled task is executed");
+        log.info("AlertMultiChildApplicationToSubmitTask Scheduled task is executed");
 
         final List<CaseDetails> casesInDraftNeedingReminder =
             ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, serviceAuthorization);
         Map<String, List<CaseDetails>> emailCounts = new HashMap<>();
 
         for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
-            log.info("case details are present: " + caseDetails.getId());
+            log.info("AlertMultiChildApplicationToSubmitTask case details are present: {}", caseDetails.getId());
             String applicantEmail = (String) caseDetails.getData().get("applicant1Email");
-            log.info("User email: {}", applicantEmail);
             List<CaseDetails> caseList = emailCounts.get(applicantEmail);
             if (!CollectionUtils.sizeIsEmpty(caseList)) {
                 log.info("adding case to the map {}", caseDetails.getId());
@@ -93,8 +92,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
                 emailCounts.put(applicantEmail, caseList);
                 log.info("map count {}", emailCounts.size());
             } else {
-                log.info("No case added to the map till now for the user {}", applicantEmail);
-                log.info("adding case to the map {}", caseDetails.getId());
+                log.info("adding first case to the map for this user, case id {}", caseDetails.getId());
                 List<CaseDetails> caseListForUser = getNewCaseList();
                 caseListForUser.add(caseDetails);
                 log.info("count of the case list {}", caseListForUser.size());
@@ -105,19 +103,17 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
         }
         log.info("case list size {}",emailCounts.size());
         emailCounts.forEach((id, caseLists) -> {
-            log.info("case list for user {} count {}",id,caseLists.size());
+            log.info("case list for user X count {}", caseLists.size());
             if (caseLists.size() > NumberUtils.INTEGER_ONE) {
                 caseLists.forEach(caseDe -> {
                     log.info("state of the case {} for case id {}",caseDe.getId(),caseDe.getState());
                     if (State.Draft.toString().equals(caseDe.getState())) {
                         sendReminderToApplicantsIfEligible(caseDe);
-                        log.info("case for the user " + id + " " + caseDe.getId());
+                        log.info("Attempted to send reminder for case id {}", caseDe.getId());
                     }
                 });
             }
         });
-
-
     }
 
     private List<CaseDetails> getNewCaseList() {
@@ -126,8 +122,8 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
 
     private void sendReminderToApplicantsIfEligible(CaseDetails caseDetails) {
 
-        uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData = caseDetailsConverter.convertToCaseDetailsFromReformModel(
-            caseDetails);
+        uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
+            caseDetailsConverter.convertToCaseDetailsFromReformModel(caseDetails);
 
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData.getData(), caseDetails.getId());
     }
