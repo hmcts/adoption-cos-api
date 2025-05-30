@@ -77,6 +77,7 @@ public class CaseData {
         label = "Case file view",
         access = {DefaultAccess.class}
     )
+    @JsonIgnore
     private ComponentLauncher caseFileView;
 
     @CCD(
