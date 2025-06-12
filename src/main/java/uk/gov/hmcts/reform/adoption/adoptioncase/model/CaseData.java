@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.ComponentLauncher;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
@@ -71,6 +72,13 @@ public class CaseData {
         typeParameterOverride = "ApplyingWith"
     )
     private ApplyingWith applyingWith;
+
+    @CCD(
+        label = "Case file view",
+        access = {DefaultAccess.class}
+    )
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private ComponentLauncher caseFileView;
 
     @CCD(
         label = "Are the applicants represented by a solicitor?",
