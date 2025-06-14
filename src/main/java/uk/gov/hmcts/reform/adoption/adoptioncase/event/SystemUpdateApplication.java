@@ -2,7 +2,9 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
+import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
+import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
@@ -28,7 +30,19 @@ public class SystemUpdateApplication implements CCDConfig<CaseData, State, UserR
             .name("Adoption case")
             .description("Adoption application update by system")
             .retries(120, 120)
+            .aboutToSubmitCallback(this::aboutToSubmit)
             .grant(CREATE_READ_UPDATE, SYSTEM_UPDATE)
             .grant(READ, SUPER_USER);
     }
+
+    public AboutToStartOrSubmitResponse<CaseData, State> aboutToSubmit(
+        final CaseDetails<CaseData, State> details,
+        final CaseDetails<CaseData, State> beforeDetails) {
+
+        return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+            .data(details.getData())
+            .state(details.getData().getStatus())
+            .build();
+    }
+
 }
