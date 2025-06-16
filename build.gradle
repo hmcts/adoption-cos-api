@@ -299,7 +299,7 @@ dependencyManagement {
 repositories {
   mavenLocal()
   mavenCentral()
-  maven { url 'https://jitpack.io' }
+  maven { url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1' }
   // Some Cftlib services still depend on jcenter
   jcenter()
 }
@@ -354,7 +354,7 @@ dependencies {
   // required by logging-appinsights
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
 
-  // send-letter-client requires upgrade but causes gradle dependency exceptions
+  // send-letter-client requires upgrade but causes gradle dependency exceptions ADOP-2686
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.3.2'
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '1.59.2'
