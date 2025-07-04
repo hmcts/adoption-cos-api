@@ -283,7 +283,7 @@ dependencyManagement {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
     //CVE-2023-2976
     dependency group: 'com.google.guava', name: 'guava', version: '32.0.0-jre'
-    //CVE-2023-24998
+    //CVE-2025-48976
     dependencySet(group: 'commons-fileupload', version: '1.6') {
       entry 'commons-fileupload'
     }
