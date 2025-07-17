@@ -335,6 +335,7 @@ dependencies {
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.18'
   implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.5.18'
   implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
+  implementation group: 'commons-configuration', name: 'commons-configuration', version: '2.0'
 
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
