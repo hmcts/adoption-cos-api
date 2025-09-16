@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.adoption.notification.ApplicantAlertForLaAlertedToSubmitToCourt;
 import uk.gov.hmcts.reform.adoption.notification.LocalAuthorityAlertToSubmitToCourt;
 import uk.gov.hmcts.reform.adoption.systemupdate.CaseDetailsConverter;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -41,6 +42,8 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
 
     private final LocalAuthorityAlertToSubmitToCourt localAuthorityAlertToSubmitToCourt;
 
+    private final ApplicantAlertForLaAlertedToSubmitToCourt applicantAlertToSubmitToCourt;
+
     private final CaseDetailsConverter caseDetailsConverter;
 
     @Value("${cron.alertSubmitToCourt.offsetDays:15}")
@@ -68,6 +71,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
         for (final CaseDetails caseDetails : casesNeedingReminder) {
             log.info("AlertLAToSubmitApplicationToCourtTask case details are present: {}", caseDetails.getId());
             sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
+            sendApplicantAlertThatLAHasBeenAlertedToSubmitToCourt(caseDetails);
         }
     }
 
@@ -77,6 +81,18 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
                  caseDetails
              );
         localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(
+            caseData.getData(),
+            caseDetails.getId()
+        );
+    }
+
+    private void sendApplicantAlertThatLAHasBeenAlertedToSubmitToCourt(CaseDetails caseDetails) {
+        uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
+            caseDetailsConverter.convertToCaseDetailsFromReformModel(
+                caseDetails
+            );
+
+        applicantAlertToSubmitToCourt.sendApplicantAlertForLaAlertedToSubmitToCourt(
             caseData.getData(),
             caseDetails.getId()
         );
