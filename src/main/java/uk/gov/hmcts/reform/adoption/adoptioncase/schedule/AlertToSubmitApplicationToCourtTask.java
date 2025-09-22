@@ -71,7 +71,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
         for (final CaseDetails caseDetails : casesNeedingReminder) {
             log.info("AlertLAToSubmitApplicationToCourtTask case details are present: {}", caseDetails.getId());
             sendLocalAuthorityAlertToSubmitToCourt(caseDetails);
-            sendApplicantAlertThatLAHasBeenAlertedToSubmitToCourt(caseDetails);
+            sendApplicantAlertThatLaHasBeenAlertedToSubmitToCourt(caseDetails);
         }
     }
 
@@ -86,7 +86,7 @@ public class AlertToSubmitApplicationToCourtTask implements Runnable {
         );
     }
 
-    private void sendApplicantAlertThatLAHasBeenAlertedToSubmitToCourt(CaseDetails caseDetails) {
+    private void sendApplicantAlertThatLaHasBeenAlertedToSubmitToCourt(CaseDetails caseDetails) {
         uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
             caseDetailsConverter.convertToCaseDetailsFromReformModel(
                 caseDetails
