@@ -41,7 +41,6 @@ public class ApplicantAlertForLaAlertedToSubmitToCourt {
 
     public void sendApplicantAlertForLaAlertedToSubmitToCourt(final CaseData caseData, final Long id) {
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
-        final String applicant2Email = caseData.getApplicant2().getEmailAddress();
         final Map<String, Object> templateVars = getTemplateVarsForLocalAuthority(caseData);
 
         log.info("Alerting Applicant that LA has been alerted to submit case : {} to court.", id);
@@ -49,6 +48,7 @@ public class ApplicantAlertForLaAlertedToSubmitToCourt {
         validateAndSendEmailAlert(applicant1Email, id, templateVars, APPLICANT_1_ERROR);
 
         if (hasSecondApplicant(caseData)) {
+            final String applicant2Email = caseData.getApplicant2().getEmailAddress();
             validateAndSendEmailAlert(applicant2Email, id, templateVars, APPLICANT_2_ERROR);
         }
     }
