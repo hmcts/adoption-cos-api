@@ -41,15 +41,17 @@ public class ApplicantAlertForLaAlertedToSubmitToCourt {
 
     public void sendApplicantAlertForLaAlertedToSubmitToCourt(final CaseData caseData, final Long id) {
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
+        final LanguagePreference applicant1LanguagePreference = caseData.getApplicant1().getLanguagePreference();
         final Map<String, Object> templateVars = getTemplateVarsForLocalAuthority(caseData);
 
         log.info("Alerting Applicant that LA has been alerted to submit case : {} to court.", id);
 
-        validateAndSendEmailAlert(applicant1Email, id, templateVars, APPLICANT_1_ERROR);
+        validateAndSendEmailAlert(applicant1Email, id, templateVars, APPLICANT_1_ERROR, applicant1LanguagePreference);
 
         if (hasSecondApplicant(caseData)) {
             final String applicant2Email = caseData.getApplicant2().getEmailAddress();
-            validateAndSendEmailAlert(applicant2Email, id, templateVars, APPLICANT_2_ERROR);
+            final LanguagePreference applicant2LanguagePreference = caseData.getApplicant2().getLanguagePreference();
+            validateAndSendEmailAlert(applicant2Email, id, templateVars, APPLICANT_2_ERROR, applicant2LanguagePreference);
         }
     }
 
@@ -83,7 +85,7 @@ public class ApplicantAlertForLaAlertedToSubmitToCourt {
     }
 
     private void validateAndSendEmailAlert(String emailAddress, Long id, Map<String, Object> templateVar,
-                                           String errorMsg) {
+                                           String errorMsg, LanguagePreference languagePreference) {
         EmailValidator validator = EmailValidator.getInstance();
 
         if (StringUtils.isBlank(emailAddress) || !validator.isValid(emailAddress)) {
@@ -93,7 +95,7 @@ public class ApplicantAlertForLaAlertedToSubmitToCourt {
                 emailAddress,
                 NOTIFY_APPLICANT_LA_REMINDED_TO_SUBMIT_ALERT,
                 templateVar,
-                LanguagePreference.ENGLISH
+                languagePreference != null ? languagePreference : LanguagePreference.ENGLISH
             );
         }
     }
