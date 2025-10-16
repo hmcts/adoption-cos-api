@@ -34,10 +34,10 @@ public class ApplicantAlertForLaAlertedToSubmitToCourt {
     private final NotificationService notificationService;
 
     private static final String APPLICANT_1_ERROR =
-        "Applicant 1 could not be alerted that LA has been alerted to submit case {}: Invalid email address '{}'";
+        "Applicant 1 could not be alerted that LA has been alerted to submit case {}: Invalid email address.";
 
     private static final String APPLICANT_2_ERROR =
-        "Applicant 2 could not be alerted that LA has been alerted to submit case {}: Invalid email address '{}'";
+        "Applicant 2 could not be alerted that LA has been alerted to submit case {}: Invalid email address.";
 
     public void sendApplicantAlertForLaAlertedToSubmitToCourt(final CaseData caseData, final Long id) {
         final String applicant1Email = caseData.getApplicant1().getEmailAddress();
@@ -87,7 +87,7 @@ public class ApplicantAlertForLaAlertedToSubmitToCourt {
         EmailValidator validator = EmailValidator.getInstance();
 
         if (StringUtils.isBlank(emailAddress) || !validator.isValid(emailAddress)) {
-            log.error(errorMsg, id, emailAddress);
+            log.error(errorMsg, id);
         } else {
             notificationService.sendEmail(
                 emailAddress,
