@@ -15,7 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -40,7 +40,7 @@ public class CaseDocumentClientPactTest {
     private static final String AUTH_TOKEN = "Bearer someAuthToken";
     private static final Boolean PERMANENT = false;
 
-    @MockBean
+    @MockitoBean
     private AuthTokenGenerator authTokenGenerator;
     @Autowired
     private CaseDocumentClient caseDocumentClient;
