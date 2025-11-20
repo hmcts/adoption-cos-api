@@ -385,7 +385,7 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi', version: '5.4.1'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.4.1'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.4.1'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.1.44'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.1.47'
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
