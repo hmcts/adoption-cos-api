@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.adoption.notification.ApplicantAlertForLaAlertedToSubmitToCourt;
 import uk.gov.hmcts.reform.adoption.notification.LocalAuthorityAlertToSubmitToCourt;
 import uk.gov.hmcts.reform.adoption.systemupdate.CaseDetailsConverter;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -65,6 +66,9 @@ class AlertToSubmitApplicationToCourtTaskTest {
     private LocalAuthorityAlertToSubmitToCourt localAuthorityAlertToSubmitToCourt;
 
     @Mock
+    private ApplicantAlertForLaAlertedToSubmitToCourt applicantAlertToSubmitToCourt;
+
+    @Mock
     private CaseDetailsConverter caseDetailsConverter;
 
     @Captor
@@ -109,6 +113,9 @@ class AlertToSubmitApplicationToCourtTaskTest {
             any(CaseData.class),
             any(Long.class));
 
+        verify(applicantAlertToSubmitToCourt, times(3)).sendApplicantAlertForLaAlertedToSubmitToCourt(
+            any(CaseData.class),
+            any(Long.class));
     }
 
     @Test
@@ -144,6 +151,10 @@ class AlertToSubmitApplicationToCourtTaskTest {
             assertThat(capturedQuery).hasToString(expectedQuery.toString());
 
             verify(localAuthorityAlertToSubmitToCourt, times(1)).sendLocalAuthorityAlertToSubmitToCourt(
+                any(CaseData.class),
+                any(Long.class));
+
+            verify(applicantAlertToSubmitToCourt, times(1)).sendApplicantAlertForLaAlertedToSubmitToCourt(
                 any(CaseData.class),
                 any(Long.class));
         }

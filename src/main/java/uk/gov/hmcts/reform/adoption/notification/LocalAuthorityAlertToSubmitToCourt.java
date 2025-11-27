@@ -33,10 +33,10 @@ public class LocalAuthorityAlertToSubmitToCourt {
     private final EmailTemplatesConfig emailTemplatesConfig;
 
     private static final String CHILD_LA_ERROR =
-        "Child local authority could not be alerted to submit case {}: Invalid email address '{}'";
+        "Child local authority could not be alerted to submit case {}: Invalid email address.'";
 
     private static final String APPLICANT_LA_ERROR =
-        "Applicant local authority could not be alerted to submit case {}: Invalid email address '{}'";
+        "Applicant local authority could not be alerted to submit case {}: Invalid email address.";
 
     public void sendLocalAuthorityAlertToSubmitToCourt(final CaseData caseData, final Long id) {
         final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
@@ -70,7 +70,7 @@ public class LocalAuthorityAlertToSubmitToCourt {
         EmailValidator validator = EmailValidator.getInstance();
 
         if (StringUtils.isBlank(emailAddress) || !validator.isValid(emailAddress)) {
-            log.error(errorMsg, id, emailAddress);
+            log.error(errorMsg, id);
         } else {
             notificationService.sendEmail(
                 emailAddress,
