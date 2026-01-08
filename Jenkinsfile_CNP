@@ -1,5 +1,5 @@
 #!groovy
-@Library("Infrastructure")
+@Library("Infrastructure@dev/DTSPO-29266-2")
 
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GradleBuilder
@@ -70,6 +70,7 @@ def vaultOverrides = [
 withPipeline(type, product, component) {
   enableAksStagingDeployment()
   disableLegacyDeployment()
+  enableFortifyScan()
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
   syncBranchesWithMaster(branchesToSync)
