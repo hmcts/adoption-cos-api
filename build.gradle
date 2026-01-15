@@ -333,8 +333,8 @@ ext.libraries = [
 dependencies {
 // uncomment for local version
 // implementation group: 'com.github.hmcts', name: 'ccd-config-generator', version: 'DEV-SNAPSHOT'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.24.3'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.24.3'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.25.3'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.25.3'
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.18'
   implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.5.18'
   implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
@@ -373,7 +373,7 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '4.3.0'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
 
-  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '8.16.2'
+  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '8.19.10'
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.0.1-RELEASE'
   implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.5.0'
   implementation group: 'commons-validator', name: 'commons-validator', version: '1.8.0'
