@@ -32,21 +32,32 @@ public class LocalAuthorityAlertToSubmitToCourt {
 
     private final EmailTemplatesConfig emailTemplatesConfig;
 
-    private static final String CHILD_LA_ERROR =
-        "Child local authority could not be alerted to submit case {}: Invalid email address.'";
+    private static final String ERROR_MESSAGE_TEMPLATE =
+        " could not be alerted to submit case {}: Invalid email address.'";
 
-    private static final String APPLICANT_LA_ERROR =
-        "Applicant local authority could not be alerted to submit case {}: Invalid email address.";
+    private static final String CHILD_LA_ERROR = "Child local authority" + ERROR_MESSAGE_TEMPLATE;
+    private static final String APPLICANT_LA_ERROR = "Applicant local authority" + ERROR_MESSAGE_TEMPLATE;
+    private static final String CHILD_SW_ERROR = "Child social worker (optional)" + ERROR_MESSAGE_TEMPLATE;
+    private static final String APPLICANT_SW_ERROR = "Applicant social worker (optional)" + ERROR_MESSAGE_TEMPLATE;
+
 
     public void sendLocalAuthorityAlertToSubmitToCourt(final CaseData caseData, final Long id) {
         final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
         final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
+        final String optionalChildSocialWorkerEmail = caseData.getChildSocialWorker().getSocialWorkerEmail();
+        final String optionalApplicantSocialWorkerEmail = caseData.getApplicantSocialWorker().getSocialWorkerEmail();
         final Map<String, Object> templateVars = getTemplateVarsForLocalAuthority(caseData);
 
         log.info("Alerting Local Authority to submit case : {} to court.", id);
 
         validateAndSendEmailAlert(childLocalAuthorityEmailAddress, id, templateVars, CHILD_LA_ERROR);
         validateAndSendEmailAlert(applicantLocalAuthorityEmailAddress, id, templateVars, APPLICANT_LA_ERROR);
+        if (StringUtils.isNotBlank(optionalChildSocialWorkerEmail)) {
+            validateAndSendEmailAlert(optionalChildSocialWorkerEmail, id, templateVars, CHILD_SW_ERROR);
+        }
+        if (StringUtils.isNotBlank(optionalApplicantSocialWorkerEmail)) {
+            validateAndSendEmailAlert(optionalApplicantSocialWorkerEmail, id, templateVars, APPLICANT_SW_ERROR);
+        }
     }
 
     private Map<String, Object> getTemplateVarsForLocalAuthority(CaseData caseData) {

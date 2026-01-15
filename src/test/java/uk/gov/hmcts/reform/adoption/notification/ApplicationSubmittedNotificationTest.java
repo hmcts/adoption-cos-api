@@ -261,6 +261,34 @@ class ApplicationSubmittedNotificationTest {
     }
 
     @Test
+    void shouldSendEmailToSocialWorkerEmailIfExistsPostApplicantSubmission() {
+        CaseData data = caseData();
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+        SocialWorker socialWorker = new SocialWorker();
+        socialWorker.setLocalAuthorityEmail(TEST_USER_EMAIL);
+        socialWorker.setSocialWorkerEmail(TEST_USER_EMAIL);
+        data.setChildSocialWorker(socialWorker);
+        data.setApplicantSocialWorker(socialWorker);
+        Map<String, Object> templateVars = new HashMap<>();
+        emailTemplatesConfig.getTemplateVars().put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
+        templateVars.put(HYPHENATED_REF, data.getHyphenatedCaseRef());
+        templateVars.put(CHILD_FULL_NAME, data.getChildren().getFirstName() + " " + data.getChildren().getLastName());
+        templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
+
+        notification.sendToLocalAuthorityPostApplicantSubmission(data, 1234567890123456L);
+
+        verify(notificationService, times(4)).sendEmail(
+            TEST_USER_EMAIL,
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
+            templateVars,
+            ENGLISH
+        );
+    }
+
+    @Test
     void shouldSendEmailToLocalAuthorityPostLocalAuthoritySubmission() {
         CaseData data = caseData();
         Children children = new Children();
@@ -280,6 +308,34 @@ class ApplicationSubmittedNotificationTest {
         notification.sendToLocalAuthorityPostLocalAuthoritySubmission(data, 1234567890123456L);
 
         verify(notificationService, times(2)).sendEmail(
+            TEST_USER_EMAIL,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
+            templateVars,
+            ENGLISH
+        );
+    }
+
+    @Test
+    void shouldSendEmailToSocialWorkerEmailIfExistsPostLocalAuthoritySubmission() {
+        CaseData data = caseData();
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+        SocialWorker socialWorker = new SocialWorker();
+        socialWorker.setLocalAuthorityEmail(TEST_USER_EMAIL);
+        socialWorker.setSocialWorkerEmail(TEST_USER_EMAIL);
+        data.setChildSocialWorker(socialWorker);
+        data.setApplicantSocialWorker(socialWorker);
+        emailTemplatesConfig.getTemplateVars().put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
+        Map<String, Object> templateVars = new HashMap<>();
+        templateVars.put(HYPHENATED_REF, data.getHyphenatedCaseRef());
+        templateVars.put(CHILD_FULL_NAME, data.getChildren().getFirstName() + " " + data.getChildren().getLastName());
+        templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
+
+        notification.sendToLocalAuthorityPostLocalAuthoritySubmission(data, 1234567890123456L);
+
+        verify(notificationService, times(4)).sendEmail(
             TEST_USER_EMAIL,
             LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
             templateVars,
