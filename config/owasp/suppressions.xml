@@ -50,4 +50,18 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
     <cve>CVE-2025-68161</cve>
   </suppress>
+  <suppress until="2026-04-02Z">
+    <notes><![CDATA[
+Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the generic CPE
+"validator:validator" (known false-positive for various *-validator libraries).
+    ]]></notes>
+
+    <!-- Matches: cpe:2.3:a:validator:validator:<any>:*:*:*:*:*:*:* -->
+    <cpe>cpe:2.3:a:validator:validator:*:*:*:*:*:*:*:*</cpe>
+
+    <!-- Optional: also cover any legacy CPE format -->
+    <cpe>cpe:/a:validator:validator</cpe>
+
+    <cve>CVE-2025-15104</cve>
+  </suppress>
 </suppressions>
