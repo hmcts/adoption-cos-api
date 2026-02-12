@@ -392,7 +392,7 @@ dependencies {
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
   testImplementation libraries.junit5
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
     exclude group: 'junit', module: 'junit'
