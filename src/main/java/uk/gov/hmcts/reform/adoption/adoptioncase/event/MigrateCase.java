@@ -97,7 +97,7 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
 
     private void run2756(CaseDetails<CaseData, State> caseDetails) {
         final String migrationId = "ADOP-2756";
-        final long expectedCaseId = 1770749964984056L;
+        final long expectedCaseId = 1771512306370619L;
 
         migrateCaseService.doCaseIdCheck(caseDetails.getId(), expectedCaseId, migrationId);
 
