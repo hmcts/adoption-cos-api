@@ -9,6 +9,7 @@ import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Solicitor;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.service.MigrateCaseService;
@@ -97,11 +98,11 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
 
     private void run2756(CaseDetails<CaseData, State> caseDetails) {
         final String migrationId = "ADOP-2756";
-        final long expectedCaseId = 1771512306370619L;
+        final long expectedCaseId = 1770749964984056L;
 
         migrateCaseService.doCaseIdCheck(caseDetails.getId(), expectedCaseId, migrationId);
 
-        caseDetails.getData().getChildSolicitor().setEmail(null);
-        caseDetails.getData().getLocalAuthority().setLocalAuthorityContactEmail(null);
+        caseDetails.getData().getChildSocialWorker().setLocalAuthorityEmail(null);
+        caseDetails.getData().getApplicantSocialWorker().setLocalAuthorityEmail(null);
     }
 }
