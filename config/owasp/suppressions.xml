@@ -50,6 +50,27 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
     <cve>CVE-2025-68161</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: kotlin-stdlib-1.9.25.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib@.*$</packageUrl>
+    <cve>CVE-2020-29582</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: kotlin-stdlib-jdk7-1.9.25.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-jdk7@.*$</packageUrl>
+    <cve>CVE-2020-29582</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: kotlin-stdlib-jdk8-1.9.25.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-jdk8@.*$</packageUrl>
+    <cve>CVE-2020-29582</cve>
+  </suppress>
   <suppress until="2026-04-02Z">
     <notes><![CDATA[
 Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the generic CPE
