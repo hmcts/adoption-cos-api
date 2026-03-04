@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DATE_SUBMITTED;
@@ -32,32 +33,27 @@ public class LocalAuthorityAlertToSubmitToCourt {
 
     private final EmailTemplatesConfig emailTemplatesConfig;
 
-    private static final String ERROR_MESSAGE_TEMPLATE =
-        " could not be alerted to submit case {}: Invalid email address.'";
-
-    private static final String CHILD_LA_ERROR = "Child local authority" + ERROR_MESSAGE_TEMPLATE;
-    private static final String APPLICANT_LA_ERROR = "Applicant local authority" + ERROR_MESSAGE_TEMPLATE;
-    private static final String CHILD_SW_ERROR = "Child social worker (optional)" + ERROR_MESSAGE_TEMPLATE;
-    private static final String APPLICANT_SW_ERROR = "Applicant social worker (optional)" + ERROR_MESSAGE_TEMPLATE;
-
+    private static final EmailValidator EMAIL_VALIDATOR = EmailValidator.getInstance();
 
     public void sendLocalAuthorityAlertToSubmitToCourt(final CaseData caseData, final Long id) {
-        final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
-        final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
-        final String optionalChildSocialWorkerEmail = caseData.getChildSocialWorker().getSocialWorkerEmail();
-        final String optionalApplicantSocialWorkerEmail = caseData.getApplicantSocialWorker().getSocialWorkerEmail();
+        Set<String> emailAddresses = collectUniqueLocalAuthorityEmails(caseData);
         final Map<String, Object> templateVars = getTemplateVarsForLocalAuthority(caseData);
 
         log.info("Alerting Local Authority to submit case : {} to court.", id);
 
-        validateAndSendEmailAlert(childLocalAuthorityEmailAddress, id, templateVars, CHILD_LA_ERROR);
-        validateAndSendEmailAlert(applicantLocalAuthorityEmailAddress, id, templateVars, APPLICANT_LA_ERROR);
-        if (StringUtils.isNotBlank(optionalChildSocialWorkerEmail)) {
-            validateAndSendEmailAlert(optionalChildSocialWorkerEmail, id, templateVars, CHILD_SW_ERROR);
-        }
-        if (StringUtils.isNotBlank(optionalApplicantSocialWorkerEmail)) {
-            validateAndSendEmailAlert(optionalApplicantSocialWorkerEmail, id, templateVars, APPLICANT_SW_ERROR);
-        }
+        emailAddresses.forEach(email -> validateAndSendEmailAlert(email, id, templateVars));
+    }
+
+    private Set<String> collectUniqueLocalAuthorityEmails(CaseData caseData) {
+        return java.util.stream.Stream.of(
+            caseData.getChildSocialWorker() != null ? caseData.getChildSocialWorker().getLocalAuthorityEmail() : "",
+            caseData.getChildSocialWorker() != null ? caseData.getChildSocialWorker().getSocialWorkerEmail() : "",
+            caseData.getApplicantSocialWorker() != null ? caseData.getApplicantSocialWorker().getLocalAuthorityEmail() : "",
+            caseData.getApplicantSocialWorker() != null ? caseData.getApplicantSocialWorker().getSocialWorkerEmail() : ""
+        )
+        .filter(StringUtils::isNotBlank)
+        .map(String::toLowerCase)
+        .collect(java.util.stream.Collectors.toSet());
     }
 
     private Map<String, Object> getTemplateVarsForLocalAuthority(CaseData caseData) {
@@ -76,12 +72,9 @@ public class LocalAuthorityAlertToSubmitToCourt {
         return templateVars;
     }
 
-    private void validateAndSendEmailAlert(String emailAddress, Long id, Map<String, Object> templateVar,
-                                           String errorMsg) {
-        EmailValidator validator = EmailValidator.getInstance();
-
-        if (StringUtils.isBlank(emailAddress) || !validator.isValid(emailAddress)) {
-            log.error(errorMsg, id);
+    private void validateAndSendEmailAlert(String emailAddress, Long id, Map<String, Object> templateVar) {
+        if (StringUtils.isBlank(emailAddress) || !EMAIL_VALIDATOR.isValid(emailAddress)) {
+            log.error("Could not send an alert to submit case {}: Invalid LA email: {}", id, emailAddress);
         } else {
             notificationService.sendEmail(
                 emailAddress,
