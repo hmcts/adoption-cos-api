@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.adoption.notification;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.BLANK_SPACE;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.DATE_SUBMITTED;
@@ -58,6 +60,9 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     private NotificationService notificationService;
 
     @Autowired
+    private NotificationUtils notificationUtils;
+
+    @Autowired
     private CommonContent commonContent;
 
     @Autowired
@@ -65,6 +70,8 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     @Autowired
     SendgridService sendgridService;
+
+    private static final EmailValidator EMAIL_VALIDATOR = EmailValidator.getInstance();
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
@@ -100,7 +107,9 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     public void sendToLocalAuthorityPostApplicantSubmission(final CaseData caseData, final Long id) {
         log.info("Sending application submitted notification to local authority post Applicant Submission for case : {}", id);
 
-        sendNotificationToAllLocalAuthorityEmails(caseData, APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY);
+        Set<String> emailAddresses = notificationUtils.collectUniqueLocalAuthorityEmails(caseData);
+
+        emailAddresses.forEach(email -> validateAndSendEmailAlert(caseData, email, APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY, id));
     }
 
     @Override
@@ -108,42 +117,18 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         log.info("Sending application submitted notification to local authority post "
                      + "Local Authority application Submission for case : {}", id);
 
-        sendNotificationToAllLocalAuthorityEmails(caseData, LOCAL_AUTHORITY_APPLICATION_SUBMITTED);
+        Set<String> emailAddresses = notificationUtils.collectUniqueLocalAuthorityEmails(caseData);
+
+        emailAddresses.forEach(email -> validateAndSendEmailAlert(caseData, email, LOCAL_AUTHORITY_APPLICATION_SUBMITTED, id));
     }
 
-    private void sendNotificationToAllLocalAuthorityEmails(final CaseData caseData, final EmailTemplateName templateName) {
-        final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
-        final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
-        final String optionalChildSocialWorkerEmail = caseData.getChildSocialWorker().getSocialWorkerEmail();
-        final String optionalApplicantSocialWorkerEmail = caseData.getApplicantSocialWorker().getSocialWorkerEmail();
-
-        notificationService.sendEmail(
-            childLocalAuthorityEmailAddress,
-            templateName,
-            templateVarsForLocalAuthority(caseData),
-            LanguagePreference.ENGLISH
-        );
-
-        notificationService.sendEmail(
-            applicantLocalAuthorityEmailAddress,
-            templateName,
-            templateVarsForLocalAuthority(caseData),
-            LanguagePreference.ENGLISH
-        );
-
-        if (StringUtils.isNotBlank(optionalChildSocialWorkerEmail)) {
+    private void validateAndSendEmailAlert(CaseData caseData, String emailAddress, EmailTemplateName emailTemplateName,  Long id) {
+        if (StringUtils.isBlank(emailAddress) || !EMAIL_VALIDATOR.isValid(emailAddress)) {
+            log.error("Could not send an alert {} for case {}: Invalid email: {}", emailTemplateName, id, emailAddress);
+        } else {
             notificationService.sendEmail(
-                optionalChildSocialWorkerEmail,
-                templateName,
-                templateVarsForLocalAuthority(caseData),
-                LanguagePreference.ENGLISH
-            );
-        }
-
-        if (StringUtils.isNotBlank(optionalApplicantSocialWorkerEmail)) {
-            notificationService.sendEmail(
-                optionalApplicantSocialWorkerEmail,
-                templateName,
+                emailAddress,
+                emailTemplateName,
                 templateVarsForLocalAuthority(caseData),
                 LanguagePreference.ENGLISH
             );

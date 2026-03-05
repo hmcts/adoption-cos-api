@@ -30,30 +30,19 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LO
 public class LocalAuthorityAlertToSubmitToCourt {
 
     private final NotificationService notificationService;
+    private final NotificationUtils notificationUtils;
 
     private final EmailTemplatesConfig emailTemplatesConfig;
 
     private static final EmailValidator EMAIL_VALIDATOR = EmailValidator.getInstance();
 
     public void sendLocalAuthorityAlertToSubmitToCourt(final CaseData caseData, final Long id) {
-        Set<String> emailAddresses = collectUniqueLocalAuthorityEmails(caseData);
+        Set<String> emailAddresses = notificationUtils.collectUniqueLocalAuthorityEmails(caseData);
         final Map<String, Object> templateVars = getTemplateVarsForLocalAuthority(caseData);
 
         log.info("Alerting Local Authority to submit case : {} to court.", id);
 
         emailAddresses.forEach(email -> validateAndSendEmailAlert(email, id, templateVars));
-    }
-
-    private Set<String> collectUniqueLocalAuthorityEmails(CaseData caseData) {
-        return java.util.stream.Stream.of(
-            caseData.getChildSocialWorker() != null ? caseData.getChildSocialWorker().getLocalAuthorityEmail() : "",
-            caseData.getChildSocialWorker() != null ? caseData.getChildSocialWorker().getSocialWorkerEmail() : "",
-            caseData.getApplicantSocialWorker() != null ? caseData.getApplicantSocialWorker().getLocalAuthorityEmail() : "",
-            caseData.getApplicantSocialWorker() != null ? caseData.getApplicantSocialWorker().getSocialWorkerEmail() : ""
-        )
-        .filter(StringUtils::isNotBlank)
-        .map(String::toLowerCase)
-        .collect(java.util.stream.Collectors.toSet());
     }
 
     private Map<String, Object> getTemplateVarsForLocalAuthority(CaseData caseData) {
@@ -67,7 +56,7 @@ public class LocalAuthorityAlertToSubmitToCourt {
         templateVars.put(CHILD_FULL_NAME,
                          caseData.getChildren().getFirstName() + BLANK_SPACE + caseData.getChildren().getLastName());
         templateVars.put(DATE_SUBMITTED, Optional.ofNullable(caseData.getApplication().getDateSubmitted())
-                .orElse(LocalDate.now()).format(DATE_TIME_FORMATTER));
+            .orElse(LocalDate.now()).format(DATE_TIME_FORMATTER));
         templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
         return templateVars;
     }
