@@ -7,7 +7,8 @@ import java.util.Set;
 
 public class NotificationUtils {
 
-    private NotificationUtils() {}
+    private NotificationUtils() {
+    }
 
     public static Set<String> collectUniqueLocalAuthorityEmails(CaseData caseData) {
         return java.util.stream.Stream.of(
