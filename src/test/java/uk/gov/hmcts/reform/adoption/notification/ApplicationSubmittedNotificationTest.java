@@ -53,6 +53,9 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.AD
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL_2;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL_3;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL_4;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.getMainTemplateVars;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.CHILD_FULL_NAME;
@@ -252,7 +255,7 @@ class ApplicationSubmittedNotificationTest {
 
         notification.sendToLocalAuthorityPostApplicantSubmission(data, 1234567890123456L);
 
-        verify(notificationService, times(2)).sendEmail(
+        verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
             APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
             templateVars,
@@ -269,9 +272,12 @@ class ApplicationSubmittedNotificationTest {
         data.setChildren(children);
         SocialWorker socialWorker = new SocialWorker();
         socialWorker.setLocalAuthorityEmail(TEST_USER_EMAIL);
-        socialWorker.setSocialWorkerEmail(TEST_USER_EMAIL);
+        socialWorker.setSocialWorkerEmail(TEST_USER_EMAIL_3);
         data.setChildSocialWorker(socialWorker);
-        data.setApplicantSocialWorker(socialWorker);
+        SocialWorker applicantSocialWorker = new SocialWorker();
+        applicantSocialWorker.setLocalAuthorityEmail(TEST_USER_EMAIL_2);
+        applicantSocialWorker.setSocialWorkerEmail(TEST_USER_EMAIL_4);
+        data.setApplicantSocialWorker(applicantSocialWorker);
         Map<String, Object> templateVars = new HashMap<>();
         emailTemplatesConfig.getTemplateVars().put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
         templateVars.put(HYPHENATED_REF, data.getHyphenatedCaseRef());
@@ -280,8 +286,29 @@ class ApplicationSubmittedNotificationTest {
 
         notification.sendToLocalAuthorityPostApplicantSubmission(data, 1234567890123456L);
 
-        verify(notificationService, times(4)).sendEmail(
+        verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
+            templateVars,
+            ENGLISH
+        );
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL_2,
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
+            templateVars,
+            ENGLISH
+        );
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL_3,
+            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
+            templateVars,
+            ENGLISH
+        );
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL_4,
             APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
             templateVars,
             ENGLISH
@@ -307,7 +334,7 @@ class ApplicationSubmittedNotificationTest {
 
         notification.sendToLocalAuthorityPostLocalAuthoritySubmission(data, 1234567890123456L);
 
-        verify(notificationService, times(2)).sendEmail(
+        verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
             LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
             templateVars,
@@ -335,7 +362,7 @@ class ApplicationSubmittedNotificationTest {
 
         notification.sendToLocalAuthorityPostLocalAuthoritySubmission(data, 1234567890123456L);
 
-        verify(notificationService, times(4)).sendEmail(
+        verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
             LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
             templateVars,

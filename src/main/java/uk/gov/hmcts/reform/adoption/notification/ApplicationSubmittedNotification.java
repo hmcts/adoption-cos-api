@@ -60,9 +60,6 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     private NotificationService notificationService;
 
     @Autowired
-    private NotificationUtils notificationUtils;
-
-    @Autowired
     private CommonContent commonContent;
 
     @Autowired
@@ -107,7 +104,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     public void sendToLocalAuthorityPostApplicantSubmission(final CaseData caseData, final Long id) {
         log.info("Sending application submitted notification to local authority post Applicant Submission for case : {}", id);
 
-        Set<String> emailAddresses = notificationUtils.collectUniqueLocalAuthorityEmails(caseData);
+        Set<String> emailAddresses = NotificationUtils.collectUniqueLocalAuthorityEmails(caseData);
 
         emailAddresses.forEach(email -> validateAndSendEmailAlert(caseData, email, APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY, id));
     }
@@ -117,7 +114,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         log.info("Sending application submitted notification to local authority post "
                      + "Local Authority application Submission for case : {}", id);
 
-        Set<String> emailAddresses = notificationUtils.collectUniqueLocalAuthorityEmails(caseData);
+        Set<String> emailAddresses = NotificationUtils.collectUniqueLocalAuthorityEmails(caseData);
 
         emailAddresses.forEach(email -> validateAndSendEmailAlert(caseData, email, LOCAL_AUTHORITY_APPLICATION_SUBMITTED, id));
     }

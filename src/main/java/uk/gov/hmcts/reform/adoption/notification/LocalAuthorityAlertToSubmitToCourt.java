@@ -30,14 +30,13 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LO
 public class LocalAuthorityAlertToSubmitToCourt {
 
     private final NotificationService notificationService;
-    private final NotificationUtils notificationUtils;
 
     private final EmailTemplatesConfig emailTemplatesConfig;
 
     private static final EmailValidator EMAIL_VALIDATOR = EmailValidator.getInstance();
 
     public void sendLocalAuthorityAlertToSubmitToCourt(final CaseData caseData, final Long id) {
-        Set<String> emailAddresses = notificationUtils.collectUniqueLocalAuthorityEmails(caseData);
+        Set<String> emailAddresses = NotificationUtils.collectUniqueLocalAuthorityEmails(caseData);
         final Map<String, Object> templateVars = getTemplateVarsForLocalAuthority(caseData);
 
         log.info("Alerting Local Authority to submit case : {} to court.", id);

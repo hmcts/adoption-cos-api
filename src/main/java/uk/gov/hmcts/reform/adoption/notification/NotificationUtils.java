@@ -1,17 +1,16 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 
 import java.util.Set;
 
-@Component
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NotificationUtils {
 
-    public Set<String> collectUniqueLocalAuthorityEmails(CaseData caseData) {
+    public static Set<String> collectUniqueLocalAuthorityEmails(CaseData caseData) {
         return java.util.stream.Stream.of(
                 caseData.getChildSocialWorker() != null ? caseData.getChildSocialWorker().getLocalAuthorityEmail() : "",
                 caseData.getChildSocialWorker() != null ? caseData.getChildSocialWorker().getSocialWorkerEmail() : "",
