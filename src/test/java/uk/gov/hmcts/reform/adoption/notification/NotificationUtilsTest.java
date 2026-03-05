@@ -36,6 +36,17 @@ class NotificationUtilsTest {
     }
 
     @Test
+    void shouldReturnEmptySetWhenLocalAuthorityEmailsSetToNull() {
+        caseData.getChildSocialWorker().setLocalAuthorityEmail(null);
+        caseData.getChildSocialWorker().setSocialWorkerEmail(null);
+        caseData.getApplicantSocialWorker().setLocalAuthorityEmail(null);
+        caseData.getApplicantSocialWorker().setSocialWorkerEmail(null);
+
+        var result = NotificationUtils.collectUniqueLocalAuthorityEmails(caseData);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
     void shouldReturnSetOfOneValueWhenAllLocalAuthorityEmailsAreSame() {
         caseData.getChildSocialWorker().setLocalAuthorityEmail(TEST_USER_EMAIL);
         caseData.getChildSocialWorker().setSocialWorkerEmail("TEST@hmcts.net");
