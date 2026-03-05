@@ -8,6 +8,9 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL_2;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL_3;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL_4;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 class NotificationUtilsTest {
@@ -52,5 +55,16 @@ class NotificationUtilsTest {
         var result = NotificationUtils.collectUniqueLocalAuthorityEmails(caseData);
         assertEquals(2, result.size());
         assertTrue(result.contains("child-sw@local-authority.gov.uk"));
+    }
+
+    @Test
+    void shouldReturnSetOfFourValuesWhenFourUniqueLocalAuthorityEmailsPresent() {
+        caseData.getChildSocialWorker().setLocalAuthorityEmail(TEST_USER_EMAIL);
+        caseData.getChildSocialWorker().setSocialWorkerEmail(TEST_USER_EMAIL_2);
+        caseData.getApplicantSocialWorker().setLocalAuthorityEmail(TEST_USER_EMAIL_3);
+        caseData.getApplicantSocialWorker().setSocialWorkerEmail(TEST_USER_EMAIL_4);
+
+        var result = NotificationUtils.collectUniqueLocalAuthorityEmails(caseData);
+        assertEquals(4, result.size());
     }
 }
