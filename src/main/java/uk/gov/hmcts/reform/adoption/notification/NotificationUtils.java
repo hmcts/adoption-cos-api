@@ -1,14 +1,13 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 
 import java.util.Set;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NotificationUtils {
+
+    private NotificationUtils() {}
 
     public static Set<String> collectUniqueLocalAuthorityEmails(CaseData caseData) {
         return java.util.stream.Stream.of(
