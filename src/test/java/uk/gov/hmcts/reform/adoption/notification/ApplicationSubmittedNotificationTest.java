@@ -33,6 +33,8 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -367,6 +369,42 @@ class ApplicationSubmittedNotificationTest {
             LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
             templateVars,
             ENGLISH
+        );
+    }
+
+    @Test
+    void whenSocialWorkerEmailInvalid_thenDoNotSendEmail() {
+        CaseData data = caseData();
+        Children children = new Children();
+        children.setFirstName("MOCK_FIRST_NAME");
+        children.setLastName("MOCK_LAST_NAME");
+        data.setChildren(children);
+        SocialWorker socialWorker = new SocialWorker();
+        socialWorker.setLocalAuthorityEmail("invalid-email");
+        data.setChildSocialWorker(socialWorker);
+        SocialWorker applicantSocialWorker = new SocialWorker();
+        applicantSocialWorker.setLocalAuthorityEmail(TEST_USER_EMAIL);
+        data.setApplicantSocialWorker(applicantSocialWorker);
+        emailTemplatesConfig.getTemplateVars().put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
+        Map<String, Object> templateVars = new HashMap<>();
+        templateVars.put(HYPHENATED_REF, data.getHyphenatedCaseRef());
+        templateVars.put(CHILD_FULL_NAME, data.getChildren().getFirstName() + " " + data.getChildren().getLastName());
+        templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
+
+        notification.sendToLocalAuthorityPostLocalAuthoritySubmission(data, 1234567890123456L);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
+            templateVars,
+            ENGLISH
+        );
+
+        verify(notificationService, times(1)).sendEmail(
+            anyString(),
+            any(),
+            anyMap(),
+            any()
         );
     }
 
