@@ -504,14 +504,8 @@ class ApplicationSubmittedNotificationTest {
     @Test
     void shouldSendEmailToLocalCourtPostLocalAuthoritySubmission() throws NotificationClientException, IOException {
         caseData.setHyphenatedCaseRef("1234-1234-1234-1234");
-        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
-            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
-                    .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocument);
-        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
-        caseData.setLaDocumentsUploaded(listOfUploadedDocument);
-        caseData.setDocumentsGenerated(listOfUploadedDocument);
+        caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
+        caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         caseData.setChildren(children);
@@ -524,14 +518,8 @@ class ApplicationSubmittedNotificationTest {
     @Test
     void testSendEmailToLocalCourtPostLocalAuthoritySubmissionCatchesException() throws IOException {
         caseData.setHyphenatedCaseRef("1234-1234-1234-1234");
-        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
-            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
-                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocument);
-        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
-        caseData.setLaDocumentsUploaded(listOfUploadedDocument);
-        caseData.setDocumentsGenerated(listOfUploadedDocument);
+        caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
+        caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         caseData.setChildren(children);
@@ -550,14 +538,8 @@ class ApplicationSubmittedNotificationTest {
     @Test
     void shouldSendEmailToLocalCourt() {
         caseData.setHyphenatedCaseRef("1234-1234-1234-1234");
-        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
-            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
-                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocument);
-        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
-        caseData.setLaDocumentsUploaded(listOfUploadedDocument);
-        caseData.setDocumentsGenerated(listOfUploadedDocument);
+        caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
+        caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         caseData.setChildren(children);
@@ -571,14 +553,8 @@ class ApplicationSubmittedNotificationTest {
     void shouldSendEmailToLocalCourt_welsh() throws IOException {
         caseData.setHyphenatedCaseRef("1234-1234-1234-1234");
         caseData.getApplicant1().setLanguagePreference(WELSH);
-        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
-            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
-                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocument);
-        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
-        caseData.setLaDocumentsUploaded(listOfUploadedDocument);
-        caseData.setDocumentsGenerated(listOfUploadedDocument);
+        caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
+        caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         caseData.setChildren(children);
@@ -594,14 +570,8 @@ class ApplicationSubmittedNotificationTest {
     @Test
     void testSendEmailToLocalCourtShouldCatchException() throws IOException {
         caseData.setHyphenatedCaseRef("1234-1234-1234-1234");
-        AdoptionDocument adoptionDocument = AdoptionDocument.builder().documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
-            .documentLink(Document.builder().url("/123/123e4567-e89b-42d3-a456-556642440000")
-                              .build()).documentFileId("123e4567-e89b-42d3-a456-556642440000").build();
-        ListValue<AdoptionDocument> listValue = new ListValue<>();
-        listValue.setValue(adoptionDocument);
-        List<ListValue<AdoptionDocument>> listOfUploadedDocument = List.of(listValue);
-        caseData.setLaDocumentsUploaded(listOfUploadedDocument);
-        caseData.setDocumentsGenerated(listOfUploadedDocument);
+        caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
+        caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         caseData.setChildren(children);
@@ -624,6 +594,24 @@ class ApplicationSubmittedNotificationTest {
         OrderSummary orderSummary = new OrderSummary();
         orderSummary.setPaymentTotal("a payment amount");
         caseData.getApplication().setApplicationFeeOrderSummary(orderSummary);
+    }
+
+    /*
+     * Function for repeatable code that returns a list with 1 uploaded document.
+     */
+    private List<ListValue<AdoptionDocument>> getListOfUploadedDocument() {
+        AdoptionDocument adoptionDocument =
+            AdoptionDocument.builder()
+                .documentType(DocumentType.APPLICATION_LA_SUMMARY_EN)
+                .documentLink(
+                    Document.builder()
+                        .url("/123/123e4567-e89b-42d3-a456-556642440000")
+                        .build())
+                .documentFileId("123e4567-e89b-42d3-a456-556642440000")
+                .build();
+        ListValue<AdoptionDocument> listValue = new ListValue<>();
+        listValue.setValue(adoptionDocument);
+        return List.of(listValue);
     }
 
 }
