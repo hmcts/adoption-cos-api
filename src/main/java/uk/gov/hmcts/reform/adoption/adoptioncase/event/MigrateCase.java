@@ -36,7 +36,7 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
         "ADOP-log", this::runLog,
         "ADOP-2555", this::run2555,
         "ADOP-2555-suspend", this::run2555,
-        "ADOP-2620", this::run2620
+        "ADOP-2756", this::run2756
     );
 
     @Override
@@ -93,5 +93,15 @@ public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
 
         caseDetails.getData().setLaDocumentsUploaded(migrateCaseService.removeLaDocumentsUploadedBundleByID(
             caseDetails.getData(), migrationId, expectedLaDocumentUploadedId));
+    }
+
+    private void run2756(CaseDetails<CaseData, State> caseDetails) {
+        final String migrationId = "ADOP-2756";
+        final long expectedCaseId = 1770749964984056L;
+
+        migrateCaseService.doCaseIdCheck(caseDetails.getId(), expectedCaseId, migrationId);
+
+        caseDetails.getData().getChildSocialWorker().setLocalAuthorityEmail(null);
+        caseDetails.getData().getApplicantSocialWorker().setLocalAuthorityEmail(null);
     }
 }

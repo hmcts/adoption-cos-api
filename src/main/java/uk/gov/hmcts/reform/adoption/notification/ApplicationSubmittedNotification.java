@@ -100,22 +100,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
     public void sendToLocalAuthorityPostApplicantSubmission(final CaseData caseData, final Long id) {
         log.info("Sending application submitted notification to local authority post Applicant Submission for case : {}", id);
 
-        final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
-        final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
-
-        notificationService.sendEmail(
-            childLocalAuthorityEmailAddress,
-            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
-            templateVarsForLocalAuthority(caseData),
-            LanguagePreference.ENGLISH
-        );
-
-        notificationService.sendEmail(
-            applicantLocalAuthorityEmailAddress,
-            APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY,
-            templateVarsForLocalAuthority(caseData),
-            LanguagePreference.ENGLISH
-        );
+        sendNotificationToAllLocalAuthorityEmails(caseData, APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY);
     }
 
     @Override
@@ -123,22 +108,46 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         log.info("Sending application submitted notification to local authority post "
                      + "Local Authority application Submission for case : {}", id);
 
+        sendNotificationToAllLocalAuthorityEmails(caseData, LOCAL_AUTHORITY_APPLICATION_SUBMITTED);
+    }
+
+    private void sendNotificationToAllLocalAuthorityEmails(final CaseData caseData, final EmailTemplateName templateName) {
         final String childLocalAuthorityEmailAddress = caseData.getChildSocialWorker().getLocalAuthorityEmail();
         final String applicantLocalAuthorityEmailAddress = caseData.getApplicantSocialWorker().getLocalAuthorityEmail();
+        final String optionalChildSocialWorkerEmail = caseData.getChildSocialWorker().getSocialWorkerEmail();
+        final String optionalApplicantSocialWorkerEmail = caseData.getApplicantSocialWorker().getSocialWorkerEmail();
 
         notificationService.sendEmail(
             childLocalAuthorityEmailAddress,
-            LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
+            templateName,
             templateVarsForLocalAuthority(caseData),
             LanguagePreference.ENGLISH
         );
 
         notificationService.sendEmail(
             applicantLocalAuthorityEmailAddress,
-            LOCAL_AUTHORITY_APPLICATION_SUBMITTED,
+            templateName,
             templateVarsForLocalAuthority(caseData),
             LanguagePreference.ENGLISH
         );
+
+        if (StringUtils.isNotBlank(optionalChildSocialWorkerEmail)) {
+            notificationService.sendEmail(
+                optionalChildSocialWorkerEmail,
+                templateName,
+                templateVarsForLocalAuthority(caseData),
+                LanguagePreference.ENGLISH
+            );
+        }
+
+        if (StringUtils.isNotBlank(optionalApplicantSocialWorkerEmail)) {
+            notificationService.sendEmail(
+                optionalApplicantSocialWorkerEmail,
+                templateName,
+                templateVarsForLocalAuthority(caseData),
+                LanguagePreference.ENGLISH
+            );
+        }
     }
 
 

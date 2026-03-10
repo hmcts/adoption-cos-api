@@ -32,6 +32,7 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.CH
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LA_PORTAL_URL;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -109,6 +110,21 @@ class LocalAuthorityAlertToSubmitToCourtTest {
         localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(caseData, 1234223432344234L);
 
         verify(notificationService, times(2)).sendEmail(
+            anyString(),
+            any(),
+            anyMap(),
+            any()
+        );
+    }
+
+    @Test
+    void sendFourEmailsWhenOptionalSocialWorkerEmailsPopulated() {
+        caseData.getChildSocialWorker().setSocialWorkerEmail(TEST_USER_EMAIL);
+        caseData.getApplicantSocialWorker().setSocialWorkerEmail(TEST_USER_EMAIL);
+
+        localAuthorityAlertToSubmitToCourt.sendLocalAuthorityAlertToSubmitToCourt(caseData, 1234223432344234L);
+
+        verify(notificationService, times(4)).sendEmail(
             anyString(),
             any(),
             anyMap(),
