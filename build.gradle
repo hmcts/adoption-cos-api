@@ -349,10 +349,7 @@ dependencies {
   }
   implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.9.2'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.4'
-  implementation group: 'com.github.hmcts', name: 'java-logging', version: '6.1.9'
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.1.9'
-  // required by logging-appinsights
-  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
+  implementation group: 'com.github.hmcts', name: 'java-logging', version: '8.0.0'
 
   // send-letter-client requires upgrade but causes gradle dependency exceptions ADOP-2686
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
