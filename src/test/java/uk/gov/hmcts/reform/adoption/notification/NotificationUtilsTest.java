@@ -111,4 +111,12 @@ class NotificationUtilsTest {
         var result = NotificationUtils.mask(emailToMask);
         assertEquals("a*********l", result);
     }
+
+    @Test
+    void shouldReturnEmptyStringIfEmailNull() {
+        String emailToMask = null;
+
+        var result = NotificationUtils.mask(emailToMask);
+        assertEquals("", result);
+    }
 }
