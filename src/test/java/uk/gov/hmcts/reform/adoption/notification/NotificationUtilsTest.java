@@ -2,8 +2,13 @@ package uk.gov.hmcts.reform.adoption.notification;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -88,35 +93,19 @@ class NotificationUtilsTest {
         assertEquals(4, result.size());
     }
 
-    @Test
-    void shouldMaskEntireEmailUserWhereTwoCharacters() {
-        String emailToMask = "ab@test.com";
-
-        var result = NotificationUtils.mask(emailToMask);
-        assertEquals("**@test.com", result);
+    @ParameterizedTest
+    @MethodSource("maskEmailProvider")
+    void shouldMaskEmailCorrectly(String emailToMask, String expectedMaskedEmail) {
+        var actualResult = NotificationUtils.mask(emailToMask);
+        assertEquals(expectedMaskedEmail, actualResult);
     }
 
-    @Test
-    void shouldPartiallyMaskEmailLongUsername() {
-        String emailToMask = "albert.bell@test.co.uk";
-
-        var result = NotificationUtils.mask(emailToMask);
-        assertEquals("a*********l@test.co.uk", result);
-    }
-
-    @Test
-    void shouldPartiallyMaskAllOfInvalidEmail() {
-        String emailToMask = "albert.bell";
-
-        var result = NotificationUtils.mask(emailToMask);
-        assertEquals("a*********l", result);
-    }
-
-    @Test
-    void shouldReturnEmptyStringIfEmailNull() {
-        String emailToMask = null;
-
-        var result = NotificationUtils.mask(emailToMask);
-        assertEquals("", result);
+    private static Stream<Arguments> maskEmailProvider() {
+        return Stream.of(
+            Arguments.of("ab@test.com", "**@test.com"),
+            Arguments.of("albert.bell@test.co.uk", "a*********l@test.co.uk"),
+            Arguments.of("albert.bell", "a*********l"),
+            Arguments.of(null, "")
+        );
     }
 }
