@@ -4,6 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 
 import java.util.Set;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toSet;
 
 public class NotificationUtils {
 
@@ -11,7 +14,7 @@ public class NotificationUtils {
     }
 
     public static Set<String> collectUniqueLocalAuthorityEmails(CaseData caseData) {
-        return java.util.stream.Stream.of(
+        return Stream.of(
                 caseData.getChildSocialWorker() != null ? caseData.getChildSocialWorker().getLocalAuthorityEmail() : "",
                 caseData.getChildSocialWorker() != null ? caseData.getChildSocialWorker().getSocialWorkerEmail() : "",
                 caseData.getApplicantSocialWorker() != null ? caseData.getApplicantSocialWorker().getLocalAuthorityEmail() : "",
@@ -19,6 +22,6 @@ public class NotificationUtils {
             )
             .filter(StringUtils::isNotBlank)
             .map(String::toLowerCase)
-            .collect(java.util.stream.Collectors.toSet());
+            .collect(toSet());
     }
 }
