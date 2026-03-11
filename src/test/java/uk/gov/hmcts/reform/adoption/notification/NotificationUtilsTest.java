@@ -87,4 +87,28 @@ class NotificationUtilsTest {
         var result = NotificationUtils.collectUniqueLocalAuthorityEmails(caseData);
         assertEquals(4, result.size());
     }
+
+    @Test
+    void shouldMaskEntireEmailUserWhereTwoCharacters() {
+        String emailToMask = "ab@test.com";
+
+        var result = NotificationUtils.mask(emailToMask);
+        assertEquals("**@test.com", result);
+    }
+
+    @Test
+    void shouldPartiallyMaskEmailLongUsername() {
+        String emailToMask = "albert.bell@test.co.uk";
+
+        var result = NotificationUtils.mask(emailToMask);
+        assertEquals("a*********l@test.co.uk", result);
+    }
+
+    @Test
+    void shouldPartiallyMaskAllOfInvalidEmail() {
+        String emailToMask = "albert.bell";
+
+        var result = NotificationUtils.mask(emailToMask);
+        assertEquals("a*********l", result);
+    }
 }

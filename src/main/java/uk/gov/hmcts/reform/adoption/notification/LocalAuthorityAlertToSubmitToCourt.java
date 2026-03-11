@@ -62,7 +62,9 @@ public class LocalAuthorityAlertToSubmitToCourt {
 
     private void validateAndSendEmailAlert(String emailAddress, Long id, Map<String, Object> templateVar) {
         if (StringUtils.isBlank(emailAddress) || !EMAIL_VALIDATOR.isValid(emailAddress)) {
-            log.error("Could not send a reminder to submit case {}: Invalid LA email: {}", id, emailAddress);
+            log.error(
+                "Could not send a reminder to submit case {}: Invalid LA email: {}", id, NotificationUtils.mask(emailAddress)
+            );
         } else {
             notificationService.sendEmail(
                 emailAddress,

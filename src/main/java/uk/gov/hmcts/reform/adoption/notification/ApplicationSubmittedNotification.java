@@ -121,7 +121,9 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
 
     private void validateAndSendEmailAlert(CaseData caseData, String emailAddress, EmailTemplateName emailTemplateName,  Long id) {
         if (StringUtils.isBlank(emailAddress) || !EMAIL_VALIDATOR.isValid(emailAddress)) {
-            log.error("Could not send an alert {} for case {}: Invalid email: {}", emailTemplateName, id, emailAddress);
+            log.error(
+                "Could not send an alert {} for case {}: Invalid email: {}", emailTemplateName, id, NotificationUtils.mask(emailAddress)
+            );
         } else {
             notificationService.sendEmail(
                 emailAddress,
