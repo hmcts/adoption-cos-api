@@ -152,7 +152,7 @@ task functional(type: Test,dependsOn: ':yarnInstall') {
     }
   }
 }
-/// TODO got to here https://github.com/hmcts/fpl-ccd-configuration/pull/6180/changes
+
 task highLevelDataSetup(type: JavaExec) {
   mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
   classpath += sourceSets.main.runtimeClasspath
