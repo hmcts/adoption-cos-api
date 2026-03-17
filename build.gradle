@@ -613,6 +613,11 @@ runAndPublishConsumerPactTests.dependsOn contract
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 tasks.named('pactPublish') {
+  doFirst {
+    logger.lifecycle("pactPublish doFirst: resolvedBrokerUrl='${resolvedBrokerUrl}'")
+    logger.lifecycle("pactPublish doFirst: pact.publish.pactBrokerUrl='${project.pact?.publish?.pactBrokerUrl}'")
+    logger.lifecycle("pactPublish doFirst: pact.broker.pactBrokerUrl='${project.pact?.broker?.pactBrokerUrl}'")
+  }
   onlyIf {
     if (!resolvedBrokerUrl) {
       logger.lifecycle("No pact broker URL configured; skipping pactPublish.")
