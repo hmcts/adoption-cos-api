@@ -8,7 +8,7 @@ services:
         - http_proxy
         - https_proxy
         - no_proxy
-    image: hmctspublic.azurecr.io/adoption-cos-api
+    image: hmctssbox.azurecr.io/adoption-cos-api
     environment:
       # these environment variables are used by java-logging library
       - ROOT_APPENDER
