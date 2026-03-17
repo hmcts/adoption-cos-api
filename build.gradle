@@ -21,6 +21,7 @@ plugins {
   id 'idea'
   id 'pmd'
   id 'jacoco'
+  id 'io.spring.dependency-management' version '1.1.7'
   id 'org.owasp.dependencycheck' version '9.1.0'
   id 'org.sonarqube' version '5.0.0.4638'
   id 'org.springframework.boot' version '3.4.11'
@@ -44,6 +45,16 @@ ccd {
 ext['elasticsearch.version'] = '7.17.3'
 ext['snakeyaml.version'] = '2.0'
 ext['jackson.version'] = '2.15.2'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
+}
+
+application {
+  mainClass.set('uk.gov.hmcts.reform.adoption.Application')
+}
 
 sourceSets {
   functionalTest {
@@ -79,8 +90,8 @@ java {
 
 idea {
   module {
-    testSourceDirs += file('src/integrationTest/java')
-    testSourceDirs += file('src/functionalTest/java')
+    testSources.from file('src/integrationTest/java')
+    testSources.from file('src/functionalTest/java')
   }
 }
 
@@ -94,7 +105,7 @@ configurations {
   contractTestImplementation.extendsFrom testImplementation
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
@@ -114,24 +125,23 @@ test {
   failFast = true
   useJUnitPlatform()
 }
-task integration(type: Test) {
+
+tasks.register('integration', Test) {
   description = "Runs integration tests"
   group = "Verification"
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
 }
+
 task yarnInstall(type: Exec) {
   workingDir '.'
   commandLine 'yarn', 'install'
 }
-task smoke(type: Test,dependsOn: ':yarnInstall') {
+
+tasks.register('runSmokeTests', Exec) {
   description = "Runs Smoke Tests"
-  doLast {
-    exec {
-      commandLine 'yarn', 'test:smoke'
-    }
-  }
+  commandLine 'yarn', '--silent', 'test:smoke'
 }
 
 task functional(type: Test,dependsOn: ':yarnInstall') {
@@ -142,6 +152,7 @@ task functional(type: Test,dependsOn: ':yarnInstall') {
     }
   }
 }
+/// TODO got to here https://github.com/hmcts/fpl-ccd-configuration/pull/6180/changes
 task highLevelDataSetup(type: JavaExec) {
   mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
   classpath += sourceSets.main.runtimeClasspath
@@ -571,8 +582,20 @@ generateCCDConfig.doLast {
   }
 }
 
+def contractTestConstantsFile = file('src/contractTest/java/uk/gov/hmcts/reform/adoption/ContractTestConstants.java')
+if (!contractTestConstantsFile.exists()) {
+  throw new GradleException("Missing ContractTestConstants.java for pacticipant alignment.")
+}
+def contractTestConstantsMatcher = (contractTestConstantsFile.text =~ /CONSUMER_NAME\s*=\s*"([^"]+)"/)
+if (!contractTestConstantsMatcher.find()) {
+  throw new GradleException("Unable to read CONSUMER_NAME from ContractTestConstants.java for pacticipant alignment.")
+}
+def contractTestConsumerName = contractTestConstantsMatcher.group(1)
+def pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL")
+def pactBranchName = System.getenv("PACT_BRANCH_NAME") ?: 'Dev'
+
 project.ext {
-  pacticipant = 'sscs_tribunalsCaseApi'
+  pacticipant = contractTestConsumerName
   pacticipantVersion = getCheckedOutGitCommitHash()
 }
 
@@ -580,19 +603,28 @@ task runAndPublishConsumerPactTests(type: Test){
   logger.lifecycle("Runs pact Tests")
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
-
 }
 runAndPublishConsumerPactTests.dependsOn contract
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
+tasks.named('pactPublish') {
+  onlyIf {
+    if (!pactBrokerUrl) {
+      logger.lifecycle("PACT_BROKER_FULL_URL not set; skipping pactPublish.")
+      return false
+    }
+    return true
+  }
+}
+
 pact {
   broker {
-    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+    pactBrokerUrl = pactBrokerUrl ?: 'http://localhost:80'
   }
   publish {
     pactDirectory = 'pacts'
-    tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
+    tags = [pactBranchName]
     version = project.pacticipantVersion
   }
 }
@@ -637,4 +669,3 @@ bootWithCCD {
   }
   authMode = uk.gov.hmcts.rse.AuthMode.AAT
 }
-
