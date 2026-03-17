@@ -592,7 +592,11 @@ if (!contractTestConstantsMatcher.find()) {
 }
 def contractTestConsumerName = contractTestConstantsMatcher.group(1)
 def pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL")
+    ?: project.findProperty('pact.broker.url')?.toString()
+    ?: project.findProperty('pactbroker.url')?.toString()
 def pactBranchName = System.getenv("PACT_BRANCH_NAME") ?: 'Dev'
+// Use a different variable name to avoid Groovy DELEGATE_FIRST shadowing inside pact {} closures
+def resolvedBrokerUrl = pactBrokerUrl
 
 project.ext {
   pacticipant = contractTestConsumerName
@@ -610,8 +614,8 @@ runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 tasks.named('pactPublish') {
   onlyIf {
-    if (!pactBrokerUrl) {
-      logger.lifecycle("PACT_BROKER_FULL_URL not set; skipping pactPublish.")
+    if (!resolvedBrokerUrl) {
+      logger.lifecycle("No pact broker URL configured; skipping pactPublish.")
       return false
     }
     return true
@@ -620,10 +624,11 @@ tasks.named('pactPublish') {
 
 pact {
   broker {
-    pactBrokerUrl = pactBrokerUrl ?: 'http://localhost:80'
+    pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
   }
   publish {
     pactDirectory = 'pacts'
+    pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
     tags = [pactBranchName]
     version = project.pacticipantVersion
   }
