@@ -629,13 +629,13 @@ tasks.named('pactPublish') {
 
 pact {
   broker {
-    pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
+    it.pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
   }
   publish {
-    pactDirectory = 'pacts'
-    pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
-    tags = [pactBranchName]
-    version = project.pacticipantVersion
+    it.pactDirectory = 'pacts'
+    it.pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
+    it.tags = [pactBranchName]
+    it.version = project.pacticipantVersion
   }
 }
 
