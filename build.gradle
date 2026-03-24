@@ -635,7 +635,7 @@ pact {
     it.pactDirectory = 'pacts'
     it.pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
     it.tags = [pactBranchName]
-    it.version = project.pacticipantVersion
+    it.consumerVersion = project.pacticipantVersion
   }
 }
 
