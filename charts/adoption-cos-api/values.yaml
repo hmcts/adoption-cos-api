@@ -12,7 +12,7 @@ ccd-case-document-am-api:
 
 java:
   applicationPort: 4550
-  image: hmctspublic.azurecr.io/adoption/cos-api:latest
+  image: hmctsprod.azurecr.io/adoption/cos-api:latest
   ingressHost: adoption-cos-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   aadIdentityName: adoption
   keyVaults:

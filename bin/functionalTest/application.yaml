@@ -41,6 +41,7 @@ uk:
             LOCAL_COURT_APPLICATION_SUBMITTED: '2960d8dd-ab3e-4265-a71d-2d81d0fd84c8'
             CITIZEN_DRAFT_APPLICATION_EXPIRING_ALERT: ''
 
+
 s2s-authorised:
   services: ${S2S_AUTHORISED_SERVICES:ccd_data}
 
@@ -77,7 +78,7 @@ case_document_am:
 docmosis:
   templates:
     english:
-      ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-ENG-00953.docx
+      ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-ENG-00953-R2.docx
     welsh:
       ADOPTION_APPLICATION_SUMMARY: FL-ADO-APP-WEL-00955.docx
 
