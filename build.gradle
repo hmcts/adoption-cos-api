@@ -145,9 +145,13 @@ task yarnInstall(type: Exec) {
   commandLine 'yarn', 'install'
 }
 
-tasks.register('smoke', Exec) {
+task smoke(type: Test,dependsOn: ':yarnInstall') {
   description = "Runs Smoke Tests"
-  commandLine 'yarn', '--silent', 'test:smoke'
+  doLast {
+    exec {
+      commandLine 'yarn', 'test:smoke'
+    }
+  }
 }
 
 task functional(type: Test,dependsOn: ':yarnInstall') {
