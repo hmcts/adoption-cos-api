@@ -45,7 +45,7 @@
     "puppeteer": "23.3.0",
     "puppeteer-core": "23.3.0",
     "webdriverio": "7.34.0",
-    "webpack": "5.94.0"
+    "webpack": "5.104.1"
   },
   "resolutions": {
     "minimist": "1.2.6",
