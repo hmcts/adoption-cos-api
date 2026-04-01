@@ -328,30 +328,30 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@hmcts/adoption-case-definition@workspace:."
   dependencies:
-    "@wdio/cli": ^8.10.5
-    "@wdio/sauce-service": ^8.22.1
-    allure-commandline: ^2.17.2
-    axios: ^1.13.5
-    axios-debug-log: ^0.8.4
-    chai: ^4.3.6
-    chai-as-promised: ^7.1.1
-    codeceptjs: ^3.4.1
-    css-loader: ^6.7.1
-    html-webpack-plugin: ^5.5.0
-    lodash: ^4.17.21
-    mocha: ">=2.2.0 <7 || >=9"
-    mocha-junit-reporter: ^2.0.0
-    mocha-multi: ^1.1.6
-    mochawesome: ^7.1.3
-    moment: ^2.29.3
-    nodemon: ^2.0.21
-    npm-run-all: ^4.1.2
-    otplib: ^12.0.1
-    playwright: ^1.22.2
-    puppeteer: ^23.3.0
-    puppeteer-core: ^23.3.0
-    webdriverio: ^7.19.7
-    webpack: ^5.94.0
+    "@wdio/cli": 8.27.1
+    "@wdio/sauce-service": 8.27.0
+    allure-commandline: 2.25.0
+    axios: 1.13.5
+    axios-debug-log: 0.8.4
+    chai: 4.3.10
+    chai-as-promised: 7.1.1
+    codeceptjs: 3.5.11
+    css-loader: 6.8.1
+    html-webpack-plugin: 5.6.0
+    lodash: 4.17.21
+    mocha: 10.2.0
+    mocha-junit-reporter: 2.2.1
+    mocha-multi: 1.1.7
+    mochawesome: 7.1.3
+    moment: 2.30.1
+    nodemon: 2.0.22
+    npm-run-all: 4.1.5
+    otplib: 12.0.1
+    playwright: 1.40.1
+    puppeteer: 23.3.0
+    puppeteer-core: 23.3.0
+    webdriverio: 7.34.0
+    webpack: 5.94.0
   languageName: unknown
   linkType: soft
 
@@ -889,7 +889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wdio/cli@npm:^8.10.5":
+"@wdio/cli@npm:8.27.1":
   version: 8.27.1
   resolution: "@wdio/cli@npm:8.27.1"
   dependencies:
@@ -1022,7 +1022,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wdio/sauce-service@npm:^8.22.1":
+"@wdio/sauce-service@npm:8.27.0":
   version: 8.27.0
   resolution: "@wdio/sauce-service@npm:8.27.0"
   dependencies:
@@ -1354,7 +1354,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"allure-commandline@npm:^2.17.2":
+"allure-commandline@npm:2.25.0":
   version: 2.25.0
   resolution: "allure-commandline@npm:2.25.0"
   bin:
@@ -1656,7 +1656,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios-debug-log@npm:^0.8.4":
+"axios-debug-log@npm:0.8.4":
   version: 0.8.4
   resolution: "axios-debug-log@npm:0.8.4"
   dependencies:
@@ -1668,7 +1668,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.13.5":
+"axios@npm:1.13.5":
   version: 1.13.5
   resolution: "axios@npm:1.13.5"
   dependencies:
@@ -2125,7 +2125,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai-as-promised@npm:^7.1.1":
+"chai-as-promised@npm:7.1.1":
   version: 7.1.1
   resolution: "chai-as-promised@npm:7.1.1"
   dependencies:
@@ -2197,6 +2197,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chai@npm:4.3.10":
+  version: 4.3.10
+  resolution: "chai@npm:4.3.10"
+  dependencies:
+    assertion-error: ^1.1.0
+    check-error: ^1.0.3
+    deep-eql: ^4.1.3
+    get-func-name: ^2.0.2
+    loupe: ^2.3.6
+    pathval: ^1.1.1
+    type-detect: ^4.0.8
+  checksum: 536668c60a0d985a0fbd94418028e388d243a925d7c5e858c7443e334753511614a3b6a124bac9ca077dfc4c37acc367d62f8c294960f440749536dc181dfc6d
+  languageName: node
+  linkType: hard
+
 "chai@npm:4.3.8":
   version: 4.3.8
   resolution: "chai@npm:4.3.8"
@@ -2209,21 +2224,6 @@ __metadata:
     pathval: ^1.1.1
     type-detect: ^4.0.5
   checksum: 29e0984ed13308319cadc35437c8ef0a3e271544d226c991bf7e3b6d771bf89707321669e11d05e362bc0ad0bd26585079b989d1032f3c106e3bb95d7f079cce
-  languageName: node
-  linkType: hard
-
-"chai@npm:^4.3.6":
-  version: 4.3.10
-  resolution: "chai@npm:4.3.10"
-  dependencies:
-    assertion-error: ^1.1.0
-    check-error: ^1.0.3
-    deep-eql: ^4.1.3
-    get-func-name: ^2.0.2
-    loupe: ^2.3.6
-    pathval: ^1.1.1
-    type-detect: ^4.0.8
-  checksum: 536668c60a0d985a0fbd94418028e388d243a925d7c5e858c7443e334753511614a3b6a124bac9ca077dfc4c37acc367d62f8c294960f440749536dc181dfc6d
   languageName: node
   linkType: hard
 
@@ -2538,7 +2538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"codeceptjs@npm:^3.4.1":
+"codeceptjs@npm:3.5.11":
   version: 3.5.11
   resolution: "codeceptjs@npm:3.5.11"
   dependencies:
@@ -2875,7 +2875,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^6.7.1":
+"css-loader@npm:6.8.1":
   version: 6.8.1
   resolution: "css-loader@npm:6.8.1"
   dependencies:
@@ -4847,7 +4847,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:^5.5.0":
+"html-webpack-plugin@npm:5.6.0":
   version: 5.6.0
   resolution: "html-webpack-plugin@npm:5.6.0"
   dependencies:
@@ -5954,7 +5954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.x.x, lodash@npm:>= 3.7.0, lodash@npm:^4.0.0, lodash@npm:^4.17.10, lodash@npm:^4.17.12, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.5":
+"lodash@npm:4.17.21, lodash@npm:4.x.x, lodash@npm:>= 3.7.0, lodash@npm:^4.0.0, lodash@npm:^4.17.10, lodash@npm:^4.17.12, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.5":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -6282,10 +6282,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.6":
-  version: 1.2.8
-  resolution: "minimist@npm:1.2.8"
-  checksum: 75a6d645fb122dad29c06a7597bddea977258957ed88d7a6df59b5cd3fe4a527e253e9bbf2e783e4b73657f9098b96a5fe96ab8a113655d4109108577ecf85b0
+"minimist@npm:1.2.6":
+  version: 1.2.6
+  resolution: "minimist@npm:1.2.6"
+  checksum: d15428cd1e11eb14e1233bcfb88ae07ed7a147de251441d61158619dfb32c4d7e9061d09cab4825fdee18ecd6fce323228c8c47b5ba7cd20af378ca4048fb3fb
   languageName: node
   linkType: hard
 
@@ -6423,7 +6423,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha-junit-reporter@npm:^2.0.0":
+"mocha-junit-reporter@npm:2.2.1":
   version: 2.2.1
   resolution: "mocha-junit-reporter@npm:2.2.1"
   dependencies:
@@ -6438,7 +6438,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha-multi@npm:^1.1.6":
+"mocha-multi@npm:1.1.7":
   version: 1.1.7
   resolution: "mocha-multi@npm:1.1.7"
   dependencies:
@@ -6453,7 +6453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha@npm:10.2.0, mocha@npm:>=2.2.0 <7 || >=9":
+"mocha@npm:10.2.0":
   version: 10.2.0
   resolution: "mocha@npm:10.2.0"
   dependencies:
@@ -6507,7 +6507,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mochawesome@npm:^7.1.3":
+"mochawesome@npm:7.1.3":
   version: 7.1.3
   resolution: "mochawesome@npm:7.1.3"
   dependencies:
@@ -6527,7 +6527,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.19.3, moment@npm:^2.29.3":
+"moment@npm:2.30.1, moment@npm:^2.19.3":
   version: 2.30.1
   resolution: "moment@npm:2.30.1"
   checksum: 859236bab1e88c3e5802afcf797fc801acdbd0ee509d34ea3df6eea21eb6bcc2abd4ae4e4e64aa7c986aa6cba563c6e62806218e6412a765010712e5fa121ba6
@@ -6755,7 +6755,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemon@npm:^2.0.21":
+"nodemon@npm:2.0.22":
   version: 2.0.22
   resolution: "nodemon@npm:2.0.22"
   dependencies:
@@ -6842,7 +6842,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-run-all@npm:^4.1.2":
+"npm-run-all@npm:4.1.5":
   version: 4.1.5
   resolution: "npm-run-all@npm:4.1.5"
   dependencies:
@@ -7010,7 +7010,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"otplib@npm:^12.0.1":
+"otplib@npm:12.0.1":
   version: 12.0.1
   resolution: "otplib@npm:12.0.1"
   dependencies:
@@ -7401,7 +7401,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright@npm:^1.22.2":
+"playwright@npm:1.40.1":
   version: 1.40.1
   resolution: "playwright@npm:1.40.1"
   dependencies:
@@ -7692,7 +7692,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:23.3.0, puppeteer-core@npm:^23.3.0":
+"puppeteer-core@npm:23.3.0":
   version: 23.3.0
   resolution: "puppeteer-core@npm:23.3.0"
   dependencies:
@@ -7745,7 +7745,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^23.3.0":
+"puppeteer@npm:23.3.0":
   version: 23.3.0
   resolution: "puppeteer@npm:23.3.0"
   dependencies:
@@ -9580,6 +9580,41 @@ __metadata:
   languageName: node
   linkType: hard
 
+"webdriverio@npm:7.34.0":
+  version: 7.34.0
+  resolution: "webdriverio@npm:7.34.0"
+  dependencies:
+    "@types/aria-query": ^5.0.0
+    "@types/node": ^18.0.0
+    "@wdio/config": 7.33.0
+    "@wdio/logger": 7.26.0
+    "@wdio/protocols": 7.27.0
+    "@wdio/repl": 7.33.0
+    "@wdio/types": 7.33.0
+    "@wdio/utils": 7.33.0
+    archiver: ^5.0.0
+    aria-query: ^5.2.1
+    css-shorthand-properties: ^1.1.1
+    css-value: ^0.0.1
+    devtools: 7.33.0
+    devtools-protocol: ^0.0.1237913
+    fs-extra: ^11.1.1
+    grapheme-splitter: ^1.0.2
+    lodash.clonedeep: ^4.5.0
+    lodash.isobject: ^3.0.2
+    lodash.isplainobject: ^4.0.6
+    lodash.zip: ^4.2.0
+    minimatch: ^6.0.4
+    puppeteer-core: ^13.1.3
+    query-selector-shadow-dom: ^1.0.0
+    resq: ^1.9.1
+    rgb2hex: 0.2.5
+    serialize-error: ^8.0.0
+    webdriver: 7.33.0
+  checksum: 11dc61fffc5743a4d48dbd3cc75d69463b575d8ac7ee875408980aa6d788102e7abc8c1107562db2856d2d9bd1957a9428c4862b9d14488ab5dfd25f971febce
+  languageName: node
+  linkType: hard
+
 "webdriverio@npm:8.27.0, webdriverio@npm:^8.23.1":
   version: 8.27.0
   resolution: "webdriverio@npm:8.27.0"
@@ -9617,41 +9652,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webdriverio@npm:^7.19.7":
-  version: 7.34.0
-  resolution: "webdriverio@npm:7.34.0"
-  dependencies:
-    "@types/aria-query": ^5.0.0
-    "@types/node": ^18.0.0
-    "@wdio/config": 7.33.0
-    "@wdio/logger": 7.26.0
-    "@wdio/protocols": 7.27.0
-    "@wdio/repl": 7.33.0
-    "@wdio/types": 7.33.0
-    "@wdio/utils": 7.33.0
-    archiver: ^5.0.0
-    aria-query: ^5.2.1
-    css-shorthand-properties: ^1.1.1
-    css-value: ^0.0.1
-    devtools: 7.33.0
-    devtools-protocol: ^0.0.1237913
-    fs-extra: ^11.1.1
-    grapheme-splitter: ^1.0.2
-    lodash.clonedeep: ^4.5.0
-    lodash.isobject: ^3.0.2
-    lodash.isplainobject: ^4.0.6
-    lodash.zip: ^4.2.0
-    minimatch: ^6.0.4
-    puppeteer-core: ^13.1.3
-    query-selector-shadow-dom: ^1.0.0
-    resq: ^1.9.1
-    rgb2hex: 0.2.5
-    serialize-error: ^8.0.0
-    webdriver: 7.33.0
-  checksum: 11dc61fffc5743a4d48dbd3cc75d69463b575d8ac7ee875408980aa6d788102e7abc8c1107562db2856d2d9bd1957a9428c4862b9d14488ab5dfd25f971febce
-  languageName: node
-  linkType: hard
-
 "webidl-conversions@npm:^3.0.0":
   version: 3.0.1
   resolution: "webidl-conversions@npm:3.0.1"
@@ -9666,7 +9666,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.94.0":
+"webpack@npm:5.94.0":
   version: 5.94.0
   resolution: "webpack@npm:5.94.0"
   dependencies:
