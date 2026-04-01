@@ -23,8 +23,8 @@
     "test:local": "codeceptjs run-multiple parallel"
   },
   "devDependencies": {
-    "@wdio/cli": "8.27.1",
-    "@wdio/sauce-service": "8.27.0",
+    "@wdio/cli": "8.46.0",
+    "@wdio/sauce-service": "8.46.0",
     "allure-commandline": "2.25.0",
     "axios-debug-log": "0.8.4",
     "chai": "4.3.10",
@@ -44,7 +44,7 @@
     "playwright": "1.40.1",
     "puppeteer": "23.3.0",
     "puppeteer-core": "23.3.0",
-    "webdriverio": "7.34.0",
+    "webdriverio": "7.40.0",
     "webpack": "5.94.0"
   },
   "resolutions": {
