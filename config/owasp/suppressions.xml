@@ -71,7 +71,7 @@
     <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-jdk8@.*$</packageUrl>
     <cve>CVE-2020-29582</cve>
   </suppress>
-  <suppress until="2026-04-02Z">
+  <suppress until="2026-04-11Z">
     <notes><![CDATA[
 Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the generic CPE
 "validator:validator" (known false-positive for various *-validator libraries).
