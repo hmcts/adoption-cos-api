@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page.ManageAccessCodes;
@@ -11,6 +13,8 @@ import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
 
+@Slf4j
+@Component
 public class CaseworkerManageAccessCodes implements CCDConfig<CaseData, State, UserRole> {
     public static final String MANAGE_ACCESS_CODES = "manageAccessCodes";
 
