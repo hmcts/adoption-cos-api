@@ -20,7 +20,7 @@ public class CaseworkerManageAccessCodes implements CCDConfig<CaseData, State, U
     public void configure(ConfigBuilder<CaseData, State, UserRole> configBuilder) {
         PageBuilder pageBuilder = new PageBuilder(configBuilder
                                                       .event(MANAGE_ACCESS_CODES)
-                                                      .forStates(State.Submitted, State.LaSubmitted)
+                                                      .forStates(State.Submitted)
                                                       .name("Manage Access Codes")
                                                       .description("Manage Social Worker access codes for this case")
                                                       .retries(120, 120)
