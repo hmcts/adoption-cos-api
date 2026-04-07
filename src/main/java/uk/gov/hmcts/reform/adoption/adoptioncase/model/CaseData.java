@@ -23,6 +23,7 @@ import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.ccd.sdk.type.DynamicListElement;
 import uk.gov.hmcts.ccd.sdk.type.WaysToPay;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAccess;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CaseworkerAndSuperUserAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.CollectionAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.DefaultAccess;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess;
@@ -216,12 +217,12 @@ public class CaseData {
 
     @JsonUnwrapped(prefix = "child")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class,CaseworkerAndSuperUserAccess.class})
     private SocialWorker childSocialWorker = new SocialWorker();
 
     @JsonUnwrapped(prefix = "applicant")
     @Builder.Default
-    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class})
+    @CCD(access = {DefaultAccess.class,SystemUpdateAccess.class,CaseworkerAndSuperUserAccess.class})
     private SocialWorker applicantSocialWorker = new SocialWorker();
 
     @JsonUnwrapped(prefix = "solicitor")
