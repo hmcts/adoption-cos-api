@@ -24,7 +24,7 @@ public class CaseworkerManageAccessCodes implements CCDConfig<CaseData, State, U
                                                       .name("Manage Access Codes")
                                                       .description("Manage Social Worker access codes for this case")
                                                       .retries(120, 120)
-                                                      .grant(CREATE_READ_UPDATE, UserRole.SUPER_USER)
+                                                      .grant(CREATE_READ_UPDATE, UserRole.CASE_WORKER)
                                                       .showSummary()
 
         );
