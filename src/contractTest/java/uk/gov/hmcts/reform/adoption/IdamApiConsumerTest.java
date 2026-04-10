@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.adoption;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslJsonRootValue;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
@@ -24,7 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 
 public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
-    @Pact(provider = "idamApi_oidc", consumer = "adoption_cos_api")
+    @Pact(provider = "idamApi_oidc", consumer = ContractTestConstants.CONSUMER_NAME)
     public RequestResponsePact generatePactForUserInfo(PactDslWithProvider builder) throws JSONException {
 
         return builder
@@ -39,7 +40,7 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
             .toPact();
     }
 
-    @Pact(provider = "idamApi_oidc", consumer = "adoption_cos_api")
+    @Pact(provider = "idamApi_oidc", consumer = ContractTestConstants.CONSUMER_NAME)
     public RequestResponsePact generatePactForToken(PactDslWithProvider builder) {
 
         Map<String, String> responseheaders = ImmutableMap.<String, String>builder()
@@ -68,7 +69,8 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
     @Test
     @PactTestFor(pactMethod = "generatePactForUserInfo")
-    public void verifyIdamUserDetailsRolesPactUserInfo() {
+    public void verifyIdamUserDetailsRolesPactUserInfo(MockServer mockServer) {
+        awaitMockServerReady(mockServer);
         UserInfo userInfo = idamApi.retrieveUserInfo(SOME_AUTHORIZATION_TOKEN);
         assertNotNull(userInfo.getUid());
         assertNotNull(userInfo.getSub());
@@ -81,8 +83,8 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
     @Test
     @PactTestFor(pactMethod = "generatePactForToken")
-    public void verifyIdamUserDetailsRolesPactToken() {
-
+    public void verifyIdamUserDetailsRolesPactToken(MockServer mockServer) {
+        awaitMockServerReady(mockServer);
         TokenResponse token = idamApi.generateOpenIdToken(buildTokenRequestMap());
         assertNotNull("Token is expected", token.accessToken);
     }
