@@ -53,7 +53,7 @@ Preliminary steps:
 
 * Then log in to the subscription (you will need to get the subscription ID from another dev):
 
-    `az acr login --name hmctspublic --subscription [SUBSCRIPTION ID]`
+    `az acr login --name hmctsprod --subscription [SUBSCRIPTION ID]`
 
 You can now run the full CCD and XUI stack locally using:
 
