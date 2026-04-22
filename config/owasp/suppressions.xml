@@ -90,7 +90,6 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <notes><![CDATA[
    file name: spring-boot-3.4.13.jar
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot@.*$</packageUrl>
     <cve>CVE-2026-22731</cve>
   </suppress>
   <!-- ADOP-2799 -->
