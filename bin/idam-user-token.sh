@@ -12,13 +12,10 @@ set -e
 username=${1}
 password=${2}
 
-IDAM_API_URL=${IDAM_API_URL_BASE:-http://localhost:5000}
-IDAM_URL=${IDAM_STUB_LOCALHOST:-$IDAM_API_URL}
-CLIENT_ID=${CLIENT_ID:-adoption-web}
-#CLIENT_ID=${CLIENT_ID:-xuiwebapp}
-clientSecret=${OAUTH2_CLIENT_SECRET}
+IDAM_URL=${IDAM_API_URL_BASE:-http://localhost:5000}
+CLIENT_ID=${CLIENT_ID:-adoption-cos-api}
+clientSecret=${COS_API_OAUTH2_CLIENT_SECRET}
 redirectUri=http://localhost:3000/receiver
-#redirectUri=http://localhost:3000/oauth2/callback
 
 curl --silent --location --show-error "${IDAM_URL}/o/token" \
 --header 'Content-Type: application/x-www-form-urlencoded' \
