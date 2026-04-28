@@ -124,9 +124,13 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
   <suppress>
     <notes>transitive spring dependencies</notes>
     <cve>CVE-2026-22735</cve>
-  </suppress>
-  <suppress>
-    <notes>transitive spring dependencies</notes>
     <cve>CVE-2026-22737</cve>
+  </suppress>
+  <!-- ADOP-2809 -->
+  <suppress>
+    <notes>log4j-core-2.24.3.jar and log4j-api-2.25.3.jar</notes>
+    <cve>CVE-2026-34478</cve>
+    <cve>CVE-2026-34480</cve>
+    <cve>CVE-2026-34481</cve>
   </suppress>
 </suppressions>
