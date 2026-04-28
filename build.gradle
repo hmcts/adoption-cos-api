@@ -374,8 +374,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'ccd-client', version: '4.9.2'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.5'
   implementation group: 'com.github.hmcts', name: 'java-logging', version: '8.0.0'
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.1.9'
-  // required by logging-appinsights
+  // required by java-logging for structured JSON logging
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
 
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.3.3'
