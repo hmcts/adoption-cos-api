@@ -106,6 +106,20 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
     <cve>CVE-2026-22732</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-crypto-6.4.12.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+    <cve>CVE-2026-22748</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-crypto-6.4.12.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+    <cve>CVE-2026-22746</cve>
+  </suppress>
   <!-- ADOP-2806 -->
   <suppress>
     <notes>transitive spring dependencies</notes>
