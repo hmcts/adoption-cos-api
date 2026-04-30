@@ -26,6 +26,8 @@ java:
           alias: S2S_SECRET_WEB
         - name: idam-secret
           alias: IDAM_CLIENT_SECRET
+        - name: idam-secret-cos-api
+          alias: COS_API_OAUTH2_CLIENT_SECRET
         - name: idam-system-user-name
           alias: IDAM_SYSTEM_UPDATE_USERNAME
         - name: idam-system-user-password
