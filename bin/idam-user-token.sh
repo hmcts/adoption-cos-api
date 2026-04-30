@@ -13,8 +13,8 @@ username=${1}
 password=${2}
 
 IDAM_URL=${IDAM_API_URL_BASE:-http://localhost:5000}
-CLIENT_ID=${CLIENT_ID:-adoption-cos-api}
-clientSecret=${COS_API_OAUTH2_CLIENT_SECRET}
+CLIENT_ID=${CLIENT_ID:-adoption-web}
+clientSecret=${OAUTH2_CLIENT_SECRET}
 redirectUri=http://localhost:3000/receiver
 
 curl --silent --location --show-error "${IDAM_URL}/o/token" \
