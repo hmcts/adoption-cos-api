@@ -198,6 +198,38 @@
     <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
     <cve>CVE-2026-22733</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-40972</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-40973</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-40975</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-40977</cve>
+  </suppress>
 
   <!-- Spring Security CVE-2026 suppressions - pending upgrade: ADOP-TODO -->
   <suppress>
