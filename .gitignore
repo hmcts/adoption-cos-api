@@ -38,3 +38,8 @@ bin/main/application.yaml
 
 ### Generated CCD Json Definition ###
 ccd-definitions/definitions/development
+
+### Miscellaneous ###
+ARCHITECTURE.md
+copilot-instructions.md
+.github/copilot-instructions.md
