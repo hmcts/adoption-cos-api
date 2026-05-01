@@ -4,8 +4,8 @@
       "id": "1646222663145",
       "value": {
         "siblingId": "1646222663145",
-        "siblingRelation": "Brother",
-        "siblingPoType": "Adoption order",
+        "siblingRelation": "brother",
+        "siblingPoType": "adoptionOrder",
         "siblingPoNumber": "1001",
         "siblingPlacementOtherType": ""
       }
@@ -14,8 +14,8 @@
       "id": "1646222699254",
       "value": {
         "siblingId": "1646222699254",
-        "siblingRelation": "Sister",
-        "siblingPoType": "Other",
+        "siblingRelation": "sister",
+        "siblingPoType": "other",
         "siblingPoNumber": "23456",
         "siblingPlacementOtherType": "other type"
       }
@@ -136,7 +136,7 @@
       "value": {
         "placementOrderId": "1646222494045",
         "placementOrderDate": "2021-12-12",
-        "placementOrderType": "Adoption order",
+        "placementOrderType": "Adoption Order",
         "placementOrderCourt": "london court",
         "placementOrderNumber": "12345"
       }
@@ -214,8 +214,8 @@
   ],
   "solicitorName": null,
   "selectedSiblingId": "1646222699254",
-  "selectedSiblingRelation": "Sister",
-  "selectedSiblingPoType": "Adoption order",
+  "selectedSiblingRelation": "sister",
+  "selectedSiblingPoType": "adoptionOrder",
   "solicitorPhoneNumber": null,
   "birthFatherAddressCountry": null,
   "applicant2AddressTown": "NOTTINGHAM",
@@ -233,33 +233,7 @@
   "birthMotherLastName": "Mother",
   "otherParentAddress3": null,
   "otherParentStillAlive": "Yes",
-  "applicationPayments": [
-    {
-      "id": "12",
-      "value": {
-        "created": "2021-11-02T02:50:12.208Z",
-        "updated": "2021-11-02T02:50:12.208Z",
-        "feeCode": "A58",
-        "amount": "183",
-        "status": "success",
-        "channel": "online",
-        "reference": "1234",
-        "transactionId": "1234"
-      }
-    }
-  ],
-  "applicationFeeOrderSummary": {
-    "PaymentTotal": "183",
-    "Fees": [
-      {
-        "value": {
-          "FeeAmount": 1234,
-          "FeeCode": "A58",
-          "FeeVersion": "1"
-        }
-      }
-    ]
-  },
+  "applicationPayments": [],
   "childrenFirstName": "child",
   "birthMotherNationality": [
     "British",
@@ -277,4 +251,5 @@
   "applicant2LanguagePreference": null,
   "birthMotherOccupation": "Teacher",
   "applicant1AddressSameAsApplicant1": null
+
 }
