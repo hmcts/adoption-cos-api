@@ -105,8 +105,8 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
         return new PactDslJsonBody()
             .stringType("sub", "61")
             .stringType("uid", "adop_pact_user@mailinator.com")
-            .stringType("givenName", "Test")
-            .stringType("familyName", "User")
+            .stringType("given_name", "Test")
+            .stringType("family_name", "User")
             .minArrayLike("roles", 1, PactDslJsonRootValue.stringType("citizen"), 1);
     }
 
