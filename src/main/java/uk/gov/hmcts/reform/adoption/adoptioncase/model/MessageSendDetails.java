@@ -158,13 +158,13 @@ public class MessageSendDetails {
         @JsonProperty("approvalOrder")
         ORDER_FOR_APPROVAL("Order for approval"),
 
-        @JsonProperty("approvalOrder")
+        @JsonProperty("approvalOrder1")
         LEAVE_TO_OPPOSE("Leave to oppose received"),
 
-        @JsonProperty("approvalOrder")
+        @JsonProperty("approvalOrder2")
         GENERAL_QUERY("General query"),
 
-        @JsonProperty("approvalOrder")
+        @JsonProperty("approvalOrder3")
         REQUEST_HEARING_DATE("Request hearing date (for CTSC caseworkers to send to LA Admin)");
 
         private final String label;
