@@ -126,5 +126,7 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <cve>CVE-2026-34478</cve>
     <cve>CVE-2026-34480</cve>
     <cve>CVE-2026-34481</cve>
+    <cve>CVE-2026-34479</cve>
+    <cve>CVE-2026-34477</cve>
   </suppress>
 </suppressions>
