@@ -364,24 +364,11 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
   </suppress>
   <!-- ADOP-2799 -->
   <suppress>
-    <notes><![CDATA[
-   file name: spring-security-crypto-6.4.13.jar
-   ]]></notes>
+    <notes>spring-security-crypto</notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
     <cve>CVE-2026-22732</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: spring-security-crypto-6.4.12.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
     <cve>CVE-2026-22748</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: spring-security-crypto-6.4.12.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+    <cve>CVE-2026-22751</cve>
     <cve>CVE-2026-22746</cve>
   </suppress>
   <!-- ADOP-2806 -->
@@ -389,6 +376,9 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <notes>transitive spring dependencies</notes>
     <cve>CVE-2026-22735</cve>
     <cve>CVE-2026-22737</cve>
+    <cve>CVE-2026-22740</cve>
+    <cve>CVE-2026-22745</cve>
+    <cve>CVE-2026-22741</cve>
   </suppress>
   <!-- ADOP-2809 -->
   <suppress>
@@ -396,5 +386,7 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <cve>CVE-2026-34478</cve>
     <cve>CVE-2026-34480</cve>
     <cve>CVE-2026-34481</cve>
+    <cve>CVE-2026-34479</cve>
+    <cve>CVE-2026-34477</cve>
   </suppress>
 </suppressions>
