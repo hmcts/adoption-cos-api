@@ -52,6 +52,48 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
+   file name: tomcat-embed-core-10.1.47.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
+    <cve>CVE-2025-66614</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tomcat-embed-core-10.1.47.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
+    <cve>CVE-2026-24733</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tomcat-embed-core-10.1.47.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
+    <cve>CVE-2026-24734</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tomcat-embed-websocket-10.1.47.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-websocket@.*$</packageUrl>
+    <cve>CVE-2025-66614</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tomcat-embed-websocket-10.1.47.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-websocket@.*$</packageUrl>
+    <cve>CVE-2026-24733</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tomcat-embed-websocket-10.1.47.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-websocket@.*$</packageUrl>
+    <cve>CVE-2026-24734</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: kotlin-stdlib-1.9.25.jar
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib@.*$</packageUrl>
@@ -71,6 +113,224 @@
     <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-jdk8@.*$</packageUrl>
     <cve>CVE-2020-29582</cve>
   </suppress>
+  <!-- Log4j CVE-2026 suppressions - pending upgrade: ADOP-TODO -->
+  <suppress>
+    <notes><![CDATA[
+   file name: log4j-api-2.25.3.jar / log4j-core-2.24.3.jar
+   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-api@.*$</packageUrl>
+    <cve>CVE-2026-34478</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: log4j-api-2.25.3.jar / log4j-core-2.24.3.jar
+   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-api@.*$</packageUrl>
+    <cve>CVE-2026-34480</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: log4j-api-2.25.3.jar / log4j-core-2.24.3.jar
+   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-api@.*$</packageUrl>
+    <cve>CVE-2026-34481</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: log4j-core-2.24.3.jar
+   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
+    <cve>CVE-2026-34478</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: log4j-core-2.24.3.jar
+   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
+    <cve>CVE-2026-34480</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: log4j-core-2.24.3.jar
+   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
+    <cve>CVE-2026-34481</cve>
+  </suppress>
+
+  <!-- Spring Framework CVE-2026 suppressions - pending upgrade: ADOP-TODO -->
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-framework 6.2.12 (aop, beans, context, core, expression, jcl, webmvc).
+   Suppressed pending upgrade to patched Spring Framework version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-.*@.*$</packageUrl>
+    <cve>CVE-2026-22737</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-framework 6.2.12 (aop, beans, context, core, expression, jcl, webmvc).
+   Suppressed pending upgrade to patched Spring Framework version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-.*@.*$</packageUrl>
+    <cve>CVE-2026-22735</cve>
+  </suppress>
+
+  <!-- Spring Boot CVE-2026 suppressions - pending upgrade: ADOP-TODO -->
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-22731</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-22733</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-40972</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-40973</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-40975</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-boot 3.4.11 and all starters.
+   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
+    <cve>CVE-2026-40977</cve>
+  </suppress>
+
+  <!-- Spring Security CVE-2026 suppressions - pending upgrade: ADOP-TODO -->
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-security-crypto 6.4.12.
+   Suppressed pending upgrade to patched Spring Security version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-.*@.*$</packageUrl>
+    <cve>CVE-2026-22732</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-security-crypto 6.4.12.
+   Suppressed pending upgrade to patched Spring Security version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-.*@.*$</packageUrl>
+    <cve>CVE-2026-22748</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects spring-security-crypto 6.4.12.
+   Suppressed pending upgrade to patched Spring Security version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-.*@.*$</packageUrl>
+    <cve>CVE-2026-22746</cve>
+  </suppress>
+
+  <!-- Tomcat CVE-2026 suppressions - pending upgrade: ADOP-TODO -->
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-29145</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-24880</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-29129</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-29146</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-34483</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-34487</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-34500</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-25854</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52.
+   Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-32990</cve>
+  </suppress>
+
   <suppress until="2027-04-02Z">
     <notes><![CDATA[
 Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the generic CPE
