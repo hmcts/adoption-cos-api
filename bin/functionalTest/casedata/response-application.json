@@ -2,17 +2,13 @@
   "data": {
     "addAnotherPlacementOrder": "No",
     "addAnotherSiblingPlacementOrder": "No",
-    "localAuthorityName": "laname",
-    "localAuthorityContactName": "contact name1",
-    "localAuthorityPhoneNumber": "01234567890",
-    "localAuthorityContactEmail": "agency1@email.co.uk",
-    "adopAgencyOrLaName": "agency1",
-    "adopAgencyOrLaContactName": "contact name1",
-    "adopAgencyOrLaPhoneNumber": "01234567890",
     "adopAgencyAddressLine1": "address",
-    "adopAgencyTown": "town",
-    "adopAgencyPostcode": "aa14aa",
     "adopAgencyOrLaContactEmail": "agency1@email.co.uk",
+    "adopAgencyOrLaContactName": "contact name1",
+    "adopAgencyOrLaName": "agency1",
+    "adopAgencyOrLaPhoneNumber": "01234567890",
+    "adopAgencyPostcode": "aa14aa",
+    "adopAgencyTown": "town",
     "adoptionDocument": {
       "documentComment": null,
       "documentDateAdded": null,
@@ -46,28 +42,29 @@
     "applicant1AddressSameAsApplicant1": null,
     "applicant1AddressTown": "NOTTINGHAM",
     "applicant1CannotUpload": "Yes",
-    "applicant1CannotUploadSupportingDocument": ["birthOrAdoptionCertificate"],
+    "applicant1CannotUploadSupportingDocument": ["birthOrAdoptionCertificate"
+    ],
     "applicant1ContactDetails": null,
     "applicant1ContactDetailsConsent": "Yes",
     "applicant1DateOfBirth": "1990-12-12",
     "applicant1DocumentsUploaded": [
-    {
+      {
         "id": "c283880e-068e-450a-b44d-e72a6191847b",
         "value": {
-            "documentEmailContent": null,
-            "documentLink": {
-                "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1",
-                "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-                "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary"
-            },
-            "documentDateAdded": null,
-            "documentComment": "Uploaded by applicant",
-            "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
-            "documentType": null,
-            "documentFileId": null
+          "documentComment": "Uploaded by applicant",
+          "documentDateAdded": null,
+          "documentEmailContent": null,
+          "documentFileId": null,
+          "documentFileName": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+          "documentLink": {
+            "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1/binary",
+            "document_filename": "adoption-application--1234567890123456-2022-03-29:23:55.pdf",
+            "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/a54c625a-82da-44c7-a06a-b4af4c09f8b1"
+          },
+          "documentType": null
         }
-    }
-],
+      }
+    ],
     "applicant1Email": "citizen.automation@mailinator.com",
     "applicant1EmailAddress": "abid@gmail.co",
     "applicant1FirstName": "Abid1",
@@ -101,6 +98,11 @@
     "applicant2PhoneNumber": "12121212121",
     "applicant2SotFullName": null,
     "applicant2StatementOfTruth": null,
+    "applicantLocalAuthority": null,
+    "applicantLocalAuthorityEmail": null,
+    "applicantSocialWorkerEmail": null,
+    "applicantSocialWorkerName": null,
+    "applicantSocialWorkerPhoneNumber": null,
     "applicationFeeOrderSummary": {
       "Fees": null,
       "PaymentReference": null,
@@ -118,6 +120,8 @@
     "birthFatherAddressPostCode": "SW1A 1AA",
     "birthFatherAddressTown": "LONDON",
     "birthFatherFirstName": "Father",
+    "birthFatherIdentityKnown": null,
+    "birthFatherLastAddressDate": null,
     "birthFatherLastName": "Father",
     "birthFatherNameOnCertificate": "Yes",
     "birthFatherNationality": ["British"
@@ -136,14 +140,21 @@
     "birthMotherAddressPostCode": "NG1 1JB",
     "birthMotherAddressTown": "NOTTINGHAM",
     "birthMotherFirstName": "Mother",
+    "birthMotherIdentityKnown": null,
+    "birthMotherLastAddressDate": null,
     "birthMotherLastName": "Mother",
     "birthMotherNameOnCertificate": null,
-    "birthMotherNationality": ["Irish", "British"
+    "birthMotherNationality": ["British", "Irish"
     ],
     "birthMotherNotAliveReason": "",
     "birthMotherOccupation": "Teacher",
     "birthMotherOtherNationalities": [],
     "birthMotherStillAlive": "Yes",
+    "childLocalAuthority": "la",
+    "childLocalAuthorityEmail": null,
+    "childSocialWorkerEmail": null,
+    "childSocialWorkerName": null,
+    "childSocialWorkerPhoneNumber": null,
     "childrenAdditionalNationalities": [
       {
         "id": "3b81bf8b-96ad-4001-a5cf-66f2af99a79c",
@@ -163,7 +174,7 @@
     "childrenFirstNameAfterAdoption": "child",
     "childrenLastName": "child",
     "childrenLastNameAfterAdoption": "child",
-    "childrenNationality": ["Irish", "British", "Other"
+    "childrenNationality": ["British", "Irish", "Other"
     ],
     "childrenOtherSexAtBirth": "something",
     "childrenSexAtBirth": "other",
@@ -174,12 +185,16 @@
     "documentsUploaded": [],
     "dueDate": null,
     "familyCourtEmailId": "adoptionproject@mailinator.com",
-    "placementOrderCourt": "xyz",
     "familyCourtName": "xyz",
     "findFamilyCourt": "Yes",
     "hasAnotherAdopAgencyOrLA": "No",
     "hasSiblings": "Yes",
     "hyphenatedCaseRef": "1234-5678-9012-3456",
+    "localAuthorityContactEmail": "agency1@email.co.uk",
+    "localAuthorityContactName": "contact name1",
+    "localAuthorityName": "laname",
+    "localAuthorityPhoneNumber": "01234567890",
+    "message": null,
     "otherApplicantRelation": "",
     "otherParentAddress1": "BUCKINGHAM PALACE",
     "otherParentAddress2": "",
@@ -191,6 +206,8 @@
     "otherParentAddressPostCode": "SW1A 1AA",
     "otherParentAddressTown": "LONDON",
     "otherParentFirstName": "other",
+    "otherParentIdentityKnown": null,
+    "otherParentLastAddressDate": null,
     "otherParentLastName": "parent",
     "otherParentNameOnCertificate": null,
     "otherParentNationality": null,
@@ -199,6 +216,7 @@
     "otherParentOtherNationalities": [],
     "otherParentStillAlive": "Yes",
     "pcqId": "9c04ea3a-c614-4eac-8361-ac75fb59f9dc",
+    "placementOrderCourt": "xyz",
     "placementOrders": [
       {
         "id": "6e59287f-a337-49ba-ae45-c1f8bfe72f25",
@@ -217,21 +235,24 @@
           "placementOrderDate": "2021-12-12",
           "placementOrderId": "1646222494045",
           "placementOrderNumber": "12345",
-          "placementOrderType": "some order2"
+          "placementOrderType": "Adoption order"
         }
       }
     ],
     "selectedAdoptionAgencyId": "1646222614256",
     "selectedPlacementOrderId": "1646222468418",
     "selectedSiblingId": "1646222699254",
+    "selectedSiblingRelation": "Sister",
+    "selectedSiblingPoType": "Adoption order",
     "siblings": [
       {
         "id": "1646222663145",
         "value": {
           "siblingId": "1646222663145",
           "siblingRelation": "Brother",
-          "siblingPoType": "some order",
-          "siblingPoNumber": "1001"
+          "siblingPoType": "Adoption order",
+          "siblingPoNumber": "1001",
+          "siblingPlacementOtherType": ""
         }
       },
       {
@@ -239,20 +260,20 @@
         "value": {
           "siblingId": "1646222699254",
           "siblingRelation": "Sister",
-          "siblingPoType": "some other order",
-          "siblingPoNumber": "23456"
+          "siblingPoType": "Other",
+          "siblingPoNumber": "23456",
+          "siblingPlacementOtherType": "other type"
         }
       }
     ],
-    "socialWorkerEmail": "socialw@email.com",
-    "socialWorkerName": "social worker",
-    "socialWorkerPhoneNumber": "01234567893",
-    "childLocalAuthority": "la",
+    "socialWorkerDetails": null,
     "solicitorEmail": null,
     "solicitorFirm": null,
     "solicitorHelpingWithApplication": null,
     "solicitorName": null,
-    "solicitorPhoneNumber": null
+    "solicitorPhoneNumber": null,
+    "status": "Draft",
+    "typeOfAdoption": null
   },
   "errors": null,
   "state": null,

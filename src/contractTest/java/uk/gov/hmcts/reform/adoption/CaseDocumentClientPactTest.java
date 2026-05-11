@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption;
 
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
@@ -45,7 +46,7 @@ public class CaseDocumentClientPactTest {
     @Autowired
     private CaseDocumentClient caseDocumentClient;
 
-    @Pact(provider = "case-document-am-api", consumer = "adoption_cos_api")
+    @Pact(provider = "case-document-am-api", consumer = ContractTestConstants.CONSUMER_NAME)
     public RequestResponsePact downloadBinaryPact(PactDslWithProvider builder) throws IOException {
         Map<String, String> headers = Maps.newHashMap();
         headers.put("Authorization", AUTH_TOKEN);
@@ -65,7 +66,8 @@ public class CaseDocumentClientPactTest {
 
     @Test
     @PactTestFor(pactMethod = "downloadBinaryPact")
-    public void verifyDownloadBinary() throws JSONException {
+    public void verifyDownloadBinary(MockServer mockServer) throws JSONException {
+        MockServerReadiness.awaitReady("127.0.0.1", mockServer.getPort());
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
         ResponseEntity<?> response = caseDocumentClient.getDocumentBinary(
             AUTH_TOKEN,
