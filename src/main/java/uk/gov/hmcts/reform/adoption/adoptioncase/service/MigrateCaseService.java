@@ -10,7 +10,7 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ =@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MigrateCaseService {
 
     public void doCaseIdCheck(long caseId, long expectedCaseId, String migrationId) throws AssertionError {

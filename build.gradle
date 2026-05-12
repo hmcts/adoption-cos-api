@@ -507,8 +507,25 @@ functional {
   }
 }
 
+/*
+
+The generateTypeScript task extracts TypeScript enums/constants from Java CCD model
+classes in adoption-cos-api; these are consumed by adoption-web form definitions.
+
+So the API project is the source of truth for the CCD data model. Rather than duplicating
+those enums/constants manually in the Node frontend, the typescript-generator plugin
+introspects the compiled Java classes and generates TypeScript equivalents automatically.
+
+This means adoption-web stays in sync with the Java model without anyone having to
+manually keep two codebases aligned. The jackson2 setting there just tells the plugin how
+the Java classes are annotated (i.e. using @JsonProperty etc from Jackson 2) — it's about 
+reading the Java classes, not about which Jackson version the API runtime uses. So 
+jackson2 stays correct even on Spring Boot 4.
+
+*/
+
 generateTypeScript {
-  jsonLibrary = 'jackson3'
+  jsonLibrary = 'jackson2'
   classPatterns = [
     'uk.gov.hmcts.reform.adoption.**.model.*',
     'uk.gov.hmcts.ccd.sdk.type.*',

@@ -39,7 +39,7 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LO
 
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ =@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class SendgridService {
 
     @Value("${send-grid.api-key}")

@@ -20,7 +20,7 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
 
 @Service
 @Slf4j
-@AllArgsConstructor(onConstructor_ =@Autowired)
+@AllArgsConstructor(onConstructor_ = @Autowired)
 public class DraftApplicationRemovalService {
 
 

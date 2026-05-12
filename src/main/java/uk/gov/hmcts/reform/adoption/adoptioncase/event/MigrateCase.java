@@ -25,7 +25,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions
 
 @Slf4j
 @Component
-@RequiredArgsConstructor(onConstructor_ =@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MigrateCase implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String MIGRATE_CASE = "migrate-case";

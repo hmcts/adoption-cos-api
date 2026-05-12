@@ -10,7 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ComponentLauncher;
 import uk.gov.hmcts.ccd.sdk.type.Document;
@@ -1010,9 +1009,9 @@ public class CaseData {
     @JsonIgnore
     public void updateVacatedHearings() {
 
-        Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
-            hearing.getValue().getHearingId(),
-            hearingListThatCanBeVacated.getValue().getCode().toString()
+        Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream()
+            .filter(hearing -> hearing.getValue().getHearingId().equals(
+                hearingListThatCanBeVacated.getValue().getCode().toString()
         )).findFirst();
 
         if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
@@ -1025,9 +1024,9 @@ public class CaseData {
 
     public void updateAdjournHearings() {
 
-        Optional<ListValue<ManageHearingDetails>> adjournHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
-            hearing.getValue().getHearingId(),
-            hearingListThatCanBeAdjourned.getValue().getCode().toString()
+        Optional<ListValue<ManageHearingDetails>> adjournHearingDetails = newHearings.stream()
+            .filter(hearing -> hearing.getValue().getHearingId().equals(
+                hearingListThatCanBeAdjourned.getValue().getCode().toString()
         )).findFirst();
 
         if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {
