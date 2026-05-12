@@ -1,0 +1,5 @@
+# Registers the ccd-case-document-am-client autoconfiguration in the Spring Boot 4 format
+# (replacing spring.factories which is no longer supported in Spring Boot 4). Required so
+# the class can be excluded via spring.autoconfigure.exclude in application.yaml until
+# the library is updated for Spring Boot 4 compatibility.
+uk.gov.hmcts.reform.ccd.document.am.config.CaseDocumentManagementClientAutoConfiguration
