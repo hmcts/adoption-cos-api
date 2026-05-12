@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -96,7 +95,6 @@ public class CaseData {
         label = "Date child moved in",
         access = {DefaultAccess.class}
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateChildMovedIn;
 
     @JsonUnwrapped(prefix = "applicant1")
@@ -355,7 +353,6 @@ public class CaseData {
         label = "Due Date",
         access = {DefaultAccess.class}
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
 
     @JsonUnwrapped()

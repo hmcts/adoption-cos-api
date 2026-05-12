@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.adoption.systemupdate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +26,9 @@ import static uk.gov.hmcts.reform.ccd.client.model.Classification.PUBLIC;
 class CaseDetailsConverterTest {
 
     @Spy
-    private ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+    private ObjectMapper objectMapper = JsonMapper.builder()
+        .findAndAddModules()
+        .build();
 
     @InjectMocks
     private CaseDetailsConverter caseDetailsConverter;

@@ -1,7 +1,8 @@
 package uk.gov.hmcts.reform.adoption.testutil;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
@@ -98,7 +99,9 @@ public class TestDataHelper {
     }
 
     public static ObjectMapper getObjectMapper() {
-        return new ObjectMapper().findAndRegisterModules();
+        return JsonMapper.builder()
+            .findAndAddModules()
+            .build();
     }
 
     public static String expectedResponse(final String resourcePath) throws IOException {

@@ -13,7 +13,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.event.MigrateCase.MIGRATE_CASE;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,8 +44,8 @@ public class MigrateCaseTest extends EventTest {
     @Test
     void shouldThrowExceptionWhenMigrationRunWithInvalidId() {
         CaseDetails<CaseData, State> caseDetails = setupCaseWithMigrationId("THIS-MIGRATION-ID-IS-NOT-VALID");
-        assertThrows("No migration mapped to THIS-MIGRATION-ID-IS-NOT-VALID", RuntimeException.class,
-                     () -> migrateCase.aboutToSubmit(caseDetails, null)
+        assertThrows(RuntimeException.class, () -> migrateCase.aboutToSubmit(caseDetails, null),
+                     "No migration mapped to THIS-MIGRATION-ID-IS-NOT-VALID"
         );
     }
 

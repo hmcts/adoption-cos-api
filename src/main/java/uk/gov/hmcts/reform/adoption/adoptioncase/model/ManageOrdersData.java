@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -66,7 +65,6 @@ public class ManageOrdersData {
     @CCD(
         access = {DefaultAccess.class}
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOrderMade;
 
     @CCD(hint = "You can choose one or 2 options here",
@@ -92,8 +90,9 @@ public class ManageOrdersData {
         typeParameterOverride = "Cafcass")
     private Set<Cafcass> cafcass;
 
-    @CCD(hint = "You are choosing which parties are issued with a direction on whether or not they can attend the"
-        + "\nhearing. You can choose more than one option.",
+    @CCD(hint = """
+        You are choosing which parties are issued with a direction on whether or not they can attend the
+        hearing. You can choose more than one option.""",
         access = {DefaultAccess.class},
         typeOverride = MultiSelectList,
         typeParameterOverride = "Attendance")

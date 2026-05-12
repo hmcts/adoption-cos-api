@@ -1,15 +1,16 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model.ccd.raw;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.databind.SerializationContext;
 
-import java.io.IOException;
+import java.io.Serial;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final String LOCALDATETIME_ISO8601_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
@@ -18,8 +19,7 @@ public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
     }
 
     @Override
-    public void serialize(LocalDateTime value, JsonGenerator jsonGenerator, SerializerProvider serializers)
-        throws IOException {
+    public void serialize(LocalDateTime value, JsonGenerator jsonGenerator, SerializationContext serializers) {
         jsonGenerator.writeString(value.format(DateTimeFormatter.ofPattern(LOCALDATETIME_ISO8601_FORMAT_STRING)));
     }
 }

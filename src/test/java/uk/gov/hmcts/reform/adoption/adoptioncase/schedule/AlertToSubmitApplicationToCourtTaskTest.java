@@ -9,6 +9,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -48,6 +49,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class AlertToSubmitApplicationToCourtTaskTest {
 
     @InjectMocks
@@ -91,12 +93,6 @@ class AlertToSubmitApplicationToCourtTaskTest {
         final CaseDetails caseDetails1 = mock(CaseDetails.class);
         final CaseDetails caseDetails2 = mock(CaseDetails.class);
         final CaseDetails caseDetails3 = mock(CaseDetails.class);
-        when(caseDetails1.getCreatedDate()).thenReturn(LocalDateTime.now());
-        when(caseDetails2.getCreatedDate()).thenReturn(LocalDateTime.now());
-        when(caseDetails3.getCreatedDate()).thenReturn(LocalDateTime.now());
-        when(caseDetails1.getState()).thenReturn(String.valueOf(State.Submitted));
-        when(caseDetails2.getState()).thenReturn(String.valueOf(Draft));
-        when(caseDetails3.getState()).thenReturn(String.valueOf(State.Submitted));
 
         //Return all 3 cases as casesNeedingReminder
         final List<CaseDetails> caseDetailsList = List.of(caseDetails1, caseDetails2, caseDetails3);
@@ -121,8 +117,6 @@ class AlertToSubmitApplicationToCourtTaskTest {
     @Test
     void checkQuery() {
         final CaseDetails caseDetails1 = mock(CaseDetails.class);
-        when(caseDetails1.getCreatedDate()).thenReturn(LocalDateTime.now());
-        when(caseDetails1.getState()).thenReturn(String.valueOf(State.Submitted));
         final List<CaseDetails> caseDetailsList = List.of(caseDetails1);
 
         //Capture query:

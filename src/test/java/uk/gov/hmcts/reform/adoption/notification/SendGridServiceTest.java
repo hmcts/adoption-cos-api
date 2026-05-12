@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
@@ -143,7 +144,7 @@ class SendGridServiceTest {
             anyString(),
             anyString(),
             any()
-        )).thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
+        )).thenReturn(new ResponseEntity<>((HttpHeaders)null, HttpStatus.OK));
 
         String caseIdForLogging = "1234133313331333";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
@@ -166,7 +167,7 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<>(null, HttpStatus.OK);
+        ResponseEntity<Resource> resource = new ResponseEntity<>((HttpHeaders)null, HttpStatus.OK);
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
             StringUtils.EMPTY,
             UserDetails.builder().build()

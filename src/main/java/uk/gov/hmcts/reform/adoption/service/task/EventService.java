@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor(onConstructor_ =@Autowired)
 public class EventService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
