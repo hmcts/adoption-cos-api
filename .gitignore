@@ -42,4 +42,4 @@ ccd-definitions/definitions/development
 ### Miscellaneous ###
 ARCHITECTURE.md
 copilot-instructions.md
-.github/copilot-instructions.md
+.github/copilot-instructions.md*.hprof

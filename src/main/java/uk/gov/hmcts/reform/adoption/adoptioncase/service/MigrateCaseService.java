@@ -9,16 +9,13 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
 import java.util.List;
 
-import static java.lang.String.format;
-
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MigrateCaseService {
 
     public void doCaseIdCheck(long caseId, long expectedCaseId, String migrationId) throws AssertionError {
         if (caseId != expectedCaseId) {
-            throw new AssertionError(format(
-                "Migration {id = %s, case reference = %s}, expected case id %d",
+            throw new AssertionError("Migration {id = %s, case reference = %s}, expected case id %d".formatted(
                 migrationId, caseId, expectedCaseId
             ));
         }
@@ -32,8 +29,7 @@ public class MigrateCaseService {
             .stream().filter(lv -> !lv.getId().equals(expectedLaDocumentsUploadedBundleId)).toList();
 
         if (laDocumentsUploaded.size() != caseData.getLaDocumentsUploaded().size() - 1) {
-            throw new AssertionError(format(
-                "Migration {id = %s, case reference = %s}, invalid hearing order bundle draft",
+            throw new AssertionError("Migration {id = %s, case reference = %s}, invalid hearing order bundle draft".formatted(
                 migrationId, caseId));
         }
 

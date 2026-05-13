@@ -17,18 +17,19 @@ buildscript {
 
 plugins {
   id 'application'
+  id 'au.com.dius.pact' version '4.3.8'
   id 'checkstyle'
+  id 'com.github.ben-manes.versions' version '0.51.0'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.1844'
+  id 'hmcts.ccd.sdk' version '6.1.0'
   id 'idea'
-  id 'pmd'
-  id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.7'
+  id 'jacoco'
+  id 'org.openrewrite.rewrite' version '7.+'
   id 'org.owasp.dependencycheck' version '9.1.0'
   id 'org.sonarqube' version '5.0.0.4638'
-  id 'org.springframework.boot' version '3.4.11'
-  id 'com.github.ben-manes.versions' version '0.51.0'
-  id 'hmcts.ccd.sdk' version '6.1.0'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1844'
-  id 'au.com.dius.pact' version '4.3.8'
+  id 'org.springframework.boot' version '4.0.6'
+  id 'pmd'
 }
 
 apply plugin: 'cz.habarta.typescript-generator'
@@ -44,7 +45,6 @@ ccd {
 
 ext['elasticsearch.version'] = '9.2.4'
 ext['snakeyaml.version'] = '2.0'
-ext['jackson.version'] = '2.19.2'
 
 application {
   mainClass.set('uk.gov.hmcts.reform.adoption.Application')
@@ -289,7 +289,7 @@ dependencyUpdates {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2024.0.0"
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.1.1"
   }
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
@@ -317,9 +317,6 @@ repositories {
 }
 
 def versions = [
-  jackson           : '2.19.2',
-  junit             : '5.10.2',
-  junitPlatform     : '1.10.2',
   lombok            : '1.18.38',
   reformsJavaLogging: '5.1.7',
   springBoot        : springBoot.class.package.implementationVersion,
@@ -331,11 +328,9 @@ def versions = [
 
 ext.libraries = [
   junit5: [
-    "org.junit.jupiter:junit-jupiter-api:${versions.junit}",
-    "org.junit.jupiter:junit-jupiter-engine:${versions.junit}",
-    "org.junit.jupiter:junit-jupiter-params:${versions.junit}",
-    "org.junit.platform:junit-platform-commons:${versions.junitPlatform}",
-    "org.junit.platform:junit-platform-engine:${versions.junitPlatform}"
+    "org.junit.jupiter:junit-jupiter-api",
+    "org.junit.jupiter:junit-jupiter-engine",
+    "org.junit.jupiter:junit-jupiter-params"
   ]
 ]
 
@@ -347,10 +342,6 @@ dependencies {
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.18'
   implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.5.18'
   implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
-
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.10.9'
   implementation(group: 'com.github.hmcts', name: 'befta-fw', version: '9.2.4') {
     exclude group: 'org.apache.commons', module: 'commons-compress'
@@ -360,21 +351,21 @@ dependencies {
     exclude group: 'com.launchdarkly', module: 'launchdarkly-java-server-sdk'
   }
   implementation 'com.github.hmcts:core-case-data-store-client:4.9.2'
-  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.5'
+  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '4.0.0'
   implementation 'com.github.hmcts.java-logging:logging:8.0.0'
 
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.3.3'
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '1.59.2'
 
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.1.54'
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '3.0.3'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webmvc'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aspectj'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
   implementation group: 'org.springframework.retry', name: 'spring-retry'
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '4.3.0'
+  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '5.0.1'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
 
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '9.2.4'
@@ -384,17 +375,20 @@ dependencies {
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
 
 // Addtional libs
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.15'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '3.0.3'
   implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.0.1'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
   implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
-  implementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
+  implementation group: "org.apache.httpcomponents.core5", name: "httpcore5", version: "5.3.6"
+    implementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
   implementation group: 'org.apache.poi', name: 'poi', version: '5.4.1'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.4.1'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.4.1'
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.1.54'
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+
+  annotationProcessor group: "org.projectlombok", name: "lombok-mapstruct-binding", version: "0.2.0"
 
   testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
   testImplementation libraries.junit5
@@ -405,7 +399,7 @@ dependencies {
     exclude(module: 'android-json')
   }
   testImplementation group: 'io.rest-assured', name: 'rest-assured'
-  testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.23.0'
   testImplementation group: 'com.jayway.awaitility', name: 'awaitility', version: '1.7.0'
   testImplementation group: 'com.github.stefanbirkner', name: 'system-lambda', version: '1.2.1'
   testImplementation group: 'io.github.openfeign', name: 'feign-jackson', version: '11.7'
@@ -417,21 +411,24 @@ dependencies {
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
 
+  runtimeOnly group: "javax.xml.bind", name: "jaxb-api", version: "2.3.1"
+
   functionalTestImplementation sourceSets.main.runtimeClasspath
   functionalTestImplementation sourceSets.test.runtimeClasspath
-  functionalTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.2.2'
+  functionalTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '5.0.1'
   functionalTestImplementation group: 'com.github.hmcts', name: 'document-management-client', version: '7.0.1'
   functionalTestImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.s2sClient
   functionalTestImplementation group: 'io.rest-assured', name: 'rest-assured'
   functionalTestImplementation group: 'net.javacrumbs.json-unit', name: 'json-unit-assertj', version: '3.2.7'
 
-  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
-  contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
+  functionalTestImplementation group: "org.springframework.boot", name: "spring-boot-starter-restclient", version: "4.0.6"
+    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
+  contractTestImplementation group: "org.apache.httpcomponents.client5", name: "httpclient5", version: "5.4.4"
+    contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
 
-  contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
-  contractTestRuntime "org.junit.platform:junit-platform-commons:1.8.1"
+  contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
   contractTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '2.0')
 }
 
@@ -509,6 +506,23 @@ functional {
     }
   }
 }
+
+/*
+
+The generateTypeScript task extracts TypeScript enums/constants from Java CCD model
+classes in adoption-cos-api; these are consumed by adoption-web form definitions.
+
+So the API project is the source of truth for the CCD data model. Rather than duplicating
+those enums/constants manually in the Node frontend, the typescript-generator plugin
+introspects the compiled Java classes and generates TypeScript equivalents automatically.
+
+This means adoption-web stays in sync with the Java model without anyone having to
+manually keep two codebases aligned. The jackson2 setting there just tells the plugin how
+the Java classes are annotated (i.e. using @JsonProperty etc from Jackson 2) — it's about 
+reading the Java classes, not about which Jackson version the API runtime uses. So 
+jackson2 stays correct even on Spring Boot 4.
+
+*/
 
 generateTypeScript {
   jsonLibrary = 'jackson2'

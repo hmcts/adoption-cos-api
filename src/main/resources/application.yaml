@@ -12,6 +12,13 @@ management:
         include: health, info, prometheus
 
 spring:
+ # Excludes the case-document-am-client health indicator autoconfiguration.
+ # This library (ccd-case-document-am-client) is not yet compatible with Spring Boot 4
+ # and causes a ClassNotFoundException for HealthIndicator at startup.
+ # Impact: the document AM API health check will not appear in /actuator/health.
+ # Remove this exclusion once ccd-case-document-am-client is updated for Spring Boot 4.
+  autoconfigure:
+     exclude: "uk.gov.hmcts.reform.ccd.document.am.config.CaseDocumentManagementClientAutoConfiguration"
   config:
     import: "optional:configtree:/mnt/secrets/adoption/"
   application:

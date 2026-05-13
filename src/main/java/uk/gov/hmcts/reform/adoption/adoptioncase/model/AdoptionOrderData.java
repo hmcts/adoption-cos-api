@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -59,7 +58,6 @@ public class AdoptionOrderData {
     @CCD(
         access = {DefaultAccess.class}
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOrderMadeFinalAdoptionOrder;
 
     @CCD(access = {DefaultAccess.class})
