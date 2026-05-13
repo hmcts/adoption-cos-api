@@ -351,7 +351,7 @@ dependencies {
     exclude group: 'com.launchdarkly', module: 'launchdarkly-java-server-sdk'
   }
   implementation 'com.github.hmcts:core-case-data-store-client:4.9.2'
-  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.5'
+  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '4.0.0'
   implementation 'com.github.hmcts.java-logging:logging:8.0.0'
 
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.3.3'
