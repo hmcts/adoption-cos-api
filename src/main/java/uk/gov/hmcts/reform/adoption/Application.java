@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.ccd.client.CaseAssignmentApi;
 import uk.gov.hmcts.reform.ccd.client.CaseUserApi;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClientApi;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 
 
@@ -23,7 +22,6 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
     scanBasePackages = {
         "uk.gov.hmcts.ccd.sdk",
         "uk.gov.hmcts.reform.adoption",
-        "uk.gov.hmcts.reform.ccd.document",
         "uk.gov.hmcts.reform.idam"
     }
 )
@@ -35,7 +33,6 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
         DocAssemblyClient.class,
         CoreCaseDataApi.class,
         CaseAssignmentApi.class,
-        CaseDocumentClientApi.class,
         CaseDocumentClient.class
     }
 )
