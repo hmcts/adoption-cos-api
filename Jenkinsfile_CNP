@@ -170,6 +170,7 @@ withPipeline(type, product, component) {
     env.S2S_URL_BASE = "http://rpe-service-auth-provider-prod.service.core-compute-prod.internal"
     env.BEFTA_S2S_CLIENT_ID = "ccd_data"
 
+    useJava21ForGradle()
     builder.gradle('generateCCDConfig --rerun-tasks')
     generateDefinitions()
   }
@@ -197,6 +198,7 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('checkout') {
+    useJava21ForGradle()
     builder.gradle('generateCCDConfig')
     generateDefinitions()
   }
@@ -323,9 +325,21 @@ withPipeline(type, product, component) {
     env.S2S_URL_BASE = "http://rpe-service-auth-provider-prod.service.core-compute-prod.internal"
     env.BEFTA_S2S_CLIENT_ID = "ccd_data"
 
+    useJava21ForGradle()
     builder.gradle('generateCCDConfig --rerun-tasks')
     generateDefinitions()
   }
+}
+
+def useJava21ForGradle() {
+    def java21Exists = sh(script: 'ls -d /usr/lib/jvm/temurin-21-jdk-* > /dev/null 2>&1', returnStatus: true)
+    if (java21Exists != 0) {
+        error('Java 21 runtime not found on Jenkins agent. generateCCDConfig requires Java 21.')
+    }
+
+    def javaHomeLocation = sh(script: 'ls -d /usr/lib/jvm/temurin-21-jdk-* | head -1', returnStdout: true).trim()
+    env.JAVA_HOME = javaHomeLocation
+    env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
 }
 
 def setCommonEnvVariables() {
