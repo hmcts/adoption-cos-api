@@ -1,11 +1,11 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.validation;
 
 import uk.gov.hmcts.ccd.sdk.type.YesOrNo;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LocalAuthority;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionAgencyOrLocalAuthority;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Parent;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.SocialWorker;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.YesNoNotSure;
 
 import java.time.LocalDate;

@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_LA_APPLICATION_SUMMARY;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_LA_APPLICATION_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_LA_APPLICATION_SUMMARY;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION_LA_SUMMARY_EN;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 

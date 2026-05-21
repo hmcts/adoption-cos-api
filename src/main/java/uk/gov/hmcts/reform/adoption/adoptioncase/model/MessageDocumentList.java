@@ -3,8 +3,8 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 
