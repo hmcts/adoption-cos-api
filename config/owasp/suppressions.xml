@@ -1,205 +1,126 @@
-<?xml version="1.0" encoding="UTF-8"?><suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+
+  <!-- commons-configuration 1.8 -->
   <suppress>
     <notes><![CDATA[
-   file name: commons-configuration-1.8.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/commons-configuration/commons-configuration@.*$</packageUrl>
+    file name: commons-configuration-1.8.jar
+    Suppressed pending upgrade / review.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/commons-configuration/commons-configuration@1\.8$</packageUrl>
     <cve>CVE-2025-46392</cve>
   </suppress>
+
+  <!-- Kotlin stdlib 1.9.25 -->
   <suppress>
     <notes><![CDATA[
-   file name: log4j-core-2.24.3.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
+    file name: kotlin-stdlib-1.9.25.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib@1\.9\.25$</packageUrl>
+    <cve>CVE-2020-29582</cve>
+  </suppress>
+
+  <suppress>
+    <notes><![CDATA[
+    file name: kotlin-stdlib-jdk7-1.9.25.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib-jdk7@1\.9\.25$</packageUrl>
+    <cve>CVE-2020-29582</cve>
+  </suppress>
+
+  <suppress>
+    <notes><![CDATA[
+    file name: kotlin-stdlib-jdk8-1.9.25.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib-jdk8@1\.9\.25$</packageUrl>
+    <cve>CVE-2020-29582</cve>
+  </suppress>
+
+  <!-- Log4j API 2.25.3 -->
+  <suppress>
+    <notes><![CDATA[
+    file name: log4j-api-2.25.3.jar
+    Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-api@2\.25\.3$</packageUrl>
+    <cve>CVE-2026-34478</cve>
+    <cve>CVE-2026-34480</cve>
+    <cve>CVE-2026-34479</cve>
+    <cve>CVE-2026-34477</cve>
+  </suppress>
+
+  <!-- Log4j Core 2.24.3 -->
+  <suppress>
+    <notes><![CDATA[
+    file name: log4j-core-2.24.3.jar
+    Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@2\.24\.3$</packageUrl>
     <cve>CVE-2025-68161</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: kotlin-stdlib-1.9.25.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib@.*$</packageUrl>
-    <cve>CVE-2020-29582</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: kotlin-stdlib-jdk7-1.9.25.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-jdk7@.*$</packageUrl>
-    <cve>CVE-2020-29582</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: kotlin-stdlib-jdk8-1.9.25.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-jdk8@.*$</packageUrl>
-    <cve>CVE-2020-29582</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: log4j-api-2.25.3.jar / log4j-core-2.24.3.jar
-   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-api@.*$</packageUrl>
     <cve>CVE-2026-34478</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: log4j-api-2.25.3.jar / log4j-core-2.24.3.jar
-   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-api@.*$</packageUrl>
     <cve>CVE-2026-34480</cve>
+    <cve>CVE-2026-34481</cve>
   </suppress>
+
+  <!-- Spring Framework 6.2.12 -->
   <suppress>
     <notes><![CDATA[
-   file name: log4j-core-2.24.3.jar
-   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
+    Affects Spring Framework 6.2.12 modules:
+    spring-aop, spring-beans, spring-context, spring-core, spring-expression, spring-jcl, spring-webmvc.
+    Suppressed pending upgrade to patched Spring Framework version. Raise Jira to track upgrade.
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
-    <cve>CVE-2026-34478</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: log4j-core-2.24.3.jar
-   Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
-    <cve>CVE-2026-34480</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-framework 6.2.12 (aop, beans, context, core, expression, jcl, webmvc).
-   Suppressed pending upgrade to patched Spring Framework version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-.*@.*$</packageUrl>
-    <cve>CVE-2026-22737</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-framework 6.2.12 (aop, beans, context, core, expression, jcl, webmvc).
-   Suppressed pending upgrade to patched Spring Framework version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-.*@.*$</packageUrl>
-    <cve>CVE-2026-22735</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-boot 3.4.11 and all starters.
-   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
-    <cve>CVE-2026-22731</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-boot 3.4.11 and all starters.
-   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
-    <cve>CVE-2026-22733</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-boot 3.4.11 and all starters.
-   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
-    <cve>CVE-2026-40972</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-boot 3.4.11 and all starters.
-   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
-    <cve>CVE-2026-40973</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-boot 3.4.11 and all starters.
-   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
-    <cve>CVE-2026-40975</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-boot 3.4.11 and all starters.
-   Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
-    <cve>CVE-2026-40977</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-security-crypto 6.4.12.
-   Suppressed pending upgrade to patched Spring Security version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-.*@.*$</packageUrl>
-    <cve>CVE-2026-22732</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-security-crypto 6.4.12.
-   Suppressed pending upgrade to patched Spring Security version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-.*@.*$</packageUrl>
-    <cve>CVE-2026-22748</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   Affects spring-security-crypto 6.4.12.
-   Suppressed pending upgrade to patched Spring Security version. Raise Jira to track upgrade.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-.*@.*$</packageUrl>
-    <cve>CVE-2026-22746</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: spring-boot-3.4.13.jar
-   ]]></notes>
-    <cve>CVE-2026-22731</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: spring-boot-3.4.11.jar
-   ]]></notes>
-    <cve>CVE-2026-22733</cve>
-    <cve>CVE-2026-40973</cve>
-    <cve>CVE-2026-40972</cve>
-    <cve>CVE-2026-40975</cve>
-    <cve>CVE-2026-40977</cve>
-  </suppress>
-  <suppress>
-    <notes>spring-security-crypto</notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
-    <cve>CVE-2026-22732</cve>
-    <cve>CVE-2026-22748</cve>
-    <cve>CVE-2026-22751</cve>
-    <cve>CVE-2026-22746</cve>
-  </suppress>
-  <suppress>
-    <notes>transitive spring dependencies</notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/(spring-aop|spring-beans|spring-context|spring-core|spring-expression|spring-jcl|spring-webmvc)@6\.2\.12$</packageUrl>
     <cve>CVE-2026-22735</cve>
     <cve>CVE-2026-22737</cve>
     <cve>CVE-2026-22740</cve>
     <cve>CVE-2026-22745</cve>
     <cve>CVE-2026-22741</cve>
   </suppress>
+
+  <!-- Spring Boot 3.4.11 -->
   <suppress>
-    <notes>log4j-core-2.24.3.jar and log4j-api-2.25.3.jar</notes>
-    <cve>CVE-2026-34478</cve>
-    <cve>CVE-2026-34480</cve>
-    <cve>CVE-2026-34479</cve>
-    <cve>CVE-2026-34477</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[Suppress CVE-2026-40974 for listed Spring Boot 3.4.11 artifacts.]]></notes>
+    <notes><![CDATA[
+    Affects listed Spring Boot 3.4.11 artifacts.
+    Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.
+    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/(spring-boot|spring-boot-actuator|spring-boot-actuator-autoconfigure|spring-boot-autoconfigure|spring-boot-starter|spring-boot-starter-actuator|spring-boot-starter-aop|spring-boot-starter-json|spring-boot-starter-logging|spring-boot-starter-tomcat|spring-boot-starter-validation|spring-boot-starter-web)@3\.4\.11$</packageUrl>
+    <cve>CVE-2026-22733</cve>
+    <cve>CVE-2026-40972</cve>
+    <cve>CVE-2026-40973</cve>
     <cve>CVE-2026-40974</cve>
+    <cve>CVE-2026-40975</cve>
+    <cve>CVE-2026-40977</cve>
   </suppress>
+
+  <!-- Spring Boot 3.4.13 -->
   <suppress>
-    <notes><![CDATA[Suppress listed CVEs for Tomcat embedded 10.1.54 artifacts.]]></notes>
+    <notes><![CDATA[
+    file name: spring-boot-3.4.13.jar
+    Suppressed pending upgrade / review.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot@3\.4\.13$</packageUrl>
+    <cve>CVE-2026-22731</cve>
+  </suppress>
+
+  <!-- Spring Security Crypto 6.4.12 -->
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-security-crypto-6.4.12.jar
+    Suppressed pending upgrade to patched Spring Security version. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-crypto@6\.4\.12$</packageUrl>
+    <cve>CVE-2026-22732</cve>
+    <cve>CVE-2026-22748</cve>
+    <cve>CVE-2026-22751</cve>
+    <cve>CVE-2026-22746</cve>
+  </suppress>
+
+  <!-- Tomcat Embedded 10.1.54 -->
+  <suppress>
+    <notes><![CDATA[
+    Suppress listed CVEs for Tomcat embedded 10.1.54 artifacts.
+    Applies to tomcat-embed-core and tomcat-embed-websocket.
+    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/(tomcat-embed-core|tomcat-embed-websocket)@10\.1\.54$</packageUrl>
     <cve>CVE-2026-41293</cve>
     <cve>CVE-2026-43512</cve>
@@ -209,4 +130,25 @@
     <cve>CVE-2026-42498</cve>
     <cve>CVE-2026-43514</cve>
   </suppress>
+
+  <!-- Hibernate Validator 8.0.3.Final -->
+  <suppress>
+    <notes><![CDATA[
+    file name: hibernate-validator-8.0.3.Final.jar
+    Suppress CVE-2025-15104 for this exact Hibernate Validator version only.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.hibernate\.validator/hibernate-validator@8\.0\.3\.Final$</packageUrl>
+    <cve>CVE-2025-15104</cve>
+  </suppress>
+
+  <!-- Commons Validator 1.10.1 -->
+  <suppress>
+    <notes><![CDATA[
+    file name: commons-validator-1.10.1.jar
+    Suppress CVE-2025-15104 for this exact Commons Validator version only.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/commons-validator/commons-validator@1\.10\.1$</packageUrl>
+    <cve>CVE-2025-15104</cve>
+  </suppress>
+
 </suppressions>
