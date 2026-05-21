@@ -389,7 +389,7 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <cve>CVE-2026-34479</cve>
     <cve>CVE-2026-34477</cve>
   </suppress>
-  <!-- ADOP-2800: spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
+  <!-- To be fixed in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
   <!-- Hystrix 2.2.10.RELEASE transitively pulls spring-boot-starter-aop:2.3.12.RELEASE.        -->
   <!-- The application itself runs Spring Boot 4 and is not affected by these 2.x vulnerabilities. -->
   <!-- Remove once spring-cloud-starter-netflix-hystrix is replaced or upgraded.                   -->
@@ -404,7 +404,7 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <cve>CVE-2023-20883</cve>
   </suppress>
 
-  <!-- ADOP-2800: Tomcat 10.1.54 CVE suppressions - pending upgrade to patched version -->
+  <!-- To be fixed in ADOP-2777: Tomcat 10.1.54 CVE suppressions - pending upgrade to patched version -->
   <suppress>
     <notes><![CDATA[
    Affects tomcat-embed-core / tomcat-embed-websocket 10.1.54 (pinned for hystrix compatibility).
