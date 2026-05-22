@@ -19,7 +19,9 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 
 /* 
 
-This change is a temporary compatibility patch so the app can run on the newer Spring Boot version.
+This change is a temporary compatibility patch, the use of a compatability bean: 
+adoption-cos-api/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports, 
+so the app can run on the newer Spring Boot version.
 
 Spring Boot 4 changed how it discovers “automatic setup” from libraries. ccd-case-document-am-client 
 tries to load an outdated health-check class, which crashes startup. So the PR does three things to avoid that crash:
