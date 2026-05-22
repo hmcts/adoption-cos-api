@@ -25,9 +25,9 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.AD
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
-import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_FIRST_NAME;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LAST_NAME;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)

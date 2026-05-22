@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,6 @@ import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionUploadDocument;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
 import uk.gov.hmcts.reform.idam.client.models.User;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.Clock;
 import java.time.LocalDate;
