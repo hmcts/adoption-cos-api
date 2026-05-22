@@ -19,10 +19,10 @@ import java.util.Map;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_FILE_NAME;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_SUMMARY;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_LA_APPLICATION_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_LA_APPLICATION_SUMMARY;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_SUMMARY;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_APPLICATION_FILE_NAME;
 import static uk.gov.hmcts.reform.adoption.document.DocumentUtil.formatDocumentName;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;

@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event.page;
 
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.AdoptionOrderData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.Children;
 import uk.gov.hmcts.reform.adoption.common.ccd.CcdPageConfiguration;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 

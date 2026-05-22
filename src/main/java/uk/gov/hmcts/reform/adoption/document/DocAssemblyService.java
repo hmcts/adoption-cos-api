@@ -4,18 +4,18 @@ import tools.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.adoption.document.content.DocmosisTemplateProvider;
 import uk.gov.hmcts.reform.adoption.document.model.DocAssemblyRequest;
 import uk.gov.hmcts.reform.adoption.document.model.DocAssemblyResponse;
-import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.Map;
 
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF_EXT;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.CASE_TYPE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.JURISDICTION;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF;
+import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF_EXT;
 
 @Service
 @Slf4j

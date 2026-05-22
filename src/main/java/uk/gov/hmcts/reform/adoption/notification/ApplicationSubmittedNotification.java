@@ -28,23 +28,23 @@ import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.HYPHENATED
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.CommonContent.SUBMISSION_RESPONSE_DATE;
-import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICANT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.APPLICATION_SUBMITTED_TO_LOCAL_AUTHORITY;
+import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_AUTHORITY_APPLICATION_SUBMITTED_ACKNOWLEDGE_CITIZEN;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_COURT_APPLICATION_SUBMITTED;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.LOCAL_COURT_APPLICATION_SUBMITTED_BY_LOCAL_AUTHORITY;
 import static uk.gov.hmcts.reform.adoption.notification.FormatUtil.DATE_TIME_FORMATTER;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.ADOPTION_CUI_MULTI_CHILDREN_URL;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.CHILD_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LA_PORTAL_URL;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.LOCAL_COURT_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.CHILD_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.PAYMENT_TOTAL;
 
 

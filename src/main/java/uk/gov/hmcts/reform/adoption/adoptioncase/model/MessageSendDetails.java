@@ -16,8 +16,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.access.SystemUpdateAccess
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedList;
+import static uk.gov.hmcts.ccd.sdk.type.FieldType.FixedRadioList;
 import static uk.gov.hmcts.ccd.sdk.type.FieldType.TextArea;
 
 @Data

@@ -24,20 +24,20 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.doThrow;
-import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_SERVICE_AUTH_TOKEN;
-import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
-import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.ENGLISH_TEMPLATE_ID;
-import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.CASE_TYPE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.JURISDICTION;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.ADOPTION_DRAFT_APPLICATION_DOCUMENT_NAME;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.CASE_TYPE;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.PDF;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.JURISDICTION;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.ENGLISH_TEMPLATE_ID;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_AUTHORIZATION_TOKEN;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_CASE_ID;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_SERVICE_AUTH_TOKEN;
 
 @ExtendWith(MockitoExtension.class)
 public class DocAssemblyServiceTest {

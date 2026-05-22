@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
