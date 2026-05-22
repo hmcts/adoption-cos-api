@@ -29,11 +29,10 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -74,13 +73,6 @@ class DraftApplicationRemovalServiceTest {
         when(authTokenGenerator.generate()).thenReturn(TEST_SERVICE_AUTH_TOKEN);
 
         final String documentUuid = FilenameUtils.getName(adoptionDocumentListValue.getValue().getDocumentLink().getUrl());
-
-        doNothing().when(caseDocumentClient).deleteDocument(
-            SYSTEM_USER_USER_ID,
-            TEST_SERVICE_AUTH_TOKEN,
-            UUID.fromString(documentUuid),
-            true
-        );
 
         final List<ListValue<AdoptionDocument>> actualDocumentsList = draftApplicationRemovalService.removeDraftApplicationDocument(
             singletonList(adoptionDocumentListValue),

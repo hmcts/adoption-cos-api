@@ -171,8 +171,7 @@ public final class CaseEventCommonMethods {
     }
 
     public static String buildMessageHistory(User caseworkerUser, String messageText, String messageHistory) {
-        String newMessage = String.format(
-            "%s %s %s",
+        String newMessage = "%s %s %s".formatted(
             caseworkerUser.getUserDetails().getEmail(),
             " - ",
             messageText);

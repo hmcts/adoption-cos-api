@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.config.launchdarkly;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -8,7 +7,6 @@ public class LaunchdarklyIntValidationService {
 
     LaunchDarklyClient launchDarklyClient;
 
-    @Autowired
     public LaunchdarklyIntValidationService(LaunchDarklyClient launchDarklyClient) {
         this.launchDarklyClient = launchDarklyClient;
     }

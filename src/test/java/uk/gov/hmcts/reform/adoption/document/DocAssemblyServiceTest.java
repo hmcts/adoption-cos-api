@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.adoption.document;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import feign.Request;
 import feign.Response;

@@ -169,8 +169,6 @@ public class MessageSendDetails {
 
         private final String label;
 
-
-
     }
 
     @Getter

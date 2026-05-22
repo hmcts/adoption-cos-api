@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,7 +53,6 @@ public class ManageHearingDetails {
         label = "Hearing date & time",
         displayOrder = 3
     )
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime hearingDateAndTime;
 
     @CCD(label = " Length of hearing",

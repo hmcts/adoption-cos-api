@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,18 +28,13 @@ public class Application {
     private static final int SUBMISSION_RESPONSE_DAYS = 14;
 
     @CCD(label = "Date when the application was created", access = { DefaultAccess.class })
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
 
     @CCD(label = "Date submitted", access = { DefaultAccess.class })
-    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateSubmitted;
 
 
     @CCD(label = "20 week timetable", access = { DefaultAccess.class })
-    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate timetable20Week;
 
     @CCD(label = "Here are your order details", access = { CollectionAccess.class })

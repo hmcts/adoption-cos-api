@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,7 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.ComponentLauncher;
 import uk.gov.hmcts.ccd.sdk.type.Document;
@@ -96,7 +94,6 @@ public class CaseData {
         label = "Date child moved in",
         access = {DefaultAccess.class}
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateChildMovedIn;
 
     @JsonUnwrapped(prefix = "applicant1")
@@ -355,7 +352,6 @@ public class CaseData {
         label = "Due Date",
         access = {DefaultAccess.class}
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
 
     @JsonUnwrapped()
@@ -1013,9 +1009,9 @@ public class CaseData {
     @JsonIgnore
     public void updateVacatedHearings() {
 
-        Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
-            hearing.getValue().getHearingId(),
-            hearingListThatCanBeVacated.getValue().getCode().toString()
+        Optional<ListValue<ManageHearingDetails>> vacatedHearingDetails = newHearings.stream()
+            .filter(hearing -> hearing.getValue().getHearingId().equals(
+                hearingListThatCanBeVacated.getValue().getCode().toString()
         )).findFirst();
 
         if (Objects.isNull(vacatedHearings) || !vacatedHearings.contains(vacatedHearingDetails.get())) {
@@ -1028,9 +1024,9 @@ public class CaseData {
 
     public void updateAdjournHearings() {
 
-        Optional<ListValue<ManageHearingDetails>> adjournHearingDetails = newHearings.stream().filter(hearing -> StringUtils.equals(
-            hearing.getValue().getHearingId(),
-            hearingListThatCanBeAdjourned.getValue().getCode().toString()
+        Optional<ListValue<ManageHearingDetails>> adjournHearingDetails = newHearings.stream()
+            .filter(hearing -> hearing.getValue().getHearingId().equals(
+                hearingListThatCanBeAdjourned.getValue().getCode().toString()
         )).findFirst();
 
         if (Objects.isNull(adjournHearings) || !adjournHearings.contains(adjournHearingDetails.get())) {

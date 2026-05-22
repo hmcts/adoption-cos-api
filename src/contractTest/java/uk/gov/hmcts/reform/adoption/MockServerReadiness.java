@@ -46,8 +46,7 @@ public final class MockServerReadiness {
             pause(pollInterval);
         }
 
-        String message = String.format(
-            "Pact mock server on %s:%d did not become ready within %d ms",
+        String message = "Pact mock server on %s:%d did not become ready within %d ms".formatted(
             host,
             port,
             timeout.toMillis()

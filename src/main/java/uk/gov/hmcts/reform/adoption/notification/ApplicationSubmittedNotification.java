@@ -193,7 +193,7 @@ public class ApplicationSubmittedNotification implements ApplicantNotification {
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         String applicantFullName = caseData.getChildren().getFirstName() + " " + caseData.getChildren().getLastName();
-        templateVars.put(CHILD_FULL_NAME, StringUtils.replace(applicantFullName, "'","\\'"));
+        templateVars.put(CHILD_FULL_NAME, applicantFullName.replace("'","\\'"));
         templateVars.put(LA_PORTAL_URL, emailTemplatesConfig.getTemplateVars().get(LA_PORTAL_URL));
         return templateVars;
     }

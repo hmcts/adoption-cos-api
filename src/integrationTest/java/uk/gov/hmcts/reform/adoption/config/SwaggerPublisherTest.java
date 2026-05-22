@@ -1,7 +1,8 @@
 package uk.gov.hmcts.reform.adoption.config;
 
 import io.restassured.RestAssured;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -11,9 +12,10 @@ import org.junit.jupiter.api.Test;
 class SwaggerPublisherTest {
 
     @Test
+    @Disabled("Requires live AAT environment - cannot run in CI without VPN access to internal network")
     public void testHealthEndpoint() {
         String  testUrl = "http://adoption-cos-api-aat.service.core-compute-aat.internal";
-        Assert.assertTrue(true);
+        Assertions.assertTrue(true);
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured
             .given()

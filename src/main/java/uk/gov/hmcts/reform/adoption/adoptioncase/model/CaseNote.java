@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +34,6 @@ public class CaseNote {
     @CCD(
         label = "Date added"
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
 }

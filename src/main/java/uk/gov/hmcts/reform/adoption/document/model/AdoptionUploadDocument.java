@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.document.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,6 @@ public class AdoptionUploadDocument {
     @CCD(
         label = "Date"
     )
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate documentDateAdded;
 
     @CCD(

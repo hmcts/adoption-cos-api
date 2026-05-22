@@ -15,15 +15,30 @@ import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.ccd.client.CaseAssignmentApi;
 import uk.gov.hmcts.reform.ccd.client.CaseUserApi;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClientApi;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
+
+/* 
+
+This change is a temporary compatibility patch, the use of a compatability bean: 
+adoption-cos-api/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports, 
+so the app can run on the newer Spring Boot version.
+
+Spring Boot 4 changed how it discovers “automatic setup” from libraries. ccd-case-document-am-client 
+tries to load an outdated health-check class, which crashes startup. So the PR does three things to avoid that crash:
+
+ 1. Application.java: removes direct wiring to the old client class/package from that library.
+ 2. AutoConfiguration.imports: adds the library’s auto-config class in Boot 4’s new format (so Spring can recognise it in the new system).
+ 3. application.yaml: explicitly excludes that auto-config class so it doesn’t run and break startup. 
+ 
+ This will be resolved in ADOP-2838
+ 
+ */
 
 
 @SpringBootApplication(
     scanBasePackages = {
         "uk.gov.hmcts.ccd.sdk",
         "uk.gov.hmcts.reform.adoption",
-        "uk.gov.hmcts.reform.ccd.document",
         "uk.gov.hmcts.reform.idam"
     }
 )
@@ -35,7 +50,6 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
         DocAssemblyClient.class,
         CoreCaseDataApi.class,
         CaseAssignmentApi.class,
-        CaseDocumentClientApi.class,
         CaseDocumentClient.class
     }
 )
