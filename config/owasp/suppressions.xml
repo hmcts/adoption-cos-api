@@ -389,4 +389,34 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <cve>CVE-2026-34479</cve>
     <cve>CVE-2026-34477</cve>
   </suppress>
+  <!-- To be fixed in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
+  <!-- Hystrix 2.2.10.RELEASE transitively pulls spring-boot-starter-aop:2.3.12.RELEASE.        -->
+  <!-- The application itself runs Spring Boot 4 and is not affected by these 2.x vulnerabilities. -->
+  <!-- Remove once spring-cloud-starter-netflix-hystrix is replaced or upgraded.                   -->
+  <suppress>
+    <notes><![CDATA[
+   spring-cloud-starter-netflix-hystrix:2.2.10.RELEASE transitively pulls
+   spring-boot-starter-aop:2.3.12.RELEASE. The application runs Spring Boot 4 and is not
+   affected by CVE-2023-20873 / CVE-2023-20883. Suppressed until Hystrix is retired.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-aop@.*$</packageUrl>
+    <cve>CVE-2023-20873</cve>
+    <cve>CVE-2023-20883</cve>
+  </suppress>
+
+  <!-- To be fixed in ADOP-2777: Tomcat 10.1.54 CVE suppressions - pending upgrade to patched version -->
+  <suppress>
+    <notes><![CDATA[
+   Affects tomcat-embed-core / tomcat-embed-websocket 10.1.54 (pinned for hystrix compatibility).
+   Suppressed pending Tomcat upgrade. Raise Jira to track upgrade.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
+    <cve>CVE-2026-41293</cve>
+    <cve>CVE-2026-41284</cve>
+    <cve>CVE-2026-42498</cve>
+    <cve>CVE-2026-43512</cve>
+    <cve>CVE-2026-43513</cve>
+    <cve>CVE-2026-43514</cve>
+    <cve>CVE-2026-43515</cve>
+  </suppress>
 </suppressions>
