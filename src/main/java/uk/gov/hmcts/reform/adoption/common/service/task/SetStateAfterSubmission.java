@@ -11,13 +11,14 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.task.CaseTask;
 import uk.gov.hmcts.reform.adoption.payment.model.PaymentStatus;
 
+import java.util.Objects;
+
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
+
 //TODO
 // import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingDocuments;
 // import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingHWFDecision;
-import java.util.Objects;
-
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.AwaitingPayment;
 
 
 @Component
