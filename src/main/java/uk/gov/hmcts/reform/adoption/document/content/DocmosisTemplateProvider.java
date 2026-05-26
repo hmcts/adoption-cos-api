@@ -2,8 +2,8 @@ package uk.gov.hmcts.reform.adoption.document.content;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.adoption.common.config.DocmosisTemplatesConfig;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
+import uk.gov.hmcts.reform.adoption.common.config.DocmosisTemplatesConfig;
 
 @Component
 public class DocmosisTemplateProvider {

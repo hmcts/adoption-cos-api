@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.systemupdate;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,10 +65,5 @@ class CaseDetailsConverterTest {
         assertThat(caseDetails.getData().getApplication().getCreatedDate()).isEqualTo(LOCAL_DATE);
         assertThat(caseDetails.getSecurityClassification()).isEqualTo(PUBLIC);
         assertThat(caseDetails.getCallbackResponseStatus()).isEqualTo(callbackResponseStatus);
-    }
-
-    private Map<Object, Object> expectedData(final CaseData caseData) {
-        return objectMapper.convertValue(caseData, new TypeReference<>() {
-        });
     }
 }

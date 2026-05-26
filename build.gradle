@@ -11,7 +11,7 @@ buildscript {
 
   }
   dependencies {
-    classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '3.2.1263'
+    classpath "cz.habarta.typescript-generator:typescript-generator-gradle-plugin:3.2.1263"
   }
 }
 
@@ -31,12 +31,6 @@ plugins {
   id 'au.com.dius.pact' version '4.3.8'
 }
 
-// This is cheating workaround to how Platops Jenkins pipeline detecting Java version
-// For more details on how the pipeline detect and setup Java version,
-// Ref: cnp-jenkins-library src/uk/gov/hmcts/contino/GradleBuilder.groovy function setupToolVersion()
-// We will need to move our nested Gradle build script to this root script in the near future
-var pipelineJavaVersion = "JavaLanguageVersion.of(21)"
-
 apply plugin: 'cz.habarta.typescript-generator'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'io.spring.dependency-management'
@@ -48,9 +42,9 @@ ccd {
   configDir = file('ccd-definitions/definitions')
 }
 
-ext['elasticsearch.version'] = '7.17.3'
+ext['elasticsearch.version'] = '9.2.4'
 ext['snakeyaml.version'] = '2.0'
-ext['jackson.version'] = '2.15.2'
+ext['jackson.version'] = '2.19.2'
 
 application {
   mainClass.set('uk.gov.hmcts.reform.adoption.Application')
@@ -323,7 +317,7 @@ repositories {
 }
 
 def versions = [
-  jackson           : '2.15.3',
+  jackson           : '2.19.2',
   junit             : '5.10.2',
   junitPlatform     : '1.10.2',
   lombok            : '1.18.38',
@@ -383,7 +377,7 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '4.3.0'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
 
-  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '8.19.10'
+  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '9.2.4'
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.0.1-RELEASE'
   implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.5.0'
   implementation group: 'commons-validator', name: 'commons-validator', version: '1.10.1'

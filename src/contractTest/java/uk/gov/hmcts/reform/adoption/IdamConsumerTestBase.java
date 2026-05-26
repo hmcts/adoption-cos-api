@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption;
 
+import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.annotations.PactFolder;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import au.com.dius.pact.consumer.MockServer;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 
 @ExtendWith(PactConsumerTestExt.class)

@@ -1,9 +1,9 @@
 package uk.gov.hmcts.reform.adoption;
 
+import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslJsonRootValue;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
@@ -107,8 +107,8 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
         return new PactDslJsonBody()
             .stringType("sub", "61")
             .stringType("uid", "adop_pact_user@mailinator.com")
-            .stringType("givenName", "Test")
-            .stringType("familyName", "User")
+            .stringType("given_name", "Test")
+            .stringType("family_name", "User")
             .minArrayLike("roles", 1, PactDslJsonRootValue.stringType("citizen"), 1);
     }
 

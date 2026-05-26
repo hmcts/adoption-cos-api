@@ -11,10 +11,10 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import java.util.List;
 
 import static java.util.List.of;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CASE_STATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CCD_REFERENCE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_FIRST_NAME;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CHILD_LAST_NAME;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.CASE_STATE;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants.DATE_SUBMITTED;
 
 @Component
