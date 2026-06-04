@@ -96,7 +96,7 @@ public class DraftApplicationExpiringNotification implements ApplicantNotificati
             templateVars.put(ADOPTION_CUI_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_URL));
         } else {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
-            templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+            templateVars.put(APPLICANT_2_FULL_NAME, "");
             templateVars.put(ADOPTION_CUI_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_URL));
         }
         return templateVars;

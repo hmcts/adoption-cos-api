@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -120,7 +119,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         setPaymentAmount(caseData);
         templateVars.put(PAYMENT_TOTAL, caseData.getApplication().getApplicationFeeOrderSummary().getPaymentTotal());
@@ -138,7 +137,7 @@ class ApplicationSubmittedNotificationTest {
             templateVars.put(HAS_SECOND_APPLICANT, YES);
         } else {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
-            templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+            templateVars.put(APPLICANT_2_FULL_NAME, "");
         }
         templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
 
@@ -158,7 +157,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         caseData.getApplicant1().setLanguagePreference(null);
         caseData.getApplicant2().setLanguagePreference(null);
         setPaymentAmount(caseData);
@@ -194,7 +193,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setApplicant2(new Applicant());
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
@@ -203,7 +202,7 @@ class ApplicationSubmittedNotificationTest {
             + caseData.getApplicant1().getLastName());
         templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
         templateVars.put(HAS_SECOND_APPLICANT, NO);
-        templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        templateVars.put(APPLICANT_2_FULL_NAME, "");
         templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
         setPaymentAmount(caseData);
         templateVars.put(PAYMENT_TOTAL, caseData.getApplication().getApplicationFeeOrderSummary().getPaymentTotal());
@@ -224,7 +223,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
                 .thenReturn(getMainTemplateVars());
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
@@ -400,7 +399,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
         templateVars.put(SUBMISSION_RESPONSE_DATE, "21 April 2021");
@@ -416,7 +415,7 @@ class ApplicationSubmittedNotificationTest {
             templateVars.put(HAS_SECOND_APPLICANT, YES);
         } else {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
-            templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+            templateVars.put(APPLICANT_2_FULL_NAME, "");
         }
         templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
 
@@ -439,7 +438,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         caseData.getApplicant2().setEmailAddress(null);
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(HYPHENATED_REF, caseData.getHyphenatedCaseRef());
@@ -449,7 +448,7 @@ class ApplicationSubmittedNotificationTest {
             + caseData.getApplicant1().getLastName());
         templateVars.put(LOCAL_COURT_NAME, caseData.getFamilyCourtName());
         templateVars.put(HAS_SECOND_APPLICANT, NO);
-        templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        templateVars.put(APPLICANT_2_FULL_NAME, "");
         templateVars.put(ADOPTION_CUI_MULTI_CHILDREN_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_MULTI_CHILDREN_URL));
 
         // email template doesn't use payment amount, so set to default 'not found' value.
@@ -471,7 +470,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         caseData.getApplicant1().setLanguagePreference(null);
         caseData.getApplicant2().setLanguagePreference(null);
         Map<String, Object> templateVars = new HashMap<>();

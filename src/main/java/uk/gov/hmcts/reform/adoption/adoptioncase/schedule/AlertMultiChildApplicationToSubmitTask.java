@@ -3,8 +3,6 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -65,9 +63,9 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
      */
     @Override
     public void run() {
-
         final User user = idamService.retrieveSystemUpdateUserDetails();
-        log.info("Idam user name: " + user.getUserDetails().getEmail());
+        log.info("Idam user name: {}", user.getUserDetails().getEmail());
+
         final String serviceAuthorization = authTokenGenerator.generate();
 
         final BoolQueryBuilder query = boolQuery()
@@ -75,45 +73,35 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
             .filter(rangeQuery(CREATED_DATE)
                         .gte(LocalDate.now())
                         .lte(LocalDate.now()));
+
         log.info("AlertMultiChildApplicationToSubmitTask Scheduled task is executed");
 
         final List<CaseDetails> casesInDraftNeedingReminder =
             ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, serviceAuthorization);
+
         Map<String, List<CaseDetails>> emailCounts = new HashMap<>();
 
         for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
             log.info("AlertMultiChildApplicationToSubmitTask case details are present: {}", caseDetails.getId());
-            String applicantEmail = (String) caseDetails.getData().get("applicant1Email");
-            List<CaseDetails> caseList = emailCounts.get(applicantEmail);
-            if (!CollectionUtils.sizeIsEmpty(caseList)) {
-                log.info("adding case to the map {}", caseDetails.getId());
-                caseList.add(caseDetails);
-                log.info("count of the case list {}", caseList.size());
-                emailCounts.put(applicantEmail, caseList);
-                log.info("map count {}", emailCounts.size());
-            } else {
-                log.info("adding first case to the map for this user, case id {}", caseDetails.getId());
-                List<CaseDetails> caseListForUser = getNewCaseList();
-                caseListForUser.add(caseDetails);
-                log.info("count of the case list {}", caseListForUser.size());
-                emailCounts.put(applicantEmail, caseListForUser);
-                log.info("map count {}", emailCounts.size());
-            }
 
+            String applicantEmail = (String) caseDetails.getData().get("applicant1Email");
+
+            emailCounts
+                .computeIfAbsent(applicantEmail, email -> getNewCaseList())
+                .add(caseDetails);
         }
-        log.info("case list size {}",emailCounts.size());
-        emailCounts.forEach((id, caseLists) -> {
-            log.info("case list for user X count {}", caseLists.size());
-            if (caseLists.size() > NumberUtils.INTEGER_ONE) {
-                caseLists.forEach(caseDe -> {
-                    log.info("state of the case {} for case id {}",caseDe.getId(),caseDe.getState());
-                    if (State.Draft.toString().equals(caseDe.getState())) {
-                        sendReminderToApplicantsIfEligible(caseDe);
-                        log.info("Attempted to send reminder for case id {}", caseDe.getId());
-                    }
-                });
-            }
-        });
+
+        log.info("case list size {}", emailCounts.size());
+
+        emailCounts.values().stream()
+            .filter(caseList -> caseList.size() > 1)
+            .flatMap(List::stream)
+            .filter(caseDetails -> State.Draft.toString().equals(caseDetails.getState()))
+            .forEach(caseDetails -> {
+                log.info("state of the case {} for case id {}", caseDetails.getId(), caseDetails.getState());
+                sendReminderToApplicantsIfEligible(caseDetails);
+                log.info("Attempted to send reminder for case id {}", caseDetails.getId());
+            });
     }
 
     private List<CaseDetails> getNewCaseList() {

@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -56,7 +55,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
 
         CaseData caseData = caseData();
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
             + caseData.getApplicant1().getLastName());
@@ -68,7 +67,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
             templateVars.put(HAS_SECOND_APPLICANT, YES);
         } else {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
-            templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+            templateVars.put(APPLICANT_2_FULL_NAME, "");
         }
         templateVars.put(HAS_MULTIPLE_APPLICANT, YES);
 
@@ -87,7 +86,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
 
         CaseData caseData = caseData();
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         caseData.getApplicant1().setLanguagePreference(null);
         caseData.getApplicant2().setLanguagePreference(null);
         Map<String, Object> templateVars = new HashMap<>();
@@ -115,7 +114,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
 
         CaseData caseData = caseData();
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         caseData.setApplicant2(new Applicant());
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
@@ -123,7 +122,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
 
         templateVars.put(HAS_SECOND_APPLICANT, NO);
         templateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        templateVars.put(APPLICANT_2_FULL_NAME, "");
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         verify(notificationService, times(1)).sendEmail(
@@ -154,7 +153,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         caseData.setApplicant2(applicant2);
 
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
             + caseData.getApplicant1().getLastName());
@@ -197,7 +196,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         caseData.setApplicant2(applicant2);
 
         caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
             + caseData.getApplicant1().getLastName());
