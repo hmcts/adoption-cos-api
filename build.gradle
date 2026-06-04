@@ -250,63 +250,49 @@ repositories {
 
 def versions = [
   lombok            : '1.18.38',
-  s2sClient         : '4.0.3',
-  pact              : '4.1.7',
+  s2sClient         : '5.3.3',
 ]
 
 dependencies {
-  implementation 'org.apache.logging.log4j:log4j-api:2.25.4'
-  implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.25.4'
-  implementation 'ch.qos.logback:logback-classic:1.5.18'
-  implementation 'ch.qos.logback:logback-core:1.5.18'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+  implementation 'org.springframework.retry:spring-retry'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 
-  implementation 'com.launchdarkly:launchdarkly-java-server-sdk:5.10.9'
-
-  implementation('com.github.hmcts:befta-fw:9.2.4') {
-    exclude group: 'org.apache.commons', module: 'commons-compress'
-    exclude group: 'com.google.guava', module: 'guava'
-    exclude group: 'org.apache.poi', module: 'poi-ooxml'
-    exclude group: 'org.apache.poi', module: 'poi'
-    exclude group: 'com.launchdarkly', module: 'launchdarkly-java-server-sdk'
-  }
-
+  implementation 'com.github.hmcts:ccd-case-document-am-client:1.59.2'
   implementation 'com.github.hmcts:core-case-data-store-client:4.9.2'
   implementation 'com.github.hmcts:idam-java-client:3.0.5'
+  implementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
   implementation 'com.github.hmcts.java-logging:logging:8.0.0'
-  implementation 'com.github.hmcts:service-auth-provider-java-client:5.3.3'
-  implementation 'com.github.hmcts:ccd-case-document-am-client:1.59.2'
 
-  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-actuator'
-  implementation 'org.springframework.boot:spring-boot-starter-validation'
-  implementation 'org.springframework.retry:spring-retry'
-  implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+  implementation('com.github.hmcts:befta-fw:9.2.4') {
+    exclude group: 'com.google.guava', module: 'guava'
+    exclude group: 'com.launchdarkly', module: 'launchdarkly-java-server-sdk'
+    exclude group: 'org.apache.commons', module: 'commons-compress'
+    exclude group: 'org.apache.poi', module: 'poi'
+    exclude group: 'org.apache.poi', module: 'poi-ooxml'
+  }
 
+  implementation 'com.launchdarkly:launchdarkly-java-server-sdk:5.10.9'
+  implementation 'com.sendgrid:sendgrid-java:4.0.1'
+  implementation 'commons-validator:commons-validator:1.10.1'
   implementation 'org.elasticsearch:elasticsearch:9.2.4'
   implementation 'uk.gov.service.notify:notifications-java-client:5.0.1-RELEASE'
-  implementation 'commons-validator:commons-validator:1.10.1'
-  implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
-  implementation 'com.sendgrid:sendgrid-java:4.0.1'
 
   implementation "org.projectlombok:lombok:${versions.lombok}"
   annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
   testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'io.rest-assured:rest-assured'
-  testImplementation 'com.jayway.awaitility:awaitility:1.7.0'
-  testImplementation 'com.github.stefanbirkner:system-lambda:1.2.1'
-  testImplementation 'io.github.openfeign:feign-jackson:11.7'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-  functionalTestImplementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.2'
   functionalTestImplementation 'com.github.hmcts:document-management-client:7.0.1'
   functionalTestImplementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
   functionalTestImplementation 'io.rest-assured:rest-assured'
   functionalTestImplementation 'net.javacrumbs.json-unit:json-unit-assertj:3.2.7'
+  functionalTestImplementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-  contractTestImplementation "au.com.dius.pact.consumer:junit5:${versions.pact}"
-  contractTestImplementation 'org.yaml:snakeyaml:2.0'
+  contractTestImplementation 'au.com.dius.pact.consumer:junit5:4.1.7'
 }
 
 ext.getVaultSecret = { String secretName ->
@@ -468,7 +454,7 @@ project.ext {
 tasks.register('runAndPublishConsumerPactTests', Test) {
   logger.lifecycle('Runs pact tests')
   testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.contractTest.runtimeClasspath
+  classpath = sourceSets.cn.runtimeClasspath
 
   dependsOn tasks.named('contract')
   finalizedBy tasks.named('pactPublish')
