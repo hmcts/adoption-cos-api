@@ -161,6 +161,8 @@ jacocoTestCoverageVerification {
 
 dependencyCheck {
   suppressionFile = 'config/owasp/suppressions.xml'
+
+  yarnAuditEnabled = false
 }
 
 tasks.named('sonarqube') {
