@@ -49,11 +49,11 @@
   },
   "resolutions": {
     "minimist": "^1.2.8",
-    "axios": "^1.15.2",
+    "axios": "^1.16.0",
     "follow-redirects": "^1.16.0"
   },
   "dependencies": {
-    "axios": "^1.15.2"
+    "axios": "^1.16.0"
   },
   "packageManager": "yarn@3.8.7"
 }
