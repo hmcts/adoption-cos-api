@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.adoption.adoptioncase.caseworker.event;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
-import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -118,18 +117,10 @@ public class CaseworkerSendOrReplyTest extends EventTest {
         selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LEAVE_TO_OPPOSE.toString());
         caseDetails.getData().setSelectedMessage(selectedMessage);
         List<DynamicListElement> replyMessageList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(caseDetails.getData().getListOfOpenMessages())) {
-            caseDetails.getData().getListOfOpenMessages().forEach(item -> {
-                if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
-                    DynamicListElement orderInfo = DynamicListElement.builder().label(item.getValue().getMessageSendDateNTime().format(
-                        DateTimeFormatter.ofPattern(SEND_N_REPLY_DATE_FORMAT)).concat(COMMA)
-                        .concat(item.getValue().getMessageReasonList().getLabel()))
-                        .code(UUID.fromString(item.getValue().getMessageId())).build();
-                    replyMessageList.add(orderInfo);
-                }
-            });
+        replyMessageList.addAll(openMessageDynamicListElements(
+            caseDetails.getData().getListOfOpenMessages()
+        ));
 
-        }
         caseDetails.getData().setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList).value(
             replyMessageList.get(0)).build());
         final var instant = Instant.now();
@@ -158,18 +149,10 @@ public class CaseworkerSendOrReplyTest extends EventTest {
         selectedMessage.setReasonForMessage(MessageSendDetails.MessageReason.LEAVE_TO_OPPOSE.toString());
         caseDetails.getData().setSelectedMessage(selectedMessage);
         List<DynamicListElement> replyMessageList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(caseDetails.getData().getListOfOpenMessages())) {
-            caseDetails.getData().getListOfOpenMessages().forEach(item -> {
-                if (item.getValue().getMessageStatus().equals(MessageSendDetails.MessageStatus.OPEN)) {
-                    DynamicListElement orderInfo = DynamicListElement.builder().label(item.getValue().getMessageSendDateNTime().format(
-                            DateTimeFormatter.ofPattern(SEND_N_REPLY_DATE_FORMAT))
-                            .concat(COMMA).concat(item.getValue().getMessageReasonList().getLabel()))
-                            .code(UUID.fromString(item.getValue().getMessageId())).build();
-                    replyMessageList.add(orderInfo);
-                }
-            });
+        replyMessageList.addAll(openMessageDynamicListElements(
+            caseDetails.getData().getListOfOpenMessages()
+        ));
 
-        }
         caseDetails.getData().setReplyMsgDynamicList(DynamicList.builder().listItems(replyMessageList).value(
             replyMessageList.get(0)).build());
         final var instant = Instant.now();
@@ -199,5 +182,25 @@ public class CaseworkerSendOrReplyTest extends EventTest {
             .data(caseData())
             .id(1L)
             .build();
+    }
+
+    private static List<DynamicListElement> openMessageDynamicListElements(
+        List<ListValue<MessageSendDetails>> messages
+    ) {
+        if (messages == null) {
+            return List.of();
+        }
+
+        return messages.stream()
+            .map(ListValue::getValue)
+            .filter(message -> MessageSendDetails.MessageStatus.OPEN.equals(message.getMessageStatus()))
+            .map(message -> DynamicListElement.builder()
+                .label(message.getMessageSendDateNTime()
+                           .format(DateTimeFormatter.ofPattern(SEND_N_REPLY_DATE_FORMAT))
+                           .concat(COMMA)
+                           .concat(message.getMessageReasonList().getLabel()))
+                .code(UUID.fromString(message.getMessageId()))
+                .build())
+            .toList();
     }
 }
