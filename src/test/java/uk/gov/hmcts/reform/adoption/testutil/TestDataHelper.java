@@ -100,18 +100,4 @@ public class TestDataHelper {
     public static ObjectMapper getObjectMapper() {
         return new ObjectMapper().findAndRegisterModules();
     }
-
-    public static String expectedResponse(final String resourcePath) throws IOException {
-        return resourceAsString(resourcePath);
-    }
-
-    public static String resourceAsString(final String resourcePath) throws IOException {
-        final File file = ResourceUtils.getFile(resourcePath);
-        return new String(Files.readAllBytes(file.toPath()));
-    }
-
-    public static byte[] resourceAsBytes(final String resourcePath) throws IOException {
-        final File file = ResourceUtils.getFile(resourcePath);
-        return Files.readAllBytes(file.toPath());
-    }
 }
