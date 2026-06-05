@@ -139,7 +139,7 @@ jacocoTestReport {
   reports {
     xml.getRequired().set(true)
     csv.getRequired().set(false)
-    xml.outputLocation = file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml"))
   }
 }
 
@@ -200,10 +200,8 @@ def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/notification/NotificationDispatcher.java',
   '**/uk/gov/hmcts/reform/adoption/common/service/task/SetStateAfterSubmission.java',
   '**/uk/gov/hmcts/reform/adoption/exception/**',
-  '**/uk/gov/hmcts/reform/adoption/document/BulkPrintService.java',
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/validation/ApplicationValidation.java',
   '**/uk/gov/hmcts/reform/adoption/config/SwaggerConfiguration.java'
-
 ]
 
 sonarqube {
@@ -255,7 +253,6 @@ def versions = [
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
   implementation 'org.springframework.retry:spring-retry'
   implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 
@@ -282,9 +279,9 @@ dependencies {
   implementation "org.projectlombok:lombok:${versions.lombok}"
   annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
-  testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
-  testImplementation 'io.rest-assured:rest-assured'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'io.rest-assured:rest-assured'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
 
   functionalTestImplementation 'com.github.hmcts:document-management-client:7.0.1'
   functionalTestImplementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
