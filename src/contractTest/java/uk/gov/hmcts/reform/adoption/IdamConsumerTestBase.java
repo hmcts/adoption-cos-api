@@ -3,9 +3,6 @@ package uk.gov.hmcts.reform.adoption;
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
-import au.com.dius.pact.core.model.annotations.PactFolder;
-import org.apache.http.client.fluent.Executor;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,29 +13,26 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 @ExtendWith(PactConsumerTestExt.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "idamApi_oidc", port = "8891")
-@PactFolder("pacts")
 @SpringBootTest({
-    "idam.api.url : localhost:8891"
+    "idam.api.url=localhost:8891"
 })
 public abstract class IdamConsumerTestBase {
 
     protected static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
+
     @Autowired
     protected IdamApi idamApi;
+
     @Value("${idam.systemupdate.username}")
     protected String caseworkerUsername;
+
     @Value("${idam.systemupdate.password}")
     protected String caseworkerPwd;
+
     @Value("${idam.client.secret}")
     protected String clientSecret;
 
     protected void awaitMockServerReady(MockServer mockServer) {
         MockServerReadiness.awaitReady("127.0.0.1", mockServer.getPort());
     }
-
-    @AfterEach
-    void teardown() {
-        Executor.closeIdleConnections();
-    }
-
 }

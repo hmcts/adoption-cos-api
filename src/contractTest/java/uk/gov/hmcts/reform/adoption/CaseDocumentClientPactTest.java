@@ -1,79 +1,65 @@
 package uk.gov.hmcts.reform.adoption;
 
 import au.com.dius.pact.consumer.MockServer;
-import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.consumer.dsl.PactBuilder;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
-import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.V4Pact;
 import au.com.dius.pact.core.model.annotations.Pact;
-import au.com.dius.pact.core.model.annotations.PactFolder;
-import com.google.common.collect.Maps;
 import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import uk.gov.hmcts.reform.adoption.document.CaseDocumentClient;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.mockito.Mockito.when;
-
 @ExtendWith(PactConsumerTestExt.class)
-@ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "case-document-am-api", port = "4452")
-@PactFolder("pacts")
-@SpringBootTest({
-    "case_document_am.url : http://localhost:4452"
+@SpringBootTest(properties = {
+    "case_document_am.url=http://localhost:4452"
 })
 public class CaseDocumentClientPactTest {
-    public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
+
+    private static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
     private static final String DOCUMENT_ID = "6c3c3906-2b51-468e-8cbb-a4002eded076";
     private static final String AUTH_TOKEN = "Bearer someAuthToken";
-    private static final Boolean PERMANENT = false;
 
-    @MockitoBean
-    private AuthTokenGenerator authTokenGenerator;
     @Autowired
     private CaseDocumentClient caseDocumentClient;
 
     @Pact(provider = "case-document-am-api", consumer = ContractTestConstants.CONSUMER_NAME)
-    public RequestResponsePact downloadBinaryPact(PactDslWithProvider builder) throws IOException {
-        Map<String, String> headers = Maps.newHashMap();
-        headers.put("Authorization", AUTH_TOKEN);
-        headers.put("ServiceAuthorization", SOME_SERVICE_AUTHORIZATION_TOKEN);
-
-
+    public V4Pact downloadBinaryPact(PactBuilder builder) {
         return builder
+            .usingLegacyDsl()
             .given("I have existing document")
-            .uponReceiving("a request for download the document")
+            .uponReceiving("a request to download the document")
             .path("/cases/documents/" + UUID.fromString(DOCUMENT_ID) + "/binary")
             .method("GET")
-            .headers(headers)
+            .headers(Map.of(
+                "Authorization", AUTH_TOKEN,
+                "ServiceAuthorization", SOME_SERVICE_AUTHORIZATION_TOKEN
+            ))
             .willRespondWith()
             .status(200)
-            .toPact();
+            .toPact(V4Pact.class);
     }
 
     @Test
     @PactTestFor(pactMethod = "downloadBinaryPact")
-    public void verifyDownloadBinary(MockServer mockServer) throws JSONException {
-        MockServerReadiness.awaitReady("127.0.0.1", mockServer.getPort());
-        when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
+    void verifyDownloadBinary(MockServer mockServer) throws JSONException {
         ResponseEntity<?> response = caseDocumentClient.getDocumentBinary(
             AUTH_TOKEN,
             SOME_SERVICE_AUTHORIZATION_TOKEN,
             UUID.fromString(DOCUMENT_ID)
         );
+
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }
 }

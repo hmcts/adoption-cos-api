@@ -1,14 +1,14 @@
 package uk.gov.hmcts.reform.adoption;
 
 import au.com.dius.pact.consumer.MockServer;
+import au.com.dius.pact.consumer.dsl.PactBuilder;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslJsonRootValue;
-import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
-import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.V4Pact;
 import au.com.dius.pact.core.model.annotations.Pact;
-import com.google.common.collect.ImmutableMap;
-import org.json.JSONException;
+import org.apache.http.client.fluent.Executor;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,12 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
+@PactTestFor(providerName = "idamApi_oidc", port = "8891")
 public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
     @Pact(provider = "idamApi_oidc", consumer = ContractTestConstants.CONSUMER_NAME)
-    public RequestResponsePact generatePactForUserInfo(PactDslWithProvider builder) throws JSONException {
-
+    public V4Pact generatePactForUserInfo(PactBuilder builder) {
         return builder
+            .usingLegacyDsl()
             .given("userinfo is requested")
             .uponReceiving("A request for a UserInfo from Adoption COS API")
             .path("/o/userinfo")
@@ -37,17 +38,13 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
             .willRespondWith()
             .status(200)
             .body(createUserDetailsResponse())
-            .toPact();
+            .toPact(V4Pact.class);
     }
 
     @Pact(provider = "idamApi_oidc", consumer = ContractTestConstants.CONSUMER_NAME)
-    public RequestResponsePact generatePactForToken(PactDslWithProvider builder) {
-
-        Map<String, String> responseheaders = ImmutableMap.<String, String>builder()
-            .put("Content-Type", "application/json")
-            .build();
-
+    public V4Pact generatePactForToken(PactBuilder builder) {
         return builder
+            .usingLegacyDsl()
             .given("a token is requested")
             .uponReceiving("Provider receives a POST /o/token request from Adoption COS API")
             .path("/o/token")
@@ -62,31 +59,34 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
                   APPLICATION_FORM_URLENCODED_VALUE)
             .willRespondWith()
             .status(HttpStatus.OK.value())
-            .headers(responseheaders)
+            .headers(Map.of(HttpHeaders.CONTENT_TYPE, "application/json"))
             .body(createAuthResponse())
-            .toPact();
+            .toPact(V4Pact.class);
     }
 
     @Test
     @PactTestFor(pactMethod = "generatePactForUserInfo")
-    public void verifyIdamUserDetailsRolesPactUserInfo(MockServer mockServer) {
+    void verifyIdamUserDetailsRolesPactUserInfo(MockServer mockServer) {
         awaitMockServerReady(mockServer);
+
         UserInfo userInfo = idamApi.retrieveUserInfo(SOME_AUTHORIZATION_TOKEN);
+
         assertNotNull(userInfo.getUid());
         assertNotNull(userInfo.getSub());
         assertNotNull(userInfo.getGivenName());
         assertNotNull(userInfo.getFamilyName());
         assertNotNull(userInfo.getRoles());
         assertTrue(userInfo.getRoles().size() > 0);
-
     }
 
     @Test
     @PactTestFor(pactMethod = "generatePactForToken")
-    public void verifyIdamUserDetailsRolesPactToken(MockServer mockServer) {
+    void verifyIdamUserDetailsRolesPactToken(MockServer mockServer) {
         awaitMockServerReady(mockServer);
+
         TokenResponse token = idamApi.generateOpenIdToken(buildTokenRequestMap());
-        assertNotNull("Token is expected", token.accessToken);
+
+        assertNotNull(token.accessToken, "Token is expected");
     }
 
     private TokenRequest buildTokenRequestMap() {
@@ -98,12 +98,12 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
             caseworkerUsername,
             caseworkerPwd,
             "openid profile roles",
-            null, null);
+            null,
+            null
+        );
     }
 
-
     private PactDslJsonBody createUserDetailsResponse() {
-
         return new PactDslJsonBody()
             .stringType("sub", "61")
             .stringType("uid", "adop_pact_user@mailinator.com")
@@ -118,4 +118,8 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
             .stringType("scope", "openid roles profile");
     }
 
+    @AfterEach
+    void teardown() {
+        Executor.closeIdleConnections();
+    }
 }

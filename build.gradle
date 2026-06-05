@@ -9,7 +9,7 @@ plugins {
   id 'cz.habarta.typescript-generator' version '3.2.1263'
   id 'hmcts.ccd.sdk' version '6.1.0'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1844'
-  id 'au.com.dius.pact' version '4.3.8'
+  id 'au.com.dius.pact' version '4.7.1'
 }
 
 group = 'uk.gov.hmcts'
@@ -126,6 +126,7 @@ tasks.register('contract', Test) {
   group = 'Verification'
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
+  systemProperty 'pact.rootDir', 'pacts'
 }
 
 tasks.register('fortifyScan', JavaExec) {
@@ -230,13 +231,10 @@ dependencyManagement {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:2024.0.0"
   }
   dependencies {
-    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
-    //CVE-2025-48976
+    // CVE-2025-48976
     dependencySet(group: 'commons-fileupload', version: '1.6.0') {
       entry 'commons-fileupload'
     }
-    //CVE-2023-5072
-    dependency group: 'org.json', name: 'json', version: '20240303'
   }
 }
 
@@ -290,7 +288,8 @@ dependencies {
   functionalTestImplementation 'net.javacrumbs.json-unit:json-unit-assertj:3.2.7'
   functionalTestImplementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-  contractTestImplementation 'au.com.dius.pact.consumer:junit5:4.1.7'
+  contractTestImplementation 'au.com.dius.pact.consumer:junit5:4.7.1'
+  contractTestImplementation 'org.apache.httpcomponents:fluent-hc:4.5.14'
 }
 
 ext.getVaultSecret = { String secretName ->
@@ -428,61 +427,25 @@ generateCCDConfig.doLast {
   }
 }
 
-def contractTestConstantsFile = file('src/contractTest/java/uk/gov/hmcts/reform/adoption/ContractTestConstants.java')
-if (!contractTestConstantsFile.exists()) {
-  throw new GradleException("Missing ContractTestConstants.java for pacticipant alignment.")
-}
-def contractTestConstantsMatcher = (contractTestConstantsFile.text =~ /CONSUMER_NAME\s*=\s*"([^"]+)"/)
-if (!contractTestConstantsMatcher.find()) {
-  throw new GradleException("Unable to read CONSUMER_NAME from ContractTestConstants.java for pacticipant alignment.")
-}
-def contractTestConsumerName = contractTestConstantsMatcher.group(1)
-def pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL")
-  ?: project.findProperty('pact.broker.url')?.toString()
-  ?: project.findProperty('pactbroker.url')?.toString()
-def pactBranchName = System.getenv("PACT_BRANCH_NAME") ?: 'Dev'
-// Use a different variable name to avoid Groovy DELEGATE_FIRST shadowing inside pact {} closures
-def resolvedBrokerUrl = pactBrokerUrl
-
 project.ext {
-  pacticipant = contractTestConsumerName
-  pacticipantVersion = getCheckedOutGitCommitHash()
-}
-
-tasks.register('runAndPublishConsumerPactTests', Test) {
-  logger.lifecycle('Runs pact tests')
-  testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.cn.runtimeClasspath
-
-  dependsOn tasks.named('contract')
-  finalizedBy tasks.named('pactPublish')
-}
-
-tasks.named('pactPublish') {
-  doFirst {
-    logger.lifecycle("pactPublish doFirst: resolvedBrokerUrl='${resolvedBrokerUrl}'")
-    logger.lifecycle("pactPublish doFirst: pact.publish.pactBrokerUrl='${project.pact?.publish?.pactBrokerUrl}'")
-    logger.lifecycle("pactPublish doFirst: pact.broker.pactBrokerUrl='${project.pact?.broker?.pactBrokerUrl}'")
-  }
-  onlyIf {
-    if (!resolvedBrokerUrl) {
-      logger.lifecycle("No pact broker URL configured; skipping pactPublish.")
-      return false
-    }
-    return true
-  }
+  pactVersion = getCheckedOutGitCommitHash()
 }
 
 pact {
-  broker {
-    it.pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
-  }
   publish {
-    it.pactDirectory = 'pacts'
-    it.pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
-    it.tags = [pactBranchName]
-    it.consumerVersion = project.pacticipantVersion
+    pactDirectory = 'pacts'
+    pactBrokerUrl = System.getenv('PACT_BROKER_FULL_URL') ?: 'http://localhost:80'
+    tags = [System.getenv('PACT_BRANCH_NAME') ?: 'Dev']
+    version = project.pactVersion
   }
+}
+
+tasks.register('runAndPublishConsumerPactTests') {
+  group = 'Verification'
+  description = 'Runs consumer Pact tests and publishes generated pacts'
+
+  dependsOn tasks.named('contract')
+  finalizedBy tasks.named('pactPublish')
 }
 
 static def getCheckedOutGitCommitHash() {
