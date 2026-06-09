@@ -18,11 +18,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
 
 @Component
@@ -53,11 +56,14 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
 
         log.info("AlertMultiChildApplicationToSubmitTask scheduled task is executed");
 
-        final List<CaseDetails> casesInDraftNeedingReminder =
-            ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, serviceAuthorization);
+        final List<CaseDetails> casesCreatedToday = Stream.of(Draft, Submitted, LaSubmitted)
+            .flatMap(state -> ccdSearchService
+                .searchForAllCasesWithQuery(state, query, user, serviceAuthorization)
+                .stream())
+            .toList();
 
         final Map<String, List<CaseDetails>> casesByApplicantEmail =
-            casesInDraftNeedingReminder.stream()
+            casesCreatedToday.stream()
                 .filter(caseDetails -> caseDetails.getData().get("applicant1Email") != null)
                 .collect(Collectors.groupingBy(
                     caseDetails -> (String) caseDetails.getData().get("applicant1Email")
@@ -69,12 +75,33 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
         );
 
         casesByApplicantEmail.values().stream()
-            .filter(caseList -> caseList.size() > 1)
-            .flatMap(List::stream)
+            .filter(this::hasDraftCase)
+            .filter(this::hasSubmittedOrLaSubmittedCase)
+            .map(this::getFirstDraftCase)
             .forEach(caseDetails -> {
                 sendReminderToApplicantsIfEligible(caseDetails);
                 log.info("Attempted to send reminder for case id {}", caseDetails.getId());
             });
+    }
+
+    private boolean hasDraftCase(final List<CaseDetails> caseList) {
+        return caseList.stream()
+            .anyMatch(caseDetails -> Draft.name().equals(caseDetails.getState()));
+    }
+
+    private boolean hasSubmittedOrLaSubmittedCase(final List<CaseDetails> caseList) {
+        return caseList.stream()
+            .anyMatch(caseDetails ->
+                          Submitted.name().equals(caseDetails.getState())
+                              || LaSubmitted.name().equals(caseDetails.getState())
+            );
+    }
+
+    private CaseDetails getFirstDraftCase(final List<CaseDetails> caseList) {
+        return caseList.stream()
+            .filter(caseDetails -> Draft.name().equals(caseDetails.getState()))
+            .findFirst()
+            .orElseThrow();
     }
 
     private void sendReminderToApplicantsIfEligible(final CaseDetails caseDetails) {

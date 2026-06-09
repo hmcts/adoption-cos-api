@@ -22,10 +22,14 @@ import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,6 +38,8 @@ class AlertMultiChildApplicationToSubmitTaskTest {
     private static final String SYSTEM_UPDATE_AUTH_TOKEN = "Bearer SystemUpdateAuthToken";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     private static final String APPLICANT_1_EMAIL = "applicant1Email";
+    private static final String TEST_EMAIL = "test@example.com";
+    private static final String OTHER_EMAIL = "other@example.com";
 
     @InjectMocks
     private AlertMultiChildApplicationToSubmitTask alertMultiChildApplicationToSubmitTask;
@@ -61,33 +67,156 @@ class AlertMultiChildApplicationToSubmitTaskTest {
     }
 
     @Test
-    void shouldSendReminderForDraftCasesWithSameApplicantEmail() {
-        final CaseDetails caseDetails1 = mock(CaseDetails.class);
-        final CaseDetails caseDetails2 = mock(CaseDetails.class);
-        final CaseDetails caseDetails3 = mock(CaseDetails.class);
+    void shouldSendOneReminderWhenApplicantHasDraftAndSubmittedCase() {
+        final CaseDetails draftCase = caseDetails(1L, TEST_EMAIL, Draft);
+        final CaseDetails submittedCase = caseDetails(2L, TEST_EMAIL, Submitted);
 
-        when(caseDetails1.getId()).thenReturn(1L);
-        when(caseDetails2.getId()).thenReturn(2L);
+        mockCasesByState(
+            List.of(draftCase),
+            List.of(submittedCase),
+            List.of()
+        );
+        mockConvertedCaseDetails(draftCase);
 
-        when(caseDetails1.getData()).thenReturn(Map.of(APPLICANT_1_EMAIL, "test@example.com"));
-        when(caseDetails2.getData()).thenReturn(Map.of(APPLICANT_1_EMAIL, "test@example.com"));
-        when(caseDetails3.getData()).thenReturn(Map.of(APPLICANT_1_EMAIL, "other@example.com"));
+        alertMultiChildApplicationToSubmitTask.run();
 
-        when(ccdSearchService.searchForAllCasesWithQuery(any(), any(), any(), anyString()))
-            .thenReturn(List.of(caseDetails1, caseDetails2, caseDetails3));
+        verify(multiChildSubmitAlertEmailNotification, times(1)).sendToApplicants(
+            any(CaseData.class),
+            eq(1L)
+        );
+        verify(caseDetailsConverter).convertToCaseDetailsFromReformModel(draftCase);
+    }
 
+    @Test
+    void shouldSendOneReminderWhenApplicantHasDraftAndLaSubmittedCase() {
+        final CaseDetails draftCase = caseDetails(1L, TEST_EMAIL, Draft);
+        final CaseDetails laSubmittedCase = caseDetails(2L, TEST_EMAIL, LaSubmitted);
+
+        mockCasesByState(
+            List.of(draftCase),
+            List.of(),
+            List.of(laSubmittedCase)
+        );
+        mockConvertedCaseDetails(draftCase);
+
+        alertMultiChildApplicationToSubmitTask.run();
+
+        verify(multiChildSubmitAlertEmailNotification, times(1)).sendToApplicants(
+            any(CaseData.class),
+            eq(1L)
+        );
+        verify(caseDetailsConverter).convertToCaseDetailsFromReformModel(draftCase);
+    }
+
+    @Test
+    void shouldNotSendReminderWhenApplicantOnlyHasOneDraftCase() {
+        final CaseDetails draftCase = caseDetails(1L, TEST_EMAIL, Draft);
+
+        mockCasesByState(
+            List.of(draftCase),
+            List.of(),
+            List.of()
+        );
+
+        alertMultiChildApplicationToSubmitTask.run();
+
+        verify(multiChildSubmitAlertEmailNotification, never()).sendToApplicants(
+            any(CaseData.class),
+            any(Long.class)
+        );
+        verify(caseDetailsConverter, never()).convertToCaseDetailsFromReformModel(any());
+    }
+
+    @Test
+    void shouldNotSendReminderWhenApplicantHasMultipleDraftCasesButNoSubmittedOrLaSubmittedCase() {
+        final CaseDetails draftCase1 = caseDetails(1L, TEST_EMAIL, Draft);
+        final CaseDetails draftCase2 = caseDetails(2L, TEST_EMAIL, Draft);
+
+        mockCasesByState(
+            List.of(draftCase1, draftCase2),
+            List.of(),
+            List.of()
+        );
+
+        alertMultiChildApplicationToSubmitTask.run();
+
+        verify(multiChildSubmitAlertEmailNotification, never()).sendToApplicants(
+            any(CaseData.class),
+            any(Long.class)
+        );
+        verify(caseDetailsConverter, never()).convertToCaseDetailsFromReformModel(any());
+    }
+
+    @Test
+    void shouldNotSendReminderWhenDraftAndSubmittedCasesHaveDifferentApplicantEmails() {
+        final CaseDetails draftCase = caseDetails(1L, TEST_EMAIL, Draft);
+        final CaseDetails submittedCase = caseDetails(2L, OTHER_EMAIL, Submitted);
+
+        mockCasesByState(
+            List.of(draftCase),
+            List.of(submittedCase),
+            List.of()
+        );
+
+        alertMultiChildApplicationToSubmitTask.run();
+
+        verify(multiChildSubmitAlertEmailNotification, never()).sendToApplicants(
+            any(CaseData.class),
+            any(Long.class)
+        );
+        verify(caseDetailsConverter, never()).convertToCaseDetailsFromReformModel(any());
+    }
+
+    @Test
+    void shouldOnlySendOneReminderWhenApplicantHasMultipleQualifyingCases() {
+        final CaseDetails draftCase1 = caseDetails(1L, TEST_EMAIL, Draft);
+        final CaseDetails draftCase2 = caseDetails(2L, TEST_EMAIL, Draft);
+        final CaseDetails submittedCase = caseDetails(3L, TEST_EMAIL, Submitted);
+        final CaseDetails laSubmittedCase = caseDetails(4L, TEST_EMAIL, LaSubmitted);
+
+        mockCasesByState(
+            List.of(draftCase1, draftCase2),
+            List.of(submittedCase),
+            List.of(laSubmittedCase)
+        );
+        mockConvertedCaseDetails(draftCase1);
+
+        alertMultiChildApplicationToSubmitTask.run();
+
+        verify(multiChildSubmitAlertEmailNotification, times(1)).sendToApplicants(
+            any(CaseData.class),
+            eq(1L)
+        );
+        verify(caseDetailsConverter).convertToCaseDetailsFromReformModel(draftCase1);
+    }
+
+    private void mockCasesByState(
+        final List<CaseDetails> draftCases,
+        final List<CaseDetails> submittedCases,
+        final List<CaseDetails> laSubmittedCases
+    ) {
+        when(ccdSearchService.searchForAllCasesWithQuery(eq(Draft), any(), any(), anyString()))
+            .thenReturn(draftCases);
+        when(ccdSearchService.searchForAllCasesWithQuery(eq(Submitted), any(), any(), anyString()))
+            .thenReturn(submittedCases);
+        when(ccdSearchService.searchForAllCasesWithQuery(eq(LaSubmitted), any(), any(), anyString()))
+            .thenReturn(laSubmittedCases);
+    }
+
+    private CaseDetails caseDetails(final Long id, final String applicantEmail, final State state) {
+        return CaseDetails.builder()
+            .id(id)
+            .state(state.name())
+            .data(Map.of(APPLICANT_1_EMAIL, applicantEmail))
+            .build();
+    }
+
+    private void mockConvertedCaseDetails(final CaseDetails caseDetails) {
         final uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> convertedCaseDetails =
             new uk.gov.hmcts.ccd.sdk.api.CaseDetails<>();
         convertedCaseDetails.setData(caseData());
 
-        when(caseDetailsConverter.convertToCaseDetailsFromReformModel(any(CaseDetails.class)))
+        when(caseDetailsConverter.convertToCaseDetailsFromReformModel(caseDetails))
             .thenReturn(convertedCaseDetails);
-
-        alertMultiChildApplicationToSubmitTask.run();
-
-        verify(multiChildSubmitAlertEmailNotification, times(2)).sendToApplicants(
-            any(CaseData.class),
-            any(Long.class)
-        );
     }
 }
