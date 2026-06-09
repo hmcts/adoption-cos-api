@@ -88,7 +88,7 @@ class CaseDataDocumentServiceTest {
 
         assertThat(documentsGenerated).hasSize(1);
 
-        final ListValue<AdoptionDocument> documentListValue = documentsGenerated.get(0);
+        final ListValue<AdoptionDocument> documentListValue = documentsGenerated.getFirst();
         final var adoptionDocument = documentListValue.getValue();
 
         assertThat(documentListValue.getId()).isEqualTo(documentId);

@@ -28,7 +28,6 @@ import uk.gov.hmcts.reform.adoption.document.CaseDataDocumentService;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -75,9 +74,6 @@ class CaseWorkerManageHearingTest extends EventTest {
     @Test
     void caseworkerManageHearingAboutToSubmitTest() {
         var caseDetails = getCaseDetails();
-        final var instant = Instant.now();
-        final var zoneId = ZoneId.systemDefault();
-        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getNewHearings()).isNotNull();
     }
@@ -85,8 +81,6 @@ class CaseWorkerManageHearingTest extends EventTest {
     @Test
     void caseworkerManageHearingAboutToSubmitVacateHearingTest() {
         var caseDetails = getCaseDetailsForHearing();
-        final var instant = Instant.now();
-        final var zoneId = ZoneId.systemDefault();
         var result = caseWorkerManageHearing.aboutToSubmit(caseDetails, caseDetails);
         assertThat(result.getData().getNewHearings()).isEmpty();
         assertThat(result.getData().getVacatedHearings()).hasSize(1);
@@ -320,14 +314,25 @@ class CaseWorkerManageHearingTest extends EventTest {
                 .label(String.join(BLANK_SPACE, hearing.getValue().getTypeOfHearing(),
                                    "-",
                                    hearing.getValue().getHearingDateAndTime().format(DateTimeFormatter.ofPattern(
-                                       "dd MMM yyyy',' hh:mm:ss a")).replace("pm", "PM").replace("am", "PM")
+                                       "dd MMM yyyy',' hh:mm:ss a")).replace("pm", "PM").replace("am", "AM")
                 )).code(UUID.fromString(hearing.getValue().getHearingId()))
                 .build();
             dynamicListElements.add(listElement1);
         });
-        data.setHearingListThatCanBeVacated(DynamicList.builder().listItems(dynamicListElements).value(dynamicListElements.get(0)).build());
-        data.setHearingListThatCanBeAdjourned(DynamicList.builder().listItems(dynamicListElements).value(
-            dynamicListElements.get(0)).build());
+
+        data.setHearingListThatCanBeVacated(
+            DynamicList.builder()
+                .listItems(dynamicListElements)
+                .value(dynamicListElements.getFirst())
+                .build()
+        );
+
+        data.setHearingListThatCanBeAdjourned(
+            DynamicList.builder()
+                .listItems(dynamicListElements)
+                .value(dynamicListElements.getFirst())
+                .build());
+
         details.setData(data);
         details.setId(1L);
         return details;

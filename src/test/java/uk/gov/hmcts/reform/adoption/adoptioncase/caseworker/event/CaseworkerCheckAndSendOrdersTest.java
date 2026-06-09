@@ -29,7 +29,6 @@ import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -121,7 +120,6 @@ class CaseworkerCheckAndSendOrdersTest extends EventTest {
         prepareCheckAndSendDropdownList(commonOrderList, manageOrderData1.getOrderId(),data);
         final var instant = Instant.now();
         final var zoneId = ZoneId.systemDefault();
-        final var expectedDate = LocalDate.ofInstant(instant, zoneId);
         when(clock.instant()).thenReturn(instant);
         when(clock.getZone()).thenReturn(zoneId);
         when(httpServletRequest.getHeader(AUTHORIZATION)).thenReturn(TEST_AUTHORIZATION_TOKEN);
@@ -129,7 +127,7 @@ class CaseworkerCheckAndSendOrdersTest extends EventTest {
         when(idamService.retrieveUser(TEST_AUTHORIZATION_TOKEN)).thenReturn(getJudgeUser());
 
         var result = caseworkerCheckAndSendOrders.aboutToSubmit(caseDetails, caseDetails);
-        assertThat(result.getData().getManageOrderList().get(0).getValue().getOrderStatus()).isEqualTo(OrderStatus.SERVED);
+        assertThat(result.getData().getManageOrderList().getFirst().getValue().getOrderStatus()).isEqualTo(OrderStatus.SERVED);
         assertThat(result.getData().getSelectedOrder()).isNull();
     }
 
