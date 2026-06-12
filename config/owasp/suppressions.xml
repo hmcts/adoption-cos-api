@@ -2,7 +2,6 @@
   <suppress>
     <notes><![CDATA[file name: log4j-*-2.24.3.jar]]></notes>
     <cve>CVE-2025-68161</cve>
-    <cve>CVE-2026-34481</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: tomcat-embed-core-10.1.47.jar]]></notes>
@@ -46,19 +45,34 @@
     <cve>CVE-2026-34480</cve>
   </suppress>
   <suppress>
-    <notes><![CDATA[Affects spring-framework 6.2.12 (aop, beans, context, core, expression, jcl, webmvc). Suppressed pending upgrade to patched Spring Framework version. Raise Jira to track upgrade.]]></notes>
+    <notes><![CDATA[Affects spring-framework 6.2.12 (aop, beans, context, core, expression, jcl, web, webmvc). Suppressed pending upgrade to patched Spring Framework version. Raise Jira to track upgrade.]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-.*@.*$</packageUrl>
     <cve>CVE-2026-22737</cve>
     <cve>CVE-2026-22735</cve>
+    <cve>CVE-2026-41838</cve>
+    <cve>CVE-2026-41840</cve>
+    <cve>CVE-2026-41841</cve>
+    <cve>CVE-2026-41842</cve>
+    <cve>CVE-2026-41843</cve>
+    <cve>CVE-2026-41844</cve>
+    <cve>CVE-2026-41845</cve>
+    <cve>CVE-2026-41846</cve>
+    <cve>CVE-2026-41848</cve>
+    <cve>CVE-2026-41850</cve>
+    <cve>CVE-2026-41851</cve>
+    <cve>CVE-2026-41852</cve>
   </suppress>
   <suppress>
-    <notes><![CDATA[Affects spring-boot 3.4.11 and all starters. Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.]]></notes>
+    <notes><![CDATA[Affects spring-boot 4.0.5 and Spring Boot web-related modules. Suppressed pending upgrade to patched Spring Boot version. Raise Jira to track upgrade.]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot.*@.*$</packageUrl>
     <cve>CVE-2026-22731</cve>
     <cve>CVE-2026-22733</cve>
+    <cve>CVE-2026-40970</cve>
+    <cve>CVE-2026-40971</cve>
     <cve>CVE-2026-40972</cve>
     <cve>CVE-2026-40973</cve>
     <cve>CVE-2026-40975</cve>
+    <cve>CVE-2026-40976</cve>
     <cve>CVE-2026-40977</cve>
   </suppress>
   <suppress>
@@ -91,6 +105,9 @@
     <cve>CVE-2026-40975</cve>
     <cve>CVE-2026-40977</cve>
     <cve>CVE-2026-40974</cve>
+    <cve>CVE-2026-40970</cve>
+    <cve>CVE-2026-40971</cve>
+    <cve>CVE-2026-40976</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[spring-security-crypto]]></notes>
@@ -102,11 +119,24 @@
   </suppress>
   <suppress>
     <notes><![CDATA[transitive spring dependencies]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-.*@.*$</packageUrl>
     <cve>CVE-2026-22735</cve>
     <cve>CVE-2026-22737</cve>
     <cve>CVE-2026-22740</cve>
     <cve>CVE-2026-22745</cve>
     <cve>CVE-2026-22741</cve>
+    <cve>CVE-2026-41838</cve>
+    <cve>CVE-2026-41840</cve>
+    <cve>CVE-2026-41841</cve>
+    <cve>CVE-2026-41842</cve>
+    <cve>CVE-2026-41843</cve>
+    <cve>CVE-2026-41844</cve>
+    <cve>CVE-2026-41845</cve>
+    <cve>CVE-2026-41846</cve>
+    <cve>CVE-2026-41848</cve>
+    <cve>CVE-2026-41850</cve>
+    <cve>CVE-2026-41851</cve>
+    <cve>CVE-2026-41852</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[log4j-core-2.24.3.jar and log4j-api-2.25.3.jar]]></notes>
