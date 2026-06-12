@@ -2,6 +2,7 @@
   <suppress>
     <notes><![CDATA[file name: log4j-*-2.24.3.jar]]></notes>
     <cve>CVE-2025-68161</cve>
+    <cve>CVE-2026-34481</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: tomcat-embed-core-10.1.47.jar]]></notes>
@@ -37,12 +38,14 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-api@.*$</packageUrl>
     <cve>CVE-2026-34478</cve>
     <cve>CVE-2026-34480</cve>
+    <cve>CVE-2026-34481</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: log4j-core-2.24.3.jar Suppressed pending upgrade to patched Log4j version. Raise Jira to track upgrade.]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
     <cve>CVE-2026-34478</cve>
     <cve>CVE-2026-34480</cve>
+    <cve>CVE-2026-34481</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[Affects spring-framework 6.2.12 (aop, beans, context, core, expression, jcl, web, webmvc). Suppressed pending upgrade to patched Spring Framework version. Raise Jira to track upgrade.]]></notes>
@@ -142,6 +145,7 @@
     <notes><![CDATA[log4j-core-2.24.3.jar and log4j-api-2.25.3.jar]]></notes>
     <cve>CVE-2026-34478</cve>
     <cve>CVE-2026-34480</cve>
+    <cve>CVE-2026-34481</cve>
     <cve>CVE-2026-34479</cve>
     <cve>CVE-2026-34477</cve>
   </suppress>
