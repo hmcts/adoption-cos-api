@@ -385,6 +385,12 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <cve>CVE-2026-41840</cve>
     <cve>CVE-2026-41841</cve>
     <cve>CVE-2026-41843</cve>
+    <cve>CVE-2026-41838</cve>
+    <cve>CVE-2026-41848</cve>
+    <cve>CVE-2026-41844</cve>
+    <cve>CVE-2026-41845</cve>
+    <cve>CVE-2026-41846</cve>
+    <cve>CVE-2026-41852</cve>
   </suppress>
   <!-- ADOP-2809 -->
   <suppress>
@@ -414,6 +420,12 @@ Suppress CVE-2025-15104 only when Dependency-Check maps a dependency to the gene
     <cve>CVE-2026-41840</cve>
     <cve>CVE-2026-41841</cve>
     <cve>CVE-2026-41843</cve>
+    <cve>CVE-2026-41838</cve>
+    <cve>CVE-2026-41848</cve>
+    <cve>CVE-2026-41844</cve>
+    <cve>CVE-2026-41845</cve>
+    <cve>CVE-2026-41846</cve>
+    <cve>CVE-2026-41852</cve>
   </suppress>
 
   <!-- To be fixed in ADOP-2777: Tomcat 10.1.54 CVE suppressions - pending upgrade to patched version -->
