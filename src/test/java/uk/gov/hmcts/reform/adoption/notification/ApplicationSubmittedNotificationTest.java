@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.time.Month.APRIL;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -116,7 +117,7 @@ class ApplicationSubmittedNotificationTest {
 
     @Test
     void shouldSendEmailToApplicantsWithSubmissionResponseDate() {
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
         caseData.setFamilyCourtName("");
@@ -154,7 +155,7 @@ class ApplicationSubmittedNotificationTest {
 
     @Test
     void shouldSendEmailToApplicantsWithSubmissionResponseDate_noLanguagePreference() {
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
         caseData.setFamilyCourtName("");
@@ -189,7 +190,7 @@ class ApplicationSubmittedNotificationTest {
 
     @Test
     void shouldSendEmailToApplicantsWithSubmissionResponseDateWhenNoApplicant2() {
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         caseData.setApplicant2(new Applicant());
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
@@ -220,7 +221,7 @@ class ApplicationSubmittedNotificationTest {
 
     @Test
     void shouldHaveAPaymentAmountDefault() {
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
                 .thenReturn(getMainTemplateVars());
         caseData.setFamilyCourtName("");
@@ -396,7 +397,7 @@ class ApplicationSubmittedNotificationTest {
 
     @Test
     void shouldSendEmailToApplicantsPostLocalAuthoritySubmissionWithSubmissionResponseDate() {
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
         caseData.setFamilyCourtName("");
@@ -435,7 +436,7 @@ class ApplicationSubmittedNotificationTest {
 
     @Test
     void shouldSendEmailToApplicantsPostLocalAuthoritySubmissionWithSubmissionResponseDate_whenApplicant2EmailBlank() {
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
         caseData.setFamilyCourtName("");
@@ -467,7 +468,7 @@ class ApplicationSubmittedNotificationTest {
 
     @Test
     void shouldSendEmailToApplicantsPostLocalAuthoritySubmissionWithSubmissionResponseDate_noLanguagePreference() {
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         when(commonContent.mainTemplateVars(caseData, 1234567890123456L, caseData.getApplicant1(), caseData.getApplicant2()))
             .thenReturn(getMainTemplateVars());
         caseData.setFamilyCourtName("");
@@ -506,7 +507,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
         caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         caseData.setChildren(children);
 
         notification.sendToLocalCourtPostLocalAuthoritySubmission(caseData, 1234567890123456L);
@@ -520,7 +521,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
         caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         caseData.setChildren(children);
         String subject = LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + caseData.getHyphenatedCaseRef()
             + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
@@ -540,7 +541,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
         caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         caseData.setChildren(children);
 
         notification.sendToLocalCourt(caseData, 1234567890123456L);
@@ -555,7 +556,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
         caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         caseData.setChildren(children);
         String subject = DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + caseData.getHyphenatedCaseRef()
             + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
@@ -572,7 +573,7 @@ class ApplicationSubmittedNotificationTest {
         caseData.setLaDocumentsUploaded(getListOfUploadedDocument());
         caseData.setDocumentsGenerated(getListOfUploadedDocument());
         caseData.setFamilyCourtEmailId(TEST_USER_EMAIL);
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
         caseData.setChildren(children);
         String subject = DRAFT_LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE1 + caseData.getHyphenatedCaseRef()
             + LOCAL_COURT_EMAIL_SENDGRID_SUBJECT_LINE2
