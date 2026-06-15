@@ -84,6 +84,9 @@
     <cve>CVE-2026-22732</cve>
     <cve>CVE-2026-22748</cve>
     <cve>CVE-2026-22746</cve>
+    <cve>CVE-2026-40988</cve>
+    <cve>CVE-2026-41003</cve>
+    <cve>CVE-2026-41694</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[Affects tomcat-embed-core / tomcat-embed-websocket 10.1.52. Suppressed pending upgrade to patched Tomcat version. Raise Jira to track upgrade.]]></notes>
