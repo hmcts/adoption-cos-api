@@ -27,6 +27,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.LAST_STATE_MODIFIED_DATE;
 
 @Component
 @Slf4j
@@ -48,22 +49,34 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
         final User user = idamService.retrieveSystemUpdateUserDetails();
         final String serviceAuthorization = authTokenGenerator.generate();
 
-        final BoolQueryBuilder query = boolQuery()
+        final BoolQueryBuilder queryCreatedDate = boolQuery()
             .must(existsQuery(CREATED_DATE))
             .filter(rangeQuery(CREATED_DATE)
                         .gte(LocalDate.now())
                         .lte(LocalDate.now()));
 
+        final BoolQueryBuilder queryLastStateModifiedDate = boolQuery()
+            .must(existsQuery(LAST_STATE_MODIFIED_DATE))
+            .filter(rangeQuery(LAST_STATE_MODIFIED_DATE)
+                        .gte(LocalDate.now())
+                        .lte(LocalDate.now()));
+
         log.info("AlertMultiChildApplicationToSubmitTask scheduled task is executed");
 
-        final List<CaseDetails> casesCreatedToday = Stream.of(Draft, Submitted, LaSubmitted)
+        final List<CaseDetails> draftCasesCreatedToday = Stream.of(Draft)
             .flatMap(state -> ccdSearchService
-                .searchForAllCasesWithQuery(state, query, user, serviceAuthorization)
+                .searchForAllCasesWithQuery(state, queryCreatedDate, user, serviceAuthorization)
+                .stream())
+            .toList();
+
+        final List<CaseDetails> casesSubmittedOrLaSubmittedToday = Stream.of(Submitted, LaSubmitted)
+            .flatMap(state -> ccdSearchService
+                .searchForAllCasesWithQuery(state, queryLastStateModifiedDate, user, serviceAuthorization)
                 .stream())
             .toList();
 
         final Map<String, List<CaseDetails>> casesByApplicantEmail =
-            casesCreatedToday.stream()
+            draftCasesCreatedToday.stream()
                 .filter(caseDetails -> caseDetails.getData().get("applicant1Email") != null)
                 .collect(Collectors.groupingBy(
                     caseDetails -> (String) caseDetails.getData().get("applicant1Email")
