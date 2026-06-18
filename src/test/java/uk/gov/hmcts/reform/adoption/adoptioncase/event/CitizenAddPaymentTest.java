@@ -67,7 +67,7 @@ class CitizenAddPaymentTest extends EventTest {
     //#endregion
 
     @Test
-    void aboutToSubmit_whenValidationFails_returnsErrorsWithoutSubmitting() {
+    void aboutToSubmitWhenValidationFailsReturnsErrorsWithoutSubmitting() {
         var caseDetails = getCaseDetails(AwaitingPayment);
         var payment = Payment.builder().status(SUCCESS).build();
         caseDetails.getData().getApplication().setApplicationPayments(
@@ -82,7 +82,7 @@ class CitizenAddPaymentTest extends EventTest {
 
     //# region citizenAddPaymentSubmitted
     @Test
-    void citizenAddPaymentSubmitted_publishesNotificationEvent() {
+    void citizenAddPaymentSubmittedPublishesNotificationEvent() {
         var caseDetails = getCaseDetails(Submitted);
 
         SubmittedCallbackResponse response = citizenAddPayment.submitted(caseDetails, caseDetails);
@@ -98,7 +98,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void citizenAddPaymentSubmitted_whenStateIsNotSubmitted_doesNotPublishEvent() {
+    void citizenAddPaymentSubmittedWhenStateIsNotSubmittedDoesNotPublishEvent() {
         var caseDetails = getCaseDetails(AwaitingPayment);
 
         SubmittedCallbackResponse response = citizenAddPayment.submitted(caseDetails, caseDetails);
@@ -109,7 +109,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void citizenAddPaymentSubmitted_whenStateIsDraft_doesNotPublishEvent() {
+    void citizenAddPaymentSubmittedWhenStateIsDraftDoesNotPublishEvent() {
         var caseDetails = getCaseDetails(Draft);
 
         SubmittedCallbackResponse response = citizenAddPayment.submitted(caseDetails, caseDetails);
@@ -120,7 +120,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void citizenAddPaymentSubmitted_whenStateIsNull_doesNotPublishEvent() {
+    void citizenAddPaymentSubmittedWhenStateIsNullDoesNotPublishEvent() {
         var caseDetails = getCaseDetails(null);
 
         SubmittedCallbackResponse response = citizenAddPayment.submitted(caseDetails, caseDetails);
@@ -131,7 +131,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void citizenAddPaymentSubmitted_whenPublishEventThrows_propagatesException() {
+    void citizenAddPaymentSubmittedWhenPublishEventThrowsPropagatesException() {
         var caseDetails = getCaseDetails(Submitted);
 
         RuntimeException exception = new RuntimeException("publish failed");
@@ -145,7 +145,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void citizenAddPaymentSubmitted_whenInvokedMultipleTimes_publishesEachTime() {
+    void citizenAddPaymentSubmittedWhenInvokedMultipleTimesPublishesEachTime() {
         var caseDetails = getCaseDetails(Submitted);
 
         SubmittedCallbackResponse first = citizenAddPayment.submitted(caseDetails, caseDetails);
@@ -159,7 +159,7 @@ class CitizenAddPaymentTest extends EventTest {
     //#region aboutToSubmit
 
     @Test
-    void aboutToSubmit_whenLastPaymentIsInProgress_keepsCaseInAwaitingPayment_andDoesNotSubmitApplication() {
+    void aboutToSubmitWhenLastPaymentIsInProgressKeepsCaseInAwaitingPaymentAndDoesNotSubmitApplication() {
         var caseDetails = getCaseDetails(AwaitingPayment);
 
         caseDetails.getData().getApplication().setApplicationPayments(
@@ -175,7 +175,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void aboutToSubmit_whenLastPaymentIsCancelled_movesCaseToDraft_andDoesNotSubmitApplication() {
+    void aboutToSubmitWhenLastPaymentIsCancelledMovesCaseToDraftAndDoesNotSubmitApplication() {
         var caseDetails = getCaseDetails(AwaitingPayment);
 
         caseDetails.getData().getApplication().setApplicationPayments(
@@ -191,7 +191,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void aboutToSubmit_whenLastPaymentIsSuccess_submitsApplicationAndReturnsSubmittedState() {
+    void aboutToSubmitWhenLastPaymentIsSuccessSubmitsApplicationAndReturnsSubmittedState() {
         var caseDetails = getCaseDetails(AwaitingPayment);
 
         var payment = Payment.builder()
@@ -224,7 +224,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void aboutToSubmit_whenSuccessPaymentAmountDoesNotMatchOrderSummary_validateSubmissionReturnsErrors_andDoesNotSubmit() {
+    void aboutToSubmitWhenSuccessPaymentAmountDoesNotMatchOrderSummaryValidateSubmissionReturnsErrorsAndDoesNotSubmit() {
         var caseDetails = getCaseDetails(AwaitingPayment);
 
         var payment = Payment.builder()
@@ -248,7 +248,7 @@ class CitizenAddPaymentTest extends EventTest {
     }
 
     @Test
-    void aboutToSubmit_whenSubmissionServiceThrows_propagatesException() {
+    void aboutToSubmitWhenSubmissionServiceThrowsPropagatesException() {
         var caseDetails = getCaseDetails(AwaitingPayment);
 
         var payment = Payment.builder()
