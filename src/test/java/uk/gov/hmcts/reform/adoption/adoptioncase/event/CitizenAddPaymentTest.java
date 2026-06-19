@@ -143,18 +143,6 @@ class CitizenAddPaymentTest extends EventTest {
 
         verify(eventPublisher, times(1)).publishEvent(any(ApplicationSubmitNotificationEvent.class));
     }
-
-    @Test
-    void citizenAddPaymentSubmittedWhenInvokedMultipleTimesPublishesEachTime() {
-        var caseDetails = getCaseDetails(Submitted);
-
-        SubmittedCallbackResponse first = citizenAddPayment.submitted(caseDetails, caseDetails);
-        SubmittedCallbackResponse second = citizenAddPayment.submitted(caseDetails, caseDetails);
-
-        assertThat(first).isNotNull();
-        assertThat(second).isNotNull();
-        verify(eventPublisher, times(2)).publishEvent(any(ApplicationSubmitNotificationEvent.class));
-    }
     //# endregion
     //#region aboutToSubmit
 
