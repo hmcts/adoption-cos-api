@@ -46,7 +46,7 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
 class CitizenAddPaymentTest extends EventTest {
-    //#region mocks
+
     @InjectMocks
     private CitizenAddPayment citizenAddPayment;
 
@@ -64,7 +64,6 @@ class CitizenAddPaymentTest extends EventTest {
 
     @Mock
     private EventService eventPublisher;
-    //#endregion
 
     @Test
     void aboutToSubmitWhenValidationFailsReturnsErrorsWithoutSubmitting() {
@@ -80,7 +79,6 @@ class CitizenAddPaymentTest extends EventTest {
         verify(submissionService, never()).submitApplication(any());
     }
 
-    //# region citizenAddPaymentSubmitted
     @Test
     void citizenAddPaymentSubmittedPublishesNotificationEvent() {
         var caseDetails = getCaseDetails(Submitted);
@@ -143,8 +141,6 @@ class CitizenAddPaymentTest extends EventTest {
 
         verify(eventPublisher, times(1)).publishEvent(any(ApplicationSubmitNotificationEvent.class));
     }
-    //# endregion
-    //#region aboutToSubmit
 
     @Test
     void aboutToSubmitWhenLastPaymentIsInProgressKeepsCaseInAwaitingPaymentAndDoesNotSubmitApplication() {
@@ -262,8 +258,6 @@ class CitizenAddPaymentTest extends EventTest {
         verifyNoInteractions(eventPublisher);
     }
 
-    //#endregion
-
     @Test
     void citizenAddPaymentConfigure() {
         final ConfigBuilderImpl<CaseData, State, UserRole> configBuilder = createCaseDataConfigBuilder();
@@ -281,7 +275,6 @@ class CitizenAddPaymentTest extends EventTest {
             .isEqualTo("Payment made");
     }
 
-    //#region set values
     private CaseDetails<CaseData, State> getCaseDetails(State state) {
         return CaseDetails.<CaseData, State>builder()
             .data(caseData())
@@ -295,5 +288,4 @@ class CitizenAddPaymentTest extends EventTest {
             .status(paymentStatus)
             .build();
     }
-    //#endregion
 }
