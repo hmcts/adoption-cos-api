@@ -35,15 +35,25 @@ class CitizenCreateApplicationTest extends EventTest {
     @DisplayName("Testing submitted event for citizen case creation with dss meta data")
     void testing_citizen_submission_with_dssData_aboutToSubmit() {
         var caseDetails = getCaseDetails();
-        citizenCreateApplication.aboutToSubmit(caseDetails,caseDetails);
-        assertThat(caseDetails.getData().getDssQuestion1()).isEqualTo("First Name");
-        assertThat(caseDetails.getData().getDssAnswer3()).isEqualTo("case_data.childrenDateOfBirth");
+        var callbackResponse = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+        var callbackData = callbackResponse.getData();
+
+        assertThat(callbackData.getStatus()).isEqualTo(State.Draft);
+        assertThat(callbackData.getTypeOfAdoption()).isEqualTo("Post-placement");
+        assertThat(callbackData.getHyphenatedCaseRef()).isEqualTo("1234-5678-9012-3456");
+        assertThat(callbackData.getDssQuestion1()).isEqualTo("First Name");
+        assertThat(callbackData.getDssQuestion2()).isEqualTo("Last Name");
+        assertThat(callbackData.getDssQuestion3()).isEqualTo("Date of Birth");
+        assertThat(callbackData.getDssAnswer1()).isEqualTo("case_data.childrenFirstName");
+        assertThat(callbackData.getDssAnswer2()).isEqualTo("case_data.childrenLastName");
+        assertThat(callbackData.getDssAnswer3()).isEqualTo("case_data.childrenDateOfBirth");
+        assertThat(callbackData.getDssHeaderDetails()).isEqualTo("Child Details");
     }
 
     private CaseDetails<CaseData, State> getCaseDetails() {
         return CaseDetails.<CaseData, State>builder()
             .data(caseData())
-            .id(1L)
+            .id(1234567890123456L)
             .build();
     }
 }
