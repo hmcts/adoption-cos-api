@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -11,7 +10,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
-import uk.gov.hmcts.reform.adoption.common.AddSystemUpdateRole;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
@@ -22,9 +20,6 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions
 public class CitizenCreateApplication implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String CITIZEN_CREATE = "citizen-create-application";
-
-    @Autowired
-    private AddSystemUpdateRole addSystemUpdateRole;
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -43,7 +38,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
                                                                        final CaseDetails<CaseData, State> beforeDetails) {
         log.info("Citizen create adoption application about to submit callback invoked");
 
-        if (details == null || details.getData() == null || details.getId() == null) {
+        if (details == null || details.getData() == null || details.getId() == null || details.getId() <= 0) {
             throw new IllegalArgumentException("Case details, data and id must be provided");
         }
         final CaseData data = details.getData();
@@ -57,6 +52,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
             .data(data)
             .build();
     }
+
     private void setDssMetaData(CaseData data) {
 
         data.setDssQuestion1("First Name");

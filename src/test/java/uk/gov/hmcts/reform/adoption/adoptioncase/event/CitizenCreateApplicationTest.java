@@ -40,44 +40,95 @@ class CitizenCreateApplicationTest extends EventTest {
     }
 
     @Test
-    @DisplayName("Testing draft status is set in about to submit method")
-    void testingCitizenSubmission_stateSetToDraft() {
-        var caseDetails = getCaseDetails();
-        assertThat(caseDetails).isNotNull();
-        assertThat(caseDetails.getData()).isNotNull();
-        assertThat(caseDetails.getState()).isEqualTo(State.Draft);
+    @DisplayName("Testing submitted event for citizen case creation with null case details")
+    void testingCitizenSubmissionWithNullCaseDetails() {
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            citizenCreateApplication.aboutToSubmit(null, null);
+        });
+        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
     }
 
     @Test
-    @DisplayName("Testing getCaseDetails method")
-    void testingCitizenSubmission_caseFieldsConstants() {
+    @DisplayName("Testing submitted event for citizen case creation with no id")
+    void testingCitizenSubmissionWithNoId() {
         var caseDetails = getCaseDetails();
-        var caseData = caseDetails.getData();
-        assertThat(caseDetails).isNotNull();
-        assertThat(caseDetails.getData()).isNotNull();
-        assertThat(caseData.getTypeOfAdoption()).isEqualTo(CaseFieldsConstants.TYPE_OF_ADOPTION);
+        caseDetails.setId(null);
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+        });
+        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
     }
 
+    @Test
+    @DisplayName("Testing submitted event for citizen case creation with id as zero")
+    void testingCitizenSubmissionWithIdIsZero() {
+        var caseDetails = getCaseDetails();
+        caseDetails.setId(0L);
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+        });
+        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
+    }
+
+    @Test
+    @DisplayName("Testing submitted event for citizen case creation with id as negative")
+    void testingCitizenSubmissionWithIdIsNegative() {
+        var caseDetails = getCaseDetails();
+        caseDetails.setId(-1L);
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+        });
+        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
+    }
+
+    @Test
+    @DisplayName("Testing submitted event for citizen case creation with null case data")
+    void testingCitizenSubmissionWithNullCaseData() {
+        var caseDetails = getCaseDetails();
+        caseDetails.setData(null);
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+        });
+        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
+    }
+
+    @Test
+    @DisplayName("Testing case status is set to Draft in about to submit")
+    void shouldSetCaseStatusToDraft() {
+        var caseDetails = getCaseDetails();
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getData()).isNotNull();
+        assertThat(response.getData().getStatus()).isEqualTo(State.Draft);
+    }
+
+    @Test
+    @DisplayName("Testing Case field is set")
+    void testingCitizenSubmission_caseFieldsConstants() {
+        var caseDetails = getCaseDetails();
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+        assertThat(response).isNotNull();
+        assertThat(response.getData()).isNotNull();
+        assertThat(response.getData().getTypeOfAdoption()).isEqualTo(CaseFieldsConstants.TYPE_OF_ADOPTION);
+    }
 
     @ParameterizedTest
     @CsvSource({
         "1234567890123456, 1234-5678-9012-3456",
         "1234,             0000-0000-0000-1234",
         "1,                0000-0000-0000-0001",
-        "0,                0000-0000-0000-0000"
     })
     @DisplayName("Testing hyphenated case reference formatting")
     void shouldFormatHyphenatedCaseRef(long caseId, String expectedRef) {
-        var caseDetails = CaseDetails.<CaseData, State>builder()
-            .data(caseData())
-            .id(caseId)
-            .build();
+        var caseDetails = getCaseDetails();
+        caseDetails.setId(caseId);
 
         var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
 
         assertThat(response.getData().getHyphenatedCaseRef()).isEqualTo(expectedRef);
     }
-
 
     private CaseDetails<CaseData, State> getCaseDetails() {
         return CaseDetails.<CaseData, State>builder()
