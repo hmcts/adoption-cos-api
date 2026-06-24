@@ -43,25 +43,20 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
                                                                        final CaseDetails<CaseData, State> beforeDetails) {
         log.info("Citizen create adoption application about to submit callback invoked");
 
-        CaseData data = details.getData();
-        details.getData().setStatus(Draft);
+        if (details == null || details.getData() == null || details.getId() == null) {
+            throw new IllegalArgumentException("Case details, data and id must be provided");
+        }
+        final CaseData data = details.getData();
+        data.setStatus(Draft);
         // Setting the default value so that its value is shown in Summary Tab and Amend Case details screen
-        details.getData().setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
-        String temp = String.format("%016d", details.getId());
-        data.setHyphenatedCaseRef(String.format(
-            "%4s-%4s-%4s-%4s",
-            temp.substring(0, 4),
-            temp.substring(4, 8),
-            temp.substring(8, 12),
-            temp.substring(12, 16)
-        ));
+        data.setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
+        data.setHyphenatedCaseRef(formatHyphenatedCaseRef(details.getId()));
         setDssMetaData(data);
 
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)
             .build();
     }
-
     private void setDssMetaData(CaseData data) {
 
         data.setDssQuestion1("First Name");
@@ -71,5 +66,16 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         data.setDssAnswer2("case_data.childrenLastName");
         data.setDssAnswer3("case_data.childrenDateOfBirth");
         data.setDssHeaderDetails("Child Details");
+    }
+
+    private String formatHyphenatedCaseRef(Long caseId) {
+        final String padded = String.format("%016d", caseId);
+        return String.format(
+            "%s-%s-%s-%s",
+            padded.substring(0, 4),
+            padded.substring(4, 8),
+            padded.substring(8, 12),
+            padded.substring(12, 16)
+        );
     }
 }
