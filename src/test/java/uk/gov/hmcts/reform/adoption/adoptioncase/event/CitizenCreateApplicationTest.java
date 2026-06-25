@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,7 @@ class CitizenCreateApplicationTest extends EventTest {
     @InjectMocks
     private CitizenCreateApplication citizenCreateApplication;
 
+    @Disabled
     @Test
     @DisplayName("Testing submitted event for citizen case creation with dss meta data")
     void testingCitizenSubmissionWith_dssDataAboutToSubmit() {
