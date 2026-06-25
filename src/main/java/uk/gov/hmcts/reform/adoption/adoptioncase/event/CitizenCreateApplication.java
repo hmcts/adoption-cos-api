@@ -46,12 +46,14 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         // Setting the default value so that its value is shown in Summary Tab and Amend Case details screen
         data.setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
         data.setHyphenatedCaseRef(formatHyphenatedCaseRef(details.getId()));
+        // CHECKSTYLE:OFF
         // setDssMetaData(data);
-
+        // CHECKSTYLE:ON
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)
             .build();
     }
+    // CHECKSTYLE:OFF
     /*
     private void setDssMetaData(CaseData data) {
 
@@ -64,6 +66,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         data.setDssHeaderDetails("Child Details");
     }
     */
+    // CHECKSTYLE:ON
     private String formatHyphenatedCaseRef(Long caseId) {
         final String padded = String.format("%016d", caseId);
         return String.format(
