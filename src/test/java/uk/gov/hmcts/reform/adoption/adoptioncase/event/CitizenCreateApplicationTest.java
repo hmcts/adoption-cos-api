@@ -40,22 +40,25 @@ class CitizenCreateApplicationTest extends EventTest {
     }
 
     @Test
-    @DisplayName("Testing draft status is set in about to submit method")
-    void testingCitizenSubmission_stateSetToDraft() {
+    @DisplayName("Testing case status is set to Draft in about to submit")
+    void shouldSetCaseStatusToDraft() {
         var caseDetails = getCaseDetails();
-        assertThat(caseDetails).isNotNull();
-        assertThat(caseDetails.getData()).isNotNull();
-        assertThat(caseDetails.getState()).isEqualTo(State.Draft);
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getData()).isNotNull();
+        assertThat(response.getData().getStatus()).isEqualTo(State.Draft);
     }
 
     @Test
-    @DisplayName("Testing getCaseDetails method")
+    @DisplayName("Testing Case field is set")
     void testingCitizenSubmission_caseFieldsConstants() {
         var caseDetails = getCaseDetails();
-        var caseData = caseDetails.getData();
-        assertThat(caseDetails).isNotNull();
-        assertThat(caseDetails.getData()).isNotNull();
-        assertThat(caseData.getTypeOfAdoption()).isEqualTo(CaseFieldsConstants.TYPE_OF_ADOPTION);
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getData()).isNotNull();
+        assertThat(response.getData().getTypeOfAdoption()).isEqualTo(CaseFieldsConstants.TYPE_OF_ADOPTION);
     }
 
 
