@@ -15,12 +15,26 @@
     <cve>CVE-2025-46392</cve>
   </suppress>
 
+  <!-- Fix in ADOP-2882 jackson-databind -->
+  <suppress>
+    <notes>jackson-databind-2.15.3.jar, jackson-databind-2.19.2.jar,
+      cucumber-core-7.18.0.jar (shaded: com.fasterxml.jackson.core:jackson-databind:2.17.1)</notes>
+    <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+    <cve>CVE-2023-35116</cve>
+    <cve>CVE-2026-54512</cve>
+    <cve>CVE-2026-54513</cve>
+    <cve>CVE-2026-54514</cve>
+    <cve>CVE-2026-54515</cve>
+  </suppress>
+
+  <!-- Fix in ADOP-2762 kotlin -->
   <suppress>
     <notes><![CDATA[
    file name: kotlin-stdlib-1.9.25.jar
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib@.*$</packageUrl>
     <cve>CVE-2020-29582</cve>
+    <cve>CVE-2026-53914</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -28,6 +42,7 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-jdk7@.*$</packageUrl>
     <cve>CVE-2020-29582</cve>
+    <cve>CVE-2026-53914</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -35,9 +50,10 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-jdk8@.*$</packageUrl>
     <cve>CVE-2020-29582</cve>
+    <cve>CVE-2026-53914</cve>
   </suppress>
 
-  <!-- ADOP-2809 -->
+  <!-- Fix in ADOP-2809 log4j -->
   <suppress>
     <notes><![CDATA[
    file name: log4j-core-2.24.3.jar
@@ -54,7 +70,7 @@
     <cve>CVE-2026-34477</cve>
   </suppress>
 
-  <!-- ADOP-2800 -->
+  <!-- Fix in ADOP-2800 spring boot -->
   <suppress>
     <notes><![CDATA[
    file name: spring-boot-3.4.13.jar
@@ -71,7 +87,7 @@
     <cve>CVE-2026-40975</cve>
     <cve>CVE-2026-40977</cve>
   </suppress>
-  <!-- ADOP-2799 -->
+  <!-- Fix in ADOP-2799 spring-security-crypto -->
   <suppress>
     <notes>spring-security-crypto</notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
@@ -82,8 +98,11 @@
     <cve>CVE-2026-40988</cve>
     <cve>CVE-2026-41003</cve>
     <cve>CVE-2026-41694</cve>
+    <cve>CVE-2026-47838</cve>
+    <cve>CVE-2026-41706</cve>
   </suppress>
-  <!-- ADOP-2806 -->
+
+  <!-- Fix in ADOP-2806 spring framework -->
   <suppress>
     <notes>transitive spring framework dependencies
       (aop, beans, context, core, expression, jcl, webmvc)</notes>
@@ -106,9 +125,10 @@
     <cve>CVE-2026-41852</cve>
     <cve>CVE-2026-41854</cve>
     <cve>CVE-2026-41853</cve>
+    <cve>CVE-2026-41855</cve>
   </suppress>
 
-  <!-- To be fixed in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
+  <!-- Fix in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
   <!-- Hystrix 2.2.10.RELEASE transitively pulls spring-boot-starter-aop:2.3.12.RELEASE.        -->
   <!-- The application itself runs Spring Boot 4 and is not affected by these 2.x vulnerabilities. -->
   <!-- Remove once spring-cloud-starter-netflix-hystrix is replaced or upgraded.                   -->
@@ -137,7 +157,7 @@
     <cve>CVE-2026-41853</cve>
   </suppress>
 
-  <!-- To be fixed in ADOP-2777: Tomcat 10.1.54 CVE suppressions - pending upgrade to patched version -->
+  <!-- Fix in ADOP-2777: Tomcat -->
   <suppress>
     <notes><![CDATA[
    file name: tomcat-embed-core-10.1.44.jar
