@@ -125,6 +125,14 @@ tasks.register('integration', Test) {
   failFast = true
 }
 
+tasks.register('functionalTest', Test) {
+  description = "Runs Java functional tests"
+  group = "Verification"
+  testClassesDirs = sourceSets.functionalTest.output.classesDirs
+  classpath = sourceSets.functionalTest.runtimeClasspath
+  failFast = true
+}
+
 task yarnInstall(type: Exec) {
   workingDir '.'
   commandLine 'yarn', 'install'
