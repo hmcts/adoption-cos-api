@@ -156,14 +156,14 @@ withPipeline(type, product, component) {
     ]
 
     dir("${WORKSPACE}") {
-      steps.archiveArtifacts  allowEmptyArchive: true, artifacts: "build/reports/tests/functional/**/*"
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: "build/reports/tests/functional/**/*"
     }
 
-    env.ENVIRONMENT="prod"
-    env.CASE_API_URL="http://adoption-cos-api-prod.service.core-compute-prod.internal"
-    env.CCD_DEF_NAME="prod"
-    env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-prod.service.core-compute-prod.internal"
-    env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
+    env.ENVIRONMENT = "prod"
+    env.CASE_API_URL = "http://adoption-cos-api-prod.service.core-compute-prod.internal"
+    env.CCD_DEF_NAME = "prod"
+    env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-prod.service.core-compute-prod.internal"
+    env.CITIZEN_UPDATE_CASE_STATE_ENABLED = true
     env.SERVICE_AUTH_MICROSERVICE = "adoption_cos_api"
     env.SERVICE_AUTH_PROVIDER_URL = "http://rpe-service-auth-provider-prod.service.core-compute-prod.internal"
     env.IDAM_API_URL_BASE = "https://idam-api.platform.hmcts.net"
@@ -196,7 +196,7 @@ withPipeline(type, product, component) {
     ]
   }
 
-  afterAlways('checkout') {
+  before('highleveldatasetup') {
     builder.gradle('generateCCDConfig')
     generateDefinitions()
   }
