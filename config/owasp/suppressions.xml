@@ -15,6 +15,16 @@
     <cve>CVE-2025-46392</cve>
   </suppress>
 
+  <!-- Fix in ADOP-2897 httpcore -->
+  <suppress>
+    <notes><![CDATA[
+   file name: httpcore-4.4.16.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/httpcore@.*$</packageUrl>
+    <cve>CVE-2026-54399</cve>
+    <cve>CVE-2026-54428</cve>
+  </suppress>
+
   <!-- Fix in ADOP-2882 jackson-databind -->
   <suppress>
     <notes>jackson-databind-2.15.3.jar, jackson-databind-2.19.2.jar,
@@ -198,6 +208,12 @@
     <cve>CVE-2026-43513</cve>
     <cve>CVE-2026-43514</cve>
     <cve>CVE-2026-43515</cve>
+    <cve>CVE-2026-53434</cve>
+    <cve>CVE-2026-55276</cve>
+    <cve>CVE-2026-53404</cve>
+    <cve>CVE-2026-55955</cve>
+    <cve>CVE-2026-55956</cve>
+    <cve>CVE-2026-50229</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: spring-boot-3.4.11.jar]]></notes>
