@@ -272,7 +272,7 @@ dependencies {
   implementation 'com.launchdarkly:launchdarkly-java-server-sdk:5.10.9'
   implementation 'com.sendgrid:sendgrid-java:4.0.1'
   implementation 'commons-validator:commons-validator:1.10.1'
-  implementation 'org.elasticsearch:elasticsearch:9.2.4'
+  implementation 'org.elasticsearch:elasticsearch:9.4.3'
   implementation 'uk.gov.service.notify:notifications-java-client:5.0.1-RELEASE'
 
   implementation "org.projectlombok:lombok:${versions.lombok}"
