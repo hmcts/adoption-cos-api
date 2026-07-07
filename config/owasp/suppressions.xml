@@ -208,6 +208,12 @@
     <cve>CVE-2026-43513</cve>
     <cve>CVE-2026-43514</cve>
     <cve>CVE-2026-43515</cve>
+    <cve>CVE-2026-53434</cve>
+    <cve>CVE-2026-55276</cve>
+    <cve>CVE-2026-53404</cve>
+    <cve>CVE-2026-55955</cve>
+    <cve>CVE-2026-55956</cve>
+    <cve>CVE-2026-50229</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: spring-boot-3.4.11.jar]]></notes>
