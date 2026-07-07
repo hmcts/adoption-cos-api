@@ -15,14 +15,19 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.idam.client.models.User;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
 
 @Component
@@ -42,7 +47,9 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
 
     @Override
     public void run() {
+
         final User user = idamService.retrieveSystemUpdateUserDetails();
+        log.info("Idam user name: " + user.getUserDetails().getEmail());
         final String serviceAuthorization = authTokenGenerator.generate();
 
         final BoolQueryBuilder query = boolQuery()
@@ -50,31 +57,49 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
             .filter(rangeQuery(CREATED_DATE)
                         .gte(LocalDate.now())
                         .lte(LocalDate.now()));
-
-        log.info("AlertMultiChildApplicationToSubmitTask scheduled task is executed");
+        log.info("AlertMultiChildApplicationToSubmitTask Scheduled task is executed");
 
         final List<CaseDetails> casesInDraftNeedingReminder =
             ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, serviceAuthorization);
+        Map<String, List<CaseDetails>> emailCounts = new HashMap<>();
 
-        final Map<String, List<CaseDetails>> casesByApplicantEmail =
-            casesInDraftNeedingReminder.stream()
-                .filter(caseDetails -> caseDetails.getData().get("applicant1Email") != null)
-                .collect(Collectors.groupingBy(
-                    caseDetails -> (String) caseDetails.getData().get("applicant1Email")
-                ));
+        for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
+            log.info("AlertMultiChildApplicationToSubmitTask case details are present: {}", caseDetails.getId());
+            String applicantEmail = (String) caseDetails.getData().get("applicant1Email");
+            List<CaseDetails> caseList = emailCounts.get(applicantEmail);
+            if (!caseList.isEmpty()) {
+                log.info("adding case to the map {}", caseDetails.getId());
+                caseList.add(caseDetails);
+                log.info("count of the case list {}", caseList.size());
+                emailCounts.put(applicantEmail, caseList);
+                log.info("map count {}", emailCounts.size());
+            } else {
+                log.info("adding first case to the map for this user, case id {}", caseDetails.getId());
+                List<CaseDetails> caseListForUser = getNewCaseList();
+                caseListForUser.add(caseDetails);
+                log.info("count of the case list {}", caseListForUser.size());
+                emailCounts.put(applicantEmail, caseListForUser);
+                log.info("map count {}", emailCounts.size());
+            }
 
-        log.info(
-            "Checking the case lists of {} unique applicant1Emails for Draft multi-child cases",
-            casesByApplicantEmail.size()
-        );
+        }
+        log.info("case list size {}",emailCounts.size());
+        emailCounts.forEach((id, caseLists) -> {
+            log.info("case list for user X count {}", caseLists.size());
+            if (caseLists.size() > 1) {
+                caseLists.forEach(caseDe -> {
+                    log.info("state of the case {} for case id {}",caseDe.getId(),caseDe.getState());
+                    if (State.Draft.toString().equals(caseDe.getState())) {
+                        sendReminderToApplicantsIfEligible(caseDe);
+                        log.info("Attempted to send reminder for case id {}", caseDe.getId());
+                    }
+                });
+            }
+        });
+    }
 
-        casesByApplicantEmail.values().stream()
-            .filter(caseList -> caseList.size() > 1)
-            .flatMap(List::stream)
-            .forEach(caseDetails -> {
-                sendReminderToApplicantsIfEligible(caseDetails);
-                log.info("Attempted to send reminder for case id {}", caseDetails.getId());
-            });
+    private List<CaseDetails> getNewCaseList() {
+        return new ArrayList<>();
     }
 
     private void sendReminderToApplicantsIfEligible(final CaseDetails caseDetails) {
