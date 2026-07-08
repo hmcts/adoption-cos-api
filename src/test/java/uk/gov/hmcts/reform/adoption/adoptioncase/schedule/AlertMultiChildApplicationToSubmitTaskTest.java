@@ -26,6 +26,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,28 +67,19 @@ class AlertMultiChildApplicationToSubmitTaskTest {
         final CaseDetails caseDetails2 = mock(CaseDetails.class);
         final CaseDetails caseDetails3 = mock(CaseDetails.class);
 
-        when(caseDetails1.getId()).thenReturn(1L);
-        when(caseDetails2.getId()).thenReturn(2L);
-
-        when(caseDetails1.getData()).thenReturn(Map.of(APPLICANT_1_EMAIL, "test@example.com"));
-        when(caseDetails2.getData()).thenReturn(Map.of(APPLICANT_1_EMAIL, "test@example.com"));
-        when(caseDetails3.getData()).thenReturn(Map.of(APPLICANT_1_EMAIL, "other@example.com"));
-
+        when(caseDetails1.getState()).thenReturn(String.valueOf(State.Submitted));
+        when(caseDetails2.getState()).thenReturn(String.valueOf(Draft));
+        when(caseDetails3.getState()).thenReturn(String.valueOf(State.Submitted));
+        final List<CaseDetails> caseDetailsList = List.of(caseDetails1, caseDetails2, caseDetails3);
         when(ccdSearchService.searchForAllCasesWithQuery(any(), any(), any(), anyString()))
-            .thenReturn(List.of(caseDetails1, caseDetails2, caseDetails3));
-
-        final uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> convertedCaseDetails =
-            new uk.gov.hmcts.ccd.sdk.api.CaseDetails<>();
-        convertedCaseDetails.setData(caseData());
-
-        when(caseDetailsConverter.convertToCaseDetailsFromReformModel(any(CaseDetails.class)))
-            .thenReturn(convertedCaseDetails);
+            .thenReturn(caseDetailsList);
+        final uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseDetails4 = new uk.gov.hmcts.ccd.sdk.api.CaseDetails<>();
+        caseDetails4.setData(caseData());
+        when(caseDetailsConverter.convertToCaseDetailsFromReformModel(any(CaseDetails.class))).thenReturn(caseDetails4);
 
         alertMultiChildApplicationToSubmitTask.run();
-
-        verify(multiChildSubmitAlertEmailNotification, times(2)).sendToApplicants(
+        verify(multiChildSubmitAlertEmailNotification, times(1)).sendToApplicants(
             any(CaseData.class),
-            any(Long.class)
-        );
+            any(Long.class));
     }
 }
