@@ -33,7 +33,6 @@ public class CcdSearchService {
     public static final String DATA = "data.%s";
     public static final String STATE = "state";
     public static final String CREATED_DATE = "created_date";
-    public static final String LAST_STATE_MODIFIED_DATE = "last_state_modified_date";
     public static final String SUBMITTED_DATE = "data.dateSubmitted";
 
     @Value("${core_case_data.search.page_size}")

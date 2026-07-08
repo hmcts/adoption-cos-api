@@ -27,7 +27,7 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.LAST_STATE_MODIFIED_DATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.SUBMITTED_DATE;
 
 @Component
 @Slf4j
@@ -55,11 +55,12 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
                         .gte(LocalDate.now())
                         .lte(LocalDate.now()));
 
-        final BoolQueryBuilder queryLastStateModifiedDate = boolQuery()
-            .must(existsQuery(LAST_STATE_MODIFIED_DATE))
-            .filter(rangeQuery(LAST_STATE_MODIFIED_DATE)
+        final BoolQueryBuilder querySubmittedDate = boolQuery()
+            .must(existsQuery(SUBMITTED_DATE))
+            .filter(rangeQuery(SUBMITTED_DATE)
                         .gte(LocalDate.now())
-                        .lte(LocalDate.now()));
+                        .lte(LocalDate.now())
+            );
 
         log.info("AlertMultiChildApplicationToSubmitTask scheduled task is executed");
 
@@ -71,7 +72,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
 
         final List<CaseDetails> casesSubmittedOrLaSubmittedToday = Stream.of(Submitted, LaSubmitted)
             .flatMap(state -> ccdSearchService
-                .searchForAllCasesWithQuery(state, queryLastStateModifiedDate, user, serviceAuthorization)
+                .searchForAllCasesWithQuery(state, querySubmittedDate, user, serviceAuthorization)
                 .stream())
             .toList();
 
