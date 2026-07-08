@@ -63,7 +63,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
             log.info("AlertMultiChildApplicationToSubmitTask case details are present: {}", caseDetails.getId());
             String applicantEmail = (String) caseDetails.getData().get("applicant1Email");
             List<CaseDetails> caseList = emailCounts.get(applicantEmail);
-            if (!caseList.isEmpty()) {
+            if (caseList != null && !caseList.isEmpty()) {
                 log.info("adding case to the map {}", caseDetails.getId());
                 caseList.add(caseDetails);
                 log.info("count of the case list {}", caseList.size());
