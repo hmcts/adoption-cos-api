@@ -70,52 +70,33 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
                 .stream())
             .toList();
 
-        final List<CaseDetails> casesSubmittedOrLaSubmittedToday = Stream.of(Submitted, LaSubmitted)
+        final List<CaseDetails> casesSubmittedToday = Stream.of(Submitted, LaSubmitted)
             .flatMap(state -> ccdSearchService
                 .searchForAllCasesWithQuery(state, querySubmittedDate, user, serviceAuthorization)
                 .stream())
             .toList();
 
-        final Map<String, List<CaseDetails>> casesByApplicantEmail =
-            draftCasesCreatedToday.stream()
+        final Map<String, List<CaseDetails>> submittedCasesByApplicantEmail =
+            casesSubmittedToday.stream()
                 .filter(caseDetails -> caseDetails.getData().get("applicant1Email") != null)
                 .collect(Collectors.groupingBy(
                     caseDetails -> (String) caseDetails.getData().get("applicant1Email")
                 ));
 
+        //TODO: Consider when the cron is running, should this be handling yesterday's cases?
         log.info(
-            "Checking the case lists of {} unique applicant1Emails for Draft multi-child cases",
-            casesByApplicantEmail.size()
+            "Checking {} applicant1Emails (from cases Submitted today) for Draft multi-child cases",
+            submittedCasesByApplicantEmail.size()
         );
 
-        casesByApplicantEmail.values().stream()
-            .filter(this::hasDraftCase)
-            .filter(this::hasSubmittedOrLaSubmittedCase)
-            .map(this::getFirstDraftCase)
-            .forEach(caseDetails -> {
-                sendReminderToApplicantsIfEligible(caseDetails);
-                log.info("Attempted to send reminder for case id {}", caseDetails.getId());
+        draftCasesCreatedToday.forEach(caseDetails -> {
+                var applicant1Email = caseDetails.getData().get("applicant1Email");
+                if (submittedCasesByApplicantEmail.containsKey(applicant1Email)) {
+                    sendReminderToApplicantsIfEligible(caseDetails);
+                    log.info("Attempted to send reminder for case id {}", caseDetails.getId());
+                    submittedCasesByApplicantEmail.remove(applicant1Email);
+                }
             });
-    }
-
-    private boolean hasDraftCase(final List<CaseDetails> caseList) {
-        return caseList.stream()
-            .anyMatch(caseDetails -> Draft.name().equals(caseDetails.getState()));
-    }
-
-    private boolean hasSubmittedOrLaSubmittedCase(final List<CaseDetails> caseList) {
-        return caseList.stream()
-            .anyMatch(caseDetails ->
-                          Submitted.name().equals(caseDetails.getState())
-                              || LaSubmitted.name().equals(caseDetails.getState())
-            );
-    }
-
-    private CaseDetails getFirstDraftCase(final List<CaseDetails> caseList) {
-        return caseList.stream()
-            .filter(caseDetails -> Draft.name().equals(caseDetails.getState()))
-            .findFirst()
-            .orElseThrow();
     }
 
     private void sendReminderToApplicantsIfEligible(final CaseDetails caseDetails) {
