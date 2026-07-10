@@ -83,20 +83,19 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
                     caseDetails -> (String) caseDetails.getData().get("applicant1Email")
                 ));
 
-        //TODO: Consider when the cron is running, should this be handling yesterday's cases?
         log.info(
             "Checking {} applicant1Emails (from cases Submitted today) for Draft multi-child cases",
             submittedCasesByApplicantEmail.size()
         );
 
         draftCasesCreatedToday.forEach(caseDetails -> {
-                var applicant1Email = caseDetails.getData().get("applicant1Email");
-                if (submittedCasesByApplicantEmail.containsKey(applicant1Email)) {
-                    sendReminderToApplicantsIfEligible(caseDetails);
-                    log.info("Attempted to send reminder for case id {}", caseDetails.getId());
-                    submittedCasesByApplicantEmail.remove(applicant1Email);
-                }
-            });
+            var applicant1Email = caseDetails.getData().get("applicant1Email");
+            if (submittedCasesByApplicantEmail.containsKey(applicant1Email)) {
+                sendReminderToApplicantsIfEligible(caseDetails);
+                log.info("Attempted to send reminder for case id {}", caseDetails.getId());
+                submittedCasesByApplicantEmail.remove(applicant1Email);
+            }
+        });
     }
 
     private void sendReminderToApplicantsIfEligible(final CaseDetails caseDetails) {
