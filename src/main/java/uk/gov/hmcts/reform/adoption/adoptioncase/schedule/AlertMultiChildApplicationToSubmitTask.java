@@ -16,9 +16,8 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
@@ -48,52 +47,41 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
     public void run() {
         final User user = idamService.retrieveSystemUpdateUserDetails();
         final String serviceAuthorization = authTokenGenerator.generate();
+        final LocalDate today = LocalDate.now();
 
-        final BoolQueryBuilder queryCreatedDate = boolQuery()
-            .must(existsQuery(CREATED_DATE))
-            .filter(rangeQuery(CREATED_DATE)
-                        .gte(LocalDate.now())
-                        .lte(LocalDate.now()));
-
-        final BoolQueryBuilder querySubmittedDate = boolQuery()
-            .must(existsQuery(SUBMITTED_DATE))
-            .filter(rangeQuery(SUBMITTED_DATE)
-                        .gte(LocalDate.now())
-                        .lte(LocalDate.now())
-            );
+        final BoolQueryBuilder createdTodayQuery = dateEqualsQuery(CREATED_DATE, today);
+        final BoolQueryBuilder submittedTodayQuery = dateEqualsQuery(SUBMITTED_DATE, today);
 
         log.info("AlertMultiChildApplicationToSubmitTask scheduled task is executed");
 
-        final List<CaseDetails> draftCasesCreatedToday = Stream.of(Draft)
-            .flatMap(state -> ccdSearchService
-                .searchForAllCasesWithQuery(state, queryCreatedDate, user, serviceAuthorization)
-                .stream())
-            .toList();
+        final List<CaseDetails> draftCasesCreatedToday =
+            searchCasesByStates(List.of(Draft), createdTodayQuery, user, serviceAuthorization);
 
-        final List<CaseDetails> casesSubmittedToday = Stream.of(Submitted, LaSubmitted)
-            .flatMap(state -> ccdSearchService
-                .searchForAllCasesWithQuery(state, querySubmittedDate, user, serviceAuthorization)
-                .stream())
-            .toList();
+        final List<CaseDetails> casesSubmittedToday =
+            searchCasesByStates(List.of(Submitted, LaSubmitted), submittedTodayQuery, user, serviceAuthorization);
 
-        final Map<String, List<CaseDetails>> submittedCasesByApplicantEmail =
-            casesSubmittedToday.stream()
-                .filter(caseDetails -> caseDetails.getData().get("applicant1Email") != null)
-                .collect(Collectors.groupingBy(
-                    caseDetails -> (String) caseDetails.getData().get("applicant1Email")
-                ));
+        if (draftCasesCreatedToday.isEmpty() || casesSubmittedToday.isEmpty()) {
+            log.info("No cases met critera for alert ({} draft cases created today, {} cases submitted today)",
+                     draftCasesCreatedToday.size(), casesSubmittedToday.size());
+            return;
+        }
+
+        final Set<String> applicant1EmailsForCasesSubmittedToday = casesSubmittedToday.stream()
+            .map(caseDetails -> (String) caseDetails.getData().get("applicant1Email"))
+            .filter(email -> email != null)
+            .collect(Collectors.toSet());
 
         log.info(
-            "Checking {} applicant1Emails (from cases Submitted today) for Draft multi-child cases",
-            submittedCasesByApplicantEmail.size()
+            "Looking for any of {} applicant1Emails (from cases Submitted today) in {} Draft cases",
+            applicant1EmailsForCasesSubmittedToday.size(), draftCasesCreatedToday.size()
         );
 
         draftCasesCreatedToday.forEach(caseDetails -> {
-            var applicant1Email = caseDetails.getData().get("applicant1Email");
-            if (submittedCasesByApplicantEmail.containsKey(applicant1Email)) {
+            String applicant1Email = caseDetails.getData().get("applicant1Email").toString();
+            if (applicant1EmailsForCasesSubmittedToday.contains(applicant1Email)) {
                 sendReminderToApplicantsIfEligible(caseDetails);
                 log.info("Attempted to send reminder for case id {}", caseDetails.getId());
-                submittedCasesByApplicantEmail.remove(applicant1Email);
+                applicant1EmailsForCasesSubmittedToday.remove(applicant1Email);
             }
         });
     }
@@ -103,5 +91,22 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
             caseDetailsConverter.convertToCaseDetailsFromReformModel(caseDetails);
 
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData.getData(), caseDetails.getId());
+    }
+
+    private BoolQueryBuilder dateEqualsQuery(String fieldName, LocalDate date) {
+        return boolQuery()
+            .must(existsQuery(fieldName))
+            .filter(rangeQuery(fieldName).gte(date).lte(date));
+    }
+
+    private List<CaseDetails> searchCasesByStates(
+        List<State> states,
+        BoolQueryBuilder query,
+        User user,
+        String serviceAuthorization
+    ) {
+        return states.stream()
+            .flatMap(state -> ccdSearchService.searchForAllCasesWithQuery(state, query, user, serviceAuthorization).stream())
+            .toList();
     }
 }
