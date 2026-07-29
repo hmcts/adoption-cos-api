@@ -52,6 +52,7 @@
     <cve>CVE-2026-34481</cve>
     <cve>CVE-2026-34479</cve>
     <cve>CVE-2026-34477</cve>
+    <cve>CVE-2026-49844</cve>
   </suppress>
 
   <!-- Fix in ADOP-2800 spring boot -->
@@ -112,6 +113,7 @@
     <cve>CVE-2026-41854</cve>
     <cve>CVE-2026-41853</cve>
     <cve>CVE-2026-41855</cve>
+    <cve>CVE-2026-41839</cve>
   </suppress>
 
   <!-- Fix in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
@@ -187,6 +189,8 @@
     <cve>CVE-2026-55955</cve>
     <cve>CVE-2026-55956</cve>
     <cve>CVE-2026-50229</cve>
+    <cve>CVE-2026-59083</cve>
+    <cve>CVE-2026-59084</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: commons-lang3-3.17.0.jar]]></notes>
