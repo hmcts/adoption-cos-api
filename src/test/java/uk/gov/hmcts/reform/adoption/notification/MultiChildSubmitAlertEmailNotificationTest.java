@@ -30,18 +30,8 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAI
 @ExtendWith(MockitoExtension.class)
 class MultiChildSubmitAlertEmailNotificationTest {
 
-
-    @Mock
-    IdamService idamService;
-
     @Mock
     private NotificationService notificationService;
-
-    @Mock
-    private CommonContent commonContent;
-
-    @Mock
-    private EmailTemplatesConfig emailTemplatesConfig;
 
     @InjectMocks
     private MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
