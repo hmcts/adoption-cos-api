@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.idam.client.models.User;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,7 +48,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
     public void run() {
         final User user = idamService.retrieveSystemUpdateUserDetails();
         final String serviceAuthorization = authTokenGenerator.generate();
-        final LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now(ZoneId.of("Europe/London"));
 
         final BoolQueryBuilder createdTodayQuery = dateEqualsQuery(CREATED_DATE, today);
         final BoolQueryBuilder submittedTodayQuery = dateEqualsQuery(SUBMITTED_DATE, today);
