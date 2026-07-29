@@ -9,8 +9,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.common.config.EmailTemplatesConfig;
 import uk.gov.hmcts.reform.adoption.idam.IdamService;
+import uk.gov.hmcts.reform.adoption.testutil.TestDataHelper;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,16 +19,13 @@ import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.WELSH;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_MULTIPLE_APPLICANT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_FIRST_NAME;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LAST_NAME;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
-import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL_2;
 
 @ExtendWith(MockitoExtension.class)
 class MultiChildSubmitAlertEmailNotificationTest {
@@ -49,170 +46,236 @@ class MultiChildSubmitAlertEmailNotificationTest {
     @InjectMocks
     private MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
 
-
     @Test
-    void draftApplicationExpiringNotificationTest_sendToApplicants() {
+    void draftApplicationWithApplicant1_whenEmailAddress_sendsEmailToApplicant1EmailAddress() {
+        Applicant applicant = TestDataHelper.getApplicant();
+        applicant.setEmail(TEST_USER_EMAIL_2);
 
-        CaseData caseData = caseData();
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName("");
-        Map<String, Object> templateVars = new HashMap<>();
-        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
-            + caseData.getApplicant1().getLastName());
-        if (caseData.getApplicant2() != null) {
-            templateVars.put(
-                APPLICANT_2_FULL_NAME,
-                caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
-            );
-            templateVars.put(HAS_SECOND_APPLICANT, YES);
-        } else {
-            templateVars.put(HAS_SECOND_APPLICANT, NO);
-            templateVars.put(APPLICANT_2_FULL_NAME, "");
-        }
-        templateVars.put(HAS_MULTIPLE_APPLICANT, YES);
+        final CaseData caseData = CaseData.builder()
+            .applicant1(applicant)
+            .build();
 
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
-        verify(notificationService, times(2)).sendEmail(
-            TEST_USER_EMAIL,
-            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
-            templateVars,
-            ENGLISH
-        );
-    }
-
-    @Test
-    void draftApplicationExpiringNotificationTest_sendToApplicants_noLanguagePreference() {
-
-        CaseData caseData = caseData();
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName("");
-        caseData.getApplicant1().setLanguagePreference(null);
-        caseData.getApplicant2().setLanguagePreference(null);
-        Map<String, Object> templateVars = new HashMap<>();
-        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
-            + caseData.getApplicant1().getLastName());
-        templateVars.put(
-            APPLICANT_2_FULL_NAME,
-            caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
-        );
-        templateVars.put(HAS_SECOND_APPLICANT, YES);
-        templateVars.put(HAS_MULTIPLE_APPLICANT, YES);
-
-        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
-
-        verify(notificationService, times(2)).sendEmail(
-            TEST_USER_EMAIL,
-            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
-            templateVars,
-            ENGLISH
-        );
-    }
-
-    @Test
-    void draftApplicationExpiringNotificationTest_sendToApplicants_scenario2() {
-
-        CaseData caseData = caseData();
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName("");
-        caseData.setApplicant2(new Applicant());
-        Map<String, Object> templateVars = new HashMap<>();
-        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
-            + caseData.getApplicant1().getLastName());
-
-        templateVars.put(HAS_SECOND_APPLICANT, NO);
-        templateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        templateVars.put(APPLICANT_2_FULL_NAME, "");
-        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
+        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
             MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
-            templateVars,
+            expectedTemplateVars,
             ENGLISH
         );
     }
 
     @Test
-    void multiChildSubmitAlertEmailNotification_sendToApplicants_noEmailAddresses() {
+    void draftApplicationWithApplicant1_whenNoEmailAddress_sendsEmailToApplicant1Email() {
+        Applicant applicant = TestDataHelper.getApplicant();
+        applicant.setEmailAddress(null);
 
-        Applicant applicant1 = Applicant.builder()
-            .firstName(TEST_FIRST_NAME)
-            .lastName(TEST_LAST_NAME)
-            .email("applicant1@test.com")
+        final CaseData caseData = CaseData.builder()
+            .applicant1(applicant)
             .build();
-
-        Applicant applicant2 = Applicant.builder()
-            .firstName(TEST_FIRST_NAME)
-            .lastName(TEST_LAST_NAME)
-            .email("applicant2@test.com")
-            .build();
-
-        CaseData caseData = caseData();
-        caseData.setApplicant1(applicant1);
-        caseData.setApplicant2(applicant2);
-
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName("");
-        Map<String, Object> templateVars = new HashMap<>();
-        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
-            + caseData.getApplicant1().getLastName());
-        templateVars.put(
-            APPLICANT_2_FULL_NAME,
-            caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
-        );
-        templateVars.put(HAS_SECOND_APPLICANT, YES);
-        templateVars.put(HAS_MULTIPLE_APPLICANT, YES);
 
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
+        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
         verify(notificationService, times(1)).sendEmail(
-            "applicant1@test.com",
+            TEST_USER_EMAIL,
             MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
-            templateVars,
+            expectedTemplateVars,
             ENGLISH
         );
     }
 
     @Test
-    void multiChildSubmitAlertEmailNotification_sendToApplicants_noEmailAddresses_welsh() {
+    void draftApplicationWithApplicant1_whenNoEmailAddressAndWelshPreference_sendsEmailToApplicant1EmailWelsh() {
+        Applicant applicant = TestDataHelper.getApplicant();
+        applicant.setLanguagePreference(WELSH);
+        applicant.setEmailAddress(null);
 
-        Applicant applicant1 = Applicant.builder()
-            .firstName(TEST_FIRST_NAME)
-            .lastName(TEST_LAST_NAME)
-            .email("applicant1@test.com")
+        final CaseData caseData = CaseData.builder()
+            .applicant1(applicant)
+            .build();
+
+        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
+
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
+        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            expectedTemplateVars,
+            WELSH
+        );
+    }
+
+    @Test
+    void draftApplicationWithApplicant1_whenNoNameAndNoLanguagePreference_usesEnglishDefault() {
+        Applicant applicant = TestDataHelper.getApplicant();
+        applicant.setFirstName(null);
+        applicant.setLastName(null);
+        applicant.setLanguagePreference(null);
+
+        final CaseData caseData = CaseData.builder()
+            .applicant1(applicant)
+            .build();
+
+        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
+
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "applicant");
+        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            expectedTemplateVars,
+            ENGLISH
+        );
+    }
+
+    @Test
+    void draftApplicationWithApplicant1_whenNoNameAndWelshLanguagePreference_usesWelshDefault() {
+        Applicant applicant = TestDataHelper.getApplicant();
+        applicant.setFirstName(null);
+        applicant.setLastName(null);
+        applicant.setLanguagePreference(WELSH);
+
+        final CaseData caseData = CaseData.builder()
+            .applicant1(applicant)
+            .build();
+
+        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
+
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "ymgeisydd"); // TODO Welsh translation
+        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            expectedTemplateVars,
+            WELSH
+        );
+    }
+
+    @Test
+    void draftApplicationWithApplicant1_whenNoLastName_usesFirstName() {
+        Applicant applicant = TestDataHelper.getApplicant();
+        applicant.setLastName(null);
+        applicant.setLanguagePreference(WELSH);
+
+        final CaseData caseData = CaseData.builder()
+            .applicant1(applicant)
+            .build();
+
+        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
+
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME);
+        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            expectedTemplateVars,
+            WELSH
+        );
+    }
+
+    @Test
+    void draftApplicationWithApplicant1_whenNoFirstName_usesLastName() {
+        Applicant applicant = TestDataHelper.getApplicant();
+        applicant.setFirstName(null);
+
+        final CaseData caseData = CaseData.builder()
+            .applicant1(applicant)
+            .build();
+
+        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
+
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_LAST_NAME);
+        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            expectedTemplateVars,
+            ENGLISH
+        );
+    }
+
+    @Test
+    void draftApplication_whenApplicant2WithNoEmailAddress_sendsEmailToApplicant1Only() {
+        final Applicant applicant2 = Applicant.builder()
+            .firstName("Second")
+            .lastName("Applicant")
+            .emailAddress(null)
             .languagePreference(WELSH)
             .build();
 
-        Applicant applicant2 = Applicant.builder()
-            .firstName(TEST_FIRST_NAME)
-            .lastName(TEST_LAST_NAME)
-            .email("applicant2@test.com")
-            .languagePreference(WELSH)
+        final CaseData caseData = CaseData.builder()
+            .applicant1(TestDataHelper.getApplicant())
+            .applicant2(applicant2)
             .build();
-
-        CaseData caseData = caseData();
-        caseData.setApplicant1(applicant1);
-        caseData.setApplicant2(applicant2);
-
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName("");
-        Map<String, Object> templateVars = new HashMap<>();
-        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
-            + caseData.getApplicant1().getLastName());
-        templateVars.put(
-            APPLICANT_2_FULL_NAME,
-            caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
-        );
-        templateVars.put(HAS_SECOND_APPLICANT, YES);
-        templateVars.put(HAS_MULTIPLE_APPLICANT, YES);
 
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
+        Map<String, Object> expectedTemplateVars = new HashMap<>();
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
+        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
         verify(notificationService, times(1)).sendEmail(
-            "applicant1@test.com",
+            TEST_USER_EMAIL,
             MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
-            templateVars,
+            expectedTemplateVars,
+            ENGLISH
+        );
+    }
+
+    @Test
+    void draftApplication_whenApplicant2_sendsEmailToBothApplicants() {
+        final Applicant applicant2 = Applicant.builder()
+            .firstName("Second")
+            .lastName("Applicant")
+            .emailAddress(TEST_USER_EMAIL_2)
+            .languagePreference(WELSH)
+            .build();
+
+        final CaseData caseData = CaseData.builder()
+            .applicant1(TestDataHelper.getApplicant())
+            .applicant2(applicant2)
+            .build();
+
+        multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
+
+        Map<String, Object> applicant1ExpectedTemplateVars = new HashMap<>();
+        applicant1ExpectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
+        applicant1ExpectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
+        Map<String, Object> applicant2ExpectedTemplateVars = new HashMap<>();
+        applicant2ExpectedTemplateVars.put(APPLICANT_1_FULL_NAME, "Second Applicant");
+        applicant2ExpectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            applicant1ExpectedTemplateVars,
+            ENGLISH
+        );
+
+        verify(notificationService, times(1)).sendEmail(
+            TEST_USER_EMAIL_2,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            applicant2ExpectedTemplateVars,
             WELSH
         );
     }
