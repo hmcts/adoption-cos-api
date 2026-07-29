@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.idam.client.models.User;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,7 +70,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
 
         final Set<String> applicant1EmailsForCasesSubmittedToday = casesSubmittedToday.stream()
             .map(caseDetails -> (String) caseDetails.getData().get("applicant1Email"))
-            .filter(email -> email != null)
+            .filter(Objects::nonNull)
             .collect(Collectors.toSet());
 
         log.info(
