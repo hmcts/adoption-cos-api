@@ -3,12 +3,10 @@ package uk.gov.hmcts.reform.adoption.notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +17,7 @@ import java.util.stream.Stream;
 import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_MULTIPLE_APPLICANT;
 
 @Component
@@ -71,8 +70,9 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
             getLanguagePreference(applicant)
         ));
         // Simplified: emails are now only addressed to the applicant they are sent to.
-        // HAS_MULTIPLE_APPLICANT can be stripped out of the notify template when next reworked.
+        // TODO: Strip these out of the notify template:
         templateVars.put(HAS_MULTIPLE_APPLICANT, NO);
+        templateVars.put(APPLICANT_2_FULL_NAME, "");
 
         return templateVars;
     }
