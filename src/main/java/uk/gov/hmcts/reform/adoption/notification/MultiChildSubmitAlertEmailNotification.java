@@ -25,7 +25,7 @@ import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HA
 @RequiredArgsConstructor
 public class MultiChildSubmitAlertEmailNotification implements ApplicantNotification {
 
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
