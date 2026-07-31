@@ -28,7 +28,7 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.51.0'
   id 'cz.habarta.typescript-generator' version '3.2.1263'
   id 'hmcts.ccd.sdk' version '6.1.0'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1844'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.2139'
   id 'au.com.dius.pact' version '4.3.8'
 }
 
