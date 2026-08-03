@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,13 +17,8 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.idam.client.models.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -33,12 +26,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
-import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.STATE;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
 class AlertMultiChildApplicationToSubmitTaskTest {
+
+    private static final String SYSTEM_UPDATE_AUTH_TOKEN = "Bearer SystemUpdateAuthToken";
+    private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    private static final String APPLICANT_1_EMAIL = "applicant1Email";
 
     @InjectMocks
     private AlertMultiChildApplicationToSubmitTask alertMultiChildApplicationToSubmitTask;
@@ -53,40 +48,20 @@ class AlertMultiChildApplicationToSubmitTaskTest {
     private AuthTokenGenerator authTokenGenerator;
 
     @Mock
-    private ObjectMapper objectMapper;
-
-    @Mock
     private MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
 
     @Mock
     private CaseDetailsConverter caseDetailsConverter;
 
-    public static final String SYSTEM_UPDATE_AUTH_TOKEN = "Bearer SystemUpdateAuthToken";
-
-    public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
-
-
-    @Mock
-    private User user;
-
-    private static final BoolQueryBuilder query = boolQuery()
-        .must(matchQuery(STATE, Draft))
-        .must(existsQuery(CREATED_DATE))
-        .filter(rangeQuery(CREATED_DATE)
-                    .gte(LocalDate.now().minusDays(83))
-                    .lte(LocalDate.now().minusDays(83)));
-
-
     @BeforeEach
     void setUp() {
-        user = new User(SYSTEM_UPDATE_AUTH_TOKEN, UserDetails.builder().build());
+        User user = new User(SYSTEM_UPDATE_AUTH_TOKEN, UserDetails.builder().build());
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(user);
         when(authTokenGenerator.generate()).thenReturn(SERVICE_AUTHORIZATION);
     }
 
     @Test
-    void run() {
-        final var data = caseData();
+    void shouldSendReminderForDraftCasesWithSameApplicantEmail() {
         final CaseDetails caseDetails1 = mock(CaseDetails.class);
         final CaseDetails caseDetails2 = mock(CaseDetails.class);
         final CaseDetails caseDetails3 = mock(CaseDetails.class);
@@ -103,8 +78,7 @@ class AlertMultiChildApplicationToSubmitTaskTest {
 
         alertMultiChildApplicationToSubmitTask.run();
         verify(multiChildSubmitAlertEmailNotification, times(1)).sendToApplicants(
-                                                      any(CaseData.class),
-                                                      any(Long.class));
-
+            any(CaseData.class),
+            any(Long.class));
     }
 }

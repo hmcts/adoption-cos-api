@@ -90,7 +90,7 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
             templateVars.put(HAS_SECOND_APPLICANT, YES);
         } else {
             templateVars.put(HAS_SECOND_APPLICANT, NO);
-            templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+            templateVars.put(APPLICANT_2_FULL_NAME, "");
         }
         if (isApplicantInfoExists(caseData.getApplicant1()) && isApplicantInfoExists(caseData.getApplicant2())) {
             templateVars.put(HAS_MULTIPLE_APPLICANT, YES);

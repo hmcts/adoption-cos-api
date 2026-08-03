@@ -1,12 +1,8 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -35,34 +31,16 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService
 @RequiredArgsConstructor
 public class AlertMultiChildApplicationToSubmitTask implements Runnable {
 
+    private final CcdSearchService ccdSearchService;
 
-    @Autowired
-    private CcdSearchService ccdSearchService;
+    private final IdamService idamService;
 
-    @Autowired
-    private IdamService idamService;
+    private final AuthTokenGenerator authTokenGenerator;
 
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
+    private final MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
 
-    @Autowired
-    private MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
+    private final CaseDetailsConverter caseDetailsConverter;
 
-    @Autowired
-    private CaseDetailsConverter caseDetailsConverter;
-
-
-    /**
-     * When an objectclear implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     *
-     * <p>The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
     @Override
     public void run() {
 
@@ -85,7 +63,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
             log.info("AlertMultiChildApplicationToSubmitTask case details are present: {}", caseDetails.getId());
             String applicantEmail = (String) caseDetails.getData().get("applicant1Email");
             List<CaseDetails> caseList = emailCounts.get(applicantEmail);
-            if (!CollectionUtils.sizeIsEmpty(caseList)) {
+            if (caseList != null && !caseList.isEmpty()) {
                 log.info("adding case to the map {}", caseDetails.getId());
                 caseList.add(caseDetails);
                 log.info("count of the case list {}", caseList.size());
@@ -104,7 +82,7 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
         log.info("case list size {}",emailCounts.size());
         emailCounts.forEach((id, caseLists) -> {
             log.info("case list for user X count {}", caseLists.size());
-            if (caseLists.size() > NumberUtils.INTEGER_ONE) {
+            if (caseLists.size() > 1) {
                 caseLists.forEach(caseDe -> {
                     log.info("state of the case {} for case id {}",caseDe.getId(),caseDe.getState());
                     if (State.Draft.toString().equals(caseDe.getState())) {
@@ -120,13 +98,10 @@ public class AlertMultiChildApplicationToSubmitTask implements Runnable {
         return new ArrayList<>();
     }
 
-    private void sendReminderToApplicantsIfEligible(CaseDetails caseDetails) {
-
-        uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
+    private void sendReminderToApplicantsIfEligible(final CaseDetails caseDetails) {
+        final uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
             caseDetailsConverter.convertToCaseDetailsFromReformModel(caseDetails);
 
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData.getData(), caseDetails.getId());
     }
-
-
 }
