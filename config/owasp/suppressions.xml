@@ -9,7 +9,6 @@
       elasticsearch-plugin-analysis-api-9.4.3.jar, elasticsearch-plugin-api-9.4.3.jar, elasticsearch-simdvec-9.4.3.jar,
       elasticsearch-user-agent-api-9.4.3.jar, elasticsearch-x-content-9.4.3.jar
     </notes>
-    <packageUrl regex="true">^pkg:maven/org\.elasticsearch/elasticsearch(?:\-.*)?@.*$</packageUrl>
     <cve>CVE-2026-63144</cve>
     <cve>CVE-2026-63263</cve>
   </suppress>
