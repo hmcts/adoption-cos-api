@@ -14,11 +14,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_MULTIPLE_APPLICANT;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_FULL_NAME;
 
 @Component
 @Slf4j
@@ -64,16 +61,11 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
     private Map<String, Object> generateTemplateVars(Applicant applicant) {
         Map<String, Object> templateVars = new HashMap<>();
 
-        templateVars.put(APPLICANT_1_FULL_NAME, generateApplicantFullName(
+        templateVars.put(APPLICANT_FULL_NAME, generateApplicantFullName(
             applicant.getFirstName(),
             applicant.getLastName(),
             getLanguagePreference(applicant)
         ));
-        // Simplified: emails are now only addressed to the applicant they are sent to.
-        // TODO: Strip these out of the notify template:
-        templateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        templateVars.put(APPLICANT_2_FULL_NAME, "");
-
         return templateVars;
     }
 

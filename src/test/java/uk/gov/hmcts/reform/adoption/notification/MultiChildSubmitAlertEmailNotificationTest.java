@@ -16,11 +16,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.WELSH;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_MULTIPLE_APPLICANT;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_FULL_NAME;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_FIRST_NAME;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_LAST_NAME;
 import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
@@ -47,9 +44,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
-        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        expectedTemplateVars.put(APPLICANT_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
@@ -71,9 +66,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
-        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        expectedTemplateVars.put(APPLICANT_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
@@ -96,9 +89,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
-        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        expectedTemplateVars.put(APPLICANT_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
@@ -122,9 +113,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "applicant");
-        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        expectedTemplateVars.put(APPLICANT_FULL_NAME, "applicant");
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
@@ -148,9 +137,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "ymgeisydd");
-        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        expectedTemplateVars.put(APPLICANT_FULL_NAME, "ymgeisydd");
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
@@ -173,9 +160,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME);
-        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        expectedTemplateVars.put(APPLICANT_FULL_NAME, TEST_FIRST_NAME);
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
@@ -197,9 +182,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_LAST_NAME);
-        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        expectedTemplateVars.put(APPLICANT_FULL_NAME, TEST_LAST_NAME);
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
@@ -226,9 +209,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
-        expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        expectedTemplateVars.put(APPLICANT_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
@@ -255,14 +236,10 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> applicant1ExpectedTemplateVars = new HashMap<>();
-        applicant1ExpectedTemplateVars.put(APPLICANT_1_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
-        applicant1ExpectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        applicant1ExpectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        applicant1ExpectedTemplateVars.put(APPLICANT_FULL_NAME, TEST_FIRST_NAME + " " + TEST_LAST_NAME);
 
         Map<String, Object> applicant2ExpectedTemplateVars = new HashMap<>();
-        applicant2ExpectedTemplateVars.put(APPLICANT_1_FULL_NAME, "Second Applicant");
-        applicant2ExpectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        applicant2ExpectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
+        applicant2ExpectedTemplateVars.put(APPLICANT_FULL_NAME, "Second Applicant");
 
         verify(notificationService, times(1)).sendEmail(
             TEST_USER_EMAIL,
