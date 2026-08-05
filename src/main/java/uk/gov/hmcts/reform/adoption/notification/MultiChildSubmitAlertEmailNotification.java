@@ -78,7 +78,6 @@ public class MultiChildSubmitAlertEmailNotification implements ApplicantNotifica
     }
 
     private String generateApplicantFullName(String firstName, String lastName, LanguagePreference languagePreference) {
-        //TODO Welsh translation:
         String defaultWording = languagePreference == LanguagePreference.WELSH ? "ymgeisydd" : "applicant";
         String fullName = Stream.of(firstName, lastName)
             .filter(StringUtils::isNotBlank)

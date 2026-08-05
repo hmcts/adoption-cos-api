@@ -148,7 +148,7 @@ class MultiChildSubmitAlertEmailNotificationTest {
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData, 1234567890123456L);
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
-        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "ymgeisydd"); // TODO Welsh translation
+        expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "ymgeisydd");
         expectedTemplateVars.put(HAS_MULTIPLE_APPLICANT, NO);
         expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
 
