@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
 
+  <!-- Fix in ADOP-2913 elasticsearch -->
+  <suppress>
+    <notes>elasticsearch-core-9.4.3.jar, elasticsearch-entitlement-9.4.3.jar, elasticsearch-tdigest-9.4.3.jar,
+      elasticsearch-exponential-histogram-9.4.3.jar, elasticsearch-geo-9.4.3.jar, elasticsearch-grok-9.4.3.jar,
+      elasticsearch-logging-9.4.3.jar, elasticsearch-lz4-9.4.3.jar, elasticsearch-native-9.4.3.jar,
+      elasticsearch-plugin-analysis-api-9.4.3.jar, elasticsearch-plugin-api-9.4.3.jar, elasticsearch-simdvec-9.4.3.jar,
+      elasticsearch-user-agent-api-9.4.3.jar, elasticsearch-x-content-9.4.3.jar
+    </notes>
+    <packageUrl regex="true">^pkg:maven/org\.elasticsearch/elasticsearch(?:\-.*)?@.*$</packageUrl>
+    <cve>CVE-2026-63144</cve>
+    <cve>CVE-2026-63263</cve>
+  </suppress>
+
   <!-- Fix in ADOP-2897 httpcore -->
   <suppress>
     <notes><![CDATA[
