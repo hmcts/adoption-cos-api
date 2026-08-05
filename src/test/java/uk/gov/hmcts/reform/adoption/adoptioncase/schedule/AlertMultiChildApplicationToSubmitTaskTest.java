@@ -30,6 +30,8 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL;
+import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAIL_2;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,8 +40,6 @@ class AlertMultiChildApplicationToSubmitTaskTest {
     private static final String SYSTEM_UPDATE_AUTH_TOKEN = "Bearer SystemUpdateAuthToken";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     private static final String APPLICANT_1_EMAIL = "applicant1Email";
-    private static final String TEST_EMAIL = "test@example.com";
-    private static final String OTHER_EMAIL = "other@example.com";
 
     @InjectMocks
     private AlertMultiChildApplicationToSubmitTask alertMultiChildApplicationToSubmitTask;
@@ -68,8 +68,8 @@ class AlertMultiChildApplicationToSubmitTaskTest {
 
     @Test
     void shouldSendOneReminderWhenApplicantHasDraftAndSubmittedCase() {
-        final CaseDetails draftCase = caseDetails(1L, TEST_EMAIL, Draft);
-        final CaseDetails submittedCase = caseDetails(2L, TEST_EMAIL, Submitted);
+        final CaseDetails draftCase = caseDetails(1L, TEST_USER_EMAIL, Draft);
+        final CaseDetails submittedCase = caseDetails(2L, TEST_USER_EMAIL, Submitted);
 
         mockCasesByState(
             List.of(draftCase),
@@ -89,8 +89,8 @@ class AlertMultiChildApplicationToSubmitTaskTest {
 
     @Test
     void shouldSendOneReminderWhenApplicantHasDraftAndLaSubmittedCase() {
-        final CaseDetails draftCase = caseDetails(1L, TEST_EMAIL, Draft);
-        final CaseDetails laSubmittedCase = caseDetails(2L, TEST_EMAIL, LaSubmitted);
+        final CaseDetails draftCase = caseDetails(1L, TEST_USER_EMAIL, Draft);
+        final CaseDetails laSubmittedCase = caseDetails(2L, TEST_USER_EMAIL, LaSubmitted);
 
         mockCasesByState(
             List.of(draftCase),
@@ -110,7 +110,7 @@ class AlertMultiChildApplicationToSubmitTaskTest {
 
     @Test
     void shouldNotSendReminderWhenApplicantOnlyHasOneDraftCase() {
-        final CaseDetails draftCase = caseDetails(1L, TEST_EMAIL, Draft);
+        final CaseDetails draftCase = caseDetails(1L, TEST_USER_EMAIL, Draft);
 
         mockCasesByState(
             List.of(draftCase),
@@ -129,8 +129,8 @@ class AlertMultiChildApplicationToSubmitTaskTest {
 
     @Test
     void shouldNotSendReminderWhenApplicantHasMultipleDraftCasesButNoSubmittedOrLaSubmittedCase() {
-        final CaseDetails draftCase1 = caseDetails(1L, TEST_EMAIL, Draft);
-        final CaseDetails draftCase2 = caseDetails(2L, TEST_EMAIL, Draft);
+        final CaseDetails draftCase1 = caseDetails(1L, TEST_USER_EMAIL, Draft);
+        final CaseDetails draftCase2 = caseDetails(2L, TEST_USER_EMAIL, Draft);
 
         mockCasesByState(
             List.of(draftCase1, draftCase2),
@@ -149,8 +149,8 @@ class AlertMultiChildApplicationToSubmitTaskTest {
 
     @Test
     void shouldNotSendReminderWhenDraftAndSubmittedCasesHaveDifferentApplicantEmails() {
-        final CaseDetails draftCase = caseDetails(1L, TEST_EMAIL, Draft);
-        final CaseDetails submittedCase = caseDetails(2L, OTHER_EMAIL, Submitted);
+        final CaseDetails draftCase = caseDetails(1L, TEST_USER_EMAIL, Draft);
+        final CaseDetails submittedCase = caseDetails(2L, TEST_USER_EMAIL_2, Submitted);
 
         mockCasesByState(
             List.of(draftCase),
@@ -169,10 +169,10 @@ class AlertMultiChildApplicationToSubmitTaskTest {
 
     @Test
     void shouldOnlySendOneReminderWhenApplicantHasMultipleQualifyingCases() {
-        final CaseDetails draftCase1 = caseDetails(1L, TEST_EMAIL, Draft);
-        final CaseDetails draftCase2 = caseDetails(2L, TEST_EMAIL, Draft);
-        final CaseDetails submittedCase = caseDetails(3L, TEST_EMAIL, Submitted);
-        final CaseDetails laSubmittedCase = caseDetails(4L, TEST_EMAIL, LaSubmitted);
+        final CaseDetails draftCase1 = caseDetails(1L, TEST_USER_EMAIL, Draft);
+        final CaseDetails draftCase2 = caseDetails(2L, TEST_USER_EMAIL, Draft);
+        final CaseDetails submittedCase = caseDetails(3L, TEST_USER_EMAIL, Submitted);
+        final CaseDetails laSubmittedCase = caseDetails(4L, TEST_USER_EMAIL, LaSubmitted);
 
         mockCasesByState(
             List.of(draftCase1, draftCase2),
