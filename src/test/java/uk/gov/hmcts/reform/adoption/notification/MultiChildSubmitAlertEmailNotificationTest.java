@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.adoption.testutil.TestDataHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.time.Month.APRIL;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
