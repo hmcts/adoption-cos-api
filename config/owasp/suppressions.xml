@@ -191,6 +191,7 @@
     <cve>CVE-2026-50229</cve>
     <cve>CVE-2026-59083</cve>
     <cve>CVE-2026-59084</cve>
+    <cve>CVE-2026-66299</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: commons-lang3-3.17.0.jar]]></notes>
