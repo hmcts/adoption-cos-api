@@ -1,12 +1,8 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.schedule;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
@@ -19,114 +15,100 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.idam.client.models.User;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.ZoneId;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.LaSubmitted;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Submitted;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.CREATED_DATE;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.service.CcdSearchService.SUBMITTED_DATE;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class AlertMultiChildApplicationToSubmitTask implements Runnable {
 
+    private final CcdSearchService ccdSearchService;
 
-    @Autowired
-    private CcdSearchService ccdSearchService;
+    private final IdamService idamService;
 
-    @Autowired
-    private IdamService idamService;
+    private final AuthTokenGenerator authTokenGenerator;
 
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
+    private final MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
 
-    @Autowired
-    private MultiChildSubmitAlertEmailNotification multiChildSubmitAlertEmailNotification;
+    private final CaseDetailsConverter caseDetailsConverter;
 
-    @Autowired
-    private CaseDetailsConverter caseDetailsConverter;
-
-
-    /**
-     * When an objectclear implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     *
-     * <p>The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
     @Override
     public void run() {
-
         final User user = idamService.retrieveSystemUpdateUserDetails();
-        log.info("Idam user name: " + user.getUserDetails().getEmail());
         final String serviceAuthorization = authTokenGenerator.generate();
+        final LocalDate today = LocalDate.now(ZoneId.of("Europe/London"));
 
-        final BoolQueryBuilder query = boolQuery()
-            .must(existsQuery(CREATED_DATE))
-            .filter(rangeQuery(CREATED_DATE)
-                        .gte(LocalDate.now())
-                        .lte(LocalDate.now()));
-        log.info("AlertMultiChildApplicationToSubmitTask Scheduled task is executed");
+        final BoolQueryBuilder createdTodayQuery = dateEqualsQuery(CREATED_DATE, today);
+        final BoolQueryBuilder submittedTodayQuery = dateEqualsQuery(SUBMITTED_DATE, today);
 
-        final List<CaseDetails> casesInDraftNeedingReminder =
-            ccdSearchService.searchForAllCasesWithQuery(Draft, query, user, serviceAuthorization);
-        Map<String, List<CaseDetails>> emailCounts = new HashMap<>();
+        log.info("AlertMultiChildApplicationToSubmitTask scheduled task is executed");
 
-        for (final CaseDetails caseDetails : casesInDraftNeedingReminder) {
-            log.info("AlertMultiChildApplicationToSubmitTask case details are present: {}", caseDetails.getId());
-            String applicantEmail = (String) caseDetails.getData().get("applicant1Email");
-            List<CaseDetails> caseList = emailCounts.get(applicantEmail);
-            if (!CollectionUtils.sizeIsEmpty(caseList)) {
-                log.info("adding case to the map {}", caseDetails.getId());
-                caseList.add(caseDetails);
-                log.info("count of the case list {}", caseList.size());
-                emailCounts.put(applicantEmail, caseList);
-                log.info("map count {}", emailCounts.size());
-            } else {
-                log.info("adding first case to the map for this user, case id {}", caseDetails.getId());
-                List<CaseDetails> caseListForUser = getNewCaseList();
-                caseListForUser.add(caseDetails);
-                log.info("count of the case list {}", caseListForUser.size());
-                emailCounts.put(applicantEmail, caseListForUser);
-                log.info("map count {}", emailCounts.size());
-            }
+        final List<CaseDetails> draftCasesCreatedToday =
+            searchCasesByStates(List.of(Draft), createdTodayQuery, user, serviceAuthorization);
 
+        final List<CaseDetails> casesSubmittedToday =
+            searchCasesByStates(List.of(Submitted, LaSubmitted), submittedTodayQuery, user, serviceAuthorization);
+
+        if (draftCasesCreatedToday.isEmpty() || casesSubmittedToday.isEmpty()) {
+            log.info("No cases met critera for alert ({} draft cases created today, {} cases submitted today)",
+                     draftCasesCreatedToday.size(), casesSubmittedToday.size());
+            return;
         }
-        log.info("case list size {}",emailCounts.size());
-        emailCounts.forEach((id, caseLists) -> {
-            log.info("case list for user X count {}", caseLists.size());
-            if (caseLists.size() > NumberUtils.INTEGER_ONE) {
-                caseLists.forEach(caseDe -> {
-                    log.info("state of the case {} for case id {}",caseDe.getId(),caseDe.getState());
-                    if (State.Draft.toString().equals(caseDe.getState())) {
-                        sendReminderToApplicantsIfEligible(caseDe);
-                        log.info("Attempted to send reminder for case id {}", caseDe.getId());
-                    }
-                });
+
+        final Set<String> applicant1EmailsForCasesSubmittedToday = casesSubmittedToday.stream()
+            .map(caseDetails -> (String) caseDetails.getData().get("applicant1Email"))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+
+        log.info(
+            "Looking for any of {} applicant1Emails (from cases Submitted today) in {} Draft cases",
+            applicant1EmailsForCasesSubmittedToday.size(), draftCasesCreatedToday.size()
+        );
+
+        draftCasesCreatedToday.forEach(caseDetails -> {
+            String applicant1Email = caseDetails.getData().get("applicant1Email").toString();
+            if (applicant1EmailsForCasesSubmittedToday.contains(applicant1Email)) {
+                sendReminderToApplicantsIfEligible(caseDetails);
+                log.info("Attempted to send reminder for case id {}", caseDetails.getId());
+                applicant1EmailsForCasesSubmittedToday.remove(applicant1Email);
             }
         });
     }
 
-    private List<CaseDetails> getNewCaseList() {
-        return new ArrayList<>();
-    }
-
-    private void sendReminderToApplicantsIfEligible(CaseDetails caseDetails) {
-
-        uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
+    private void sendReminderToApplicantsIfEligible(final CaseDetails caseDetails) {
+        final uk.gov.hmcts.ccd.sdk.api.CaseDetails<CaseData, State> caseData =
             caseDetailsConverter.convertToCaseDetailsFromReformModel(caseDetails);
 
         multiChildSubmitAlertEmailNotification.sendToApplicants(caseData.getData(), caseDetails.getId());
     }
 
+    private BoolQueryBuilder dateEqualsQuery(String fieldName, LocalDate date) {
+        return boolQuery()
+            .must(existsQuery(fieldName))
+            .filter(rangeQuery(fieldName).gte(date).lte(date));
+    }
 
+    private List<CaseDetails> searchCasesByStates(
+        List<State> states,
+        BoolQueryBuilder query,
+        User user,
+        String serviceAuthorization
+    ) {
+        return states.stream()
+            .flatMap(state -> ccdSearchService.searchForAllCasesWithQuery(state, query, user, serviceAuthorization).stream())
+            .toList();
+    }
 }

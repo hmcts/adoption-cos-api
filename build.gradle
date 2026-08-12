@@ -1,50 +1,28 @@
-buildscript {
-  repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-      url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
-      content {
-        excludeGroup "com.github.ben-manes.versions"
-      }
-    }
-
-  }
-  dependencies {
-    classpath "cz.habarta.typescript-generator:typescript-generator-gradle-plugin:3.2.1263"
-  }
-}
-
 plugins {
   id 'application'
-  id 'checkstyle'
-  id 'idea'
-  id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.owasp.dependencycheck' version '9.1.0'
-  id 'org.sonarqube' version '5.0.0.4638'
   id 'org.springframework.boot' version '3.4.11'
+  id 'uk.gov.hmcts.java' version '0.12.70'
+  id 'org.sonarqube' version '5.0.0.4638'
   id 'com.github.ben-manes.versions' version '0.51.0'
   id 'cz.habarta.typescript-generator' version '3.2.1263'
   id 'hmcts.ccd.sdk' version '6.1.0'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1844'
-  id 'au.com.dius.pact' version '4.3.8'
+  id 'au.com.dius.pact' version '4.7.1'
 }
 
 group = 'uk.gov.hmcts'
 version = '0.0.1'
 
-ccd {
-  configDir = file('ccd-definitions/definitions')
+application {
+  mainClass = 'uk.gov.hmcts.reform.adoption.Application'
 }
 
-ext['elasticsearch.version'] = '9.2.4'
-ext['snakeyaml.version'] = '2.0'
-ext['jackson.version'] = '2.19.2'
-
-application {
-  mainClass.set('uk.gov.hmcts.reform.adoption.Application')
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
 }
 
 sourceSets {
@@ -70,59 +48,42 @@ sourceSets {
       runtimeClasspath += main.output
     }
   }
-
-}
-
-java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
-  }
-}
-
-idea {
-  module {
-    testSources.from file('src/integrationTest/java')
-    testSources.from file('src/functionalTest/java')
-  }
 }
 
 configurations {
   functionalTestImplementation.extendsFrom testImplementation
-  functionalTestRuntime.extendsFrom testRuntime
+  functionalTestRuntimeOnly.extendsFrom testRuntimeOnly
+
   integrationTestImplementation.extendsFrom testImplementation
-  integrationTestRuntime.extendsFrom testRuntime
-  contractTestCompile.extendsFrom testCompile
-  contractTestRuntime.extendsFrom testRuntime
+  integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+
   contractTestImplementation.extendsFrom testImplementation
+  contractTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 tasks.withType(JavaCompile).configureEach {
-  options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+  options.compilerArgs << '-Xlint:unchecked' << '-Werror'
 }
 
 tasks.withType(JavaExec).configureEach {
   javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
   useJUnitPlatform()
+
+  failFast = true
 
   testLogging {
     exceptionFormat = 'full'
   }
 }
 
-test {
-  failFast = true
-  useJUnitPlatform()
-}
-
 tasks.register('integration', Test) {
-  description = "Runs integration tests"
-  group = "Verification"
+  description = 'Runs integration tests'
+  group = 'Verification'
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
-  failFast = true
 }
 
 tasks.register('functionalTest', Test) {
@@ -133,13 +94,16 @@ tasks.register('functionalTest', Test) {
   failFast = true
 }
 
-task yarnInstall(type: Exec) {
+tasks.register('yarnInstall', Exec) {
   workingDir '.'
   commandLine 'yarn', 'install'
 }
 
-task smoke(type: Test,dependsOn: ':yarnInstall') {
-  description = "Runs Smoke Tests"
+tasks.register('smoke', Test) {
+  dependsOn tasks.named('yarnInstall')
+  description = 'Runs smoke tests'
+  group = 'Verification'
+
   doLast {
     exec {
       commandLine 'yarn', 'test:smoke'
@@ -147,8 +111,11 @@ task smoke(type: Test,dependsOn: ':yarnInstall') {
   }
 }
 
-task functional(type: Test,dependsOn: ':yarnInstall') {
-  description = "Runs functional tests"
+tasks.register('functional', Test) {
+  dependsOn tasks.named('yarnInstall')
+  description = 'Runs functional tests'
+  group = 'Verification'
+
   doLast {
     exec {
       commandLine 'yarn', 'test:functional'
@@ -156,39 +123,24 @@ task functional(type: Test,dependsOn: ':yarnInstall') {
   }
 }
 
-task highLevelDataSetup(type: JavaExec) {
-  mainClass.set("uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp")
+tasks.register('highLevelDataSetup', JavaExec) {
+  mainClass = 'uk.gov.hmcts.reform.adoption.common.ccd.HighLevelDataSetupApp'
   classpath += sourceSets.main.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
-task contract(type: Test, description: 'Runs the pact contract tests.', group: 'Verification') {
-  description = "Runs the consumer Pact tests"
-  useJUnitPlatform()
+tasks.register('contract', Test) {
+  description = 'Runs the consumer Pact tests'
+  group = 'Verification'
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
+  systemProperty 'pact.rootDir', 'pacts'
 }
 
-task fortifyScan(type: JavaExec)  {
-  mainClass = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+tasks.register('fortifyScan', JavaExec) {
+  mainClass = 'uk.gov.hmcts.fortifyclient.FortifyClientMainApp'
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
-}
-
-checkstyle {
-  maxWarnings = 0
-  toolVersion = '10.14.0'
-  getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
-}
-
-pmd {
-  toolVersion = "6.18.0"
-  sourceSets = [sourceSets.main]
-  reportsDir = file("$project.buildDir/reports/pmd")
-  // https://github.com/pmd/pmd/issues/876
-  consoleOutput = true
-  ruleSets = []
-  ruleSetFiles = files("${rootDir}/config/pmd/ruleset.xml")
 }
 
 jacocoTestReport {
@@ -196,12 +148,12 @@ jacocoTestReport {
   reports {
     xml.getRequired().set(true)
     csv.getRequired().set(false)
-    xml.outputLocation = file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml"))
   }
 }
 
 jacoco {
-  toolVersion = "0.8.13"
+  toolVersion = '0.8.13'
 }
 
 jacocoTestCoverageVerification {
@@ -216,22 +168,15 @@ jacocoTestCoverageVerification {
   }
 }
 
-// https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
-  // range of 0-10 fails the build, anything greater and it doesn't fail the build
-  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
   suppressionFile = 'config/owasp/suppressions.xml'
-  outputDirectory = 'build/reports/'
 
-  analyzers {
-    // Disable scanning of .NET related binaries
-    assemblyEnabled = false
-  }
   analyzers.nodeAudit.yarnEnabled = false
 }
 
-project.tasks['sonarqube'].dependsOn jacocoTestReport
+tasks.named('sonarqube') {
+  dependsOn jacocoTestReport
+}
 
 def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/common/ccd/**',
@@ -264,21 +209,18 @@ def sonarExclusions = [
   '**/uk/gov/hmcts/reform/adoption/notification/NotificationDispatcher.java',
   '**/uk/gov/hmcts/reform/adoption/common/service/task/SetStateAfterSubmission.java',
   '**/uk/gov/hmcts/reform/adoption/exception/**',
-  '**/uk/gov/hmcts/reform/adoption/document/BulkPrintService.java',
   '**/uk/gov/hmcts/reform/adoption/adoptioncase/validation/ApplicationValidation.java',
   '**/uk/gov/hmcts/reform/adoption/config/SwaggerConfiguration.java'
-
 ]
 
 sonarqube {
   properties {
-    property "sonar.projectName", "Adoption :: adoption-cos-api"
-    property "sonar.projectKey", "uk.gov.hmcts.reform:adoption-cos-api"
+    property 'sonar.projectName', 'Adoption :: adoption-cos-api'
+    property 'sonar.projectKey', 'uk.gov.hmcts.reform:adoption-cos-api'
     property "sonar.coverage.jacoco.xmlReportPaths", "${projectDir}/build/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.exclusions", sonarExclusions.join(', ')
   }
 }
-
 
 // before committing a change, make sure task still works
 dependencyUpdates {
@@ -297,18 +239,9 @@ dependencyManagement {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:2024.0.0"
   }
   dependencies {
-    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
-    //CVE-2023-2976
-    dependency group: 'com.google.guava', name: 'guava', version: '32.0.0-jre'
-    //CVE-2025-48976
+    // CVE-2025-48976
     dependencySet(group: 'commons-fileupload', version: '1.6.0') {
       entry 'commons-fileupload'
-    }
-    //CVE-2023-5072
-    dependency group: 'org.json', name: 'json', version: '20240303'
-    //CVE-2022-1471
-    dependencySet(group: 'org.yaml', version: '2.0') {
-      entry 'snakeyaml'
     }
   }
 }
@@ -316,131 +249,56 @@ dependencyManagement {
 repositories {
   mavenLocal()
   mavenCentral()
-  maven { url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1' }
-  // Some Cftlib services still depend on jcenter
-  jcenter()
+  maven {url = 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1' }
 }
 
 def versions = [
-  jackson           : '2.19.2',
-  junit             : '5.10.2',
-  junitPlatform     : '1.10.2',
   lombok            : '1.18.38',
-  reformsJavaLogging: '5.1.7',
-  springBoot        : springBoot.class.package.implementationVersion,
-  s2sClient         : '4.0.3',
-  pact              : '4.1.7',
-  serenity          : '4.1.6',
-  ccdCaseDocumentAmClient      : '1.7.3'
-]
-
-ext.libraries = [
-  junit5: [
-    "org.junit.jupiter:junit-jupiter-api:${versions.junit}",
-    "org.junit.jupiter:junit-jupiter-engine:${versions.junit}",
-    "org.junit.jupiter:junit-jupiter-params:${versions.junit}",
-    "org.junit.platform:junit-platform-commons:${versions.junitPlatform}",
-    "org.junit.platform:junit-platform-engine:${versions.junitPlatform}"
-  ]
+  s2sClient         : '5.3.3',
 ]
 
 dependencies {
-// uncomment for local version
-// implementation group: 'com.github.hmcts', name: 'ccd-config-generator', version: 'DEV-SNAPSHOT'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.25.4'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.25.4'
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.18'
-  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.5.18'
-  implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.springframework.retry:spring-retry'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.10.9'
-  implementation(group: 'com.github.hmcts', name: 'befta-fw', version: '9.2.4') {
-    exclude group: 'org.apache.commons', module: 'commons-compress'
-    exclude group: 'com.google.guava', module: 'guava'
-    exclude group: 'org.apache.poi', module: 'poi-ooxml'
-    exclude group: 'org.apache.poi', module: 'poi'
-    exclude group: 'com.launchdarkly', module: 'launchdarkly-java-server-sdk'
-  }
+  implementation 'com.github.hmcts:ccd-case-document-am-client:1.59.2'
   implementation 'com.github.hmcts:core-case-data-store-client:4.9.2'
-  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.5'
+  implementation 'com.github.hmcts:idam-java-client:3.0.5'
+  implementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
   implementation 'com.github.hmcts.java-logging:logging:8.0.0'
 
-  implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.3.3'
-  implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '1.59.2'
-
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.1.54'
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
-  implementation group: 'org.springframework.retry', name: 'spring-retry'
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '4.3.0'
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
-
-  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '9.2.4'
-  implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.0.1-RELEASE'
-  implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.5.0'
-  implementation group: 'commons-validator', name: 'commons-validator', version: '1.10.1'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
-
-// Addtional libs
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.15'
-  implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.0.1'
-  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
-  implementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
-  implementation group: 'org.apache.poi', name: 'poi', version: '5.4.1'
-  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.4.1'
-  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.4.1'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.1.54'
-  implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-
-  testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
-  testImplementation libraries.junit5
-  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
-    exclude group: 'junit', module: 'junit'
-    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    exclude(module: 'commons-logging')
-    exclude(module: 'android-json')
+  implementation('com.github.hmcts:befta-fw:9.2.4') {
+    exclude group: 'com.google.guava', module: 'guava'
+    exclude group: 'com.launchdarkly', module: 'launchdarkly-java-server-sdk'
+    exclude group: 'org.apache.commons', module: 'commons-compress'
+    exclude group: 'org.apache.poi', module: 'poi'
+    exclude group: 'org.apache.poi', module: 'poi-ooxml'
   }
-  testImplementation group: 'io.rest-assured', name: 'rest-assured'
-  testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
-  testImplementation group: 'com.jayway.awaitility', name: 'awaitility', version: '1.7.0'
-  testImplementation group: 'com.github.stefanbirkner', name: 'system-lambda', version: '1.2.1'
-  testImplementation group: 'io.github.openfeign', name: 'feign-jackson', version: '11.7'
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity)
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity)
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity)
-  testImplementation (group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity)
 
-  integrationTestImplementation sourceSets.main.runtimeClasspath
-  integrationTestImplementation sourceSets.test.runtimeClasspath
+  implementation 'com.launchdarkly:launchdarkly-java-server-sdk:5.10.9'
+  implementation 'com.sendgrid:sendgrid-java:4.0.1'
+  implementation 'commons-validator:commons-validator:1.10.1'
+  implementation 'org.elasticsearch:elasticsearch:9.5.0'
+  implementation 'uk.gov.service.notify:notifications-java-client:5.0.1-RELEASE'
 
-  functionalTestImplementation sourceSets.main.runtimeClasspath
-  functionalTestImplementation sourceSets.test.runtimeClasspath
-  functionalTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.2.2'
-  functionalTestImplementation group: 'com.github.hmcts', name: 'document-management-client', version: '7.0.1'
-  functionalTestImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.s2sClient
-  functionalTestImplementation group: 'io.rest-assured', name: 'rest-assured'
-  functionalTestImplementation group: 'net.javacrumbs.json-unit', name: 'json-unit-assertj', version: '3.2.7'
+  implementation "org.projectlombok:lombok:${versions.lombok}"
+  annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
-  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
-  contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junitJupiter
-  contractTestImplementation sourceSets.main.runtimeClasspath
-  contractTestImplementation sourceSets.test.runtimeClasspath
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'io.rest-assured:rest-assured'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
 
-  contractTestRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junitJupiter
-  contractTestRuntime "org.junit.platform:junit-platform-commons:1.8.1"
-  contractTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '2.0')
+  functionalTestImplementation 'com.github.hmcts:document-management-client:7.0.1'
+  functionalTestImplementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
+  functionalTestImplementation 'io.rest-assured:rest-assured'
+  functionalTestImplementation 'net.javacrumbs.json-unit:json-unit-assertj:3.2.7'
+  functionalTestImplementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+  contractTestImplementation 'au.com.dius.pact.consumer:junit5:4.7.1'
+  contractTestImplementation 'org.apache.httpcomponents:fluent-hc:4.5.14'
 }
-
-mainClassName = 'uk.gov.hmcts.reform.adoption.Application'
 
 ext.getVaultSecret = { String secretName ->
   new ByteArrayOutputStream().withStream { os ->
@@ -452,26 +310,38 @@ ext.getVaultSecret = { String secretName ->
   }
 }
 
-bootRun {
-  doFirst() {
-    if (System.getenv("IDAM_API_BASEURL") == null) {
-      println("Loading secrets from vault")
+def loadAatSecrets = { task ->
+  task.systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
+  task.systemProperty 'UK_GOV_NOTIFY_API_KEY', getVaultSecret('uk-gov-notify-api-key')
+  task.systemProperty 'S2S_SECRET', getVaultSecret('s2s-secret-cos-api')
+  task.systemProperty 'IDAM_SYSTEM_UPDATE_USERNAME', getVaultSecret('idam-system-user-name')
+  task.systemProperty 'IDAM_SYSTEM_UPDATE_PASSWORD', getVaultSecret('idam-system-user-password')
+  task.systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
+  task.systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
+  task.systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
+  task.systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
+  task.systemProperty 'SEND_GRID_API_KEY', getVaultSecret('send-grid-api-key')
+  task.systemProperty 'SEND_GRID_NOTIFY_FROM_EMAIL', getVaultSecret('sendgrid-notify-from-email')
+}
 
-      systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
-      systemProperty 'UK_GOV_NOTIFY_API_KEY', getVaultSecret('uk-gov-notify-api-key')
-      systemProperty 'S2S_SECRET', getVaultSecret('s2s-secret-cos-api')
-      //systemProperty 'IDAM_CASEWORKER_USERNAME', getVaultSecret('idam-caseworker-username')
-      //systemProperty 'IDAM_CASEWORKER_PASSWORD', getVaultSecret('idam-caseworker-password')
-      systemProperty 'IDAM_SYSTEM_UPDATE_USERNAME', getVaultSecret('idam-system-user-name')
-      systemProperty 'IDAM_SYSTEM_UPDATE_PASSWORD', getVaultSecret('idam-system-user-password')
-      systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
-      systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
+def loadDotEnv = { ExecSpec spec ->
+  file('../.env').readLines()
+    .findAll { it.contains('=') && !it.startsWith('#') }
+    .each {
+      def index = it.indexOf('=')
+      spec.environment it.substring(0, index), it.substring(index + 1)
+    }
+}
+
+bootRun {
+  doFirst {
+    if (System.getenv('IDAM_API_BASEURL') == null) {
+      println 'Loading secrets from vault'
+
+      loadAatSecrets(delegate)
       systemProperty 'IDAM_CLIENT_SECRET', getVaultSecret('idam-secret')
-      systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
-      systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
-      systemProperty 'SEND_GRID_API_KEY', getVaultSecret('send-grid-api-key')
-      systemProperty 'SEND_GRID_NOTIFY_FROM_EMAIL', getVaultSecret('sendgrid-notify-from-email')
-      if (System.getenv("BOOT_RUN_DOCKER")) {
+
+      if (System.getenv('BOOT_RUN_DOCKER')) {
         systemProperty 'IDAM_API_BASEURL', 'http://localhost:5000'
         systemProperty 'CASE_DATA_STORE_BASEURL', 'http://localhost:4452'
       }
@@ -480,37 +350,23 @@ bootRun {
 }
 
 bootJar {
-  getArchiveFileName().set(provider {
-    'adoption-cos-api.jar'
-  })
+  archiveFileName = 'adoption-cos-api.jar'
 
   manifest {
     attributes('Implementation-Version': project.version.toString())
   }
 }
 
-functional {
-  doFirst() {
-    if (System.getenv("OAUTH2_CLIENT_SECRET") == null) {
-      println("Loading secrets from vault")
+tasks.named('functional') {
+  doFirst {
+    if (System.getenv('OAUTH2_CLIENT_SECRET') == null) {
+      println 'Loading secrets from vault'
 
-      systemProperty 'IDAM_API_BASEURL', 'https://idam-api.aat.platform.hmcts.net'
-      systemProperty 'UK_GOV_NOTIFY_API_KEY', getVaultSecret('uk-gov-notify-api-key')
-      systemProperty 'S2S_SECRET', getVaultSecret('s2s-secret-cos-api')
-      //systemProperty 'IDAM_CASEWORKER_USERNAME', getVaultSecret('idam-caseworker-username')
-      //systemProperty 'IDAM_CASEWORKER_PASSWORD', getVaultSecret('idam-caseworker-password')
-      systemProperty 'IDAM_SYSTEM_UPDATE_USERNAME', getVaultSecret('idam-system-user-name')
-      systemProperty 'IDAM_SYSTEM_UPDATE_PASSWORD', getVaultSecret('idam-system-user-password')
-      systemProperty 'IDAM_SOLICITOR_USERNAME', getVaultSecret('idam-solicitor-username')
-      systemProperty 'IDAM_SOLICITOR_PASSWORD', getVaultSecret('idam-solicitor-password')
+      loadAatSecrets(delegate)
       systemProperty 'OAUTH2_CLIENT_SECRET', getVaultSecret('idam-secret')
-      systemProperty 'APP_INSIGHTS_KEY', getVaultSecret('AppInsightsInstrumentationKey')
-      systemProperty 'LAUNCH_DARKLY_SDK_KEY', getVaultSecret('launchDarkly-sdk-key')
-      systemProperty 'SEND_GRID_API_KEY', getVaultSecret('send-grid-api-key')
-      systemProperty 'SEND_GRID_NOTIFY_FROM_EMAIL', getVaultSecret('sendgrid-notify-from-email')
-      secret("caseworker-username", "CASEWORKER_USERNAME")
-      secret("caseworker-password", "CASEWORKER_PASSWORD")
-      secret("s2s-secret", "S2S_SECRET_WEB")
+      secret('caseworker-username', 'CASEWORKER_USERNAME')
+      secret('caseworker-password', 'CASEWORKER_PASSWORD')
+      secret('s2s-secret', 'S2S_SECRET_WEB')
     }
   }
 }
@@ -552,19 +408,15 @@ tasks.register('stopCosApiContainer') {
 
 def reloadCcd = tasks.register('reloadCcd') {
   group = 'ccd tasks'
+
   doLast {
     exec {
-      file('../.env').readLines().each() {
-        def (key, value) = it.tokenize('=')
-        environment key, value
-      }
+      loadDotEnv(delegate)
       commandLine './bin/process-and-import-ccd-definition.sh'
     }
+
     exec {
-      file('../.env').readLines().each() {
-        def (key, value) = it.tokenize('=')
-        environment key, value
-      }
+      loadDotEnv(delegate)
       commandLine 'docker-compose', '-f', '../docker-compose.yml', 'up', '--build', '-d', 'adoption-cos-api'
     }
   }
@@ -574,7 +426,7 @@ reloadCcd.configure {
   dependsOn assemble, generateCCDConfig
 }
 
-generateCCDConfig.dependsOn stopCosApiContainer
+generateCCDConfig.dependsOn tasks.named('stopCosApiContainer')
 
 generateCCDConfig.doLast {
   copy {
@@ -583,69 +435,32 @@ generateCCDConfig.doLast {
   }
 }
 
-def contractTestConstantsFile = file('src/contractTest/java/uk/gov/hmcts/reform/adoption/ContractTestConstants.java')
-if (!contractTestConstantsFile.exists()) {
-  throw new GradleException("Missing ContractTestConstants.java for pacticipant alignment.")
-}
-def contractTestConstantsMatcher = (contractTestConstantsFile.text =~ /CONSUMER_NAME\s*=\s*"([^"]+)"/)
-if (!contractTestConstantsMatcher.find()) {
-  throw new GradleException("Unable to read CONSUMER_NAME from ContractTestConstants.java for pacticipant alignment.")
-}
-def contractTestConsumerName = contractTestConstantsMatcher.group(1)
-def pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL")
-    ?: project.findProperty('pact.broker.url')?.toString()
-    ?: project.findProperty('pactbroker.url')?.toString()
-def pactBranchName = System.getenv("PACT_BRANCH_NAME") ?: 'Dev'
-// Use a different variable name to avoid Groovy DELEGATE_FIRST shadowing inside pact {} closures
-def resolvedBrokerUrl = pactBrokerUrl
-
 project.ext {
-  pacticipant = contractTestConsumerName
-  pacticipantVersion = getCheckedOutGitCommitHash()
-}
-
-task runAndPublishConsumerPactTests(type: Test){
-  logger.lifecycle("Runs pact Tests")
-  testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.contractTest.runtimeClasspath
-}
-runAndPublishConsumerPactTests.dependsOn contract
-
-runAndPublishConsumerPactTests.finalizedBy pactPublish
-
-tasks.named('pactPublish') {
-  doFirst {
-    logger.lifecycle("pactPublish doFirst: resolvedBrokerUrl='${resolvedBrokerUrl}'")
-    logger.lifecycle("pactPublish doFirst: pact.publish.pactBrokerUrl='${project.pact?.publish?.pactBrokerUrl}'")
-    logger.lifecycle("pactPublish doFirst: pact.broker.pactBrokerUrl='${project.pact?.broker?.pactBrokerUrl}'")
-  }
-  onlyIf {
-    if (!resolvedBrokerUrl) {
-      logger.lifecycle("No pact broker URL configured; skipping pactPublish.")
-      return false
-    }
-    return true
-  }
+  pactVersion = getCheckedOutGitCommitHash()
 }
 
 pact {
-  broker {
-    it.pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
-  }
   publish {
-    it.pactDirectory = 'pacts'
-    it.pactBrokerUrl = resolvedBrokerUrl ?: 'http://localhost:80'
-    it.tags = [pactBranchName]
-    it.consumerVersion = project.pacticipantVersion
+    pactDirectory = 'pacts'
+    pactBrokerUrl = System.getenv('PACT_BROKER_FULL_URL') ?: 'http://localhost:80'
+    tags = [System.getenv('PACT_BRANCH_NAME') ?: 'Dev']
+    version = project.pactVersion
   }
+}
+
+tasks.register('runAndPublishConsumerPactTests') {
+  group = 'Verification'
+  description = 'Runs consumer Pact tests and publishes generated pacts'
+
+  dependsOn tasks.named('contract')
+  finalizedBy tasks.named('pactPublish')
 }
 
 static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
 }
 
-
-task loadEnvSecrets() {
+tasks.register('loadEnvSecrets') {
   doLast {
     if (!project.file('build/cftlib/.aat-env').exists()) {
       new ByteArrayOutputStream().withStream { os ->
@@ -659,15 +474,16 @@ task loadEnvSecrets() {
   }
 }
 
-task buildCCDXlsx(type: Exec, dependsOn: generateCCDConfig) {
-  group 'ccd tasks'
+tasks.register('buildCCDXlsx', Exec) {
+  dependsOn generateCCDConfig
+  group = 'ccd tasks'
   commandLine './bin/ccd-build-definition.sh'
   inputs.dir layout.buildDirectory.dir('definitions')
   outputs.dir layout.buildDirectory.dir('ccd-config')
 }
 
 bootWithCCD {
-  dependsOn(loadEnvSecrets, buildCCDXlsx)
+  dependsOn tasks.named('loadEnvSecrets'), tasks.named('buildCCDXlsx')
   doFirst() {
     project.file('build/cftlib/.aat-env').readLines().each() {
       if (it.contains("=")) {
