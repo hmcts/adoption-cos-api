@@ -120,6 +120,8 @@
     <cve>CVE-2026-41853</cve>
     <cve>CVE-2026-41855</cve>
     <cve>CVE-2026-41839</cve>
+    <cve>CVE-2026-59313</cve>
+    <cve>CVE-2026-59314</cve>
   </suppress>
 
   <!-- Fix in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
