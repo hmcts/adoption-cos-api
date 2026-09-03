@@ -94,6 +94,7 @@
     <cve>CVE-2026-47838</cve>
     <cve>CVE-2026-41706</cve>
     <cve>CVE-2026-59270</cve>
+    <cve>CVE-2026-59276</cve>
   </suppress>
 
   <!-- Fix in ADOP-2806 spring framework -->
