@@ -197,6 +197,9 @@ withPipeline(type, product, component) {
   }
 
   before('highleveldatasetup') {
+    sh 'az login --identity'
+    sh 'az acr login --name hmctsprod'
+
     builder.gradle('generateCCDConfig')
     generateDefinitions()
   }
