@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +13,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,7 +22,6 @@ class CitizenCreateApplicationTest extends EventTest {
     @InjectMocks
     private CitizenCreateApplication citizenCreateApplication;
 
-    @Disabled
     @Test
     @DisplayName("Testing submitted event for citizen case creation with dss meta data")
     void testingCitizenSubmissionWith_dssDataAboutToSubmit() {
@@ -44,7 +43,7 @@ class CitizenCreateApplicationTest extends EventTest {
     @Test
     @DisplayName("Testing submitted event for citizen case creation with null case details")
     void testingCitizenSubmissionWithNullCaseDetails() {
-        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        var exception = assertThrows(IllegalArgumentException.class, () -> {
             citizenCreateApplication.aboutToSubmit(null, null);
         });
         assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
@@ -55,7 +54,7 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmissionWithNoId() {
         var caseDetails = getCaseDetails();
         caseDetails.setId(null);
-        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        var exception = assertThrows(IllegalArgumentException.class, () -> {
             citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
         });
         assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
@@ -66,7 +65,7 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmissionWithIdIsZero() {
         var caseDetails = getCaseDetails();
         caseDetails.setId(0L);
-        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        var exception = assertThrows(IllegalArgumentException.class, () -> {
             citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
         });
         assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
@@ -77,7 +76,7 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmissionWithIdIsNegative() {
         var caseDetails = getCaseDetails();
         caseDetails.setId(-1L);
-        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        var exception = assertThrows(IllegalArgumentException.class, () -> {
             citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
         });
         assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
@@ -88,7 +87,7 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmissionWithNullCaseData() {
         var caseDetails = getCaseDetails();
         caseDetails.setData(null);
-        var exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        var exception = assertThrows(IllegalArgumentException.class, () -> {
             citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
         });
         assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
