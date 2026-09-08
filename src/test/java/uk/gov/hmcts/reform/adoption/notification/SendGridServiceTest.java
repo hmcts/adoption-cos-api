@@ -74,7 +74,7 @@ class SendGridServiceTest {
             StringUtils.EMPTY,
             UserDetails.builder().build()
         ));
-        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(authTokenGenerator.generate()).thenReturn("");
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
         String caseIdForLogging = "1234011101110111";
@@ -107,7 +107,7 @@ class SendGridServiceTest {
             StringUtils.EMPTY,
             UserDetails.builder().build()
         ));
-        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(authTokenGenerator.generate()).thenReturn("");
 
         String caseIdForLogging = "1234122212221222";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
@@ -138,7 +138,7 @@ class SendGridServiceTest {
             StringUtils.EMPTY,
             UserDetails.builder().build()
         ));
-        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(authTokenGenerator.generate()).thenReturn("");
         when(caseDocumentClient.getDocumentBinary(
             anyString(),
             anyString(),
@@ -171,7 +171,7 @@ class SendGridServiceTest {
             StringUtils.EMPTY,
             UserDetails.builder().build()
         ));
-        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(authTokenGenerator.generate()).thenReturn("");
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
         String caseIdForLogging = "1234144414441444";
@@ -200,7 +200,7 @@ class SendGridServiceTest {
             StringUtils.EMPTY,
             UserDetails.builder().build()
         ));
-        when(authTokenGenerator.generate()).thenReturn(StringUtils.EMPTY);
+        when(authTokenGenerator.generate()).thenReturn("");
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), any())).thenReturn(resource);
 
         String caseIdForLogging = "1234155515551555";

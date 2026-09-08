@@ -29,15 +29,10 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.Adoption.CASE_TYPE;
 @Slf4j
 public class CcdSearchService {
 
-    public static final String ACCESS_CODE = "data.accessCode";
     public static final String DUE_DATE = "data.dueDate";
-    public static final String ISSUE_DATE = "data.issueDate";
     public static final String DATA = "data.%s";
     public static final String STATE = "state";
     public static final String CREATED_DATE = "created_date";
-    public static final String AOS_RESPONSE = "data.howToRespondApplication";
-    public static final String FINAL_ORDER_ELIGIBLE_FROM_DATE = "data.dateFinalOrderEligibleFrom";
-    public static final String FINAL_ORDER_ELIGIBLE_TO_RESPONDENT_DATE = "data.dateFinalOrderEligibleToRespondent";
     public static final String SUBMITTED_DATE = "data.dateSubmitted";
 
     @Value("${core_case_data.search.page_size}")

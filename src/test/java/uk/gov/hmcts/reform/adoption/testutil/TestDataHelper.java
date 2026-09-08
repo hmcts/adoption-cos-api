@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.adoption.testutil;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.ccd.sdk.type.Document;
 import uk.gov.hmcts.ccd.sdk.type.ListValue;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
@@ -10,15 +9,14 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.document.DocumentType;
 import uk.gov.hmcts.reform.adoption.document.model.AdoptionDocument;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.time.Month.APRIL;
 import static org.springframework.util.ResourceUtils.getFile;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
 import static uk.gov.hmcts.reform.adoption.document.DocumentType.APPLICATION;
@@ -30,8 +28,8 @@ import static uk.gov.hmcts.reform.adoption.testutil.TestConstants.TEST_USER_EMAI
 public class TestDataHelper {
 
 
-    public static final LocalDate LOCAL_DATE = LocalDate.of(2021, 4, 28);
-    public static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.of(2021, 4, 28, 1, 0);
+    public static final LocalDate LOCAL_DATE = LocalDate.of(2021, APRIL, 28);
+    public static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.of(2021, APRIL, 28, 1, 0);
     private static final TestDataHelper.MapTypeReference MAP_TYPE = new TestDataHelper.MapTypeReference();
 
     public static ListValue<AdoptionDocument> documentWithType(final DocumentType documentType) {
@@ -99,19 +97,5 @@ public class TestDataHelper {
 
     public static ObjectMapper getObjectMapper() {
         return new ObjectMapper().findAndRegisterModules();
-    }
-
-    public static String expectedResponse(final String resourcePath) throws IOException {
-        return resourceAsString(resourcePath);
-    }
-
-    public static String resourceAsString(final String resourcePath) throws IOException {
-        final File file = ResourceUtils.getFile(resourcePath);
-        return new String(Files.readAllBytes(file.toPath()));
-    }
-
-    public static byte[] resourceAsBytes(final String resourcePath) throws IOException {
-        final File file = ResourceUtils.getFile(resourcePath);
-        return Files.readAllBytes(file.toPath());
     }
 }

@@ -1,108 +1,85 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.Applicant;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference;
-import uk.gov.hmcts.reform.adoption.idam.IdamService;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.NO;
-import static uk.gov.hmcts.reform.adoption.document.DocumentConstants.YES;
 import static uk.gov.hmcts.reform.adoption.notification.EmailTemplateName.MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_1_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_2_FULL_NAME;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_MULTIPLE_APPLICANT;
-import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.HAS_SECOND_APPLICANT;
+import static uk.gov.hmcts.reform.adoption.notification.NotificationConstants.APPLICANT_FULL_NAME;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class MultiChildSubmitAlertEmailNotification implements ApplicantNotification {
 
-    @Autowired
-    IdamService idamService;
-
-    @Autowired
-    private NotificationService notificationService;
-
-    @Autowired
-    private CommonContent commonContent;
-
-
-
-
+    private final NotificationService notificationService;
 
     @Override
     public void sendToApplicants(final CaseData caseData, final Long id) {
-        log.info("Sending MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT notification to applicants for case : {}", id);
+        log.info("Sending MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT notification to applicants for caseid : {}", id);
 
-        final String applicant1Email = caseData.getApplicant1().getEmailAddress();
-        final String applicant2Email = caseData.getApplicant2().getEmailAddress();
-        final LanguagePreference applicant1LanguagePreference = caseData.getApplicant1().getLanguagePreference();
+        final String applicant1Email = StringUtils.isNotBlank(caseData.getApplicant1().getEmailAddress())
+                ? caseData.getApplicant1().getEmailAddress() : caseData.getApplicant1().getEmail();
 
-        Map<String, Object> templateVars = templateVars(caseData, id, caseData.getApplicant1(), caseData.getApplicant2());
-        if (StringUtils.isNotBlank(applicant1Email)) {
-            notificationService.sendEmail(
-                applicant1Email,
-                MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
-                templateVars,
-                applicant1LanguagePreference != null
-                    ? applicant1LanguagePreference : LanguagePreference.ENGLISH
-            );
-        }
-        log.info("notification sent to applicant 1 : {}", id);
+        Map<String, Object> applicant1TemplateVars = generateTemplateVars(caseData.getApplicant1());
 
-        if (StringUtils.isNotBlank(applicant2Email)) {
-            final LanguagePreference applicant2LanguagePreference = caseData.getApplicant2().getLanguagePreference();
+        notificationService.sendEmail(
+            applicant1Email,
+            MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
+            applicant1TemplateVars,
+            getLanguagePreference(caseData.getApplicant1())
+        );
+
+        log.info("Multi_Child notification sent to applicant 1 for caseid {}", id);
+
+        if (Objects.nonNull(caseData.getApplicant2())
+            && StringUtils.isNotBlank(caseData.getApplicant2().getEmailAddress())) {
+
+            final String applicant2Email = caseData.getApplicant2().getEmailAddress();
+            Map<String, Object> applicant2TemplateVars = generateTemplateVars(caseData.getApplicant2());
 
             notificationService.sendEmail(
                 applicant2Email,
                 MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
-                templateVars,
-                applicant2LanguagePreference != null
-                    ? applicant2LanguagePreference : LanguagePreference.ENGLISH
+                applicant2TemplateVars,
+                getLanguagePreference(caseData.getApplicant2())
             );
-        }
-        if (StringUtils.isEmpty(applicant1Email) && StringUtils.isEmpty(applicant2Email)) {
-            final String defaultEmailAddress = caseData.getApplicant1().getEmail();
-            notificationService.sendEmail(
-                defaultEmailAddress,
-                MULTI_CHILD_SUBMIT_APPLICATION_EMAIL_ALERT,
-                templateVars,
-                applicant1LanguagePreference != null
-                    ? applicant1LanguagePreference : LanguagePreference.ENGLISH
-            );
+            log.info("Multi_Child notification sent to applicant 2 for caseid {}", id);
         }
     }
 
-    private Map<String, Object> templateVars(CaseData caseData, Long id, Applicant applicant1, Applicant applicant2) {
-        Map<String, Object> templateVars = commonContent.mainTemplateVars(caseData, id, applicant1, applicant2);
-        templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " " + caseData.getApplicant1().getLastName());
-        if (isApplicantInfoExists(caseData.getApplicant2())) {
-            templateVars.put(
-                APPLICANT_2_FULL_NAME,
-                caseData.getApplicant2().getFirstName() + " " + caseData.getApplicant2().getLastName()
-            );
-            templateVars.put(HAS_SECOND_APPLICANT, YES);
-        } else {
-            templateVars.put(HAS_SECOND_APPLICANT, NO);
-            templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
-        }
-        if (isApplicantInfoExists(caseData.getApplicant1()) && isApplicantInfoExists(caseData.getApplicant2())) {
-            templateVars.put(HAS_MULTIPLE_APPLICANT, YES);
-        } else {
-            templateVars.put(HAS_MULTIPLE_APPLICANT, NO);
-        }
+    private Map<String, Object> generateTemplateVars(Applicant applicant) {
+        Map<String, Object> templateVars = new HashMap<>();
 
+        templateVars.put(APPLICANT_FULL_NAME, generateApplicantFullName(
+            applicant.getFirstName(),
+            applicant.getLastName(),
+            getLanguagePreference(applicant)
+        ));
         return templateVars;
     }
 
-    private boolean isApplicantInfoExists(Applicant applicant) {
-        return applicant != null && (StringUtils.isNotBlank(applicant.getFirstName())
-            || StringUtils.isNotBlank(applicant.getLastName()));
+    private String generateApplicantFullName(String firstName, String lastName, LanguagePreference languagePreference) {
+        String defaultWording = languagePreference == LanguagePreference.WELSH ? "ymgeisydd" : "applicant";
+        String fullName = Stream.of(firstName, lastName)
+            .filter(StringUtils::isNotBlank)
+            .map(String::trim)
+            .collect(Collectors.joining(" "));
+        return StringUtils.defaultIfBlank(fullName, defaultWording);
+    }
+
+    private LanguagePreference getLanguagePreference(Applicant applicant) {
+        return applicant.getLanguagePreference() != null
+            ? applicant.getLanguagePreference() : LanguagePreference.ENGLISH;
     }
 }

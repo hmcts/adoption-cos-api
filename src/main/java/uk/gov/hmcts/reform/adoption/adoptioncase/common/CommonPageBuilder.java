@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.common;
 
-import org.apache.commons.collections4.CollectionUtils;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
 import uk.gov.hmcts.ccd.sdk.api.callback.AboutToStartOrSubmitResponse;
 import uk.gov.hmcts.ccd.sdk.type.DynamicList;
@@ -11,7 +10,6 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.SelectedMessage;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.common.ccd.PageBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -86,18 +84,30 @@ public final class CommonPageBuilder {
             .done();
     }
 
-    public static AboutToStartOrSubmitResponse<CaseData, State> sendMessageMidEvent(CaseDetails<CaseData, State> details,
-                                                                   CaseDetails<CaseData, State> detailsBefore) {
+    public static AboutToStartOrSubmitResponse<CaseData, State> sendMessageMidEvent(
+        CaseDetails<CaseData, State> details,
+        CaseDetails<CaseData, State> detailsBefore
+    ) {
         CaseData caseData = details.getData();
-        List<DynamicListElement> listElements = new ArrayList<>();
-        CaseEventCommonMethods.prepareDocumentList(caseData).forEach(item -> listElements.add(DynamicListElement.builder()
-                                                            .label(item.getDocumentLink().getFilename())
-                                                             .code(UUID.fromString(item.getMessageId())).build()));
-        caseData.setAttachDocumentList(DynamicList.builder().listItems(listElements).value(DynamicListElement.EMPTY).build());
 
-        if (CollectionUtils.isNotEmpty(caseData.getListOfOpenMessages()) && caseData.getReplyMsgDynamicList() != null) {
+        List<DynamicListElement> listElements = CaseEventCommonMethods.prepareDocumentList(caseData).stream()
+            .map(item -> DynamicListElement.builder()
+                .label(item.getDocumentLink().getFilename())
+                .code(UUID.fromString(item.getMessageId()))
+                .build())
+            .toList();
+
+        caseData.setAttachDocumentList(DynamicList.builder()
+                                           .listItems(listElements)
+                                           .value(DynamicListElement.EMPTY)
+                                           .build());
+
+        if (caseData.getListOfOpenMessages() != null
+            && !caseData.getListOfOpenMessages().isEmpty()
+            && caseData.getReplyMsgDynamicList() != null) {
             setSelectedObject(caseData);
         }
+
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(caseData)
             .build();

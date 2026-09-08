@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +14,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.time.Month.APRIL;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.LanguagePreference.ENGLISH;
@@ -53,8 +53,8 @@ class DraftApplicationExpiringNotificationTest {
     void draftApplicationExpiringNotificationTest_sendToApplicants() {
 
         CaseData caseData = caseData();
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
             + caseData.getApplicant1().getLastName());
@@ -78,8 +78,8 @@ class DraftApplicationExpiringNotificationTest {
     @Test
     void draftApplicationExpiringNotificationTest_sendToApplicants_noLanguagePreference() {
         CaseData caseData = caseData();
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
+        caseData.setFamilyCourtName("");
         caseData.getApplicant1().setLanguagePreference(null);
         caseData.getApplicant2().setLanguagePreference(null);
         Map<String, Object> templateVars = new HashMap<>();
@@ -107,15 +107,15 @@ class DraftApplicationExpiringNotificationTest {
     void draftApplicationExpiringNotificationTest_sendToApplicants_scenario2() {
 
         CaseData caseData = caseData();
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
+        caseData.setFamilyCourtName("");
         caseData.setApplicant2(new Applicant());
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
             + caseData.getApplicant1().getLastName());
 
         templateVars.put(HAS_SECOND_APPLICANT, NO);
-        templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        templateVars.put(APPLICANT_2_FULL_NAME, "");
         templateVars.put(ADOPTION_CUI_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_URL));
         draftApplicationExpiringNotification.sendToApplicants(caseData, 1234567890123456L);
 
@@ -148,13 +148,13 @@ class DraftApplicationExpiringNotificationTest {
         caseData.setApplicant1(applicant1);
         caseData.setApplicant2(applicant2);
 
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
             + caseData.getApplicant1().getLastName());
         templateVars.put(HAS_SECOND_APPLICANT, NO);
-        templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        templateVars.put(APPLICANT_2_FULL_NAME, "");
         templateVars.put(ADOPTION_CUI_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_URL));
         draftApplicationExpiringNotification.sendToApplicants(caseData, 1234567890123456L);
 
@@ -187,13 +187,13 @@ class DraftApplicationExpiringNotificationTest {
         caseData.setApplicant1(applicant1);
         caseData.setApplicant2(applicant2);
 
-        caseData.setDueDate(LocalDate.of(2021, 4, 21));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setDueDate(LocalDate.of(2021, APRIL, 21));
+        caseData.setFamilyCourtName("");
         Map<String, Object> templateVars = new HashMap<>();
         templateVars.put(APPLICANT_1_FULL_NAME, caseData.getApplicant1().getFirstName() + " "
             + caseData.getApplicant1().getLastName());
         templateVars.put(HAS_SECOND_APPLICANT, NO);
-        templateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        templateVars.put(APPLICANT_2_FULL_NAME, "");
         templateVars.put(ADOPTION_CUI_URL, emailTemplatesConfig.getTemplateVars().get(ADOPTION_CUI_URL));
         draftApplicationExpiringNotification.sendToApplicants(caseData, 1234567890123456L);
 
