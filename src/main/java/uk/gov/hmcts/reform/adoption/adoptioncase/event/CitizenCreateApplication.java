@@ -23,7 +23,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
 
     public static final String CITIZEN_CREATE = "citizen-create-application";
 
-    public static final String ERROR_CASE_DETAILS_REQUIRED = "Case details, data and id must be provided";
+    public static final String ERROR_CASE_DETAILS_REQUIRED = "Sorry, there was a problem. Please try again.";
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
