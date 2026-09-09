@@ -119,7 +119,7 @@ class CitizenCreateApplicationTest extends EventTest {
     @CsvSource({
         "1234567890123456, 1234-5678-9012-3456",
         "1234,             0000-0000-0000-1234",
-        "1,                0000-0000-0000-0001",
+        "1,                0000-0000-0000-0001"
     })
     @DisplayName("Testing hyphenated case reference formatting")
     void shouldFormatHyphenatedCaseRef(long caseId, String expectedRef) {
