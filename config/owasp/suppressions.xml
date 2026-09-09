@@ -95,6 +95,29 @@
     <cve>CVE-2026-41706</cve>
     <cve>CVE-2026-59270</cve>
     <cve>CVE-2026-59276</cve>
+    <cve>CVE-2026-47841</cve>
+    <cve>CVE-2026-47842</cve>
+  </suppress>
+
+  <!-- Fixed only in Spring Boot 3.4.17, which is not published to Maven Central
+       (3.4.x reached OSS end-of-life 2025-12-31; last public release is 3.4.13).
+       Neither feature is used by this service: no Artemis/JMS broker
+       (CVE-2026-41001) and no Spring Mail / JavaMailSender (CVE-2026-40992).
+       Revisit when the service moves to a supported Spring Boot line. -->
+  <suppress until="2026-12-31Z">
+    <notes><![CDATA[spring-boot and spring-boot-* starters at 3.4.11]]></notes>
+    <cve>CVE-2026-41001</cve>
+    <cve>CVE-2026-40992</cve>
+  </suppress>
+
+  <!-- Fixed only in spring-retry 2.0.12.1, which is not published to Maven Central.
+       The advisory covers exhaustion of the *stateful* retry cache; this service
+       uses stateless @Retryable with backoff only (SendgridService.sendEmail),
+       so the affected code path is not engaged. -->
+  <suppress until="2026-12-31Z">
+    <notes><![CDATA[spring-retry-2.0.10.jar]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.retry/spring\-retry@.*$</packageUrl>
+    <cve>CVE-2026-41710</cve>
   </suppress>
 
   <!-- Fix in ADOP-2806 spring framework -->
