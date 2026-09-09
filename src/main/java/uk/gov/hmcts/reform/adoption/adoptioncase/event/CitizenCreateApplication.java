@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.CaseDetails;
@@ -11,7 +10,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.CaseData;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
-import uk.gov.hmcts.reform.adoption.common.AddSystemUpdateRole;
+
+import java.util.List;
 
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
@@ -23,8 +23,7 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
 
     public static final String CITIZEN_CREATE = "citizen-create-application";
 
-    @Autowired
-    private AddSystemUpdateRole addSystemUpdateRole;
+    public static final String ERROR_CASE_DETAILS_REQUIRED = "Sorry, there was a problem. Please try again.";
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -43,20 +42,18 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
                                                                        final CaseDetails<CaseData, State> beforeDetails) {
         log.info("Citizen create adoption application about to submit callback invoked");
 
-        CaseData data = details.getData();
-        details.getData().setStatus(Draft);
+        if (details == null || details.getData() == null || details.getId() == null || details.getId() <= 0) {
+            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+                .data(details == null ? null : details.getData())
+                .errors(List.of(ERROR_CASE_DETAILS_REQUIRED))
+                .build();
+        }
+        final CaseData data = details.getData();
+        data.setStatus(Draft);
         // Setting the default value so that its value is shown in Summary Tab and Amend Case details screen
-        details.getData().setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
-        String temp = String.format("%016d", details.getId());
-        data.setHyphenatedCaseRef(String.format(
-            "%4s-%4s-%4s-%4s",
-            temp.substring(0, 4),
-            temp.substring(4, 8),
-            temp.substring(8, 12),
-            temp.substring(12, 16)
-        ));
+        data.setTypeOfAdoption(CaseFieldsConstants.TYPE_OF_ADOPTION);
+        data.setHyphenatedCaseRef(formatHyphenatedCaseRef(details.getId()));
         setDssMetaData(data);
-
         return AboutToStartOrSubmitResponse.<CaseData, State>builder()
             .data(data)
             .build();
@@ -71,5 +68,16 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         data.setDssAnswer2("case_data.childrenLastName");
         data.setDssAnswer3("case_data.childrenDateOfBirth");
         data.setDssHeaderDetails("Child Details");
+    }
+
+    private String formatHyphenatedCaseRef(Long caseId) {
+        final String padded = String.format("%016d", caseId);
+        return String.format(
+            "%s-%s-%s-%s",
+            padded.substring(0, 4),
+            padded.substring(4, 8),
+            padded.substring(8, 12),
+            padded.substring(12, 16)
+        );
     }
 }
