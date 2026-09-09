@@ -11,6 +11,8 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 
+import java.util.List;
+
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.State.Draft;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.UserRole.CITIZEN;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions.CREATE_READ_UPDATE;
@@ -20,6 +22,8 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.access.Permissions
 public class CitizenCreateApplication implements CCDConfig<CaseData, State, UserRole> {
 
     public static final String CITIZEN_CREATE = "citizen-create-application";
+
+    public static final String ERROR_CASE_DETAILS_REQUIRED = "Case details, data and id must be provided";
 
     @Override
     public void configure(final ConfigBuilder<CaseData, State, UserRole> configBuilder) {
@@ -39,7 +43,10 @@ public class CitizenCreateApplication implements CCDConfig<CaseData, State, User
         log.info("Citizen create adoption application about to submit callback invoked");
 
         if (details == null || details.getData() == null || details.getId() == null || details.getId() <= 0) {
-            throw new IllegalArgumentException("Case details, data and id must be provided");
+            return AboutToStartOrSubmitResponse.<CaseData, State>builder()
+                .data(details == null ? null : details.getData())
+                .errors(List.of(ERROR_CASE_DETAILS_REQUIRED))
+                .build();
         }
         final CaseData data = details.getData();
         data.setStatus(Draft);

@@ -13,7 +13,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.event.CitizenCreateApplication.ERROR_CASE_DETAILS_REQUIRED;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +29,7 @@ class CitizenCreateApplicationTest extends EventTest {
         var callbackResponse = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
         var callbackData = callbackResponse.getData();
 
+        assertThat(callbackResponse.getErrors()).isNullOrEmpty();
         assertThat(callbackData.getTypeOfAdoption()).isEqualTo("Post-placement");
         assertThat(callbackData.getHyphenatedCaseRef()).isEqualTo("1234-5678-9012-3456");
         assertThat(callbackData.getDssQuestion1()).isEqualTo("First Name");
@@ -43,10 +44,9 @@ class CitizenCreateApplicationTest extends EventTest {
     @Test
     @DisplayName("Testing submitted event for citizen case creation with null case details")
     void testingCitizenSubmissionWithNullCaseDetails() {
-        var exception = assertThrows(IllegalArgumentException.class, () -> {
-            citizenCreateApplication.aboutToSubmit(null, null);
-        });
-        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
+        var response = citizenCreateApplication.aboutToSubmit(null, null);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
     }
 
     @Test
@@ -54,10 +54,10 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmissionWithNoId() {
         var caseDetails = getCaseDetails();
         caseDetails.setId(null);
-        var exception = assertThrows(IllegalArgumentException.class, () -> {
-            citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
-        });
-        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
     }
 
     @Test
@@ -65,10 +65,10 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmissionWithIdIsZero() {
         var caseDetails = getCaseDetails();
         caseDetails.setId(0L);
-        var exception = assertThrows(IllegalArgumentException.class, () -> {
-            citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
-        });
-        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
     }
 
     @Test
@@ -76,10 +76,10 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmissionWithIdIsNegative() {
         var caseDetails = getCaseDetails();
         caseDetails.setId(-1L);
-        var exception = assertThrows(IllegalArgumentException.class, () -> {
-            citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
-        });
-        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
     }
 
     @Test
@@ -87,10 +87,10 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmissionWithNullCaseData() {
         var caseDetails = getCaseDetails();
         caseDetails.setData(null);
-        var exception = assertThrows(IllegalArgumentException.class, () -> {
-            citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
-        });
-        assertThat(exception.getMessage()).isEqualTo("Case details, data and id must be provided");
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
     }
 
     @Test
