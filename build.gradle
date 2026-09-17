@@ -2,13 +2,12 @@ plugins {
   id 'application'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '3.4.11'
+  id 'org.springframework.boot' version '4.1.1'
   id 'uk.gov.hmcts.java' version '0.12.70'
   id 'org.sonarqube' version '5.0.0.4638'
-  id 'com.github.ben-manes.versions' version '0.51.0'
   id 'cz.habarta.typescript-generator' version '3.2.1263'
   id 'hmcts.ccd.sdk' version '6.1.0'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1844'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.2391'
   id 'au.com.dius.pact' version '4.7.1'
 }
 
@@ -63,6 +62,10 @@ configurations {
 
 tasks.withType(JavaCompile).configureEach {
   options.compilerArgs << '-Xlint:unchecked' << '-Werror'
+}
+
+checkstyle {
+  configFile = file('config/checkstyle/checkstyle.xml')
 }
 
 tasks.withType(JavaExec).configureEach {
@@ -222,21 +225,9 @@ sonarqube {
   }
 }
 
-// before committing a change, make sure task still works
-dependencyUpdates {
-  def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { qualifier -> version.toUpperCase().contains(qualifier) }
-    def regex = /^[0-9,.v-]+$/
-    return !stableKeyword && !(version ==~ regex)
-  }
-  rejectVersionIf { selection -> // <---- notice how the closure argument is named
-    return isNonStable(selection.candidate.version) && !isNonStable(selection.currentVersion)
-  }
-}
-
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2024.0.0"
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.1.3"
   }
   dependencies {
     // CVE-2025-48976
@@ -254,18 +245,20 @@ repositories {
 
 def versions = [
   lombok            : '1.18.38',
-  s2sClient         : '5.3.3',
+  restAssured        : '6.0.1',
+  s2sClient         : '6.0.1',
 ]
 
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-webmvc'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.springframework.boot:spring-boot-jackson2'
   implementation 'org.springframework.retry:spring-retry'
-  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1'
 
-  implementation 'com.github.hmcts:ccd-case-document-am-client:1.59.2'
-  implementation 'com.github.hmcts:core-case-data-store-client:4.9.2'
-  implementation 'com.github.hmcts:idam-java-client:3.0.5'
+  implementation 'com.github.hmcts:ccd-case-document-am-client:1.60.0'
+  implementation 'com.github.hmcts:core-case-data-store-client:6.1.0'
+  implementation 'com.github.hmcts:idam-java-client:4.0.0'
   implementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
   implementation 'com.github.hmcts.java-logging:logging:8.0.0'
 
@@ -287,12 +280,12 @@ dependencies {
   annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'io.rest-assured:rest-assured'
+  testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
   testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
 
   functionalTestImplementation 'com.github.hmcts:document-management-client:7.0.1'
   functionalTestImplementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
-  functionalTestImplementation 'io.rest-assured:rest-assured'
+  functionalTestImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
   functionalTestImplementation 'net.javacrumbs.json-unit:json-unit-assertj:3.2.7'
   functionalTestImplementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
