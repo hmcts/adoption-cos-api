@@ -143,7 +143,7 @@ class SendGridServiceTest {
             anyString(),
             anyString(),
             any()
-        )).thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
+        )).thenReturn(ResponseEntity.ok().build());
 
         String caseIdForLogging = "1234133313331333";
         when(sendgridService.getSendGrid(caseIdForLogging)).thenReturn(sendGrid);
@@ -166,7 +166,7 @@ class SendGridServiceTest {
         caseData.setDocumentsGenerated(getDocumentsGenerated());
         caseData.setLaDocumentsUploaded(getLaDocumentsUploaded());
 
-        ResponseEntity<Resource> resource = new ResponseEntity<>(null, HttpStatus.OK);
+        ResponseEntity<Resource> resource = ResponseEntity.ok().build();
         when(idamService.retrieveSystemUpdateUserDetails()).thenReturn(new User(
             StringUtils.EMPTY,
             UserDetails.builder().build()
