@@ -79,6 +79,8 @@
     <cve>CVE-2026-40970</cve>
     <cve>CVE-2026-40971</cve>
     <cve>CVE-2026-40976</cve>
+    <cve>CVE-2026-40992</cve>
+    <cve>CVE-2026-41001</cve>
   </suppress>
   <!-- Fix in ADOP-2799 spring-security-crypto -->
   <suppress>
@@ -95,6 +97,8 @@
     <cve>CVE-2026-41706</cve>
     <cve>CVE-2026-59270</cve>
     <cve>CVE-2026-59276</cve>
+    <cve>CVE-2026-47841</cve>
+    <cve>CVE-2026-47842</cve>
   </suppress>
 
   <!-- Fix in ADOP-2806 spring framework -->
@@ -132,6 +136,14 @@
     <cve>CVE-2026-47891</cve>
     <cve>CVE-2026-59282</cve>
     <cve>CVE-2026-59281</cve>
+    <cve>CVE-2026-47883</cve>
+    <cve>CVE-2026-47884</cve>
+    <cve>CVE-2026-47885</cve>
+    <cve>CVE-2026-47886</cve>
+    <cve>CVE-2026-47887</cve>
+    <cve>CVE-2026-47889</cve>
+    <cve>CVE-2026-47888</cve>
+    <cve>CVE-2026-41710</cve>
   </suppress>
 
   <!-- Fix in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
