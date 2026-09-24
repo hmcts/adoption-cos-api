@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.adoption.adoptioncase.model.State;
 import uk.gov.hmcts.reform.adoption.adoptioncase.search.CaseFieldsConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.hmcts.reform.adoption.adoptioncase.event.CitizenCreateApplication.ERROR_CASE_DETAILS_REQUIRED;
 import static uk.gov.hmcts.reform.adoption.testutil.TestDataHelper.caseData;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +29,7 @@ class CitizenCreateApplicationTest extends EventTest {
         var callbackResponse = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
         var callbackData = callbackResponse.getData();
 
+        assertThat(callbackResponse.getErrors()).isNullOrEmpty();
         assertThat(callbackData.getTypeOfAdoption()).isEqualTo("Post-placement");
         assertThat(callbackData.getHyphenatedCaseRef()).isEqualTo("1234-5678-9012-3456");
         assertThat(callbackData.getDssQuestion1()).isEqualTo("First Name");
@@ -40,9 +42,62 @@ class CitizenCreateApplicationTest extends EventTest {
     }
 
     @Test
+    @DisplayName("Testing submitted event for citizen case creation with null case details")
+    void testingCitizenSubmissionWithNullCaseDetails() {
+        var response = citizenCreateApplication.aboutToSubmit(null, null);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
+    }
+
+    @Test
+    @DisplayName("Testing submitted event for citizen case creation with no id")
+    void testingCitizenSubmissionWithNoId() {
+        var caseDetails = getCaseDetails();
+        caseDetails.setId(null);
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
+    }
+
+    @Test
+    @DisplayName("Testing submitted event for citizen case creation with id as zero")
+    void testingCitizenSubmissionWithIdIsZero() {
+        var caseDetails = getCaseDetails();
+        caseDetails.setId(0L);
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
+    }
+
+    @Test
+    @DisplayName("Testing submitted event for citizen case creation with id as negative")
+    void testingCitizenSubmissionWithIdIsNegative() {
+        var caseDetails = getCaseDetails();
+        caseDetails.setId(-1L);
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
+    }
+
+    @Test
+    @DisplayName("Testing submitted event for citizen case creation with null case data")
+    void testingCitizenSubmissionWithNullCaseData() {
+        var caseDetails = getCaseDetails();
+        caseDetails.setData(null);
+
+        var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
+
+        assertThat(response.getErrors()).containsExactly(ERROR_CASE_DETAILS_REQUIRED);
+    }
+
+    @Test
     @DisplayName("Testing case status is set to Draft in about to submit")
     void shouldSetCaseStatusToDraft() {
         var caseDetails = getCaseDetails();
+
         var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
 
         assertThat(response).isNotNull();
@@ -55,32 +110,26 @@ class CitizenCreateApplicationTest extends EventTest {
     void testingCitizenSubmission_caseFieldsConstants() {
         var caseDetails = getCaseDetails();
         var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
-
         assertThat(response).isNotNull();
         assertThat(response.getData()).isNotNull();
         assertThat(response.getData().getTypeOfAdoption()).isEqualTo(CaseFieldsConstants.TYPE_OF_ADOPTION);
     }
 
-
     @ParameterizedTest
     @CsvSource({
         "1234567890123456, 1234-5678-9012-3456",
         "1234,             0000-0000-0000-1234",
-        "1,                0000-0000-0000-0001",
-        "0,                0000-0000-0000-0000"
+        "1,                0000-0000-0000-0001"
     })
     @DisplayName("Testing hyphenated case reference formatting")
     void shouldFormatHyphenatedCaseRef(long caseId, String expectedRef) {
-        var caseDetails = CaseDetails.<CaseData, State>builder()
-            .data(caseData())
-            .id(caseId)
-            .build();
+        var caseDetails = getCaseDetails();
+        caseDetails.setId(caseId);
 
         var response = citizenCreateApplication.aboutToSubmit(caseDetails, caseDetails);
 
         assertThat(response.getData().getHyphenatedCaseRef()).isEqualTo(expectedRef);
     }
-
 
     private CaseDetails<CaseData, State> getCaseDetails() {
         return CaseDetails.<CaseData, State>builder()
