@@ -32,8 +32,10 @@ java:
           alias: CASEWORKER_USERNAME
         - name: caseworker-password
           alias: CASEWORKER_PASSWORD
-        - name: AppInsightsInstrumentationKey
+        - name: AppInsightsInstrumentationKey-Preview-New
           alias: APP_INSIGHTS_KEY
+        - name: app-insight-connection-key-preview
+          alias: APP_INSIGHTS_CONNECTION_KEY
         - name: send-grid-api-key
           alias: SEND_GRID_API_KEY
         - name: sendgrid-notify-from-email
