@@ -498,5 +498,13 @@ bootWithCCD {
       }
     }
   }
+
+  // cft-lib specific env vars
+  environment 'rse.lib.stub.s2s', 'true'
+  environment 'PRD_HOST', 'http://rd-professional-api-aat.service.core-compute-aat.internal'
+  environment 'MANAGE_CASE_S2S_AUTHORISED_SERVICES', 'ccd_gw,xui_webapp,ccd_data,adoption_web'
+  environment 'DATA_STORE_CROSS_JURISDICTIONAL_ROLES', 'caseworker-caa,caseworker-adoption-systemupdate,caseworker-approver'
+  environment 'DATA_STORE_S2S_AUTHORISED_SERVICES', 'ccd_gw,ccd_gateway,ccd_data,ccd_ps,aac_manage_case_assignment,xui_webapp,ccd_case_document_am_api,adoption_web,em_ccd_orchestrator,wa_workflow_api,wa_task_configuration_api,wa_task_management_api,wa_task_monitor,wa_case_event_handler,am_role_assignment_service'
+
   authMode = uk.gov.hmcts.rse.AuthMode.AAT
 }

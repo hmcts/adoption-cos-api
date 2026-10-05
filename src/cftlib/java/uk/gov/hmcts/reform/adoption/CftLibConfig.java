@@ -1,9 +1,11 @@
 package uk.gov.hmcts.reform.adoption;
 
+import com.google.common.io.Resources;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.rse.ccd.lib.api.CFTLib;
 import uk.gov.hmcts.rse.ccd.lib.api.CFTLibConfigurer;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -20,6 +22,7 @@ public class CftLibConfig implements CFTLibConfigurer {
             "caseworker-adoption-superuser",
             "caseworker-adoption-solicitor",
             "caseworker-adoption-systemupdate",
+            "adoption-citizen-user",
             "citizen",
             "TTL_profile"
         );
