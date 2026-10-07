@@ -269,7 +269,7 @@ dependencies {
   implementation "com.github.hmcts:service-auth-provider-java-client:${versions.s2sClient}"
   implementation 'com.github.hmcts.java-logging:logging:8.0.0'
 
-  implementation('com.github.hmcts:befta-fw:9.2.4') {
+  implementation('com.github.hmcts:befta-fw:9.2.10') {
     exclude group: 'com.google.guava', module: 'guava'
     exclude group: 'com.launchdarkly', module: 'launchdarkly-java-server-sdk'
     exclude group: 'org.apache.commons', module: 'commons-compress'
