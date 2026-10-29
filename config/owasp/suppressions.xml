@@ -99,6 +99,7 @@
     <cve>CVE-2026-59276</cve>
     <cve>CVE-2026-47841</cve>
     <cve>CVE-2026-47842</cve>
+    <cve>CVE-2026-41707</cve>
   </suppress>
 
   <!-- Fixed only in Spring Boot 3.4.17, which is not published to Maven Central
@@ -205,6 +206,7 @@
     <cve>CVE-2025-55754</cve>
     <cve>CVE-2025-55752</cve>
     <cve>CVE-2025-61795</cve>
+    <cve>CVE-2026-65637</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -214,6 +216,7 @@
     <cve>CVE-2025-66614</cve>
     <cve>CVE-2026-24733</cve>
     <cve>CVE-2026-24734</cve>
+    <cve>CVE-2026-65637</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[Affects tomcat-embed-core / tomcat-embed-websocket 10.1.54 (pinned for hystrix compatibility). Suppressed pending Tomcat upgrade. Raise Jira to track upgrade.]]></notes>
