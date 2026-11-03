@@ -38,6 +38,8 @@ java:
           alias: SEND_GRID_NOTIFY_FROM_EMAIL
         - name: app-insight-connection-key
           alias: app-insight-connection-key
+        - name: AppInsightsInstrumentationKey
+          alias: APP_INSIGHTS_KEY
   environment:
     ADOPTION_WEB_CLIENT_ID: adoption-web
     ADOPTION_WEB_MICROSERVICE: adoption_web
