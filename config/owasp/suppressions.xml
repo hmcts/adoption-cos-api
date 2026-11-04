@@ -62,24 +62,15 @@
   </suppress>
 
   <!-- Fix in ADOP-2799 spring-security-crypto -->
-<!--  <suppress>-->
-<!--    <notes><![CDATA[spring-security-crypto]]></notes>-->
-<!--    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>-->
-<!--    <cve>CVE-2026-22732</cve>-->
-<!--    <cve>CVE-2026-22748</cve>-->
-<!--    <cve>CVE-2026-22751</cve>-->
-<!--    <cve>CVE-2026-22746</cve>-->
-<!--    <cve>CVE-2026-40988</cve>-->
-<!--    <cve>CVE-2026-41003</cve>-->
-<!--    <cve>CVE-2026-41694</cve>-->
-<!--    <cve>CVE-2026-47838</cve>-->
-<!--    <cve>CVE-2026-41706</cve>-->
-<!--    <cve>CVE-2026-59270</cve>-->
-<!--    <cve>CVE-2026-59276</cve>-->
-<!--    <cve>CVE-2026-47841</cve>-->
-<!--    <cve>CVE-2026-47842</cve>-->
-<!--    <cve>CVE-2026-41707</cve>-->
-<!--  </suppress>-->
+  <suppress>
+    <notes><![CDATA[spring-security-crypto]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+    <cve>CVE-2026-59270</cve>
+    <cve>CVE-2026-41707</cve>
+    <cve>CVE-2026-47841</cve>
+    <cve>CVE-2026-47842</cve>
+    <cve>CVE-2026-59276</cve>
+  </suppress>
 
   <!-- Fixed only in Spring Boot 3.4.17, which is not published to Maven Central
        (3.4.x reached OSS end-of-life 2025-12-31; last public release is 3.4.13).
@@ -153,6 +144,13 @@
 <!--    <cve>CVE-2026-41854</cve>-->
 <!--    <cve>CVE-2026-41853</cve>-->
 <!--  </suppress>-->
+
+  <suppress>
+    <notes>spring-cloud-commons-4.3.3.jar,
+      spring-cloud-context-4.3.3.jar,
+      spring-cloud-starter-4.3.3.jar</notes>
+    <cve>CVE-2026-59284</cve>
+  </suppress>
 
   <!-- Fix in ADOP-2777: Tomcat -->
   <suppress>
