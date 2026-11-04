@@ -281,7 +281,7 @@ dependencies {
   implementation 'com.sendgrid:sendgrid-java:4.0.1'
   implementation 'commons-validator:commons-validator:1.10.1'
   implementation 'org.elasticsearch:elasticsearch:9.5.5'
-  implementation 'uk.gov.service.notify:notifications-java-client:5.0.1-RELEASE'
+  implementation 'uk.gov.service.notify:notifications-java-client:5.2.1-RELEASE'
 
   implementation "org.projectlombok:lombok:${versions.lombok}"
   annotationProcessor "org.projectlombok:lombok:${versions.lombok}"

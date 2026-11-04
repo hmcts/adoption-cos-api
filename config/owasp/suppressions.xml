@@ -61,27 +61,6 @@
     <cve>CVE-2026-49844</cve>
   </suppress>
 
-  <!-- Fix in ADOP-2800 spring boot -->
-<!--  <suppress>-->
-<!--    <notes><![CDATA[-->
-<!--   file name: spring-boot-3.4.13.jar-->
-<!--   ]]></notes>-->
-<!--    <cve>CVE-2026-22731</cve>-->
-<!--  </suppress>-->
-<!--  <suppress>-->
-<!--    <notes><![CDATA[file name: spring-boot-3.4.11.jar]]></notes>-->
-<!--    <cve>CVE-2026-22733</cve>-->
-<!--    <cve>CVE-2026-40973</cve>-->
-<!--    <cve>CVE-2026-40972</cve>-->
-<!--    <cve>CVE-2026-40975</cve>-->
-<!--    <cve>CVE-2026-40977</cve>-->
-<!--    <cve>CVE-2026-40974</cve>-->
-<!--    <cve>CVE-2026-40970</cve>-->
-<!--    <cve>CVE-2026-40971</cve>-->
-<!--    <cve>CVE-2026-40976</cve>-->
-<!--    <cve>CVE-2026-40992</cve>-->
-<!--    <cve>CVE-2026-41001</cve>-->
-<!--  </suppress>-->
   <!-- Fix in ADOP-2799 spring-security-crypto -->
 <!--  <suppress>-->
 <!--    <notes><![CDATA[spring-security-crypto]]></notes>-->
