@@ -61,44 +61,15 @@
     <cve>CVE-2026-49844</cve>
   </suppress>
 
-  <!-- Fix in ADOP-2800 spring boot -->
-  <suppress>
-    <notes><![CDATA[
-   file name: spring-boot-3.4.13.jar
-   ]]></notes>
-    <cve>CVE-2026-22731</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[file name: spring-boot-3.4.11.jar]]></notes>
-    <cve>CVE-2026-22733</cve>
-    <cve>CVE-2026-40973</cve>
-    <cve>CVE-2026-40972</cve>
-    <cve>CVE-2026-40975</cve>
-    <cve>CVE-2026-40977</cve>
-    <cve>CVE-2026-40974</cve>
-    <cve>CVE-2026-40970</cve>
-    <cve>CVE-2026-40971</cve>
-    <cve>CVE-2026-40976</cve>
-    <cve>CVE-2026-40992</cve>
-    <cve>CVE-2026-41001</cve>
-  </suppress>
   <!-- Fix in ADOP-2799 spring-security-crypto -->
   <suppress>
     <notes><![CDATA[spring-security-crypto]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
-    <cve>CVE-2026-22732</cve>
-    <cve>CVE-2026-22748</cve>
-    <cve>CVE-2026-22751</cve>
-    <cve>CVE-2026-22746</cve>
-    <cve>CVE-2026-40988</cve>
-    <cve>CVE-2026-41003</cve>
-    <cve>CVE-2026-41694</cve>
-    <cve>CVE-2026-47838</cve>
-    <cve>CVE-2026-41706</cve>
     <cve>CVE-2026-59270</cve>
-    <cve>CVE-2026-59276</cve>
+    <cve>CVE-2026-41707</cve>
     <cve>CVE-2026-47841</cve>
     <cve>CVE-2026-47842</cve>
+    <cve>CVE-2026-59276</cve>
   </suppress>
 
   <!-- Fixed only in Spring Boot 3.4.17, which is not published to Maven Central
@@ -106,144 +77,90 @@
        Neither feature is used by this service: no Artemis/JMS broker
        (CVE-2026-41001) and no Spring Mail / JavaMailSender (CVE-2026-40992).
        Revisit when the service moves to a supported Spring Boot line. -->
-  <suppress until="2026-12-31Z">
-    <notes><![CDATA[spring-boot and spring-boot-* starters at 3.4.11]]></notes>
-    <cve>CVE-2026-41001</cve>
-    <cve>CVE-2026-40992</cve>
-  </suppress>
+<!--  <suppress until="2026-12-31Z">-->
+<!--    <notes><![CDATA[spring-boot and spring-boot-* starters at 3.4.11]]></notes>-->
+<!--    <cve>CVE-2026-41001</cve>-->
+<!--    <cve>CVE-2026-40992</cve>-->
+<!--  </suppress>-->
 
   <!-- Fixed only in spring-retry 2.0.12.1, which is not published to Maven Central.
        The advisory covers exhaustion of the *stateful* retry cache; this service
        uses stateless @Retryable with backoff only (SendgridService.sendEmail),
        so the affected code path is not engaged. -->
-  <suppress until="2026-12-31Z">
-    <notes><![CDATA[spring-retry-2.0.10.jar]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.retry/spring\-retry@.*$</packageUrl>
-    <cve>CVE-2026-41710</cve>
-  </suppress>
+<!--  <suppress until="2026-12-31Z">-->
+<!--    <notes><![CDATA[spring-retry-2.0.10.jar]]></notes>-->
+<!--    <packageUrl regex="true">^pkg:maven/org\.springframework\.retry/spring\-retry@.*$</packageUrl>-->
+<!--    <cve>CVE-2026-41710</cve>-->
+<!--  </suppress>-->
 
   <!-- Fix in ADOP-2806 spring framework -->
   <suppress>
     <notes>transitive spring framework dependencies
       (aop, beans, context, core, expression, jcl, webmvc)</notes>
-    <cve>CVE-2026-22735</cve>
-    <cve>CVE-2026-22737</cve>
-    <cve>CVE-2026-22740</cve>
-    <cve>CVE-2026-22745</cve>
-    <cve>CVE-2026-22741</cve>
-    <cve>CVE-2026-41842</cve>
-    <cve>CVE-2026-41850</cve>
-    <cve>CVE-2026-41851</cve>
-    <cve>CVE-2026-41840</cve>
-    <cve>CVE-2026-41841</cve>
-    <cve>CVE-2026-41843</cve>
-    <cve>CVE-2026-41838</cve>
-    <cve>CVE-2026-41848</cve>
-    <cve>CVE-2026-41844</cve>
-    <cve>CVE-2026-41845</cve>
-    <cve>CVE-2026-41846</cve>
-    <cve>CVE-2026-41852</cve>
-    <cve>CVE-2026-41854</cve>
-    <cve>CVE-2026-41853</cve>
-    <cve>CVE-2026-41855</cve>
-    <cve>CVE-2026-41839</cve>
-    <cve>CVE-2026-59313</cve>
-    <cve>CVE-2026-59314</cve>
-    <cve>CVE-2026-47892</cve>
-    <cve>CVE-2026-59283</cve>
-    <cve>CVE-2026-47893</cve>
-    <cve>CVE-2026-59280</cve>
-    <cve>CVE-2026-47890</cve>
     <cve>CVE-2026-47891</cve>
-    <cve>CVE-2026-59282</cve>
-    <cve>CVE-2026-59281</cve>
-    <cve>CVE-2026-47883</cve>
-    <cve>CVE-2026-47884</cve>
-    <cve>CVE-2026-47885</cve>
-    <cve>CVE-2026-47886</cve>
+    <cve>CVE-2026-47890</cve>
+    <cve>CVE-2026-47893</cve>
+    <cve>CVE-2026-47892</cve>
+    <cve>CVE-2026-47888</cve>
     <cve>CVE-2026-47887</cve>
     <cve>CVE-2026-47889</cve>
-    <cve>CVE-2026-47888</cve>
-    <cve>CVE-2026-41710</cve>
+    <cve>CVE-2026-47884</cve>
+    <cve>CVE-2026-47883</cve>
+    <cve>CVE-2026-47886</cve>
+    <cve>CVE-2026-47885</cve>
+    <cve>CVE-2026-59313</cve>
+    <cve>CVE-2026-59314</cve>
+    <cve>CVE-2026-59282</cve>
+    <cve>CVE-2026-59283</cve>
+    <cve>CVE-2026-59280</cve>
+    <cve>CVE-2026-59281</cve>
   </suppress>
 
   <!-- Fix in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
   <!-- Hystrix 2.2.10.RELEASE transitively pulls spring-boot-starter-aop:2.3.12.RELEASE.        -->
   <!-- The application itself runs Spring Boot 4 and is not affected by these 2.x vulnerabilities. -->
   <!-- Remove once spring-cloud-starter-netflix-hystrix is replaced or upgraded.                   -->
+<!--  <suppress>-->
+<!--    <notes><![CDATA[-->
+<!--   spring-cloud-starter-netflix-hystrix:2.2.10.RELEASE transitively pulls-->
+<!--   spring-boot-starter-aop:2.3.12.RELEASE. The application runs Spring Boot 4 and is not-->
+<!--   affected by CVE-2023-20873 / CVE-2023-20883. Suppressed until Hystrix is retired.-->
+<!--    ]]></notes>-->
+<!--    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-aop@.*$</packageUrl>-->
+<!--    <cve>CVE-2023-20873</cve>-->
+<!--    <cve>CVE-2023-20883</cve>-->
+<!--    <cve>CVE-2026-41842</cve>-->
+<!--    <cve>CVE-2026-41850</cve>-->
+<!--    <cve>CVE-2026-41851</cve>-->
+<!--    <cve>CVE-2026-41840</cve>-->
+<!--    <cve>CVE-2026-41841</cve>-->
+<!--    <cve>CVE-2026-41843</cve>-->
+<!--    <cve>CVE-2026-41838</cve>-->
+<!--    <cve>CVE-2026-41848</cve>-->
+<!--    <cve>CVE-2026-41844</cve>-->
+<!--    <cve>CVE-2026-41845</cve>-->
+<!--    <cve>CVE-2026-41846</cve>-->
+<!--    <cve>CVE-2026-41852</cve>-->
+<!--    <cve>CVE-2026-41854</cve>-->
+<!--    <cve>CVE-2026-41853</cve>-->
+<!--  </suppress>-->
+
   <suppress>
-    <notes><![CDATA[
-   spring-cloud-starter-netflix-hystrix:2.2.10.RELEASE transitively pulls
-   spring-boot-starter-aop:2.3.12.RELEASE. The application runs Spring Boot 4 and is not
-   affected by CVE-2023-20873 / CVE-2023-20883. Suppressed until Hystrix is retired.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-aop@.*$</packageUrl>
-    <cve>CVE-2023-20873</cve>
-    <cve>CVE-2023-20883</cve>
-    <cve>CVE-2026-41842</cve>
-    <cve>CVE-2026-41850</cve>
-    <cve>CVE-2026-41851</cve>
-    <cve>CVE-2026-41840</cve>
-    <cve>CVE-2026-41841</cve>
-    <cve>CVE-2026-41843</cve>
-    <cve>CVE-2026-41838</cve>
-    <cve>CVE-2026-41848</cve>
-    <cve>CVE-2026-41844</cve>
-    <cve>CVE-2026-41845</cve>
-    <cve>CVE-2026-41846</cve>
-    <cve>CVE-2026-41852</cve>
-    <cve>CVE-2026-41854</cve>
-    <cve>CVE-2026-41853</cve>
+    <notes>spring-cloud-commons-4.3.3.jar,
+      spring-cloud-context-4.3.3.jar,
+      spring-cloud-starter-4.3.3.jar</notes>
+    <cve>CVE-2026-59284</cve>
   </suppress>
 
   <!-- Fix in ADOP-2777: Tomcat -->
   <suppress>
-    <notes><![CDATA[
-   file name: tomcat-embed-core-10.1.44.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
-    <cve>CVE-2025-55754</cve>
-    <cve>CVE-2025-55752</cve>
-    <cve>CVE-2025-61795</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: tomcat-embed-core/websocket 10.1.47.jar
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
-    <cve>CVE-2025-66614</cve>
-    <cve>CVE-2026-24733</cve>
-    <cve>CVE-2026-24734</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[Affects tomcat-embed-core / tomcat-embed-websocket 10.1.54 (pinned for hystrix compatibility). Suppressed pending Tomcat upgrade. Raise Jira to track upgrade.]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-.*@.*$</packageUrl>
-    <cve>CVE-2026-29145</cve>
-    <cve>CVE-2026-24880</cve>
-    <cve>CVE-2026-29129</cve>
-    <cve>CVE-2026-29146</cve>
-    <cve>CVE-2026-34483</cve>
-    <cve>CVE-2026-34487</cve>
-    <cve>CVE-2026-34500</cve>
-    <cve>CVE-2026-25854</cve>
-    <cve>CVE-2026-32990</cve>
-    <cve>CVE-2026-41293</cve>
-    <cve>CVE-2026-41284</cve>
-    <cve>CVE-2026-42498</cve>
-    <cve>CVE-2026-43512</cve>
-    <cve>CVE-2026-43513</cve>
-    <cve>CVE-2026-43514</cve>
-    <cve>CVE-2026-43515</cve>
+    <notes>tomcat-embed-core-10.1.55.jar, tomcat-embed-websocket-10.1.55.jar</notes>
+    <cve>CVE-2026-65637</cve>
+    <cve>CVE-2026-65905</cve>
     <cve>CVE-2026-53434</cve>
     <cve>CVE-2026-55276</cve>
-    <cve>CVE-2026-53404</cve>
-    <cve>CVE-2026-55955</cve>
-    <cve>CVE-2026-55956</cve>
-    <cve>CVE-2026-50229</cve>
     <cve>CVE-2026-59083</cve>
     <cve>CVE-2026-59084</cve>
-    <cve>CVE-2026-66299</cve>
-    <cve>CVE-2026-65905</cve>
     <cve>CVE-2026-65182</cve>
     <cve>CVE-2026-68525</cve>
     <cve>CVE-2026-65183</cve>
@@ -251,8 +168,14 @@
     <cve>CVE-2026-68569</cve>
     <cve>CVE-2026-65927</cve>
     <cve>CVE-2026-68763</cve>
+    <cve>CVE-2026-53404</cve>
     <cve>CVE-2026-73180</cve>
+    <cve>CVE-2026-55955</cve>
+    <cve>CVE-2026-55956</cve>
+    <cve>CVE-2026-50229</cve>
+    <cve>CVE-2026-66299</cve>
   </suppress>
+
 
   <!-- Suspected false positive -->
   <suppress until="2027-04-02Z">
