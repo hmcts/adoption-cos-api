@@ -97,48 +97,49 @@ class CaseDataTest {
 
     @Test
     void shouldDeserializeJsonUnwrappedFieldsProperly() throws Exception {
-        String json = """
-        {
-          "applicant1FirstName": "A1First",
-          "applicant1LastName": "A1Last",
-          "applicant2FirstName": "A2First",
-          "applicant2LastName": "A2Last",
-          "childrenFirstName": "CFirst",
-          "childrenLastName": "CLast",
+        String json =
+            """
+            {
+              "applicant1FirstName": "A1First",
+              "applicant1LastName": "A1Last",
+              "applicant2FirstName": "A2First",
+              "applicant2LastName": "A2Last",
+              "childrenFirstName": "CFirst",
+              "childrenLastName": "CLast",
 
-          "localGuardianName": "GName",
-          "childSolicitorSolicitorFirm": "CSsolicitorFirm",
+              "localGuardianName": "GName",
+              "childSolicitorSolicitorFirm": "CSsolicitorFirm",
 
-          "birthMotherFirstName": "BMFirst",
-          "birthMotherLastName": "BMLast",
-          "motherSolicitorSolicitorFirm": "BMSsolicitorFirm",
+              "birthMotherFirstName": "BMFirst",
+              "birthMotherLastName": "BMLast",
+              "motherSolicitorSolicitorFirm": "BMSsolicitorFirm",
 
-          "birthFatherFirstName": "BFFirst",
-          "birthFatherLastName": "BFLast",
-          "fatherSolicitorSolicitorFirm": "BFSsolicitorFirm",
+              "birthFatherFirstName": "BFFirst",
+              "birthFatherLastName": "BFLast",
+              "fatherSolicitorSolicitorFirm": "BFSsolicitorFirm",
 
-          "otherParentFirstName": "OPFirst",
-          "otherParentLastName": "OPLast",
-          "otherParentSolicitorSolicitorFirm": "OPSsolicitorFirm",
+              "otherParentFirstName": "OPFirst",
+              "otherParentLastName": "OPLast",
+              "otherParentSolicitorSolicitorFirm": "OPSsolicitorFirm",
 
-          "childSocialWorkerName": "ChildSW",
-          "applicantSocialWorkerName": "ApplicantSW",
-          "solicitorSolicitorFirm": "SsolicitorFirm",
+              "childSocialWorkerName": "ChildSW",
+              "applicantSocialWorkerName": "ApplicantSW",
+              "solicitorSolicitorFirm": "SsolicitorFirm",
 
-          "otherAdoptionAgencyOrLaName": "OtherAgency",
+              "otherAdoptionAgencyOrLaName": "OtherAgency",
 
-          "createdDate": "2026-11-10",
-          "dateSubmitted": "2026-11-11",
-          "applicationFeeOrderSummary": {
-            "PaymentReference": "1234567890",
-            "PaymentTotal": "100.00"
-          },
+              "createdDate": "2026-11-10",
+              "dateSubmitted": "2026-11-11",
+              "applicationFeeOrderSummary": {
+                "PaymentReference": "1234567890",
+                "PaymentTotal": "100.00"
+              },
 
-          "nameOfApplicant2": "NestedApplicationField",
-          "nameOfCourtFirstHearing": "NestedManageOrdersField",
-          "reasonForVacatingHearing": "agreementConsentOrderMade"
-        }
-        """;
+              "nameOfApplicant2": "NestedApplicationField",
+              "nameOfCourtFirstHearing": "NestedManageOrdersField",
+              "reasonForVacatingHearing": "agreementConsentOrderMade"
+            }
+            """;
 
         CaseData caseData = objectMapper.readValue(json, CaseData.class);
 
