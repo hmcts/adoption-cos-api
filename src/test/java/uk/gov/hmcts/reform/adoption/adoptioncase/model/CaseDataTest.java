@@ -13,6 +13,10 @@ class CaseDataTest {
 
     @Test
     void shouldSerializeAllJsonUnwrappedFieldsProperly() throws Exception {
+        /* manageHearingDetails, manageOrdersData, adoptionOrderData, directionsOrderData, messageSendDetails,
+         * selectedMessage, selectedOrder are in use. But still adding them to this unit test for safe.
+         * Feel free to remove them from this unit test when removing unused code.
+         */
         CaseData caseData = CaseData.builder()
             .applicant1(Applicant.builder().firstName("A1First").lastName("A1Last").build())
             .applicant2(Applicant.builder().firstName("A2First").lastName("A2Last").build())
