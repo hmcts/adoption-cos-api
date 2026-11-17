@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.java.en.But;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
 
@@ -9,6 +8,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ReasonForVacatingHearing.AGREEMENT_OR_CONSENT_ORDER_MADE;
 
 class CaseDataTest {
+    /* manageHearingDetails, manageOrdersData, adoptionOrderData, directionsOrderData, messageSendDetails,
+     * selectedMessage, selectedOrder are not in use.
+     * But still adding them to this unit test for safety.
+     * Feel free to remove them from this unit test when removing unused code.
+     */
 
     private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
@@ -87,7 +91,6 @@ class CaseDataTest {
         assertThat(json).doesNotContain("\"localAuthority\":{");
         assertThat(json).doesNotContain("\"adopAgencyOrLA\":{");
         assertThat(json).doesNotContain("\"application\":{");
-        // Following fields are not in use. But still including them in this test for safety.
         assertThat(json).doesNotContain("\"manageHearingDetails\":{");
         assertThat(json).doesNotContain("\"manageOrdersData\":{");
         assertThat(json).doesNotContain("\"adoptionOrderData\":{");
@@ -205,7 +208,6 @@ class CaseDataTest {
             OrderSummary.builder().paymentReference("1234567890").paymentTotal("100.00").build()
         );
 
-        // Following fields are not in use. But still including them in this test for safety.
         assertThat(caseData.getManageOrdersData()).isNotNull();
         assertThat(caseData.getManageOrdersData().getNameOfCourtFirstHearing())
             .isEqualTo("NestedManageOrdersField");
