@@ -14,7 +14,7 @@ class CaseDataTest {
     @Test
     void shouldSerializeAllJsonUnwrappedFieldsProperly() throws Exception {
         /* manageHearingDetails, manageOrdersData, adoptionOrderData, directionsOrderData, messageSendDetails,
-         * selectedMessage, selectedOrder are in use. But still adding them to this unit test for safety.
+         * selectedMessage, selectedOrder are not in use. But still adding them to this unit test for safety.
          * Feel free to remove them from this unit test when removing unused code.
          */
         CaseData caseData = CaseData.builder()
