@@ -9,7 +9,8 @@ import static uk.gov.hmcts.reform.adoption.adoptioncase.model.ReasonForVacatingH
 
 class CaseDataTest {
     /* manageHearingDetails, manageOrdersData, adoptionOrderData, directionsOrderData, messageSendDetails,
-     * selectedMessage, selectedOrder are not in use.
+     * selectedMessage, selectedOrder, localGuardian, childSolicitor, birthMotherSolicitor, birthFatherSolicitor,
+     * otherParentSolicitor, solicitor are not in use.
      * But still adding them to this unit test for safety.
      * Feel free to remove them from this unit test when removing unused code.
      */
