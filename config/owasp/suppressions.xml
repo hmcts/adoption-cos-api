@@ -94,35 +94,6 @@
     <cve>CVE-2026-59281</cve>
   </suppress>
 
-  <!-- Fix in ADOP-2832 : spring-boot-starter-aop 2.3.12.RELEASE CVE suppressions -->
-  <!-- Hystrix 2.2.10.RELEASE transitively pulls spring-boot-starter-aop:2.3.12.RELEASE.        -->
-  <!-- The application itself runs Spring Boot 4 and is not affected by these 2.x vulnerabilities. -->
-  <!-- Remove once spring-cloud-starter-netflix-hystrix is replaced or upgraded.                   -->
-<!--  <suppress>-->
-<!--    <notes><![CDATA[-->
-<!--   spring-cloud-starter-netflix-hystrix:2.2.10.RELEASE transitively pulls-->
-<!--   spring-boot-starter-aop:2.3.12.RELEASE. The application runs Spring Boot 4 and is not-->
-<!--   affected by CVE-2023-20873 / CVE-2023-20883. Suppressed until Hystrix is retired.-->
-<!--    ]]></notes>-->
-<!--    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-aop@.*$</packageUrl>-->
-<!--    <cve>CVE-2023-20873</cve>-->
-<!--    <cve>CVE-2023-20883</cve>-->
-<!--    <cve>CVE-2026-41842</cve>-->
-<!--    <cve>CVE-2026-41850</cve>-->
-<!--    <cve>CVE-2026-41851</cve>-->
-<!--    <cve>CVE-2026-41840</cve>-->
-<!--    <cve>CVE-2026-41841</cve>-->
-<!--    <cve>CVE-2026-41843</cve>-->
-<!--    <cve>CVE-2026-41838</cve>-->
-<!--    <cve>CVE-2026-41848</cve>-->
-<!--    <cve>CVE-2026-41844</cve>-->
-<!--    <cve>CVE-2026-41845</cve>-->
-<!--    <cve>CVE-2026-41846</cve>-->
-<!--    <cve>CVE-2026-41852</cve>-->
-<!--    <cve>CVE-2026-41854</cve>-->
-<!--    <cve>CVE-2026-41853</cve>-->
-<!--  </suppress>-->
-
   <suppress>
     <notes>spring-cloud-commons-4.3.3.jar,
       spring-cloud-context-4.3.3.jar,
