@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.adoption.adoptioncase.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.en.But;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.ccd.sdk.type.OrderSummary;
 
@@ -13,10 +14,6 @@ class CaseDataTest {
 
     @Test
     void shouldSerializeAllJsonUnwrappedFieldsProperly() throws Exception {
-        /* manageHearingDetails, manageOrdersData, adoptionOrderData, directionsOrderData, messageSendDetails,
-         * selectedMessage, selectedOrder are not in use. But still adding them to this unit test for safety.
-         * Feel free to remove them from this unit test when removing unused code.
-         */
         CaseData caseData = CaseData.builder()
             .applicant1(Applicant.builder().firstName("A1First").lastName("A1Last").build())
             .applicant2(Applicant.builder().firstName("A2First").lastName("A2Last").build())
@@ -90,6 +87,7 @@ class CaseDataTest {
         assertThat(json).doesNotContain("\"localAuthority\":{");
         assertThat(json).doesNotContain("\"adopAgencyOrLA\":{");
         assertThat(json).doesNotContain("\"application\":{");
+        // Following fields are not in use. But still including them here for safety.
         assertThat(json).doesNotContain("\"manageHearingDetails\":{");
         assertThat(json).doesNotContain("\"manageOrdersData\":{");
         assertThat(json).doesNotContain("\"adoptionOrderData\":{");
