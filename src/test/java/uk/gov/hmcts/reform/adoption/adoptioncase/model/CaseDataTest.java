@@ -87,7 +87,7 @@ class CaseDataTest {
         assertThat(json).doesNotContain("\"localAuthority\":{");
         assertThat(json).doesNotContain("\"adopAgencyOrLA\":{");
         assertThat(json).doesNotContain("\"application\":{");
-        // Following fields are not in use. But still including them here for safety.
+        // Following fields are not in use. But still including them in this test for safety.
         assertThat(json).doesNotContain("\"manageHearingDetails\":{");
         assertThat(json).doesNotContain("\"manageOrdersData\":{");
         assertThat(json).doesNotContain("\"adoptionOrderData\":{");
@@ -205,6 +205,7 @@ class CaseDataTest {
             OrderSummary.builder().paymentReference("1234567890").paymentTotal("100.00").build()
         );
 
+        // Following fields are not in use. But still including them in this test for safety.
         assertThat(caseData.getManageOrdersData()).isNotNull();
         assertThat(caseData.getManageOrdersData().getNameOfCourtFirstHearing())
             .isEqualTo("NestedManageOrdersField");
