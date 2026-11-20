@@ -1,5 +1,5 @@
 #!groovy
-@Library("Infrastructure")
+@Library("Infrastructure@2.5.4")
 
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GradleBuilder
@@ -38,6 +38,7 @@ def secrets = [
     secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
     secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD'),
     secret('ccd-case-document-am-api-s2s-secret', 'CCD_CASE_DOCUMENT_AM_API_SECRET'),
+    secret('session-keys', 'SESSION_KEYS'),
   ],
   'adoption-${env}'    :[
     secret('definition-importer-username', 'DEFINITION_IMPORTER_USERNAME'),
@@ -156,14 +157,14 @@ withPipeline(type, product, component) {
     ]
 
     dir("${WORKSPACE}") {
-      steps.archiveArtifacts  allowEmptyArchive: true, artifacts: "build/reports/tests/functional/**/*"
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: "build/reports/tests/functional/**/*"
     }
 
-    env.ENVIRONMENT="prod"
-    env.CASE_API_URL="http://adoption-cos-api-prod.service.core-compute-prod.internal"
-    env.CCD_DEF_NAME="prod"
-    env.DEFINITION_STORE_URL_BASE="http://ccd-definition-store-api-prod.service.core-compute-prod.internal"
-    env.CITIZEN_UPDATE_CASE_STATE_ENABLED=true
+    env.ENVIRONMENT = "prod"
+    env.CASE_API_URL = "http://adoption-cos-api-prod.service.core-compute-prod.internal"
+    env.CCD_DEF_NAME = "prod"
+    env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-prod.service.core-compute-prod.internal"
+    env.CITIZEN_UPDATE_CASE_STATE_ENABLED = true
     env.SERVICE_AUTH_MICROSERVICE = "adoption_cos_api"
     env.SERVICE_AUTH_PROVIDER_URL = "http://rpe-service-auth-provider-prod.service.core-compute-prod.internal"
     env.IDAM_API_URL_BASE = "https://idam-api.platform.hmcts.net"
@@ -196,7 +197,10 @@ withPipeline(type, product, component) {
     ]
   }
 
-  afterAlways('checkout') {
+  before('highleveldatasetup') {
+    sh 'az login --identity'
+    sh 'az acr login --name hmctsprod'
+
     builder.gradle('generateCCDConfig')
     generateDefinitions()
   }

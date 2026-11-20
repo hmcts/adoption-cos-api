@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,7 +59,7 @@ class LocalAuthorityAlertToSubmitToCourtTest {
         caseData = caseData();
         caseData.setHyphenatedCaseRef("1234-2234-3234-4234");
         caseData.getApplication().setDateSubmitted(LocalDate.of(2025, Month.MARCH, 1));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
 
         SocialWorker childSocialWorker = new SocialWorker();
         childSocialWorker.setLocalAuthorityEmail("child-sw@local-authority.gov.uk");
@@ -84,7 +83,7 @@ class LocalAuthorityAlertToSubmitToCourtTest {
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
         expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
-        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(LOCAL_COURT_NAME, "");
         expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
         expectedTemplateVars.put(DATE_SUBMITTED, "1 March 2025");
         expectedTemplateVars.put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
@@ -142,7 +141,7 @@ class LocalAuthorityAlertToSubmitToCourtTest {
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
         expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
-        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(LOCAL_COURT_NAME, "");
         expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
         expectedTemplateVars.put(DATE_SUBMITTED, LocalDate.now().format(DATE_TIME_FORMATTER));
         expectedTemplateVars.put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
@@ -173,7 +172,7 @@ class LocalAuthorityAlertToSubmitToCourtTest {
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
         expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
-        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(LOCAL_COURT_NAME, "");
         expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
         expectedTemplateVars.put(DATE_SUBMITTED, "1 March 2025");
         expectedTemplateVars.put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);
@@ -204,7 +203,7 @@ class LocalAuthorityAlertToSubmitToCourtTest {
 
         Map<String, Object> expectedTemplateVars = new HashMap<>();
         expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
-        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(LOCAL_COURT_NAME, "");
         expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
         expectedTemplateVars.put(DATE_SUBMITTED, "1 March 2025");
         expectedTemplateVars.put(LA_PORTAL_URL, TEST_LA_PORTAL_URL);

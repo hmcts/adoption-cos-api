@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.adoption.notification;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,7 +50,7 @@ public class ApplicantAlertForLaAlertedToSubmitToCourtTest {
         caseData = caseData();
         caseData.setHyphenatedCaseRef("1234-2234-3234-4234");
         caseData.getApplication().setDateSubmitted(LocalDate.of(2025, Month.MARCH, 1));
-        caseData.setFamilyCourtName(StringUtils.EMPTY);
+        caseData.setFamilyCourtName("");
 
         Applicant applicant1 = new Applicant();
         applicant1.setFirstName("Applicant1 First");
@@ -73,9 +72,9 @@ public class ApplicantAlertForLaAlertedToSubmitToCourtTest {
         expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
         expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
         expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "Applicant1 First Applicant1 Last");
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
         expectedTemplateVars.put(HAS_SECOND_APPLICANT, NO);
-        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(LOCAL_COURT_NAME, "");
         expectedTemplateVars.put(DATE_SUBMITTED, "1 March 2025");
 
         applicantAlertForLaAlertedToSubmitToCourt.sendApplicantAlertForLaAlertedToSubmitToCourt(caseData,
@@ -103,7 +102,7 @@ public class ApplicantAlertForLaAlertedToSubmitToCourtTest {
         expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "Applicant1 First Applicant1 Last");
         expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "Applicant2 First Applicant2 Last");
         expectedTemplateVars.put(HAS_SECOND_APPLICANT, YES);
-        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(LOCAL_COURT_NAME, "");
         expectedTemplateVars.put(DATE_SUBMITTED, "1 March 2025");
 
         applicantAlertForLaAlertedToSubmitToCourt.sendApplicantAlertForLaAlertedToSubmitToCourt(caseData,
@@ -132,9 +131,9 @@ public class ApplicantAlertForLaAlertedToSubmitToCourtTest {
         expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
         expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
         expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "Applicant1 First Applicant1 Last");
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
         expectedTemplateVars.put(HAS_SECOND_APPLICANT, NO);
-        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(LOCAL_COURT_NAME, "");
         expectedTemplateVars.put(DATE_SUBMITTED, LocalDate.now().format(DATE_TIME_FORMATTER));
 
         applicantAlertForLaAlertedToSubmitToCourt.sendApplicantAlertForLaAlertedToSubmitToCourt(caseData,
@@ -156,9 +155,9 @@ public class ApplicantAlertForLaAlertedToSubmitToCourtTest {
         expectedTemplateVars.put(HYPHENATED_REF, "1234-2234-3234-4234");
         expectedTemplateVars.put(CHILD_FULL_NAME, "Child First Child Last");
         expectedTemplateVars.put(APPLICANT_1_FULL_NAME, "Applicant1 First Applicant1 Last");
-        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(APPLICANT_2_FULL_NAME, "");
         expectedTemplateVars.put(HAS_SECOND_APPLICANT, NO);
-        expectedTemplateVars.put(LOCAL_COURT_NAME, StringUtils.EMPTY);
+        expectedTemplateVars.put(LOCAL_COURT_NAME, "");
         expectedTemplateVars.put(DATE_SUBMITTED, "1 March 2025");
 
         applicantAlertForLaAlertedToSubmitToCourt.sendApplicantAlertForLaAlertedToSubmitToCourt(caseData,
