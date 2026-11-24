@@ -205,24 +205,6 @@ Password can be found in Kubernetes Services -> preview environment -> workloads
 To view the databases:
 `kubectl get flexibleserversdatabases -n adoption`
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-## Connect to Preview Database
-Hostname = adoption-preview.postgres.database.azure.com
-Port = 5432
-Database Name = pr-<number>-data-store
-Username = hmcts
-SSL (Parameters) =  require
-
-Password can be found in Kubernetes Services -> preview environment -> workloads
--> select deployment name adoption-cos-api-pr-<number>-ccd-data-store-api
--> select pod -> select container (overview) -> environment variables tab
--> click postgres link for DATA_STORE_DB_PASSWORD -> click eye to decrypt
-
-To view the databases:
-`kubectl get flexibleserversdatabases -n adoption`
 
 ## Local Database
 
@@ -233,3 +215,7 @@ User: postgres
 Password: postgres
 Hostname: localhost
 Port: probably 6432 but check Docker Desktop → cftlib → shared-database
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
