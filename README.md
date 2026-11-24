@@ -29,7 +29,7 @@ This API handles callbacks from CCD for the ADOPTION case type.
 Running the application requires the following tools to be installed in your environment:
 
 - [JDK](https://openjdk.org/projects/jdk/21/) v21 *specifically*
-- [Docker](https://www.docker.com) 
+- [Docker](https://www.docker.com)
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
 
 ### Building the application
@@ -190,6 +190,7 @@ The project contains the following plugins:
   ```
 
 ## Connect to Preview Database
+
 Hostname = adoption-preview.postgres.database.azure.com
 Port = 5432
 Database Name = pr-<number>-data-store
