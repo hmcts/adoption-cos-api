@@ -28,11 +28,9 @@ This API handles callbacks from CCD for the ADOPTION case type.
 
 Running the application requires the following tools to be installed in your environment:
 
-- [JDK](https://openjdk.org/projects/jdk/17/) v17 *specifically*
+- [JDK](https://openjdk.org/projects/jdk/21/) v21 *specifically*
 - [Docker](https://www.docker.com)
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
-
-## Building and running the application
 
 ### Building the application
 
@@ -45,21 +43,34 @@ To build the project execute the following command:
 
 ### Running the application locally with CCD and XUI
 
+1. Connect to F5 VPN
+2. Start Docker Desktop
+3. Login to Azure
+4. Run ./gradlew bootWithCcd
+5. Access XUI on localhost:3000
+
 Preliminary steps:
 
-* Connect to F5 VPN:<br>
+1. Connect to F5 VPN:<br>
   Go to the webpage https://portal.platform.hmcts.net/ and follow the instructions to connect to F5 VPN.  Once the F5 scan has taken place and you are taken to the F5 landing page, **make sure you click the VPN button** to actually start the VPN.<br>
   (This is needed because we connect to APIs deployed in the AAT environment while running the application locally.)
 
-* Then log in to the subscription (you will need to get the subscription ID from another dev):
+2. Ensure Docker Desktop and containers running by checking in Docker Desktop or
+
+    `docker ps`
+
+3. Then log in to the Azure Container Registry (you will need to get the subscription ID from another dev):
 
     `az acr login --name hmctsprod --subscription [SUBSCRIPTION ID]`
 
-You can now run the full CCD and XUI stack locally using:
+    You won't need to do this every time
+
+
+4. You can now run the full CCD and XUI stack locally using:
 
     ./gradlew bootWithCcd
 
-* Then you can access XUI on `http://localhost:3000`. This will redirect to the IDAM log-in page in AAT.  Use the test account with e-mail address `test-case-worker-dc6@mailinator.com` and password `Password23` to log in as a case-worker.<br>
+5.  Then you can access XUI on `http://localhost:3000`. This will redirect to the IDAM log-in page in AAT.  Use the test account with e-mail address `test-case-worker-dc6@mailinator.com` and password `Password23` to log in as a case-worker.<br>
 If you see any errors then you need to recreate the test account using `curl` as follows:
 
 ```bash
@@ -179,6 +190,7 @@ The project contains the following plugins:
   ```
 
 ## Connect to Preview Database
+
 Hostname = adoption-preview.postgres.database.azure.com
 Port = 5432
 Database Name = pr-<number>-data-store
@@ -192,6 +204,17 @@ Password can be found in Kubernetes Services -> preview environment -> workloads
 
 To view the databases:
 `kubectl get flexibleserversdatabases -n adoption`
+
+
+## Local Database
+
+Prerequisites: cftLib is running
+
+Database: postgres
+User: postgres
+Password: postgres
+Hostname: localhost
+Port: probably 6432 but check Docker Desktop → cftlib → shared-database
 
 ## License
 
